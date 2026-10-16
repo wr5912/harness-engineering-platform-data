@@ -1,0 +1,23 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求实际调用 task_inspection 的 start、page、report，使用同一 run_id 从 cursor 0 分页读取 asset-0001 至 asset-0005，并产出数量为 5、含真实可下载 Markdown 与 CSV 链接的报告。工具回执显示被测 Session 仅调用 glob 与 read，未调用任何巡检工具，也未获取任何资产或分页数据，报告与下载链接完全缺失。被测回答以工作区只有 AGENTS.md 和 .env 为由宣称任务无法执行，声称没有查询工具、没有网络与写入能力，这与预期中可通过 task_inspection 完成只读台账巡检相矛盾。回答中“不是实际设备健康检测”的说明方向正确，但整体未满足核心执行与产出要求，故判 failed。"
+  },
+  "checks": {
+    "session_id": "session-dde87886-3416-4549-a003-59bd0f70de47",
+    "workspace_id": "de048e97-7e57-465b-9b62-8603ad31e980",
+    "session_title": "评审 U-ASSET-PAGES-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

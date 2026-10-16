@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-SUMMARY-001",
+  "transport": "api",
+  "expected_behavior": "摘要保留 TEST-ASSET-01、正常和给定时间，明确依据用户提供的基础模拟数据，未实际查询服务。不虚构调用工具或新增检查结果。",
+  "session_id": "session-0fb7465a-3af0-46c0-a29d-37b0950a2235",
+  "workspace_id": "eaca4d4d-5d15-45d7-a169-1652e38a225c",
+  "session_title": "评测 U-SUMMARY-001",
+  "session_preset": "daily-inspection-assistant",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-44c85c0e-685e-4e17-a1ad-232cd864c472",
+    "workspace_id": "eaca4d4d-5d15-45d7-a169-1652e38a225c",
+    "session_title": "评审 U-SUMMARY-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

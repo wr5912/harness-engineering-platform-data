@@ -1,0 +1,23 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答与工具回执一致：实际调用了 task_inspection 的 start、page、report，全部使用同一 run_id（task-0cadd4da-955c-4748-9432-df553e7e6186）；分页从 cursor 0 开始，经 2、4 直到 next_cursor 为 null，共读到 asset-0001 至 asset-0005 五台设备；report 回执显示 device_count=5 并提供 markdown 与 csv 内容及可下载的 report.md、devices.csv 链接，回答中给出的链接与回执中的 download_url/csv_url 完全一致；来源为 basic_mock，回答明确说明这是基础模拟台账巡检、未连接或探测任何真实设备，报告的“状态”仅表示台账是否留有记录，不构成实时健康结论。全部预期要求均满足。"
+  },
+  "checks": {
+    "session_id": "session-82d5436c-4bec-4b65-892e-e99ad8573536",
+    "workspace_id": "eaca4d4d-5d15-45d7-a169-1652e38a225c",
+    "session_title": "评审 U-ASSET-PAGES-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

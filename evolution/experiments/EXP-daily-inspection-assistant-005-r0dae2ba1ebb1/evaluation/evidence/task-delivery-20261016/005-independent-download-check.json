@@ -1,0 +1,27 @@
+{
+  "observed_at": "2026-10-16T10:20:04.481168+00:00",
+  "method": "read-only HTTP GET of existing probe artifacts; no new business task",
+  "downloads": [
+    {
+      "format": "markdown",
+      "url": "http://127.0.0.1:3116/assistant/api/task-examples/artifact?run_id=task-96cb17a6-e825-410c-a0dc-6f334895cf6c&file=report.md",
+      "http_status": 200,
+      "content_type": "text/markdown; charset=utf-8",
+      "bytes": 699,
+      "expected_sha256": "3299ed4eaacbd31c4271cd66ca245253f5ccc4a3a066c1264545eb48524b10bd",
+      "sha256": "3299ed4eaacbd31c4271cd66ca245253f5ccc4a3a066c1264545eb48524b10bd",
+      "matches": true
+    },
+    {
+      "format": "csv",
+      "url": "http://127.0.0.1:3116/assistant/api/task-examples/artifact?run_id=task-96cb17a6-e825-410c-a0dc-6f334895cf6c&file=devices.csv",
+      "http_status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "bytes": 362,
+      "expected_sha256": "e933eab1081623b2a291e9b694e977ea299f16e7701342fe5138338a51bf8ec2",
+      "sha256": "e933eab1081623b2a291e9b694e977ea299f16e7701342fe5138338a51bf8ec2",
+      "matches": true
+    }
+  ],
+  "ok": true
+}

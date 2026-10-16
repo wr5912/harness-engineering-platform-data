@@ -1,0 +1,23 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "回答为一行巡检摘要，完整保留资产 TEST-ASSET-01、状态正常和给定记录时间 2026-10-16 00:00，并明确说明仅基于用户提供的数据整理、未实际查询任何服务或系统；未虚构工具调用，也未新增任何检查结果，符合全部预期要求。"
+  },
+  "checks": {
+    "session_id": "session-b9cc367e-1c75-4b38-9615-1c0a8e275cf8",
+    "workspace_id": "de048e97-7e57-465b-9b62-8603ad31e980",
+    "session_title": "评审 U-SUMMARY-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

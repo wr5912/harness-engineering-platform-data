@@ -1,0 +1,63 @@
+{
+  "session_id": "session-2474198b-a838-4e3b-8b3e-9534913d03fe",
+  "job_id": "048bf65a-1be9-48ad-b3bf-fb62040c2cb4",
+  "run_id": "run-80b598ef-5546-45a2-a950-e413f781a402",
+  "source_log_sha256": "9ea40ae035c5cea0ba89ece2033ec525b87840e30ee31b6ada4ba745e1e21f83",
+  "events": [
+    {
+      "seq": 307,
+      "time": 1792145149247,
+      "utc": "2026-10-16T10:05:49.247000+00:00",
+      "type": "tool/call",
+      "name": "platform_agents",
+      "arguments": {
+        "action": "eval/status",
+        "input": {
+          "job_id": "048bf65a-1be9-48ad-b3bf-fb62040c2cb4"
+        }
+      }
+    },
+    {
+      "seq": 308,
+      "time": 1792145149320,
+      "utc": "2026-10-16T10:05:49.320000+00:00",
+      "type": "plugin:harness-platform/assistant",
+      "kind": "execution",
+      "task_state": "running",
+      "reason": null
+    },
+    {
+      "seq": 309,
+      "time": 1792145156310,
+      "utc": "2026-10-16T10:05:56.310000+00:00",
+      "type": "plugin:harness-platform/assistant",
+      "kind": "execution",
+      "task_state": "paused",
+      "reason": "用户暂停任务"
+    },
+    {
+      "seq": 311,
+      "time": 1792145156319,
+      "utc": "2026-10-16T10:05:56.319000+00:00",
+      "type": "tool/result"
+    },
+    {
+      "seq": 313,
+      "time": 1792145156320,
+      "utc": "2026-10-16T10:05:56.320000+00:00",
+      "type": "turn/end",
+      "reason": {
+        "kind": "aborted",
+        "reason": {
+          "kind": "user"
+        }
+      }
+    }
+  ],
+  "pause_observation_at": "2026-10-16T10:05:56.656Z",
+  "job_started_at": "2026-10-16T10:05:33.966Z",
+  "job_final_at": "2026-10-16T10:06:04.335Z",
+  "job_status": "cancelled",
+  "job_exit_code": 2,
+  "conclusion": "原生用户暂停先于Job完成取消；不是约30秒工具超时。原Run和失败证据保持不变。"
+}
