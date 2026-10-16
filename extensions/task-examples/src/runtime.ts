@@ -116,7 +116,8 @@ export function apply(ctx: any, config: Config) {
     ? '基础资产台账只读巡检：start固定资产快照，page按cursor读完分页，report校验已读取完整集合并生成实际Markdown/CSV报告。数据来自基础Mock，不能称为真实设备健康检测。'
     : config.kind === 'research' ? '多步骤资料研究：start创建任务，collect按配置资料URL读取真实正文，report用每个URL对应的summaries生成带来源的报告；资料须全部读取。'
       : '自主训练研究：preflight核查真实GPU、固定来源、uv/PyTorch与数据；baseline建立一次真实基线，candidate只修改train.py并实际训练评估，最多三个候选、单次十分钟、总时限一小时。更优保留、失败回退，status读取原运行。没有真实算力时只报告缺口，不产生模拟指标。',
-    parameters: columns,
+    parameters: { type: 'object', properties: columns, required: ['action'], additionalProperties: false },
+    output: { schema: { type: 'object', additionalProperties: true }, render: (_args: unknown, value: any) => [{ type: 'text', text: JSON.stringify(value) }] },
     async execute(args: any, execution: any) {
       const session = execution.agent.session.header.id, signal = execution.signal
       if (config.kind === 'training') {
