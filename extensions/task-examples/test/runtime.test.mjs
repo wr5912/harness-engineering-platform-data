@@ -60,6 +60,16 @@ test('巡检经实际HTTP读资产，并行分页完整保留；未读完拒交�
   assert.equal((await ctx.download(`/assistant/api/task-examples/artifact?run_id=${started.run_id}&file=..%2Fstate.json`)).status, 400)
 })
 
+test('装配到新智能体时，限制绑定新Preset而不沿用来源身份', () => {
+  const ctx = toolContext({ kind: 'inspection', presetId: 'inspection-delivery-demo' })
+  let restricted = false
+  const agent = { session: { header: { agentPreset: 'inspection-delivery-demo' } }, ctx: { tools: { restrict() { restricted = true } } } }
+  ctx.preStep({ agent }, () => undefined)
+  assert.equal(restricted, true)
+  assert.match(ctx.guard({ name: 'write', agent }), /只允许/)
+  assert.equal(ctx.guard({ name: 'task_inspection', agent }), undefined)
+})
+
 test('巡检上游缺失设备时拒绝造全量报告', async t => {
   environment(t, { DSH_HOME: temporary(t) })
   const url = await http(t, (_req, res) => res.end('[]'))
