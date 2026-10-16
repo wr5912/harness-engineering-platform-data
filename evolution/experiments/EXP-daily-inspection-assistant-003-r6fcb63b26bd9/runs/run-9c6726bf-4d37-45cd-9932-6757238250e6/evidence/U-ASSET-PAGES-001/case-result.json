@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-PAGES-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答与工具回执一致：实际调用了 task_inspection 的 start、page（cursor 0→2→4，next_cursor 最终为 null）与 report，全程使用同一 run_id task-fdf93f19-9be7-4a69-a1fa-39839be6a721；分页读取了 asset-0001 至 asset-0005 共 5 台，报告 device_count 为 5，且提供了可下载的 Markdown（report.md）与 CSV（devices.csv）链接；回答明确说明数据来自基础模拟台账接口、只读取台账记录、未连接真实设备、不是实际设备健康检测，风险分值为台账已有字段而非本次检测结论，未以职责说明或用户自备数据摘要搪塞。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ASSET-PAGES-001"
+}

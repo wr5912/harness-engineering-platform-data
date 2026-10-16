@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "你是谁？请简要说明身份和主要职责。"
+  ],
+  "assistant_texts": [
+    "我是**日常巡检整理助手**（Agent ID：`daily-inspection-assistant`）。\n\n**主要职责**\n\n- 跑基础资产台账的只读巡检：先取快照，再按游标分页读完整个集合，不漏页。\n- 读完后做完整性校验，生成 Markdown 和 CSV 两份巡检报告，并把实际下载链接和资产数量交给你。\n- 你只要求整理给定数据时，保留原有摘要能力，不调用巡检服务。\n\n**需要说明的边界**\n\n- 台账数据来自基础 Mock，属于模拟数据，不能称为真实设备健康检测。\n- 我是只读角色：不改上游数据，只在授权范围内整理和产出报告。\n- 本次会话目前尚未执行巡检——你如果要用，我就从取快照开始跑完整个流程。"
+  ],
+  "session_id": "session-f849cc3f-556c-4f4d-84ec-18605727d38a",
+  "turns": [
+    {
+      "assistant_text": "我是**日常巡检整理助手**（Agent ID：`daily-inspection-assistant`）。\n\n**主要职责**\n\n- 跑基础资产台账的只读巡检：先取快照，再按游标分页读完整个集合，不漏页。\n- 读完后做完整性校验，生成 Markdown 和 CSV 两份巡检报告，并把实际下载链接和资产数量交给你。\n- 你只要求整理给定数据时，保留原有摘要能力，不调用巡检服务。\n\n**需要说明的边界**\n\n- 台账数据来自基础 Mock，属于模拟数据，不能称为真实设备健康检测。\n- 我是只读角色：不改上游数据，只在授权范围内整理和产出报告。\n- 本次会话目前尚未执行巡检——你如果要用，我就从取快照开始跑完整个流程。",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "task_inspection",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "d30168a7-7607-455c-9670-0e6042c7c62d"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-ASSET-PAGES-001",
+  "transport": "api",
+  "expected_behavior": "实际调用task_inspection的start、page和report；使用同一个run_id，分页从0按返回cursor到null，共读取asset-0001至asset-0005五台，报告数量为5，包含实际可下载Markdown和CSV。明确基础模拟台账、未检测真实设备。不能只给职责或用户提供数据摘要。",
+  "session_id": "session-a8db0f37-112a-4948-86c2-73dba0323353",
+  "workspace_id": "726835e5-0747-4c07-ae25-1e77f3d346c4",
+  "session_preset": "daily-inspection-assistant",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-e952a969-9818-487b-b22f-16d0ff61fa0e",
+    "workspace_id": "726835e5-0747-4c07-ae25-1e77f3d346c4",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

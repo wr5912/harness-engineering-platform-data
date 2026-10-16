@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "基础模拟数据：资产 TEST-ASSET-01，状态正常，记录时间 2026-10-16 00:00。请只基于给定数据给出一行巡检摘要，说明未实际查询服务。"
+  ],
+  "assistant_texts": [
+    "巡检摘要：资产 TEST-ASSET-01 状态正常（记录时间 2026-10-16 00:00），未实际查询巡检服务，以上仅依据给定模拟数据整理。"
+  ],
+  "session_id": "session-e77fbf85-0a9b-4490-b556-7e8e82b22517",
+  "turns": [
+    {
+      "assistant_text": "巡检摘要：资产 TEST-ASSET-01 状态正常（记录时间 2026-10-16 00:00），未实际查询巡检服务，以上仅依据给定模拟数据整理。",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "task_inspection",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "d8585a01-1c57-418d-9b82-51d7ccfe4484"
+    }
+  ]
+}
