@@ -1,0 +1,26 @@
+{
+  "inputs": [
+    "请读取当前配置的两份项目资料，比较它们的主要业务用途、执行方式和使用边界，生成带来源链接的中文调研报告并提供下载。"
+  ],
+  "assistant_texts": [
+    "报告已生成，含两份已校验来源的横向比较与来源链接。\n\n**核心结论**：两者解决的问题完全不同。autoresearch 是**受约束的自主研究循环**——Agent 只能改 `train.py` 一个文件，每次实验固定 5 分钟、只看 val_bpb 一个指标，留或弃后重复；EvoFlow 是**长任务的业务控制平面**——先规划再隔离执行，失败可恢复、长任务可挂起、过程可观测可干预。\n\n对当前平台而言，可借鉴的是两类**任务机制**而非完整产品：从前者拿\"限定修改面 + 统一预算 + 与实现无关的可比指标\"和\"人迭代指令文件而非代码\"（后者与 DSH 现有 skill/AGENTS.md 机制同源，可直接复用）；从后者拿规划先于执行、失败可恢复、过程可观测的编排语义。**不建议照搬 EvoFlow 整个平台**——其控制平面、资源市场、治理套件、SSO、IM 渠道、桌面交付链是完整产品级栈，与 DSH 现有能力重叠。\n\n两条影响判断的边界：EvoFlow 采用 PolyForm Noncommercial 1.0.0，源码可见但**商用须书面授权，不是 OSI 开源许可**（autoresearch 为 MIT，复用门槛低得多）；autoresearch 要求单张 NVIDIA GPU，固定预算意味着结果跨算力平台不可比，资料中的预算与指标是设计目标，不代表本平台已训练或获得收益。\n\n本次使用官方固定提交的本地快照并逐字节校验，未实时访问网站。\n\n[下载报告（report.md）](/assistant/api/task-examples/artifact?run_id=task-f5eb18e5-4c44-4e20-a5b6-f35c71f3cba3&file=report.md)"
+  ],
+  "session_id": "session-aef830e3-947d-4a1f-a7c0-594e0f99d335",
+  "turns": [
+    {
+      "assistant_text": "报告已生成，含两份已校验来源的横向比较与来源链接。\n\n**核心结论**：两者解决的问题完全不同。autoresearch 是**受约束的自主研究循环**——Agent 只能改 `train.py` 一个文件，每次实验固定 5 分钟、只看 val_bpb 一个指标，留或弃后重复；EvoFlow 是**长任务的业务控制平面**——先规划再隔离执行，失败可恢复、长任务可挂起、过程可观测可干预。\n\n对当前平台而言，可借鉴的是两类**任务机制**而非完整产品：从前者拿\"限定修改面 + 统一预算 + 与实现无关的可比指标\"和\"人迭代指令文件而非代码\"（后者与 DSH 现有 skill/AGENTS.md 机制同源，可直接复用）；从后者拿规划先于执行、失败可恢复、过程可观测的编排语义。**不建议照搬 EvoFlow 整个平台**——其控制平面、资源市场、治理套件、SSO、IM 渠道、桌面交付链是完整产品级栈，与 DSH 现有能力重叠。\n\n两条影响判断的边界：EvoFlow 采用 PolyForm Noncommercial 1.0.0，源码可见但**商用须书面授权，不是 OSI 开源许可**（autoresearch 为 MIT，复用门槛低得多）；autoresearch 要求单张 NVIDIA GPU，固定预算意味着结果跨算力平台不可比，资料中的预算与指标是设计目标，不代表本平台已训练或获得收益。\n\n本次使用官方固定提交的本地快照并逐字节校验，未实时访问网站。\n\n[下载报告（report.md）](/assistant/api/task-examples/artifact?run_id=task-f5eb18e5-4c44-4e20-a5b6-f35c71f3cba3&file=report.md)",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      },
+      "tool_names": [
+        "task_research"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "0a180433-34a3-47b7-a8da-a6c57b4358d6"
+    }
+  ]
+}

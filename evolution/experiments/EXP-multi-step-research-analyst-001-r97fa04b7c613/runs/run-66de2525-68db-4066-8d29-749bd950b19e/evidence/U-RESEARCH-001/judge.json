@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测 Session 实际调用 task_research start（seq18），随后按 start 返回的两个固定官方提交来源分别 collect（seq28、seq30），两次 collect 回执均给出 fixed_public_document_snapshot、完整正文与 SHA-256，最后 report 成功（seq42，completed），符合预期执行路径。报告正文基于工具回执中已读正文：区分 autoresearch 的自主训练研究循环（单文件 train.py、固定 5 分钟、val_bpb、单张 NVIDIA GPU、MIT）与 EvoFlow 的长任务业务控制平面（Plan/Goal、隔离执行、失败可恢复、可观测、PolyForm Noncommercial 非商业许可、非 OSI 开源），保留 MIT 声明与非商业边界，未声称已验证两项目业务效果。报告含两个原始来源链接（raw.githubusercontent.com 固定提交）及读取时间与摘要。回复先给出任务结果与实际报告下载链接（download_url 与工具回执一致），并明确说明使用官方固定提交的本地快照、逐字节校验、本次未实时访问网站，未把快照称为在线抓取；未堆砌执行细节，也未生成未经请求的下一条用户消息。"
+  },
+  "checks": {
+    "session_id": "session-efe7059e-0f50-417a-a6fa-011a342cfd7e",
+    "workspace_id": "65955d89-627b-49cb-80bd-989595e3729a",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}
