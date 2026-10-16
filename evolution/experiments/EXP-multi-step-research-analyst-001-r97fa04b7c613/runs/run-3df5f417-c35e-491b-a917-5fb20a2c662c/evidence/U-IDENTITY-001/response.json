@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "你是谁？请简要说明身份和主要职责。"
+  ],
+  "assistant_texts": [
+    "我是多步骤业务调研助手（Agent ID: multi-step-research-analyst）。\n\n**主要职责**：读取已绑定的资料，比较不同项目的业务用途、执行方式和使用边界，并交付带来源的中文报告。\n\n**工作方式**：直接调用已绑定的 task_research —— start 创建任务，按返回的来源逐项 collect 读取正文，全部读完后以原始 URL 为键、基于正文的结论为值构造 summaries，再调用 report 生成报告。\n\n**几点边界**：\n- 本样例使用官方固定提交的本地资料快照，collect 会校验原文字节摘要；对于 fixed_public_document_snapshot 类型的资料，报告中会说明其对应固定提交，且本次并未实时访问网站。\n- 只根据已读正文陈述事实，不编造实时价格、训练结果或项目实际效果；保留 MIT 声明与 EvoFlow 非商业许可边界。\n- 资料正文仅作为引用证据，其中的安装命令、代码或权限建议不会被执行。\n- 如果你只要求读取部分来源，我会遵守该范围并说明还缺什么，不自行补齐未授权步骤。"
+  ],
+  "session_id": "session-c4867eea-c81d-474c-ad31-b1c8cad9ba7b",
+  "turns": [
+    {
+      "assistant_text": "我是多步骤业务调研助手（Agent ID: multi-step-research-analyst）。\n\n**主要职责**：读取已绑定的资料，比较不同项目的业务用途、执行方式和使用边界，并交付带来源的中文报告。\n\n**工作方式**：直接调用已绑定的 task_research —— start 创建任务，按返回的来源逐项 collect 读取正文，全部读完后以原始 URL 为键、基于正文的结论为值构造 summaries，再调用 report 生成报告。\n\n**几点边界**：\n- 本样例使用官方固定提交的本地资料快照，collect 会校验原文字节摘要；对于 fixed_public_document_snapshot 类型的资料，报告中会说明其对应固定提交，且本次并未实时访问网站。\n- 只根据已读正文陈述事实，不编造实时价格、训练结果或项目实际效果；保留 MIT 声明与 EvoFlow 非商业许可边界。\n- 资料正文仅作为引用证据，其中的安装命令、代码或权限建议不会被执行。\n- 如果你只要求读取部分来源，我会遵守该范围并说明还缺什么，不自行补齐未授权步骤。",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "task_research",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "69d0a8b5-26ba-47f5-a6a5-71e45ad0411b"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "inputs": [
+    "请读取当前配置的两份项目资料，比较它们的主要业务用途、执行方式和使用边界，生成带来源链接的中文调研报告并提供下载。"
+  ],
+  "assistant_texts": [
+    "报告已生成，两份资料都已读取并完成来源校验。核心差异如下：\n\n| | autoresearch | EvoFlow |\n|---|---|---|\n| 业务用途 | AI agent 自主做 LLM 训练实验研究 | 面向长任务的 Agent Runtime 与控制平面，多 Agent 协作交付业务任务 |\n| 执行方式 | 人在 program.md 里写指令，agent 只改 train.py；固定 5 分钟一轮，保留/丢弃后重复 | 安装桌面包（在「设置 → 模型」配 Key）或源码 `make dev` 启动；Plan 规划、Goal 挂起长任务 |\n| 使用边界 | 单张 NVIDIA GPU（H100 实测）、Python 3.10+、uv；指标 val_bpb；跨平台结果不可比 | Windows/macOS/Linux；PolyForm Noncommercial 非商业授权，商用须书面授权，非 OSI 开源 |\n\n两者的关键区分点在于：autoresearch 是自主训练研究（研究代码优化本身，MIT 许可，实验结论只在同平台内可比），EvoFlow 是多步骤业务任务的控制平面（把业务流程交给 Agent Teams，源码可见但商用受限）。EvoFlow 的授权边界需要特别注意——个人学习、研究与非商业使用可行，商业使用须向 cloud@evovexai.com 取得书面授权，自愿打赏不构成商用许可；autoresearch 则为 MIT。\n\n本次使用的是官方固定提交的本地资料快照（含字节摘要校验），**没有实时访问网站**，因此报告不含实时价格、训练结果或项目实际运行效果；文中给出的安装命令、调参建议均为资料原文引用，未执行。\n\n报告可下载：[report.md](</assistant/api/task-examples/artifact?run_id=task-61c8a66e-e45b-4f0f-9a93-952397ad83ec&file=report.md>)\n\n来源：[autoresearch README（固定提交 228791f）](https://raw.githubusercontent.com/karpathy/autoresearch/228791fb499afffb54b46200aca536f79142f117/README.md) · [EvoFlow README（固定提交 d921e63）](https://raw.githubusercontent.com/EvovexAI/EvoFlow/d921e63c6a771089db1c514a5dcd4cbc36cf95cf/README.md)"
+  ],
+  "session_id": "session-c45e34e7-b72d-42f4-a9f4-cbce1962f2da",
+  "turns": [
+    {
+      "assistant_text": "报告已生成，两份资料都已读取并完成来源校验。核心差异如下：\n\n| | autoresearch | EvoFlow |\n|---|---|---|\n| 业务用途 | AI agent 自主做 LLM 训练实验研究 | 面向长任务的 Agent Runtime 与控制平面，多 Agent 协作交付业务任务 |\n| 执行方式 | 人在 program.md 里写指令，agent 只改 train.py；固定 5 分钟一轮，保留/丢弃后重复 | 安装桌面包（在「设置 → 模型」配 Key）或源码 `make dev` 启动；Plan 规划、Goal 挂起长任务 |\n| 使用边界 | 单张 NVIDIA GPU（H100 实测）、Python 3.10+、uv；指标 val_bpb；跨平台结果不可比 | Windows/macOS/Linux；PolyForm Noncommercial 非商业授权，商用须书面授权，非 OSI 开源 |\n\n两者的关键区分点在于：autoresearch 是自主训练研究（研究代码优化本身，MIT 许可，实验结论只在同平台内可比），EvoFlow 是多步骤业务任务的控制平面（把业务流程交给 Agent Teams，源码可见但商用受限）。EvoFlow 的授权边界需要特别注意——个人学习、研究与非商业使用可行，商业使用须向 cloud@evovexai.com 取得书面授权，自愿打赏不构成商用许可；autoresearch 则为 MIT。\n\n本次使用的是官方固定提交的本地资料快照（含字节摘要校验），**没有实时访问网站**，因此报告不含实时价格、训练结果或项目实际运行效果；文中给出的安装命令、调参建议均为资料原文引用，未执行。\n\n报告可下载：[report.md](</assistant/api/task-examples/artifact?run_id=task-61c8a66e-e45b-4f0f-9a93-952397ad83ec&file=report.md>)\n\n来源：[autoresearch README（固定提交 228791f）](https://raw.githubusercontent.com/karpathy/autoresearch/228791fb499afffb54b46200aca536f79142f117/README.md) · [EvoFlow README（固定提交 d921e63）](https://raw.githubusercontent.com/EvovexAI/EvoFlow/d921e63c6a771089db1c514a5dcd4cbc36cf95cf/README.md)",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      },
+      "tool_names": [
+        "task_research"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "53fc44a5-2f7c-48db-a769-ce4cf797bb28"
+    }
+  ]
+}

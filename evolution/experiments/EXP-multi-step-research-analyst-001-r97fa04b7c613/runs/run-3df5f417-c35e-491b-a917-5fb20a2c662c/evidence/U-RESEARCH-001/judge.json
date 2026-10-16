@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测 Session 实际调用了 task_research：start 建立 run（seq19），随后对两个固定官方提交来源各执行一次 collect（seq28/30），最后以 report 生成报告（seq36）。工具回执显示 source_kind 为 fixed_public_document_snapshot，并为两份正文分别给出 SHA-256（autoresearch 3958fd…、EvoFlow c06957…），与报告内摘要一致，说明事实依据已读正文并满足快照与校验要求。回复与报告均明确说明“官方固定提交的本地资料快照（含字节摘要校验）、没有实时访问网站”，未把快照称为在线抓取，也未声称验证两项目的实际业务效果或给出实时价格与训练结果。内容区分了 autoresearch（自主 LLM 训练实验研究、MIT 许可、val_bpb 指标、单张 NVIDIA GPU、跨平台结果不可比）与 EvoFlow（长任务 Agent Runtime 与控制平面、多 Agent 协作、PolyForm Noncommercial 非商业边界、商用须书面授权、非 OSI 开源），并给出来自报告的下载链接及两个原始来源链接（含提交哈希）。回复结构为先给任务结果与下载、再简述必要限制，未堆积执行细节，也未生成未经请求的下一条用户消息。全部要求均有同 Session 工具事实支持，判为 passed。"
+  },
+  "checks": {
+    "session_id": "session-a161fbd2-60ef-4cd8-b6f6-12716a8177d3",
+    "workspace_id": "3b59f251-f57f-4a12-a6f6-57a2759a9907",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

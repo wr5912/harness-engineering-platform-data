@@ -1,0 +1,26 @@
+{
+  "inputs": [
+    "请读取当前配置的两份项目资料，比较它们的主要业务用途、执行方式和使用边界，生成带来源链接的中文调研报告并提供下载。"
+  ],
+  "assistant_texts": [
+    "调研报告已生成，两份资料均来自官方固定提交的本地快照，本次没有实时访问网站。\n\n**核心结论**\n\n| 维度 | autoresearch | EvoFlow |\n|---|---|---|\n| 业务用途 | 自主 LLM 训练研究：把小型真实训练环境交给 AI agent 夜间自主做实验 | 面向长任务的原生 Agent Runtime 与控制平面，多 Agent 协作可观测、可干预 |\n| 执行方式 | agent 改代码→训练 5 分钟→判断改善→保留/丢弃循环；人写 `program.md` 组织研究 | 桌面安装包（设置→模型配 API Key，复杂任务用 Plan、长任务用 Goal）或源码运行（`make dev`） |\n| 度量/能力 | 固定 5 分钟墙钟预算，指标 val_bpb 越低越好 | 对话/Plan/Goal、Agent Teams、应用中心、工作空间与代码索引、治理套件、沙箱与可观测 |\n| 平台 | 仅单张 NVIDIA GPU（H100 测试），其他平台需用社区 fork | Windows / macOS / Linux |\n| 使用边界 | 单 GPU、单文件、单指标；结果不可跨算力平台比较 | PolyForm Noncommercial，个人/研究/非商业可用，商用须书面授权；**非 OSI 开源** |\n\n两者定位差异明显：autoresearch 是限定在单个训练实验回路内的研究工具，靠固定时间预算和 val_bpb 保证可比性，因此结果只在同一平台上成立；EvoFlow 是通用长任务执行与治理平台，覆盖规划、恢复、审批和可观测，代价是许可为源码可见而非开源。\n\n需要留意的两点：autoresearch 的 MIT 许可宽松，可直接复用；EvoFlow 的 MIT 不适用，商用前须取得书面授权，其第三方组件（如 ZCode，Apache-2.0）的具体影响见项目内许可证说明。\n\n报告全文：[report.md](/assistant/api/task-examples/artifact?run_id=task-9afc6c26-590a-4690-82f9-2cd0976064ad&file=report.md)"
+  ],
+  "session_id": "session-cb57a4be-7fdc-4282-b829-03fb097bf1dc",
+  "turns": [
+    {
+      "assistant_text": "调研报告已生成，两份资料均来自官方固定提交的本地快照，本次没有实时访问网站。\n\n**核心结论**\n\n| 维度 | autoresearch | EvoFlow |\n|---|---|---|\n| 业务用途 | 自主 LLM 训练研究：把小型真实训练环境交给 AI agent 夜间自主做实验 | 面向长任务的原生 Agent Runtime 与控制平面，多 Agent 协作可观测、可干预 |\n| 执行方式 | agent 改代码→训练 5 分钟→判断改善→保留/丢弃循环；人写 `program.md` 组织研究 | 桌面安装包（设置→模型配 API Key，复杂任务用 Plan、长任务用 Goal）或源码运行（`make dev`） |\n| 度量/能力 | 固定 5 分钟墙钟预算，指标 val_bpb 越低越好 | 对话/Plan/Goal、Agent Teams、应用中心、工作空间与代码索引、治理套件、沙箱与可观测 |\n| 平台 | 仅单张 NVIDIA GPU（H100 测试），其他平台需用社区 fork | Windows / macOS / Linux |\n| 使用边界 | 单 GPU、单文件、单指标；结果不可跨算力平台比较 | PolyForm Noncommercial，个人/研究/非商业可用，商用须书面授权；**非 OSI 开源** |\n\n两者定位差异明显：autoresearch 是限定在单个训练实验回路内的研究工具，靠固定时间预算和 val_bpb 保证可比性，因此结果只在同一平台上成立；EvoFlow 是通用长任务执行与治理平台，覆盖规划、恢复、审批和可观测，代价是许可为源码可见而非开源。\n\n需要留意的两点：autoresearch 的 MIT 许可宽松，可直接复用；EvoFlow 的 MIT 不适用，商用前须取得书面授权，其第三方组件（如 ZCode，Apache-2.0）的具体影响见项目内许可证说明。\n\n报告全文：[report.md](/assistant/api/task-examples/artifact?run_id=task-9afc6c26-590a-4690-82f9-2cd0976064ad&file=report.md)",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      },
+      "tool_names": [
+        "task_research"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "658a950a-8e55-4181-9039-f5eec0c82db0"
+    }
+  ]
+}

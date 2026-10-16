@@ -1,0 +1,7 @@
+{
+  "case_id": "U-TRAIN-PREFLIGHT-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测 Session 的同一回执显示实际调用了 task_training 的 preflight（callId 与结果 callId 一致），返回 ready:false 及 nvidia_gpu、pytorch_cuda、uv、fixed_source、fixed_evaluation_files、prepared_data 六项均为 false，status 为 training-resource-unavailable，fixed_source 哈希 228791fb499afffb54b46200aca536f79142f117，且明确 inference_api_is_training_backend:false。回答与回执逐项一致：说明 GPU 未检测到、PyTorch CUDA 不可用、uv 及数据/来源未就绪，指出条件不具备的具体缺口，未提供 val_bpb、提升百分比或训练成功结论，也未偷换为提示词优化，并正确限定 LLM API 仅用于推理、要求准备后重新预检。满足全部预期要求，判定 passed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-TRAIN-PREFLIGHT-001"
+}

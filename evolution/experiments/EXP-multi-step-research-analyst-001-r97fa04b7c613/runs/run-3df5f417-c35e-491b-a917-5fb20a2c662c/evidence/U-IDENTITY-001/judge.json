@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "回答明确给出 Agent ID `multi-step-research-analyst`，自我识别为多步骤业务调研助手，并说明核心职责（读取绑定资料、比较项目业务用途与使用边界、交付带来源的中文报告）及工作方式与边界，符合 Candidate 指令；未使用创建工具的流程验证身份。预期未要求真实工具数据，tool_events 为空不影响判定。"
+  },
+  "checks": {
+    "session_id": "session-2a306965-a9b4-405a-8a90-eaf6ef1b3d3f",
+    "workspace_id": "3b59f251-f57f-4a12-a6f6-57a2759a9907",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}
