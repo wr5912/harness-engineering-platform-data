@@ -308,9 +308,9 @@ export function apply(ctx: any, config: Config) {
   }
   ctx.tools.register({ name: `task_${config.kind}`, description: config.kind === 'inspection'
     ? '基础资产台账只读巡检：start固定资产快照，page按cursor读完分页，report校验已读取完整集合并生成实际Markdown/CSV报告。数据来自基础Mock，不能称为真实设备健康检测。'
-    : config.kind === 'research' ? '多步骤资料研究：start创建任务，collect按明确配置读取在线正文或校验本地固定官方资料快照，report用每个URL对应的summaries生成带来源的报告；资料须全部读取，不自动切换数据来源。'
+    : config.kind === 'research' ? '多步骤资料研究：start创建任务，collect按明确配置读取在线正文或校验本地固定官方资料快照，report用comparison给出跨来源比较结论、summaries保留各URL的相关依据，生成带来源的报告；资料须全部读取，不自动切换数据来源。'
       : '自主训练研究：preflight核查真实GPU、固定来源、uv/PyTorch与数据；baseline建立一次真实基线，candidate只修改train.py并实际训练评估，最多三个候选、单次十分钟、总时限一小时。更优保留、失败回退，status读取原运行。没有真实算力时只报告缺口，不产生模拟指标。',
-    parameters: { type: 'object', properties: columns, required: ['action'], additionalProperties: false },
+    parameters: { type: 'object', properties: config.kind === 'research' ? { ...columns, comparison: { type: 'string', description: 'report必填：综合全部已读来源，横向比较用途、任务机制、运行与许可前提，给出当前平台可借鉴及不可直接采用的结论；不是两份摘要的重复拼接。' } } : columns, required: ['action'], additionalProperties: false },
     output: { schema: { type: 'object', additionalProperties: true }, render: (_args: unknown, value: any) => [{ type: 'text', text: JSON.stringify(value) }] },
     async execute(args: any, execution: any) {
       return serializeTask(args.run_id || execution.agent.session.header.id, async () => {
@@ -368,8 +368,11 @@ export function apply(ctx: any, config: Config) {
       if (config.kind === 'research' && args.action === 'report') {
         if (!value.sources.length || value.sources.some((url: string) => !value.read.includes(url))) throw new Error('还有资料未读取，不能交付完整报告')
         if (value.sources.some((url: string) => typeof args.summaries?.[url] !== 'string' || !args.summaries[url].trim())) throw new Error('报告须逐项包含已读来源的结论')
+        if (typeof args.comparison !== 'string' || !args.comparison.trim()) throw new Error('报告须包含跨来源比较结论，不能仅拼接逐项摘要')
+        value.comparison = args.comparison.trim()
+        value.summaries = Object.fromEntries(value.sources.map((url: string) => [url, args.summaries[url].trim()]))
         const basis = value.source_kind === 'fixed_public_document_snapshot' ? '本报告依据已校验摘要的官方固定提交资料快照；资料时点以各原始链接中的提交为准，本次没有实时访问网站。' : '本报告依据本次实际读取的在线资料；读取时点见各来源。'
-        const text = '# 多步骤业务资料调研报告\n\n' + basis + '\n\n' + value.sources.map((url: string, i: number) => `## 资料 ${i + 1}\n\n${args.summaries[url].slice(0, 8000)}\n\n来源：[原始资料](${url})；读取时间：${value.documents[url].read_at}；摘要：${value.documents[url].sha256}\n`).join('\n')
+        const text = '# 多步骤业务资料调研报告\n\n## 比较结论\n\n' + value.comparison + '\n\n' + basis + '\n\n## 来源要点与依据\n\n' + value.sources.map((url: string, i: number) => `### 来源 ${i + 1}\n\n${value.summaries[url]}\n\n来源：[原始资料](${url})；读取时间：${value.documents[url].read_at}；摘要：${value.documents[url].sha256}\n`).join('\n')
         return { ...await report(id, value, text), source_count: value.sources.length, note: '已完成来源完整性校验；语义准确性需由独立评测核对。' }
       }
       throw new Error('本业务不支持此动作')

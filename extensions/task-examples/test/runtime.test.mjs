@@ -5,6 +5,7 @@ import { createServer } from 'node:http'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { setTimeout as delay } from 'node:timers/promises'
+import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 import { apply, runTrainingProcess } from '../src/runtime.ts'
 
@@ -15,9 +16,9 @@ function environment(t, values) {
   Object.assign(process.env, values)
   t.after(() => { for (const [key, value] of Object.entries(before)) if (value === undefined) delete process.env[key]; else process.env[key] = value })
 }
-function toolContext(config) {
+function toolContext(config, install = apply) {
   let tool, fetchHandler, guard, preStep
-  apply({ tools: { register(value) { tool = value }, guard(value) { guard = value } }, on(event, handler) { if (event === 'agent/pre-step') preStep = handler },
+  install({ tools: { register(value) { tool = value }, guard(value) { guard = value } }, on(event, handler) { if (event === 'agent/pre-step') preStep = handler },
     connection: { fetch: { register(value) { fetchHandler = value.fetch } } } }, config)
   const execute = (args, session = 'session-1', signal = new AbortController().signal) => tool.execute(args, { agent: { session: { header: { id: session, agentPreset: config.kind === 'training' ? 'autonomous-training-researcher' : config.kind === 'inspection' ? 'daily-inspection-assistant' : 'multi-step-research-analyst' } } }, signal })
   return { get tool() { return tool }, execute, download: url => fetchHandler(new Request('http://localhost' + url)), guard, preStep }
@@ -85,8 +86,18 @@ test('资料研究固定首次读取正文，缺少来源时拒交付', async t 
   assert.equal(requests, 1)
   await assert.rejects(ctx.execute({ action: 'report', run_id: start.run_id }), /还有资料未读取/)
   await ctx.execute({ action: 'collect', run_id: start.run_id, source: url + '/two' })
-  const report = await ctx.execute({ action: 'report', run_id: start.run_id, summaries: { [url + '/one']: '资料一说明任务机制。', [url + '/two']: '资料二说明任务机制。' } })
+  const summaries = { [url + '/one']: '资料一说明任务机制。', [url + '/two']: '资料二说明任务机制。' }
+  for (const comparison of [undefined, '', '   ']) await assert.rejects(ctx.execute({ action: 'report', run_id: start.run_id, summaries, comparison }), /跨来源比较结论/)
+  const comparison = '两份资料均描述任务机制，但用途不同；当前平台应借鉴预算内迭代和恢复方式，不据资料声称已验证运行收益。'
+  const report = await ctx.execute({ action: 'report', run_id: start.run_id, summaries, comparison })
   assert.equal(report.source_count, 2); assert.match(report.markdown, /读取时间/)
+  assert.ok(report.markdown.indexOf(comparison) < report.markdown.indexOf('资料一说明任务机制。'))
+  const saved = JSON.parse(readFileSync(join(process.env.DSH_HOME, 'task-example-artifacts', start.run_id, 'state.json'), 'utf8'))
+  assert.equal(saved.comparison, comparison); assert.deepEqual(saved.summaries, summaries)
+  const resumed = toolContext({ kind: 'research', sourceUrls: [url + '/one', url + '/two'] })
+  assert.equal((await resumed.execute({ action: 'status', run_id: start.run_id })).completed, true)
+  const content = await (await resumed.download(report.download_url)).text()
+  assert.equal(content, report.markdown); assert.equal(createHash('sha256').update(content).digest('hex'), report.report_sha256)
 })
 
 function trainingFixture(t) {
@@ -200,7 +211,7 @@ test('调研显式固定资料快照仅只读本地文件并核对摘要，不�
     const result = await ctx.execute({ action: 'collect', run_id: start.run_id, source: document.url })
     assert.equal(result.source_kind, 'fixed_public_document_snapshot'); assert.equal(result.sha256, document.sha256)
   }
-  const report = await ctx.execute({ action: 'report', run_id: start.run_id, summaries: Object.fromEntries(documents.map((document, index) => [document.url, texts[index]])) })
+  const report = await ctx.execute({ action: 'report', run_id: start.run_id, comparison: '前者是需要实际训练环境的研究循环，后者是长任务业务；MIT与非商业许可边界不同，本次只比较固定资料，没有验证项目效果。', summaries: Object.fromEntries(documents.map((document, index) => [document.url, texts[index]])) })
   assert.match(report.markdown, /没有实时访问网站/); assert.equal(report.source_kind, 'fixed_public_document_snapshot'); assert.equal(requests, 0)
   const started = await ctx.execute({ action: 'start' }); write(root, documents[0].path, '已变化正文')
   await assert.rejects(ctx.execute({ action: 'collect', run_id: started.run_id, source: documents[0].url }), /摘要不匹配/)
@@ -213,4 +224,28 @@ test('资料来源配置不得混用在线与快照，也不允许越出referenc
   const document = { url: 'https://example.invalid/fixed/README.md', path: 'references/source.md', sha256: '0'.repeat(64) }
   await assert.rejects(toolContext({ kind: 'research', sourceUrls: [document.url], sourceDocuments: [document] }).execute({ action: 'start' }), /不能与在线来源同时配置/)
   await assert.rejects(toolContext({ kind: 'research', sourceDocuments: [{ ...document, path: '../outside.md' }] }).execute({ action: 'start' }), /配置无效/)
+})
+
+test('研究Candidate实际生成制品要求比较结论，保存产物仍保留两份真实固定资料依据', async t => {
+  const candidate = new URL('../../../evolution/experiments/EXP-multi-step-research-analyst-001-r97fa04b7c613/candidate/dsh/', import.meta.url)
+  const generated = await import(new URL('managed/task-example-tools.mjs', candidate))
+  const previousCwd = process.cwd(); process.chdir(fileURLToPath(new URL('workspace/', candidate))); t.after(() => process.chdir(previousCwd))
+  environment(t, { DSH_HOME: temporary(t) })
+  const documents = [
+    { url: 'https://raw.githubusercontent.com/karpathy/autoresearch/228791fb499afffb54b46200aca536f79142f117/README.md', path: 'references/autoresearch-readme.md', sha256: '3958fd4195ac2f98ed35c4eaa4f3028a335165ee24945e96426c408d25793a41' },
+    { url: 'https://raw.githubusercontent.com/EvovexAI/EvoFlow/d921e63c6a771089db1c514a5dcd4cbc36cf95cf/README.md', path: 'references/evoflow-readme.md', sha256: 'c0695756b1e44eabd15202868c1badde44527170206315bf35bc44c2c428a8bb' },
+  ]
+  const ctx = toolContext({ kind: 'research', sourceDocuments: documents }, generated.apply)
+  assert.equal(ctx.tool.parameters.properties.comparison.type, 'string')
+  const start = await ctx.execute({ action: 'start' })
+  for (const document of documents) assert.equal((await ctx.execute({ action: 'collect', run_id: start.run_id, source: document.url })).sha256, document.sha256)
+  const summaries = { [documents[0].url]: '固定资料描述单GPU训练实验；MIT。', [documents[1].url]: '固定资料描述长任务规划与恢复；PolyForm Noncommercial 1.0.0，商用需书面授权。' }
+  await assert.rejects(ctx.execute({ action: 'report', run_id: start.run_id, summaries }), /跨来源比较结论/)
+  // 本测试仅验证生成制品的输入、持久化与下载，不把这段人工输入当成模型效果。
+  const comparison = '两者分别服务训练实验和长任务业务。当前平台可借鉴固定预算内保留/回退与规划/恢复机制，继续复用DSH；本次未执行训练或验证外部业务效果。'
+  const result = await ctx.execute({ action: 'report', run_id: start.run_id, summaries, comparison })
+  const downloaded = await (await ctx.download(result.download_url)).text()
+  assert.equal(result.source_kind, 'fixed_public_document_snapshot'); assert.equal(downloaded, result.markdown)
+  assert.ok(downloaded.indexOf(comparison) < downloaded.indexOf('### 来源 1'))
+  for (const document of documents) { assert.ok(downloaded.includes(document.url)); assert.ok(downloaded.includes(document.sha256)) }
 })
