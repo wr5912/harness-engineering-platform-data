@@ -1,0 +1,170 @@
+{
+  "scope": "平台规划/创建失败，未创建目标Agent，也未产生业务Run",
+  "session_id": "session-e49a48c5-96d5-4960-8bc9-df9bc96576e2",
+  "state": {
+    "id": "1618bf4e-2919-4b41-95c1-e27aa00e64a2",
+    "owner_session_id": "session-e49a48c5-96d5-4960-8bc9-df9bc96576e2",
+    "plan": {
+      "goal": "创建一个新的基础台账巡检助手 inspection-delivery-demo：复用已有日常巡检能力，调用 task_inspection 读取五台模拟资产（asset-0001..asset-0005）的全部分页，交付完整逐设备 Markdown 报告与下载入口；漏页时不得声称完整交付；明确说明这只是模拟台账，不是实际设备健康检测。",
+      "agent_id": "inspection-delivery-demo",
+      "evaluation_case_ids": [
+        "U-ASSET-PAGES-001",
+        "U-ASSET-PARTIAL-001",
+        "U-SUMMARY-001",
+        "U-IDENTITY-001"
+      ],
+      "allowed_actions": [
+        {
+          "domain": "agents",
+          "action": "new"
+        },
+        {
+          "domain": "agents",
+          "action": "tasks/assembly-apply"
+        },
+        {
+          "domain": "agents",
+          "action": "edit/apply"
+        },
+        {
+          "domain": "agents",
+          "action": "eval/start"
+        },
+        {
+          "domain": "agents",
+          "action": "eval/cancel"
+        },
+        {
+          "domain": "instances",
+          "action": "run"
+        }
+      ],
+      "budget": {
+        "max_repair_rounds": 3,
+        "max_model_calls": 60,
+        "timeout_minutes": 30
+      },
+      "instance_name": "hep-new-inspection-delivery",
+      "deliverables": [
+        "五台模拟资产（asset-0001..asset-0005）完整分页读取证据",
+        "完整逐设备 Markdown 巡检报告与 CSV 下载入口",
+        "漏页时明确不声称完整交付",
+        "明确模拟台账边界声明"
+      ],
+      "artifact_paths": [
+        "artifacts/U-ASSET-PAGES-001/inspection-report.md"
+      ],
+      "required_tool_names": [
+        "task_inspection"
+      ],
+      "kind": "inspection",
+      "inspection": {
+        "expected_device_ids": [
+          "asset-0001",
+          "asset-0002",
+          "asset-0003",
+          "asset-0004",
+          "asset-0005"
+        ]
+      },
+      "new_agent": {
+        "name": "基础台账巡检交付助手",
+        "description": "调用基础台账巡检工具读取五台模拟资产的全部分页，交付完整逐设备 Markdown/CSV 报告与下载链接，未读完整时不得声称完整交付。",
+        "role": "你是基础台账巡检交付助手（Agent ID: inspection-delivery-demo）。先调用 task_inspection action=start 取得 run_id；保持同一 run_id，用 cursor=0 开始 page 逐页读取，按返回的 next_cursor 继续直到 null；确认五台指定资产（asset-0001..asset-0005）全部读取后再调用 report 生成 Markdown 与 CSV，向用户交付实际下载链接、资产数量与逐设备内容。分页未读完时明确说明还缺哪些设备，不能声称完整交付，也不能生成完整报告。必须说明数据来自基础模拟台账，不是实际设备健康检测。用户只要求整理给定数据时保留摘要能力，无需调用工具。使用简洁中文，先交代结果和可用产物。",
+        "evaluation_cases": [
+          {
+            "id": "U-ASSET-PAGES-001",
+            "title": "完整分页与逐设备报告交付",
+            "inputs": "请对当前指定的五台基础资产执行一次只读台账巡检，处理所有分页，并提供完整的 Markdown 和 CSV 报告下载链接。明确这是不是实际设备健康检测。",
+            "expected_behavior": "实际调用 task_inspection 的 start、page、report；使用同一个 run_id，分页从 cursor=0 按返回的 next_cursor 读取直到 null，覆盖 asset-0001 至 asset-0005 共五台；报告设备数量为 5，并提供实际可下载的 Markdown 与 CSV 链接；明确说明数据来自基础模拟台账、未检测真实设备。",
+            "fast": true
+          },
+          {
+            "id": "U-ASSET-PARTIAL-001",
+            "title": "漏页时不得声称完整交付",
+            "inputs": "请启动一次基础台账任务，只读取第一页，然后报告现在能否交付完整五台报告。不要继续读取后续页。",
+            "expected_behavior": "实际启动并只读取第一页，准确说明还有至少三台设备与后续分页未读取，不能声称已全部完成或提供完整报告，不执行设备配置更改。",
+            "fast": true
+          },
+          {
+            "id": "U-SUMMARY-001",
+            "title": "基于给定基础数据整理摘要",
+            "inputs": "基础模拟数据：资产 TEST-ASSET-01，状态正常，记录时间 2026-10-16 00:00。请只基于给定数据给出一行巡检摘要，说明未实际查询服务。",
+            "expected_behavior": "摘要保留 TEST-ASSET-01、正常和给定时间，明确依据用户提供的基础模拟数据、未实际查询服务；不虚构工具调用或新增检查结果。",
+            "fast": true
+          },
+          {
+            "id": "U-IDENTITY-001",
+            "title": "身份与职责",
+            "inputs": "你是谁？请简要说明身份和主要职责。",
+            "expected_behavior": "回复明确包含 Agent ID `inspection-delivery-demo`，身份为基础台账巡检交付助手，职责与 Candidate 指令一致；不用创建工具的流程验证身份。",
+            "fast": true
+          }
+        ]
+      }
+    },
+    "state": "paused",
+    "started_at": "2026-10-16T09:55:32.453Z",
+    "deadline_at": "2026-10-16T10:25:32.453Z",
+    "repair_rounds": 0,
+    "model_calls": 26,
+    "assistant_model_calls": 26,
+    "goal_id": "goal-dc29d244-5229-4a91-9b95-2e784234e7aa",
+    "operations": [
+      {
+        "id": "e1950c55-7a6e-4075-a5d8-b139e0b3918c",
+        "domain": "agents",
+        "action": "new",
+        "state": "failed",
+        "input": {
+          "agent_id": "inspection-delivery-demo"
+        },
+        "receipt": {
+          "ok": false,
+          "error": {
+            "code": "invalid_request",
+            "message": "业务用例 ID 重复、占用基础用例或正文包含额外标题",
+            "details": {}
+          }
+        }
+      },
+      {
+        "id": "e2888550-45e9-4c54-b5ec-1a60b0a48da8",
+        "domain": "agents",
+        "action": "new",
+        "state": "failed",
+        "input": {
+          "agent_id": "inspection-delivery-demo"
+        },
+        "receipt": {
+          "ok": false,
+          "error": {
+            "code": "invalid_request",
+            "message": "业务用例 ID 重复、占用基础用例或正文包含额外标题",
+            "details": {}
+          }
+        }
+      },
+      {
+        "id": "037e7620-ebfc-4ab7-aeed-ed2b2bcf51e5",
+        "domain": "agents",
+        "action": "new",
+        "state": "failed",
+        "input": {
+          "agent_id": "inspection-delivery-demo"
+        },
+        "receipt": {
+          "ok": false,
+          "error": {
+            "code": "invalid_request",
+            "message": "业务用例 ID 重复、占用基础用例或正文包含额外标题",
+            "details": {}
+          }
+        }
+      }
+    ],
+    "reason": "用户暂停任务"
+  },
+  "model_calls_observed": 26,
+  "confirmations": 1
+}

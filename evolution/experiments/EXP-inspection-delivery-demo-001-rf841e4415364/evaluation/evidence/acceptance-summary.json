@@ -1,0 +1,173 @@
+{
+  "at": "2026-10-16T10:12:56.900Z",
+  "session_id": "session-1cdf2a44-bc8d-47e7-b20b-9a13418c1998",
+  "task_id": "15ba7218-97fa-4f09-8860-6a731fab9e4b",
+  "agent_id": "inspection-delivery-demo",
+  "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+  "run_id": "run-05973a80-6b91-40e7-a0da-acca3a4ea696",
+  "elapsed_seconds": 357.913,
+  "user_messages": 1,
+  "confirmations": 1,
+  "repair_rounds": 0,
+  "verdict": "4/4 passed；正常完整分页与漏页不能完成两业务Case已独立核查实际工具动作",
+  "instance": {
+    "name": "hep-new-inspection-delivery",
+    "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+    "state": "running",
+    "port": 3112,
+    "image_id": "sha256:060d338f4d4cfe18097d7c0ae72a4fb22d82c3fe8da11829bba0121686c458f8"
+  },
+  "frozen_case_ids": [
+    "U-IDENTITY-001",
+    "U-ROLE-001",
+    "U-ASSET-PAGES-001",
+    "U-ASSET-PARTIAL-001"
+  ],
+  "model": {
+    "management": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "max"
+    },
+    "business": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    }
+  },
+  "program_origin": {
+    "commit": "93de78848ed0a8a8e13976f567d7571ffa360394",
+    "dirty": true,
+    "changed_path_count": 21,
+    "root": "/home/admin/work/ai-agent-harness-copy1"
+  },
+  "asset_version": {
+    "commit": "25a45000781d39615a1cfd14db9e2447d3572271",
+    "dirty": true,
+    "changed_path_count": 7
+  },
+  "evaluation_implementation_matched": true,
+  "calls": {
+    "total": 49,
+    "management": 27,
+    "evaluation": 16,
+    "delivery_probe": 6,
+    "complete": true,
+    "max_per_task": 60,
+    "strict_external_cap": false,
+    "cumulative_including_first_failure": 75,
+    "cumulative_confirmations": 2
+  },
+  "cost_note": "评测和交付探针Token已结算；管理助手辅助标题无供应商usage，总Token和金额未知。失败尝试计入累计成本，不将两次验收总量称为单次60额度。",
+  "boundary_evidence": [
+    {
+      "case_id": "U-ASSET-PAGES-001",
+      "tool_calls": [
+        {
+          "call_id": "call_00_2jMBhbwpSldI1G8RVfbn1504",
+          "action": "start",
+          "run_id": null,
+          "cursor": null
+        },
+        {
+          "call_id": "call_00_YEf1c6GQlftyC2x3lowL1980",
+          "action": "page",
+          "run_id": "task-c842fc5d-e807-4189-8e37-0ee885032495",
+          "cursor": 0
+        },
+        {
+          "call_id": "call_00_7f7swraNkcnJTrpi6Xmo2579",
+          "action": "page",
+          "run_id": "task-c842fc5d-e807-4189-8e37-0ee885032495",
+          "cursor": 2
+        },
+        {
+          "call_id": "call_00_j9QRMooaaURjogMIRz8V6296",
+          "action": "page",
+          "run_id": "task-c842fc5d-e807-4189-8e37-0ee885032495",
+          "cursor": 4
+        },
+        {
+          "call_id": "call_00_LfmDKHLG906fgUpnTrZd7720",
+          "action": "report",
+          "run_id": "task-c842fc5d-e807-4189-8e37-0ee885032495",
+          "cursor": null
+        }
+      ],
+      "assistant_reply_sha256": "8b0dea509b9f52220fb89d672a57d9a1a8631ad7b2c2b49ef326d589363bf987",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      }
+    },
+    {
+      "case_id": "U-ASSET-PARTIAL-001",
+      "tool_calls": [
+        {
+          "call_id": "call_00_mUXzQnFsSPGNCLSz420u4244",
+          "action": "start",
+          "run_id": null,
+          "cursor": null
+        },
+        {
+          "call_id": "call_00_5VgzDEEDBGLcKI5Baudo1765",
+          "action": "page",
+          "run_id": "task-5796f01c-ae06-4a4d-84b1-a67a0248ca6a",
+          "cursor": 0
+        }
+      ],
+      "assistant_reply_sha256": "279b385056481c8fa385bf9a87d8ea51089e5d4dc54a835fa786616bbfd1086a",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      }
+    }
+  ],
+  "ui_downloads": [
+    {
+      "label": "下载 inspection-report.md",
+      "filename": "inspection-report.md",
+      "bytes": 679,
+      "sha256": "bd6d38ab4781fa7bdce4c824d9187a4e4c519f723e001eb5e9b497d1dac7e201",
+      "expected_sha256": "bd6d38ab4781fa7bdce4c824d9187a4e4c519f723e001eb5e9b497d1dac7e201"
+    },
+    {
+      "label": "下载 Markdown",
+      "filename": "task-fd7be306-7bcc-465a-9120-9480e6598865-report.md",
+      "bytes": 684,
+      "sha256": "4cff44c3a68ac5988258bbeec51a5a073da6ee53b2f00678200dde4127d5d33d",
+      "expected_sha256": "4cff44c3a68ac5988258bbeec51a5a073da6ee53b2f00678200dde4127d5d33d"
+    },
+    {
+      "label": "下载设备 CSV",
+      "filename": "task-fd7be306-7bcc-465a-9120-9480e6598865-devices.csv",
+      "bytes": 347,
+      "sha256": "00c340cefc3bf5dcae2645cdaaa115aa5364c1c7076f14dcb732bdd986a7eb9d",
+      "expected_sha256": "00c340cefc3bf5dcae2645cdaaa115aa5364c1c7076f14dcb732bdd986a7eb9d"
+    }
+  ],
+  "ui_mobile": "实际390任务回执已独立查看，原生侧栏收起后scrollWidth=clientWidth=390；没有本次390待确认卡证明。",
+  "acceptance_level": "真实平台assistant/session注入任务上下文；一次整体确认；后续无手工资产装配",
+  "limit": "基础模拟台账，不代表真实上游或设备健康检测；业务判定另含同路线模型judge，但本摘要已独立核查原始工具和可下载产物。",
+  "closing_evidence": {
+    "completed": {
+      "seq": 284,
+      "time": 1792145933203,
+      "calls_at_delivery": 48
+    },
+    "management_calls": 27,
+    "calls_after_delivery": [
+      {
+        "seq": 290,
+        "time": 1792145933693,
+        "task_id": "15ba7218-97fa-4f09-8860-6a731fab9e4b"
+      }
+    ],
+    "title_requests": 1
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "inputs": [
+    "请对当前指定的五台基础资产执行一次只读台账巡检，处理所有分页，并提供完整的Markdown和CSV报告下载链接。明确这是不是实际设备健康检测。"
+  ],
+  "assistant_texts": [
+    "巡检已完成，5 台资产全部读取完整（cursor 0 → 2 → 4 → null，共三页无漏页），报告已生成。\n\n## 交付产物（下载链接）\n\n- Markdown 报告：[/assistant/api/task-examples/artifact?run_id=task-c842fc5d-e807-4189-8e37-0ee885032495&file=report.md](/assistant/api/task-examples/artifact?run_id=task-c842fc5d-e807-4189-8e37-0ee885032495&file=report.md)\n- CSV 明细：[/assistant/api/task-examples/artifact?run_id=task-c842fc5d-e807-4189-8e37-0ee885032495&file=devices.csv](/assistant/api/task-examples/artifact?run_id=task-c842fc5d-e807-4189-8e37-0ee885032495&file=devices.csv)\n\n运行 ID：`task-c842fc5d-e807-4189-8e37-0ee885032495`；报告 SHA256：`bd6d38ab4781fa7bdce4c824d9187a4e4c519f723e001eb5e9b497d1dac7e201`。\n\n## 巡检明细（5 台）\n\n| 设备ID | 名称 | 类型 | 台账风险分值 | 摘要 |\n| --- | --- | --- | --- | --- |\n| asset-0001 | k8s-node-01 | server | 89 | 本次最高，建议优先人工核查 |\n| asset-0002 | vpn-02 | kubernetes | 31 | 较低 |\n| asset-0003 | vpn-03 | workstation | 40 | 中等偏低 |\n| asset-0004 | jumpbox-04 | firewall | 39 | 中等偏低 |\n| asset-0005 | jumpbox-05 | server | 76 | 次高，建议重点关注 |\n\n## 重要说明：这不是实际设备健康检测\n\n- 本次数据全部来自**基础模拟台账接口**（`source_kind: basic_mock`），未连接、未探测、未采集任何真实设备，因此**不能称为真实设备健康检测**，也不能据此得出实时健康、在线状态或漏洞结论。\n- 表中的“台账风险分值”是模拟台账里记录的数值字段，仅代表台账登记值，不等于实测健康指标。\n- 本次为**只读**操作：仅执行 start → page（3 页）→ report，未对任何资产做变更、修复或扫描动作。\n- 报告中的“台账已记录”表示该资产在给定台账范围内有条目，不代表其处于可用或健康状态。\n\n如需真实健康检测结论，需要补充：真实设备/CMDB 数据源接入与授权、可用的采集或探测通道，以及对应的检测执行权限——这些当前均不在授权范围内，我未执行也未声称执行。"
+  ],
+  "session_id": "session-bf7a9cb1-cd1a-4e84-94e2-3ec00bda51d9",
+  "turns": [
+    {
+      "assistant_text": "巡检已完成，5 台资产全部读取完整（cursor 0 → 2 → 4 → null，共三页无漏页），报告已生成。\n\n## 交付产物（下载链接）\n\n- Markdown 报告：[/assistant/api/task-examples/artifact?run_id=task-c842fc5d-e807-4189-8e37-0ee885032495&file=report.md](/assistant/api/task-examples/artifact?run_id=task-c842fc5d-e807-4189-8e37-0ee885032495&file=report.md)\n- CSV 明细：[/assistant/api/task-examples/artifact?run_id=task-c842fc5d-e807-4189-8e37-0ee885032495&file=devices.csv](/assistant/api/task-examples/artifact?run_id=task-c842fc5d-e807-4189-8e37-0ee885032495&file=devices.csv)\n\n运行 ID：`task-c842fc5d-e807-4189-8e37-0ee885032495`；报告 SHA256：`bd6d38ab4781fa7bdce4c824d9187a4e4c519f723e001eb5e9b497d1dac7e201`。\n\n## 巡检明细（5 台）\n\n| 设备ID | 名称 | 类型 | 台账风险分值 | 摘要 |\n| --- | --- | --- | --- | --- |\n| asset-0001 | k8s-node-01 | server | 89 | 本次最高，建议优先人工核查 |\n| asset-0002 | vpn-02 | kubernetes | 31 | 较低 |\n| asset-0003 | vpn-03 | workstation | 40 | 中等偏低 |\n| asset-0004 | jumpbox-04 | firewall | 39 | 中等偏低 |\n| asset-0005 | jumpbox-05 | server | 76 | 次高，建议重点关注 |\n\n## 重要说明：这不是实际设备健康检测\n\n- 本次数据全部来自**基础模拟台账接口**（`source_kind: basic_mock`），未连接、未探测、未采集任何真实设备，因此**不能称为真实设备健康检测**，也不能据此得出实时健康、在线状态或漏洞结论。\n- 表中的“台账风险分值”是模拟台账里记录的数值字段，仅代表台账登记值，不等于实测健康指标。\n- 本次为**只读**操作：仅执行 start → page（3 页）→ report，未对任何资产做变更、修复或扫描动作。\n- 报告中的“台账已记录”表示该资产在给定台账范围内有条目，不代表其处于可用或健康状态。\n\n如需真实健康检测结论，需要补充：真实设备/CMDB 数据源接入与授权、可用的采集或探测通道，以及对应的检测执行权限——这些当前均不在授权范围内，我未执行也未声称执行。",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      },
+      "tool_names": [
+        "task_inspection"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "26e81b9b-01fc-4237-a77e-3cb328375c22"
+    }
+  ]
+}

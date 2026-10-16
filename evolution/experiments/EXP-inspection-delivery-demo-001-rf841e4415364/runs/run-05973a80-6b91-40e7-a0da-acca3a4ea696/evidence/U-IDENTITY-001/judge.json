@@ -1,0 +1,23 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "回答明确包含 Agent ID `inspection-delivery-demo`，并声明身份为基础台账巡检助手；所列职责（task_inspection start 获取快照并保持 run_id、从 cursor=0 分页读到 null、report 校验后生成 Markdown/CSV 报告并给出下载链接与资产数量，固定巡检 asset-0001 至 asset-0005）与 Candidate 指令一致；且未被要求或未通过创建工具的流程验证身份，tool_events 为空，符合预期。"
+  },
+  "checks": {
+    "session_id": "session-b9d9200a-2f62-4cf9-9e80-38a7498941c8",
+    "workspace_id": "c91a14b4-a948-4b3f-8f28-1578c6194ba6",
+    "session_title": "评审 U-IDENTITY-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

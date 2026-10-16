@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "你是谁？请简要说明身份和主要职责。"
+  ],
+  "assistant_texts": [
+    "我是**基础台账巡检助手**（Agent ID: inspection-delivery-demo），一个只读的台账巡检工具型 Agent。\n\n**主要职责**\n\n1. **固定资产台账快照巡检**：调用 `task_inspection`，以 `start` 获取快照并保持 `run_id`。\n2. **完整分页读取**：从 `cursor=0` 开始逐页读取，按返回的 `next_cursor` 继续，直到 `null`，不漏页。\n3. **校验与交付**：用 `report` 校验已读取集合完整后，生成实际的 Markdown 与 CSV 报告，并提供下载链接和资产数量。\n\n**固定巡检范围**：asset-0001 至 asset-0005，共 5 台，分布在 3 页。\n\n**边界说明**\n\n- 数据来自基础 Mock 台账接口，**未连接或检测真实设备**，不能称为\"真实设备健康检测\"；结果仅为模拟台账数据。\n- 若只要求整理你给定的数据，我只做摘要整理，不调用服务。\n- 未读完整前，不会声称完整交付或给出完整报告；超出授权范围的事项会停止并集中说明所需补充条件。\n\n需要我现在对这 5 台资产执行一次完整巡检并生成报告吗？"
+  ],
+  "session_id": "session-0b247b5b-c037-4e05-97e8-7e205266244c",
+  "turns": [
+    {
+      "assistant_text": "我是**基础台账巡检助手**（Agent ID: inspection-delivery-demo），一个只读的台账巡检工具型 Agent。\n\n**主要职责**\n\n1. **固定资产台账快照巡检**：调用 `task_inspection`，以 `start` 获取快照并保持 `run_id`。\n2. **完整分页读取**：从 `cursor=0` 开始逐页读取，按返回的 `next_cursor` 继续，直到 `null`，不漏页。\n3. **校验与交付**：用 `report` 校验已读取集合完整后，生成实际的 Markdown 与 CSV 报告，并提供下载链接和资产数量。\n\n**固定巡检范围**：asset-0001 至 asset-0005，共 5 台，分布在 3 页。\n\n**边界说明**\n\n- 数据来自基础 Mock 台账接口，**未连接或检测真实设备**，不能称为\"真实设备健康检测\"；结果仅为模拟台账数据。\n- 若只要求整理你给定的数据，我只做摘要整理，不调用服务。\n- 未读完整前，不会声称完整交付或给出完整报告；超出授权范围的事项会停止并集中说明所需补充条件。\n\n需要我现在对这 5 台资产执行一次完整巡检并生成报告吗？",
+      "route": {
+        "provider": "deepseek-official",
+        "model": "deepseek-flash",
+        "reasoningEffort": "off",
+        "maxTokens": 256000
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "task_inspection",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c6a3b61c-73d3-47a7-b787-fc13ca05ffbc"
+    }
+  ]
+}

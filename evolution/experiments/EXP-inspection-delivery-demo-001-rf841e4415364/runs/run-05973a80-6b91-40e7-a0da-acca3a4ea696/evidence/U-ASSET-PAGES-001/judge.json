@@ -1,0 +1,23 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答调用了同一 run_id（task-c842fc5d-e807-4189-8e37-0ee885032495）的 task_inspection：先 start，再依次 page(cursor 0→2→4→null)，覆盖 asset-0001 至 asset-0005 共 5 台，与工具回执一致；随后 report 返回 device_count=5、Markdown/CSV 内容包括五台资产，且报告数量为 5。回答给出的 Markdown 与 CSV 下载链接与工具回执中的 download_url/csv_url 完全一致，SHA256 也与 report 回执一致。回答明确说明数据来自基础模拟台账（source_kind: basic_mock）、未连接或检测真实设备，因而不是真实设备健康检测，也未据此给出实时健康结论；同时说明仅执行只读 start→page→report，没有仅提供职责描述或用用户自提供摘要代替。全部预期要求均被满足。"
+  },
+  "checks": {
+    "session_id": "session-e0f1aa55-0fdc-4ada-b9ef-7b8353c3d27a",
+    "workspace_id": "c91a14b4-a948-4b3f-8f28-1578c6194ba6",
+    "session_title": "评审 U-ASSET-PAGES-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

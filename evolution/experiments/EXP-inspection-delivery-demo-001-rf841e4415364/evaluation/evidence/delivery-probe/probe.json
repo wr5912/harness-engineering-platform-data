@@ -1,0 +1,51 @@
+{
+  "id": "8a7db255-5829-42ce-99a1-f2df291d50b1",
+  "path": "/home/admin/work/hep-task-delivery-data/.local/delivery-probes/8a7db255-5829-42ce-99a1-f2df291d50b1",
+  "status": "completed",
+  "case_id": "U-ASSET-PAGES-001",
+  "session_id": "session-f12afc42-7f68-4825-bc43-3f0ca252f9c7",
+  "model_usage": {
+    "actual_model_calls": 6,
+    "observed_model_calls": 6,
+    "failed_model_calls": 0,
+    "observed_failed_model_calls": 0,
+    "auxiliary_model_calls": 0,
+    "auxiliary_requests_observed": 0,
+    "model_calls_by_role": {
+      "target": 6,
+      "judge": 0,
+      "analysis": 0
+    },
+    "model_calls_complete": true,
+    "model_calls_basis": "锁定 DSH 的主请求尝试/retry、llmStreamCall 压缩及成功结算的辅助标题请求；按 Session ID 与 seq 去重，未结算标题保留未知。",
+    "model_calls_unknown_reasons": [],
+    "token_usage": {
+      "input_tokens": 17085,
+      "output_tokens": 1017,
+      "total_tokens": 18102
+    },
+    "observed_token_usage": {
+      "input_tokens": 17085,
+      "output_tokens": 1017,
+      "total_tokens": 18102
+    },
+    "token_usage_complete": true,
+    "token_usage_note": "当前已采集请求的供应商 Token 用量；未核算实际费用。",
+    "hard_cap_supported": false
+  },
+  "downloads": [
+    {
+      "format": "markdown",
+      "url": "http://127.0.0.1:3112/assistant/api/task-examples/artifact?run_id=task-fd7be306-7bcc-465a-9120-9480e6598865&file=report.md",
+      "sha256": "4cff44c3a68ac5988258bbeec51a5a073da6ee53b2f00678200dde4127d5d33d",
+      "bytes": 684
+    },
+    {
+      "format": "csv",
+      "url": "http://127.0.0.1:3112/assistant/api/task-examples/artifact?run_id=task-fd7be306-7bcc-465a-9120-9480e6598865&file=devices.csv",
+      "sha256": "00c340cefc3bf5dcae2645cdaaa115aa5364c1c7076f14dcb732bdd986a7eb9d",
+      "bytes": 347
+    }
+  ],
+  "report_sha256": "4cff44c3a68ac5988258bbeec51a5a073da6ee53b2f00678200dde4127d5d33d"
+}

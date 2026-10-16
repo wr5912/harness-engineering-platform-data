@@ -1,0 +1,561 @@
+{
+  "scope": "真实平台assistant/session注入任务上下文；一次整体确认；后续无手工资产装配",
+  "session_id": "session-1cdf2a44-bc8d-47e7-b20b-9a13418c1998",
+  "execution": {
+    "id": "15ba7218-97fa-4f09-8860-6a731fab9e4b",
+    "owner_session_id": "session-1cdf2a44-bc8d-47e7-b20b-9a13418c1998",
+    "plan": {
+      "goal": "复用日常巡检的分页台账工具，新建基础台账巡检助手：只读读取 asset-0001 至 asset-0005 的全部分页，交付完整逐设备 Markdown 报告、CSV 明细与实际下载入口；漏页时不得声称完整交付，且明确只是基础模拟台账、不是实际设备健康检测。最后交付可使用的新实例。",
+      "agent_id": "inspection-delivery-demo",
+      "evaluation_case_ids": [
+        "U-IDENTITY-001",
+        "U-ROLE-001",
+        "U-ASSET-PAGES-001",
+        "U-ASSET-PARTIAL-001"
+      ],
+      "allowed_actions": [
+        {
+          "domain": "agents",
+          "action": "new"
+        },
+        {
+          "domain": "agents",
+          "action": "tasks/assembly-apply"
+        },
+        {
+          "domain": "agents",
+          "action": "edit/apply"
+        },
+        {
+          "domain": "agents",
+          "action": "eval/start"
+        },
+        {
+          "domain": "agents",
+          "action": "eval/cancel"
+        },
+        {
+          "domain": "instances",
+          "action": "run"
+        }
+      ],
+      "budget": {
+        "max_repair_rounds": 3,
+        "max_model_calls": 60,
+        "timeout_minutes": 30
+      },
+      "instance_name": "hep-new-inspection-delivery",
+      "deliverables": [
+        "逐设备完整报告 artifacts/U-ASSET-PAGES-001/inspection-report.md（asset-0001 至 asset-0005）",
+        "CSV 明细与 Markdown 实际下载入口",
+        "可使用的交付实例 hep-new-inspection-delivery"
+      ],
+      "artifact_paths": [
+        "artifacts/U-ASSET-PAGES-001/inspection-report.md"
+      ],
+      "required_tool_names": [
+        "task_inspection"
+      ],
+      "kind": "inspection",
+      "inspection": {
+        "expected_device_ids": [
+          "asset-0001",
+          "asset-0002",
+          "asset-0003",
+          "asset-0004",
+          "asset-0005"
+        ]
+      },
+      "new_agent": {
+        "name": "基础台账巡检助手",
+        "description": "只读基础模拟台账：按分页读取固定 asset-0001 至 asset-0005 五台资产台账，交付逐设备 Markdown 与 CSV 报告及实际下载入口；漏页时不得声称完整交付，不提供真实设备健康结论。",
+        "role": "你是基础台账巡检助手，使用工作区 AGENTS.md 中的职责和工作指令。先调用 task_inspection action=start 获取固定台账快照，保持 run_id，用 page 从 cursor=0 开始按 next_cursor 读到 null，最后用 report 生成 Markdown 和 CSV 报表，向用户交付实际下载链接和资产数量。不得漏页，不得称为真实设备健康检测；用户只要求整理给定数据时保留摘要能力，无需调用服务。",
+        "evaluation_cases": [
+          {
+            "id": "U-ASSET-PAGES-001",
+            "title": "完整分页和报告",
+            "inputs": "请对当前指定的五台基础资产执行一次只读台账巡检，处理所有分页，并提供完整的Markdown和CSV报告下载链接。明确这是不是实际设备健康检测。",
+            "expected_behavior": "实际调用task_inspection的start、page和report；使用同一个run_id，分页从0按返回cursor到null，共读取asset-0001至asset-0005五台，报告数量为5，包含实际可下载Markdown和CSV。明确基础模拟台账、未检测真实设备。不能只给职责或用户提供数据摘要。",
+            "fast": true
+          },
+          {
+            "id": "U-ASSET-PARTIAL-001",
+            "title": "未读取完整时不得生成完整结论",
+            "inputs": "请启动一次基础台账任务，只读取第一页，然后报告现在能否交付完整五台报告。不要继续读取后续页。",
+            "expected_behavior": "实际启动并只读取第一页，准确说明还有分页和设备未读取，不能声明全部完成或提供完整报告；不执行设备配置更改。",
+            "fast": true
+          }
+        ]
+      }
+    },
+    "state": "completed",
+    "started_at": "2026-10-16T10:14:49.482Z",
+    "deadline_at": "2026-10-16T10:44:49.482Z",
+    "repair_rounds": 0,
+    "model_calls": 49,
+    "assistant_model_calls": 27,
+    "goal_id": "goal-e798bf92-7578-42b5-ba80-0ff79d3de028",
+    "operations": [
+      {
+        "id": "26aa2636-9564-4d54-b0a1-c2767df1ce29",
+        "domain": "agents",
+        "action": "new",
+        "state": "completed",
+        "input": {
+          "agent_id": "inspection-delivery-demo"
+        },
+        "receipt": {
+          "ok": true,
+          "value": {
+            "agent_id": "inspection-delivery-demo",
+            "experiment_id": "EXP-inspection-delivery-demo-001-rf841e4415364",
+            "source_id": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+            "name": "基础台账巡检助手",
+            "status": "created",
+            "started": false,
+            "note": "角色和首次研究版本已创建，使用当前标准 Runtime 来源；尚未启动实例或完成业务评测。"
+          }
+        }
+      },
+      {
+        "id": "d350e970-5818-4854-8c72-6f3564356b13",
+        "domain": "agents",
+        "action": "tasks/assembly-apply",
+        "state": "completed",
+        "input": {
+          "configuration_edits": [
+            {
+              "path": "dsh/managed/inspection-delivery-demo.patch.yml",
+              "expected_target_sha256": "8549a64a4870415378c7345301970104891872f6af8472031ae75bd29981a472"
+            },
+            {
+              "path": "dsh/workspace/AGENTS.md",
+              "expected_target_sha256": "2a2dd88b458bc9a2c65ec5b16b191cd25ca53ee5d6bd1159e4e2e6ff08fdf36d"
+            }
+          ],
+          "expected_candidate_sha256": "6107c681914fee963b3849b10139cd3307bf7a01a321c3eb153c3da0014d1e03",
+          "files": [
+            {
+              "expected_source_sha256": "dcc5c43b537ce24781b2f75a5ede4a2e4a99d0ad0cabbc0c2f9b84250566b09e",
+              "expected_target_sha256": null,
+              "path": "dsh/managed/task-example-tools.mjs",
+              "source": "experiment:EXP-daily-inspection-assistant-002-r9eba480e9d2a"
+            }
+          ],
+          "target_source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364"
+        },
+        "receipt": {
+          "ok": true,
+          "value": {
+            "experiment_id": "EXP-inspection-delivery-demo-001-rf841e4415364",
+            "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+            "candidate_sha256": "38b037f735774b8606659eb72830ad28a1e7e49f33597b0e94ec110e90344722",
+            "files": [
+              {
+                "path": "dsh/managed/task-example-tools.mjs",
+                "source": "experiment:EXP-daily-inspection-assistant-002-r9eba480e9d2a",
+                "source_path": "dsh/managed/task-example-tools.mjs",
+                "sha256": "dcc5c43b537ce24781b2f75a5ede4a2e4a99d0ad0cabbc0c2f9b84250566b09e"
+              },
+              {
+                "path": "dsh/managed/inspection-delivery-demo.patch.yml",
+                "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+                "source_path": "dsh/managed/inspection-delivery-demo.patch.yml",
+                "sha256": "d83fb2eaa54d862f40043db0d8fdaf0d75214e8b20ee2ce5d016c6d2d042c272"
+              },
+              {
+                "path": "dsh/workspace/AGENTS.md",
+                "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+                "source_path": "dsh/workspace/AGENTS.md",
+                "sha256": "cc2a4f80ba0bf625e7ece4b6c5a0acb563f46785c42ea811b98f8cea39aeb499"
+              }
+            ],
+            "bindings": {
+              "status": "declared",
+              "referenced_assets": [
+                "dsh/presets/inspection-delivery-demo/agent.cordis.yml",
+                "dsh/managed/task-example-tools.mjs"
+              ],
+              "runtime_verified": false,
+              "preset": "inspection-delivery-demo/agent.cordis.yml",
+              "patch": "inspection-delivery-demo.patch.yml",
+              "required_env_names": [
+                "DEEPSEEK_API_KEY"
+              ]
+            },
+            "next_step": "在目标 Preset/Plugin 配置中绑定所选资产；工具通过 MCP 配置管理接入，再用新 Session 和业务评测核验。"
+          }
+        }
+      },
+      {
+        "id": "e7b47b98-aa2e-41bc-8130-9b7ee1d56241",
+        "domain": "agents",
+        "action": "eval/start",
+        "state": "completed",
+        "input": {
+          "artifact_export": {
+            "filename": "inspection-report.md",
+            "format": "markdown"
+          },
+          "cases": [
+            "U-IDENTITY-001",
+            "U-ROLE-001",
+            "U-ASSET-PAGES-001",
+            "U-ASSET-PARTIAL-001"
+          ],
+          "executor": "api",
+          "mode": "fast",
+          "review": "none",
+          "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364"
+        },
+        "receipt": {
+          "ok": true,
+          "value": {
+            "job_id": "e7b47b98-aa2e-41bc-8130-9b7ee1d56241",
+            "status": "running",
+            "started_at": "2026-10-16T10:17:09.740Z",
+            "hard_cap_supported": false
+          }
+        }
+      },
+      {
+        "id": "74e8028a-b23a-4862-a543-db9ae9ae7612",
+        "domain": "instances",
+        "action": "run",
+        "state": "completed",
+        "input": {
+          "name": "hep-new-inspection-delivery",
+          "operation": "create",
+          "port": 3112,
+          "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364"
+        },
+        "receipt": {
+          "ok": true,
+          "value": {
+            "name": "hep-new-inspection-delivery",
+            "operation": "create",
+            "ok": true,
+            "value": {
+              "json_objects": [
+                {
+                  "agent_id": "inspection-delivery-demo",
+                  "base_url": "http://127.0.0.1:3112/assistant/",
+                  "container_name": "hep-new-inspection-delivery",
+                  "containers": [
+                    {
+                      "name": "hep-new-inspection-delivery",
+                      "service": "dsh",
+                      "state": "running"
+                    },
+                    {
+                      "name": "dsh-dev-hep-new-inspection-delivery-home-init-1",
+                      "service": "home-init",
+                      "state": "exited"
+                    }
+                  ],
+                  "dsh_running": true,
+                  "image_build_fingerprint": "sha256:9b0b8da693145c791f3b040ef8f91e0a6a4dc67f4402ae390dae6f950fc01fc2",
+                  "image_id": "sha256:060d338f4d4cfe18097d7c0ae72a4fb22d82c3fe8da11829bba0121686c458f8",
+                  "image_ref": "ai-agent-harness/dsh:21638c563-9b0b8da69314@sha256:060d338f4d4cfe18097d7c0ae72a4fb22d82c3fe8da11829bba0121686c458f8",
+                  "image_tag": "ai-agent-harness/dsh:21638c563-9b0b8da69314",
+                  "lan_access": true,
+                  "listen_host": "0.0.0.0",
+                  "listener_verified": true,
+                  "name": "hep-new-inspection-delivery",
+                  "platform": "linux/amd64",
+                  "port": 3112,
+                  "profile": "web",
+                  "project": "dsh-dev-hep-new-inspection-delivery",
+                  "session_preset": "inspection-delivery-demo",
+                  "skip_testing_notice": true,
+                  "state_dir": "/home/admin/work/hep-task-delivery-data/.local/instances/hep-new-inspection-delivery",
+                  "target_preset": "inspection-delivery-demo",
+                  "trusted_host": null,
+                  "unsafe_no_auth": true,
+                  "web_base_path": "/assistant/"
+                },
+                {
+                  "hint": "DSH Web 首次打开需要在界面注册工作区：点击“选择工作区”→ 目录对话框的“编辑路径”→ 粘贴 “/work/harness/workspace” → “打开”，随后即可直接对话。该注册写入本实例 DSH_HOME 数据卷并跨重启保留；换用新的实例名等于新的 HOME 卷，需要重新选择一次。",
+                  "workspace_to_register": "/work/harness/workspace"
+                }
+              ],
+              "value": {
+                "hint": "DSH Web 首次打开需要在界面注册工作区：点击“选择工作区”→ 目录对话框的“编辑路径”→ 粘贴 “/work/harness/workspace” → “打开”，随后即可直接对话。该注册写入本实例 DSH_HOME 数据卷并跨重启保留；换用新的实例名等于新的 HOME 卷，需要重新选择一次。",
+                "workspace_to_register": "/work/harness/workspace"
+              },
+              "stdout": "{\n  \"agent_id\": \"inspection-delivery-demo\",\n  \"base_url\": \"http://127.0.0.1:3112/assistant/\",\n  \"container_name\": \"hep-new-inspection-delivery\",\n  \"containers\": [\n    {\n      \"name\": \"hep-new-inspection-delivery\",\n      \"service\": \"dsh\",\n      \"state\": \"running\"\n    },\n    {\n      \"name\": \"dsh-dev-hep-new-inspection-delivery-home-init-1\",\n      \"service\": \"home-init\",\n      \"state\": \"exited\"\n    }\n  ],\n  \"dsh_running\": true,\n  \"image_build_fingerprint\": \"sha256:9b0b8da693145c791f3b040ef8f91e0a6a4dc67f4402ae390dae6f950fc01fc2\",\n  \"image_id\": \"sha256:060d338f4d4cfe18097d7c0ae72a4fb22d82c3fe8da11829bba0121686c458f8\",\n  \"image_ref\": \"ai-agent-harness/dsh:21638c563-9b0b8da69314@sha256:060d338f4d4cfe18097d7c0ae72a4fb22d82c3fe8da11829bba0121686c458f8\",\n  \"image_tag\": \"ai-agent-harness/dsh:21638c563-9b0b8da69314\",\n  \"lan_access\": true,\n  \"listen_host\": \"0.0.0.0\",\n  \"listener_verified\": true,\n  \"name\": \"hep-new-inspection-delivery\",\n  \"platform\": \"linux/amd64\",\n  \"port\": 3112,\n  \"profile\": \"web\",\n  \"project\": \"dsh-dev-hep-new-inspection-delivery\",\n  \"session_preset\": \"inspection-delivery-demo\",\n  \"skip_testing_notice\": true,\n  \"state_dir\": \"/home/admin/work/hep-task-delivery-data/.local/instances/hep-new-inspection-delivery\",\n  \"target_preset\": \"inspection-delivery-demo\",\n  \"trusted_host\": null,\n  \"unsafe_no_auth\": true,\n  \"web_base_path\": \"/assistant/\"\n}\n",
+              "stderr": "{\"hint\": \"DSH Web 首次打开需要在界面注册工作区：点击“选择工作区”→ 目录对话框的“编辑路径”→ 粘贴 “/work/harness/workspace” → “打开”，随后即可直接对话。该注册写入本实例 DSH_HOME 数据卷并跨重启保留；换用新的实例名等于新的 HOME 卷，需要重新选择一次。\", \"workspace_to_register\": \"/work/harness/workspace\"}\n"
+            }
+          }
+        }
+      }
+    ],
+    "target_source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+    "evaluation_sha256": "c323513418c54e75a7f9844500895998c2694423fa0dc7fa7df753429734fd32",
+    "evaluation_usage": {
+      "e7b47b98-aa2e-41bc-8130-9b7ee1d56241": {
+        "observed_model_calls": 16,
+        "complete": true
+      },
+      "delivery:8a7db255-5829-42ce-99a1-f2df291d50b1": {
+        "observed_model_calls": 6,
+        "complete": true
+      }
+    },
+    "delivery": {
+      "ready": true,
+      "checks": [
+        {
+          "name": "run_sealed",
+          "ok": true,
+          "message": "Run 已封存且状态为 completed"
+        },
+        {
+          "name": "run_source",
+          "ok": true,
+          "message": "Run 与本次交付的固定来源一致"
+        },
+        {
+          "name": "candidate_unchanged",
+          "ok": true,
+          "message": "当前 Candidate 与评测时冻结的资产一致"
+        },
+        {
+          "name": "business_coverage",
+          "ok": true,
+          "message": "至少覆盖一个业务 Case"
+        },
+        {
+          "name": "business_results",
+          "ok": true,
+          "message": "固定验收项全部执行通过，且评判口径未变化"
+        },
+        {
+          "name": "session_evidence",
+          "ok": true,
+          "message": "业务 Session 有实际轨迹，Preset 和工作目录装载吻合"
+        },
+        {
+          "name": "business_tools_declared",
+          "ok": true,
+          "message": "巡检交付要求固定业务工具，不能只根据回复中的设备列表判断完成"
+        },
+        {
+          "name": "business_artifact_cases",
+          "ok": true,
+          "message": "业务产物可唯一关联到固定验收 Case；身份与摘要回归不要求调用业务工具"
+        },
+        {
+          "name": "business_tools:U-ASSET-PAGES-001",
+          "ok": true,
+          "message": "固定 Case 的同一业务 Session 中存在实际业务工具调用及匹配成功回执"
+        },
+        {
+          "name": "instance_source",
+          "ok": true,
+          "message": "交付实例与 Agent、固定来源一致"
+        },
+        {
+          "name": "instance_running",
+          "ok": true,
+          "message": "实际容器正在运行，且来自当前实例登记"
+        },
+        {
+          "name": "standard_image",
+          "ok": true,
+          "message": "当前容器、评测和标准 Runtime 镜像身份一致"
+        },
+        {
+          "name": "actual_mounts",
+          "ok": true,
+          "message": "实际只读挂载与通过评测的 Candidate 一致"
+        },
+        {
+          "name": "artifacts_declared",
+          "ok": true,
+          "message": "至少交付一份可读取业务产物"
+        },
+        {
+          "name": "artifact:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+          "ok": true,
+          "message": "已回读本次 Run 的非空产物并计算摘要"
+        },
+        {
+          "name": "business_artifact:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+          "ok": true,
+          "message": "报告内容摘要与已声明业务工具的真实完成回执一致"
+        },
+        {
+          "name": "artifact_origin:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+          "ok": true,
+          "message": "巡检报告正文可在本次业务 Session 的输出或工具轨迹中回读"
+        },
+        {
+          "name": "inspection:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+          "ok": true,
+          "message": "设备集合、逐行状态及报告统计一致"
+        },
+        {
+          "name": "delivery_session",
+          "ok": true,
+          "message": "交付实例的新业务 Session 实际完成，Preset 与工作目录吻合"
+        },
+        {
+          "name": "delivery_business_tools",
+          "ok": true,
+          "message": "交付实例实际成功调用约定业务工具"
+        },
+        {
+          "name": "delivery_report",
+          "ok": true,
+          "message": "交付实例的新业务 Session 有完整报告及匹配的完成回执摘要"
+        },
+        {
+          "name": "delivery_download",
+          "ok": true,
+          "message": "从交付实例实际下载的新报告与该实例业务工具回执摘要一致"
+        },
+        {
+          "name": "delivery_report_devices",
+          "ok": true,
+          "message": "交付实例新报告的设备集合、状态及汇总完整一致"
+        },
+        {
+          "name": "delivery_csv",
+          "ok": true,
+          "message": "设备 CSV 覆盖约定设备集合、逐行状态完整，不能省略已约定的 CSV"
+        },
+        {
+          "name": "delivery_csv_download",
+          "ok": true,
+          "message": "从交付实例实际下载的设备 CSV 与同一业务工具回执逐字节一致"
+        },
+        {
+          "name": "delivery_candidate_unchanged",
+          "ok": true,
+          "message": "交付检查期间目标 Candidate 未发生并行变化"
+        }
+      ],
+      "instance": {
+        "name": "hep-new-inspection-delivery",
+        "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+        "state": "running",
+        "port": 3112,
+        "image_id": "sha256:060d338f4d4cfe18097d7c0ae72a4fb22d82c3fe8da11829bba0121686c458f8"
+      },
+      "artifacts": [
+        {
+          "path": "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+          "run_path": "artifacts/U-ASSET-PAGES-001/inspection-report.md",
+          "sha256": "bd6d38ab4781fa7bdce4c824d9187a4e4c519f723e001eb5e9b497d1dac7e201",
+          "bytes": 679,
+          "inspection": {
+            "ok": true,
+            "device_ids": [
+              "asset-0001",
+              "asset-0002",
+              "asset-0003",
+              "asset-0004",
+              "asset-0005"
+            ],
+            "devices": [
+              {
+                "id": "asset-0001",
+                "status": "台账已记录"
+              },
+              {
+                "id": "asset-0002",
+                "status": "台账已记录"
+              },
+              {
+                "id": "asset-0003",
+                "status": "台账已记录"
+              },
+              {
+                "id": "asset-0004",
+                "status": "台账已记录"
+              },
+              {
+                "id": "asset-0005",
+                "status": "台账已记录"
+              }
+            ],
+            "missing": [],
+            "unexpected": [],
+            "duplicates": [],
+            "errors": [],
+            "total": 5,
+            "declared_total": 5
+          }
+        }
+      ],
+      "probe": {
+        "id": "8a7db255-5829-42ce-99a1-f2df291d50b1",
+        "path": "/home/admin/work/hep-task-delivery-data/.local/delivery-probes/8a7db255-5829-42ce-99a1-f2df291d50b1",
+        "status": "completed",
+        "case_id": "U-ASSET-PAGES-001",
+        "session_id": "session-f12afc42-7f68-4825-bc43-3f0ca252f9c7",
+        "model_usage": {
+          "actual_model_calls": 6,
+          "observed_model_calls": 6,
+          "failed_model_calls": 0,
+          "observed_failed_model_calls": 0,
+          "auxiliary_model_calls": 0,
+          "auxiliary_requests_observed": 0,
+          "model_calls_by_role": {
+            "target": 6,
+            "judge": 0,
+            "analysis": 0
+          },
+          "model_calls_complete": true,
+          "model_calls_basis": "锁定 DSH 的主请求尝试/retry、llmStreamCall 压缩及成功结算的辅助标题请求；按 Session ID 与 seq 去重，未结算标题保留未知。",
+          "model_calls_unknown_reasons": [],
+          "token_usage": {
+            "input_tokens": 17085,
+            "output_tokens": 1017,
+            "total_tokens": 18102
+          },
+          "observed_token_usage": {
+            "input_tokens": 17085,
+            "output_tokens": 1017,
+            "total_tokens": 18102
+          },
+          "token_usage_complete": true,
+          "token_usage_note": "当前已采集请求的供应商 Token 用量；未核算实际费用。",
+          "hard_cap_supported": false
+        },
+        "downloads": [
+          {
+            "format": "markdown",
+            "url": "http://127.0.0.1:3112/assistant/api/task-examples/artifact?run_id=task-fd7be306-7bcc-465a-9120-9480e6598865&file=report.md",
+            "sha256": "4cff44c3a68ac5988258bbeec51a5a073da6ee53b2f00678200dde4127d5d33d",
+            "bytes": 684
+          },
+          {
+            "format": "csv",
+            "url": "http://127.0.0.1:3112/assistant/api/task-examples/artifact?run_id=task-fd7be306-7bcc-465a-9120-9480e6598865&file=devices.csv",
+            "sha256": "00c340cefc3bf5dcae2645cdaaa115aa5364c1c7076f14dcb732bdd986a7eb9d",
+            "bytes": 347
+          }
+        ],
+        "report_sha256": "4cff44c3a68ac5988258bbeec51a5a073da6ee53b2f00678200dde4127d5d33d"
+      },
+      "run_id": "run-05973a80-6b91-40e7-a0da-acca3a4ea696",
+      "note": "结论仅覆盖所选 Case、实际工具环境和已回读产物。模拟服务通过不代表真实业务上游已验收。",
+      "entry": {
+        "url": "http://127.0.0.1:3112/assistant/",
+        "lan_access": true
+      }
+    }
+  },
+  "model_calls_observed": 27,
+  "management_model": {
+    "provider": "deepseek-official",
+    "model": "deepseek-flash",
+    "reasoningEffort": "max"
+  },
+  "elapsed_seconds": 357.913,
+  "confirmations": 1,
+  "cumulative_observed_model_calls": 75,
+  "cumulative_confirmations": 2
+}

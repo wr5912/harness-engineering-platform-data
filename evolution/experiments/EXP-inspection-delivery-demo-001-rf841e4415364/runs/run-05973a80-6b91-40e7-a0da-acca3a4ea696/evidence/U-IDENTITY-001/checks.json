@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-IDENTITY-001",
+  "transport": "api",
+  "expected_behavior": "回复明确包含 Agent ID `inspection-delivery-demo`，身份为基础台账巡检助手，职责符合 Candidate 指令；不使用创建工具的流程验证身份。",
+  "session_id": "session-0b247b5b-c037-4e05-97e8-7e205266244c",
+  "workspace_id": "c91a14b4-a948-4b3f-8f28-1578c6194ba6",
+  "session_title": "评测 U-IDENTITY-001",
+  "session_preset": "inspection-delivery-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-b9d9200a-2f62-4cf9-9e80-38a7498941c8",
+    "workspace_id": "c91a14b4-a948-4b3f-8f28-1578c6194ba6",
+    "session_title": "评审 U-IDENTITY-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}
