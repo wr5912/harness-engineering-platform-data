@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-PAGES-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答实际依次调用了 task_inspection 的 start、page（cursor 0→2→4，next_cursor 最终为 null）与 report，全部使用同一 run_id task-db533223-78bc-4824-810e-b86d3bc4754a；工具回执显示 source_kind 为 basic_mock、device_count 为 5，且逐条读出 asset-0001 至 asset-0005，与回答中表格的名称、类型、风险分值完全一致。report 回执给出真实可下载的 Markdown 与 CSV 链接（download_url、csv_url），回答按用户语言（中文）提供这两个链接，与预期“实际可下载 Markdown 和 CSV”相符。回答明确说明“这不是实际设备健康检测”，数据来自基础模拟接口、未连接探测任何真实设备、风险分值为台账自带字段，满足“基础模拟台账、未检测真实设备”的要求。回答给出实际设备清单与报告，而非仅职责说明或数据摘要，满足全部预期行为。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ASSET-PAGES-001"
+}

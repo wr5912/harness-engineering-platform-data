@@ -1,0 +1,449 @@
+{
+  "observed_at": "2026-10-16T10:00:18.913Z",
+  "scope": "真实首页默认002→独立版本004→固定业务Case→独立实例新Session→真实UI下载；基础Mock台账，非真实设备健康验收",
+  "source": "experiment:EXP-daily-inspection-assistant-002-r9eba480e9d2a",
+  "native_session": {
+    "session_id": "session-cca8dc75-3d14-4e15-8a30-90af0af371da",
+    "source": "experiment:EXP-daily-inspection-assistant-002-r9eba480e9d2a",
+    "created_by": "首页真实client，native prepared session经assistant/session绑定"
+  },
+  "task_id": "64f11fa6-b320-4f1e-ad9c-63cc61ec85ad",
+  "task_state": "completed",
+  "proposal": {
+    "id": "09d77245-efc0-43f0-ae2a-c60a414b309c",
+    "plan": {
+      "goal": "只读基础模拟台账巡检：对固定五台基础资产读取全部分页，按约定业务测试生成完整 Markdown 与 CSV 报告并提供实际下载；明确数据来自基础 Mock 台账，不声称真实设备健康检测。",
+      "agent_id": "daily-inspection-assistant",
+      "source": "experiment:EXP-daily-inspection-assistant-002-r9eba480e9d2a",
+      "evaluation_case_ids": [
+        "U-ASSET-PAGES-001"
+      ],
+      "allowed_actions": [
+        {
+          "domain": "agents",
+          "action": "create"
+        },
+        {
+          "domain": "agents",
+          "action": "tasks/assembly-apply"
+        },
+        {
+          "domain": "agents",
+          "action": "edit/apply"
+        },
+        {
+          "domain": "agents",
+          "action": "eval/start"
+        },
+        {
+          "domain": "agents",
+          "action": "eval/cancel"
+        },
+        {
+          "domain": "instances",
+          "action": "run"
+        }
+      ],
+      "budget": {
+        "max_repair_rounds": 3,
+        "max_model_calls": 60,
+        "timeout_minutes": 30
+      },
+      "instance_name": "hep-task-inspection-delivery",
+      "deliverables": [
+        "inspection-report.md（完整基础资产台账巡检报告，Markdown）",
+        "devices.csv（五台资产清单 CSV）"
+      ],
+      "artifact_paths": [
+        "artifacts/U-ASSET-PAGES-001/inspection-report.md"
+      ],
+      "required_tool_names": [
+        "task_inspection"
+      ],
+      "kind": "inspection",
+      "inspection": {
+        "expected_device_ids": [
+          "asset-0001",
+          "asset-0002",
+          "asset-0003",
+          "asset-0004",
+          "asset-0005"
+        ]
+      }
+    },
+    "source_ref": "git:432dd8d1ed2feeb6b9e4b7e42622253c33b6fe7a",
+    "evaluation_sha256": "66e2f51a1fdac9bde109a3315b21b5801279f74337874bbaf007900774635ad2"
+  },
+  "run_id": "run-325d6b40-9324-4dee-8b8f-b82e969e69b9",
+  "instance": {
+    "name": "hep-task-inspection-delivery",
+    "port": 3093,
+    "state": "running",
+    "source_id": "experiment:EXP-daily-inspection-assistant-004-r965bc66e4614"
+  },
+  "user_involvement": {
+    "text_inputs": 0,
+    "confirmations": 1,
+    "clicks_including_navigation_open_and_downloads": 7,
+    "actions": [
+      {
+        "label": "进入首页",
+        "at": "2026-10-16T09:51:46.042Z"
+      },
+      {
+        "label": "体验示例",
+        "at": "2026-10-16T09:51:49.529Z"
+      },
+      {
+        "label": "开始体验",
+        "at": "2026-10-16T09:51:51.598Z"
+      },
+      {
+        "label": "开始构建并验证",
+        "at": "2026-10-16T09:54:47.758Z"
+      },
+      {
+        "label": "打开智能体",
+        "at": "2026-10-16T10:00:14.029Z"
+      },
+      {
+        "label": "下载 report.md",
+        "at": "2026-10-16T10:00:18.641Z"
+      },
+      {
+        "label": "下载 devices.csv",
+        "at": "2026-10-16T10:00:18.886Z"
+      }
+    ]
+  },
+  "elapsed_seconds_from_start_example_to_delivery": 497.62,
+  "repair_rounds": 0,
+  "completed_task_usage": {
+    "total": 35,
+    "assistant": 22,
+    "evaluation_and_probe": {
+      "8f895ac0-a937-452e-b216-124d680eecc8": {
+        "observed_model_calls": 7,
+        "complete": true
+      },
+      "delivery:9a37049b-873b-496f-90bb-eee5d15f62ab": {
+        "observed_model_calls": 6,
+        "complete": true
+      }
+    }
+  },
+  "final_session_usage": {
+    "at": "2026-10-16T10:03:09.143Z",
+    "session_id": "session-cca8dc75-3d14-4e15-8a30-90af0af371da",
+    "running": false,
+    "final_session_model_calls": 23,
+    "completed_task": {
+      "id": "64f11fa6-b320-4f1e-ad9c-63cc61ec85ad",
+      "model_calls": 35,
+      "assistant_model_calls": 22,
+      "evaluation_usage": {
+        "8f895ac0-a937-452e-b216-124d680eecc8": {
+          "observed_model_calls": 7,
+          "complete": true
+        },
+        "delivery:9a37049b-873b-496f-90bb-eee5d15f62ab": {
+          "observed_model_calls": 6,
+          "complete": true
+        }
+      }
+    },
+    "cost_scope": "completed_task统计到服务端交付检查完成；final_session统计含之后的管理助手收尾说明。账单费用未知，不由调用次数推算。",
+    "final_total_observed_model_calls": 36
+  },
+  "cost_scope": "completed_task统计到服务端交付检查完成；final_session统计含之后的管理助手收尾说明。账单费用未知，不由调用次数推算。",
+  "currency_cost": null,
+  "delivery_checks": [
+    {
+      "name": "run_sealed",
+      "ok": true,
+      "message": "Run 已封存且状态为 completed"
+    },
+    {
+      "name": "run_source",
+      "ok": true,
+      "message": "Run 与本次交付的固定来源一致"
+    },
+    {
+      "name": "candidate_unchanged",
+      "ok": true,
+      "message": "当前 Candidate 与评测时冻结的资产一致"
+    },
+    {
+      "name": "business_coverage",
+      "ok": true,
+      "message": "至少覆盖一个业务 Case"
+    },
+    {
+      "name": "business_results",
+      "ok": true,
+      "message": "固定验收项全部执行通过，且评判口径未变化"
+    },
+    {
+      "name": "session_evidence",
+      "ok": true,
+      "message": "业务 Session 有实际轨迹，Preset 和工作目录装载吻合"
+    },
+    {
+      "name": "business_tools_declared",
+      "ok": true,
+      "message": "巡检交付要求固定业务工具，不能只根据回复中的设备列表判断完成"
+    },
+    {
+      "name": "business_artifact_cases",
+      "ok": true,
+      "message": "业务产物可唯一关联到固定验收 Case；身份与摘要回归不要求调用业务工具"
+    },
+    {
+      "name": "business_tools:U-ASSET-PAGES-001",
+      "ok": true,
+      "message": "固定 Case 的同一业务 Session 中存在实际业务工具调用及匹配成功回执"
+    },
+    {
+      "name": "instance_source",
+      "ok": true,
+      "message": "交付实例与 Agent、固定来源一致"
+    },
+    {
+      "name": "instance_running",
+      "ok": true,
+      "message": "实际容器正在运行，且来自当前实例登记"
+    },
+    {
+      "name": "standard_image",
+      "ok": true,
+      "message": "当前容器、评测和标准 Runtime 镜像身份一致"
+    },
+    {
+      "name": "actual_mounts",
+      "ok": true,
+      "message": "实际只读挂载与通过评测的 Candidate 一致"
+    },
+    {
+      "name": "artifacts_declared",
+      "ok": true,
+      "message": "至少交付一份可读取业务产物"
+    },
+    {
+      "name": "artifact:evolution/experiments/EXP-daily-inspection-assistant-004-r965bc66e4614/runs/run-325d6b40-9324-4dee-8b8f-b82e969e69b9/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "已回读本次 Run 的非空产物并计算摘要"
+    },
+    {
+      "name": "business_artifact:evolution/experiments/EXP-daily-inspection-assistant-004-r965bc66e4614/runs/run-325d6b40-9324-4dee-8b8f-b82e969e69b9/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "报告内容摘要与已声明业务工具的真实完成回执一致"
+    },
+    {
+      "name": "artifact_origin:evolution/experiments/EXP-daily-inspection-assistant-004-r965bc66e4614/runs/run-325d6b40-9324-4dee-8b8f-b82e969e69b9/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "巡检报告正文可在本次业务 Session 的输出或工具轨迹中回读"
+    },
+    {
+      "name": "inspection:evolution/experiments/EXP-daily-inspection-assistant-004-r965bc66e4614/runs/run-325d6b40-9324-4dee-8b8f-b82e969e69b9/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "设备集合、逐行状态及报告统计一致"
+    },
+    {
+      "name": "delivery_session",
+      "ok": true,
+      "message": "交付实例的新业务 Session 实际完成，Preset 与工作目录吻合"
+    },
+    {
+      "name": "delivery_business_tools",
+      "ok": true,
+      "message": "交付实例实际成功调用约定业务工具"
+    },
+    {
+      "name": "delivery_report",
+      "ok": true,
+      "message": "交付实例的新业务 Session 有完整报告及匹配的完成回执摘要"
+    },
+    {
+      "name": "delivery_download",
+      "ok": true,
+      "message": "从交付实例实际下载的新报告与该实例业务工具回执摘要一致"
+    },
+    {
+      "name": "delivery_report_devices",
+      "ok": true,
+      "message": "交付实例新报告的设备集合、状态及汇总完整一致"
+    },
+    {
+      "name": "delivery_csv",
+      "ok": true,
+      "message": "设备 CSV 覆盖约定设备集合、逐行状态完整，不能省略已约定的 CSV"
+    },
+    {
+      "name": "delivery_csv_download",
+      "ok": true,
+      "message": "从交付实例实际下载的设备 CSV 与同一业务工具回执逐字节一致"
+    },
+    {
+      "name": "delivery_candidate_unchanged",
+      "ok": true,
+      "message": "交付检查期间目标 Candidate 未发生并行变化"
+    }
+  ],
+  "business_actions": [
+    {
+      "call_id": "call_00_vt3JJYYnzhaKmxkoAMPf9522",
+      "action": "start",
+      "cursor": null
+    },
+    {
+      "call_id": "call_00_FIqCBsSVYYAqNmlepEHV5835",
+      "action": "page",
+      "cursor": 0
+    },
+    {
+      "call_id": "call_00_2SK0nK3AnfaunKho2kzh6304",
+      "action": "page",
+      "cursor": 2
+    },
+    {
+      "call_id": "call_00_ZXx64whEKfoD5whZaLQb4567",
+      "action": "page",
+      "cursor": 4
+    },
+    {
+      "call_id": "call_00_uHoQjKTgUXs3m4eJMYzC9924",
+      "action": "report",
+      "cursor": null
+    }
+  ],
+  "downloads": [
+    {
+      "format": "markdown",
+      "bytes": 686,
+      "sha256": "1a0ff0fd68dd2c0ebe72bd58a842339128c117f9cb90bc0885b476e5090f0ffe",
+      "check": {
+        "ok": true,
+        "device_ids": [
+          "asset-0001",
+          "asset-0002",
+          "asset-0003",
+          "asset-0004",
+          "asset-0005"
+        ],
+        "devices": [
+          {
+            "id": "asset-0001",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0002",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0003",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0004",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0005",
+            "status": "台账已记录"
+          }
+        ],
+        "missing": [],
+        "unexpected": [],
+        "duplicates": [],
+        "errors": [],
+        "total": 5,
+        "declared_total": 5
+      }
+    },
+    {
+      "format": "csv",
+      "bytes": 349,
+      "sha256": "688960df65a6dad52531ce1767a68675f50371eeba55e9e12661b10e98397034",
+      "check": {
+        "ok": true,
+        "device_ids": [
+          "asset-0001",
+          "asset-0002",
+          "asset-0003",
+          "asset-0004",
+          "asset-0005"
+        ],
+        "devices": [
+          {
+            "id": "asset-0001",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0002",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0003",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0004",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0005",
+            "status": "台账已记录"
+          }
+        ],
+        "missing": [],
+        "unexpected": [],
+        "duplicates": [],
+        "errors": [],
+        "total": 5
+      }
+    }
+  ],
+  "ui_observation": {
+    "raw_sha256": "bd9c312109a81e7b77047171e23b64dfb5b5cb02f10a60f257420d757494992d",
+    "pageerrors": [],
+    "viewports": [
+      {
+        "name": "home",
+        "width": 1440,
+        "scroll": 1440,
+        "client": 1440
+      },
+      {
+        "name": "confirmation",
+        "width": 1440,
+        "scroll": 1440,
+        "client": 1440
+      },
+      {
+        "name": "confirmation-narrow",
+        "width": 390,
+        "scroll": 390,
+        "client": 390
+      },
+      {
+        "name": "delivered",
+        "width": 1440,
+        "scroll": 1440,
+        "client": 1440
+      },
+      {
+        "name": "delivered-narrow",
+        "width": 390,
+        "scroll": 390,
+        "client": 390
+      }
+    ],
+    "original_path": "/tmp/hep-task-delivery-20261016/home-live-example.json"
+  },
+  "limitations": [
+    "仅一次固定Case与一次交付Session，不证明长期稳定性或优于002。",
+    "运行实例列表只反映当前工作区，不能以本脚本按端口筛选的结果声称已独立检查所有其他工作区3081/3084实例；本任务生命周期记录仅含新建实例hep-task-inspection-delivery。",
+    "原始UI观察中的tool_actions为null，因为采集器未解码JSON字符串arguments；此处从保留trace解码补齐，原观察未改写。",
+    "Task完成时调用35与之后完整会话36分别保留；无账单，费用未知。"
+  ]
+}
