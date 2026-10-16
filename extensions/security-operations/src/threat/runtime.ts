@@ -1,5 +1,6 @@
 import { execFile } from 'node:child_process'
 import { randomUUID } from 'node:crypto'
+import { isDeepStrictEqual } from 'node:util'
 import { lstat, mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { basename, join, relative, resolve, sep } from 'node:path'
 import { createThreatBridge } from './bridge.ts'
@@ -46,12 +47,17 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
     if (!RUN_ID.test(id)) throw new Error('invalid_threat_run_id')
     return join(stateRoot, 'runs', id)
   }
+  async function checkedRunDirectory(id: string) {
+    const root = runDirectory(id), stat = await lstat(root)
+    if (!stat.isDirectory() || stat.isSymbolicLink()) throw new Error('threat_artifact_integrity_failed')
+    return root
+  }
   async function load(id: string): Promise<Context> {
-    try { return await json(join(runDirectory(id), 'context.json')) }
+    try { return await json(join(await checkedRunDirectory(id), 'context.json')) }
     catch (error: any) { if (error.code === 'ENOENT') throw new Error('threat_run_not_found'); throw error }
   }
   async function artifacts(id: string): Promise<ThreatArtifact[]> {
-    const root = runDirectory(id), rows: ThreatArtifact[] = []
+    const root = await checkedRunDirectory(id), rows: ThreatArtifact[] = []
     async function walk(folder: string) {
       for (const name of (await readdir(folder)).sort()) {
         if (name === 'context.json' || name.startsWith('.') || name.endsWith('.tmp')) continue
@@ -68,6 +74,29 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
     return { ...context.result, phase_status: phase, artifacts: await artifacts(id), trace: context.trace, source: context.source } as ThreatResult
   }
   async function inspect(id: string) { return view(id, await load(id)) }
+
+  async function assertSavedResult(id: string, context: Context) {
+    // 跨源码版本仅回读已保存的完整结果；旧 Run 没有逐文件摘要，不回填或重写历史。
+    const required = ['result.json']
+    if (context.result.route === 'fast_classification') required.push('fusion/fast-classification-output.json')
+    if (context.phases.infer === 'completed' && context.result.route === 'five_source') required.push('model/model-analysis-output.json', 'model/validation.json')
+    if (context.phases.writeback === 'completed' && context.result.status === 'completed') required.push('report.html', 'storage.json')
+    if (context.phases.report === 'completed') required.push('summary.json', 'summary.md')
+    try {
+      const root = await checkedRunDirectory(id)
+      for (const name of required) {
+        let file = root
+        const parts = name.split('/')
+        for (const [index, part] of parts.entries()) {
+          file = join(file, part)
+          const stat = await lstat(file), last = index === parts.length - 1
+          if (stat.isSymbolicLink() || (last ? !stat.isFile() || stat.size === 0 : !stat.isDirectory())) throw new Error('missing_artifact')
+        }
+        if (name.endsWith('.json')) await json(file)
+      }
+      if (context.result.run_id !== id || !isDeepStrictEqual(await json(join(runDirectory(id), 'result.json')), context.result)) throw new Error('result_conflict')
+    } catch { throw new Error('threat_artifact_integrity_failed') }
+  }
 
   return {
     inspect,
@@ -90,7 +119,6 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
           result: { schema_version: '1.0', run_id: id, incident_id: input.incident_id, model: null, llm_invoked: false, status: 'claim_failed' }, phases: {}, trace: [], phase_status: 'unknown' }
         await atomic(join(runDirectory(id), 'context.json'), context)
       } else context = await load(id)
-      if (context.source.commit !== immutable.commit || context.source.digest !== immutable.digest) throw new Error('threat_source_integrity_failed')
       if (bindings.socConnectionId !== context.bindings.socConnectionId || bindings.reportConnectionId !== context.bindings.reportConnectionId) throw new Error('threat_binding_conflict')
       if (stage === 'collect' && input.incident_id !== context.result.incident_id) throw new Error('threat_incident_conflict')
       const output = runDirectory(id), contextFile = join(output, 'context.json'), lock = join(output, '.phase-lock')
@@ -99,7 +127,15 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
         context = await load(id)
         if (stage === 'infer' && context.inference_attempted && bindings.model && context.bindings.model &&
           Object.entries(bindings.model).some(([key, value]) => value !== context.bindings.model![key as keyof typeof bindings.model])) throw new Error('threat_model_conflict')
-        if (context.phases[stage]) return { ...await view(id, context, context.phases[stage]), replayed: true }
+        const sameSource = context.source.commit === immutable.commit && context.source.digest === immutable.digest
+        if (context.phases[stage]) {
+          if (!sameSource) {
+            if (context.phases[stage] !== 'completed') throw new Error('threat_source_integrity_failed')
+            await assertSavedResult(id, context)
+          }
+          return { ...await view(id, context, context.phases[stage]), replayed: true }
+        }
+        if (!sameSource) throw new Error('threat_source_integrity_failed')
         await assertConnections(context)
         if (stage !== 'collect' && !context.phases.collect) throw new Error('threat_collect_required')
         if (stage === 'writeback' && context.result.status === 'evidence_ready') throw new Error('threat_inference_required')
@@ -139,7 +175,7 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
           const currentBridge = bridge
           await writeFile(entry, threatPython, { mode: 0o600 })
           const payload = { stage, source: immutable.root, output, run: context.result, analysis_deadline: context.analysis_deadline,
-            config: { connections: { soc: { url: bridge.soc, catalogDir: immutable.catalog }, report: { url: bridge.report } },
+            config: { connections: { runtime: { bridgeUrl: bridge.runtime, bridgeKey: bridge.key } },
               analysisModel: { baseURL: bridge.model, model: context.bindings.model?.model ?? 'platform-default' } } }
           const result = await new Promise<{ stdout: string }>((resolveResult, reject) => {
             const child = execFile(opts.python ?? process.env.HARNESS_PYTHON ?? 'python3', [entry], {

@@ -5,6 +5,7 @@ import { chmod, lstat, mkdir, mkdtemp, readdir, readFile, rm } from 'node:fs/pro
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import test, { after } from 'node:test'
+import { THREAT_SOURCE_COMMIT } from '../src/threat/source.ts'
 import { build } from 'esbuild'
 
 const repository = process.env.HARNESS_ASSET_ROOT
@@ -90,7 +91,7 @@ async function baseline(source, home, services, createThreatBridge) {
     const stdout = await new Promise((resolve, reject) => {
       execFile(python, [join(source.directory, 'dsh_runner.py'), incidentId], {
         env: { ...process.env, DSH_HOME: home, PYTHONDONTWRITEBYTECODE: '1', THREAT_MODEL_BRIDGE_KEY: bridge.key,
-          THREAT_ANALYSIS_CONFIG: JSON.stringify({ connections: { soc: { url: bridge.soc, catalogDir: source.catalog }, report: { url: bridge.report } },
+          THREAT_ANALYSIS_CONFIG: JSON.stringify({ connections: { runtime: { bridgeUrl: bridge.runtime, bridgeKey: bridge.key } },
             analysisModel: { baseURL: bridge.model, model: bindings.model.model, apiKeyEnv: 'THREAT_MODEL_BRIDGE_KEY' } }) },
         timeout: 60_000, maxBuffer: 4 * 1024 * 1024,
       }, (error, output) => error ? reject(new Error('baseline_cli_failed')) : resolve(output))
@@ -136,7 +137,7 @@ for (const scenario of [
     const api = await modules()
     const stateRoot = join(root, 'platform')
     const source = await api.ensureThreatSource(repository, { stateRoot })
-    assert.equal(source.commit, '6e80f2c92b7983cbe8fc7957685d36338080b134')
+    assert.equal(source.commit, THREAT_SOURCE_COMMIT)
     const originalServices = servicesFor(scenario), candidateServices = servicesFor(scenario)
     const original = await baseline(source, join(root, 'baseline'), originalServices, api.createThreatBridge)
     const runtime = api.createThreatRuntime(repository, candidateServices, { stateRoot, python })

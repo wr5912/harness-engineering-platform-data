@@ -1,0 +1,143 @@
+{
+  "unified_event_id": "INC-20261015-000002",
+  "event_snapshot": {
+    "event_type": "例行运维检查测试事件",
+    "time_range": [
+      "2026-10-15T01:00:00Z",
+      "2026-10-15T01:00:00Z"
+    ],
+    "judgement_target": {
+      "claim_family": "incident_declared_threat",
+      "claim_type": "例行运维检查测试事件",
+      "target_source": "incident.metadata",
+      "anchor_rule": {
+        "id": "1",
+        "name": "例行运维检查",
+        "description": "核对测试资产的健康检查记录。"
+      }
+    },
+    "entities": [
+      {
+        "entity_ref": "E1",
+        "entity_type": "asset",
+        "role": "anchor",
+        "asset_id": "9107",
+        "ip": "192.0.2.20",
+        "hostname": "mock-db",
+        "entity_display": "mock-db（192.0.2.20，资产ID 9107）"
+      }
+    ]
+  },
+  "enriched_context": {
+    "graph": {
+      "related_hosts": [],
+      "related_users": [
+        {
+          "entity_ref": "E1",
+          "name": "mock-operator"
+        }
+      ],
+      "connection_history": [],
+      "firewall_sessions": [],
+      "ids_probe_alerts": [
+        {
+          "source": "UNKNOWN",
+          "event_type": "HEALTH_CHECK",
+          "destination_ip": "192.0.2.20",
+          "count": 1,
+          "first_seen": "2026-10-15T01:00:00Z",
+          "last_seen": "2026-10-15T01:00:00Z",
+          "entity_refs": [
+            "E1"
+          ]
+        }
+      ],
+      "trust_info": null,
+      "path_hints": [],
+      "asset_group": [
+        {
+          "entity_ref": "E1",
+          "asset_id": "9107"
+        }
+      ],
+      "cross_device_corroboration": [],
+      "topology_summary": [
+        {
+          "entity_ref": "E1",
+          "neighbor_count": 0
+        }
+      ],
+      "login_sequence": []
+    },
+    "edr_detail": {
+      "entities": [
+        {
+          "entity_ref": "E1",
+          "entity_display": "mock-db（192.0.2.20，资产ID 9107）",
+          "activity_segments": [
+            {
+              "segment_id": "E1-SEG-001",
+              "scope": "anchor_entity",
+              "time_range": [
+                "2026-10-15T01:00:00Z",
+                "2026-10-15T01:00:00Z"
+              ],
+              "source_types": [
+                "UNKNOWN"
+              ],
+              "network_details": [
+                {
+                  "destination_ip": "192.0.2.20",
+                  "observed_at": "2026-10-15T01:00:00Z"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "asset": {
+      "entities": [
+        {
+          "entity_ref": "E1",
+          "asset_id": "9107",
+          "hostname": "mock-db",
+          "ip": "192.0.2.20",
+          "asset_criticality": "NORMAL",
+          "business_system": [
+            {
+              "id": "mock-business",
+              "name": "测试业务系统",
+              "assetId": 9107
+            }
+          ],
+          "collectors": [
+            {
+              "id": "mock-collector",
+              "assetId": 9107,
+              "name": "测试采集器",
+              "status": "ONLINE"
+            }
+          ]
+        }
+      ]
+    },
+    "threat_intel": {
+      "indicators": [
+        {
+          "indicator_type": "ip",
+          "value": "192.0.2.20",
+          "entity_refs": [
+            "E1"
+          ],
+          "intel_hit": false
+        }
+      ]
+    },
+    "history": {
+      "records": []
+    }
+  },
+  "data_completeness": 0.85,
+  "enrichment_latency_ms": 593
+}

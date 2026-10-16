@@ -6,8 +6,8 @@ import { promisify } from 'node:util'
 import { homedir } from 'node:os'
 import { existsSync } from 'node:fs'
 
-export const THREAT_SOURCE_COMMIT = '6e80f2c92b7983cbe8fc7957685d36338080b134'
-export const THREAT_SOURCE_DIRECTORY = 'evolution/experiments/EXP-security-operations-expert-020/candidate/dsh/managed/threat-analysis'
+export const THREAT_SOURCE_COMMIT = 'c903724269be0ef249182e2fd7024325c7124629'
+export const THREAT_SOURCE_DIRECTORY = 'evolution/experiments/EXP-security-operations-expert-022-r41bf6c2f0d3d/candidate/dsh/managed/threat-analysis'
 export type ThreatSource = { root: string; catalog: string; commit: string; digest: string }
 
 export function defaultThreatStateRoot(assetRoot: string) {

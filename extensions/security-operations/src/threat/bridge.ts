@@ -26,11 +26,11 @@ function socEnvelope(value: any) {
 }
 
 export async function createThreatBridge(catalogDir: string, bindings: ThreatBindings, services: ThreatServices, signal: AbortSignal) {
-  const tools = new Map<string, string>()
+  const tools = new Set<string>()
   for (const file of await readdir(catalogDir)) if (/^\.current-ai_soc_.*-tools\.local\.json$/.test(file)) {
     const document = JSON.parse(await readFile(join(catalogDir, file), 'utf8'))
     const entries = document.items ?? Object.values(document)
-    for (const tool of entries) tools.set(tool.name, tool.resource_id)
+    for (const tool of entries) tools.add(tool.name)
   }
   const capability = randomUUID(), key = randomUUID()
   const controller = new AbortController()
@@ -45,27 +45,16 @@ export async function createThreatBridge(catalogDir: string, bindings: ThreatBin
       for await (const raw of request) { const chunk = Buffer.from(raw); size += chunk.length; if (size > 16 * 1024 * 1024) throw new Error('request_too_large'); chunks.push(chunk) }
       const body = JSON.parse(Buffer.concat(chunks).toString('utf8'))
       const path = request.url.slice(prefix.length)
-      const soc = /^\/soc\/api\/v1\/mcp-resources\/([^/]+)\/tools\/([^/]+)\/invoke$/.exec(path)
-      if (soc) {
-        const name = decodeURIComponent(soc[2]!)
-        if (tools.get(name) !== soc[1] || !body.arguments || typeof body.arguments !== 'object') { send(422, { status: 'error', status_code: 422 }); return }
-        const timeout = /judgement|judge_pending/.test(name) ? 30_000 : 120_000
-        send(200, socEnvelope(await services.invoke(bindings.socConnectionId, name, body.arguments, AbortSignal.any([bridgeSignal, AbortSignal.timeout(timeout)])))); return
+      if (path === '/runtime/invoke') {
+        if (request.headers.authorization !== `Bearer ${key}` || !body.args || typeof body.args !== 'object' || Array.isArray(body.args)) { send(403, { error: 'invalid_runtime_request' }); return }
+        const report = body.resource === 'report-write' && body.tool === 'save_persistence_result'
+        if (!report && (!tools.has(body.tool) || body.tool.split('__')[0] !== body.resource)) { send(422, { error: 'unknown_runtime_tool' }); return }
+        const timeout = report || /judgement|judge_pending/.test(body.tool) ? 30_000 : 120_000
+        send(200, socEnvelope(await services.invoke(report ? bindings.reportConnectionId : bindings.socConnectionId, body.tool, body.args, AbortSignal.any([bridgeSignal, AbortSignal.timeout(timeout)])))); return
       }
       if (path === '/model/chat/completions') {
         if (request.headers.authorization !== `Bearer ${key}` || body.messages?.length !== 2 || body.messages[0]?.role !== 'system' || body.messages[1]?.role !== 'user') { send(403, { error: 'invalid_frozen_request' }); return }
         send(200, await services.inferFrozen(body, bindings.model, AbortSignal.any([bridgeSignal, AbortSignal.timeout(300_000)]))); return
-      }
-      if (path === '/report') {
-        if (body.method === 'initialize') { send(200, { jsonrpc: '2.0', id: body.id, result: { protocolVersion: '2025-11-25', capabilities: {}, serverInfo: { name: 'platform-threat-report', version: '1' } } }); return }
-        if (body.method === 'notifications/initialized') { send(202); return }
-        if (body.method !== 'tools/call' || body.params?.name !== 'save_persistence_result') { send(200, { jsonrpc: '2.0', id: body.id, error: { code: -32601, message: 'method_not_found' } }); return }
-        let result = await services.invoke(bindings.reportConnectionId, 'save_persistence_result', body.params.arguments, AbortSignal.any([bridgeSignal, AbortSignal.timeout(30_000)]))
-        if (!Array.isArray(result?.content)) {
-          const value = typeof result?.status === 'string' && result.result !== undefined ? result.result : result
-          result = { content: [{ type: 'text', text: JSON.stringify(value) }] }
-        }
-        send(200, { jsonrpc: '2.0', id: body.id, result }); return
       }
       send(404, { error: 'not_found' })
     } catch { send(502, { status: 'error', status_code: 502, error: 'platform_upstream_failed' }) }
@@ -74,6 +63,6 @@ export async function createThreatBridge(catalogDir: string, bindings: ThreatBin
   const address = server.address()
   if (!address || typeof address === 'string') throw new Error('threat_bridge_unavailable')
   const base = `http://127.0.0.1:${address.port}${prefix}`
-  return { key, soc: `${base}/soc`, report: `${base}/report`, model: `${base}/model`,
+  return { key, runtime: `${base}/runtime`, model: `${base}/model`,
     close: () => { controller.abort(); server.closeAllConnections(); server.close() } }
 }

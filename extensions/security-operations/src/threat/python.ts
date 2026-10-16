@@ -6,6 +6,7 @@ p = json.load(sys.stdin)
 sys.path.insert(0, p['source'])
 import evidence_collection
 from model_inference import run_inference
+from dsh_runner import build_gateway
 from result_delivery import build_delivery, failure_markdown
 from result_storage import SocJudgementClient, SocWriteError, build_writeback, build_failure_writeback, persist
 
@@ -14,7 +15,8 @@ run = p['run']
 stage = p['stage']
 config = p['config']
 phase_status = 'completed'
-client = SocJudgementClient(config['connections']['soc'], out)
+gateway = build_gateway(config, out / 'fusion' / 'raw')
+client = SocJudgementClient(gateway, out)
 
 def read(path):
     return json.loads(Path(path).read_text(encoding='utf-8'))
@@ -43,13 +45,11 @@ try:
         run['judgement_id'] = claim['judgementId']
         run['status'] = 'evidence_failed'
         checkpoint()
-        soc = config['connections']['soc']
         args = evidence_collection.parse_args([
-            '--incident-id', run['incident_id'], '--base-url', soc['url'],
-            '--catalog-dir', soc['catalogDir'], '--output-dir', str(out / 'fusion'),
-            '--list-timezone', 'Asia/Shanghai'])
+            '--incident-id', run['incident_id'], '--output-dir', str(out / 'fusion'),
+            '--list-timezone', 'Asia/Shanghai'], require_bridge=False)
         with contextlib.redirect_stdout(io.StringIO()):
-            fusion = evidence_collection.run(args)
+            fusion = evidence_collection.run(args, gateway=gateway)
         manifest = read(fusion / 'manifest.json')
         run['route'] = manifest['route']
         ledger = read(fusion / 'call-ledger.audit.json')
@@ -128,7 +128,7 @@ try:
         else:
             storage = read(out / 'storage.json')
             html = (out / 'report.html').read_text(encoding='utf-8')
-            storage['report'] = persist(run, html, config['connections']['report']['url'])['report']
+            storage['report'] = persist(run, html, gateway)['report']
             dump(out / 'storage.json', storage)
             delivery = build_delivery(run, storage=storage)
             dump(out / 'summary.json', delivery['summary'])

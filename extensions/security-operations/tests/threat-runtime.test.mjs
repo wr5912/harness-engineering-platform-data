@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { chmod, lstat, mkdtemp, readdir, readFile, rm, symlink, writeFile } from 'node:fs/promises'
+import { chmod, lstat, mkdtemp, readdir, readFile, rename, rm, symlink, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { tmpdir } from 'node:os'
 import test from 'node:test'
@@ -387,4 +387,54 @@ test('缓存实际内容每次校验：篡改、缺失及符号链接均拒绝�
       if (mutation === 'changed') assert.equal(await readFile(file, 'utf8'), '# changed cache\n')
     } finally { await remove(stateRoot) }
   }
+})
+
+test('固定算法升级只重放旧完成阶段，保留模型与绑定校验，缺失交付及旧未完成阶段拒绝', async () => {
+  const fx = await setup()
+  try {
+    const collected = await fx.runtime.execute('collect', bindings, { incident_id: 'INC-20261015-000001' }, active())
+    const input = { run_id: collected.run_id }
+    await fx.runtime.execute('infer', bindings, input, active())
+    await fx.runtime.execute('writeback', bindings, input, active())
+    const delivered = await fx.runtime.execute('report', bindings, input, active())
+    const directory = join(fx.stateRoot, 'runs', collected.run_id), file = join(directory, 'context.json')
+    const context = JSON.parse(await readFile(file, 'utf8'))
+    context.source = { commit: 'prior-fixed-source', digest: '0'.repeat(64) }
+    await writeFile(file, JSON.stringify(context))
+    const before = fx.services.calls.length, models = fx.services.modelCalls
+    assert.equal((await fx.runtime.execute('report', bindings, input, active())).replayed, true)
+    assert.equal((await fx.runtime.inspect(collected.run_id)).run_id, collected.run_id)
+    await assert.rejects(() => fx.runtime.execute('report', { ...bindings, reportConnectionId: 'other' }, input, active()), /binding_conflict/)
+    await assert.rejects(() => fx.runtime.execute('infer', { ...bindings, model: { provider: 'fixture', model: 'other' } }, input, active()), /model_conflict/)
+    const outsideRun = join(fx.stateRoot, 'outside-run')
+    await rename(directory, outsideRun)
+    await symlink(outsideRun, directory)
+    try {
+      await assert.rejects(() => fx.runtime.execute('report', bindings, input, active()), /artifact_integrity_failed/)
+      await assert.rejects(() => fx.runtime.inspect(collected.run_id), /artifact_integrity_failed/)
+      await assert.rejects(() => fx.runtime.artifact(collected.run_id, 'report.html'), /artifact_integrity_failed/)
+    } finally { await rm(directory); await rename(outsideRun, directory) }
+    const outsideModel = join(fx.stateRoot, 'outside-model')
+    await rename(join(directory, 'model'), outsideModel)
+    await symlink(outsideModel, join(directory, 'model'))
+    try { await assert.rejects(() => fx.runtime.execute('report', bindings, input, active()), /artifact_integrity_failed/) }
+    finally { await rm(join(directory, 'model')); await rename(outsideModel, join(directory, 'model')) }
+    const html = await readFile(join(directory, 'report.html'))
+    await rm(join(directory, 'report.html'))
+    await assert.rejects(() => fx.runtime.execute('report', bindings, input, active()), /artifact_integrity_failed/)
+    await writeFile(join(directory, 'report.html'), html)
+    const result = await readFile(join(directory, 'result.json'))
+    await writeFile(join(directory, 'result.json'), JSON.stringify({ ...context.result, run_id: 'other' }))
+    await assert.rejects(() => fx.runtime.execute('report', bindings, input, active()), /artifact_integrity_failed/)
+    await writeFile(join(directory, 'result.json'), result)
+    assert.deepEqual((await fx.runtime.execute('report', bindings, input, active())).delivery, delivered.delivery)
+    assert.equal(fx.services.calls.length, before)
+    assert.equal(fx.services.modelCalls, models)
+    const partial = await fx.runtime.execute('collect', bindings, { incident_id: 'INC-20261015-000001' }, active())
+    const partialFile = join(fx.stateRoot, 'runs', partial.run_id, 'context.json')
+    const unfinished = JSON.parse(await readFile(partialFile, 'utf8')); unfinished.source = context.source
+    await writeFile(partialFile, JSON.stringify(unfinished))
+    await assert.rejects(() => fx.runtime.execute('infer', bindings, { run_id: partial.run_id }, active()), /source_integrity_failed/)
+    assert.equal(fx.services.modelCalls, models)
+  } finally { await fx.cleanup() }
 })
