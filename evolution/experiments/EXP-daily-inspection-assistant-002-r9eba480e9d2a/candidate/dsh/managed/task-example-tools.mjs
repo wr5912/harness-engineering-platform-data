@@ -86,7 +86,7 @@ async function fileDigest(path) {
 function apply(ctx, config) {
   const base = join(process.env.DSH_HOME || "/var/lib/dsh", "task-example-artifacts");
   const workspaceRoot = process.cwd();
-  const subjectPreset = { inspection: "daily-inspection-assistant", research: "multi-step-research-analyst", training: "autonomous-training-researcher" }[config.kind];
+  const subjectPreset = config.presetId ?? { inspection: "daily-inspection-assistant", research: "multi-step-research-analyst", training: "autonomous-training-researcher" }[config.kind];
   const isSubject = (agent) => agent?.session?.header?.agentPreset === subjectPreset;
   ctx.on("agent/pre-step", ({ agent }, next) => {
     if (isSubject(agent)) agent.ctx.tools.restrict({ allow: ["task_" + config.kind] });

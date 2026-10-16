@@ -9,7 +9,7 @@ export const name = 'task-example-tools'
 export const inject = ['tools', 'connection', 'webServer']
 type Row = { asset_id: string; hostname: string; asset_type: string; risk_score: number }
 type SourceDocument = { url: string; path: string; sha256: string }
-type Config = { kind: 'inspection' | 'research' | 'training'; assetUrl?: string; sourceUrls?: string[]; sourceDocuments?: SourceDocument[] }
+type Config = { kind: 'inspection' | 'research' | 'training'; presetId?: string; assetUrl?: string; sourceUrls?: string[]; sourceDocuments?: SourceDocument[] }
 const digest = (value: string) => createHash('sha256').update(value).digest('hex')
 const runPattern = /^task-[0-9a-f-]{36}$/
 const safeCell = (value: unknown) => String(value).replace(/[\r\n|]/g, ' ').slice(0, 500)
@@ -81,7 +81,7 @@ async function fileDigest(path: string) {
 export function apply(ctx: any, config: Config) {
   const base = join(process.env.DSH_HOME || '/var/lib/dsh', 'task-example-artifacts')
   const workspaceRoot = process.cwd()
-  const subjectPreset = { inspection: 'daily-inspection-assistant', research: 'multi-step-research-analyst', training: 'autonomous-training-researcher' }[config.kind]
+  const subjectPreset = config.presetId ?? { inspection: 'daily-inspection-assistant', research: 'multi-step-research-analyst', training: 'autonomous-training-researcher' }[config.kind]
   const isSubject = (agent: any) => agent?.session?.header?.agentPreset === subjectPreset
   ctx.on('agent/pre-step', ({ agent }: any, next: () => unknown) => {
     if (isSubject(agent)) agent.ctx.tools.restrict({ allow: ['task_' + config.kind] })
