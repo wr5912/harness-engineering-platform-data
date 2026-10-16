@@ -1,0 +1,70 @@
+{
+  "unified_event_id": "INC-20261015-000002",
+  "run_id": "run-777fcfd9-2d95-427e-a9ba-7ac62a95ee52",
+  "verdict": "误报",
+  "is_fast": false,
+  "validation": {
+    "status": "passed",
+    "warnings": []
+  },
+  "primary_claim": {
+    "type": "例行运维检查测试事件",
+    "result": "反驳"
+  },
+  "secondary_findings": null,
+  "confidence_score": 0.88,
+  "attack_stage": null,
+  "technique": null,
+  "technique_name": null,
+  "counter_evidence": [
+    {
+      "claim": "事件属于威胁性质或非例行活动",
+      "fact": "图数据中针对 192.0.2.20 的唯一 IDS 探测告警记录类型为 HEALTH_CHECK。",
+      "source": "graph",
+      "field": "ids_probe_alerts[0].event_type",
+      "value": "HEALTH_CHECK"
+    }
+  ],
+  "uncertainty_notes": "EDR 仅提供目的地址和观测时间，未包含发起进程、命令行或账户上下文；图告警来源为 UNKNOWN；历史记录、防火墙会话和登录序列为空；威胁情报未命中 192.0.2.20。上述缺口降低对活动来源的完整解释能力，但未观察到高疑行为，维持误报判断。",
+  "attack_chain_speculation": {
+    "current_stage": null,
+    "observed_path": [],
+    "possible_next_steps": [],
+    "supporting_evidence": []
+  },
+  "rule_optimization_suggestions": [
+    {
+      "rule": {
+        "level": "威胁事件规则",
+        "id": "1",
+        "name": "例行运维检查"
+      },
+      "suggestion": "建议将目标 IP 为资产自身、event_type 为 HEALTH_CHECK 且来源为 UNKNOWN 的例行健康检查记录加入运维白名单或降级为审计事件，并补充记录发起进程或调度器，以减少同类误报。"
+    }
+  ],
+  "recommended_actions": [
+    {
+      "action": "标记为误报并关闭告警",
+      "target": "mock-db（192.0.2.20，资产ID 9107）",
+      "priority": "P3",
+      "reason": "已观察到健康检查类探测记录，目标为资产自身，未形成攻击链或高疑行为。"
+    },
+    {
+      "action": "补充采集健康检查来源进程与调度信息",
+      "target": "mock-db（192.0.2.20，资产ID 9107）",
+      "priority": "P3",
+      "reason": "当前来源为 UNKNOWN，EDR 缺少进程与命令行上下文；补充后可进一步减少同类误报。"
+    }
+  ],
+  "reasoning_summary": "事件声明的威胁被现有观察反驳：唯一可见网络活动是 EDR 记录的到 192.0.2.20 的目的地址，图数据中对应的探测告警被标记为 HEALTH_CHECK，且资产关键性为 NORMAL。没有进程、账户、文件或横向移动证据，也没有形成最小攻击链。数据缺口主要是来源 UNKNOWN 和缺少进程上下文，因此判定误报，置信度 0.88。",
+  "key_claims": [
+    {
+      "claim": "图数据中针对 192.0.2.20 的探测告警记录类型为 HEALTH_CHECK，目标为该资产自身 IP。",
+      "result": "支持"
+    },
+    {
+      "claim": "资产 mock-db（192.0.2.20，资产ID 9107）关键性为 NORMAL，且关联采集器状态为 ONLINE。",
+      "result": "支持"
+    }
+  ]
+}

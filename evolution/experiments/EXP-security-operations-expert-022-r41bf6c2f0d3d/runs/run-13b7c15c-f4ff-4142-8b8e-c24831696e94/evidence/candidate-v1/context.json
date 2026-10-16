@@ -1,0 +1,302 @@
+{
+  "bindings": {
+    "socConnectionId": "mock-threat-soc",
+    "reportConnectionId": "mock-threat-report",
+    "model": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "max"
+    }
+  },
+  "connections": {
+    "soc": "036db1c1b4522a8c0e0923adceba33dc1a08c4eb0ff1e189a318927ac570a3b2",
+    "report": "6a2ad3f40065a7ea5dfd25fb64b393dc4fcf389ee6ae420a3e88e4722f66cb7d"
+  },
+  "source": {
+    "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+    "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+  },
+  "analysis_deadline": 1792125467.46,
+  "result": {
+    "schema_version": "1.0",
+    "run_id": "run-b5c66e91-8d7b-433e-9958-03380ea5cacf",
+    "incident_id": "INC-20261015-000002",
+    "model": "deepseek-flash",
+    "llm_invoked": true,
+    "status": "completed",
+    "judgement_id": "judgement_f425f7bf8c7343f583b7c7eeef94ccb5",
+    "route": "five_source",
+    "mcp_calls": 18,
+    "mcp_failures": 0,
+    "input_sha256": "56d47ef1a62bfa2ee5b40e5e2afcd8feacf48a0b8a6d59b9fd82b5a42ffae0fe",
+    "validation": {
+      "status": "failed",
+      "error_type": "ValueError",
+      "error": "false positive verdict cannot contain an observed attack path"
+    },
+    "result": {
+      "unified_event_id": "INC-20261015-000002",
+      "verdict": "误报",
+      "primary_claim": {
+        "type": "例行运维检查测试事件",
+        "result": "证据不足"
+      },
+      "secondary_findings": null,
+      "confidence_score": 0.68,
+      "attack_stage": null,
+      "technique": null,
+      "technique_name": null,
+      "verified_facts": [
+        {
+          "id": "F01",
+          "fact": "针对 mock-db（192.0.2.20，资产ID 9107）观测到 1 次 HEALTH_CHECK 类型的 IDS/探针事件，首末时间均为 2026-10-15T01:00:00Z，来源标记为 UNKNOWN。",
+          "source": "graph"
+        },
+        {
+          "id": "F02",
+          "fact": "EDR 活动片段在 2026-10-15T01:00:00Z 记录到目的地址 192.0.2.20 的网络明细，作用范围为 anchor_entity，来源类型为 UNKNOWN。",
+          "source": "edr_detail"
+        },
+        {
+          "id": "F03",
+          "fact": "资产 mock-db（192.0.2.20，资产ID 9107）关键性为 NORMAL，属于测试业务系统，测试采集器状态为 ONLINE。",
+          "source": "asset"
+        },
+        {
+          "id": "F04",
+          "fact": "拓扑摘要显示 mock-db（192.0.2.20，资产ID 9107）的邻居数量为 0。",
+          "source": "graph"
+        }
+      ],
+      "key_claims": [
+        {
+          "claim": "观测到针对 mock-db（192.0.2.20，资产ID 9107）的一次 HEALTH_CHECK 类型 IDS/探针事件，而非登录、文件或进程攻击行为。",
+          "result": "支持",
+          "evidence": [
+            {
+              "source": "graph",
+              "field": "ids_probe_alerts[0].event_type",
+              "value": "HEALTH_CHECK"
+            }
+          ],
+          "weight": 0.7
+        },
+        {
+          "claim": "EDR 活动片段仅显示同一时间目的地址 192.0.2.20 的网络记录，活动范围为 anchor_entity，来源类型为 UNKNOWN。",
+          "result": "支持",
+          "evidence": [
+            {
+              "source": "edr_detail",
+              "field": "entities[0].activity_segments[0].network_details[0].destination_ip",
+              "value": "192.0.2.20"
+            }
+          ],
+          "weight": 0.5
+        },
+        {
+          "claim": "资产 mock-db（192.0.2.20，资产ID 9107）为 NORMAL 关键性、属于测试业务系统，且测试采集器在线。",
+          "result": "支持",
+          "evidence": [
+            {
+              "source": "asset",
+              "field": "entities[0].asset_criticality",
+              "value": "NORMAL"
+            },
+            {
+              "source": "asset",
+              "field": "entities[0].collectors[0].status",
+              "value": "ONLINE"
+            }
+          ],
+          "weight": 0.2
+        }
+      ],
+      "counter_evidence": [],
+      "uncertainty_notes": "history.records、graph.connection_history、graph.firewall_sessions、graph.login_sequence、graph.cross_device_corroboration 和 graph.path_hints 均为空；threat_intel 对 192.0.2.20 未命中；IDS/EDR 来源均为 UNKNOWN。无法确认 2026-10-15T01:00:00Z 是否处于维护窗口或由授权操作员发起，因而不能完全证实为例行检查；但当前未观察到登录、进程、横向连接或其他高特异性攻击行为。",
+      "attack_chain_speculation": {
+        "current_stage": null,
+        "observed_path": [
+          {
+            "description": "针对 mock-db（192.0.2.20，资产ID 9107）观测到 HEALTH_CHECK 类型 IDS/探针事件。",
+            "fact_refs": [
+              "F01"
+            ]
+          },
+          {
+            "description": "EDR 活动片段显示同一时间目的地址 192.0.2.20 的网络记录。",
+            "fact_refs": [
+              "F02"
+            ]
+          }
+        ],
+        "possible_next_steps": [],
+        "supporting_evidence": [
+          "F01",
+          "F02",
+          "F03",
+          "F04"
+        ]
+      },
+      "rule_optimization_suggestions": [
+        {
+          "rule": {
+            "level": "告警规则",
+            "id": "1",
+            "name": "例行运维检查"
+          },
+          "suggestion": "为 HEALTH_CHECK 类探针事件增加维护窗口、资产测试标签和来源校验；在无登录、连接或威胁情报命中时自动降级并关联工单后再关闭。"
+        }
+      ],
+      "recommended_actions": [
+        {
+          "action": "核实维护窗口/工单",
+          "target": "mock-db（192.0.2.20，资产ID 9107）",
+          "priority": "P3",
+          "reason": "事件仅显示 HEALTH_CHECK，来源为 UNKNOWN；需确认 2026-10-15T01:00:00Z 是否为例行测试或维护。"
+        },
+        {
+          "action": "持续监控后续登录与连接行为",
+          "target": "mock-db（192.0.2.20，资产ID 9107）",
+          "priority": "P3",
+          "reason": "当前未观察到攻击链或高特异性攻击行为，但缺少维护记录；若后续出现异常登录、连接或进程可升级研判。"
+        }
+      ],
+      "reasoning_summary": "仅观察到针对 mock-db（192.0.2.20，资产ID 9107）的一次 HEALTH_CHECK 类型 IDS/探针事件，以及同时间同目的地址的 EDR 网络记录，未发现登录、连接、跨设备佐证或威胁情报命中。缺少维护记录和来源信息，无法完全证实其为例行检查，但也没有形成攻击链或高特异性攻击单点，因此判为误报但置信度中等偏低。"
+    },
+    "delivery": {
+      "summary": {
+        "unified_event_id": "INC-20261015-000002",
+        "run_id": "run-b5c66e91-8d7b-433e-9958-03380ea5cacf",
+        "verdict": "误报",
+        "is_fast": false,
+        "validation": {
+          "status": "failed",
+          "error_type": "ValueError",
+          "error": "false positive verdict cannot contain an observed attack path"
+        },
+        "primary_claim": {
+          "type": "例行运维检查测试事件",
+          "result": "证据不足"
+        },
+        "secondary_findings": null,
+        "confidence_score": 0.68,
+        "attack_stage": null,
+        "technique": null,
+        "technique_name": null,
+        "counter_evidence": [],
+        "uncertainty_notes": "history.records、graph.connection_history、graph.firewall_sessions、graph.login_sequence、graph.cross_device_corroboration 和 graph.path_hints 均为空；threat_intel 对 192.0.2.20 未命中；IDS/EDR 来源均为 UNKNOWN。无法确认 2026-10-15T01:00:00Z 是否处于维护窗口或由授权操作员发起，因而不能完全证实为例行检查；但当前未观察到登录、进程、横向连接或其他高特异性攻击行为。",
+        "attack_chain_speculation": {
+          "current_stage": null,
+          "observed_path": [
+            {
+              "description": "针对 mock-db（192.0.2.20，资产ID 9107）观测到 HEALTH_CHECK 类型 IDS/探针事件。",
+              "fact_refs": [
+                "F01"
+              ]
+            },
+            {
+              "description": "EDR 活动片段显示同一时间目的地址 192.0.2.20 的网络记录。",
+              "fact_refs": [
+                "F02"
+              ]
+            }
+          ],
+          "possible_next_steps": [],
+          "supporting_evidence": [
+            "F01",
+            "F02",
+            "F03",
+            "F04"
+          ]
+        },
+        "rule_optimization_suggestions": [
+          {
+            "rule": {
+              "level": "告警规则",
+              "id": "1",
+              "name": "例行运维检查"
+            },
+            "suggestion": "为 HEALTH_CHECK 类探针事件增加维护窗口、资产测试标签和来源校验；在无登录、连接或威胁情报命中时自动降级并关联工单后再关闭。"
+          }
+        ],
+        "recommended_actions": [
+          {
+            "action": "核实维护窗口/工单",
+            "target": "mock-db（192.0.2.20，资产ID 9107）",
+            "priority": "P3",
+            "reason": "事件仅显示 HEALTH_CHECK，来源为 UNKNOWN；需确认 2026-10-15T01:00:00Z 是否为例行测试或维护。"
+          },
+          {
+            "action": "持续监控后续登录与连接行为",
+            "target": "mock-db（192.0.2.20，资产ID 9107）",
+            "priority": "P3",
+            "reason": "当前未观察到攻击链或高特异性攻击行为，但缺少维护记录；若后续出现异常登录、连接或进程可升级研判。"
+          }
+        ],
+        "reasoning_summary": "仅观察到针对 mock-db（192.0.2.20，资产ID 9107）的一次 HEALTH_CHECK 类型 IDS/探针事件，以及同时间同目的地址的 EDR 网络记录，未发现登录、连接、跨设备佐证或威胁情报命中。缺少维护记录和来源信息，无法完全证实其为例行检查，但也没有形成攻击链或高特异性攻击单点，因此判为误报但置信度中等偏低。",
+        "key_claims": [
+          {
+            "claim": "观测到针对 mock-db（192.0.2.20，资产ID 9107）的一次 HEALTH_CHECK 类型 IDS/探针事件，而非登录、文件或进程攻击行为。",
+            "result": "支持"
+          },
+          {
+            "claim": "EDR 活动片段仅显示同一时间目的地址 192.0.2.20 的网络记录，活动范围为 anchor_entity，来源类型为 UNKNOWN。",
+            "result": "支持"
+          },
+          {
+            "claim": "资产 mock-db（192.0.2.20，资产ID 9107）为 NORMAL 关键性、属于测试业务系统，且测试采集器在线。",
+            "result": "支持"
+          }
+        ]
+      },
+      "markdown": "### 威胁事件研判摘要\n\n**结论：** 误报\n\n**快速研判：** 否\n\n**事件 ID：** INC\\-20261015\\-000002\n\n**结论置信度：** 0\\.68\n\n#### 核心判断\n\n**原始主张：** 例行运维检查测试事件\n\n**主张判断：** 证据不足\n\n**其他攻击发现：** 无\n\n**攻击阶段：** 未提供\n\n**攻击技术：** 未提供\n\n**技术名称：** 未提供\n\n#### 推理摘要\n\n仅观察到针对 mock\\-db（192\\.0\\.2\\.20，资产ID 9107）的一次 HEALTH\\_CHECK 类型 IDS/探针事件，以及同时间同目的地址的 EDR 网络记录，未发现登录、连接、跨设备佐证或威胁情报命中。缺少维护记录和来源信息，无法完全证实其为例行检查，但也没有形成攻击链或高特异性攻击单点，因此判为误报但置信度中等偏低。\n\n置信度表示当前结论的可信程度，不是恶意概率。\n\n#### 保存与下载\n\n**摘要存储：** 已保存\n\n**报告存储：** 已保存\n\n**报告下载：** [下载 HTML 报告](<http://127.0.0.1:53012/reports/report_c9a45f9086094828b1187a01bced170a.html>)\n\n**运行 ID：** run\\-b5c66e91\\-8d7b\\-433e\\-9958\\-03380ea5cacf\n",
+      "storage": {
+        "summary": {
+          "status": "saved",
+          "judgement_id": "judgement_f425f7bf8c7343f583b7c7eeef94ccb5",
+          "attempts": 1,
+          "replayed": false
+        },
+        "report": {
+          "status": "saved",
+          "id": "report_c9a45f9086094828b1187a01bced170a",
+          "download_url": "http://127.0.0.1:53012/reports/report_c9a45f9086094828b1187a01bced170a.html"
+        }
+      }
+    }
+  },
+  "phases": {
+    "collect": "completed",
+    "infer": "completed",
+    "writeback": "completed",
+    "report": "completed"
+  },
+  "trace": [
+    {
+      "stage": "collect",
+      "status": "completed",
+      "started_at": "2026-10-16T04:07:47.461Z",
+      "finished_at": "2026-10-16T04:07:48.475Z"
+    },
+    {
+      "stage": "infer",
+      "status": "completed",
+      "started_at": "2026-10-16T04:07:48.710Z",
+      "finished_at": "2026-10-16T04:08:44.681Z"
+    },
+    {
+      "stage": "writeback",
+      "status": "completed",
+      "started_at": "2026-10-16T04:08:45.050Z",
+      "finished_at": "2026-10-16T04:08:45.374Z"
+    },
+    {
+      "stage": "report",
+      "status": "completed",
+      "started_at": "2026-10-16T04:08:45.751Z",
+      "finished_at": "2026-10-16T04:08:46.105Z"
+    }
+  ],
+  "phase_status": "completed",
+  "inference_attempted": true
+}

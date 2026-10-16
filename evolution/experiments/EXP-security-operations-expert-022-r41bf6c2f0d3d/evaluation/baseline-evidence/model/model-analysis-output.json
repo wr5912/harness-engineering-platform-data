@@ -1,0 +1,120 @@
+{
+  "unified_event_id": "INC-20261015-000002",
+  "verdict": "误报",
+  "primary_claim": {
+    "type": "例行运维检查测试事件",
+    "result": "证据不足"
+  },
+  "secondary_findings": null,
+  "confidence_score": 0.7,
+  "attack_stage": null,
+  "technique": null,
+  "technique_name": null,
+  "verified_facts": [
+    {
+      "id": "F01",
+      "fact": "资产 E1 为 mock-db（192.0.2.20，资产ID 9107），重要性 NORMAL，归属测试业务系统 mock-business，采集器 mock-collector 状态 ONLINE。",
+      "source": "asset"
+    },
+    {
+      "id": "F02",
+      "fact": "EDR 记录 E1 在 2026-10-15T01:00:00Z 有一条网络活动段 E1-SEG-001，目的 IP 为 192.0.2.20，来源类型为 UNKNOWN。",
+      "source": "edr_detail"
+    },
+    {
+      "id": "F03",
+      "fact": "图数据记录一次 IDS 探测告警：event_type=HEALTH_CHECK，destination_ip=192.0.2.20，count=1，source=UNKNOWN，first_seen 和 last_seen 均为 2026-10-15T01:00:00Z，关联实体 E1。",
+      "source": "graph"
+    },
+    {
+      "id": "F04",
+      "fact": "图数据中 E1 关联用户 mock-operator。",
+      "source": "graph"
+    },
+    {
+      "id": "F05",
+      "fact": "图数据 topology_summary 显示 E1 的邻居数为 0。",
+      "source": "graph"
+    }
+  ],
+  "key_claims": [
+    {
+      "claim": "2026-10-15T01:00:00Z，E1（mock-db，192.0.2.20）收到一次 HEALTH_CHECK 类型的 IDS 探测告警，来源为 UNKNOWN。",
+      "result": "支持",
+      "evidence": [
+        {
+          "source": "graph",
+          "field": "ids_probe_alerts.0.event_type",
+          "value": "HEALTH_CHECK"
+        },
+        {
+          "source": "graph",
+          "field": "ids_probe_alerts.0.source",
+          "value": "UNKNOWN"
+        }
+      ],
+      "weight": 0.9
+    },
+    {
+      "claim": "EDR 在同一时刻观察到 E1 存在一条目的地址为 192.0.2.20 的网络活动段，来源类型为 UNKNOWN。",
+      "result": "支持",
+      "evidence": [
+        {
+          "source": "edr_detail",
+          "field": "entities.0.activity_segments.0.network_details.0.destination_ip",
+          "value": "192.0.2.20"
+        },
+        {
+          "source": "edr_detail",
+          "field": "entities.0.activity_segments.0.source_types.0",
+          "value": "UNKNOWN"
+        }
+      ],
+      "weight": 0.8
+    }
+  ],
+  "counter_evidence": [],
+  "uncertainty_notes": "威胁情报查询 192.0.2.20 未命中（intel_hit=false），仅说明当前情报源无记录，不能作为反向证据。EDR 网络活动与 IDS 探测告警的来源均为 UNKNOWN，缺少进程、用户会话、防火墙连接和登录序列等上下文，无法确认该 HEALTH_CHECK 是否来自已授权的例行运维，也不能完全排除低噪声探测；这些缺口会降低对“误报”结论的确定性，但现有事实未显示高特异性攻击行为。",
+  "attack_chain_speculation": {
+    "current_stage": null,
+    "observed_path": [
+      {
+        "description": "2026-10-15T01:00:00Z，E1（mock-db，192.0.2.20）出现目的地址为自身的 HEALTH_CHECK 探测告警，来源为 UNKNOWN。",
+        "fact_refs": [
+          "F02",
+          "F03"
+        ]
+      }
+    ],
+    "possible_next_steps": [],
+    "supporting_evidence": [
+      "F02",
+      "F03"
+    ]
+  },
+  "rule_optimization_suggestions": [
+    {
+      "rule": {
+        "level": "告警规则",
+        "id": "1",
+        "name": "例行运维检查"
+      },
+      "suggestion": "增加来源白名单和作业 ID 校验：仅当 HEALTH_CHECK 来源不属于已登记的监控/采集器或缺少授权作业标识时保留告警，否则降级为信息级。"
+    }
+  ],
+  "recommended_actions": [
+    {
+      "action": "核实来源归属",
+      "target": "192.0.2.20",
+      "priority": "P2",
+      "reason": "HEALTH_CHECK 告警与 EDR 网络活动均标记来源为 UNKNOWN，需确认是否属于已授权的监控或运维健康检查。"
+    },
+    {
+      "action": "补充白名单或监控项",
+      "target": "mock-db",
+      "priority": "P3",
+      "reason": "若来源确认为例行健康检查，将对应来源和检查项加入白名单，减少同类误报。"
+    }
+  ],
+  "reasoning_summary": "事件仅显示一条发往 mock-db（192.0.2.20）的 HEALTH_CHECK 探测告警，EDR 只有同时刻一条目的地址为自身的网络活动段，来源均为 UNKNOWN；未观察到进程、登录、横向移动或恶意载荷，威胁情报也未命中。当前未形成最小攻击链，也没有高特异性攻击单点，因此更符合误报；但来源身份和运维上下文缺失，不能据此确认其为已授权的例行检查。"
+}

@@ -1,0 +1,53 @@
+{
+  "baseline_file_sha256": "8103f594b20e223c436b242cbaac295cd53eec4285fa23e99df9008b08c6b55a",
+  "baseline_enrichment_latency_ms": 416,
+  "exact_frozen_input_replay_performed": false,
+  "comparison_limit": "各轮为独立现有Mock进程重新取证；仅归一化enrichment_latency_ms后业务输入相同。固定父算法与新父版MCP客户端不同，未实施字节完全相同冻结输入的严格单变量A/B。",
+  "runs": [
+    {
+      "run_id": "run-0319d79f-aa9b-40c4-aeff-ec8934cd8ba2",
+      "trial": "candidate-v4",
+      "file_sha256": "82afb98969ce64c6c05aa88f8075ef14c31c3421ef3bdbe57c3d5fec9eb6721d",
+      "enrichment_latency_ms": 333,
+      "difference_paths_from_baseline": [
+        "/enrichment_latency_ms"
+      ]
+    },
+    {
+      "run_id": "run-13b7c15c-f4ff-4142-8b8e-c24831696e94",
+      "trial": "candidate-v1",
+      "file_sha256": "56d47ef1a62bfa2ee5b40e5e2afcd8feacf48a0b8a6d59b9fd82b5a42ffae0fe",
+      "enrichment_latency_ms": 621,
+      "difference_paths_from_baseline": [
+        "/enrichment_latency_ms"
+      ]
+    },
+    {
+      "run_id": "run-39131950-61f4-4859-8309-ca164c4b96f3",
+      "trial": "candidate-v3",
+      "file_sha256": "2360474879a0d6892bdd34534713b1daf001ade36a238595753ca58dc6a09074",
+      "enrichment_latency_ms": 728,
+      "difference_paths_from_baseline": [
+        "/enrichment_latency_ms"
+      ]
+    },
+    {
+      "run_id": "run-bba792ca-42b7-4ee8-9935-b7b5deb09d06",
+      "trial": "candidate-v4-repeat",
+      "file_sha256": "1662b3ef079a30703b0a024f7d666ddc9484b27c7e192bb6ab190f7a312d9a1c",
+      "enrichment_latency_ms": 385,
+      "difference_paths_from_baseline": [
+        "/enrichment_latency_ms"
+      ]
+    },
+    {
+      "run_id": "run-d2de7f5f-a404-47c1-ae5d-267b6b31b534",
+      "trial": "candidate-v2",
+      "file_sha256": "99318c077aa74a3098b809502e85ea3107e13119287e8a59d43a9d43e76a2f62",
+      "enrichment_latency_ms": 348,
+      "difference_paths_from_baseline": [
+        "/enrichment_latency_ms"
+      ]
+    }
+  ]
+}

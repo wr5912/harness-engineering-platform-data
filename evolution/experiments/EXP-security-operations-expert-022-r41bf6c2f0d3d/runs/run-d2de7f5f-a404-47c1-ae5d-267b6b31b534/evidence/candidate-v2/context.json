@@ -1,0 +1,273 @@
+{
+  "bindings": {
+    "socConnectionId": "mock-threat-soc",
+    "reportConnectionId": "mock-threat-report",
+    "model": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "max"
+    }
+  },
+  "connections": {
+    "soc": "8325aca55487c40c41e8d8c9dc9a4fa69399b91d267b88aeefe8f95870ecbe59",
+    "report": "3c9dc3d0fd8f4f554fc9203e376875f290513efbbbd04e9f722053069d3d948a"
+  },
+  "source": {
+    "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+    "digest": "ab1042907247cf89c52918ba1cbd2abfbc5f140e708eb928a2bed454c42f28fd"
+  },
+  "analysis_deadline": 1792125642.687,
+  "result": {
+    "schema_version": "1.0",
+    "run_id": "run-7f6ed3d3-ddba-469d-bb43-c3771e953fff",
+    "incident_id": "INC-20261015-000002",
+    "model": "deepseek-flash",
+    "llm_invoked": true,
+    "status": "completed",
+    "judgement_id": "judgement_cf9372ce113443fcb924f07a41eec6aa",
+    "route": "five_source",
+    "mcp_calls": 18,
+    "mcp_failures": 0,
+    "input_sha256": "99318c077aa74a3098b809502e85ea3107e13119287e8a59d43a9d43e76a2f62",
+    "result": {
+      "unified_event_id": "INC-20261015-000002",
+      "verdict": "误报",
+      "primary_claim": {
+        "type": "例行运维检查测试事件",
+        "result": "反驳"
+      },
+      "secondary_findings": null,
+      "confidence_score": 0.85,
+      "attack_stage": null,
+      "technique": null,
+      "technique_name": null,
+      "verified_facts": [
+        {
+          "id": "F01",
+          "fact": "图侧记录到一次指向 mock-db（192.0.2.20，资产ID 9107）的 HEALTH_CHECK 告警，首次和末次观察时间均为 2026-10-15T01:00:00Z，来源为 UNKNOWN。",
+          "source": "graph"
+        },
+        {
+          "id": "F02",
+          "fact": "EDR 活动片段显示 mock-db（192.0.2.20，资产ID 9107）有一条目的地址为 192.0.2.20 的网络活动，观察时间为 2026-10-15T01:00:00Z，来源类型为 UNKNOWN。",
+          "source": "edr_detail"
+        },
+        {
+          "id": "F03",
+          "fact": "资产 mock-db（192.0.2.20，资产ID 9107）关键性为 NORMAL，属于测试业务系统，关联的测试采集器状态为 ONLINE。",
+          "source": "asset"
+        }
+      ],
+      "key_claims": [
+        {
+          "claim": "图侧健康检查告警指向 mock-db（192.0.2.20，资产ID 9107），事件类型为 HEALTH_CHECK。",
+          "result": "支持",
+          "evidence": [
+            {
+              "source": "graph",
+              "field": "ids_probe_alerts[0].event_type",
+              "value": "HEALTH_CHECK"
+            },
+            {
+              "source": "graph",
+              "field": "ids_probe_alerts[0].destination_ip",
+              "value": "192.0.2.20"
+            },
+            {
+              "source": "graph",
+              "field": "ids_probe_alerts[0].count",
+              "value": "1"
+            }
+          ],
+          "weight": 0.9
+        },
+        {
+          "claim": "EDR 侧仅观察到 mock-db（192.0.2.20，资产ID 9107）在 2026-10-15T01:00:00Z 的一条目的地址为 192.0.2.20 的网络活动。",
+          "result": "支持",
+          "evidence": [
+            {
+              "source": "edr_detail",
+              "field": "entities[0].activity_segments[0].network_details[0].destination_ip",
+              "value": "192.0.2.20"
+            },
+            {
+              "source": "edr_detail",
+              "field": "entities[0].activity_segments[0].network_details[0].observed_at",
+              "value": "2026-10-15T01:00:00Z"
+            }
+          ],
+          "weight": 0.7
+        }
+      ],
+      "counter_evidence": [
+        {
+          "claim": "事件声明的安全威胁成立",
+          "fact": "图侧记录的事件类型为 HEALTH_CHECK。",
+          "source": "graph",
+          "field": "ids_probe_alerts[0].event_type",
+          "value": "HEALTH_CHECK"
+        }
+      ],
+      "uncertainty_notes": "graph 中 login_sequence、firewall_sessions、connection_history、cross_device_corroboration、path_hints 为空，history.records 为空，threat_intel 对 192.0.2.20 的 IP 指标未命中；数据完整性为 0.85，这些缺口可能影响对隐蔽横向或后续行为的排除，但当前未观察到高疑攻击行为。",
+      "attack_chain_speculation": {
+        "current_stage": null,
+        "observed_path": [],
+        "possible_next_steps": [],
+        "supporting_evidence": []
+      },
+      "rule_optimization_suggestions": [
+        {
+          "rule": {
+            "level": "威胁事件规则",
+            "id": "1",
+            "name": "例行运维检查"
+          },
+          "suggestion": "建议将该规则限定于需要安全响应的行为：在触发条件中增加攻击载荷、失败登录、失陷结果或非健康检查来源等条件，并对测试采集器和测试业务系统的 HEALTH_CHECK 来源建立白名单，避免单次 UNKNOWN 来源健康检查生成安全事件。"
+        }
+      ],
+      "recommended_actions": [
+        {
+          "action": "关闭误报事件",
+          "target": "mock-db（192.0.2.20，资产ID 9107）",
+          "priority": "P3",
+          "reason": "当前证据仅显示一次 HEALTH_CHECK 和同 IP 的 EDR 网络活动，未形成攻击链或高特异性攻击单点。"
+        },
+        {
+          "action": "将测试采集器健康检查加入白名单",
+          "target": "测试采集器",
+          "priority": "P3",
+          "reason": "资产属于测试业务系统且采集器状态 ONLINE，例行健康检查不应作为威胁事件处理。"
+        }
+      ],
+      "reasoning_summary": "图侧仅记录到一次指向 mock-db（192.0.2.20，资产ID 9107）的 HEALTH_CHECK，EDR 侧仅有同一目的地址的网络活动，资产为测试业务系统且未观察到登录、防火墙会话或跨设备印证等攻击链证据。情报查询未命中，关键关系数据为空，但现有事实已可由例行健康检查完整解释，因此判定为误报。"
+    },
+    "validation": {
+      "status": "passed_with_warnings",
+      "warnings": [
+        "claim evidence value does not match input: enriched_context.graph.ids_probe_alerts[0].count"
+      ]
+    },
+    "delivery": {
+      "summary": {
+        "unified_event_id": "INC-20261015-000002",
+        "run_id": "run-7f6ed3d3-ddba-469d-bb43-c3771e953fff",
+        "verdict": "误报",
+        "is_fast": false,
+        "validation": {
+          "status": "passed_with_warnings",
+          "warnings": [
+            "claim evidence value does not match input: enriched_context.graph.ids_probe_alerts[0].count"
+          ]
+        },
+        "primary_claim": {
+          "type": "例行运维检查测试事件",
+          "result": "反驳"
+        },
+        "secondary_findings": null,
+        "confidence_score": 0.85,
+        "attack_stage": null,
+        "technique": null,
+        "technique_name": null,
+        "counter_evidence": [
+          {
+            "claim": "事件声明的安全威胁成立",
+            "fact": "图侧记录的事件类型为 HEALTH_CHECK。",
+            "source": "graph",
+            "field": "ids_probe_alerts[0].event_type",
+            "value": "HEALTH_CHECK"
+          }
+        ],
+        "uncertainty_notes": "graph 中 login_sequence、firewall_sessions、connection_history、cross_device_corroboration、path_hints 为空，history.records 为空，threat_intel 对 192.0.2.20 的 IP 指标未命中；数据完整性为 0.85，这些缺口可能影响对隐蔽横向或后续行为的排除，但当前未观察到高疑攻击行为。",
+        "attack_chain_speculation": {
+          "current_stage": null,
+          "observed_path": [],
+          "possible_next_steps": [],
+          "supporting_evidence": []
+        },
+        "rule_optimization_suggestions": [
+          {
+            "rule": {
+              "level": "威胁事件规则",
+              "id": "1",
+              "name": "例行运维检查"
+            },
+            "suggestion": "建议将该规则限定于需要安全响应的行为：在触发条件中增加攻击载荷、失败登录、失陷结果或非健康检查来源等条件，并对测试采集器和测试业务系统的 HEALTH_CHECK 来源建立白名单，避免单次 UNKNOWN 来源健康检查生成安全事件。"
+          }
+        ],
+        "recommended_actions": [
+          {
+            "action": "关闭误报事件",
+            "target": "mock-db（192.0.2.20，资产ID 9107）",
+            "priority": "P3",
+            "reason": "当前证据仅显示一次 HEALTH_CHECK 和同 IP 的 EDR 网络活动，未形成攻击链或高特异性攻击单点。"
+          },
+          {
+            "action": "将测试采集器健康检查加入白名单",
+            "target": "测试采集器",
+            "priority": "P3",
+            "reason": "资产属于测试业务系统且采集器状态 ONLINE，例行健康检查不应作为威胁事件处理。"
+          }
+        ],
+        "reasoning_summary": "图侧仅记录到一次指向 mock-db（192.0.2.20，资产ID 9107）的 HEALTH_CHECK，EDR 侧仅有同一目的地址的网络活动，资产为测试业务系统且未观察到登录、防火墙会话或跨设备印证等攻击链证据。情报查询未命中，关键关系数据为空，但现有事实已可由例行健康检查完整解释，因此判定为误报。",
+        "key_claims": [
+          {
+            "claim": "图侧健康检查告警指向 mock-db（192.0.2.20，资产ID 9107），事件类型为 HEALTH_CHECK。",
+            "result": "支持"
+          },
+          {
+            "claim": "EDR 侧仅观察到 mock-db（192.0.2.20，资产ID 9107）在 2026-10-15T01:00:00Z 的一条目的地址为 192.0.2.20 的网络活动。",
+            "result": "支持"
+          }
+        ]
+      },
+      "markdown": "### 威胁事件研判摘要\n\n**结论：** 误报\n\n**快速研判：** 否\n\n**事件 ID：** INC\\-20261015\\-000002\n\n**结论置信度：** 0\\.85\n\n#### 核心判断\n\n**原始主张：** 例行运维检查测试事件\n\n**主张判断：** 反驳\n\n**其他攻击发现：** 无\n\n**攻击阶段：** 未提供\n\n**攻击技术：** 未提供\n\n**技术名称：** 未提供\n\n#### 推理摘要\n\n图侧仅记录到一次指向 mock\\-db（192\\.0\\.2\\.20，资产ID 9107）的 HEALTH\\_CHECK，EDR 侧仅有同一目的地址的网络活动，资产为测试业务系统且未观察到登录、防火墙会话或跨设备印证等攻击链证据。情报查询未命中，关键关系数据为空，但现有事实已可由例行健康检查完整解释，因此判定为误报。\n\n置信度表示当前结论的可信程度，不是恶意概率。\n\n#### 保存与下载\n\n**摘要存储：** 已保存\n\n**报告存储：** 已保存\n\n**报告下载：** [下载 HTML 报告](<http://127.0.0.1:53013/reports/report_04db301bd531479a987d60a512825312.html>)\n\n**运行 ID：** run\\-7f6ed3d3\\-ddba\\-469d\\-bb43\\-c3771e953fff\n",
+      "storage": {
+        "summary": {
+          "status": "saved",
+          "judgement_id": "judgement_cf9372ce113443fcb924f07a41eec6aa",
+          "attempts": 1,
+          "replayed": false
+        },
+        "report": {
+          "status": "saved",
+          "id": "report_04db301bd531479a987d60a512825312",
+          "download_url": "http://127.0.0.1:53013/reports/report_04db301bd531479a987d60a512825312.html"
+        }
+      }
+    }
+  },
+  "phases": {
+    "collect": "completed",
+    "infer": "completed",
+    "writeback": "completed",
+    "report": "completed"
+  },
+  "trace": [
+    {
+      "stage": "collect",
+      "status": "completed",
+      "started_at": "2026-10-16T04:10:42.687Z",
+      "finished_at": "2026-10-16T04:10:43.243Z"
+    },
+    {
+      "stage": "infer",
+      "status": "completed",
+      "started_at": "2026-10-16T04:10:43.439Z",
+      "finished_at": "2026-10-16T04:11:46.224Z"
+    },
+    {
+      "stage": "writeback",
+      "status": "completed",
+      "started_at": "2026-10-16T04:11:46.401Z",
+      "finished_at": "2026-10-16T04:11:46.596Z"
+    },
+    {
+      "stage": "report",
+      "status": "completed",
+      "started_at": "2026-10-16T04:11:46.810Z",
+      "finished_at": "2026-10-16T04:11:47.013Z"
+    }
+  ],
+  "phase_status": "completed",
+  "inference_attempted": true
+}

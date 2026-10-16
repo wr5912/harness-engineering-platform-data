@@ -1,0 +1,1613 @@
+{
+  "at": "2026-10-16T04:05:50.059Z",
+  "base": "http://127.0.0.1:3099/hep/",
+  "mock": "http://127.0.0.1:53012",
+  "steps": [
+    {
+      "name": "query_asset_related_alerts",
+      "args": {
+        "asset": "9106",
+        "limit": 5
+      },
+      "isError": false,
+      "value": {
+        "ok": true,
+        "version": {
+          "gitCommit": "12b6f552d4c15a475d9443c7029276810aafdbf4",
+          "gitDirty": true,
+          "programCommit": "44020d329b1b6984b53dd92532aec11b8d5dd694",
+          "programDirty": true,
+          "sourceDigest": "d719a1c8efa794c0aba57de23cac189f84b7d5b593c80d964678fb8ed8a2c2f1",
+          "businessExtension": {
+            "id": "security-operations-compositions",
+            "sourceDigest": "bff2a454b8061fcaf763e4ab9ead11e69474a7405f1d0964abaeed748ad79ed3"
+          },
+          "digest": "23cbffca4a12439035114e1765f1e895db44e8fb14727fdd489ef05deb290a71",
+          "definition": {
+            "schema_version": "1.0",
+            "readonly": true,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "asset": {
+                  "type": "string",
+                  "description": "SOC 正整数资产 ID，例如 9106",
+                  "pattern": "^[1-9]\\d*$"
+                },
+                "limit": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20,
+                  "default": 5
+                }
+              },
+              "required": [
+                "asset"
+              ],
+              "additionalProperties": false
+            },
+            "outputSchema": {
+              "type": "object",
+              "properties": {
+                "asset": {
+                  "type": "object"
+                },
+                "alerts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "alertSummary": {
+                  "type": "object",
+                  "description": "SOC 告警分组的查询范围、总分组数及总告警数；alerts 为首页分组"
+                },
+                "trace": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "asset",
+                "alerts",
+                "trace"
+              ]
+            },
+            "upstream": {
+              "kind": "openapi",
+              "steps": []
+            },
+            "toolName": "query_asset_related_alerts",
+            "title": "资产相关告警只读查询",
+            "description": "按资产 ID 查询资产详情，再查询近 30 天关联告警分组；返回首页分组、总分组数及总告警数，仅执行只读 GET。",
+            "connectionId": "mock-soc-readonly",
+            "flow": "soc-asset-alerts",
+            "alertsConnectionId": "mock-soc-readonly",
+            "publishedAt": "2026-10-15T08:46:43.198Z"
+          }
+        },
+        "receipts": [
+          {
+            "connectionId": "mock-soc-readonly",
+            "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+            "operationId": "get_soc_asset_by_asset_id",
+            "method": "GET",
+            "path": "/api/v1/security-operations/readonly/assets/{assetId}",
+            "schemaDigest": "1e23feacde0866900aae889672ecec3d072d7f5692fb9904e8e5f89841435292"
+          },
+          {
+            "connectionId": "mock-soc-readonly",
+            "specDigest": "1c8306c499b0abbf8105e63ea401f66bea1749b65de3622feee44981dc1f04dd",
+            "operationId": "list_detect_alert",
+            "method": "GET",
+            "path": "/api/v1/security-operations/readonly/alerts",
+            "schemaDigest": "3cb0e695c43102c12f36a45c6d36e1f95a096aed50c6c819392a974a2507d915"
+          }
+        ],
+        "result": {
+          "asset": {
+            "assetId": 9106,
+            "id": 9106,
+            "name": "测试应用服务器",
+            "hostname": "mock-app",
+            "ip": "192.0.2.10",
+            "status": "ONLINE",
+            "importance": "NORMAL",
+            "type": "SERVER"
+          },
+          "alerts": [
+            {
+              "groupId": "group-MOCK-ALERT-000001",
+              "assetId": 9106,
+              "title": "正常运维测试告警",
+              "severity": "LOW",
+              "alertCount": 1,
+              "firstSeenTime": "2026-10-15T01:00:00Z",
+              "lastSeenTime": "2026-10-15T01:00:00Z",
+              "alerts": [
+                {
+                  "alert_id": "MOCK-ALERT-000001",
+                  "id": "MOCK-ALERT-000001",
+                  "title": "正常运维测试告警",
+                  "description": "例行健康检查的基础测试数据。",
+                  "severity": "LOW",
+                  "rule_id": 1,
+                  "affected_asset_id": 9106,
+                  "affectedAssetId": 9106,
+                  "created_at": "2026-10-15T01:00:00Z",
+                  "alert_type": "HEALTH_CHECK",
+                  "destination_ip": "192.0.2.10",
+                  "ocsf": {
+                    "activity_name": "例行健康检查",
+                    "class_name": "设备状态",
+                    "metadata": {
+                      "original_time": "2026-10-15T01:00:00Z",
+                      "product": {
+                        "name": "基础模拟服务"
+                      }
+                    },
+                    "device": {
+                      "uid": "9106",
+                      "ip": "192.0.2.10",
+                      "hostname": "mock-app"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "trace": [
+            {
+              "step": "asset",
+              "title": "查询资产",
+              "connectionId": "mock-soc-readonly",
+              "operationId": "get_soc_asset_by_asset_id",
+              "input": {
+                "assetId": "$input.asset"
+              },
+              "output": "asset",
+              "status": "succeeded",
+              "httpStatus": 200,
+              "durationMs": 43,
+              "mappedArguments": {
+                "assetId": 9106
+              }
+            },
+            {
+              "step": "alerts",
+              "title": "查询近 30 天关联告警分组",
+              "connectionId": "mock-soc-readonly",
+              "operationId": "list_detect_alert",
+              "input": {
+                "req.assetId": "$state.assetId",
+                "req.pageNum": 1,
+                "req.pageSize": "$input.limit",
+                "req.windowSeconds": 2592000
+              },
+              "output": "alerts",
+              "status": "succeeded",
+              "httpStatus": 200,
+              "durationMs": 7,
+              "mappedArguments": {
+                "req": {
+                  "assetId": "9106",
+                  "pageNum": 1,
+                  "pageSize": 5,
+                  "windowSeconds": 2592000
+                }
+              }
+            }
+          ],
+          "alertSummary": {
+            "totalGroups": 1,
+            "totalAlerts": 1,
+            "truncated": false,
+            "from": "2026-09-15T01:00:00Z",
+            "to": "2026-10-15T01:00:00Z",
+            "pageNum": 1,
+            "pageSize": 5
+          }
+        }
+      }
+    },
+    {
+      "name": "analyze_threat_incident",
+      "args": {
+        "incident_id": "INC-20261015-000001"
+      },
+      "isError": true,
+      "value": {
+        "ok": false,
+        "receipts": [],
+        "result": {
+          "schema_version": "1.0",
+          "run_id": "run-1fd77c0e-9197-46dc-9374-878fad51240c",
+          "incident_id": "INC-20261015-000001",
+          "model": null,
+          "llm_invoked": false,
+          "status": "claim_failed",
+          "error_type": "AttributeError",
+          "phase_status": "failed",
+          "artifacts": [
+            {
+              "id": "result.json",
+              "name": "result.json",
+              "content_type": "application/json",
+              "bytes": 229
+            },
+            {
+              "id": "soc-claim-request.json",
+              "name": "soc-claim-request.json",
+              "content_type": "application/json",
+              "bytes": 42
+            }
+          ],
+          "trace": [
+            {
+              "step": "collect",
+              "title": "威胁分析：取证与快判",
+              "operationId": "threat_collect",
+              "input": {
+                "incident_id": "$input.incident_id"
+              },
+              "output": "collect",
+              "compositionId": "threat-collect",
+              "versionId": "baafbe2c7426010e22baffe74534a6455d45dc80b7928160cf9bad0a528662c6",
+              "when": "always",
+              "mappedArguments": {
+                "incident_id": "INC-20261015-000001"
+              },
+              "status": "failed",
+              "durationMs": 922,
+              "version": {
+                "gitCommit": "12b6f552d4c15a475d9443c7029276810aafdbf4",
+                "gitDirty": true,
+                "programCommit": "44020d329b1b6984b53dd92532aec11b8d5dd694",
+                "programDirty": true,
+                "sourceDigest": "d719a1c8efa794c0aba57de23cac189f84b7d5b593c80d964678fb8ed8a2c2f1",
+                "businessExtension": {
+                  "id": "security-operations-compositions",
+                  "sourceDigest": "bff2a454b8061fcaf763e4ab9ead11e69474a7405f1d0964abaeed748ad79ed3"
+                },
+                "digest": "a82dca901be69fb88d8a0be2e5ab6c3e154937362efb6252e2b868f766e48d69",
+                "definition": {
+                  "schema_version": "1.0",
+                  "readonly": false,
+                  "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                      "incident_id": {
+                        "type": "string",
+                        "description": "SOC 事件 ID，例如 INC-20261015-000001",
+                        "pattern": "^INC-\\d{8}-\\d{6}$"
+                      }
+                    },
+                    "required": [
+                      "incident_id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "outputSchema": {
+                    "type": "object",
+                    "properties": {
+                      "run_id": {
+                        "type": "string"
+                      },
+                      "incident_id": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "phase_status": {
+                        "type": "string"
+                      },
+                      "route": {
+                        "type": "string"
+                      },
+                      "judgement_id": {
+                        "type": "string"
+                      },
+                      "artifacts": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      },
+                      "trace": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "required": [
+                      "run_id",
+                      "incident_id",
+                      "status",
+                      "phase_status",
+                      "artifacts",
+                      "trace"
+                    ]
+                  },
+                  "upstream": {
+                    "kind": "threat-stage",
+                    "stage": "collect",
+                    "bindings": {
+                      "socConnectionId": "mock-threat-soc",
+                      "reportConnectionId": "mock-threat-report"
+                    }
+                  },
+                  "toolName": "threat_collect",
+                  "title": "威胁分析：取证与快判",
+                  "description": "认领一次事件，采集证据并执行名单快判，冻结完整研判输入。",
+                  "connectionId": "platform-compositions",
+                  "kind": "threat-stage",
+                  "stage": "collect",
+                  "bindings": {
+                    "socConnectionId": "mock-threat-soc",
+                    "reportConnectionId": "mock-threat-report"
+                  }
+                },
+                "versionId": "baafbe2c7426010e22baffe74534a6455d45dc80b7928160cf9bad0a528662c6"
+              }
+            },
+            {
+              "step": "infer",
+              "title": "威胁分析：完整研判",
+              "operationId": "threat_infer",
+              "input": {
+                "run_id": "$steps.collect.run_id"
+              },
+              "output": "infer",
+              "compositionId": "threat-infer",
+              "versionId": "4f42d66aea9b8bf6fe5c0a9715cb825c8960768c1c7120dc4528d35c789231c1",
+              "when": "five_source",
+              "status": "skipped",
+              "reason": "前置结果不满足执行条件"
+            },
+            {
+              "step": "writeback",
+              "title": "威胁分析：结果回写",
+              "operationId": "threat_writeback",
+              "input": {
+                "run_id": "$steps.collect.run_id"
+              },
+              "output": "writeback",
+              "compositionId": "threat-writeback",
+              "versionId": "0468c4f56cd294df0df364fa0414bb2faba792ef13298ed8db83c5d6bf56cfef",
+              "when": "claimed",
+              "status": "skipped",
+              "reason": "前置结果不满足执行条件"
+            },
+            {
+              "step": "report",
+              "title": "威胁分析：报告保存与交付",
+              "operationId": "threat_report",
+              "input": {
+                "run_id": "$steps.collect.run_id"
+              },
+              "output": "report",
+              "compositionId": "threat-report",
+              "versionId": "550b156eede733dfbce0d2520c79eeefd925a2b43778deb0db236a5464afaf50",
+              "when": "completed",
+              "status": "skipped",
+              "reason": "前置结果不满足执行条件"
+            }
+          ],
+          "source": {
+            "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+            "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+          },
+          "stepValues": {
+            "collect": {
+              "schema_version": "1.0",
+              "run_id": "run-1fd77c0e-9197-46dc-9374-878fad51240c",
+              "incident_id": "INC-20261015-000001",
+              "model": null,
+              "llm_invoked": false,
+              "status": "claim_failed",
+              "error_type": "AttributeError",
+              "phase_status": "failed",
+              "artifacts": [
+                {
+                  "id": "result.json",
+                  "name": "result.json",
+                  "content_type": "application/json",
+                  "bytes": 229
+                },
+                {
+                  "id": "soc-claim-request.json",
+                  "name": "soc-claim-request.json",
+                  "content_type": "application/json",
+                  "bytes": 42
+                }
+              ],
+              "trace": [
+                {
+                  "stage": "collect",
+                  "status": "failed",
+                  "started_at": "2026-10-16T04:06:01.822Z",
+                  "finished_at": "2026-10-16T04:06:02.056Z"
+                }
+              ],
+              "source": {
+                "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+                "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+              }
+            }
+          }
+        },
+        "error": {
+          "code": "claim_failed",
+          "message": "SOC 事件认领失败"
+        },
+        "version": {
+          "gitCommit": "12b6f552d4c15a475d9443c7029276810aafdbf4",
+          "gitDirty": true,
+          "programCommit": "44020d329b1b6984b53dd92532aec11b8d5dd694",
+          "programDirty": true,
+          "sourceDigest": "d719a1c8efa794c0aba57de23cac189f84b7d5b593c80d964678fb8ed8a2c2f1",
+          "businessExtension": {
+            "id": "security-operations-compositions",
+            "sourceDigest": "bff2a454b8061fcaf763e4ab9ead11e69474a7405f1d0964abaeed748ad79ed3"
+          },
+          "digest": "dd32a9e6e56fa9c2dcc53a8c2b460c1d1a3520dadf5a965a2029dbeac19561e8",
+          "definition": {
+            "schema_version": "1.0",
+            "readonly": false,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "incident_id": {
+                  "type": "string",
+                  "description": "SOC 事件 ID，例如 INC-20261015-000001",
+                  "pattern": "^INC-\\d{8}-\\d{6}$"
+                }
+              },
+              "required": [
+                "incident_id"
+              ],
+              "additionalProperties": false
+            },
+            "outputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string"
+                },
+                "incident_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "phase_status": {
+                  "type": "string"
+                },
+                "route": {
+                  "type": "string"
+                },
+                "judgement_id": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "trace": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "stepValues": {
+                  "type": "object",
+                  "description": "已实际执行的子组合结果；全部跳过时为空，工具返回失败。"
+                }
+              },
+              "required": [
+                "stepValues",
+                "trace"
+              ]
+            },
+            "upstream": {
+              "kind": "composite",
+              "steps": [
+                {
+                  "id": "collect",
+                  "compositionId": "threat-collect",
+                  "versionId": "baafbe2c7426010e22baffe74534a6455d45dc80b7928160cf9bad0a528662c6",
+                  "inputMap": {
+                    "incident_id": "$input.incident_id"
+                  },
+                  "when": "always"
+                },
+                {
+                  "id": "infer",
+                  "compositionId": "threat-infer",
+                  "versionId": "4f42d66aea9b8bf6fe5c0a9715cb825c8960768c1c7120dc4528d35c789231c1",
+                  "inputMap": {
+                    "run_id": "$steps.collect.run_id"
+                  },
+                  "when": "five_source"
+                },
+                {
+                  "id": "writeback",
+                  "compositionId": "threat-writeback",
+                  "versionId": "0468c4f56cd294df0df364fa0414bb2faba792ef13298ed8db83c5d6bf56cfef",
+                  "inputMap": {
+                    "run_id": "$steps.collect.run_id"
+                  },
+                  "when": "claimed"
+                },
+                {
+                  "id": "report",
+                  "compositionId": "threat-report",
+                  "versionId": "550b156eede733dfbce0d2520c79eeefd925a2b43778deb0db236a5464afaf50",
+                  "inputMap": {
+                    "run_id": "$steps.collect.run_id"
+                  },
+                  "when": "completed"
+                }
+              ]
+            },
+            "toolName": "analyze_threat_incident",
+            "title": "威胁分析：组合流程",
+            "description": "按事件 ID 执行取证快判、必要的完整研判、结果回写和报告交付。",
+            "connectionId": "platform-compositions",
+            "kind": "composite",
+            "steps": [
+              {
+                "id": "collect",
+                "compositionId": "threat-collect",
+                "versionId": "baafbe2c7426010e22baffe74534a6455d45dc80b7928160cf9bad0a528662c6",
+                "inputMap": {
+                  "incident_id": "$input.incident_id"
+                },
+                "when": "always"
+              },
+              {
+                "id": "infer",
+                "compositionId": "threat-infer",
+                "versionId": "4f42d66aea9b8bf6fe5c0a9715cb825c8960768c1c7120dc4528d35c789231c1",
+                "inputMap": {
+                  "run_id": "$steps.collect.run_id"
+                },
+                "when": "five_source"
+              },
+              {
+                "id": "writeback",
+                "compositionId": "threat-writeback",
+                "versionId": "0468c4f56cd294df0df364fa0414bb2faba792ef13298ed8db83c5d6bf56cfef",
+                "inputMap": {
+                  "run_id": "$steps.collect.run_id"
+                },
+                "when": "claimed"
+              },
+              {
+                "id": "report",
+                "compositionId": "threat-report",
+                "versionId": "550b156eede733dfbce0d2520c79eeefd925a2b43778deb0db236a5464afaf50",
+                "inputMap": {
+                  "run_id": "$steps.collect.run_id"
+                },
+                "when": "completed"
+              }
+            ],
+            "publishedAt": "2026-10-15T11:25:44.010Z"
+          },
+          "versionId": "5e0ac92231637e7f77fce9b3421270e8307f5a271f55c0638bc4549f50be24ee"
+        }
+      }
+    },
+    {
+      "name": "threat_collect",
+      "args": {
+        "incident_id": "INC-20261015-000002"
+      },
+      "isError": true,
+      "value": {
+        "ok": false,
+        "version": {
+          "gitCommit": "12b6f552d4c15a475d9443c7029276810aafdbf4",
+          "gitDirty": true,
+          "programCommit": "44020d329b1b6984b53dd92532aec11b8d5dd694",
+          "programDirty": true,
+          "sourceDigest": "d719a1c8efa794c0aba57de23cac189f84b7d5b593c80d964678fb8ed8a2c2f1",
+          "businessExtension": {
+            "id": "security-operations-compositions",
+            "sourceDigest": "bff2a454b8061fcaf763e4ab9ead11e69474a7405f1d0964abaeed748ad79ed3"
+          },
+          "digest": "8c70a80b19fe25d1ea4c2fe3e68689fadcb31c13fb43e4cb6c9c211f554ceb7b",
+          "definition": {
+            "schema_version": "1.0",
+            "readonly": false,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "incident_id": {
+                  "type": "string",
+                  "description": "SOC 事件 ID，例如 INC-20261015-000001",
+                  "pattern": "^INC-\\d{8}-\\d{6}$"
+                }
+              },
+              "required": [
+                "incident_id"
+              ],
+              "additionalProperties": false
+            },
+            "outputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string"
+                },
+                "incident_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "phase_status": {
+                  "type": "string"
+                },
+                "route": {
+                  "type": "string"
+                },
+                "judgement_id": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "trace": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "run_id",
+                "incident_id",
+                "status",
+                "phase_status",
+                "artifacts",
+                "trace"
+              ]
+            },
+            "upstream": {
+              "kind": "threat-stage",
+              "stage": "collect",
+              "bindings": {
+                "socConnectionId": "mock-threat-soc",
+                "reportConnectionId": "mock-threat-report"
+              }
+            },
+            "toolName": "threat_collect",
+            "title": "威胁分析：取证与快判",
+            "description": "认领一次事件，采集证据并执行名单快判，冻结完整研判输入。",
+            "connectionId": "platform-compositions",
+            "kind": "threat-stage",
+            "stage": "collect",
+            "bindings": {
+              "socConnectionId": "mock-threat-soc",
+              "reportConnectionId": "mock-threat-report"
+            },
+            "publishedAt": "2026-10-15T11:25:23.817Z"
+          },
+          "versionId": "baafbe2c7426010e22baffe74534a6455d45dc80b7928160cf9bad0a528662c6"
+        },
+        "receipts": [],
+        "result": {
+          "schema_version": "1.0",
+          "run_id": "run-0fc55932-b04f-4840-99d1-cf2c11411678",
+          "incident_id": "INC-20261015-000002",
+          "model": null,
+          "llm_invoked": false,
+          "status": "claim_failed",
+          "error_type": "AttributeError",
+          "phase_status": "failed",
+          "artifacts": [
+            {
+              "id": "result.json",
+              "name": "result.json",
+              "content_type": "application/json",
+              "bytes": 229
+            },
+            {
+              "id": "soc-claim-request.json",
+              "name": "soc-claim-request.json",
+              "content_type": "application/json",
+              "bytes": 42
+            }
+          ],
+          "trace": [
+            {
+              "stage": "collect",
+              "status": "failed",
+              "started_at": "2026-10-16T04:06:02.478Z",
+              "finished_at": "2026-10-16T04:06:02.698Z"
+            }
+          ],
+          "source": {
+            "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+            "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+          }
+        },
+        "error": {
+          "code": "claim_failed",
+          "message": "SOC 事件认领失败"
+        }
+      }
+    },
+    {
+      "name": "threat_infer",
+      "args": {
+        "run_id": "run-0fc55932-b04f-4840-99d1-cf2c11411678"
+      },
+      "isError": true,
+      "value": {
+        "ok": false,
+        "version": {
+          "gitCommit": "12b6f552d4c15a475d9443c7029276810aafdbf4",
+          "gitDirty": true,
+          "programCommit": "44020d329b1b6984b53dd92532aec11b8d5dd694",
+          "programDirty": true,
+          "sourceDigest": "d719a1c8efa794c0aba57de23cac189f84b7d5b593c80d964678fb8ed8a2c2f1",
+          "businessExtension": {
+            "id": "security-operations-compositions",
+            "sourceDigest": "bff2a454b8061fcaf763e4ab9ead11e69474a7405f1d0964abaeed748ad79ed3"
+          },
+          "digest": "1ae815b92843f51538a88e571b23b7efb39a7462150a439097b436d738866eae",
+          "definition": {
+            "schema_version": "1.0",
+            "readonly": false,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string",
+                  "description": "前序阶段返回的运行 ID",
+                  "pattern": "^run-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                }
+              },
+              "required": [
+                "run_id"
+              ],
+              "additionalProperties": false
+            },
+            "outputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string"
+                },
+                "incident_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "phase_status": {
+                  "type": "string"
+                },
+                "route": {
+                  "type": "string"
+                },
+                "judgement_id": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "trace": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "run_id",
+                "incident_id",
+                "status",
+                "phase_status",
+                "artifacts",
+                "trace"
+              ]
+            },
+            "upstream": {
+              "kind": "threat-stage",
+              "stage": "infer",
+              "bindings": {
+                "socConnectionId": "mock-threat-soc",
+                "reportConnectionId": "mock-threat-report"
+              }
+            },
+            "toolName": "threat_infer",
+            "title": "威胁分析：完整研判",
+            "description": "复用冻结证据执行一次模型研判，并保留原契约校验结果。",
+            "connectionId": "platform-compositions",
+            "kind": "threat-stage",
+            "stage": "infer",
+            "bindings": {
+              "socConnectionId": "mock-threat-soc",
+              "reportConnectionId": "mock-threat-report"
+            },
+            "publishedAt": "2026-10-15T11:25:27.996Z"
+          },
+          "versionId": "4f42d66aea9b8bf6fe5c0a9715cb825c8960768c1c7120dc4528d35c789231c1"
+        },
+        "receipts": [],
+        "result": {
+          "schema_version": "1.0",
+          "run_id": "run-0fc55932-b04f-4840-99d1-cf2c11411678",
+          "incident_id": "INC-20261015-000002",
+          "model": null,
+          "llm_invoked": false,
+          "status": "claim_failed",
+          "error_type": "AttributeError",
+          "phase_status": "skipped",
+          "artifacts": [
+            {
+              "id": "result.json",
+              "name": "result.json",
+              "content_type": "application/json",
+              "bytes": 229
+            },
+            {
+              "id": "soc-claim-request.json",
+              "name": "soc-claim-request.json",
+              "content_type": "application/json",
+              "bytes": 42
+            }
+          ],
+          "trace": [
+            {
+              "stage": "collect",
+              "status": "failed",
+              "started_at": "2026-10-16T04:06:02.478Z",
+              "finished_at": "2026-10-16T04:06:02.698Z"
+            }
+          ],
+          "source": {
+            "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+            "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+          }
+        },
+        "error": {
+          "code": "claim_failed",
+          "message": "SOC 事件认领失败"
+        }
+      }
+    },
+    {
+      "name": "threat_writeback",
+      "args": {
+        "run_id": "run-0fc55932-b04f-4840-99d1-cf2c11411678"
+      },
+      "isError": true,
+      "value": {
+        "ok": false,
+        "version": {
+          "gitCommit": "12b6f552d4c15a475d9443c7029276810aafdbf4",
+          "gitDirty": true,
+          "programCommit": "44020d329b1b6984b53dd92532aec11b8d5dd694",
+          "programDirty": true,
+          "sourceDigest": "d719a1c8efa794c0aba57de23cac189f84b7d5b593c80d964678fb8ed8a2c2f1",
+          "businessExtension": {
+            "id": "security-operations-compositions",
+            "sourceDigest": "bff2a454b8061fcaf763e4ab9ead11e69474a7405f1d0964abaeed748ad79ed3"
+          },
+          "digest": "36e2ab2b153ab3bfb13489c4a7a1b44b264c8601557229b99d6a4e3620907f37",
+          "definition": {
+            "schema_version": "1.0",
+            "readonly": false,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string",
+                  "description": "前序阶段返回的运行 ID",
+                  "pattern": "^run-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                }
+              },
+              "required": [
+                "run_id"
+              ],
+              "additionalProperties": false
+            },
+            "outputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string"
+                },
+                "incident_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "phase_status": {
+                  "type": "string"
+                },
+                "route": {
+                  "type": "string"
+                },
+                "judgement_id": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "trace": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "run_id",
+                "incident_id",
+                "status",
+                "phase_status",
+                "artifacts",
+                "trace"
+              ]
+            },
+            "upstream": {
+              "kind": "threat-stage",
+              "stage": "writeback",
+              "bindings": {
+                "socConnectionId": "mock-threat-soc",
+                "reportConnectionId": "mock-threat-report"
+              }
+            },
+            "toolName": "threat_writeback",
+            "title": "威胁分析：结果回写",
+            "description": "生成报告 HTML，并将同一运行的完成或失败结果回写 SOC。",
+            "connectionId": "platform-compositions",
+            "kind": "threat-stage",
+            "stage": "writeback",
+            "bindings": {
+              "socConnectionId": "mock-threat-soc",
+              "reportConnectionId": "mock-threat-report"
+            },
+            "publishedAt": "2026-10-15T11:25:32.494Z"
+          },
+          "versionId": "0468c4f56cd294df0df364fa0414bb2faba792ef13298ed8db83c5d6bf56cfef"
+        },
+        "receipts": [],
+        "result": {
+          "schema_version": "1.0",
+          "run_id": "run-0fc55932-b04f-4840-99d1-cf2c11411678",
+          "incident_id": "INC-20261015-000002",
+          "model": null,
+          "llm_invoked": false,
+          "status": "claim_failed",
+          "error_type": "AttributeError",
+          "delivery": {
+            "status": "not_generated",
+            "markdown": "### 研判未完成\n\nSOC 事件认领失败，未开始取证。当前没有可发布的正式结论，未生成正式摘要与报告。\n\n运行 ID：run\\-0fc55932\\-b04f\\-4840\\-99d1\\-cf2c11411678\n"
+          },
+          "phase_status": "skipped",
+          "artifacts": [
+            {
+              "id": "result.json",
+              "name": "result.json",
+              "content_type": "application/json",
+              "bytes": 506
+            },
+            {
+              "id": "soc-claim-request.json",
+              "name": "soc-claim-request.json",
+              "content_type": "application/json",
+              "bytes": 42
+            }
+          ],
+          "trace": [
+            {
+              "stage": "collect",
+              "status": "failed",
+              "started_at": "2026-10-16T04:06:02.478Z",
+              "finished_at": "2026-10-16T04:06:02.698Z"
+            },
+            {
+              "stage": "writeback",
+              "status": "skipped",
+              "started_at": "2026-10-16T04:06:03.106Z",
+              "finished_at": "2026-10-16T04:06:03.279Z"
+            }
+          ],
+          "source": {
+            "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+            "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+          }
+        },
+        "error": {
+          "code": "claim_failed",
+          "message": "SOC 事件认领失败"
+        }
+      }
+    },
+    {
+      "name": "threat_report",
+      "args": {
+        "run_id": "run-0fc55932-b04f-4840-99d1-cf2c11411678"
+      },
+      "isError": true,
+      "value": {
+        "ok": false,
+        "version": {
+          "gitCommit": "12b6f552d4c15a475d9443c7029276810aafdbf4",
+          "gitDirty": true,
+          "programCommit": "44020d329b1b6984b53dd92532aec11b8d5dd694",
+          "programDirty": true,
+          "sourceDigest": "d719a1c8efa794c0aba57de23cac189f84b7d5b593c80d964678fb8ed8a2c2f1",
+          "businessExtension": {
+            "id": "security-operations-compositions",
+            "sourceDigest": "bff2a454b8061fcaf763e4ab9ead11e69474a7405f1d0964abaeed748ad79ed3"
+          },
+          "digest": "140fe03d48d5c7c2b2215574f1aea5565831a752bce4f306b4dcd46c2e2de858",
+          "definition": {
+            "schema_version": "1.0",
+            "readonly": false,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string",
+                  "description": "前序阶段返回的运行 ID",
+                  "pattern": "^run-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                }
+              },
+              "required": [
+                "run_id"
+              ],
+              "additionalProperties": false
+            },
+            "outputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string"
+                },
+                "incident_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "phase_status": {
+                  "type": "string"
+                },
+                "route": {
+                  "type": "string"
+                },
+                "judgement_id": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "trace": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "run_id",
+                "incident_id",
+                "status",
+                "phase_status",
+                "artifacts",
+                "trace"
+              ]
+            },
+            "upstream": {
+              "kind": "threat-stage",
+              "stage": "report",
+              "bindings": {
+                "socConnectionId": "mock-threat-soc",
+                "reportConnectionId": "mock-threat-report"
+              }
+            },
+            "toolName": "threat_report",
+            "title": "威胁分析：报告保存与交付",
+            "description": "保存已生成的报告，返回实际下载地址及固定交付摘要。",
+            "connectionId": "platform-compositions",
+            "kind": "threat-stage",
+            "stage": "report",
+            "bindings": {
+              "socConnectionId": "mock-threat-soc",
+              "reportConnectionId": "mock-threat-report"
+            },
+            "publishedAt": "2026-10-15T11:25:37.054Z"
+          },
+          "versionId": "550b156eede733dfbce0d2520c79eeefd925a2b43778deb0db236a5464afaf50"
+        },
+        "receipts": [],
+        "result": {
+          "schema_version": "1.0",
+          "run_id": "run-0fc55932-b04f-4840-99d1-cf2c11411678",
+          "incident_id": "INC-20261015-000002",
+          "model": null,
+          "llm_invoked": false,
+          "status": "claim_failed",
+          "error_type": "AttributeError",
+          "delivery": {
+            "status": "not_generated",
+            "markdown": "### 研判未完成\n\nSOC 事件认领失败，未开始取证。当前没有可发布的正式结论，未生成正式摘要与报告。\n\n运行 ID：run\\-0fc55932\\-b04f\\-4840\\-99d1\\-cf2c11411678\n"
+          },
+          "phase_status": "skipped",
+          "artifacts": [
+            {
+              "id": "result.json",
+              "name": "result.json",
+              "content_type": "application/json",
+              "bytes": 506
+            },
+            {
+              "id": "soc-claim-request.json",
+              "name": "soc-claim-request.json",
+              "content_type": "application/json",
+              "bytes": 42
+            }
+          ],
+          "trace": [
+            {
+              "stage": "collect",
+              "status": "failed",
+              "started_at": "2026-10-16T04:06:02.478Z",
+              "finished_at": "2026-10-16T04:06:02.698Z"
+            },
+            {
+              "stage": "writeback",
+              "status": "skipped",
+              "started_at": "2026-10-16T04:06:03.106Z",
+              "finished_at": "2026-10-16T04:06:03.279Z"
+            },
+            {
+              "stage": "report",
+              "status": "skipped",
+              "started_at": "2026-10-16T04:06:03.505Z",
+              "finished_at": "2026-10-16T04:06:03.697Z"
+            }
+          ],
+          "source": {
+            "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+            "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+          }
+        },
+        "error": {
+          "code": "claim_failed",
+          "message": "SOC 事件认领失败"
+        }
+      }
+    }
+  ],
+  "model": {
+    "provider": "deepseek-official",
+    "model": "deepseek-flash",
+    "reasoningEffort": "max"
+  },
+  "mcpTools": {
+    "AAA": [
+      "mcp__compositions__query_asset_related_alerts"
+    ],
+    "threat-analysis-mock": [
+      "mcp__compositions__threat_collect",
+      "mcp__compositions__threat_infer",
+      "mcp__compositions__threat_writeback",
+      "mcp__compositions__threat_report",
+      "mcp__compositions__analyze_threat_incident"
+    ]
+  },
+  "asset": {
+    "asset": {
+      "assetId": 9106,
+      "id": 9106,
+      "name": "测试应用服务器",
+      "hostname": "mock-app",
+      "ip": "192.0.2.10",
+      "status": "ONLINE",
+      "importance": "NORMAL",
+      "type": "SERVER"
+    },
+    "alerts": [
+      {
+        "groupId": "group-MOCK-ALERT-000001",
+        "assetId": 9106,
+        "title": "正常运维测试告警",
+        "severity": "LOW",
+        "alertCount": 1,
+        "firstSeenTime": "2026-10-15T01:00:00Z",
+        "lastSeenTime": "2026-10-15T01:00:00Z",
+        "alerts": [
+          {
+            "alert_id": "MOCK-ALERT-000001",
+            "id": "MOCK-ALERT-000001",
+            "title": "正常运维测试告警",
+            "description": "例行健康检查的基础测试数据。",
+            "severity": "LOW",
+            "rule_id": 1,
+            "affected_asset_id": 9106,
+            "affectedAssetId": 9106,
+            "created_at": "2026-10-15T01:00:00Z",
+            "alert_type": "HEALTH_CHECK",
+            "destination_ip": "192.0.2.10",
+            "ocsf": {
+              "activity_name": "例行健康检查",
+              "class_name": "设备状态",
+              "metadata": {
+                "original_time": "2026-10-15T01:00:00Z",
+                "product": {
+                  "name": "基础模拟服务"
+                }
+              },
+              "device": {
+                "uid": "9106",
+                "ip": "192.0.2.10",
+                "hostname": "mock-app"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "step": "asset",
+        "title": "查询资产",
+        "connectionId": "mock-soc-readonly",
+        "operationId": "get_soc_asset_by_asset_id",
+        "input": {
+          "assetId": "$input.asset"
+        },
+        "output": "asset",
+        "status": "succeeded",
+        "httpStatus": 200,
+        "durationMs": 43,
+        "mappedArguments": {
+          "assetId": 9106
+        }
+      },
+      {
+        "step": "alerts",
+        "title": "查询近 30 天关联告警分组",
+        "connectionId": "mock-soc-readonly",
+        "operationId": "list_detect_alert",
+        "input": {
+          "req.assetId": "$state.assetId",
+          "req.pageNum": 1,
+          "req.pageSize": "$input.limit",
+          "req.windowSeconds": 2592000
+        },
+        "output": "alerts",
+        "status": "succeeded",
+        "httpStatus": 200,
+        "durationMs": 7,
+        "mappedArguments": {
+          "req": {
+            "assetId": "9106",
+            "pageNum": 1,
+            "pageSize": 5,
+            "windowSeconds": 2592000
+          }
+        }
+      }
+    ],
+    "alertSummary": {
+      "totalGroups": 1,
+      "totalAlerts": 1,
+      "truncated": false,
+      "from": "2026-09-15T01:00:00Z",
+      "to": "2026-10-15T01:00:00Z",
+      "pageNum": 1,
+      "pageSize": 5
+    }
+  },
+  "fast": {
+    "schema_version": "1.0",
+    "run_id": "run-1fd77c0e-9197-46dc-9374-878fad51240c",
+    "incident_id": "INC-20261015-000001",
+    "model": null,
+    "llm_invoked": false,
+    "status": "claim_failed",
+    "error_type": "AttributeError",
+    "phase_status": "failed",
+    "artifacts": [
+      {
+        "id": "result.json",
+        "name": "result.json",
+        "content_type": "application/json",
+        "bytes": 229
+      },
+      {
+        "id": "soc-claim-request.json",
+        "name": "soc-claim-request.json",
+        "content_type": "application/json",
+        "bytes": 42
+      }
+    ],
+    "trace": [
+      {
+        "step": "collect",
+        "title": "威胁分析：取证与快判",
+        "operationId": "threat_collect",
+        "input": {
+          "incident_id": "$input.incident_id"
+        },
+        "output": "collect",
+        "compositionId": "threat-collect",
+        "versionId": "baafbe2c7426010e22baffe74534a6455d45dc80b7928160cf9bad0a528662c6",
+        "when": "always",
+        "mappedArguments": {
+          "incident_id": "INC-20261015-000001"
+        },
+        "status": "failed",
+        "durationMs": 922,
+        "version": {
+          "gitCommit": "12b6f552d4c15a475d9443c7029276810aafdbf4",
+          "gitDirty": true,
+          "programCommit": "44020d329b1b6984b53dd92532aec11b8d5dd694",
+          "programDirty": true,
+          "sourceDigest": "d719a1c8efa794c0aba57de23cac189f84b7d5b593c80d964678fb8ed8a2c2f1",
+          "businessExtension": {
+            "id": "security-operations-compositions",
+            "sourceDigest": "bff2a454b8061fcaf763e4ab9ead11e69474a7405f1d0964abaeed748ad79ed3"
+          },
+          "digest": "a82dca901be69fb88d8a0be2e5ab6c3e154937362efb6252e2b868f766e48d69",
+          "definition": {
+            "schema_version": "1.0",
+            "readonly": false,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "incident_id": {
+                  "type": "string",
+                  "description": "SOC 事件 ID，例如 INC-20261015-000001",
+                  "pattern": "^INC-\\d{8}-\\d{6}$"
+                }
+              },
+              "required": [
+                "incident_id"
+              ],
+              "additionalProperties": false
+            },
+            "outputSchema": {
+              "type": "object",
+              "properties": {
+                "run_id": {
+                  "type": "string"
+                },
+                "incident_id": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "phase_status": {
+                  "type": "string"
+                },
+                "route": {
+                  "type": "string"
+                },
+                "judgement_id": {
+                  "type": "string"
+                },
+                "artifacts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "trace": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "run_id",
+                "incident_id",
+                "status",
+                "phase_status",
+                "artifacts",
+                "trace"
+              ]
+            },
+            "upstream": {
+              "kind": "threat-stage",
+              "stage": "collect",
+              "bindings": {
+                "socConnectionId": "mock-threat-soc",
+                "reportConnectionId": "mock-threat-report"
+              }
+            },
+            "toolName": "threat_collect",
+            "title": "威胁分析：取证与快判",
+            "description": "认领一次事件，采集证据并执行名单快判，冻结完整研判输入。",
+            "connectionId": "platform-compositions",
+            "kind": "threat-stage",
+            "stage": "collect",
+            "bindings": {
+              "socConnectionId": "mock-threat-soc",
+              "reportConnectionId": "mock-threat-report"
+            }
+          },
+          "versionId": "baafbe2c7426010e22baffe74534a6455d45dc80b7928160cf9bad0a528662c6"
+        }
+      },
+      {
+        "step": "infer",
+        "title": "威胁分析：完整研判",
+        "operationId": "threat_infer",
+        "input": {
+          "run_id": "$steps.collect.run_id"
+        },
+        "output": "infer",
+        "compositionId": "threat-infer",
+        "versionId": "4f42d66aea9b8bf6fe5c0a9715cb825c8960768c1c7120dc4528d35c789231c1",
+        "when": "five_source",
+        "status": "skipped",
+        "reason": "前置结果不满足执行条件"
+      },
+      {
+        "step": "writeback",
+        "title": "威胁分析：结果回写",
+        "operationId": "threat_writeback",
+        "input": {
+          "run_id": "$steps.collect.run_id"
+        },
+        "output": "writeback",
+        "compositionId": "threat-writeback",
+        "versionId": "0468c4f56cd294df0df364fa0414bb2faba792ef13298ed8db83c5d6bf56cfef",
+        "when": "claimed",
+        "status": "skipped",
+        "reason": "前置结果不满足执行条件"
+      },
+      {
+        "step": "report",
+        "title": "威胁分析：报告保存与交付",
+        "operationId": "threat_report",
+        "input": {
+          "run_id": "$steps.collect.run_id"
+        },
+        "output": "report",
+        "compositionId": "threat-report",
+        "versionId": "550b156eede733dfbce0d2520c79eeefd925a2b43778deb0db236a5464afaf50",
+        "when": "completed",
+        "status": "skipped",
+        "reason": "前置结果不满足执行条件"
+      }
+    ],
+    "source": {
+      "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+      "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+    },
+    "stepValues": {
+      "collect": {
+        "schema_version": "1.0",
+        "run_id": "run-1fd77c0e-9197-46dc-9374-878fad51240c",
+        "incident_id": "INC-20261015-000001",
+        "model": null,
+        "llm_invoked": false,
+        "status": "claim_failed",
+        "error_type": "AttributeError",
+        "phase_status": "failed",
+        "artifacts": [
+          {
+            "id": "result.json",
+            "name": "result.json",
+            "content_type": "application/json",
+            "bytes": 229
+          },
+          {
+            "id": "soc-claim-request.json",
+            "name": "soc-claim-request.json",
+            "content_type": "application/json",
+            "bytes": 42
+          }
+        ],
+        "trace": [
+          {
+            "stage": "collect",
+            "status": "failed",
+            "started_at": "2026-10-16T04:06:01.822Z",
+            "finished_at": "2026-10-16T04:06:02.056Z"
+          }
+        ],
+        "source": {
+          "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+          "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+        }
+      }
+    }
+  },
+  "runId": "run-0fc55932-b04f-4840-99d1-cf2c11411678",
+  "full": {
+    "schema_version": "1.0",
+    "run_id": "run-0fc55932-b04f-4840-99d1-cf2c11411678",
+    "incident_id": "INC-20261015-000002",
+    "model": null,
+    "llm_invoked": false,
+    "status": "claim_failed",
+    "error_type": "AttributeError",
+    "delivery": {
+      "status": "not_generated",
+      "markdown": "### 研判未完成\n\nSOC 事件认领失败，未开始取证。当前没有可发布的正式结论，未生成正式摘要与报告。\n\n运行 ID：run\\-0fc55932\\-b04f\\-4840\\-99d1\\-cf2c11411678\n"
+    },
+    "phase_status": "skipped",
+    "artifacts": [
+      {
+        "id": "result.json",
+        "name": "result.json",
+        "content_type": "application/json",
+        "bytes": 506
+      },
+      {
+        "id": "soc-claim-request.json",
+        "name": "soc-claim-request.json",
+        "content_type": "application/json",
+        "bytes": 42
+      }
+    ],
+    "trace": [
+      {
+        "stage": "collect",
+        "status": "failed",
+        "started_at": "2026-10-16T04:06:02.478Z",
+        "finished_at": "2026-10-16T04:06:02.698Z"
+      },
+      {
+        "stage": "writeback",
+        "status": "skipped",
+        "started_at": "2026-10-16T04:06:03.106Z",
+        "finished_at": "2026-10-16T04:06:03.279Z"
+      },
+      {
+        "stage": "report",
+        "status": "skipped",
+        "started_at": "2026-10-16T04:06:03.505Z",
+        "finished_at": "2026-10-16T04:06:03.697Z"
+      }
+    ],
+    "source": {
+      "commit": "worktree:EXP-security-operations-expert-022-r41bf6c2f0d3d",
+      "digest": "9118201fe7d709cda2af39eb9ca0b60f810bf6c3b8582e478f60ed925b7c3b81"
+    }
+  },
+  "artifacts": [
+    {
+      "id": "result.json",
+      "bytes": 506,
+      "body": "{\n  \"schema_version\": \"1.0\",\n  \"run_id\": \"run-0fc55932-b04f-4840-99d1-cf2c11411678\",\n  \"incident_id\": \"INC-20261015-000002\",\n  \"model\": null,\n  \"llm_invoked\": false,\n  \"status\": \"claim_failed\",\n  \"error_type\": \"AttributeError\",\n  \"delivery\": {\n    \"status\": \"not_generated\",\n    \"markdown\": \"### 研判未完成\\n\\nSOC 事件认领失败，未开始取证。当前没有可发布的正式结论，未生成正式摘要与报告。\\n\\n运行 ID：run\\\\-0fc55932\\\\-b04f\\\\-4840\\\\-99d1\\\\-cf2c11411678\\n\"\n  }\n}\n"
+    }
+  ],
+  "downloads": [],
+  "completed": true
+}
