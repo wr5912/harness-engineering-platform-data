@@ -1142,6 +1142,48 @@
         "AI_PLATFORM_URL",
         "PLATFORM_CONFIRMATION_ISSUER"
       ]
+    },
+    "EXP-daily-inspection-assistant-002-r9eba480e9d2a": {
+      "agent_id": "daily-inspection-assistant",
+      "candidate_root": "evolution/experiments/EXP-daily-inspection-assistant-002-r9eba480e9d2a/candidate/dsh",
+      "profile": "web",
+      "patch": "daily-inspection-assistant.patch.yml",
+      "preset": "daily-inspection-assistant/agent.cordis.yml",
+      "guard": null,
+      "config_markers": [
+        "/opt/dsh-presets"
+      ],
+      "required_env_names": [
+        "DEEPSEEK_API_KEY"
+      ]
+    },
+    "EXP-multi-step-research-analyst-001-r97fa04b7c613": {
+      "agent_id": "multi-step-research-analyst",
+      "candidate_root": "evolution/experiments/EXP-multi-step-research-analyst-001-r97fa04b7c613/candidate/dsh",
+      "profile": "web",
+      "patch": "multi-step-research-analyst.patch.yml",
+      "preset": "multi-step-research-analyst/agent.cordis.yml",
+      "guard": null,
+      "config_markers": [
+        "/opt/dsh-presets"
+      ],
+      "required_env_names": [
+        "DEEPSEEK_API_KEY"
+      ]
+    },
+    "EXP-autonomous-training-researcher-001-redf6be6240bf": {
+      "agent_id": "autonomous-training-researcher",
+      "candidate_root": "evolution/experiments/EXP-autonomous-training-researcher-001-redf6be6240bf/candidate/dsh",
+      "profile": "web",
+      "patch": "autonomous-training-researcher.patch.yml",
+      "preset": "autonomous-training-researcher/agent.cordis.yml",
+      "guard": null,
+      "config_markers": [
+        "/opt/dsh-presets"
+      ],
+      "required_env_names": [
+        "DEEPSEEK_API_KEY"
+      ]
     }
   }
 }

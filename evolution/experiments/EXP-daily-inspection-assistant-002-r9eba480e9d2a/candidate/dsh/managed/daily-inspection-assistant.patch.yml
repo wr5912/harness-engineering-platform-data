@@ -1,0 +1,19 @@
+- id: agent-preset-registry
+  config:
+    default: daily-inspection-assistant
+- insert:
+    - id: preset-daily-inspection-assistant
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: daily-inspection-assistant
+        plugins:
+          - id: daily-inspection-assistant-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/daily-inspection-assistant/agent.cordis.yml
+- insert:
+    - id: task-example-tools
+      name: /opt/dsh-managed/task-example-tools.mjs
+      config:
+        kind: inspection
+        assetUrl: http://127.0.0.1:53001/api/v1/assets

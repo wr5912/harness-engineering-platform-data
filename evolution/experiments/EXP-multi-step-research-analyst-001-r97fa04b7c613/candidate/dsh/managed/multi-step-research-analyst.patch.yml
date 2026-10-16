@@ -1,0 +1,21 @@
+- id: agent-preset-registry
+  config:
+    default: multi-step-research-analyst
+- insert:
+    - id: preset-multi-step-research-analyst
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: multi-step-research-analyst
+        plugins:
+          - id: multi-step-research-analyst-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/multi-step-research-analyst/agent.cordis.yml
+- insert:
+    - id: task-example-tools
+      name: /opt/dsh-managed/task-example-tools.mjs
+      config:
+        kind: research
+        sourceUrls:
+          - https://raw.githubusercontent.com/karpathy/autoresearch/228791fb499afffb54b46200aca536f79142f117/README.md
+          - https://raw.githubusercontent.com/EvovexAI/EvoFlow/d921e63c6a771089db1c514a5dcd4cbc36cf95cf/README.md

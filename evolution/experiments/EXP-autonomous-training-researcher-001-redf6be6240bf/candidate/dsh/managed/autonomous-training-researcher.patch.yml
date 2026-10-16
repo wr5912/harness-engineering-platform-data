@@ -1,0 +1,18 @@
+- id: agent-preset-registry
+  config:
+    default: autonomous-training-researcher
+- insert:
+    - id: preset-autonomous-training-researcher
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: autonomous-training-researcher
+        plugins:
+          - id: autonomous-training-researcher-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/autonomous-training-researcher/agent.cordis.yml
+- insert:
+    - id: task-example-tools
+      name: /opt/dsh-managed/task-example-tools.mjs
+      config:
+        kind: training

@@ -1,0 +1,26 @@
+schema_version: '1.0'
+agent:
+  id: multi-step-research-analyst
+  name: 多步骤业务调研助手
+  language: zh-CN
+  lifecycle_status: experiment
+  runtime_family: dsh
+  load_mode: container-only
+experiment:
+  id: EXP-multi-step-research-analyst-001-r97fa04b7c613
+  baseline_ref: none:first-experiment
+  status: active
+loadable_assets:
+  workspace: dsh/workspace
+  preset_root: dsh/presets
+  managed_root: dsh/managed
+  preset_id: multi-step-research-analyst
+  profile_patch: dsh/managed/multi-step-research-analyst.patch.yml
+runtime_contract:
+  workspace_container_path: /work/harness/workspace
+  preset_container_path: /opt/dsh-presets
+  managed_container_path: /opt/dsh-managed
+  dsh_home_container_path: /var/lib/dsh
+  verification_candidate_mode: ro
+credential_environment_keys:
+  - DEEPSEEK_API_KEY
