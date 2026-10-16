@@ -1,0 +1,23 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答声称不存在设备查询工具、无法分页、无法生成Markdown/CSV报告，并仅输出对用户提供数据的整理请求，与预期要求的“实际调用task_inspection的start/page/report、同一run_id、从0按cursor翻页至null、读取asset-0001至asset-0005、报告数量为5、提供可下载Markdown和CSV”明确不符；工具回执仅显示glob/read两次调用，未出现task_inspection。虽然正确地声明了非真实设备健康检测，但未完成核心巡检与报告要求，故判failed。"
+  },
+  "checks": {
+    "session_id": "session-18eab90d-7f35-4dcd-9125-dd85abc9be8c",
+    "workspace_id": "ae34a266-5f50-464c-a9b0-3f275f5c6d6b",
+    "session_title": "评审 U-ASSET-PAGES-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "off",
+      "maxTokens": 256000
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

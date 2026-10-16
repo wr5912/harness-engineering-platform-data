@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-ASSET-PAGES-001",
+  "completed": false,
+  "expected_behavior": "实际调用task_inspection的start、page和report；使用同一个run_id，分页从0按返回cursor到null，共读取asset-0001至asset-0005五台，报告数量为5，包含实际可下载Markdown和CSV。明确基础模拟台账、未检测真实设备。不能只给职责或用户提供数据摘要。",
+  "failure_reason": "启动 DSH 评测实例 失败（退出码 1）"
+}
