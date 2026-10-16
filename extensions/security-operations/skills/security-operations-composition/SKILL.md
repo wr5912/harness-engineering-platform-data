@@ -5,33 +5,42 @@ description: 为已启用的安全运营业务扩展配置、发布和验证资�
 
 # 安全运营工具组合
 
-根据受信任工作区上下文或 `HARNESS_ASSET_ROOT` 定位用户数据根，根据 `HARNESS_PROGRAM_ROOT` 定位平台程序根。先读取平台通用 `mcp-composition` Skill。本技能来自当前工作区已启用的安全运营扩展，供全局 DSH 的平台管理助手使用；读取业务资产不会改变管理助手身份。先区分用户要配置编排、发布版本还是实际调用工具。
+使用受信任工作区上下文定位数据根，先读取通用 [mcp-composition](../../../../.agents/skills/mcp-composition/SKILL.md) Skill。本技能来自当前工作区声明启用的安全运营扩展，供平台管理助手办理业务；读取业务资产不改变管理身份。先区分用户要配置编排、发布版本还是实际调用工具。
 
-当前接入的 Mock service 只提供基本、良性的模拟业务数据。配置样例、测试输入和后续验证建议都必须遵守此范围：不得生成或要求恶意代码、病毒、渗透相关的数据或命令，也不以补齐覆盖为由建议这类 Mock 场景。需要验证分支时使用普通资产、状态、告警元数据或缺失字段等无害样例；未覆盖的业务效果如实保留为限制。
+Mock service 只提供基本、良性的模拟业务数据。配置样例、测试输入和验证建议不得生成或要求恶意代码、病毒、渗透相关的数据或命令，也不以补齐覆盖为由建议这些 Mock 场景。验证分支只使用普通资产、状态、告警元数据或缺失字段等无害样例，未覆盖的业务效果如实保留为限制。
 
-编排定义与草稿、发布版本只在 数据根 `config/mcp-compositions.json` 维护。界面和 MCP Gateway 共用程序根 `platform/plugin/src/mcp/` 执行器，从所选版本的编译图展示节点、边与映射。当前接入合同与阶段边界见程序根 `docs/platform-design/02_系统架构与部署设计.md` 的威胁分析阶段组合小节；运行设置、Session 和产物留在数据根 `.local/` 下的平台 HOME，不回流业务 Candidate。
+原生服务连接由 MCP 配置管理维护，编排定义、草稿和发布版本只在数据根 `config/mcp-compositions.json` 维护。通过 `platform_mcp` 读取、预览、按现有确认保存并回读，不直接编辑配置或另存凭据。执行回执与冻结产物保存在数据根 `.local/artifacts/security-operations/`，不回流业务 Candidate。
 
-用户需要配置威胁分析样例时，按以下顺序操作：
+## 威胁分析组合
 
-1. 在 MCP“服务列表”登记并保存 SOC 的原生 OpenAPI 服务及报告的原生 MCP 服务。SOC 规范须包含原事件研判所需操作，报告服务须发现 `save_persistence_result`；地址、鉴权和模型凭据沿用平台原生配置，不另存一份凭据。
-2. 在“工具组合编排”点击“威胁分析样例”，选择这两个连接，创建四个阶段草稿和一个总组合草稿。模型仅在完整研判阶段配置；可选平台默认模型或指定原生 Provider、模型及推理强度。
-3. 分别保存、dry 校验并发布四个子组合，再编辑总组合，为每步选择具体已发布版本。保留样例的输入映射与分支条件；父组合固定引用这些版本，子组合再次发布不会自动改变父组合。
-4. 对总组合输入有效 `incident_id`，仅在用户要求实际研判时执行。单独测试后续阶段时输入同一 `run_id`，不要重新发起取证。已完成阶段重放原结果，不能靠再次调用研判阶段重新采样。
-5. 分别核对研判、机械校验、SOC 回写和报告保存状态，再查看原程序摘要、真实下载地址及冻结产物。`validation=failed` 但 JSON 可解析时，原流程仍保留 `status=completed` 并要求人工复核；不得把阶段返回或该完成状态解释成校验、保存均成功。
+1. 读取 `configuration` 与 `list`，核对真实连接和已装载扩展。SOC 使用原生 OpenAPI 服务，规范需覆盖完整事件研判操作；只有资产与告警两个 GET 的只读规范不够。报告使用原生 MCP 服务，须能发现 `save_persistence_result`。地址、鉴权与模型凭据沿用原生配置，不回显或复制凭据。
+2. 确需创建样例且 `list.extension.seed` 为 true 时，通过 `seedThreatCompositions {revision,bindings:{socConnectionId,reportConnectionId,model?}}` 提交确认，创建四个阶段和一个总组合草稿；revision 和连接 ID 来自实际读取结果。已有组合优先读取和维护，不重复创建。页面在“全部编排”中展示草稿和发布状态，没有单独的“威胁分析样例”按钮。
+3. 分别保存、dry 校验并发布四个子组合，再为总组合选择具体已发布版本。保留输入映射与分支条件；父组合固定这些版本，子组合再次发布不自动改变父组合。完整研判阶段可选择平台默认模型或用户指定的原生 Provider、模型和推理强度，不自行改变用户选择。
+4. 仅在用户要求实际研判时，对总组合传入已核对的 `incident_id`；格式为 `INC-YYYYMMDD-NNNNNN`。只读或 dry 请求不得升级为实际执行来排障。独立测试后续阶段时输入同一 `run_id`，不重新发起取证，已完成阶段读取原结果，不重复 infer 重新采样。
 
-已发布工具会进入“工具组合编排”服务，可在原生分组中勾选、保存并重新发现；调用方使用分组入口及统一访问 Token。草稿只供页面编辑和测试，不对外提供。发布和 dry 不请求上游，不证明实际业务可用。模型默认值、固定源码、Python 版本及中断恢复边界集中维护在上述合同，不在 Skill 中维护第二份配置。
+| 默认工具 | 输入 | 核对的业务结果 |
+|---|---|---|
+| `threat_collect` | `incident_id` | 事件认领、名单快判或五源富化，以及固定的 Run |
+| `threat_infer` | `run_id` | 五源分支的实际模型响应及独立校验结果；快判不调用模型 |
+| `threat_writeback` | `run_id` | 同一研判身份的 SOC 回写结果 |
+| `threat_report` | `run_id` | 已有报告的保存结果、真实存储 ID 与下载地址 |
 
-原有两步只读组合继续保留。默认接口为 `get_asset → list_alerts`；SOC 流程 `soc-asset-alerts` 使用资产服务的 `get_soc_asset_by_asset_id` 和告警服务的 `list_detect_alert`。只需查询且会话已接入组合 MCP 入口时，先发现已发布工具，再传入 `asset` 和可选 `limit`（1–20，默认 5）；未接入时使用页面的实际执行入口。
+总组合 `analyze_threat_incident` 保留 `always → five_source → claimed → completed` 条件及 `$input.incident_id`、`$steps.collect.run_id` 映射。子组合单独调用仅执行该阶段，不自动补跑前序阶段。后续阶段沿用取证时固定的 SOC、报告连接；首次 infer 固定实际模型，设置变化不改写既有 Run。
 
-SOC 流程要求正整数资产 ID。资产服务配置在 `connectionId`，告警服务配置在 `alertsConnectionId`。第一步将输入转为整数 `assetId`，校验响应 `code === 200` 与 `data.assetId` 匹配后，第二步传入 `req: { assetId: String(data.assetId), pageNum: 1, pageSize: limit, windowSeconds: 2592000 }`。共享 OpenAPI 适配器将 `form/explode` 对象查询参数展开到 URL，不能发送 `req=[object Object]`。第二步同样检查业务码，读取 `data.groups`；`alerts` 是首页告警分组，`alertSummary` 保留近 30 天查询范围、总分组数及总告警数。HTTP 200、空列表与业务失败须分别判断。
+执行后用 `compositionRun {run_id}` 回读阶段、校验和保存状态，必要时用 `compositionArtifact {run_id,artifactId}` 读取已存在产物。JSON 可解析但机械校验失败时，原流程仍可能返回 `status=completed`；此时明确需要人员复核，不能解释为可靠研判或保存均成功。SOC 保存失败与报告保存结果分别说明，没有真实下载地址时不编造链接。
 
-确需修改执行实现时，复用 LangGraph.js 的 `Annotation.Root`、`StateGraph.addNode/addEdge/addConditionalEdges`、`compile({ checkpointer: false })` 和 `invoke`。节点名称不要与 State 字段同名。只读资产组合保留 GET 检查和首步失败停止；威胁阶段复用固定算法与原生连接，不将整段原 CLI 伪装成多个已执行节点。节点 metadata 与真实调用保持一致。
+## 资产关联告警查询
 
-按用户当前需要修改最少代码，验证受影响路径。威胁阶段测试见本扩展 `tests/threat-runtime.test.mjs`，固定原 CLI 与四阶段的基本样例比对见本扩展 `tests/threat-equivalence.test.mjs`；它们不替代真实界面、原生 MCP 或外部业务验收。不要新增图数据库、调度服务或通用 Workflow 引擎。
+通用两步只读组合使用 `get_asset → list_alerts`；SOC 流程 `soc-asset-alerts` 使用 `get_soc_asset_by_asset_id` 和 `list_detect_alert`。只需查询时调用已发现的发布工具，传入 `asset` 和可选 `limit`（1–20，默认5）。
 
-验证流程：
+SOC 流程要求正整数资产 ID。资产服务配置在 `connectionId`，告警服务在 `alertsConnectionId`。第一步转换为整数 `assetId`，核对业务码 `code === 200` 且 `data.assetId` 匹配；第二步使用 `req: { assetId: String(data.assetId), pageNum: 1, pageSize: limit, windowSeconds: 2592000 }`。对象查询参数由现有 OpenAPI 适配器处理，不自行拼成 `req=[object Object]`。
 
-1. 仅在实际修改程序实现时，在程序根 `platform/plugin/` 执行 `pnpm run check`、`pnpm test`。通用测试核对编排合同。本扩展使用 `HARNESS_PROGRAM_ROOT=<程序根> node <扩展根>/test.mjs` 验证业务映射、失败停止及取消，不代表外部业务平台验收。
-2. 页面“工具组合编排”的侧边栏按全部编排、正在编辑、已发布列出工具。选择草稿或发布版后，**测试（dry）** 调用 `mcp/dryRunComposition`，只检查输入、图编译和连接登记，零上游请求、零节点执行。保存和测试均携带所选编排 ID、版本及目录摘要；并发变化拒绝覆盖。发布只接受已保存草稿，服务端再次 dry 校验后更新发布快照；Gateway 仅发现和调用已发布版本，发布后调用方重新发现工具。dry 通过不能证明远端工具存在或执行成功。
-3. 修改后执行程序根入口 `platform/dsh-platform prepare`，按当前实例的启动方式重启平台。在新 Session 中确认本 Skill 仍可发现，在页面检查图与源码一致。读取原有启动参数，避免启动另一工作树或覆盖用户配置。
-4. 用户要求实际执行时才在页面点击“实际执行组合工具”，或调用已接入的组合工具。核对回执中的操作 ID、参数映射、版本与错误；如实保留失败，不把 dry 当作业务评测或新建 Research Run。
+第二步检查业务码并读取 `data.groups`。`alerts` 是首页告警分组，`alertSummary` 保留近30天查询范围、总分组数与总告警数；不能将首页结果冒称全部告警明细。首步失败时停止后续查询，HTTP 200、空列表与业务失败分别判断。
+
+## 发布、验证与失败处理
+
+保存、dry 和发布携带最新目录摘要及所选编排、版本，发生并发变化先回读，不覆盖他人修改。dry 只检查输入、图与连接登记，零上游请求、零节点执行；发布也不证明上游业务可用。已发布工具出现在原生“工具组合编排”服务，选择分组并保存后调用方重新发现；草稿不对外提供。
+
+真实执行后核对操作 ID、固定版本、参数映射、各步结果及产物。中断或回执未知先读取已有 Run，不自动重试可能回写的步骤。业务目录变更回读即可生效，不要求重启平台；模型结束和发布回执不能替代实际调用验收。
+
+若工具缺失、实现报错或能力不受支持，保存必要动作、对象和错误，说明受阻业务及可行下一步。管理助手不进入平台源码开发，不运行构建、测试、依赖安装、平台重启或内部执行器调用来绕过接口。运行器和工具实现的研发资料由[平台架构合同](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/02_系统架构与部署设计.md#threat-stage-composition)及[扩展开发说明](../../README.md)维护，需要修复时交由相应研发任务处理。
