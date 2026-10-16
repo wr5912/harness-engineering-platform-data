@@ -1,0 +1,9 @@
+{
+  "inputs": [
+    "请对当前指定的五台基础资产执行一次只读台账巡检，处理所有分页，并提供完整的Markdown和CSV报告下载链接。明确这是不是实际设备健康检测。"
+  ],
+  "assistant_texts": [
+    "巡检已完成，5 台资产全覆盖（三页全部分页读完，末页 `next_cursor=null`），报告已生成。\n\n## 报告下载\n\n- [Markdown 报告](/assistant/api/task-examples/artifact?run_id=task-cdd21678-bb87-44c6-bdec-44e7f47d82b1&file=report.md)\n- [CSV 明细](/assistant/api/task-examples/artifact?run_id=task-cdd21678-bb87-44c6-bdec-44e7f47d82b1&file=devices.csv)\n\n运行 ID：`task-cdd21678-bb87-44c6-bdec-44e7f47d82b1`；报告校验值 `report_sha256: 852ba827…dd95`。\n\n## 台账结果（共 5 台）\n\n| 设备ID | 名称 | 类型 | 台账风险分值 |\n| --- | --- | --- | --- |\n| asset-0001 | db-core-01 | workstation | 17 |\n| asset-0002 | k8s-node-02 | workstation | 87 |\n| asset-0003 | edr-gateway-03 | database | 70 |\n| asset-0004 | db-core-04 | kubernetes | 72 |\n| asset-0005 | k8s-node-05 | database | 34 |\n\n分页读取情况：cursor 0 → 2 → 4 → null，三次分页共 5 条，与 `total: 5` 一致，无漏页。\n\n## 这是不是实际设备健康检测\n\n**不是。** 本次数据来自基础模拟台账接口（`source_kind: basic_mock`），未连接、未探测、未检测任何真实设备；表中的\"风险分值\"是台账字段值，不是实时健康或漏洞扫描结论。因此本报告只能作为台账记录核对与整理结果，不能作为真实设备健康检测报告使用。\n\n未执行事项：未做在线探测、未做漏洞/合规扫描、未采集性能或存活指标、未对风险分值做归因分析。如需真实健康检测，需要提供可访问的设备/接口凭据与授权范围后再进行。"
+  ],
+  "session_id": "session-f9f3bc6e-54fe-4d0e-8b3a-fe2d0eb97f1e"
+}

@@ -1,0 +1,241 @@
+{
+  "ready": true,
+  "checks": [
+    {
+      "name": "run_sealed",
+      "ok": true,
+      "message": "Run 已封存且状态为 completed"
+    },
+    {
+      "name": "run_source",
+      "ok": true,
+      "message": "Run 与本次交付的固定来源一致"
+    },
+    {
+      "name": "candidate_unchanged",
+      "ok": true,
+      "message": "当前 Candidate 与评测时冻结的资产一致"
+    },
+    {
+      "name": "business_coverage",
+      "ok": true,
+      "message": "至少覆盖一个业务 Case"
+    },
+    {
+      "name": "business_results",
+      "ok": true,
+      "message": "固定验收项全部执行通过，且评判口径未变化"
+    },
+    {
+      "name": "session_evidence",
+      "ok": true,
+      "message": "业务 Session 有实际轨迹，Preset 和工作目录装载吻合"
+    },
+    {
+      "name": "business_tools_declared",
+      "ok": true,
+      "message": "巡检交付要求固定业务工具，不能只根据回复中的设备列表判断完成"
+    },
+    {
+      "name": "business_artifact_cases",
+      "ok": true,
+      "message": "业务产物可唯一关联到固定验收 Case；身份与摘要回归不要求调用业务工具"
+    },
+    {
+      "name": "business_tools:U-ASSET-PAGES-001",
+      "ok": true,
+      "message": "固定 Case 的同一业务 Session 中存在实际业务工具调用及匹配成功回执"
+    },
+    {
+      "name": "instance_source",
+      "ok": true,
+      "message": "交付实例与 Agent、固定来源一致"
+    },
+    {
+      "name": "instance_running",
+      "ok": true,
+      "message": "实际容器正在运行，且来自当前实例登记"
+    },
+    {
+      "name": "standard_image",
+      "ok": true,
+      "message": "当前容器、评测和标准 Runtime 镜像身份一致"
+    },
+    {
+      "name": "actual_mounts",
+      "ok": true,
+      "message": "实际只读挂载与通过评测的 Candidate 一致"
+    },
+    {
+      "name": "artifacts_declared",
+      "ok": true,
+      "message": "至少交付一份可读取业务产物"
+    },
+    {
+      "name": "artifact:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "已回读本次 Run 的非空产物并计算摘要"
+    },
+    {
+      "name": "business_artifact:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "报告内容摘要与已声明业务工具的真实完成回执一致"
+    },
+    {
+      "name": "artifact_origin:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "巡检报告正文可在本次业务 Session 的输出或工具轨迹中回读"
+    },
+    {
+      "name": "inspection:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "设备集合、逐行状态及报告统计一致"
+    },
+    {
+      "name": "delivery_session",
+      "ok": true,
+      "message": "交付实例的新业务 Session 实际完成，Preset 与工作目录吻合"
+    },
+    {
+      "name": "delivery_business_tools",
+      "ok": true,
+      "message": "交付实例实际成功调用约定业务工具"
+    },
+    {
+      "name": "delivery_report",
+      "ok": true,
+      "message": "交付实例的新业务 Session 有完整报告及匹配的完成回执摘要"
+    },
+    {
+      "name": "delivery_download",
+      "ok": true,
+      "message": "从交付实例实际下载的新报告与该实例业务工具回执摘要一致"
+    },
+    {
+      "name": "delivery_report_devices",
+      "ok": true,
+      "message": "交付实例新报告的设备集合、状态及汇总完整一致"
+    },
+    {
+      "name": "delivery_csv",
+      "ok": true,
+      "message": "设备 CSV 覆盖约定设备集合、逐行状态完整，不能省略已约定的 CSV"
+    },
+    {
+      "name": "delivery_csv_download",
+      "ok": true,
+      "message": "从交付实例实际下载的设备 CSV 与同一业务工具回执逐字节一致"
+    },
+    {
+      "name": "delivery_candidate_unchanged",
+      "ok": true,
+      "message": "交付检查期间目标 Candidate 未发生并行变化"
+    }
+  ],
+  "instance": {
+    "name": "hep-inspection-delivery",
+    "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+    "state": "running",
+    "port": 3114,
+    "image_id": "sha256:060d338f4d4cfe18097d7c0ae72a4fb22d82c3fe8da11829bba0121686c458f8"
+  },
+  "artifacts": [
+    {
+      "path": "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "run_path": "artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "sha256": "bd6d38ab4781fa7bdce4c824d9187a4e4c519f723e001eb5e9b497d1dac7e201",
+      "bytes": 679,
+      "inspection": {
+        "ok": true,
+        "device_ids": [
+          "asset-0001",
+          "asset-0002",
+          "asset-0003",
+          "asset-0004",
+          "asset-0005"
+        ],
+        "devices": [
+          {
+            "id": "asset-0001",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0002",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0003",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0004",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0005",
+            "status": "台账已记录"
+          }
+        ],
+        "missing": [],
+        "unexpected": [],
+        "duplicates": [],
+        "errors": [],
+        "total": 5,
+        "declared_total": 5
+      }
+    }
+  ],
+  "probe": {
+    "id": "153ab5d1-4eb0-437b-9ae4-d8d2862e3bd8",
+    "path": "/home/admin/harness-engineering-platform-data/.local/delivery-probes/153ab5d1-4eb0-437b-9ae4-d8d2862e3bd8",
+    "status": "completed",
+    "case_id": "U-ASSET-PAGES-001",
+    "session_id": "session-f9f3bc6e-54fe-4d0e-8b3a-fe2d0eb97f1e",
+    "model_usage": {
+      "actual_model_calls": 6,
+      "observed_model_calls": 6,
+      "failed_model_calls": 0,
+      "observed_failed_model_calls": 0,
+      "auxiliary_model_calls": 0,
+      "auxiliary_requests_observed": 0,
+      "model_calls_by_role": {
+        "target": 6,
+        "judge": 0,
+        "analysis": 0
+      },
+      "model_calls_complete": true,
+      "model_calls_basis": "锁定 DSH 的主请求尝试/retry、llmStreamCall 压缩及成功结算的辅助标题请求；按 Session ID 与 seq 去重，未结算标题保留未知。",
+      "model_calls_unknown_reasons": [],
+      "token_usage": {
+        "input_tokens": 17564,
+        "output_tokens": 1120,
+        "total_tokens": 18684
+      },
+      "observed_token_usage": {
+        "input_tokens": 17564,
+        "output_tokens": 1120,
+        "total_tokens": 18684
+      },
+      "token_usage_complete": true,
+      "token_usage_note": "当前已采集请求的供应商 Token 用量；未核算实际费用。",
+      "hard_cap_supported": false
+    },
+    "downloads": [
+      {
+        "format": "markdown",
+        "url": "http://127.0.0.1:3114/assistant/api/task-examples/artifact?run_id=task-cdd21678-bb87-44c6-bdec-44e7f47d82b1&file=report.md",
+        "sha256": "852ba82755455c1864ad77037d039d244d6214969b153fd8b486cc56d931dd95",
+        "bytes": 699
+      },
+      {
+        "format": "csv",
+        "url": "http://127.0.0.1:3114/assistant/api/task-examples/artifact?run_id=task-cdd21678-bb87-44c6-bdec-44e7f47d82b1&file=devices.csv",
+        "sha256": "cf8ffece058e5c0d63e0ea88f0521ca82493139429a19fcedfd58d97c95f6288",
+        "bytes": 362
+      }
+    ],
+    "report_sha256": "852ba82755455c1864ad77037d039d244d6214969b153fd8b486cc56d931dd95"
+  },
+  "run_id": "run-05973a80-6b91-40e7-a0da-acca3a4ea696",
+  "note": "结论仅覆盖所选 Case、实际工具环境和已回读产物。模拟服务通过不代表真实业务上游已验收。"
+}

@@ -1,0 +1,24 @@
+{
+  "reason": "Git checkout仅保存执行位；当前umask下原0644恢复为0664。按原Run输入清单恢复精确模式，不改文件内容/冻结记录。",
+  "run_id": "run-05973a80-6b91-40e7-a0da-acca3a4ea696",
+  "files": [
+    {
+      "path": "dsh/workspace/AGENTS.md",
+      "before": "0o664",
+      "after": "0o644",
+      "sha256": "cc2a4f80ba0bf625e7ece4b6c5a0acb563f46785c42ea811b98f8cea39aeb499"
+    },
+    {
+      "path": "dsh/managed/inspection-delivery-demo.patch.yml",
+      "before": "0o664",
+      "after": "0o644",
+      "sha256": "d83fb2eaa54d862f40043db0d8fdaf0d75214e8b20ee2ce5d016c6d2d042c272"
+    },
+    {
+      "path": "dsh/managed/task-example-tools.mjs",
+      "before": "0o664",
+      "after": "0o644",
+      "sha256": "dcc5c43b537ce24781b2f75a5ede4a2e4a99d0ad0cabbc0c2f9b84250566b09e"
+    }
+  ]
+}

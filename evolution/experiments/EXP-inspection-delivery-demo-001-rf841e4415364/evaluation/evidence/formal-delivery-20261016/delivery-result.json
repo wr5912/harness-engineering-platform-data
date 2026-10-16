@@ -1,0 +1,155 @@
+{
+  "ready": false,
+  "checks": [
+    {
+      "name": "run_sealed",
+      "ok": true,
+      "message": "Run 已封存且状态为 completed"
+    },
+    {
+      "name": "run_source",
+      "ok": true,
+      "message": "Run 与本次交付的固定来源一致"
+    },
+    {
+      "name": "candidate_unchanged",
+      "ok": false,
+      "message": "当前 Candidate 与评测时冻结的资产一致"
+    },
+    {
+      "name": "business_coverage",
+      "ok": true,
+      "message": "至少覆盖一个业务 Case"
+    },
+    {
+      "name": "business_results",
+      "ok": true,
+      "message": "固定验收项全部执行通过，且评判口径未变化"
+    },
+    {
+      "name": "session_evidence",
+      "ok": true,
+      "message": "业务 Session 有实际轨迹，Preset 和工作目录装载吻合"
+    },
+    {
+      "name": "business_tools_declared",
+      "ok": true,
+      "message": "巡检交付要求固定业务工具，不能只根据回复中的设备列表判断完成"
+    },
+    {
+      "name": "business_artifact_cases",
+      "ok": true,
+      "message": "业务产物可唯一关联到固定验收 Case；身份与摘要回归不要求调用业务工具"
+    },
+    {
+      "name": "business_tools:U-ASSET-PAGES-001",
+      "ok": true,
+      "message": "固定 Case 的同一业务 Session 中存在实际业务工具调用及匹配成功回执"
+    },
+    {
+      "name": "instance_source",
+      "ok": true,
+      "message": "交付实例与 Agent、固定来源一致"
+    },
+    {
+      "name": "instance_running",
+      "ok": true,
+      "message": "实际容器正在运行，且来自当前实例登记"
+    },
+    {
+      "name": "standard_image",
+      "ok": true,
+      "message": "当前容器、评测和标准 Runtime 镜像身份一致"
+    },
+    {
+      "name": "actual_mounts",
+      "ok": true,
+      "message": "实际只读挂载与通过评测的 Candidate 一致"
+    },
+    {
+      "name": "artifacts_declared",
+      "ok": true,
+      "message": "至少交付一份可读取业务产物"
+    },
+    {
+      "name": "artifact:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "已回读本次 Run 的非空产物并计算摘要"
+    },
+    {
+      "name": "business_artifact:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "报告内容摘要与已声明业务工具的真实完成回执一致"
+    },
+    {
+      "name": "artifact_origin:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "巡检报告正文可在本次业务 Session 的输出或工具轨迹中回读"
+    },
+    {
+      "name": "inspection:evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "ok": true,
+      "message": "设备集合、逐行状态及报告统计一致"
+    },
+    {
+      "name": "delivery_candidate_unchanged",
+      "ok": true,
+      "message": "交付检查期间目标 Candidate 未发生并行变化"
+    }
+  ],
+  "instance": {
+    "name": "hep-inspection-delivery",
+    "source": "experiment:EXP-inspection-delivery-demo-001-rf841e4415364",
+    "state": "running",
+    "port": 3114,
+    "image_id": "sha256:060d338f4d4cfe18097d7c0ae72a4fb22d82c3fe8da11829bba0121686c458f8"
+  },
+  "artifacts": [
+    {
+      "path": "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "run_path": "artifacts/U-ASSET-PAGES-001/inspection-report.md",
+      "sha256": "bd6d38ab4781fa7bdce4c824d9187a4e4c519f723e001eb5e9b497d1dac7e201",
+      "bytes": 679,
+      "inspection": {
+        "ok": true,
+        "device_ids": [
+          "asset-0001",
+          "asset-0002",
+          "asset-0003",
+          "asset-0004",
+          "asset-0005"
+        ],
+        "devices": [
+          {
+            "id": "asset-0001",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0002",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0003",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0004",
+            "status": "台账已记录"
+          },
+          {
+            "id": "asset-0005",
+            "status": "台账已记录"
+          }
+        ],
+        "missing": [],
+        "unexpected": [],
+        "duplicates": [],
+        "errors": [],
+        "total": 5,
+        "declared_total": 5
+      }
+    }
+  ],
+  "run_id": "run-05973a80-6b91-40e7-a0da-acca3a4ea696",
+  "note": "结论仅覆盖所选 Case、实际工具环境和已回读产物。模拟服务通过不代表真实业务上游已验收。"
+}
