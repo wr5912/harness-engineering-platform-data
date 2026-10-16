@@ -16,6 +16,10 @@
       name: /opt/dsh-managed/task-example-tools.mjs
       config:
         kind: research
-        sourceUrls:
-          - https://raw.githubusercontent.com/karpathy/autoresearch/228791fb499afffb54b46200aca536f79142f117/README.md
-          - https://raw.githubusercontent.com/EvovexAI/EvoFlow/d921e63c6a771089db1c514a5dcd4cbc36cf95cf/README.md
+        sourceDocuments:
+          - url: https://raw.githubusercontent.com/karpathy/autoresearch/228791fb499afffb54b46200aca536f79142f117/README.md
+            path: references/autoresearch-readme.md
+            sha256: 3958fd4195ac2f98ed35c4eaa4f3028a335165ee24945e96426c408d25793a41
+          - url: https://raw.githubusercontent.com/EvovexAI/EvoFlow/d921e63c6a771089db1c514a5dcd4cbc36cf95cf/README.md
+            path: references/evoflow-readme.md
+            sha256: c0695756b1e44eabd15202868c1badde44527170206315bf35bc44c2c428a8bb

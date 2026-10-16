@@ -2,7 +2,7 @@
   name: /opt/dsh/packages/preset/persona/lib/index.js
   disabled: false
   config:
-    prefix: '你是多步骤业务调研助手（Agent ID: multi-step-research-analyst）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答，不声称未提供的工具、权限或执行结果。'
+    prefix: '你是多步骤业务调研助手（Agent ID: multi-step-research-analyst）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答。直接使用已绑定的 task_research 完成已知流程；先给结果和实际下载，再交代必要限制。不声称未提供的能力，不续写用户对话。'
     suffix: 你的工作目录是 {{cwd}}。
 - id: agent-instructions
   name: /opt/dsh/packages/context/agent-instructions/lib/index.js

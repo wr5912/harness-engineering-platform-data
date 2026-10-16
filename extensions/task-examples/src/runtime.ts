@@ -1,14 +1,15 @@
 /** 三个任务样例的受限业务工具；输出来自实际接口或可核查执行回执。 */
 import { createHash, randomUUID } from 'node:crypto'
-import { mkdir, open, readFile, readdir, rename, stat, unlink, writeFile } from 'node:fs/promises'
+import { lstat, mkdir, open, readFile, readdir, realpath, rename, stat, unlink, writeFile } from 'node:fs/promises'
 import { createReadStream } from 'node:fs'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import { spawn } from 'node:child_process'
 
 export const name = 'task-example-tools'
 export const inject = ['tools', 'connection', 'webServer']
 type Row = { asset_id: string; hostname: string; asset_type: string; risk_score: number }
-type Config = { kind: 'inspection' | 'research' | 'training'; assetUrl?: string; sourceUrls?: string[] }
+type SourceDocument = { url: string; path: string; sha256: string }
+type Config = { kind: 'inspection' | 'research' | 'training'; assetUrl?: string; sourceUrls?: string[]; sourceDocuments?: SourceDocument[] }
 const digest = (value: string) => createHash('sha256').update(value).digest('hex')
 const runPattern = /^task-[0-9a-f-]{36}$/
 const safeCell = (value: unknown) => String(value).replace(/[\r\n|]/g, ' ').slice(0, 500)
@@ -79,6 +80,7 @@ async function fileDigest(path: string) {
 
 export function apply(ctx: any, config: Config) {
   const base = join(process.env.DSH_HOME || '/var/lib/dsh', 'task-example-artifacts')
+  const workspaceRoot = process.cwd()
   const subjectPreset = { inspection: 'daily-inspection-assistant', research: 'multi-step-research-analyst', training: 'autonomous-training-researcher' }[config.kind]
   const isSubject = (agent: any) => agent?.session?.header?.agentPreset === subjectPreset
   ctx.on('agent/pre-step', ({ agent }: any, next: () => unknown) => {
@@ -114,6 +116,15 @@ export function apply(ctx: any, config: Config) {
       }
     } finally { reader.releaseLock() }
     return Buffer.concat(chunks).toString('utf8')
+  }
+  async function readSourceDocument(document: SourceDocument) {
+    if (!/^references\/[a-z0-9-]+\.md$/.test(document.path) || !/^[0-9a-f]{64}$/.test(document.sha256)) throw new Error('固定资料路径或摘要配置无效')
+    const file = resolve(workspaceRoot, document.path)
+    const info = await lstat(file)
+    if (!info.isFile() || info.size > 2 * 1024 * 1024 || await realpath(file) !== file) throw new Error('固定资料必须是工作区references内的普通文件')
+    const bytes = await readFile(file)
+    if (createHash('sha256').update(bytes).digest('hex') !== document.sha256) throw new Error('固定资料摘要不匹配，请核对已绑定版本；未尝试联网替代')
+    return bytes.toString('utf8')
   }
   async function report(id: string, value: any, content: string, csv?: string) {
     const bytes = Buffer.from(content)
@@ -297,7 +308,7 @@ export function apply(ctx: any, config: Config) {
   }
   ctx.tools.register({ name: `task_${config.kind}`, description: config.kind === 'inspection'
     ? '基础资产台账只读巡检：start固定资产快照，page按cursor读完分页，report校验已读取完整集合并生成实际Markdown/CSV报告。数据来自基础Mock，不能称为真实设备健康检测。'
-    : config.kind === 'research' ? '多步骤资料研究：start创建任务，collect按配置资料URL读取真实正文，report用每个URL对应的summaries生成带来源的报告；资料须全部读取。'
+    : config.kind === 'research' ? '多步骤资料研究：start创建任务，collect按明确配置读取在线正文或校验本地固定官方资料快照，report用每个URL对应的summaries生成带来源的报告；资料须全部读取，不自动切换数据来源。'
       : '自主训练研究：preflight核查真实GPU、固定来源、uv/PyTorch与数据；baseline建立一次真实基线，candidate只修改train.py并实际训练评估，最多三个候选、单次十分钟、总时限一小时。更优保留、失败回退，status读取原运行。没有真实算力时只报告缺口，不产生模拟指标。',
     parameters: { type: 'object', properties: columns, required: ['action'], additionalProperties: false },
     output: { schema: { type: 'object', additionalProperties: true }, render: (_args: unknown, value: any) => [{ type: 'text', text: JSON.stringify(value) }] },
@@ -316,6 +327,12 @@ export function apply(ctx: any, config: Config) {
           value.rows = all.filter((r: any) => /^asset-000[1-5]$/.test(r.asset_id)).map((r: any): Row => ({ asset_id: r.asset_id, hostname: r.hostname, asset_type: r.asset_type, risk_score: r.risk_score }))
           if (value.rows.length !== 5 || new Set(value.rows.map((r: Row) => r.asset_id)).size !== 5) throw new Error('固定基础资产范围不完整，不能生成全量报告')
           value.source_sha256 = digest(JSON.stringify(value.rows))
+        } else if (config.sourceDocuments !== undefined) {
+          if (config.sourceUrls !== undefined || !config.sourceDocuments.length || config.sourceDocuments.some(document => !/^https:\/\//.test(document.url) || !/^references\/[a-z0-9-]+\.md$/.test(document.path) || !/^[0-9a-f]{64}$/.test(document.sha256))
+            || new Set(config.sourceDocuments.map(document => document.url)).size !== config.sourceDocuments.length) throw new Error('固定资料快照配置无效，不能与在线来源同时配置')
+          value.source_kind = 'fixed_public_document_snapshot'
+          value.source_documents = config.sourceDocuments.map(document => ({ ...document }))
+          value.sources = value.source_documents.map((document: SourceDocument) => document.url)
         } else value.sources = config.sourceUrls || []
         await save(id, value)
         return { run_id: id, source_kind: value.source_kind, ...(value.rows ? { total: value.rows.length, next_cursor: 0, source_sha256: value.source_sha256 } : { sources: value.sources }) }
@@ -340,16 +357,19 @@ export function apply(ctx: any, config: Config) {
       }
       if (config.kind === 'research' && args.action === 'collect') {
         if (!value.sources.includes(args.source)) throw new Error('资料不在本任务固定来源范围内')
-        if (value.documents?.[args.source]) return { run_id: id, source: args.source, ...value.documents[args.source], reused_snapshot: true }
-        const content = await get(args.source, signal)
+        if (value.documents?.[args.source]) return { run_id: id, source: args.source, source_kind: value.source_kind, ...value.documents[args.source], reused_snapshot: true }
+        const document = value.source_documents?.find((item: SourceDocument) => item.url === args.source)
+        if (value.source_kind === 'fixed_public_document_snapshot' && !document) throw new Error('固定资料登记缺失；未尝试联网替代')
+        const content = document ? await readSourceDocument(document) : await get(args.source, signal)
         value.documents ||= {}; value.documents[args.source] = { sha256: digest(content), content: content.slice(0, 24_000), read_at: new Date().toISOString() }
         value.read = [...new Set([...value.read, args.source])]; await save(id, value)
-        return { run_id: id, source: args.source, ...value.documents[args.source], truncated: content.length > 24_000 }
+        return { run_id: id, source: args.source, source_kind: value.source_kind, ...value.documents[args.source], truncated: content.length > 24_000 }
       }
       if (config.kind === 'research' && args.action === 'report') {
         if (!value.sources.length || value.sources.some((url: string) => !value.read.includes(url))) throw new Error('还有资料未读取，不能交付完整报告')
         if (value.sources.some((url: string) => typeof args.summaries?.[url] !== 'string' || !args.summaries[url].trim())) throw new Error('报告须逐项包含已读来源的结论')
-        const text = '# 多步骤业务资料调研报告\n\n' + value.sources.map((url: string, i: number) => `## 资料 ${i + 1}\n\n${args.summaries[url].slice(0, 8000)}\n\n来源：[原始资料](${url})；读取时间：${value.documents[url].read_at}；摘要：${value.documents[url].sha256}\n`).join('\n')
+        const basis = value.source_kind === 'fixed_public_document_snapshot' ? '本报告依据已校验摘要的官方固定提交资料快照；资料时点以各原始链接中的提交为准，本次没有实时访问网站。' : '本报告依据本次实际读取的在线资料；读取时点见各来源。'
+        const text = '# 多步骤业务资料调研报告\n\n' + basis + '\n\n' + value.sources.map((url: string, i: number) => `## 资料 ${i + 1}\n\n${args.summaries[url].slice(0, 8000)}\n\n来源：[原始资料](${url})；读取时间：${value.documents[url].read_at}；摘要：${value.documents[url].sha256}\n`).join('\n')
         return { ...await report(id, value, text), source_count: value.sources.length, note: '已完成来源完整性校验；语义准确性需由独立评测核对。' }
       }
       throw new Error('本业务不支持此动作')

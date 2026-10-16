@@ -1,8 +1,8 @@
 // extensions/task-examples/src/runtime.ts
 import { createHash, randomUUID } from "node:crypto";
-import { mkdir, open, readFile, readdir, rename, stat, unlink, writeFile } from "node:fs/promises";
+import { lstat, mkdir, open, readFile, readdir, realpath, rename, stat, unlink, writeFile } from "node:fs/promises";
 import { createReadStream } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
 var name = "task-example-tools";
 var inject = ["tools", "connection", "webServer"];
@@ -13,7 +13,7 @@ var columns = { run_id: { type: "string" }, action: { type: "string" }, cursor: 
 var trainingCommit = "228791fb499afffb54b46200aca536f79142f117";
 async function runTrainingProcess(command, args, options) {
   options.signal?.throwIfAborted();
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve2, reject) => {
     const child = spawn(command, args, { cwd: options.cwd, env: options.env, detached: process.platform !== "win32", stdio: ["ignore", "pipe", "pipe"] });
     let stdout = "", stderr = "", bytes = 0, reason = "";
     let receipt = Promise.resolve();
@@ -69,7 +69,7 @@ async function runTrainingProcess(command, args, options) {
       options.signal?.removeEventListener("abort", aborted);
       killGroup("SIGKILL");
       if (reason || code !== 0 || signal) reject(Object.assign(new Error(reason || "process-failed"), { code: reason || "process-failed", stdout, stderr }));
-      else resolve({ stdout, stderr });
+      else resolve2({ stdout, stderr });
     });
     if (options.signal?.aborted) terminate("cancelled");
   });
@@ -85,6 +85,7 @@ async function fileDigest(path) {
 }
 function apply(ctx, config) {
   const base = join(process.env.DSH_HOME || "/var/lib/dsh", "task-example-artifacts");
+  const workspaceRoot = process.cwd();
   const subjectPreset = { inspection: "daily-inspection-assistant", research: "multi-step-research-analyst", training: "autonomous-training-researcher" }[config.kind];
   const isSubject = (agent) => agent?.session?.header?.agentPreset === subjectPreset;
   ctx.on("agent/pre-step", ({ agent }, next) => {
@@ -125,6 +126,15 @@ function apply(ctx, config) {
       reader.releaseLock();
     }
     return Buffer.concat(chunks).toString("utf8");
+  }
+  async function readSourceDocument(document) {
+    if (!/^references\/[a-z0-9-]+\.md$/.test(document.path) || !/^[0-9a-f]{64}$/.test(document.sha256)) throw new Error("\u56FA\u5B9A\u8D44\u6599\u8DEF\u5F84\u6216\u6458\u8981\u914D\u7F6E\u65E0\u6548");
+    const file = resolve(workspaceRoot, document.path);
+    const info = await lstat(file);
+    if (!info.isFile() || info.size > 2 * 1024 * 1024 || await realpath(file) !== file) throw new Error("\u56FA\u5B9A\u8D44\u6599\u5FC5\u987B\u662F\u5DE5\u4F5C\u533Areferences\u5185\u7684\u666E\u901A\u6587\u4EF6");
+    const bytes = await readFile(file);
+    if (createHash("sha256").update(bytes).digest("hex") !== document.sha256) throw new Error("\u56FA\u5B9A\u8D44\u6599\u6458\u8981\u4E0D\u5339\u914D\uFF0C\u8BF7\u6838\u5BF9\u5DF2\u7ED1\u5B9A\u7248\u672C\uFF1B\u672A\u5C1D\u8BD5\u8054\u7F51\u66FF\u4EE3");
+    return bytes.toString("utf8");
   }
   async function report(id, value, content, csv) {
     const bytes = Buffer.from(content);
@@ -424,7 +434,7 @@ function apply(ctx, config) {
   }
   ctx.tools.register({
     name: `task_${config.kind}`,
-    description: config.kind === "inspection" ? "\u57FA\u7840\u8D44\u4EA7\u53F0\u8D26\u53EA\u8BFB\u5DE1\u68C0\uFF1Astart\u56FA\u5B9A\u8D44\u4EA7\u5FEB\u7167\uFF0Cpage\u6309cursor\u8BFB\u5B8C\u5206\u9875\uFF0Creport\u6821\u9A8C\u5DF2\u8BFB\u53D6\u5B8C\u6574\u96C6\u5408\u5E76\u751F\u6210\u5B9E\u9645Markdown/CSV\u62A5\u544A\u3002\u6570\u636E\u6765\u81EA\u57FA\u7840Mock\uFF0C\u4E0D\u80FD\u79F0\u4E3A\u771F\u5B9E\u8BBE\u5907\u5065\u5EB7\u68C0\u6D4B\u3002" : config.kind === "research" ? "\u591A\u6B65\u9AA4\u8D44\u6599\u7814\u7A76\uFF1Astart\u521B\u5EFA\u4EFB\u52A1\uFF0Ccollect\u6309\u914D\u7F6E\u8D44\u6599URL\u8BFB\u53D6\u771F\u5B9E\u6B63\u6587\uFF0Creport\u7528\u6BCF\u4E2AURL\u5BF9\u5E94\u7684summaries\u751F\u6210\u5E26\u6765\u6E90\u7684\u62A5\u544A\uFF1B\u8D44\u6599\u987B\u5168\u90E8\u8BFB\u53D6\u3002" : "\u81EA\u4E3B\u8BAD\u7EC3\u7814\u7A76\uFF1Apreflight\u6838\u67E5\u771F\u5B9EGPU\u3001\u56FA\u5B9A\u6765\u6E90\u3001uv/PyTorch\u4E0E\u6570\u636E\uFF1Bbaseline\u5EFA\u7ACB\u4E00\u6B21\u771F\u5B9E\u57FA\u7EBF\uFF0Ccandidate\u53EA\u4FEE\u6539train.py\u5E76\u5B9E\u9645\u8BAD\u7EC3\u8BC4\u4F30\uFF0C\u6700\u591A\u4E09\u4E2A\u5019\u9009\u3001\u5355\u6B21\u5341\u5206\u949F\u3001\u603B\u65F6\u9650\u4E00\u5C0F\u65F6\u3002\u66F4\u4F18\u4FDD\u7559\u3001\u5931\u8D25\u56DE\u9000\uFF0Cstatus\u8BFB\u53D6\u539F\u8FD0\u884C\u3002\u6CA1\u6709\u771F\u5B9E\u7B97\u529B\u65F6\u53EA\u62A5\u544A\u7F3A\u53E3\uFF0C\u4E0D\u4EA7\u751F\u6A21\u62DF\u6307\u6807\u3002",
+    description: config.kind === "inspection" ? "\u57FA\u7840\u8D44\u4EA7\u53F0\u8D26\u53EA\u8BFB\u5DE1\u68C0\uFF1Astart\u56FA\u5B9A\u8D44\u4EA7\u5FEB\u7167\uFF0Cpage\u6309cursor\u8BFB\u5B8C\u5206\u9875\uFF0Creport\u6821\u9A8C\u5DF2\u8BFB\u53D6\u5B8C\u6574\u96C6\u5408\u5E76\u751F\u6210\u5B9E\u9645Markdown/CSV\u62A5\u544A\u3002\u6570\u636E\u6765\u81EA\u57FA\u7840Mock\uFF0C\u4E0D\u80FD\u79F0\u4E3A\u771F\u5B9E\u8BBE\u5907\u5065\u5EB7\u68C0\u6D4B\u3002" : config.kind === "research" ? "\u591A\u6B65\u9AA4\u8D44\u6599\u7814\u7A76\uFF1Astart\u521B\u5EFA\u4EFB\u52A1\uFF0Ccollect\u6309\u660E\u786E\u914D\u7F6E\u8BFB\u53D6\u5728\u7EBF\u6B63\u6587\u6216\u6821\u9A8C\u672C\u5730\u56FA\u5B9A\u5B98\u65B9\u8D44\u6599\u5FEB\u7167\uFF0Creport\u7528\u6BCF\u4E2AURL\u5BF9\u5E94\u7684summaries\u751F\u6210\u5E26\u6765\u6E90\u7684\u62A5\u544A\uFF1B\u8D44\u6599\u987B\u5168\u90E8\u8BFB\u53D6\uFF0C\u4E0D\u81EA\u52A8\u5207\u6362\u6570\u636E\u6765\u6E90\u3002" : "\u81EA\u4E3B\u8BAD\u7EC3\u7814\u7A76\uFF1Apreflight\u6838\u67E5\u771F\u5B9EGPU\u3001\u56FA\u5B9A\u6765\u6E90\u3001uv/PyTorch\u4E0E\u6570\u636E\uFF1Bbaseline\u5EFA\u7ACB\u4E00\u6B21\u771F\u5B9E\u57FA\u7EBF\uFF0Ccandidate\u53EA\u4FEE\u6539train.py\u5E76\u5B9E\u9645\u8BAD\u7EC3\u8BC4\u4F30\uFF0C\u6700\u591A\u4E09\u4E2A\u5019\u9009\u3001\u5355\u6B21\u5341\u5206\u949F\u3001\u603B\u65F6\u9650\u4E00\u5C0F\u65F6\u3002\u66F4\u4F18\u4FDD\u7559\u3001\u5931\u8D25\u56DE\u9000\uFF0Cstatus\u8BFB\u53D6\u539F\u8FD0\u884C\u3002\u6CA1\u6709\u771F\u5B9E\u7B97\u529B\u65F6\u53EA\u62A5\u544A\u7F3A\u53E3\uFF0C\u4E0D\u4EA7\u751F\u6A21\u62DF\u6307\u6807\u3002",
     parameters: { type: "object", properties: columns, required: ["action"], additionalProperties: false },
     output: { schema: { type: "object", additionalProperties: true }, render: (_args, value) => [{ type: "text", text: JSON.stringify(value) }] },
     async execute(args, execution) {
@@ -442,6 +452,11 @@ function apply(ctx, config) {
             value2.rows = all.filter((r) => /^asset-000[1-5]$/.test(r.asset_id)).map((r) => ({ asset_id: r.asset_id, hostname: r.hostname, asset_type: r.asset_type, risk_score: r.risk_score }));
             if (value2.rows.length !== 5 || new Set(value2.rows.map((r) => r.asset_id)).size !== 5) throw new Error("\u56FA\u5B9A\u57FA\u7840\u8D44\u4EA7\u8303\u56F4\u4E0D\u5B8C\u6574\uFF0C\u4E0D\u80FD\u751F\u6210\u5168\u91CF\u62A5\u544A");
             value2.source_sha256 = digest(JSON.stringify(value2.rows));
+          } else if (config.sourceDocuments !== void 0) {
+            if (config.sourceUrls !== void 0 || !config.sourceDocuments.length || config.sourceDocuments.some((document) => !/^https:\/\//.test(document.url) || !/^references\/[a-z0-9-]+\.md$/.test(document.path) || !/^[0-9a-f]{64}$/.test(document.sha256)) || new Set(config.sourceDocuments.map((document) => document.url)).size !== config.sourceDocuments.length) throw new Error("\u56FA\u5B9A\u8D44\u6599\u5FEB\u7167\u914D\u7F6E\u65E0\u6548\uFF0C\u4E0D\u80FD\u4E0E\u5728\u7EBF\u6765\u6E90\u540C\u65F6\u914D\u7F6E");
+            value2.source_kind = "fixed_public_document_snapshot";
+            value2.source_documents = config.sourceDocuments.map((document) => ({ ...document }));
+            value2.sources = value2.source_documents.map((document) => document.url);
           } else value2.sources = config.sourceUrls || [];
           await save(id2, value2);
           return { run_id: id2, source_kind: value2.source_kind, ...value2.rows ? { total: value2.rows.length, next_cursor: 0, source_sha256: value2.source_sha256 } : { sources: value2.sources } };
@@ -479,18 +494,21 @@ ${rows.map((r) => `| ${r.asset_id} | \u53F0\u8D26\u5DF2\u8BB0\u5F55 | ${safeCell
         }
         if (config.kind === "research" && args.action === "collect") {
           if (!value.sources.includes(args.source)) throw new Error("\u8D44\u6599\u4E0D\u5728\u672C\u4EFB\u52A1\u56FA\u5B9A\u6765\u6E90\u8303\u56F4\u5185");
-          if (value.documents?.[args.source]) return { run_id: id, source: args.source, ...value.documents[args.source], reused_snapshot: true };
-          const content = await get(args.source, signal);
+          if (value.documents?.[args.source]) return { run_id: id, source: args.source, source_kind: value.source_kind, ...value.documents[args.source], reused_snapshot: true };
+          const document = value.source_documents?.find((item) => item.url === args.source);
+          if (value.source_kind === "fixed_public_document_snapshot" && !document) throw new Error("\u56FA\u5B9A\u8D44\u6599\u767B\u8BB0\u7F3A\u5931\uFF1B\u672A\u5C1D\u8BD5\u8054\u7F51\u66FF\u4EE3");
+          const content = document ? await readSourceDocument(document) : await get(args.source, signal);
           value.documents ||= {};
           value.documents[args.source] = { sha256: digest(content), content: content.slice(0, 24e3), read_at: (/* @__PURE__ */ new Date()).toISOString() };
           value.read = [.../* @__PURE__ */ new Set([...value.read, args.source])];
           await save(id, value);
-          return { run_id: id, source: args.source, ...value.documents[args.source], truncated: content.length > 24e3 };
+          return { run_id: id, source: args.source, source_kind: value.source_kind, ...value.documents[args.source], truncated: content.length > 24e3 };
         }
         if (config.kind === "research" && args.action === "report") {
           if (!value.sources.length || value.sources.some((url) => !value.read.includes(url))) throw new Error("\u8FD8\u6709\u8D44\u6599\u672A\u8BFB\u53D6\uFF0C\u4E0D\u80FD\u4EA4\u4ED8\u5B8C\u6574\u62A5\u544A");
           if (value.sources.some((url) => typeof args.summaries?.[url] !== "string" || !args.summaries[url].trim())) throw new Error("\u62A5\u544A\u987B\u9010\u9879\u5305\u542B\u5DF2\u8BFB\u6765\u6E90\u7684\u7ED3\u8BBA");
-          const text = "# \u591A\u6B65\u9AA4\u4E1A\u52A1\u8D44\u6599\u8C03\u7814\u62A5\u544A\n\n" + value.sources.map((url, i) => `## \u8D44\u6599 ${i + 1}
+          const basis = value.source_kind === "fixed_public_document_snapshot" ? "\u672C\u62A5\u544A\u4F9D\u636E\u5DF2\u6821\u9A8C\u6458\u8981\u7684\u5B98\u65B9\u56FA\u5B9A\u63D0\u4EA4\u8D44\u6599\u5FEB\u7167\uFF1B\u8D44\u6599\u65F6\u70B9\u4EE5\u5404\u539F\u59CB\u94FE\u63A5\u4E2D\u7684\u63D0\u4EA4\u4E3A\u51C6\uFF0C\u672C\u6B21\u6CA1\u6709\u5B9E\u65F6\u8BBF\u95EE\u7F51\u7AD9\u3002" : "\u672C\u62A5\u544A\u4F9D\u636E\u672C\u6B21\u5B9E\u9645\u8BFB\u53D6\u7684\u5728\u7EBF\u8D44\u6599\uFF1B\u8BFB\u53D6\u65F6\u70B9\u89C1\u5404\u6765\u6E90\u3002";
+          const text = "# \u591A\u6B65\u9AA4\u4E1A\u52A1\u8D44\u6599\u8C03\u7814\u62A5\u544A\n\n" + basis + "\n\n" + value.sources.map((url, i) => `## \u8D44\u6599 ${i + 1}
 
 ${args.summaries[url].slice(0, 8e3)}
 

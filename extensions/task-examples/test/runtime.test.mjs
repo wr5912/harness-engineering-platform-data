@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { chmodSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { tmpdir } from 'node:os'
@@ -172,4 +173,34 @@ test('共享训练目录的独占锁避免两个Session同时覆盖train.py', as
   await assert.rejects(ctx.execute({ action: 'baseline' }), /工作区已占用/)
   assert.equal(JSON.parse(readFileSync(lock, 'utf8')).run_id, 'other-task')
   assert.match(readFileSync(join(dsh, 'autoresearch/train.py'), 'utf8'), /metric: 1.5/)
+})
+
+
+test('调研显式固定资料快照仅只读本地文件并核对摘要，不进行在线回退', async t => {
+  const previousCwd = process.cwd(), root = temporary(t)
+  environment(t, { DSH_HOME: join(root, 'dsh') }); process.chdir(root); t.after(() => process.chdir(previousCwd))
+  const texts = ['固定提交一：自主训练研究，MIT。', '固定提交二：多步骤任务，非商业许可。']
+  const documents = texts.map((text, index) => ({ url: `https://example.invalid/fixed-commit-${index}/README.md`, path: `references/source-${index}.md`, sha256: createHash('sha256').update(text).digest('hex') }))
+  documents.forEach((document, index) => write(root, document.path, texts[index]))
+  const originalFetch = globalThis.fetch; let requests = 0
+  globalThis.fetch = async () => { requests++; throw new Error('快照模式不应联网') }; t.after(() => { globalThis.fetch = originalFetch })
+  const ctx = toolContext({ kind: 'research', sourceDocuments: documents }), start = await ctx.execute({ action: 'start' })
+  assert.equal(start.source_kind, 'fixed_public_document_snapshot')
+  for (const document of documents) {
+    const result = await ctx.execute({ action: 'collect', run_id: start.run_id, source: document.url })
+    assert.equal(result.source_kind, 'fixed_public_document_snapshot'); assert.equal(result.sha256, document.sha256)
+  }
+  const report = await ctx.execute({ action: 'report', run_id: start.run_id, summaries: Object.fromEntries(documents.map((document, index) => [document.url, texts[index]])) })
+  assert.match(report.markdown, /没有实时访问网站/); assert.equal(report.source_kind, 'fixed_public_document_snapshot'); assert.equal(requests, 0)
+  const started = await ctx.execute({ action: 'start' }); write(root, documents[0].path, '已变化正文')
+  await assert.rejects(ctx.execute({ action: 'collect', run_id: started.run_id, source: documents[0].url }), /摘要不匹配/)
+  assert.equal(requests, 0)
+  await assert.rejects(ctx.execute({ action: 'report', run_id: started.run_id, summaries: {} }), /还有资料未读取/)
+})
+
+test('资料来源配置不得混用在线与快照，也不允许越出references目录', async t => {
+  environment(t, { DSH_HOME: temporary(t) })
+  const document = { url: 'https://example.invalid/fixed/README.md', path: 'references/source.md', sha256: '0'.repeat(64) }
+  await assert.rejects(toolContext({ kind: 'research', sourceUrls: [document.url], sourceDocuments: [document] }).execute({ action: 'start' }), /不能与在线来源同时配置/)
+  await assert.rejects(toolContext({ kind: 'research', sourceDocuments: [{ ...document, path: '../outside.md' }] }).execute({ action: 'start' }), /配置无效/)
 })
