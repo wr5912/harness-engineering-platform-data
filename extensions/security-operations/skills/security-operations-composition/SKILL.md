@@ -5,7 +5,7 @@ description: 为已启用的安全运营业务扩展配置、发布和验证资�
 
 # 安全运营工具组合
 
-使用受信任工作区上下文定位数据根，先读取通用 [mcp-composition](../../../../.agents/skills/mcp-composition/SKILL.md) Skill。本技能来自当前工作区声明启用的安全运营扩展，供平台管理助手办理业务；读取业务资产不改变管理身份。先区分用户要配置编排、发布版本还是实际调用工具。
+本技能来自当前工作区声明启用的安全运营扩展，供平台管理助手办理业务。通用保存、dry、发布和错误处理沿用 [mcp-composition](../../../../.agents/skills/mcp-composition/SKILL.md)，尚未加载时读一次，已加载则继续，不互相循环。先区分查看运行、只读/dry、编辑发布和实际调用，仅读结果直接进入回读步骤。
 
 Mock service 只提供基本、良性的模拟业务数据。配置样例、测试输入和验证建议不得生成或要求恶意代码、病毒、渗透相关的数据或命令，也不以补齐覆盖为由建议这些 Mock 场景。验证分支只使用普通资产、状态、告警元数据或缺失字段等无害样例，未覆盖的业务效果如实保留为限制。
 
@@ -13,7 +13,7 @@ Mock service 只提供基本、良性的模拟业务数据。配置样例、测�
 
 ## 威胁分析组合
 
-1. 读取 `configuration` 与 `list`，核对真实连接和已装载扩展。SOC 使用原生 OpenAPI 服务，规范需覆盖完整事件研判操作；只有资产与告警两个 GET 的只读规范不够。报告使用原生 MCP 服务，须能发现 `save_persistence_result`。地址、鉴权与模型凭据沿用原生配置，不回显或复制凭据。
+1. 仅在配置或接入时读取 `configuration` 与 `list` 核对连接和扩展；查看运行不重新发现全部连接。SOC 使用原生 OpenAPI 服务，规范须覆盖完整研判操作，只有资产/告警两个 GET 不够；报告 MCP 须有 `save_persistence_result`。缺少能力就停止依赖配置，地址、鉴权与模型凭据沿用原生配置，不回显或复制。
 2. 确需创建样例且 `list.extension.seed` 为 true 时，通过 `seedThreatCompositions {revision,bindings:{socConnectionId,reportConnectionId,model?}}` 提交确认，创建四个阶段和一个总组合草稿；revision 和连接 ID 来自实际读取结果。已有组合优先读取和维护，不重复创建。页面在“全部编排”中展示草稿和发布状态，没有单独的“威胁分析样例”按钮。
 3. 分别保存、dry 校验并发布四个子组合，再为总组合选择具体已发布版本。保留输入映射与分支条件；父组合固定这些版本，子组合再次发布不自动改变父组合。完整研判阶段可选择平台默认模型或用户指定的原生 Provider、模型和推理强度，不自行改变用户选择。
 4. 仅在用户要求实际研判时，对总组合传入已核对的 `incident_id`；格式为 `INC-YYYYMMDD-NNNNNN`。只读或 dry 请求不得升级为实际执行来排障。独立测试后续阶段时输入同一 `run_id`，不重新发起取证，已完成阶段读取原结果，不重复 infer 重新采样。
@@ -27,7 +27,7 @@ Mock service 只提供基本、良性的模拟业务数据。配置样例、测�
 
 总组合 `analyze_threat_incident` 保留 `always → five_source → claimed → completed` 条件及 `$input.incident_id`、`$steps.collect.run_id` 映射。子组合单独调用仅执行该阶段，不自动补跑前序阶段。后续阶段沿用取证时固定的 SOC、报告连接；首次 infer 固定实际模型，设置变化不改写既有 Run。
 
-执行后用 `compositionRun {run_id}` 回读阶段、校验和保存状态，必要时用 `compositionArtifact {run_id,artifactId}` 读取已存在产物。JSON 可解析但机械校验失败时，原流程仍可能返回 `status=completed`；此时明确需要人员复核，不能解释为可靠研判或保存均成功。SOC 保存失败与报告保存结果分别说明，没有真实下载地址时不编造链接。
+执行后或查看已有结果时，用返回的 `run_id` 调 `compositionRun`，需要产物再 `compositionArtifact {run_id,artifactId}`。先看校验是否通过，再看 SOC 回写和报告保存各自结果。JSON 可解析但校验失败仍可能 `status=completed`，此时明确需要人员复核，不能解释为可靠研判。未知回写先查原 Run，不重跑；没有真实下载地址不编造链接。
 
 ## 资产关联告警查询
 

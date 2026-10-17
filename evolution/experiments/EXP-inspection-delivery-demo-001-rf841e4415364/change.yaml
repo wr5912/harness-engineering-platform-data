@@ -1,6 +1,100 @@
-schema_version: '1.0'
-experiment_id: EXP-inspection-delivery-demo-001-rf841e4415364
-agent_id: inspection-delivery-demo
-baseline_ref: none:first-experiment
-status: active
-research_question: 基础台账巡检助手能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求
+schema_version: "1.0"
+experiment_id: "EXP-inspection-delivery-demo-001-rf841e4415364"
+agent_id: "inspection-delivery-demo"
+baseline_ref: "none:first-experiment"
+status: "active"
+research_question: "基础台账巡检助手能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求"
+features:
+  - id: "purpose-identity"
+    title: "身份与用途：只读基础台账巡检"
+    description: "面向固定范围的模拟台账巡检交付。以“基础台账巡检助手”身份（Agent ID inspection-delivery-demo）用中文先说明结果与可用产物；业务任务内只执行 task_inspection 的 start/page/report，不提供真实设备健康结论。用户只要求整理给定数据时保留摘要能力、不调用服务。身份与职责由固定 Run 的 U-IDENTITY-001、U-ROLE-001 验证通过（机器结论、同路由自评）。"
+    source_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/presets/inspection-delivery-demo/preset.yml"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/presets/inspection-delivery-demo/agent.cordis.yml"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/workspace/AGENTS.md"
+      - "agents/inspection-delivery-demo/evaluation.md"
+    evidence_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/report.md"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-IDENTITY-001/response.json"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ROLE-001/response.json"
+    change: "新增"
+  - id: "fixed-asset-scope"
+    title: "固定五台资产范围与快照校验"
+    description: "start 从基础 Mock 台账接口 http://127.0.0.1:53001/api/v1/assets 读取快照，仅保留 asset-0001 至 asset-0005，并要求恰好 5 台且 asset_id 唯一，否则报“固定基础资产范围不完整，不能生成全量报告”；快照同时记录 source_sha256。实际 Run 的 start 回执为 total=5、source_kind=basic_mock。"
+    source_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/managed/task-example-tools.mjs"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/workspace/AGENTS.md"
+    evidence_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ASSET-PAGES-001/tools.jsonl"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ASSET-PARTIAL-001/tools.jsonl"
+    change: "新增"
+  - id: "paged-read"
+    title: "按 cursor 分页读取（每页 2 条，读至 null）"
+    description: "page 以 cursor 定位，每次返回 2 条并把已读 asset_id 累积进同一 run 状态；cursor 必须为不小于 0 的偶数且小于总数，回执给出 next_cursor（末尾为 null）。实测完整路径 cursor 0→2→4→null 覆盖三页五台；只读第一页时 next_cursor=2、缺 asset-0003 至 asset-0005。run_id 与 Session 绑定，换 Session 读取会被拒绝。"
+    source_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/managed/task-example-tools.mjs"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/workspace/AGENTS.md"
+    evidence_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ASSET-PAGES-001/tools.jsonl"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ASSET-PARTIAL-001/tools.jsonl"
+    change: "新增"
+  - id: "report-delivery"
+    title: "完整读取后生成 Markdown/CSV 与实际下载入口"
+    description: "report 先校验全部资产已进入已读集合，缺项时报“尚未读取全部设备，不能交付完整报告”并列出缺失 ID；通过后生成逐设备 Markdown 报告与 devices.csv，写入 report.md/devices.csv，回执含 device_count、device_ids、report_sha256、download_url 与 csv_url。下载端点 /assistant/api/task-examples/artifact 仅放行白名单文件并按 run_id 与 Session 校验。固定 Run 的 U-ASSET-PAGES-001 交付 device_count=5，报告 679 字节，摘要与工具回执一致。"
+    source_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/managed/task-example-tools.mjs"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/workspace/AGENTS.md"
+    evidence_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ASSET-PAGES-001/tools.jsonl"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/U-ASSET-PAGES-001/inspection-report.md"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/artifacts/index.json"
+    change: "新增"
+  - id: "incomplete-boundary"
+    title: "漏页不得声称完整交付"
+    description: "角色指令与工具校验共同约束：读取未完整时不得声称完整交付或提供完整报告。实测只读第一页时，回答明确五台共三页、还缺 3 台，未调用 report、未给出报告或下载链接，并说明需从 cursor=2 继续。该边界由 U-ASSET-PARTIAL-001 验证通过。"
+    source_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/workspace/AGENTS.md"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/managed/task-example-tools.mjs"
+      - "agents/inspection-delivery-demo/evaluation.md"
+    evidence_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ASSET-PARTIAL-001/tools.jsonl"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ASSET-PARTIAL-001/response.json"
+    change: "新增"
+  - id: "readonly-scope"
+    title: "只读任务与模拟数据边界"
+    description: "本版只注册 task_inspection 一个业务工具，并在 agent/pre-step 对目标 Preset 限制 allow 列表；其它工具调用被拦截并返回“任务只允许已绑定业务工具”，Run 中业务会话的 read/glob 均被拒绝。数据来自基础 Mock 台账，未连接或探测真实设备，回答须明确“不是真实设备健康检测”，也不执行设备配置变更。"
+    source_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/managed/inspection-delivery-demo.patch.yml"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/managed/task-example-tools.mjs"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/workspace/AGENTS.md"
+    evidence_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ROLE-001/tools.jsonl"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ROLE-001/response.json"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/evidence/U-ASSET-PAGES-001/response.json"
+    change: "新增"
+  - id: "preset-assembly"
+    title: "平台 Preset 装配与容器装载"
+    description: "通过 managed patch 注册默认 Preset inspection-delivery-demo，引用 agent.cordis.yml（persona 与 agent-instructions 从工作区加载 AGENTS.md，maxBytes 65536），并挂载 task-example-tools，kind=inspection、presetId=inspection-delivery-demo、assetUrl 指向基础 Mock 台账；harness.yaml 标记 container-only、workspace/presets/managed 容器路径与 DEEPSEEK_API_KEY 依赖。固定 Run 封存来源核对为 matched，load_observation 显示 session_preset 与 workspace 均匹配；当前实例 hep-inspection-delivery（端口 3114）观察为 running，但实例可观察不等于业务效果通过。"
+    source_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/managed/inspection-delivery-demo.patch.yml"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/presets/inspection-delivery-demo/agent.cordis.yml"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/dsh/presets/inspection-delivery-demo/preset.yml"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/candidate/harness.yaml"
+    evidence_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/report.md"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/summary.json"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/results.jsonl"
+    change: "新增"
+  - id: "verification-status"
+    title: "评测状态与未验证边界"
+    description: "固定 4 个 Case（3 个 fast、1 个 full）在 run-05973a80-6b91-40e7-a0da-acca3a4ea696 中 4/4 通过，有效结论为 passed、封存来源核对 matched；review_status 为 not_requested，证据复核未请求，机器结论为同路由自评、仅作研究辅助。观察记录另有一次正式平台复验（2026-10-16，实例 hep-inspection-delivery:3114）：新 Session 读取三页并交付五台，独立下载 Markdown 699 字节、CSV 362 字节，与同 Session 工具回执逐字节一致。尚未验证：真实设备健康检测、真实业务上游接入、干净版本间因果比较，也不证明任意新智能体可自动交付。"
+    source_refs:
+      - "agents/inspection-delivery-demo/evaluation.md"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/evaluation/observations.md"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/decision.md"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/hypothesis.md"
+    evidence_refs:
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/report.md"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/summary.json"
+      - "evolution/experiments/EXP-inspection-delivery-demo-001-rf841e4415364/runs/run-05973a80-6b91-40e7-a0da-acca3a4ea696/results.jsonl"
+    change: "新增"
