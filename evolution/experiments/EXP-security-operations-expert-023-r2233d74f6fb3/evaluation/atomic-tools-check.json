@@ -1,0 +1,56 @@
+{
+  "kind": "deterministic-only",
+  "model_runs": 0,
+  "fixed_input_sha256": "b6b17d57c8a1a5132d8c75884801cd11d1b03ae317ddfaee41f11893f72b6714",
+  "source_ref": "git:8f1c88ba14227bda685bd374150bf95e91df41e2",
+  "parent_experiment_id": "EXP-security-operations-expert-021-rdd331f9f2e30",
+  "original_files_unchanged": 210,
+  "intentional_modified_files": [
+    "dsh/workspace/AGENTS.md",
+    "dsh/managed/security-operations-guard.mjs",
+    "dsh/managed/role-tool-matrix.yaml",
+    "dsh/presets/security-operations-expert/agent.cordis.yml"
+  ],
+  "checks": [
+    {
+      "asset_id": 9106,
+      "expected": "success",
+      "asset_status": 200,
+      "alert_status": 200,
+      "alert_business_code": 200,
+      "passed": true
+    },
+    {
+      "asset_id": 999999,
+      "expected": "asset-missing",
+      "asset_status": 404,
+      "alert_status": null,
+      "alert_business_code": null,
+      "passed": true
+    },
+    {
+      "asset_id": 9107,
+      "expected": "empty",
+      "asset_status": 200,
+      "alert_status": 200,
+      "alert_business_code": 200,
+      "passed": true
+    },
+    {
+      "asset_id": 9108,
+      "expected": "business-failure",
+      "asset_status": 200,
+      "alert_status": 200,
+      "alert_business_code": 503,
+      "passed": true
+    }
+  ],
+  "guard_tools_verified": [
+    "get_soc_asset_by_asset_id",
+    "list_detect_alert"
+  ],
+  "notes": [
+    "执行真实原子工具代码与Guard；仅外部GET响应使用固定Mock/replay。",
+    "尚无DSH装载、新Session或模型评测，不证明节省与业务等效。"
+  ]
+}
