@@ -2,6 +2,7 @@ import { pathToFileURL } from 'node:url'
 import { createHash } from 'node:crypto'
 import { ensureThreatSource } from './threat/source.ts'
 import type { ThreatModelRoute, ThreatServices } from './threat/types.ts'
+import { observeLlm, type CompositionExecutionContext } from '@harness-platform/mcp/extension'
 
 type Dispatch = (request: Record<string, any>, signal?: AbortSignal) => Promise<{ status: number; value: any }>
 
@@ -54,11 +55,12 @@ export function createNativeThreatServices(assetRoot: string, dispatch: Dispatch
       if (reply.status >= 400) throw new Error(`平台连接调用失败：${connectionId}/${toolName}`)
       return reply.value
     },
-    async inferFrozen(payload, route, signal) {
+    async inferFrozen(payload, route, signal, execution?: CompositionExecutionContext) {
       signal.throwIfAborted()
       const source = await ensureThreatSource(assetRoot)
       const original = await import(pathToFileURL(source.bridgeModule).href)
-      return original.inferFrozen({ llm }, resolveModel(route), payload, signal)
+      const observed = execution?.recordAttempt ? observeLlm(llm, execution, execution.recordAttempt) : llm
+      return original.inferFrozen({ llm: observed }, resolveModel(route), payload, signal)
     },
   }
 }

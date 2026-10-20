@@ -1,12 +1,13 @@
 import { execFile } from 'node:child_process'
 import { randomUUID } from 'node:crypto'
 import { isDeepStrictEqual } from 'node:util'
-import { lstat, mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
+import { appendFile, lstat, mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { basename, join, relative, resolve, sep } from 'node:path'
 import { createThreatBridge } from './bridge.ts'
 import { defaultThreatStateRoot, loadThreatSource } from './source.ts'
 import { threatPython } from './python.ts'
 import type { ThreatArtifact, ThreatBindings, ThreatPhaseStatus, ThreatResult, ThreatRuntime, ThreatRuntimeOptions, ThreatServices, ThreatStage, ThreatTrace } from './types.ts'
+import type { CompositionExecutionContext } from '@harness-platform/mcp/extension'
 
 const RUN_ID = /^run-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 const STAGES: ThreatStage[] = ['collect', 'infer', 'writeback', 'report']
@@ -105,7 +106,7 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
       if (!found) throw new Error('threat_artifact_not_found')
       return { filename: basename(found.id), contentType: found.content_type, body: await readFile(join(runDirectory(id), found.id), 'utf8') }
     },
-    async execute(stage, suppliedBindings, input, signal) {
+    async execute(stage, suppliedBindings, input, signal, execution?: CompositionExecutionContext) {
       if (!STAGES.includes(stage)) throw new Error('invalid_threat_stage')
       const bindings = bindingsOf(suppliedBindings)
       const immutable = await source()
@@ -161,7 +162,15 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
             context.bindings.model = bindingsOf({ ...context.bindings, model }).model
             await atomic(contextFile, context)
           }
-          const scopedServices: ThreatServices = { ...services, async invoke(connectionId, toolName, args, callSignal) {
+          const observedExecution: CompositionExecutionContext = { ...execution, execution_id: execution?.execution_id ?? `graph-${randomUUID()}`, role: execution?.role ?? 'target',
+            recordAttempt: async attempt => {
+              // 唯一业务模型原始事实；回执只传输同一事实，重放不重写或再次计费。
+              await appendFile(join(output, 'model-attempts.jsonl'), JSON.stringify(attempt) + '\n', { mode: 0o600 })
+              await execution?.recordAttempt?.(attempt)
+            } }
+          const scopedServices: ThreatServices = { ...services,
+            inferFrozen: (payload, model, callSignal) => services.inferFrozen(payload, model, callSignal, observedExecution),
+            async invoke(connectionId, toolName, args, callSignal) {
             const expected = connectionId === context.bindings.socConnectionId ? context.connections.soc : context.connections.report
             try {
               if (await services.connectionFingerprint(connectionId) !== expected) throw new Error('threat_connection_conflict')

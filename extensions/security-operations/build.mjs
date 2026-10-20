@@ -18,7 +18,7 @@ async function digest(folder, prefix = '') {
   }
 }
 await digest(join(directory, 'src'))
-for (const path of [fileURLToPath(import.meta.url), join(directory, 'package.json'), join(programRoot, 'platform/plugin/pnpm-lock.yaml'), join(programRoot, 'platform/plugin/src/mcp/compositions.ts'), join(programRoot, 'platform/plugin/src/mcp/extension.ts')]) hash.update(await readFile(path))
+for (const path of [fileURLToPath(import.meta.url), join(directory, 'package.json'), join(programRoot, 'platform/plugin/pnpm-lock.yaml'), join(programRoot, 'platform/plugin/src/mcp/compositions.ts'), join(programRoot, 'platform/plugin/src/mcp/extension.ts'), join(programRoot, 'platform/plugin/src/evaluation/model-attempts.ts')]) hash.update(await readFile(path))
 const sourceDigest = hash.digest('hex')
 const output = join(dataRoot, '.local/build-cache/security-operations', sourceDigest)
 if (process.argv.includes('--path')) {
