@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "enabled": true,
+  "authentication": {
+    "endpoint": "http://172.17.0.1:53101/api/v1/control/identity/authenticate",
+    "timeoutMs": 1500
+  },
+  "identityTrust": {
+    "endpoint": "http://172.17.0.1:53101/api/v1/control/identity/trust",
+    "timeoutMs": 1500
+  },
+  "riskAssessment": {
+    "endpoint": "http://172.17.0.1:53101/api/v1/control/risk/evaluate",
+    "timeoutMs": 1500,
+    "testRunId": "gateway-3090-20261020",
+    "requiredKinds": [
+      "write",
+      "publish"
+    ]
+  },
+  "agents": [
+    {
+      "agentId": "security-operations-expert",
+      "enabled": true,
+      "subjects": [
+        "subject-a",
+        "subject-b"
+      ],
+      "actions": [
+        "agent:access",
+        "session:create",
+        "session:read",
+        "session:prompt",
+        "read"
+      ],
+      "serverIds": [
+        "inspection"
+      ],
+      "sourceDigest": "sha256:9f32b205f30af44bf9b46e6a5c974caec56684fb1f1c66046ce6577c04c07998",
+      "agentAuthentication": {
+        "enabled": true,
+        "method": "hmac-sha256"
+      },
+      "agentTrust": {
+        "enabled": true
+      }
+    }
+  ],
+  "operations": [
+    {
+      "serverId": "inspection",
+      "operationId": "list_executable_inspections",
+      "kind": "read",
+      "target": "http://172.17.0.1:53101/mcp/inspection/",
+      "method": "TOOLS/CALL",
+      "schemaDigest": "ff1b2d8857c8e4a2cd87b566a798c5d1cd937fe8a13363e59a51231b4b328939"
+    }
+  ],
+  "gateway": {
+    "host": "10.0.160.32",
+    "port": 53105,
+    "publicOrigin": "http://10.0.160.32:53105",
+    "sharedSecretFile": "/home/admin/harness-engineering-platform-data/.local/business-control-mock/gateway-secret.bin",
+    "instances": [
+      {
+        "agentId": "security-operations-expert",
+        "instanceId": "security-operations-expert-business-mock"
+      }
+    ],
+    "managementUrl": "http://10.0.160.32:3090/hep/#/gateway"
+  }
+}
