@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "servers": [
+    {
+      "id": "mock-soc-readonly",
+      "description": "",
+      "enabled": true,
+      "specUrl": "http://10.0.160.32:53001/api/v1/security-operations/readonly/openapi.json",
+      "authType": "credential",
+      "authHeader": "Authorization",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "tools": {
+        "mode": "all",
+        "names": []
+      },
+      "headers": []
+    },
+    {
+      "id": "mock-threat-soc",
+      "description": "",
+      "enabled": true,
+      "specUrl": "http://10.0.160.32:53001/api/v1/security-operations/openapi.json",
+      "authType": "credential",
+      "authHeader": "Authorization",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "tools": {
+        "mode": "all",
+        "names": []
+      },
+      "headers": []
+    },
+    {
+      "id": "mock-threat-report",
+      "description": "",
+      "enabled": true,
+      "url": "http://10.0.160.32:53001/mcp/report/",
+      "tools": {
+        "mode": "all",
+        "names": []
+      },
+      "headers": []
+    }
+  ],
+  "groups": [
+    {
+      "id": "AAA",
+      "members": [
+        {
+          "serverId": "platform-compositions",
+          "names": [
+            "query_asset_related_alerts"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "threat-analysis-mock",
+      "members": [
+        {
+          "serverId": "platform-compositions",
+          "names": [
+            "threat_collect",
+            "threat_infer",
+            "threat_writeback",
+            "threat_report",
+            "analyze_threat_incident"
+          ]
+        }
+      ]
+    }
+  ]
+}

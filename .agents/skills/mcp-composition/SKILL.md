@@ -1,13 +1,13 @@
 ---
 name: mcp-composition
-description: 通过原生 MCP 配置管理连接、组合草稿与固定发布版本，执行指定的只读检查、发布或调用，并核对实际运行结果。
+description: 通过平台 MCP 配置管理连接、组合草稿与固定发布版本，执行指定的只读检查、发布或调用，并核对实际运行结果。
 ---
 
 # MCP 工具组合
 
 使用 `platform_mcp`。先判断用户要查看运行、dry 检查、编辑、发布还是实际调用，选择对应路径；后一步不因前一步失败而自动获得授权。业务操作与成功码以已启用扩展的真实描述为准。
 
-连接由原生 MCP 配置管理，草稿与发布快照由数据根 `config/mcp-compositions.json` 维护。通过工具更新，不另存连接、凭据或编排副本。
+连接及分组公开配置由数据根 `config/mcp-manager.json` 维护，分组 Token 和出站凭据位于本地忽略文件 `.local/credentials/mcp-manager.json`；草稿与发布快照由数据根 `config/mcp-compositions.json` 维护。页面与本技能使用同一配置读取和保存服务；本技能只提交非敏感配置修改，凭据通过 MCP 管理页面维护。修改前读取 `configuration` 回执中的 `revision`，保存冲突时重新读取并核对差异，不覆盖并行修改。不另存连接、凭据或编排副本。
 
 ## 选择操作
 
@@ -23,10 +23,10 @@ draft 直接复用 list.compositions 中的实际 draft 或 published 扁平字�
 
 ## 连接与依赖
 
-- 仅确需发现或测试连接时，使用 configuration 返回的真实 `serverId`；`sources/list` 同样需要 serverId。它不是组合 ID 或工具名。
+- 仅确需发现或测试连接时，使用 `configuration` 返回的真实服务 `id` 作为请求的 `serverId`；`sources/list` 同样需要 `serverId`。它不是组合 ID 或工具名。
 - `server not found` 先核对 serverId。`specLoaded:false`、`toolCallSucceeded:false` 只说明尚未观测到成功，不直接证明服务不可用。HTTP、资源发现和业务调用分别判断。
 - 父组合引用子组合的具体已发布版本。先发布子组合再选择父依赖；子组合重新发布不自动升级父组合。
-- 已发布工具出现在原生“工具组合编排”服务，调用方保存分组后重新发现；草稿不对外暴露。界面统一在“全部编排”展示状态，不另找样例按钮。
+- 已发布工具出现在派生的“工具组合编排”服务，调用方保存分组后重新发现；草稿不对外暴露。分组 v2 链接使用稳定来源 ID，当前可调用工具名从实际发现结果解析，不在 Skill 或业务配置中写死服务显示名拼出的完整工具名。界面统一在“全部编排”展示状态，不另找样例按钮。
 
 ## 失败与结果
 
