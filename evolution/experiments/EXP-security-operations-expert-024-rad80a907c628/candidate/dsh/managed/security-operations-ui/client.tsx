@@ -76,8 +76,6 @@ const defaultEmployees: Employee[] = [
 
 const PLUGIN_ID = 'dsh-security-operations-ui'
 const STATUS_KIND = 'security-operations-status'
-const WORKSPACE_PATH = '/work/harness/workspace'
-const AGENT_PRESET = 'security-operations-expert'
 // shortcut: 卡片仅保存在当前浏览器，需要跨设备共享时接入持久化服务。
 const EMPLOYEES_KEY = 'dsh.securityOperations.digitalEmployees.v1'
 
@@ -391,8 +389,6 @@ type ModuleLoader = {
     }
 
     const css = `
-      div:has(> button[aria-label="选择工作区"]),div:has(> button[aria-label="Choose workspace"]){display:none}
-      button[aria-label="添加工作区"],button[aria-label="Add workspace"]{display:none}
       .soc-brand-mark{display:block;object-fit:contain}
       .soc-brand-name{font-size:14px;font-weight:600;white-space:nowrap}
       .soc-hero-brand{display:inline-flex;align-items:center;gap:12px;white-space:nowrap}
@@ -480,7 +476,7 @@ type ModuleLoader = {
       @media(max-width:720px){.soc-quick__grid{grid-template-columns:1fr}.soc-quick__toolbar{align-items:stretch;flex-direction:column}.soc-quick__search{width:100%;box-sizing:border-box;margin-left:0}.soc-employee-form{grid-template-columns:1fr}.soc-employee-form label:nth-child(3){grid-column:auto}}
     `
 
-    const inject = ['slots', 'sidebarRight', 'sidebarRightTabs', 'uiWorkspace', 'workspaces', 'sessions', 'remote.agentPresets', 'locale', 'configForms']
+    const inject = ['slots', 'sidebarRight', 'sidebarRightTabs', 'uiWorkspace', 'locale', 'configForms']
     function apply(ctx: any) {
       ctx.effect(() => {
         const preference = ctx.configForms.get('locale')
@@ -500,41 +496,6 @@ type ModuleLoader = {
         setDefault()
         return unsubscribe
       }, 'security-operations-ui: default Chinese locale')
-
-      ctx.effect(() => {
-        let disposed = false
-        let workspaceId: string | undefined
-        let moving = false
-        const presetAttempts = new Set<string>()
-        const reconcile = () => {
-          if (disposed || !workspaceId) return
-          const blank = Object.values(ctx.sessions.list.getSnapshot().byId).find((session: any) =>
-            session.blank && (session.retainedBy.mainView ?? 0) > 0) as any
-          if (!blank) return
-          const owner = ctx.workspaces.list.getSnapshot().items.find((item: any) => item.sessionIds.includes(blank.id))
-          if (owner?.workspaceId !== workspaceId) {
-            if (moving) return
-            moving = true
-            void ctx.uiWorkspace.openWorkspace(workspaceId).then(
-              () => { moving = false; reconcile() },
-              (error: unknown) => { moving = false; console.error('固定工作区切换失败', error) },
-            )
-            return
-          }
-          if (blank.projectionValues?.agentPreset === AGENT_PRESET || presetAttempts.has(blank.id)) return
-          presetAttempts.add(blank.id)
-          void ctx.remote.agentPresets.select(blank.id, AGENT_PRESET).then(
-            (result: any) => { if (!result.ok) console.error('固定 Agent 预设失败', result.error) },
-            (error: unknown) => { console.error('固定 Agent 预设失败', error) },
-          )
-        }
-        const unsubscribe = ctx.sessions.list.subscribe(reconcile)
-        void ctx.workspaces.create({ path: WORKSPACE_PATH }).then(
-          (workspace: any) => { if (!disposed) { workspaceId = workspace.workspaceId; reconcile() } },
-          (error: unknown) => { console.error('注册固定工作区失败', error) },
-        )
-        return () => { disposed = true; unsubscribe() }
-      }, 'security-operations-ui: fixed workspace and agent preset')
 
       ctx.effect(() => {
         try {

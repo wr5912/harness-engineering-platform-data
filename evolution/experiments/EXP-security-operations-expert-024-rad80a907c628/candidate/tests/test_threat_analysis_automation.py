@@ -14,11 +14,87 @@ sys.path.insert(0, str(ROOT))
 
 from mcp_gateway import FIXED_RUNTIME_TOOLS, McpGateway  # noqa: E402
 from model_inference import extract_json_output  # noqa: E402
-from result_storage import SocJudgementClient, SocWriteError, persist  # noqa: E402
+from forced_output_contract import _require_observed_target, _require_structured_target  # noqa: E402
+from result_delivery import build_delivery, priority_pill  # noqa: E402
+from result_storage import SocJudgementClient, SocWriteError, build_writeback, persist  # noqa: E402
 import dsh_runner  # noqa: E402
 
 
 class ThreatAnalysisAutomationTest(unittest.TestCase):
+    def test_unknown_action_priority_is_not_rendered_as_p3(self) -> None:
+        for value in ("P0", None):
+            with self.subTest(value=value):
+                pill = priority_pill(value)
+                self.assertIn('class="priority unknown"', pill)
+                self.assertNotIn('class="priority p3"', pill)
+
+    def test_structured_action_target_and_report_keep_source_identity(self) -> None:
+        target = {"host_name": "web<script>", "ip": "203.0.113.10", "port": 443, "asset_id": "A-10"}
+        _require_structured_target(target, "recommended_actions[0].target")
+        for invalid in ("203.0.113.10", {"host_name": "web"}, {"ip": "203.0.113.10", "host_name": "E1"},
+                        {"ip": "203.0.113.10", "port": 0},
+                        {"ip": "203.0.113.10", "port": True}, {"ip": "203.0.113.10", "unknown": "x"}):
+            with self.subTest(target=invalid), self.assertRaises(ValueError):
+                _require_structured_target(invalid, "recommended_actions[0].target")
+        run = {
+            "status": "completed", "route": "full_analysis", "incident_id": "INC-20261021-000001",
+            "run_id": "run-11111111-1111-4111-8111-111111111111", "llm_invoked": True,
+            "validation": {"status": "passed"}, "result": {
+                "verdict": "可疑", "confidence_score": 0.62,
+                "primary_claim": {"type": "可疑连接", "result": "证据不足"},
+                "secondary_findings": None, "reasoning_summary": "观察到连接，尚无执行结果。",
+                "verified_facts": [{"id": "F01", "fact": "连接到目标端点", "source": "graph"}],
+                "key_claims": [{"claim": "发生连接", "result": "支持", "weight": 0.5,
+                                "evidence": [{"source": "graph", "field": "connections[0]", "value": {"dst": "203.0.113.10"}}]}],
+                "counter_evidence": [], "attack_chain_speculation": {
+                    "observed_path": [{"description": "连接到端点", "fact_refs": ["F01"]}],
+                    "possible_next_steps": [], "supporting_evidence": ["F01"]},
+                "recommended_actions": [{"action": "核验连接", "target": target, "priority": "P2",
+                                         "reason": "观察到连接，需核验其用途。"}],
+                "rule_optimization_suggestions": [],
+            },
+        }
+        delivery = build_delivery(run, analyzed_at="2026-10-21T03:04:05+00:00")
+        report = delivery["report_html"]
+        self.assertIn("2026-10-21 03:04:05 UTC", report)
+        self.assertIn("203.0.113.10:443", report)
+        self.assertIn("证据引用 1", report)
+        self.assertIn("攻击链依据 · F01", report)
+        self.assertIn("连接到目标端点", report)
+        self.assertIn("尚未执行任何处置", report)
+        self.assertIn(run["run_id"], report)
+        self.assertNotIn("<script>", report)
+        self.assertEqual(target, delivery["summary"]["recommended_actions"][0]["target"])
+        self.assertEqual(target, build_writeback(run, report)["resultJson"]["result"]["recommended_actions"][0]["target"])
+
+    def test_action_target_must_identify_one_observed_endpoint_and_its_port(self) -> None:
+        five_source = {"event_snapshot": {"entities": [
+            {"entity_type": "asset", "asset_id": "A-10", "aliases": [
+                {"type": "ip", "value": "203.0.113.10"}, {"type": "hostname", "value": "web-a"}]},
+            {"entity_type": "asset", "asset_id": "A-11", "aliases": [
+                {"type": "ip", "value": "203.0.113.11"},
+                {"type": "ip", "value": "203.0.113.12"},
+                {"type": "hostname", "value": "web-b"}]},
+        ]}, "enriched_context": {"graph": {"path_hints": [{
+            "src_ip": "203.0.113.10", "dst_ip": "203.0.113.11", "dst_ports": [443]}]},
+            "edr_detail": {"assets": [{"activity_segments": [{"network_details": [{
+                "source_ip": "203.0.113.10", "source_port": 53123,
+                "destination_ip": "203.0.113.11", "destination_port": 443}]}]}]}}}
+        field = "recommended_actions[0].target"
+        for target in ({"ip": "203.0.113.11", "port": 443},
+                       {"asset_id": "A-11", "ip": "203.0.113.11", "host_name": "web-b", "port": 443},
+                       {"asset_id": "A-11", "ip": "203.0.113.12", "host_name": "web-b"},
+                       {"asset_id": "A-10", "ip": "203.0.113.10", "port": 53123}):
+            with self.subTest(valid=target):
+                _require_observed_target(target, five_source, field)
+        for target in ({"ip": "203.0.113.99"}, {"asset_id": "A-99"},
+                       {"asset_id": "A-10", "ip": "203.0.113.11"},
+                       {"asset_id": "A-11", "host_name": "web-a"},
+                       {"asset_id": "A-11", "ip": "203.0.113.12", "port": 443},
+                       {"ip": "203.0.113.10", "port": 443}):
+            with self.subTest(invalid=target), self.assertRaisesRegex(ValueError, "observed|same target"):
+                _require_observed_target(target, five_source, field)
+
     def test_cancel_cleanup_does_not_contradict_an_already_started_terminal_write(self) -> None:
         run_id = "run-11111111-1111-4111-8111-111111111111"
         for operation in ("result", "fail"):
@@ -133,6 +209,15 @@ class ThreatAnalysisAutomationTest(unittest.TestCase):
         for invalid in (True, 0, 101):
             with self.assertRaises(ValueError):
                 client.pending(invalid)
+
+    def test_pending_preserves_soc_error_type_and_status(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            with patch.object(dsh_runner, "build_gateway"), patch.object(
+                dsh_runner, "SocJudgementClient"
+            ) as client_type:
+                client_type.return_value.pending.side_effect = SocWriteError(503, "SOCTransport")
+                result = dsh_runner.pending(directory, {})
+        self.assertEqual({"type": "SOCTransport", "status_code": 503}, result["error"])
 
     def test_claim_conflict_preserves_409_for_batch_skip(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

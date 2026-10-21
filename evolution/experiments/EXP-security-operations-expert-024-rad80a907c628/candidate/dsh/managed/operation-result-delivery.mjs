@@ -429,9 +429,22 @@ export function emergencyDraftConflict(data) {
   const isBlock = actionKey.includes('block') && !isUnblock
   if (wantsUnblock && !isUnblock) return `用户意图是解除封禁，但冻结动作是 ${actionKey}`
   if (wantsBlock && !isBlock) return `用户意图是封禁，但冻结动作是 ${actionKey}`
+  const wantsFirewall = /防火墙|网络设备|跨厂商|opnsense|(?<![\w-])(?:un)?block-ip(?![\w-])/i.test(intent)
+  const wantsHost = /主机(?:侧|设备|上)|\bedr\b|\bwazuh\b/i.test(intent)
+  if (wantsFirewall && /^(?:host-)(?:un)?block-ip(?:-port)?$/.test(actionKey)) {
+    return `用户指定防火墙动作，但冻结动作是 ${actionKey}`
+  }
+  if (wantsHost && /^(?:un)?block-ip$/.test(actionKey)) {
+    return `用户指定主机动作，但冻结动作是 ${actionKey}`
+  }
   const params = record(snapshot.params) ?? {}
   if (snapshotValue(params, ['port']) && /^host-(?:un)?block-ip$/.test(actionKey)) {
     return `用户指定了端口，但冻结动作 ${actionKey} 不包含端口`
+  }
+  const ruleName = snapshotValue(params, ['rule_name'])
+  if (actionKey === 'block-ip' && !ruleName) return '防火墙封禁草案缺少规则名称'
+  if (actionKey === 'unblock-ip' && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(ruleName ?? '')) {
+    return '防火墙解封草案缺少原规则 UUID'
   }
   return null
 }
@@ -441,6 +454,8 @@ export function emergencyDraftMarkdown(data, nativeQuestion = false) {
   const snapshot = emergencySnapshot(data)
   const actionKey = snapshotValue(snapshot, ['action_key', 'action'])
   const actionNames = {
+    'block-ip': '在防火墙上封禁源 IP',
+    'unblock-ip': '在防火墙上解除源 IP 封禁',
     'host-block-ip': '封禁源 IP',
     'host-block-ip-port': '封禁源 IP 的指定端口',
     'host-unblock-ip': '解除源 IP 封禁',
@@ -456,6 +471,7 @@ export function emergencyDraftMarkdown(data, nativeQuestion = false) {
   const parameters = [
     snapshotValue(params, ['src_ip']) ? `源 IP \`${snapshotValue(params, ['src_ip'])}\`` : null,
     snapshotValue(params, ['port']) ? `端口 \`${snapshotValue(params, ['port'])}\`` : null,
+    snapshotValue(params, ['rule_name']) ? `规则标识 \`${snapshotValue(params, ['rule_name'])}\`` : null,
     snapshotValue(params, ['user']) ? `用户 \`${snapshotValue(params, ['user'])}\`` : null,
   ].filter(Boolean).join('；')
   const execution = [

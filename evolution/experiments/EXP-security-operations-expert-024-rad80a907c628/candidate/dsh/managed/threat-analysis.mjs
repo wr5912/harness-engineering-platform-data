@@ -18,8 +18,8 @@ const automationTool = 'analyze_pending_threat_incidents'
 const continuousBatchSize = 1
 const manualToolTimeoutMs = 36 * 60 * 1000
 const automationToolTimeoutMs = 45 * 60 * 1000
-const heartbeatSeconds = 120
 const pendingTimeoutMs = 2 * 60 * 1000
+const processedOccurrenceLimit = 256
 
 export function apply(ctx, config = {}, dependencies = {}) {
   const openMcpGroupBridge = dependencies.openMcpGroupBridge ?? startMcpGroupBridge
@@ -30,7 +30,7 @@ export function apply(ctx, config = {}, dependencies = {}) {
   const scheduledSteps = new Map()
   const originalRoutes = new Map()
   let activeAutomation
-  let lastAutomationFinishedAt = 0
+  const processedOccurrences = new Set()
   // request/header 和本步 user/message 尚未落盘；只冻结原生 inbox 本次实际接纳的来源。
   ctx.on('agent/pre-step', async ({ agent, turn, step, messages, signal }, next) => {
     scheduledSteps.delete(agent.id)
@@ -166,22 +166,32 @@ export function apply(ctx, config = {}, dependencies = {}) {
         ? scheduledBatch(scheduled.events) : undefined
       if (expected?.batchSize !== args.batch_size) throw new Error('trusted Schedule trigger required')
       scheduled.consumed = true
-      const occurrenceAt = scheduledOccurrenceAt(scheduled.events)
-      const occurrenceTime = occurrenceAt === undefined ? undefined : Date.parse(occurrenceAt)
-      if (Number.isFinite(occurrenceTime)
-        && occurrenceTime <= Math.max(lastAutomationFinishedAt, Date.now() - heartbeatSeconds * 2 * 1000)) {
+      const trigger = scheduledAutomationReminder(scheduled.events)
+      const occurrenceKey = trigger && `${trigger.scheduleId}\u0000${trigger.occurrenceAt}`
+      if (occurrenceKey && processedOccurrences.has(occurrenceKey)) {
         return batchResult('skipped_stale', args.batch_size, 'stale')
       }
+      if (occurrenceKey) rememberOccurrence(processedOccurrences, occurrenceKey)
       if (activeAutomation) {
         return { ...batchResult('skipped_busy', args.batch_size, 'busy'),
           ...(activeAutomation.incidentId ? { active_incident_id: activeAutomation.incidentId } : {}) }
       }
       activeAutomation = {}
       try {
-        let incidentIds
+        let pendingResult
         try {
-          incidentIds = pendingIncidentIds(await fetchPending(ctx, config, exec, openMcpGroupBridge))
+          pendingResult = await fetchPending(ctx, config, exec, openMcpGroupBridge)
         } catch (error) {
+          return { ...batchResult('failed', args.batch_size, 'pending_fetch_failed'), failed: 1,
+            error_type: error?.constructor?.name ?? 'Error' }
+        }
+        if (pendingResult?.error) {
+          return { ...batchResult('failed', args.batch_size, 'pending_fetch_failed'), failed: 1,
+            error_type: [pendingResult.error.type, pendingResult.error.status_code].filter(Boolean).join(' / ') || 'Error' }
+        }
+        let incidentIds
+        try { incidentIds = pendingIncidentIds(pendingResult) }
+        catch (error) {
           return { ...batchResult('failed', args.batch_size, 'pending_fetch_failed'), failed: 1,
             error_type: error?.constructor?.name ?? 'Error' }
         }
@@ -213,7 +223,6 @@ export function apply(ctx, config = {}, dependencies = {}) {
           failed: attempted - completed, stopped_reason: stoppedReason, results }
       } finally {
         activeAutomation = undefined
-        lastAutomationFinishedAt = Date.now()
       }
     },
   })
@@ -333,7 +342,19 @@ function batchResult(status, requested, stoppedReason) {
     completed: 0, skipped_locked: 0, failed: 0, stopped_reason: stoppedReason, results: [] }
 }
 
+function rememberOccurrence(processedOccurrences, key) {
+  if (processedOccurrences.has(key)) return
+  processedOccurrences.add(key)
+  while (processedOccurrences.size > processedOccurrenceLimit) {
+    processedOccurrences.delete(processedOccurrences.values().next().value)
+  }
+}
+
 export function scheduledBatch(events) {
+  return scheduledAutomationReminder(events)?.payload
+}
+
+function scheduledAutomationReminder(events) {
   const event = events.findLast(item => item.type === 'user/message' && item.data?.source?.kind === 'schedule')
   if (!event || events.findLast(item => item.type === 'user/message') !== event) return undefined
   const text = event.data.content?.filter(item => item.type === 'text').map(item => item.text).join('')
@@ -341,17 +362,25 @@ export function scheduledBatch(events) {
   const single = lines.find(item => item.startsWith('reminder_prompt_json: '))
   const recurring = lines.find(item => item.startsWith('reminders_json: '))
   try {
-    let prompt
-    if (single) prompt = JSON.parse(single.slice('reminder_prompt_json: '.length))
+    let reminder
+    if (single) reminder = {
+      prompt: JSON.parse(single.slice('reminder_prompt_json: '.length)),
+      scheduleId: JSON.parse(lines.find(item => item.startsWith('schedule_id_json: '))?.slice('schedule_id_json: '.length)),
+      occurrenceAt: lines.find(item => item.startsWith('occurrence_at: '))?.slice('occurrence_at: '.length),
+    }
     else if (recurring) {
       const reminders = JSON.parse(recurring.slice('reminders_json: '.length))
       if (!Array.isArray(reminders) || reminders.length === 0) return undefined
       const matches = reminders.filter(item => isExactAutomationPrompt(item?.reminder_prompt))
       // 不劫持混合批次；其他提醒仍交给原模型处理。
       if (matches.length !== reminders.length) return undefined
-      prompt = matches.at(-1).reminder_prompt
+      const latest = matches.slice().sort((left, right) => Date.parse(right?.occurrence_at) - Date.parse(left?.occurrence_at))[0]
+      reminder = { prompt: latest.reminder_prompt, scheduleId: latest.schedule_id, occurrenceAt: latest.occurrence_at }
     } else return undefined
-    return automationPayload(prompt)
+    if (typeof reminder.scheduleId !== 'string' || !reminder.scheduleId
+      || typeof reminder.occurrenceAt !== 'string' || !Number.isFinite(Date.parse(reminder.occurrenceAt))) return undefined
+    const payload = automationPayload(reminder.prompt)
+    return payload && { payload, scheduleId: reminder.scheduleId, occurrenceAt: reminder.occurrenceAt }
   } catch { return undefined }
 }
 
@@ -368,19 +397,7 @@ function isExactAutomationPrompt(prompt) {
 }
 
 export function scheduledOccurrenceAt(events) {
-  const event = events.findLast(item => item.type === 'user/message' && item.data?.source?.kind === 'schedule')
-  if (!event || events.findLast(item => item.type === 'user/message') !== event) return undefined
-  const text = event.data.content?.filter(item => item.type === 'text').map(item => item.text).join('')
-  const recurring = text?.split('\n').find(item => item.startsWith('reminders_json: '))
-  if (!recurring) return undefined
-  try {
-    const reminders = JSON.parse(recurring.slice('reminders_json: '.length))
-    if (!Array.isArray(reminders) || reminders.length === 0) return undefined
-    if (reminders.some(item => !isExactAutomationPrompt(item?.reminder_prompt))) return undefined
-    const occurrences = reminders.map(item => item?.occurrence_at)
-      .filter(item => typeof item === 'string' && Number.isFinite(Date.parse(item)))
-    return occurrences.sort((left, right) => Date.parse(left) - Date.parse(right)).at(-1)
-  } catch { return undefined }
+  return scheduledAutomationReminder(events)?.occurrenceAt
 }
 
 export function pendingIncidentIds(value) {

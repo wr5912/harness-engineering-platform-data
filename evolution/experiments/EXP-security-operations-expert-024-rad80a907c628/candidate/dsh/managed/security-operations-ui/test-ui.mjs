@@ -5,12 +5,13 @@ import { runInNewContext } from 'node:vm'
 const entries = new Map()
 const storage = new Map()
 const groupModes = []
+const styleTexts = []
 let plugin
 let states = []
 let cursor = 0
 let effects
 const requests = []
-const pageDocument = { baseURI: 'http://localhost/', createElement() { return { dataset: {} } }, head: { appendChild() {} } }
+const pageDocument = { baseURI: 'http://localhost/', createElement() { return { dataset: {} } }, head: { appendChild(style) { styleTexts.push(style.textContent) } } }
 const responseOverview = {
   windowHours: 24, parent: { state: 'idle', active: 0, sessions: 0, toolCalls: 0, skillLoads: 0 },
   roles: ['delegate_threat_analysis', 'delegate_fault_analysis', 'delegate_response_planning'].map(id =>
@@ -62,10 +63,6 @@ const context = {
     assert.equal(name, 'locale')
     return { getSnapshot: () => localeSnapshot, subscribe(listener) { notifyLocale = listener; return () => {} } }
   } },
-  sessions: { list: { subscribe() { return () => {} }, getSnapshot: () => sessionSnapshot } },
-  workspaces: { create: async () => ({ workspaceId: 'workspace-id' }), list: { getSnapshot: () => ({ items: [] }) } },
-  uiWorkspace: { openWorkspace: async () => {} },
-  remote: { agentPresets: { select: async () => ({ ok: true }) } },
   get(name) {
     return {
       workspaces: { list: { subscribe() {}, getSnapshot: () => workspaceSnapshot } },
@@ -83,6 +80,7 @@ const context = {
   sidebarRightTabs: { register() {} },
 }
 apply(context)
+assert.doesNotMatch(styleTexts[0], /选择工作区|Choose workspace|添加工作区|Add workspace/)
 assert.deepEqual(groupModes, ['flat'])
 assert.deepEqual(selectedLocales, [])
 localeSnapshot = { mode: 'host', status: 'ready', value: { preference: 'en' } }
@@ -208,19 +206,6 @@ assert.equal(cards(tree).length, 1)
 cards(tree)[0].props.onClick()
 assert.deepEqual(opened, ['saved-session'])
 
-const fixedCalls = []
-const blank = { id: 'blank', blank: true, retainedBy: { mainView: 1 }, projectionValues: {} }
-const fixedContext = {
-  ...context,
-  sessions: { list: { subscribe() { return () => {} }, getSnapshot: () => ({ byId: { blank } }) } },
-  workspaces: { create: async ({ path }) => { fixedCalls.push(path); return { workspaceId: 'workspace-id' } },
-    list: { getSnapshot: () => ({ items: [{ workspaceId: 'other', sessionIds: ['blank'] }] }) } },
-  uiWorkspace: { openWorkspace: async id => { fixedCalls.push(id); fixedContext.workspaces.list.getSnapshot = () => ({ items: [{ workspaceId: id, sessionIds: ['blank'] }] }) } },
-  remote: { agentPresets: { select: async (id, preset) => { fixedCalls.push([id, preset]); return { ok: true } } } },
-}
-apply(fixedContext)
-await new Promise(resolve => setTimeout(resolve, 0))
-assert.deepEqual(fixedCalls, ['/work/harness/workspace', 'workspace-id', ['blank', 'security-operations-expert']])
 for (const prefix of ['/', '/assistant/', '/portal/apps/assistant/']) {
   pageDocument.baseURI = `https://portal.example${prefix}?token=entry-only#view`
   states = []; effects = []
@@ -237,4 +222,4 @@ for (const prefix of ['/', '/assistant/', '/portal/apps/assistant/']) {
   assert.deepEqual(nodes(overview, item => item.props?.['data-runtime-state']).map(item => item.props['data-runtime-state']), ['idle', 'idle', 'idle', 'idle'])
   cleanup()
 }
-console.log('固定工作区和预设、概览展开、数字员工增改删与持久化、快捷入口与三种应用前缀通过')
+console.log('概览展开、数字员工增改删与持久化、快捷入口、三种应用前缀及通用工作区控件保留通过')

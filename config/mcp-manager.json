@@ -41,6 +41,178 @@
         "names": []
       },
       "headers": []
+    },
+    {
+      "id": "policy-configuration",
+      "serverName": "policy-configuration",
+      "description": "",
+      "enabled": false,
+      "url": "http://172.16.138.232:50500/mcp/group",
+      "headers": [
+        {
+          "name": "Authorization"
+        }
+      ],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "emergency-action",
+      "serverName": "emergency-action",
+      "enabled": false,
+      "url": "http://172.16.138.232:50500/mcp/group-3",
+      "headers": [
+        {
+          "name": "Authorization"
+        }
+      ],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "sec-ops",
+      "serverName": "sec-ops",
+      "description": "",
+      "enabled": true,
+      "url": "http://172.16.138.232:50500/mcp/security-operations-expert",
+      "headers": [],
+      "tools": {
+        "mode": "selected",
+        "names": [
+          "search_graph_assets",
+          "get_graph_resolve_ip_host",
+          "get_soc_asset_by_asset_id",
+          "list_soc_asset",
+          "get_soc_asset_biz_systems",
+          "get_soc_asset_vulnerabilities",
+          "get_ingest_devices_by_asset_by_asset_id",
+          "get_graph_node_detail",
+          "get_graph_path_query",
+          "get_reachability_path_by_ip",
+          "get_graph_flow_host_pair_ports",
+          "get_reachability_cross_signal",
+          "get_graph_compliance_violations",
+          "get_graph_coverage",
+          "get_event_by_id"
+        ]
+      }
+    },
+    {
+      "id": "inspection",
+      "serverName": "inspection",
+      "description": "",
+      "enabled": true,
+      "url": "http://172.16.138.232:18150/mcp/inspection",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-correlate",
+      "description": "SOC 关联分析服务：事件研判与处置、关联和推理规则、威胁情报、IOC、KEV 及 ATT&CK 技术管理",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18085/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-detect",
+      "description": "SOC 检测服务:SIGMA 编译预检、操作符元数据、检测规则、告警查询、白名单",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18084/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-event",
+      "description": "SOC 安全事件查询服务：事件检索、精确计数、字段聚合、字段能力及 ECS 标签查询",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:8083/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-graph",
+      "description": "SOC 安全图谱服务：拓扑建模、可达性和攻击路径分析、暴露风险、合规检测及图数据投影",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18088/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-ingest",
+      "description": "SOC 数据采集与策略运营服务：设备和插件管理、数据标准化、基线核查、策略分析迁移与下发",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18081/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-master",
+      "description": "SOC 基础主数据服务：资产、业务系统、设备型号、网络图层及动作下发模板管理",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18087/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "report-write",
+      "description": "用于威胁研判报告写入",
+      "enabled": true,
+      "url": "http://172.16.138.232:18150/mcp/persistence",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
     }
   ],
   "groups": [
@@ -66,6 +238,97 @@
             "threat_writeback",
             "threat_report",
             "analyze_threat_incident"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inspection-readonly",
+      "members": [
+        {
+          "serverId": "inspection",
+          "names": [
+            "list_executable_inspections",
+            "get_inspection_result"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        }
+      ]
+    },
+    {
+      "id": "threat-analysis-runtime",
+      "members": [
+        {
+          "serverId": "ai-soc-correlate",
+          "names": [
+            "get_correlate_incident_judge_pending",
+            "create_incident_judgement_claim",
+            "update_incident_judgement_result",
+            "create_correlate_incident_judgement_fail",
+            "get_correlate_threat_intel",
+            "get_correlate_intel_check"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18085/correlate/incident/{incidentId}",
+            "http://172.16.138.223:18085/correlate/reasoning/rules/{ruleId}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-event",
+          "names": [
+            "search_event"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        },
+        {
+          "serverId": "ai-soc-graph",
+          "names": [
+            "get_graph_lm_login_sequence",
+            "get_graph_flow_host_pair_ports"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18088/graph/enrich/topology/{assetId}",
+            "http://172.16.138.223:18088/graph/identity/asset/{assetId}/accounts"
+          ]
+        },
+        {
+          "serverId": "report-write",
+          "names": [
+            "save_persistence_result"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        },
+        {
+          "serverId": "ai-soc-detect",
+          "names": [],
+          "resourceUris": [
+            "http://172.16.138.223:18084/detect/whitelist/list"
+          ],
+          "resourceTemplates": [
+            "http://172.16.138.223:18084/detect/alert/{alertId}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-ingest",
+          "names": [],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18081/admin/ingest/devices/by-asset/{assetId}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-master",
+          "names": [],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18087/soc/asset/{assetId}",
+            "http://172.16.138.223:18087/soc/asset/{assetId}/importance",
+            "http://172.16.138.223:18087/soc/asset/{assetId}/biz-systems"
           ]
         }
       ]

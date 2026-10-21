@@ -19,9 +19,9 @@ import {
 const prompt = JSON.stringify({ type: 'threat-analysis.pending', version: 1, batchSize: 1 })
 let messageNumber = 0
 
-function scheduleEvent(value) {
+function scheduleEvent(value, scheduleId = 'schedule-single', occurrenceAt = new Date().toISOString()) {
   return { type: 'user/message', data: { id: `schedule-message-${++messageNumber}`, source: { kind: 'schedule' }, content: [
-    { type: 'text', text: `[SCHEDULE REMINDER]\nreminder_prompt_json: ${JSON.stringify(value)}` },
+    { type: 'text', text: `[SCHEDULE REMINDER]\nschedule_id_json: ${JSON.stringify(scheduleId)}\noccurrence_at: ${occurrenceAt}\nreminder_prompt_json: ${JSON.stringify(value)}` },
   ] } }
 }
 
@@ -249,16 +249,21 @@ test('后续普通消息不继承自动或交付专用路由', async () => {
 test('自然语言创建与删除任务所需固定合同写在唯一业务指令中', async () => {
   const { readFile } = await import('node:fs/promises')
   const instructions = await readFile(new URL('../dsh/workspace/AGENTS.md', import.meta.url), 'utf8')
-  assert.match(instructions, /不要求用户提供标题、内部 prompt、JSON、周期或批量参数/)
-  assert.match(instructions, /固定设置标题 `自动威胁研判`、`every_seconds: 120`/)
+  assert.match(instructions, /不要求用户提供标题、内部 prompt、JSON 或批量参数/)
+  assert.match(instructions, /受控业务实例未开放该能力时准确说明缺口/)
+  assert.ok(instructions.includes('`daily: {"time":"HH:mm:ss","time_zone":"Asia/Shanghai"}`'))
+  assert.match(instructions, /`every_seconds: XX\*60`/)
+  assert.ok(instructions.includes('`cron: {"expression":"*/30 9-17 * * *","time_zone":"Asia/Shanghai"}`'))
+  assert.ok(instructions.includes('`cron: {"expression":"0 18 * * *","time_zone":"Asia/Shanghai"}`'))
   assert.match(instructions, /`\{"type":"threat-analysis\.pending","version":1,"batchSize":1\}`/)
   assert.match(instructions, /上一条仍在运行时跳过本次心跳、不排队/)
-  assert.match(instructions, /必须先调用 `schedule_list`/)
-  assert.match(instructions, /直接使用其 ID 调用 `schedule_delete`/)
+  assert.match(instructions, /调用 `schedule_list`/)
+  assert.match(instructions, /修改周期用 `schedule_update`/)
+  assert.match(instructions, /删除用 `schedule_delete`/)
   assert.match(instructions, /删除只停止后续心跳/)
 })
 
-test('空列表、并发心跳、旧心跳和认领冲突遵守串行合同', async () => {
+test('空列表、并发心跳、重复到期和认领冲突遵守串行合同', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'threat-automation-'))
   const executable = join(directory, 'python3')
   const previousPath = process.env.PATH
@@ -266,7 +271,9 @@ test('空列表、并发心跳、旧心跳和认领冲突遵守串行合同', as
   await writeFile(executable, `#!/bin/sh
 if [ "$2" = "--pending" ]; then
   if [ "$THREAT_AUTOMATION_TEST_MODE" = "busy" ]; then sleep 0.2; fi
-  if [ "$THREAT_AUTOMATION_TEST_MODE" = "locked" ]; then
+  if [ "$THREAT_AUTOMATION_TEST_MODE" = "pending-error" ]; then
+    printf '%s\\n' '{"schema_version":"1.0","error":{"type":"SOCTransport","status_code":503}}'
+  elif [ "$THREAT_AUTOMATION_TEST_MODE" = "locked" ]; then
     printf '%s\\n' '{"schema_version":"1.0","data":{"rows":[{"incidentId":"INC-20261010-000001"},{"incidentId":"INC-20261010-000002"}]}}'
   else
     printf '%s\\n' '{"schema_version":"1.0","data":{"rows":[]}}'
@@ -295,6 +302,13 @@ fi
         stopped_reason: 'empty', results: [] })
     await assert.rejects(tool.execute({ batch_size: 1 }, instance.execute('duplicate')),
       /trusted Schedule trigger required/, '同一接纳消息不能重复执行')
+    const originalOccurrence = scheduledOccurrenceAt([events[0]])
+    await instance.prepare([scheduleEvent(prompt, 'schedule-single', originalOccurrence).data], 2)
+    const repeated = await tool.execute({ batch_size: 1 }, instance.execute('repeated-occurrence'))
+    assert.equal(repeated.status, 'skipped_stale', '同一 Schedule 到期时点只处理一次')
+    await instance.prepare([scheduleEvent(prompt, 'schedule-single', new Date(Date.parse(originalOccurrence) + 1000).toISOString()).data], 3)
+    assert.equal((await tool.execute({ batch_size: 1 }, instance.execute('next-occurrence'))).status, 'completed',
+      '不同到期时点即使相隔一秒也不受全局窗口抑制')
 
     process.env.THREAT_AUTOMATION_TEST_MODE = 'busy'
     instance = harness(events)
@@ -325,13 +339,22 @@ fi
       ['INC-20261010-000002', 'completed', 'run-completed'],
     ])
 
+    process.env.THREAT_AUTOMATION_TEST_MODE = 'pending-error'
+    events = [scheduleEvent(prompt)]
+    instance = harness(events)
+    tool = instance.definitions.get('analyze_pending_threat_incidents')
+    await instance.prepare([events[0].data])
+    const failedPending = await tool.execute({ batch_size: 1 }, instance.execute('pending-error'))
+    assert.equal(failedPending.status, 'failed')
+    assert.equal(failedPending.error_type, 'SOCTransport / 503')
+
+    process.env.THREAT_AUTOMATION_TEST_MODE = 'empty'
     events = [recurringEvent([prompt], new Date(Date.now() - 10 * 60 * 1000).toISOString())]
     instance = harness(events)
     tool = instance.definitions.get('analyze_pending_threat_incidents')
     await instance.prepare([events[0].data])
-    const stale = await tool.execute({ batch_size: 1 }, instance.execute('stale'))
-    assert.equal(stale.status, 'skipped_stale')
-    assert.equal(stale.stopped_reason, 'stale')
+    const delayed = await tool.execute({ batch_size: 1 }, instance.execute('delayed'))
+    assert.equal(delayed.status, 'completed', '首次接纳的独立到期时点不因墙钟延迟被直接抑制')
 
     events = [{ type: 'user/message', data: { source: { kind: 'user' }, content: [
       { type: 'text', text: prompt },

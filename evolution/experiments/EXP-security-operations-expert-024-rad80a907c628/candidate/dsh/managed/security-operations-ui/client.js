@@ -65,8 +65,6 @@
   ];
   var PLUGIN_ID = "dsh-security-operations-ui";
   var STATUS_KIND = "security-operations-status";
-  var WORKSPACE_PATH = "/work/harness/workspace";
-  var AGENT_PRESET = "security-operations-expert";
   var EMPLOYEES_KEY = "dsh.securityOperations.digitalEmployees.v1";
   function loadEmployees() {
     try {
@@ -278,8 +276,6 @@
         return /* @__PURE__ */ React.createElement("section", { className: "soc-status", "aria-labelledby": "soc-status-title" }, /* @__PURE__ */ React.createElement("header", null, /* @__PURE__ */ React.createElement("strong", { id: "soc-status-title" }, "\u7CFB\u7EDF\u6D88\u606F"), /* @__PURE__ */ React.createElement("span", null, "\u5F53\u524D\u4F1A\u8BDD")), /* @__PURE__ */ React.createElement("div", { className: "soc-status__metrics" }, metrics.map(([value, label]) => /* @__PURE__ */ React.createElement("div", { key: label }, /* @__PURE__ */ React.createElement("strong", null, value), /* @__PURE__ */ React.createElement("span", null, label)))), /* @__PURE__ */ React.createElement("p", { className: failed ? "soc-status__message soc-status__message--error" : "soc-status__message" }, message));
       }
       const css = `
-      div:has(> button[aria-label="\u9009\u62E9\u5DE5\u4F5C\u533A"]),div:has(> button[aria-label="Choose workspace"]){display:none}
-      button[aria-label="\u6DFB\u52A0\u5DE5\u4F5C\u533A"],button[aria-label="Add workspace"]{display:none}
       .soc-brand-mark{display:block;object-fit:contain}
       .soc-brand-name{font-size:14px;font-weight:600;white-space:nowrap}
       .soc-hero-brand{display:inline-flex;align-items:center;gap:12px;white-space:nowrap}
@@ -366,7 +362,7 @@
       @media(max-width:1100px){.soc-quick__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.soc-runtime__header{flex-wrap:wrap}.soc-runtime__summary{flex-basis:100%;order:3}.soc-runtime__summary div:first-child{padding-left:0;border-left:0}}
       @media(max-width:720px){.soc-quick__grid{grid-template-columns:1fr}.soc-quick__toolbar{align-items:stretch;flex-direction:column}.soc-quick__search{width:100%;box-sizing:border-box;margin-left:0}.soc-employee-form{grid-template-columns:1fr}.soc-employee-form label:nth-child(3){grid-column:auto}}
     `;
-      const inject = ["slots", "sidebarRight", "sidebarRightTabs", "uiWorkspace", "workspaces", "sessions", "remote.agentPresets", "locale", "configForms"];
+      const inject = ["slots", "sidebarRight", "sidebarRightTabs", "uiWorkspace", "locale", "configForms"];
       function apply(ctx) {
         ctx.effect(() => {
           const preference = ctx.configForms.get("locale");
@@ -386,59 +382,6 @@
           setDefault();
           return unsubscribe;
         }, "security-operations-ui: default Chinese locale");
-        ctx.effect(() => {
-          let disposed = false;
-          let workspaceId;
-          let moving = false;
-          const presetAttempts = /* @__PURE__ */ new Set();
-          const reconcile = () => {
-            if (disposed || !workspaceId) return;
-            const blank = Object.values(ctx.sessions.list.getSnapshot().byId).find((session) => session.blank && (session.retainedBy.mainView ?? 0) > 0);
-            if (!blank) return;
-            const owner = ctx.workspaces.list.getSnapshot().items.find((item) => item.sessionIds.includes(blank.id));
-            if (owner?.workspaceId !== workspaceId) {
-              if (moving) return;
-              moving = true;
-              void ctx.uiWorkspace.openWorkspace(workspaceId).then(
-                () => {
-                  moving = false;
-                  reconcile();
-                },
-                (error) => {
-                  moving = false;
-                  console.error("\u56FA\u5B9A\u5DE5\u4F5C\u533A\u5207\u6362\u5931\u8D25", error);
-                }
-              );
-              return;
-            }
-            if (blank.projectionValues?.agentPreset === AGENT_PRESET || presetAttempts.has(blank.id)) return;
-            presetAttempts.add(blank.id);
-            void ctx.remote.agentPresets.select(blank.id, AGENT_PRESET).then(
-              (result) => {
-                if (!result.ok) console.error("\u56FA\u5B9A Agent \u9884\u8BBE\u5931\u8D25", result.error);
-              },
-              (error) => {
-                console.error("\u56FA\u5B9A Agent \u9884\u8BBE\u5931\u8D25", error);
-              }
-            );
-          };
-          const unsubscribe = ctx.sessions.list.subscribe(reconcile);
-          void ctx.workspaces.create({ path: WORKSPACE_PATH }).then(
-            (workspace) => {
-              if (!disposed) {
-                workspaceId = workspace.workspaceId;
-                reconcile();
-              }
-            },
-            (error) => {
-              console.error("\u6CE8\u518C\u56FA\u5B9A\u5DE5\u4F5C\u533A\u5931\u8D25", error);
-            }
-          );
-          return () => {
-            disposed = true;
-            unsubscribe();
-          };
-        }, "security-operations-ui: fixed workspace and agent preset");
         ctx.effect(() => {
           try {
             if (localStorage.getItem("dsh.workspace.view.v5") !== null) return;

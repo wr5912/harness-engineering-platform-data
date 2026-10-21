@@ -49,6 +49,19 @@ function fixtureRuntime(ask, resolver = (source, raw) => `mcp__${source}__${raw}
 }
 
 const endpointBody = { request_id: 'basic-endpoint-request', operation: 'ADD', action: 'ALLOW', source_query: '基础主机', destination_query: '基础服务', protocol: 'TCP', ports: [443] }
+
+test('应急冻结草案核对防火墙与主机动作及规则标识', () => {
+  const draft = (intent, action_key, params = {}) => ({ snapshot: { content: { intent, action_key, params } } })
+  const ruleId = '12345678-1234-4123-8123-123456789abc'
+  assert.match(delivery.emergencyDraftConflict(draft('在防火墙上封禁源 IP', 'host-block-ip')), /防火墙动作/)
+  assert.match(delivery.emergencyDraftConflict(draft('在主机上封禁源 IP', 'block-ip', { rule_name: 'block-test' })), /主机动作/)
+  assert.match(delivery.emergencyDraftConflict(draft('在防火墙上封禁源 IP', 'block-ip')), /规则名称/)
+  assert.match(delivery.emergencyDraftConflict(draft('在防火墙上解除封禁', 'unblock-ip', { rule_name: 'block-test' })), /规则 UUID/)
+  assert.equal(delivery.emergencyDraftConflict(draft('在防火墙上封禁源 IP', 'block-ip', { rule_name: 'block-test' })), null)
+  assert.equal(delivery.emergencyDraftConflict(draft('在防火墙上解除封禁', 'unblock-ip', { rule_name: ruleId })), null)
+  assert.match(delivery.emergencyDraftMarkdown({ operation_id: operationId, ...draft('在防火墙上解除封禁', 'unblock-ip', { rule_name: ruleId }) }), /规则标识/)
+})
+
 function endpoints() {
   return { request_id: endpointBody.request_id, resolution_status: 'SELECTION_REQUIRED', candidate_set_digest: digest, result_markdown: '基础主机有两个候选，请选择本次端点。',
     source: { candidates: [{ candidate_id: candidateId('b'), label: '基础主机一', ip: '192.0.2.10' }, { candidate_id: candidateId('c'), label: '基础主机二', ip: '192.0.2.20' }] },

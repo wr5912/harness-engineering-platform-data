@@ -222,6 +222,97 @@ def _require_readable_text(value: Any, field: str) -> str:
     return value
 
 
+ALLOWED_TARGET_KEYS = {"host_name", "ip", "port", "asset_id"}
+
+
+def _require_structured_target(value: Any, field: str) -> None:
+    if not isinstance(value, Mapping):
+        raise ValueError(f"{field} must be an object")
+    unexpected = set(value) - ALLOWED_TARGET_KEYS
+    if unexpected:
+        raise ValueError(f"{field} contains unknown fields: {sorted(unexpected)}")
+    for key in ("host_name", "ip", "asset_id"):
+        item = value.get(key)
+        if item is not None:
+            _require_readable_text(item, f"{field}.{key}")
+    port = value.get("port")
+    if port is not None and (isinstance(port, bool) or not isinstance(port, int) or not 1 <= port <= 65535):
+        raise ValueError(f"{field}.port must be an integer between 1 and 65535")
+    if not value.get("ip") and not value.get("asset_id"):
+        raise ValueError(f"{field} requires an ip or asset_id as a machine-readable identifier")
+
+
+def _require_observed_target(value: Mapping[str, Any], five_source: Mapping[str, Any], field: str) -> None:
+    snapshot = five_source.get("event_snapshot") or {}
+    enriched = five_source.get("enriched_context") or {}
+    graph = enriched.get("graph") or {}
+    asset = enriched.get("asset") or {}
+    edr = enriched.get("edr_detail") or {}
+    targets: list[dict[str, Any]] = []
+    ports: set[tuple[str, str]] = set()
+
+    for entity in snapshot.get("entities") or []:
+        if not isinstance(entity, Mapping):
+            continue
+        ips = [entity.get("ip")]
+        hosts = [entity.get("host_name") or entity.get("hostname")]
+        if entity.get("entity_type") == "ip":
+            ips.append(entity.get("value"))
+        if entity.get("entity_type") == "hostname":
+            hosts.append(entity.get("value"))
+        for alias in entity.get("aliases") or []:
+            if isinstance(alias, Mapping) and alias.get("type") in {"ip", "hostname"}:
+                (hosts if alias["type"] == "hostname" else ips).append(alias.get("value"))
+        for ip in set(ips) - {None, ""} or {None}:
+            for host in set(hosts) - {None, ""} or {None}:
+                targets.append({"asset_id": entity.get("asset_id"), "ip": ip, "host_name": host})
+    for collection in (asset.get("entities") or [], graph.get("related_hosts") or []):
+        for row in collection:
+            if isinstance(row, Mapping):
+                targets.append({"asset_id": row.get("asset_id"), "ip": row.get("ip"),
+                                "host_name": row.get("host_name") or row.get("hostname")})
+    for hint in graph.get("path_hints") or []:
+        if not isinstance(hint, Mapping):
+            continue
+        for side in ("src", "dst"):
+            ip = hint.get(f"{side}_ip")
+            targets.append({"asset_id": hint.get(f"{side}_asset_id"), "ip": ip,
+                            "host_name": hint.get(f"{side}_host")})
+        for port in hint.get("dst_ports") or []:
+            if hint.get("dst_ip") and port not in (None, ""):
+                ports.add((str(hint["dst_ip"]), str(port)))
+    networks = [row for name in ("firewall_sessions", "ids_probe_alerts", "login_sequence")
+                for row in graph.get(name) or []]
+    for entity in (edr.get("assets") or []) + (edr.get("entities") or []):
+        if not isinstance(entity, Mapping):
+            continue
+        for segment in entity.get("activity_segments") or []:
+            if not isinstance(segment, Mapping):
+                continue
+            networks.extend(segment.get("network_details") or [])
+    for network in networks:
+        if not isinstance(network, Mapping):
+            continue
+        for side in ("source", "destination"):
+            ip, port = network.get(f"{side}_ip"), network.get(f"{side}_port")
+            if ip and port not in (None, ""):
+                ports.add((str(ip), str(port)))
+            if ip:
+                targets.append({"ip": ip, "host_name": network.get(f"{side}_host")})
+
+    matches = [row for row in targets if all(
+        str(row.get(key)) == str(item) if key != "host_name"
+        else str(row.get(key) or "").casefold() == str(item).casefold()
+        for key, item in value.items() if key != "port" and item is not None
+    )]
+    if not matches:
+        raise ValueError(f"{field} does not match one observed five-source target")
+    if value.get("port") is not None and not any(
+        (str(row.get("ip")), str(value["port"])) in ports for row in matches if row.get("ip")
+    ):
+        raise ValueError(f"{field}.port is not observed on the same target endpoint")
+
+
 def _reject_incident_or_rule_declaration(
     value: str,
     snapshot: Mapping[str, Any],
@@ -699,10 +790,19 @@ def validate_forced_output(
             )
     for index, action in enumerate(output["recommended_actions"]):
         if isinstance(action, Mapping):
-            for field in ("action", "target", "reason"):
+            for field in ("action", "reason"):
                 readable_fields.append(
                     (f"recommended_actions[{index}].{field}", action.get(field))
                 )
+            _require_structured_target(
+                action.get("target"), f"recommended_actions[{index}].target"
+            )
+            _require_observed_target(
+                action["target"], five_source, f"recommended_actions[{index}].target"
+            )
+            priority = action.get("priority")
+            if isinstance(priority, str) and priority and priority not in {"P1", "P2", "P3"}:
+                warnings.append(f"recommended_actions[{index}].priority 非 P1/P2/P3：{priority}")
     for field, value in readable_fields:
         _require_readable_text(value, field)
     return warnings

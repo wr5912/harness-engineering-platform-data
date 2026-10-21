@@ -28,7 +28,10 @@ test('实际新实例seed可通过manager snapshot，未配置资源的成员不
   const platformLink = value.servers.find(server => server.id === 'threat-analysis-runtime')
   assert.equal(platformLink?.enabled, false)
   assert.equal(platformLink?.serverName, 'threat-analysis-runtime')
-  assert.match(platformLink?.url ?? '', /\/mcp\/groups\/threat-analysis-runtime\/v2$/)
+  const expectedGroupUrl = 'http://10.0.160.32:18120/hep/mcp/groups/threat-analysis-runtime/v2'
+  assert.equal(platformLink?.url, expectedGroupUrl)
+  assert.match(readFileSync(new URL('../dsh/managed/security-operations-expert.patch.yml', import.meta.url), 'utf8'),
+    /url: http:\/\/10\.0\.160\.32:18120\/hep\/mcp\/groups\/threat-analysis-runtime\/v2/)
 
 })
 

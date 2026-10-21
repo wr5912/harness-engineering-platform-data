@@ -10,6 +10,7 @@ import re
 import signal
 import sys
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 
 import evidence_collection
@@ -123,8 +124,9 @@ def _analyze(incident_id, output_root, config, cancel_analysis_deadline=None, ru
     if cancel_analysis_deadline is not None:
         cancel_analysis_deadline()
     if result['status'] == 'completed':
+        analyzed_at = datetime.now(timezone.utc).isoformat(timespec='seconds')
         try:
-            delivery = build_delivery(result)
+            delivery = build_delivery(result, analyzed_at=analyzed_at)
             # 先保留报告与回写请求，即使远端保存失败也可独立检查与再次交付。
             (output / 'report.html').write_text(delivery['report_html'], encoding='utf-8')
             storage = {}
@@ -139,7 +141,7 @@ def _analyze(incident_id, output_root, config, cancel_analysis_deadline=None, ru
                 (output / 'writeback-error.json').write_text(json.dumps(state, ensure_ascii=False), encoding='utf-8')
                 storage['summary'] = state
             storage['report'] = persist(result, delivery['report_html'], gateway)['report']
-            delivery = build_delivery(result, storage=storage)
+            delivery = build_delivery(result, storage=storage, analyzed_at=analyzed_at)
             (output / 'summary.json').write_text(json.dumps(delivery['summary'], ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
             (output / 'summary.md').write_text(delivery['markdown'], encoding='utf-8')
             (output / 'report.html').write_text(delivery.pop('report_html'), encoding='utf-8')
@@ -187,7 +189,12 @@ def pending(output_root, config, page_size=100):
     output = Path(output_root) / 'automation'
     gateway = build_gateway(config, output / 'mcp-raw')
     client = SocJudgementClient(gateway, output)
-    return {'schema_version': '1.0', 'data': client.pending(page_size)}
+    try:
+        return {'schema_version': '1.0', 'data': client.pending(page_size)}
+    except Exception as error:
+        return {'schema_version': '1.0', 'error': {
+            'type': getattr(error, 'error_type', None) or type(error).__name__,
+            'status_code': getattr(error, 'code', None)}}
 
 
 def cleanup(run_id, output_root, config):

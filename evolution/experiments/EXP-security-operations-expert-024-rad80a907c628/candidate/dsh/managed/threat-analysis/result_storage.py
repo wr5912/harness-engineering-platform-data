@@ -57,9 +57,10 @@ def build_writeback(run, report_html):
 
 
 class SocWriteError(RuntimeError):
-    def __init__(self, code=None):
+    def __init__(self, code=None, error_type=None):
         super().__init__('SOC judgement MCP request failed')
         self.code = code
+        self.error_type = error_type
 
 
 class SocJudgementClient:
@@ -89,7 +90,8 @@ class SocJudgementClient:
             raise SocWriteError()
         if classify_response(response) not in (CallOutcome.SUCCESS_WITH_DATA, CallOutcome.SUCCESS_EMPTY):
             inner = response.get('result')
-            raise SocWriteError(inner.get('code', response.get('status_code')) if isinstance(inner, dict) else response.get('status_code'))
+            code = inner.get('code', response.get('status_code')) if isinstance(inner, dict) else response.get('status_code')
+            raise SocWriteError(code, response.get('error_type'))
         return extract_result_data(response)
 
     def claim(self, incident_id):

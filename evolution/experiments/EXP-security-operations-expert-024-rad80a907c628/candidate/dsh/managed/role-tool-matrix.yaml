@@ -68,6 +68,8 @@ parent_direct_tools:
     - delegate_threat_analysis
     - delegate_fault_analysis
     - delegate_response_planning
+  threat-automation:
+    - analyze_pending_threat_incidents
 denied_mcp_tools:
   - mcp__sec-ops__prepare_policy_configuration
   - mcp__sec-ops__get_policy_configuration_status
@@ -78,5 +80,14 @@ denied_mcp_tools:
   - mcp__policy-configuration__decide_policy_configuration
   - mcp__emergency-action__confirm_emergency_action
   - mcp__emergency-action__submit_emergency_action
-  threat-automation:
-    - analyze_pending_threat_incidents
+runtime_capabilities:
+  local_tools:
+    - skill
+    - analyze_threat_incident
+    - delegate_threat_analysis
+    - delegate_fault_analysis
+  local_model_routes:
+    - provider: threat-analysis-delivery
+      model: fixed-summary
+    - provider: security-operation-delivery
+      model: fixed-operation-result
