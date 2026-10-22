@@ -1,0 +1,7 @@
+{
+  "case_id": "U-VOICE-002",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：预期要求判断会话自动播报/摘要功能的行为（每次主 LLM Call 正常完成且含可见正文时生成约30字摘要、共用 /api/remote.mux、设置页保存字数/提示词/模型等）。但证据中的 assistant_texts 与 tool_events 均未提供任何关于摘要生成、字数、mux 音频流、设置保存的可核验事实；被测回答只涉及威胁研判与 Schedule 提醒的澄清，与被评要求无直接对应。无法据此判定通过或不满足，故为 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-VOICE-002"
+}

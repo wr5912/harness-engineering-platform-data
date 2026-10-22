@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请研判威胁事件。"
+  ],
+  "assistant_texts": [
+    "请提供需要研判的明确威胁事件 ID（格式为 `INC-YYYYMMDD-NNNNNN`，例如 `INC-20261022-000123`）。\n\n收到有效事件 ID 后，我会委派威胁研判子智能体执行固定取证与研判流程，并返回程序生成的正式摘要和可下载报告链接。本轮尚未执行任何研判。"
+  ],
+  "session_id": "session-5625cde6-65ae-4d9b-bc5d-b8e05a215d00",
+  "turns": [
+    {
+      "assistant_text": "请提供需要研判的明确威胁事件 ID（格式为 `INC-YYYYMMDD-NNNNNN`，例如 `INC-20261022-000123`）。\n\n收到有效事件 ID 后，我会委派威胁研判子智能体执行固定取证与研判流程，并返回程序生成的正式摘要和可下载报告链接。本轮尚未执行任何研判。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c65e8a67-29cd-4b4d-8beb-07334845318f"
+    }
+  ]
+}

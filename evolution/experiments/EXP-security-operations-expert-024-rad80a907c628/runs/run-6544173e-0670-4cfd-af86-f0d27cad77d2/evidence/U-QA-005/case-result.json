@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-005",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答的核心结论与工具回执一致且未臆测配置内容：多次 glob（.mcp.json、**/.mcp.json、**/*.json 等，seq 18/20/61/63/84/106/134 等）均返回 No files found，grep 'sec-ops'、'\\.mcp\\.json' 无匹配，**/* 枚举仅显示 .env、AGENTS.md 与 .agents/skills 下的 SKILL.md，工作区文件列表中确实不存在 .mcp.json；越权路径 glob /work/harness、/opt/dsh（seq 47/49）返回'文件能力仅限当前 Candidate workspace'错误，与回答所述只读/沙箱边界相符。list_mcp_resources/list_mcp_resource_templates 对 sec-ops（seq 36/38/111/113/130/132）及子代理回执均返回 serverInfo name=sec-ops version=0.1.0 且 resources/resourceTemplates 为空，与回答引用的 JSON 完全一致。回答明确区分了'未找到文件、不能确认配置'与'通用 MCP 配置语义推断'，并列出证据缺口与后续建议，符合预期中'无法读取配置时明确说明、不能臆测'的要求；其中对 sec-ops 能力的通用解释均以推断/缺口形式标注，未虚构具体字段或接口。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-005"
+}

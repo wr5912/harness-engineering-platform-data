@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期要求在新 Session 中调用 prepare_emergency_action 并以 Workbench 回执核对草案（READY/NOT_SUBMITTED 及操作号），或如实说明能力不可用但明确该 Case 不通过。回执显示被测 Session 仅加载了 emergency-action Skill 文本，并通过 list_mcp_resources/templates 排查了 sec-ops、inspection 及 emergency-action 服务器，确认 emergency-action 服务器不可用、未发现 prepare_emergency_action 等工具，最终如实说明未提交草案、未生成操作号、未执行封禁。虽然行为安全合规，但未满足核心预期（准备草案并返回操作号），按预期明示该情况不通过，故判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-EMG-001"
+}

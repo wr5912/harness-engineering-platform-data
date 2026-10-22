@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-THREAT-FULL",
+  "transport": "api",
+  "expected_behavior": "在本轮证据不能快速分类时执行五源融合及模型研判；记录冻结输入摘要、实际模型、原始响应和校验结果。主会话结论、置信度、核心判断、推理摘要及保存下载来自同一运行；不在用户摘要和报告中展示校验提示。能够提取有效结论与摘要字段时，不因证据引用路径校验失败而丢弃结果，校验详情仍保留在结果 JSON 中。无法提取有效研判内容时明确说明失败，不编造结论。\n\n正式 HTML 报告按同一 Run 呈现结论与 UTC 研判时间、事实与证据计数、已观察和推测攻击链、结构化处置目标的卡片及证据引用附录；建议须标明尚未执行，空数据不伪装成已观察事实。`resultJson` 保留 `recommended_actions.target` 对象原文，报告只做阅读投影。原始值、下载链接及报告的运行 ID 必须一致。\n\n本轮若满足快速分类条件，应按实际路由执行，并记录完整研判路径未覆盖。",
+  "session_id": "session-9e65e578-2900-47af-9c7c-5207df4f470a",
+  "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+  "session_title": "评测 U-THREAT-FULL",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-b99a83b7-050a-4772-a7fa-7498f1aca656",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-THREAT-FULL",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  },
+  "trace_available": true
+}

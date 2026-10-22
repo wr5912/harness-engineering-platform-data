@@ -1,0 +1,79 @@
+{
+  "inputs": [
+    "创建一个每隔 30 分钟威胁研判的定时任务。",
+    "删除这个定时研判任务。"
+  ],
+  "assistant_texts": [
+    "定时任务已创建成功。\n\n| 项目 | 值 |\n|---|---|\n| 任务 ID | `schedule-8474bd51-10ff-444c-a0d5-012fdd3e8ad6` |\n| 标题 | 自动威胁研判-每30分钟 |\n| 规则 | 每 30 分钟一次（`every_seconds: 1800`） |\n| 下次到期 | 2026-10-22 18:10（Asia/Shanghai，即 10:10:04 UTC） |\n| 状态 | scheduled，绑定本 Session |\n\n说明：\n\n- 该任务尚未执行任何研判；到期后由本地受信桥解析固定 prompt 并调用 `analyze_pending_threat_incidents`，每次只研判一条待处理事件。\n- 上一条研判仍在运行时，本次心跳会跳过、不排队，并显示当前研判事件 ID。\n- Schedule 投递成功不等于研判完成，实际结果以带事件 ID 和 Run ID 的工具回执为准。\n\n如需修改周期、删除任务或改为固定时点，请告诉我。",
+    "定时研判任务已删除。\n\n- 任务 ID：`schedule-8474bd51-10ff-444c-a0d5-012fdd3e8ad6`（自动威胁研判-每30分钟）\n- 删除回执：`deleted: true`\n\n该任务不再产生后续心跳。删除只停止后续调度，不会中止已经在执行中的研判；本次会话中尚无已执行的研判。如需重新创建或改用其他周期，告诉我即可。"
+  ],
+  "session_id": "session-de8db6eb-d446-4cba-88aa-af832ca8367a",
+  "turns": [
+    {
+      "assistant_text": "定时任务已创建成功。\n\n| 项目 | 值 |\n|---|---|\n| 任务 ID | `schedule-8474bd51-10ff-444c-a0d5-012fdd3e8ad6` |\n| 标题 | 自动威胁研判-每30分钟 |\n| 规则 | 每 30 分钟一次（`every_seconds: 1800`） |\n| 下次到期 | 2026-10-22 18:10（Asia/Shanghai，即 10:10:04 UTC） |\n| 状态 | scheduled，绑定本 Session |\n\n说明：\n\n- 该任务尚未执行任何研判；到期后由本地受信桥解析固定 prompt 并调用 `analyze_pending_threat_incidents`，每次只研判一条待处理事件。\n- 上一条研判仍在运行时，本次心跳会跳过、不排队，并显示当前研判事件 ID。\n- Schedule 投递成功不等于研判完成，实际结果以带事件 ID 和 Run ID 的工具回执为准。\n\n如需修改周期、删除任务或改为固定时点，请告诉我。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "22eba958-d609-4fb5-aa23-f4732e01c249"
+    },
+    {
+      "assistant_text": "定时研判任务已删除。\n\n- 任务 ID：`schedule-8474bd51-10ff-444c-a0d5-012fdd3e8ad6`（自动威胁研判-每30分钟）\n- 删除回执：`deleted: true`\n\n该任务不再产生后续心跳。删除只停止后续调度，不会中止已经在执行中的研判；本次会话中尚无已执行的研判。如需重新创建或改用其他周期，告诉我即可。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "58f3c587-a8a9-4ec1-8da5-b816a6aa29e5"
+    }
+  ]
+}

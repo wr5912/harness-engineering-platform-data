@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "对重复策略、无可达路径、预检失败或外部能力未接通的对象发起开通。"
+  ],
+  "assistant_texts": [
+    "我识别到的是一条**网络访问策略新增（ADD）**请求，但目前还不能生成草稿，本轮需要您补充这些必需参数：\n\n1. **源端点**：一个资产名称、IPv4 地址，或网络地址对齐的 IPv4 CIDR（例如 `192.0.2.0/28`）。\n2. **目的端点**：同上，资产名称、IPv4 或 IPv4 CIDR。\n3. **协议**：TCP 或 UDP。\n4. **目的端口**：1–65535 的单个端口。\n5. **动作**：明确是**允许**还是**阻断**访问（ALLOW / DENY）；只说\"开通/新增策略\"未说明允许或阻断时需要您明确。\n6. **设备线索（可选）**：如果您要求\"在防火墙上\"或指定了具体防火墙名称/设备 ID，请给出原话线索。\n\n本路线的能力边界（请一并知悉）：\n\n- 仅支持主机/网段到主机/网段的**新增**策略，不支持 MODIFY、DELETE，也不能把\"关闭/停用\"当作删除处理。\n- 仅支持 IPv4，不接受 IPv6 网段；CIDR 必须是网络地址（如 `172.16.1.0/28`），若只给了单个 IPv4 却称\"网段\"，请说明是要单主机还是具体 CIDR。\n- 每条策略只支持**单个目的端口**（非端口段）。\n- 不支持有效期/截止时间参数：若策略需要限时下发，请先说明，本轮不会省略该约束生成永久策略。\n- 资产名称解析、设备选择、路径判断和草稿准备都由 Platform 平台侧完成；我不能自行查询资产或拓扑，也不会在草稿就绪前下发任何配置。\n\n请补充上述参数后，我再发起端点解析并准备策略草稿。"
+  ],
+  "session_id": "session-ad45e1bd-30b0-4718-80e2-9ec1dc9f1bb8",
+  "turns": [
+    {
+      "assistant_text": "我识别到的是一条**网络访问策略新增（ADD）**请求，但目前还不能生成草稿，本轮需要您补充这些必需参数：\n\n1. **源端点**：一个资产名称、IPv4 地址，或网络地址对齐的 IPv4 CIDR（例如 `192.0.2.0/28`）。\n2. **目的端点**：同上，资产名称、IPv4 或 IPv4 CIDR。\n3. **协议**：TCP 或 UDP。\n4. **目的端口**：1–65535 的单个端口。\n5. **动作**：明确是**允许**还是**阻断**访问（ALLOW / DENY）；只说\"开通/新增策略\"未说明允许或阻断时需要您明确。\n6. **设备线索（可选）**：如果您要求\"在防火墙上\"或指定了具体防火墙名称/设备 ID，请给出原话线索。\n\n本路线的能力边界（请一并知悉）：\n\n- 仅支持主机/网段到主机/网段的**新增**策略，不支持 MODIFY、DELETE，也不能把\"关闭/停用\"当作删除处理。\n- 仅支持 IPv4，不接受 IPv6 网段；CIDR 必须是网络地址（如 `172.16.1.0/28`），若只给了单个 IPv4 却称\"网段\"，请说明是要单主机还是具体 CIDR。\n- 每条策略只支持**单个目的端口**（非端口段）。\n- 不支持有效期/截止时间参数：若策略需要限时下发，请先说明，本轮不会省略该约束生成永久策略。\n- 资产名称解析、设备选择、路径判断和草稿准备都由 Platform 平台侧完成；我不能自行查询资产或拓扑，也不会在草稿就绪前下发任何配置。\n\n请补充上述参数后，我再发起端点解析并准备策略草稿。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "60bca80b-bade-4256-8e6f-da477d71f97e"
+    }
+  ]
+}

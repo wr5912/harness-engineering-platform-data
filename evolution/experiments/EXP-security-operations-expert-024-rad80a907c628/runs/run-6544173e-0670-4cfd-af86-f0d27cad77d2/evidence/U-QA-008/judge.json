@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "回答准确区分了三个指标：CVSS 为 FIRST 发布的漏洞固有技术严重性评分（0–10，静态、与环境无关），EPSS 为未来 30 天内被在野利用的概率估计（每日更新），CISA KEV 为已确认在野利用的目录（含补救截止日期）。同时明确说明 CVSS 9.8 不一定是最高优先级的原因，覆盖了资产是否部署/对互联网暴露、业务关键性、受影响情况（可达性）、补偿控制（WAF/虚拟补丁）以及 KEV/EPSS 的动态时效性，并给出交叉排序方法，符合预期要求。回答基于通用方法论、未引用伪造的工具数据，且明确标注未查询实际资产清单，未越权声称有实时证据。工具回执仅为 skill 加载，回答未从其虚构关键数据，故不影响结论。"
+  },
+  "checks": {
+    "session_id": "session-0a2949fe-5821-4cc5-a2f7-ecfe0b7da60f",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-QA-008",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

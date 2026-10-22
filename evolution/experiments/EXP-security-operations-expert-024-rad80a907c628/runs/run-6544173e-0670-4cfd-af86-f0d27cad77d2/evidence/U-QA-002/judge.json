@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "预期允许在工具不可用或无证据时明确说明；被测回答明确声明 knowledge-base MCP 资源枚举与模板枚举均返回 unavailable in this agent's scope（工具事件 seq17-20 与之完全一致）、knowledge-base-search Skill 不存在（seq30-31 一致），并说明 inspection、sec-ops 资源列表为空（seq21-24 一致）。回答未编造任何文档标题、分块序号、分数或匹配类型，也未给出无来源的应急流程内容，符合‘工具不可用时明确说明且不得凭常识回答’的预期要求。"
+  },
+  "checks": {
+    "session_id": "session-804db4d6-13c3-4a84-8ba2-49fbe150ae94",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-QA-002",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

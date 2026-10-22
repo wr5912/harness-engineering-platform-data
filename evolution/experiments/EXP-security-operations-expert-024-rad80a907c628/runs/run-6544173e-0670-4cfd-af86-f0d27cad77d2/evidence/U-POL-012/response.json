@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请从头执行交换机 ACL 策略预览，完整参数已确认，禁止查询资产或改写标识。"
+  ],
+  "assistant_texts": [
+    "暂不能发起交换机 ACL 策略预览：当前会话未暴露端点解析、策略准备或 Preview 等策略配置工具，按能力门禁不能绕过该链路自行生成配置预览。\n\n请确认本轮要处理的一项并补充源/目的端点，或检查策略配置 MCP 是否已绑定。"
+  ],
+  "session_id": "session-755c9809-938a-4b3f-9ed4-1bd79afe33ae",
+  "turns": [
+    {
+      "assistant_text": "暂不能发起交换机 ACL 策略预览：当前会话未暴露端点解析、策略准备或 Preview 等策略配置工具，按能力门禁不能绕过该链路自行生成配置预览。\n\n请确认本轮要处理的一项并补充源/目的端点，或检查策略配置 MCP 是否已绑定。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c36302e6-a0cc-4cfc-8010-2a4030a23a67"
+    }
+  ]
+}

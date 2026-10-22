@@ -1,0 +1,7 @@
+{
+  "case_id": "U-POL-012",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：证据不足：预期要求若当前会话没有可复用的完整参数则明确说明无法执行并索取参数。被测回答确实说明暂不能发起预览并索取端点，且未查询资产、未改写标识、未生成或执行策略，这部分与预期相符；工具回执（sec-ops 资源/模板为空）也表明当前会话未暴露策略配置工具。但无法从现有证据确定本会话此前是否已有完整可复用参数——证据仅提供 assistant_texts 与两条工具事件，未给出完整会话参数历史；且会话中确实装载了 policy-configuration Skill，其内容规定此时应按缺参只追问而非归因于工具缺失。回答将原因归结为缺少工具链路，与预期两种情形均无法完全对应，故判定 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-POL-012"
+}

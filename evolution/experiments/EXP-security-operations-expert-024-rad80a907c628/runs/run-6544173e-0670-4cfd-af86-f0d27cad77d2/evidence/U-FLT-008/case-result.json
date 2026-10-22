@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-008",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：预期要求按采集、检测、同步、事件生成顺序核对真实状态并给出最后成功点与首个失败点。被测回答仅为“已启动故障分析子智能体，正在排查，待其完成后汇总”的过程性说明，未给出任何环节的实际状态、成功点或失败点结论。工具回执只有 skill 内容加载和 delegate_fault_analysis 返回“started subagent”两个事件，未包含任何被测 Session 内的真实链路查询结果，无法支撑任何关键数据。证据不足以判定通过或不满足，故为 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-008"
+}

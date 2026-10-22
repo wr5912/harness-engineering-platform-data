@@ -1,0 +1,43 @@
+{
+  "inputs": [
+    "请研判基本模拟事件 INC-20261015-000002，完成取证、研判、模拟结果保存，并提供报告下载地址。"
+  ],
+  "assistant_texts": [
+    "started subagent b43debc5-16b0-4aed-b9ad-362a5204b88e"
+  ],
+  "session_id": "session-e95918ff-03c8-40f9-bdb6-b91d79ad6014",
+  "turns": [
+    {
+      "assistant_text": "started subagent b43debc5-16b0-4aed-b9ad-362a5204b88e",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c1d46b0d-0d79-4e07-afaa-c5ed420047e2"
+    }
+  ]
+}

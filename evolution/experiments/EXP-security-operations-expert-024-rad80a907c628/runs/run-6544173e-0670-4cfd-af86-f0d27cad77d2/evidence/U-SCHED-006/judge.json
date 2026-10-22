@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期明确要求第二轮先调用 `schedule_list` 查询任务再删除，未先查询直接删除即判为失败。证据显示第二轮 turn 2 只有 seq 32 的 `schedule_delete` 调用（直接使用创建时返回的 ID），整个工具事件中不存在任何 `schedule_list` 调用，违反预期的核心步骤要求。其余方面符合：删除使用了正确的唯一任务 ID、回执 `deleted: true` 与回答一致、且回答明确说明只停止后续心跳、不中止正在执行的研判。但由于缺失必需的先查询步骤，判定为 failed。"
+  },
+  "checks": {
+    "session_id": "session-5a935e02-fdf1-4607-8322-ed776e135532",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-SCHED-006",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

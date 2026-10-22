@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "CVSS、EPSS 和 CISA KEV 分别表示什么？为什么 CVSS 9.8 也不一定是我司最高优先级？"
+  ],
+  "assistant_texts": [
+    "## 结论\n\n三者衡量的是**不同维度**：CVSS 衡量漏洞本身的技术严重性，EPSS 衡量漏洞在未来 30 天内被在野利用的概率，CISA KEV 衡量该漏洞**已经被确认在野利用**的事实。CVSS 9.8 只说明“一旦利用成功后果严重且易触发”，不代表“我司资产真的会被打、正在被利用”——所以未必是你司最高优先级。\n\n---\n\n## 三者含义对比\n\n| 指标 | 发布方 | 衡量什么 | 结果形式 | 关键局限 |\n|---|---|---|---|---|\n| **CVSS**（Common Vulnerability Scoring System） | FIRST 基金会 | 漏洞固有的技术严重性（攻击向量、复杂度、权限要求、机密性/完整性/可用性影响等） | 0–10 分（如 9.8 = Critical） | 静态、与环境无关；不反映是否被利用、我司是否有该资产 |\n| **EPSS**（Exploit Prediction Scoring System） | CAIDA / FIRST | 该漏洞在**未来 30 天**内被在野利用的**概率** | 0–100% 概率（含日期，每日更新） | 概率模型，新漏洞数据少；高概率 ≠ 已发生 |\n| **CISA KEV**（Known Exploited Vulnerabilities catalog） | CISA（美国联邦） | 该漏洞**已被确认在野利用**的**事实** | 条目 + 补救截止日期 | 只收录已知案例，覆盖偏美国/联邦视角，可能滞后于实际利用 |\n\n---\n\n## 为什么 CVSS 9.8 不一定是你司最高优先级\n\n1. **严重性 ≠ 被利用的可能性**  \n   CVSS 只回答“打下来后果多严重、好不好打”，不回答“有没有人在打”。现实中 CVSS 9.8 但 EPSS <1%、且不在 KEV 的漏洞常年无人利用；反之 CVSS 7.5 的漏洞因进入 KEV + EPSS 飙升而成为实际最高优先级。\n\n2. **严重性 ≠ 暴露面**  \n   如果该漏洞影响的组件（如某冷门中间件）在我司根本未部署、或端口不对互联网暴露、或已有虚拟补丁/WAF 规则拦截，则对我司的实际风险远低于评分。\n\n3. **缺乏“我司语境”**  \n   CVSS 是通用评分，未包含你司的资产关键性、业务影响、可达性、已有补偿控制。资产分级高的机器上一个 8.8 分可能比核心系统上的 9.8 分更该先处理——反之亦然。\n\n4. **时效性**  \n   KEV 和 EPSS 是动态的，CVSS 相对固定。优先级应基于三者交叉 + 资产价值，而非单一分数。\n\n---\n\n## 实用优先级方法\n\n按顺序交叉判断，而不是单看 CVSS：\n\n1. **进入 CISA KEV → 视为“已确认被利用”，优先处置**（尤其是面向外网的资产）。\n2. **KEV 未收录但 EPSS 飙升（如 >10% 且快速上升）→ 高优先级**。\n3. **CVSS 高 + EPSS 中高 + 我司有暴露资产 → 高优先级**。\n4. **CVSS 高但 EPSS 极低、不在 KEV、无我司暴露资产 → 可排入常规修复窗口**。\n5. 叠加我司因素：**资产是否在网、是否对互联网暴露、业务关键性、是否有补偿控制**。\n\n> 一句话：**CVSS 定“严重程度”，EPSS 定“被打概率”，KEV 定“已被打事实”，再乘以“我司暴露面”，才是真实优先级。**\n\n---\n\n**范围与未知项**：以上为通用风险管理方法论，**未查询你司实际资产、已部署组件或当前漏洞清单**，因此无法给出针对具体漏洞的排序结论；需要实时证据时应转入故障排查取证（该动作尚未执行）。"
+  ],
+  "session_id": "session-98349456-e47e-4712-ac0a-04b295ef9272",
+  "turns": [
+    {
+      "assistant_text": "## 结论\n\n三者衡量的是**不同维度**：CVSS 衡量漏洞本身的技术严重性，EPSS 衡量漏洞在未来 30 天内被在野利用的概率，CISA KEV 衡量该漏洞**已经被确认在野利用**的事实。CVSS 9.8 只说明“一旦利用成功后果严重且易触发”，不代表“我司资产真的会被打、正在被利用”——所以未必是你司最高优先级。\n\n---\n\n## 三者含义对比\n\n| 指标 | 发布方 | 衡量什么 | 结果形式 | 关键局限 |\n|---|---|---|---|---|\n| **CVSS**（Common Vulnerability Scoring System） | FIRST 基金会 | 漏洞固有的技术严重性（攻击向量、复杂度、权限要求、机密性/完整性/可用性影响等） | 0–10 分（如 9.8 = Critical） | 静态、与环境无关；不反映是否被利用、我司是否有该资产 |\n| **EPSS**（Exploit Prediction Scoring System） | CAIDA / FIRST | 该漏洞在**未来 30 天**内被在野利用的**概率** | 0–100% 概率（含日期，每日更新） | 概率模型，新漏洞数据少；高概率 ≠ 已发生 |\n| **CISA KEV**（Known Exploited Vulnerabilities catalog） | CISA（美国联邦） | 该漏洞**已被确认在野利用**的**事实** | 条目 + 补救截止日期 | 只收录已知案例，覆盖偏美国/联邦视角，可能滞后于实际利用 |\n\n---\n\n## 为什么 CVSS 9.8 不一定是你司最高优先级\n\n1. **严重性 ≠ 被利用的可能性**  \n   CVSS 只回答“打下来后果多严重、好不好打”，不回答“有没有人在打”。现实中 CVSS 9.8 但 EPSS <1%、且不在 KEV 的漏洞常年无人利用；反之 CVSS 7.5 的漏洞因进入 KEV + EPSS 飙升而成为实际最高优先级。\n\n2. **严重性 ≠ 暴露面**  \n   如果该漏洞影响的组件（如某冷门中间件）在我司根本未部署、或端口不对互联网暴露、或已有虚拟补丁/WAF 规则拦截，则对我司的实际风险远低于评分。\n\n3. **缺乏“我司语境”**  \n   CVSS 是通用评分，未包含你司的资产关键性、业务影响、可达性、已有补偿控制。资产分级高的机器上一个 8.8 分可能比核心系统上的 9.8 分更该先处理——反之亦然。\n\n4. **时效性**  \n   KEV 和 EPSS 是动态的，CVSS 相对固定。优先级应基于三者交叉 + 资产价值，而非单一分数。\n\n---\n\n## 实用优先级方法\n\n按顺序交叉判断，而不是单看 CVSS：\n\n1. **进入 CISA KEV → 视为“已确认被利用”，优先处置**（尤其是面向外网的资产）。\n2. **KEV 未收录但 EPSS 飙升（如 >10% 且快速上升）→ 高优先级**。\n3. **CVSS 高 + EPSS 中高 + 我司有暴露资产 → 高优先级**。\n4. **CVSS 高但 EPSS 极低、不在 KEV、无我司暴露资产 → 可排入常规修复窗口**。\n5. 叠加我司因素：**资产是否在网、是否对互联网暴露、业务关键性、是否有补偿控制**。\n\n> 一句话：**CVSS 定“严重程度”，EPSS 定“被打概率”，KEV 定“已被打事实”，再乘以“我司暴露面”，才是真实优先级。**\n\n---\n\n**范围与未知项**：以上为通用风险管理方法论，**未查询你司实际资产、已部署组件或当前漏洞清单**，因此无法给出针对具体漏洞的排序结论；需要实时证据时应转入故障排查取证（该动作尚未执行）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "4d409aea-346e-42ba-93e9-db0ec4deb96d"
+    }
+  ]
+}

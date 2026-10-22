@@ -1,0 +1,7 @@
+{
+  "case_id": "U-POL-007",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：本轮输入只给出“对重复策略、无可达路径、预检失败或外部能力未接通的对象发起开通”这一概括场景，未提供被测 Session 中针对这些情形的真实端点解析、prepare 或 status/result 工具回执。证据里唯一的助手回复是在参数不足时列出缺失参数与能力边界，仅涉及“参数缺失”澄清，并未展示对重复策略（如 POLICY_ALREADY_COVERED）、无可达路径、预检失败、外部能力未接通的识别与停止行为。skill 文本虽载有相关规则，但属 Skill 内容而非被测执行结果，无法证明被测 Session 已按预期识别四类状态、停止创建并报告可行下一步，证据不足，故判 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-POL-007"
+}

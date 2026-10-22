@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-ALERTS-EMPTY",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期要求实际执行两步只读查询（先资产查询、再以返回资产 ID 调告警查询），且两步业务码成功、告警 groups 为空、总分组与总告警均为 0，并在回复中准确说明受控空结果与查询范围。被测回答明确自述“仅完成委派启动、未取得任何 SOC 查询结果”，未报告任何告警查询结果、分组数或时间范围；其主会话仅重复发起 delegate_fault_analysis 并只拿到“started subagent …”回执。虽子代理日志中确有资产查询（code 200、assetId 9107）等只读调用，但没有任何一次告警分组查询返回 groups 为空/总数 0 的受控空结果（仅出现 get_graph_node_detail 的 incidents 统计和一次 code 10501 的 index [alerts] 报错），且回答未引用这些数据。因此关键结果既未达成也缺乏工具回执支撑，明确不满足预期，判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ASSET-ALERTS-EMPTY"
+}

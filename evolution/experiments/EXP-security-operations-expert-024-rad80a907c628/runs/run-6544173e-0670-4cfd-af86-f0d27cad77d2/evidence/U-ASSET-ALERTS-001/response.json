@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 9106 近 30 天的关联告警，展示首页最多 5 个分组，说明总量和查询时段。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "收到一个误触发的占位任务回执（与本需求无关，未产生任何数据）。资产 9106 的只读告警查询仍在进行中，完成后我会汇总展示。"
+  ],
+  "session_id": "session-fb5005c8-3479-4db1-8f01-e2341606c602",
+  "turns": [
+    {
+      "assistant_text": "收到一个误触发的占位任务回执（与本需求无关，未产生任何数据）。资产 9106 的只读告警查询仍在进行中，完成后我会汇总展示。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "54376de4-e6ca-4287-b6a7-33b683f90109"
+    }
+  ]
+}

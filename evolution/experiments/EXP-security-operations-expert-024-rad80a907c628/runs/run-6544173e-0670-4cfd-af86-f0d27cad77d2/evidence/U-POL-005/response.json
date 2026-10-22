@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "允许网段 172.16.1.155 访问 172.16.2.103 的 UDP 53 端口，有效期 7 天。"
+  ],
+  "assistant_texts": [
+    "**当前无法继续此策略配置请求。**\n\n本轮必需的时间参数存在尚未端到端验证的能力缺口：\n\n- 您要求“有效期 7 天”，即策略应有明确的起止时间或到期语义；\n- 当前 `policy-configuration` 路线只支持新增 IPv4 主机/网段到主机/网段的 TCP/UDP 单目的端口 `ALLOW` 策略，**限时下发与到期语义尚未端到端验证**；\n- Skill 明确要求：不得省略“7 天”约束后生成永久策略，也不得自行推算起止时间后声称已包含有效期，因此本轮到此停止，未调用任何策略准备工具，**尚无草稿、操作号或设备选择**。\n\n其余参数本身已齐备（源 `172.16.1.155`、目的 `172.16.2.103`、UDP、目的端口 53、ADD + ALLOW），但按规则不能忽略时效约束继续。\n\n请选择其一以便继续：\n\n1. **改为长期（永久）策略**：确认不需要 7 天到期，我将按现有五元组发起端点解析并准备草稿；\n2. **保留 7 天限制**：请暂以其他支持时效的变更渠道处理，或等待本路线支持限时策略后再发起。"
+  ],
+  "session_id": "session-6cbf55a3-add9-45cb-9691-694d93ae74a9",
+  "turns": [
+    {
+      "assistant_text": "**当前无法继续此策略配置请求。**\n\n本轮必需的时间参数存在尚未端到端验证的能力缺口：\n\n- 您要求“有效期 7 天”，即策略应有明确的起止时间或到期语义；\n- 当前 `policy-configuration` 路线只支持新增 IPv4 主机/网段到主机/网段的 TCP/UDP 单目的端口 `ALLOW` 策略，**限时下发与到期语义尚未端到端验证**；\n- Skill 明确要求：不得省略“7 天”约束后生成永久策略，也不得自行推算起止时间后声称已包含有效期，因此本轮到此停止，未调用任何策略准备工具，**尚无草稿、操作号或设备选择**。\n\n其余参数本身已齐备（源 `172.16.1.155`、目的 `172.16.2.103`、UDP、目的端口 53、ADD + ALLOW），但按规则不能忽略时效约束继续。\n\n请选择其一以便继续：\n\n1. **改为长期（永久）策略**：确认不需要 7 天到期，我将按现有五元组发起端点解析并准备草稿；\n2. **保留 7 天限制**：请暂以其他支持时效的变更渠道处理，或等待本路线支持限时策略后再发起。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "8e43948b-0fc9-42f4-9ef1-4858049e97d0"
+    }
+  ]
+}

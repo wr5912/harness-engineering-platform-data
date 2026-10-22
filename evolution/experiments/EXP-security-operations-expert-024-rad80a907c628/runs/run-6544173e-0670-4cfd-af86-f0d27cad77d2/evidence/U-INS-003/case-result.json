@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-003",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：回答只返回了一个可解析的 JSON 对象，未混入额外文本；facts 字段完整准确保留了输入给出的四项事实（39 台/套、12 台/套、4 台/套、2 项），数值与单位均无改动；conclusion/notes 属于定性提示，suggestions 以「建议+尚未执行」形式明确与事实区分；notes 明确声明未调用工具核验、未添加输入之外的时间或状态字段，派生指标（离线率等）也未擅自计算，符合「不添加输入中没有的动态数据」的要求；本用例预期本身不要求真实工具数据，且未调用工具与之相符。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-003"
+}

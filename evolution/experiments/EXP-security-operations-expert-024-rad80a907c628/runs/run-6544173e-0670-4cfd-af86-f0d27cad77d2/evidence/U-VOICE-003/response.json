@@ -1,0 +1,62 @@
+{
+  "inputs": [
+    "连续产生同一回合的两步正文；分别在摘要生成时打断、关闭播报、切换会话和断开连接。"
+  ],
+  "assistant_texts": [
+    "**当前无法生成两步正文，中断测试尚未开始。**\n\n已确认的配置要求：\n\n- **目标序列**：同一回合内连续产生两步（step 1、step 2）正文。\n- **四个打断时机**，依次为：\n  1. 摘要生成时打断\n  2. 关闭播报\n  3. 切换会话\n  4. 断开连接\n\n**事实与缺口**：\n\n- 本轮（turn 1, step 1，采样时间 2026-10-22T09:41:27+00:00 UTC）尚未执行任何生成或打断操作。\n- 浏览器时区不可用，涉及\"日期时间\"的相对表述需您明确时区后才能准确对齐。\n- 四个时机点均为**尚未执行**的建议动作，本回合不产生实际中断事件。\n\n**下一步需要您确认**：由您在 GUI 侧触发第一步生成，并在指定时机（摘要生成中）发起第一次打断；或告知我具体哪一步由我这边配合触发。"
+  ],
+  "session_id": "session-dfff8782-a85d-4b73-8278-72b7306363cd",
+  "turns": [
+    {
+      "assistant_text": "**当前无法生成两步正文，中断测试尚未开始。**\n\n已确认的配置要求：\n\n- **目标序列**：同一回合内连续产生两步（step 1、step 2）正文。\n- **四个打断时机**，依次为：\n  1. 摘要生成时打断\n  2. 关闭播报\n  3. 切换会话\n  4. 断开连接\n\n**事实与缺口**：\n\n- 本轮（turn 1, step 1，采样时间 2026-10-22T09:41:27+00:00 UTC）尚未执行任何生成或打断操作。\n- 浏览器时区不可用，涉及\"日期时间\"的相对表述需您明确时区后才能准确对齐。\n- 四个时机点均为**尚未执行**的建议动作，本回合不产生实际中断事件。\n\n**下一步需要您确认**：由您在 GUI 侧触发第一步生成，并在指定时机（摘要生成中）发起第一次打断；或告知我具体哪一步由我这边配合触发。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "700225e5-da0d-46cf-81ce-726a75a21dda"
+    }
+  ]
+}

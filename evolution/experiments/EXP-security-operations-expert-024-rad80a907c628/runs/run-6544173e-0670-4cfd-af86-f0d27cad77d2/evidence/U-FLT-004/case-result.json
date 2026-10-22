@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-004",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 的最终回答仅为“自动威胁研判本次心跳执行失败，没有重试同一投递；请核对运行日志并等待下一次新鲜心跳”，与用例 U-FLT-004 要求的防火墙切换后 172.16.2.103→172.16.138.214 访问失败排查结果完全无关，未给出任何围绕主备状态、路径、策略同步或设备配置的分析结论、事实、推断或明确的未知项。虽然同一被测 Session 及其委派子 Agent 的工具回执中确有真实取证数据（get_reachability_path_by_ip 返回 reachable=false、verdict=UNKNOWN、reason=nat_snapshot_pending；get_graph_path_query 返回 SRC_NOT_FOUND、端点未登记为资产、analysisMode=COLLECTED_CONFIGURATION；资产搜索与 list_soc_asset 均返回 total=0；覆盖率 collected=5/registered=12、coveragePct=29；cross_signal 与 flow_host_pair_ports、compliance_violations 均为空），但这些证据均未被整合进最终回答，回答甚至未提及这些查询结果或说明切换相关的主备/同步证据缺口。最终输出既无证据支持的原因，也无明确未知项说明，且与故障排查主题无关，因此判定为不满足预期要求。回答中也未见策略变更类操作，但这不足以弥补核心排查结论缺失。",
+  "evidence_ref": "evidence/U-FLT-004"
+}

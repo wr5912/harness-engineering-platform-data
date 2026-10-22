@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "帮我阻断 172.16.138.214 到 172.16.2.103 的 TCP:80 的业务。"
+  ],
+  "assistant_texts": [
+    "当前能力无法执行这条阻断。\n\n**请求类型**：`172.16.138.214 → 172.16.2.103` 的 `TCP:80` 是明确限定**通信两端**的阻断，属于双端路径处置，超出了本会话应急指令的能力范围（应急指令仅支持单目标封禁，例如在指定设备上封禁某个源 IP）。\n\n**当前缺口**：\n- `sec-ops` MCP 未暴露应急处置工具（资源和模板均为空），无法准备或提交该阻断草案。\n- 不能用“去掉目的 IP、改为在某台主机上封禁源 IP”的方式替代，否则会改变你的处置意图。\n\n**可行的替代方向（均未执行，请选择其一并提供必要信息）**：\n1. 明确改为**单目标封禁**：在指定设备（防火墙或主机，需给出设备 IP/ID/主机名）上封禁源 IP `172.16.138.214`，这会阻断它对所有目标的相应流量，而不只是 `172.16.2.103:80`。\n2. 改为**新增网络访问策略**：在 `172.16.138.214 → 172.16.2.103` 的 `TCP:80` 方向上配置拒绝策略（策略配置路由仅支持新增 IPv4 主机到主机、TCP/UDP 单目的端口策略，需要你确认走此路线）。"
+  ],
+  "session_id": "session-4a285eca-9ef4-4eda-a950-8e126a41e900",
+  "turns": [
+    {
+      "assistant_text": "当前能力无法执行这条阻断。\n\n**请求类型**：`172.16.138.214 → 172.16.2.103` 的 `TCP:80` 是明确限定**通信两端**的阻断，属于双端路径处置，超出了本会话应急指令的能力范围（应急指令仅支持单目标封禁，例如在指定设备上封禁某个源 IP）。\n\n**当前缺口**：\n- `sec-ops` MCP 未暴露应急处置工具（资源和模板均为空），无法准备或提交该阻断草案。\n- 不能用“去掉目的 IP、改为在某台主机上封禁源 IP”的方式替代，否则会改变你的处置意图。\n\n**可行的替代方向（均未执行，请选择其一并提供必要信息）**：\n1. 明确改为**单目标封禁**：在指定设备（防火墙或主机，需给出设备 IP/ID/主机名）上封禁源 IP `172.16.138.214`，这会阻断它对所有目标的相应流量，而不只是 `172.16.2.103:80`。\n2. 改为**新增网络访问策略**：在 `172.16.138.214 → 172.16.2.103` 的 `TCP:80` 方向上配置拒绝策略（策略配置路由仅支持新增 IPv4 主机到主机、TCP/UDP 单目的端口策略，需要你确认走此路线）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "00a44b02-76b1-4c93-845d-c69e62bde2a5"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-003",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：预期要求识别关键信息缺失并向用户询问、不得给出无证据根因。被测回答明确指出缺少业务系统/资产或IP、异常时间、错误现象及事件ID，逐项列出需补充信息，并声明未执行任何SOC查询或处置，未给出任何根因结论。工具回执（skill读取与delegate_fault_analysis调用）仅用于启动故障分析流程且未产生任何取证数据，与回答中'尚未执行取证、等待补充信息'的表述一致，不存在矛盾。因此明确满足全部预期要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-003"
+}

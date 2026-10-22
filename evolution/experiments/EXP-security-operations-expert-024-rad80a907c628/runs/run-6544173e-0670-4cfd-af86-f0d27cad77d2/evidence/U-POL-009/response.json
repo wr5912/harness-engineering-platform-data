@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "开通访问策略后验证业务连通性；若失败，诊断原因并生成回退策略预览。"
+  ],
+  "assistant_texts": [
+    "**本轮未创建或查询策略草稿，无法验证连通性，也未生成回退预览。**\n\n当前能力边界与缺口：\n\n- 策略配置路线只支持**新增 IPv4 主机/网段到主机/网段的 TCP/UDP 单目的端口 `ALLOW` 或 `DENY` 策略**；没有连通性验证、回退策略生成或已有策略查询/修改能力。\n- 当前工具目录中未见策略端点解析、准备、状态/结果查询能力，`sec-ops` 服务器也未暴露可用资源或资源模板；因此无法建立会话内 DRAFT，更不能声称已验证或已回退。\n\n请补充以下信息以便继续（若目标确为“开通”）：\n\n1. 源端点（资产名称、IPv4 或 IPv4 CIDR）\n2. 目的端点（同上）\n3. 协议（TCP/UDP）与目的端口（1–65535）\n4. 明确动作：允许（ALLOW）还是阻断（DENY）\n5. 是否指定设备（如“在防火墙上”）\n\n如目标其实是**验证已下发策略后的业务连通性**，请提供策略操作号或五元组，并明确验证方式；当前会话没有该类验证工具，我会如实报告能力缺口而不声称已验证。"
+  ],
+  "session_id": "session-e7a4391f-7ae9-4ce9-a2c0-4729b89d222c",
+  "turns": [
+    {
+      "assistant_text": "**本轮未创建或查询策略草稿，无法验证连通性，也未生成回退预览。**\n\n当前能力边界与缺口：\n\n- 策略配置路线只支持**新增 IPv4 主机/网段到主机/网段的 TCP/UDP 单目的端口 `ALLOW` 或 `DENY` 策略**；没有连通性验证、回退策略生成或已有策略查询/修改能力。\n- 当前工具目录中未见策略端点解析、准备、状态/结果查询能力，`sec-ops` 服务器也未暴露可用资源或资源模板；因此无法建立会话内 DRAFT，更不能声称已验证或已回退。\n\n请补充以下信息以便继续（若目标确为“开通”）：\n\n1. 源端点（资产名称、IPv4 或 IPv4 CIDR）\n2. 目的端点（同上）\n3. 协议（TCP/UDP）与目的端口（1–65535）\n4. 明确动作：允许（ALLOW）还是阻断（DENY）\n5. 是否指定设备（如“在防火墙上”）\n\n如目标其实是**验证已下发策略后的业务连通性**，请提供策略操作号或五元组，并明确验证方式；当前会话没有该类验证工具，我会如实报告能力缺口而不声称已验证。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "7fb55a16-2ec4-4ed1-912d-aa4c6232f5be"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请在 OPNsense 防火墙 172.16.2.103 上封禁源 IP 198.51.100.77，规则名 block-198.51.100.77-20261021。只准备草案。"
+  ],
+  "assistant_texts": [
+    "**当前无法准备该草案：本会话未提供应急草案能力，能力存在缺口。**\n\n- 目标信息已明确：OPNsense 防火墙 `172.16.2.103`，动作 `block-ip`，源 IP `198.51.100.77`，规则名 `block-198.51.100.77-20261021`，仅准备草案。\n- 本轮可见的 MCP 服务器仅提供只读巡检能力和 `sec-ops` 资源目录；`sec-ops` 的资源与模板均为空，未暴露应急草案的准备、修订或查询工具。\n- 按能力边界，我不能通过 Shell、文件或底层 HTTP 绕过，也不能猜测工具名或直接调用 SOC 写接口。\n- **尚未准备、提交、确认或执行任何封禁。**\n\n后续若会话加载应急草案能力，可按上述参数直接准备 `block-ip` 草案，再由您决定是否“确认执行”。"
+  ],
+  "session_id": "session-0e02178c-d570-4bb7-82a3-6d62f775d535",
+  "turns": [
+    {
+      "assistant_text": "**当前无法准备该草案：本会话未提供应急草案能力，能力存在缺口。**\n\n- 目标信息已明确：OPNsense 防火墙 `172.16.2.103`，动作 `block-ip`，源 IP `198.51.100.77`，规则名 `block-198.51.100.77-20261021`，仅准备草案。\n- 本轮可见的 MCP 服务器仅提供只读巡检能力和 `sec-ops` 资源目录；`sec-ops` 的资源与模板均为空，未暴露应急草案的准备、修订或查询工具。\n- 按能力边界，我不能通过 Shell、文件或底层 HTTP 绕过，也不能猜测工具名或直接调用 SOC 写接口。\n- **尚未准备、提交、确认或执行任何封禁。**\n\n后续若会话加载应急草案能力，可按上述参数直接准备 `block-ip` 草案，再由您决定是否“确认执行”。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a182ac1b-6a18-4f50-b7f8-410913d0a5f4"
+    }
+  ]
+}

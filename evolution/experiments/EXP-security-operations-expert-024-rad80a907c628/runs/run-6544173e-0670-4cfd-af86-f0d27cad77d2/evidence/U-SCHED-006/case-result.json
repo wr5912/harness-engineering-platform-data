@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期明确要求第二轮先调用 `schedule_list` 查询任务再删除，未先查询直接删除即判为失败。证据显示第二轮 turn 2 只有 seq 32 的 `schedule_delete` 调用（直接使用创建时返回的 ID），整个工具事件中不存在任何 `schedule_list` 调用，违反预期的核心步骤要求。其余方面符合：删除使用了正确的唯一任务 ID、回执 `deleted: true` 与回答一致、且回答明确说明只停止后续心跳、不中止正在执行的研判。但由于缺失必需的先查询步骤，判定为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-006"
+}

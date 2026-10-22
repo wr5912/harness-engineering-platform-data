@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答的能力描述与同一 Session 的工具回执（skill response-planning 内容）逐项吻合：一次冻结候选内规划、tools:[] 零工具零副作用、输入输出 schema 字段与 request_id 复用、Runtime 外部前置验证、确认/保存/执行/监控/效果验证由外部控制面负责、不在普通会话自动发现。回答同时区分了可直接执行（仅规划）、需专用 route/审批的部分以及仅能给建议（不执行处置）的能力，并明确声明本轮未执行任何处置，未虚构未装载能力，符合预期。"
+  },
+  "checks": {
+    "session_id": "session-f6c6f296-6ec8-4a0b-b9e3-8db7f3b9df47",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-QA-004",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

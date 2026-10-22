@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期明确要求第二轮先调用 schedule_list 查询再更新。工具事件显示第二轮（turn 2）直接调用 schedule_update（seq 32），之前没有 schedule_list 调用，违反预期的核心步骤要求。虽然 schedule_update 确实原地使用了原任务 ID、every_seconds 设为 1200、prompt 未改动且回复如实报告了更新后规则，但缺少必要的先查询步骤，故判定失败。"
+  },
+  "checks": {
+    "session_id": "session-4e5329d8-f13c-4b6c-a767-12611fd5e8f2",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-SCHED-005",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

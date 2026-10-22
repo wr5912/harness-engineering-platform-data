@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "证据显示被测 Session 先调用 list_executable_inspections（seq 24/25），从本轮目录中选出了唯一与“巡检”匹配且无需额外必填输入的可执行任务“设备综合巡检”，并使用目录返回的 taskId=task-bfc6f1c0e99a488988fa5d6949cd3a35、definitionVersion=V5 及本轮稳定的 requestId 调用 start_inspection，scope 指定为 {\"type\":\"ASSET_IDS\",\"assetIds\":[\"A-001\"]}（seq 29/30），随后按同一 runId=run-bc7b0d0908004843ac1c02441539cda8 两次查询结果（seq 34/35、39/40）。回答中的 runId、V5 版本、状态 RUNNING/PENDING、以及两次 JSONArray→JSONObject 类型转换错误均与工具回执一致；回答如实说明未取得结论与报告，不伪造完成、不拼接下载地址、不另建运行，并把后续查询列为未执行建议，符合预期要求。"
+  },
+  "checks": {
+    "session_id": "session-bc3ebb4f-7499-49c8-838a-fc1cf3e3e59a",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-INS-006",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

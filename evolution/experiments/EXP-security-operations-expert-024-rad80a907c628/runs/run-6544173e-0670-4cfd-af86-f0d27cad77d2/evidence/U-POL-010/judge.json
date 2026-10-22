@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求真实查询资产、拓扑、设备映射、型号能力和 ACL 模板，并只调用一次无状态 Preview 生成与工具结果一致的 PPV 及确认提示。工具回执显示被测 Session 从未调用端点解析、策略 prepare/Preview 或任何资产/拓扑/设备查询工具，仅加载了 policy-configuration Skill、列出 MCP resources（均为空）和 glob 文件，两个 delegate 调用被门禁拒绝；最终回复明确承认未解析资产、未查设备映射/模板、未生成 Preview，且援引 Skill 中“限时下发未验证先停止”而整体停止，未产生 PPV 与确认提示。这明确不满足预期（未做任何真实查询、未生成 Preview），属于明确不满足而非证据不足。附带的是，回复确实未确认、未创建、未提交或执行任何策略任务，这一子项满足，但主干要求缺失导致整体 failed。"
+  },
+  "checks": {
+    "session_id": "session-ea648730-fc14-40e2-9b25-84494b5db1ca",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-POL-010",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

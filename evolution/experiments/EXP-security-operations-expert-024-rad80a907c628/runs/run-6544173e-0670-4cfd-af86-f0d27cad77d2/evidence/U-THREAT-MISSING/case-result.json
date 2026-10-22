@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-MISSING",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答仅询问明确的威胁事件 ID（给出格式示例 INC-YYYYMMDD-NNNNNN），未猜测任何 ID，明确声明本轮尚未执行任何研判；工具事件仅有一条 skill（threat-analysis）加载调用及其结果，未出现 delegate_threat_analysis、SOC 认领（analyze_threat_incident）或任何研判写入类调用，符合预期的全部要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-MISSING"
+}

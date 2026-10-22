@@ -1,0 +1,149 @@
+{
+  "inputs": [
+    "开通策略。",
+    "查询状态。",
+    "调整端口。",
+    "业务验证结束后关闭策略。"
+  ],
+  "assistant_texts": [
+    "我在当前可用工具中没有找到策略配置所需的端点解析或草稿准备能力，因此无法启动“开通”配置流程；当前无法继续。\n请补充以下必需参数，我再按能力边界处理：\n\n- 源端点（资产名称、IPv4 或 IPv4 CIDR）\n- 目的端点（资产名称、IPv4 或 IPv4 CIDR）\n- 协议（TCP 或 UDP）\n- 目的端口（1–65535）\n- 动作（允许或阻断）\n- 如指定设备：设备名称或原话中的设备线索\n\n当前能力边界：仅支持新增 IPv4 主机/网段到主机/网段的 TCP 或 UDP 单一目的端口策略；不支持 IPv6、修改、删除或带有效期的临时策略。",
+    "当前会话没有可查询的策略操作号，我无法查询状态。",
+    "“调整端口”涉及修改已有策略，当前能力不支持；我无法执行此调整。\n\n如需继续，可改为提交新增策略，并提供：源端点、目的端点、协议、目的端口、允许或阻断，以及是否指定设备。",
+    "“关闭策略”属于删除或停用现有策略，当前能力不支持。\n\n如需改为新增阻断策略，请提供：源端点、目的端点、协议、目的端口，以及是否指定设备。"
+  ],
+  "session_id": "session-76c4971f-cd10-4daa-9012-37a33e55d5fb",
+  "turns": [
+    {
+      "assistant_text": "我在当前可用工具中没有找到策略配置所需的端点解析或草稿准备能力，因此无法启动“开通”配置流程；当前无法继续。\n请补充以下必需参数，我再按能力边界处理：\n\n- 源端点（资产名称、IPv4 或 IPv4 CIDR）\n- 目的端点（资产名称、IPv4 或 IPv4 CIDR）\n- 协议（TCP 或 UDP）\n- 目的端口（1–65535）\n- 动作（允许或阻断）\n- 如指定设备：设备名称或原话中的设备线索\n\n当前能力边界：仅支持新增 IPv4 主机/网段到主机/网段的 TCP 或 UDP 单一目的端口策略；不支持 IPv6、修改、删除或带有效期的临时策略。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "1bcc272e-1bfd-4f0a-8eee-9945c06fe33c"
+    },
+    {
+      "assistant_text": "当前会话没有可查询的策略操作号，我无法查询状态。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "75d8a571-d111-4f10-a173-567bd0f8b303"
+    },
+    {
+      "assistant_text": "“调整端口”涉及修改已有策略，当前能力不支持；我无法执行此调整。\n\n如需继续，可改为提交新增策略，并提供：源端点、目的端点、协议、目的端口、允许或阻断，以及是否指定设备。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 3,
+      "input_message_id": "efc7b6b8-22f6-45ca-8969-c74b3b741aae"
+    },
+    {
+      "assistant_text": "“关闭策略”属于删除或停用现有策略，当前能力不支持。\n\n如需改为新增阻断策略，请提供：源端点、目的端点、协议、目的端口，以及是否指定设备。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 4,
+      "input_message_id": "807e1060-3a84-4bcf-a83a-7c75af258b8a"
+    }
+  ]
+}

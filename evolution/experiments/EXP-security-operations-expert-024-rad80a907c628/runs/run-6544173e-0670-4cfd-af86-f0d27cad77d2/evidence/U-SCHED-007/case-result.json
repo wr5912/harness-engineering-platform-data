@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-007",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：证据显示被测 Session 内确有 schedule_create 工具回执（seq 24/25），返回 schedule-14b97d5d-2257-423f-9fdd-d50298576ebe、daily、12:00:00 Asia/Shanghai、state=scheduled、deliveryMode=host，且回答中的任务 ID、规则、下次到期与该回执一致，未见声称已执行研判。但预期的关键分歧在于本受控实例是否真的开放了 DSH 定时工具与自动投递：提供的 tool_events 只证明 schedule_create 被调用且返回了对象，无法独立确认该工具属于本实例 Runtime 的合法接通能力、其身份与网关状态、到期投递通道是否真实可用，也无法排除回执来自隔离研究实例。评审侧不调用工具，缺少对实际受控实例能力状态的可核验证据，因此既不能判 passed 也不能判 failed。建议补充本实例工具清单/能力开关、身份与网关校验、以及到期回执链路的证据后重评。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-007"
+}

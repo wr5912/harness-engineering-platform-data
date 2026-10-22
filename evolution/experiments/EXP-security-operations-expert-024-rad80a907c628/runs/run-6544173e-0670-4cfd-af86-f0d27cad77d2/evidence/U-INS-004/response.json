@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "帮我创建巡检任务。"
+  ],
+  "assistant_texts": [
+    "我可以直接发起一次巡检，但巡检服务的三个工具只能“发起一次运行”，不能在服务端创建任务；周期巡检需用 DSH 原生定时提醒逐次触发，且当前会话是只读工作区，不适合直接创建持久化任务文件。\n\n请确认你想要哪一种：\n\n1. **创建可执行的一次性巡检**：我会根据巡检项选择唯一模板并发起一次巡检，返回 `runId` 和报告。\n2. **创建周期巡检提醒**：请提供**巡检项、资产范围、执行周期、时区**；我会先核对目录是否有匹配模板，再尝试创建定时提醒。提醒创建后**尚未执行巡检**。\n3. **只查询当前可执行巡检项**：不创建任务，只返回目录。\n\n当前可执行巡检包括：\n\n- 业务可达性巡检\n- 设备状态专项巡检\n- 基线核查专项巡检\n- 设备综合巡检\n- 漏洞专项巡检"
+  ],
+  "session_id": "session-10e970fd-9845-48c6-a175-9156d6ad0f08",
+  "turns": [
+    {
+      "assistant_text": "我可以直接发起一次巡检，但巡检服务的三个工具只能“发起一次运行”，不能在服务端创建任务；周期巡检需用 DSH 原生定时提醒逐次触发，且当前会话是只读工作区，不适合直接创建持久化任务文件。\n\n请确认你想要哪一种：\n\n1. **创建可执行的一次性巡检**：我会根据巡检项选择唯一模板并发起一次巡检，返回 `runId` 和报告。\n2. **创建周期巡检提醒**：请提供**巡检项、资产范围、执行周期、时区**；我会先核对目录是否有匹配模板，再尝试创建定时提醒。提醒创建后**尚未执行巡检**。\n3. **只查询当前可执行巡检项**：不创建任务，只返回目录。\n\n当前可执行巡检包括：\n\n- 业务可达性巡检\n- 设备状态专项巡检\n- 基线核查专项巡检\n- 设备综合巡检\n- 漏洞专项巡检",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "4e4fc616-b254-4bd2-880a-31213af70590"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具调用参数与预期完全一致：prompt 为 {\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}，title 为 自动威胁研判-每天12:00，daily 为 {\"time\":\"12:00:00\",\"time_zone\":\"Asia/Shanghai\"}；工具成功返回 schedule-92c52963-eb1e-4e49-818d-331bdc8a20e2、state=scheduled、scheduledAt=2026-10-23T04:00:00.000Z（UTC+8 后为 2026-10-23 12:00 北京时间），与回答中的任务 ID、标题、规则、下次到期时间一致；回答明确说明尚未执行任何研判，未夸大执行情况。时区按 Asia/Shanghai 处理且未追问，符合预期。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-001"
+}

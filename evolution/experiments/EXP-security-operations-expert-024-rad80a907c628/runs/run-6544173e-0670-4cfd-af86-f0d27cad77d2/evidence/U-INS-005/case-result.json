@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-005",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具回执证实：先查询巡检目录（seq 24/25），返回唯一匹配的“设备状态专项巡检”（taskId task-ffbb9db47ecb4176a724547a965b4bde，description 明确“检查当前资产清单中的设备在线状态”，支持“以当时资产清单为准”的语义）；随后调用 schedule_create，参数 every_seconds:600 与用户要求一致。真实回执（seq 30）返回 id=schedule-e318fb43-c3cd-45dc-abf5-01f0b57f8f1a、state=scheduled、scheduledAt=2026-10-22T09:06:10.583Z、deliveryMode=host，回答中的任务 ID、状态、下次到期时间与回执逐项一致；回答明确说明“尚未执行任何巡检”、无 runId/结果，并计划每次到期重新查询目录、省略 scope、核对 scopeLabel 与设备数量，未虚构执行结果或资产覆盖数。题目仅要求“创建任务”阶段的判断，且创建部分全部由真实工具回执支持，故判定通过；周期到期后的执行与巡检回执属另一阶段，当前无到期消息，不影响本阶段结论。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-005"
+}

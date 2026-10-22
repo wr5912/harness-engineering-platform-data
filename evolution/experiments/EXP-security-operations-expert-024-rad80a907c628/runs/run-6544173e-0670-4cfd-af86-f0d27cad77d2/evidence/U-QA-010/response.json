@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "如何创建巡检任务、查看报告或发起响应处置？我需要什么权限？"
+  ],
+  "assistant_texts": [
+    "结论：**巡检服务本身不创建巡检任务**，只负责查询已发布的可执行模板、发起一次巡检、按 `runId` 查询结果。查看报告和响应处置是另外几条独立路线，权限由 DSH Profile、Guard、工具过滤器和 MCP 服务在运行时强制决定。\n\n### 巡检：查看目录、发起、查报告\n\n本会话已实际提供以下三个巡检工具：\n\n| 目标 | 实际能力 | 关键要求 |\n|---|---|---|\n| 查看可执行巡检项 | 无参数目录查询 | 仅返回**已发布、绑定最新版本、任务已启用**的模板；只查目录不会发起运行 |\n| 发起一次巡检 | 指定 `taskId` + `definitionVersion` + `requestId` | 必须先查目录并选定唯一匹配模板；常规全量巡检省略 `scope`，指定设备时传 `ASSET_IDS` |\n| 查看结果/报告 | 按 `runId` 查询 | 同一运行续查时继续使用原 `runId`，不得重复发起 |\n\n操作流程：\n\n1. 查询可执行巡检，确认模板名称、巡检项和当前版本。\n2. 发起巡检并保存返回的 `runId`。\n3. 用同一 `runId` 查询；运行中只能看到状态，此时报告尚未就绪。\n4. 报告就绪后，按服务返回的 `conclusionStatus`、`businessSummary` 和完整 `reportMarkdown` 查看结论。\n5. 仅当服务返回非空 `reportDownloadUrl` 时，才使用该原样地址下载 HTML 报告；不会自行拼接下载地址。\n\n关于“创建巡检任务”需要区分：\n\n- **平台侧周期巡检任务**：三个巡检工具不能创建，应由巡检平台的任务管理/发布流程配置。\n- **本 Session 的自动触发**：当前 Runtime 确实提供 DSH `schedule_create`，可在用户明确给出巡检项、范围和周期后创建提醒；每次到期单独发起一次巡检。提醒创建成功不等于巡检已经执行，必须以巡检工具返回的 `runId` 和最终报告为准。\n- 如果只是一次性巡检，不需要创建定时任务，直接发起即可。\n\n### 发起响应处置\n\n响应规划与实际处置是不同环节：\n\n- 受控响应规划只能由模型外 Runtime 先完成授权、候选集合和上下文冻结，再进入零工具规划；规划结果本身不代表已确认、已保存、已执行或已验证。\n- 网络访问策略配置和单动作应急处置分别走各自的草案、确认与执行流程；排队或受理也不等于执行成功。\n- 具体采用哪条路线，应根据你本轮只选择一个明确动作来确定，例如新增访问策略、隔离一个目标或封禁一个 IP。\n\n### 需要什么权限\n\n你不需要在提示词里自行声明权限，但必须由运行环境授予对应能力：\n\n- **查看巡检项**：inspection MCP 的目录查询权限。\n- **发起巡检**：巡检发起权限；还需能读取目录中的有效 `taskId` 和 `definitionVersion`。\n- **查看/下载报告**：巡检结果查询权限；HTML 下载还要求服务返回有效的 `reportDownloadUrl`。\n- **创建周期触发**：DSH 原生 `schedule_create` 权限；本会话当前已具备。\n- **响应规划**：模型外受信 Runtime Gate 的专门授权，普通用户文字不能替代。\n- **策略配置或应急处置**：相应草案工具、受信确认插件以及后台执行权限；这些通常还受审批策略约束。\n- **威胁研判和实时故障取证**：对应的委派入口及 SOC 只读工具权限。\n\n当前两个已配置 MCP 服务器 `inspection` 和 `sec-ops` 都没有发布可枚举的 MCP 资源或资源模板，因此没有额外的权限说明资源可读取；实际可用能力仍以本轮工具目录和运行时拒绝结果为准。"
+  ],
+  "session_id": "session-3ea0b156-348b-4ea0-80d6-47516af93e30",
+  "turns": [
+    {
+      "assistant_text": "结论：**巡检服务本身不创建巡检任务**，只负责查询已发布的可执行模板、发起一次巡检、按 `runId` 查询结果。查看报告和响应处置是另外几条独立路线，权限由 DSH Profile、Guard、工具过滤器和 MCP 服务在运行时强制决定。\n\n### 巡检：查看目录、发起、查报告\n\n本会话已实际提供以下三个巡检工具：\n\n| 目标 | 实际能力 | 关键要求 |\n|---|---|---|\n| 查看可执行巡检项 | 无参数目录查询 | 仅返回**已发布、绑定最新版本、任务已启用**的模板；只查目录不会发起运行 |\n| 发起一次巡检 | 指定 `taskId` + `definitionVersion` + `requestId` | 必须先查目录并选定唯一匹配模板；常规全量巡检省略 `scope`，指定设备时传 `ASSET_IDS` |\n| 查看结果/报告 | 按 `runId` 查询 | 同一运行续查时继续使用原 `runId`，不得重复发起 |\n\n操作流程：\n\n1. 查询可执行巡检，确认模板名称、巡检项和当前版本。\n2. 发起巡检并保存返回的 `runId`。\n3. 用同一 `runId` 查询；运行中只能看到状态，此时报告尚未就绪。\n4. 报告就绪后，按服务返回的 `conclusionStatus`、`businessSummary` 和完整 `reportMarkdown` 查看结论。\n5. 仅当服务返回非空 `reportDownloadUrl` 时，才使用该原样地址下载 HTML 报告；不会自行拼接下载地址。\n\n关于“创建巡检任务”需要区分：\n\n- **平台侧周期巡检任务**：三个巡检工具不能创建，应由巡检平台的任务管理/发布流程配置。\n- **本 Session 的自动触发**：当前 Runtime 确实提供 DSH `schedule_create`，可在用户明确给出巡检项、范围和周期后创建提醒；每次到期单独发起一次巡检。提醒创建成功不等于巡检已经执行，必须以巡检工具返回的 `runId` 和最终报告为准。\n- 如果只是一次性巡检，不需要创建定时任务，直接发起即可。\n\n### 发起响应处置\n\n响应规划与实际处置是不同环节：\n\n- 受控响应规划只能由模型外 Runtime 先完成授权、候选集合和上下文冻结，再进入零工具规划；规划结果本身不代表已确认、已保存、已执行或已验证。\n- 网络访问策略配置和单动作应急处置分别走各自的草案、确认与执行流程；排队或受理也不等于执行成功。\n- 具体采用哪条路线，应根据你本轮只选择一个明确动作来确定，例如新增访问策略、隔离一个目标或封禁一个 IP。\n\n### 需要什么权限\n\n你不需要在提示词里自行声明权限，但必须由运行环境授予对应能力：\n\n- **查看巡检项**：inspection MCP 的目录查询权限。\n- **发起巡检**：巡检发起权限；还需能读取目录中的有效 `taskId` 和 `definitionVersion`。\n- **查看/下载报告**：巡检结果查询权限；HTML 下载还要求服务返回有效的 `reportDownloadUrl`。\n- **创建周期触发**：DSH 原生 `schedule_create` 权限；本会话当前已具备。\n- **响应规划**：模型外受信 Runtime Gate 的专门授权，普通用户文字不能替代。\n- **策略配置或应急处置**：相应草案工具、受信确认插件以及后台执行权限；这些通常还受审批策略约束。\n- **威胁研判和实时故障取证**：对应的委派入口及 SOC 只读工具权限。\n\n当前两个已配置 MCP 服务器 `inspection` 和 `sec-ops` 都没有发布可枚举的 MCP 资源或资源模板，因此没有额外的权限说明资源可读取；实际可用能力仍以本轮工具目录和运行时拒绝结果为准。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e4a25a21-3608-48f4-bdb7-2bd5d58b1fb9"
+    }
+  ]
+}

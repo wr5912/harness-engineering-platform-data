@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "目前**还无法开始实质性故障取证**：请求只说明“业务系统访问异常”，没有给出业务系统或资产、IP、异常时间、错误现象或事件 ID。没有这些目标和时间范围，SOC 只读工具无法做有意义的交叉查询。\n\n我已启动故障分析子智能体，正在确认可用工具目录和取证所需参数。\n\n**请补充（任选最有把握的信息）：**\n- 异常业务系统名称、资产名或 IP\n- 异常开始时间和时区（或“约多久前”）\n- 具体现象，如无法登录、超时、502、接口报错、部分用户受影响\n- 如有 SOC 事件 ID（`INC-YYYYMMDD-NNNNNN`），请一并提供\n\n**尚未执行**：任何 SOC 查询、巡检、处置或策略变更均未执行；子智能体当前仅在评估取证可行性。"
+  ],
+  "session_id": "session-991bc7ec-a10f-4928-9082-ed5dcb8fc796",
+  "turns": [
+    {
+      "assistant_text": "目前**还无法开始实质性故障取证**：请求只说明“业务系统访问异常”，没有给出业务系统或资产、IP、异常时间、错误现象或事件 ID。没有这些目标和时间范围，SOC 只读工具无法做有意义的交叉查询。\n\n我已启动故障分析子智能体，正在确认可用工具目录和取证所需参数。\n\n**请补充（任选最有把握的信息）：**\n- 异常业务系统名称、资产名或 IP\n- 异常开始时间和时区（或“约多久前”）\n- 具体现象，如无法登录、超时、502、接口报错、部分用户受影响\n- 如有 SOC 事件 ID（`INC-YYYYMMDD-NNNNNN`），请一并提供\n\n**尚未执行**：任何 SOC 查询、巡检、处置或策略变更均未执行；子智能体当前仅在评估取证可行性。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "dbf14010-cc1b-475d-b7fb-28fe40a2c700"
+    }
+  ]
+}

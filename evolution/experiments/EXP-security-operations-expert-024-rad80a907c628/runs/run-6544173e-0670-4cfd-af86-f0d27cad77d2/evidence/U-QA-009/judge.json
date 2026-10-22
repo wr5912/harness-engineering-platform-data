@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答准确区分了五个概念：IOC 定义为攻击留下的静态痕迹/可观察指标（易变、黑名单匹配）；TTP 定义为攻击者行为模式（相对稳定、行为检测）；MITRE ATT&CK Technique 定义为 TTP 的标准化分类编号（Tactic→Technique→Sub-technique 编目）；告警定义为检测规则触发的单条信号（机器产物、含误报）；事件定义为告警聚合研判后的调查处置对象（人/研判流程产物）。并明确说明它们可关联但不等同，如：IOC 是 TTP 执行过程留下的产物、ATT&CK 是 TTP 的结构化表达而非全部、告警经关联研判形成事件，且给出完整链路示例。内容为概念性知识问答，无需真实工具数据即可判定，工具调用非必需。所有预期要求均明确满足。"
+  },
+  "checks": {
+    "session_id": "session-1bc2f4fc-92c7-43f9-9316-6e9038f27fd1",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-QA-009",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

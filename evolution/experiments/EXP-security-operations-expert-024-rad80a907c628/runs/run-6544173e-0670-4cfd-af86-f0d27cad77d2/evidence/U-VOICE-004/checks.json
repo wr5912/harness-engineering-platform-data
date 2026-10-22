@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-VOICE-004",
+  "transport": "api",
+  "expected_behavior": "开启自动播报并使用默认约 30 字摘要时，逐条保留否定、风险、未确认与未完成状态，合成输入与最终摘要一致，不强行截断句子。摘要专用调用按模型公开能力请求关闭思考，不能关闭时如实记录最低强度或能力未知，主调用仍使用原有有效设置。正文完成、摘要生成、排队、TTS 首包和浏览器起播分别可关联；流式 TTS 不因插件等待完整响应而延迟起播。DeepSeek Flash 与 Qwen3.8-27B 分别在相同输入、提示词、TTS 和运行环境下比较原版与整改版，每种输入重复三次并保留逐次耗时、字数偏差、失败和漏播。服务热态且没有待播音频时，研究目标为摘要完成中位数不超过 2 秒、首次播报等待中位数不超过 3 秒、原有长等待中位数下降至少 50%，正常样本无漏播、重复或语义失真。受控接口只验证链路，不能据此判定真实模型速度或实际听感达标；缺少凭据、服务或物理播放证据时明确记为未验证。",
+  "session_id": "session-fc55f218-f16b-45c3-8a8f-20328d2cab84",
+  "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+  "session_title": "评测 U-VOICE-004",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-97b38828-bf70-4275-9c31-8891e7a716e2",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-VOICE-004",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "对资产标识 A-001 执行匹配的巡检。"
+  ],
+  "assistant_texts": [
+    "**巡检已发起，报告尚未就绪。**\n\n- 已按资产标识 `A-001` 发起**设备综合巡检**（范围：`ASSET_IDS: [\"A-001\"]`，模板版本 `V5`）\n- 运行标识：`run-bc7b0d0908004843ac1c02441539cda8`\n- 当前状态：`RUNNING`，结论状态：`PENDING`\n\n**查询异常：** 连续两次按 `runId` 查询结果时，巡检服务返回内部类型转换错误（`JSONArray` 无法转换为 `JSONObject`），因此本轮**无法取得**巡检结论、`businessSummary`、报告正文或下载链接。\n\n**说明：** 当前没有巡检结论可报告，也不存在可提供的 `reportDownloadUrl`。巡检已发起但结果查询受阻，这是服务端返回的错误，不是巡检失败的结论。\n\n**建议下一步（尚未执行）：** 稍后在本会话中继续用同一 `runId` 查询结果；如仍报同样的错误，说明巡检服务的结果查询接口存在故障，需要平台侧处理。我不会重新发起巡检。"
+  ],
+  "session_id": "session-0628e214-94b1-462e-a85e-8d13839ee200",
+  "turns": [
+    {
+      "assistant_text": "**巡检已发起，报告尚未就绪。**\n\n- 已按资产标识 `A-001` 发起**设备综合巡检**（范围：`ASSET_IDS: [\"A-001\"]`，模板版本 `V5`）\n- 运行标识：`run-bc7b0d0908004843ac1c02441539cda8`\n- 当前状态：`RUNNING`，结论状态：`PENDING`\n\n**查询异常：** 连续两次按 `runId` 查询结果时，巡检服务返回内部类型转换错误（`JSONArray` 无法转换为 `JSONObject`），因此本轮**无法取得**巡检结论、`businessSummary`、报告正文或下载链接。\n\n**说明：** 当前没有巡检结论可报告，也不存在可提供的 `reportDownloadUrl`。巡检已发起但结果查询受阻，这是服务端返回的错误，不是巡检失败的结论。\n\n**建议下一步（尚未执行）：** 稍后在本会话中继续用同一 `runId` 查询结果；如仍报同样的错误，说明巡检服务的结果查询接口存在故障，需要平台侧处理。我不会重新发起巡检。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "fd796806-b865-417d-a5f2-4ff147ba343a"
+    }
+  ]
+}

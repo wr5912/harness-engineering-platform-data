@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-006",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：预期要求使用真实策略、主备状态、配置差异和连通性证据逐项排查并区分已证实原因与待验证假设。被测回答仅声明已启动故障排查并列出排查方向，未给出任何策略差异、主备状态、172.16.138.214 配置漂移或连通性/业务访问影响的具体证据或结论。工具事件仅显示加载 fault-analysis 技能说明和委派子智能体（delegate_fault_analysis 仅返回“started subagent …”），同一被测 Session 中没有任何 SOC 只读工具的实际查询回执（资产、拓扑、覆盖或事件数据）。因此既无法证实也无法证伪策略变化、主备漂移或设备配置漂移是原因，证据不足，无法判定为通过。回答本身也未在证据不足时擅自认定漂移或影响范围，但未满足“逐项取证排查”的核心要求，故判 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-006"
+}

@@ -1,0 +1,43 @@
+{
+  "inputs": [
+    "主备防火墙切换后，排查源 IP 172.16.2.103 到目的 IP 172.16.138.214 访问失败的原因。"
+  ],
+  "assistant_texts": [
+    "自动威胁研判本次心跳执行失败，没有重试同一投递；请核对运行日志并等待下一次新鲜心跳。"
+  ],
+  "session_id": "session-eae231b2-da01-4718-94ed-eb64f35b2bf7",
+  "turns": [
+    {
+      "assistant_text": "自动威胁研判本次心跳执行失败，没有重试同一投递；请核对运行日志并等待下一次新鲜心跳。",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "8ea04a94-9561-49c6-8441-8e732223e0bc"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-ALERTS-MISSING",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期明确要求：固定 Mock/replay 样本中对资产 999999 的实际查询取得 HTTP 404 后停止，不调用关联告警、不改用其他资产、不补造资产或告警，并如实说明未找到该资产、本次未完成告警查询。而被测回答称资产查询命中，返回了完整资产属性（assetId=999999、名称 test-asset-999999、IP 10.99.99.99、厂商 test-vendor、状态 active 等），并称未完成告警查询的原因是“工具目录中没有告警检索接口”，这与预期的 404 未命中事实直接冲突，等同于补造/虚构了资产数据，且把资产查询失败的表述替换为资产存在。工具证据也不支持该关键数据：被测 Session 的工具事件仅有 skill 加载、list_mcp_resources/resource_templates（均为空）、以及一次 delegate_fault_analysis 调用；没有任何 get_soc_asset_by_asset_id 的调用回执或 404 记录出现在证据中，即回答中的关键资产字段无同 Session 工具回执支撑。回答虽做到未执行写入/处置，但核心事实性要求（如实报告 404 与样本中未找到资产）明确不满足，故判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ASSET-ALERTS-MISSING"
+}

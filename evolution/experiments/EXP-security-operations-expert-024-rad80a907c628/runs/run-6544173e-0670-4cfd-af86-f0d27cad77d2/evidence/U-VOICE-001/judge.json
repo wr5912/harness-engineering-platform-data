@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "证据不足。预期要求：语音转写草稿可编辑、触发词不写入消息、点击朗读按钮后进入音频播放流程、原生会话与输入功能可用。当前证据只有模型的文本回复（tool_events 为空），没有任何工具回执或交互记录能证明麦克风转写、触发词处理、朗读播放流程或原生输入功能的状态。仅凭文本回复无法判定这些交互式 UI/音频行为是否发生，因此按约定判为 inconclusive。"
+  },
+  "checks": {
+    "session_id": "session-93d3906c-0796-4b70-8d42-2f9305f40db3",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-VOICE-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请为 172.16.138.214 到 172.16.2.103 开通 TCP 19720 访问策略。"
+  ],
+  "assistant_texts": [
+    "已识别请求的五元组与动作：\n\n- **源**：`172.16.138.214`\n- **目的**：`172.16.2.103`\n- **协议**：TCP\n- **目的端口**：`19720`\n- **动作**：开通，即 `ADD + ALLOW`\n\n但当前运行时的策略工具目录中未提供端点解析能力，因此无法准备或下发策略草稿；本轮没有创建任务，也未使任何策略生效。"
+  ],
+  "session_id": "session-92553650-1450-42af-8910-e34f70f9d4a8",
+  "turns": [
+    {
+      "assistant_text": "已识别请求的五元组与动作：\n\n- **源**：`172.16.138.214`\n- **目的**：`172.16.2.103`\n- **协议**：TCP\n- **目的端口**：`19720`\n- **动作**：开通，即 `ADD + ALLOW`\n\n但当前运行时的策略工具目录中未提供端点解析能力，因此无法准备或下发策略草稿；本轮没有创建任务，也未使任何策略生效。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "cd4f24b4-2f0f-40e3-9733-b55df4667281"
+    }
+  ]
+}

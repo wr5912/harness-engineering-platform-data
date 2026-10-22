@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "排查 172.16.1.155 到 172.16.2.103 访问失败；基于正式故障结果恢复受影响服务并验证。"
+  ],
+  "assistant_texts": [
+    "## 结论\n\n**当前不能执行恢复。** 正式故障取证尚未返回可归因结论；已完成的正式业务可达性巡检结果为 **PARTIAL / INCOMPLETE**，明确表示 **SOC 尚不能确认该连接是否可达、路径结论“无法判断”**，且巡检仅依据已采集数据，**没有验证服务响应或实际登录**。\n\n因此目前没有足够证据确定受影响服务，也没有可基于正式故障结果执行并验证的恢复动作。**本轮未执行任何恢复、策略修改或应急处置。**\n\n## 正式巡检结果\n\n- 运行标识：`run-84bce4b767d84668b73966b15d99d9a3`\n- 范围：业务连接 `172.16.1.155 → 172.16.2.103`\n- 执行时间：**2026-10-22 17:22:57 至 2026-10-22 17:22:58**（服务返回值）\n- 状态：`PARTIAL`\n- 结论状态：`INCOMPLETE`\n- 错误信息：一个或多个巡检项存在证据缺口\n- 业务可达性：部分检查未完成；`incompleteCount = 1`\n\n关键原因：\n\n- SOC 尚不能确认该业务连接是否可达\n- SOC 路径结论：无法判断\n- SOC 尚未给出可查询的路径设备序列\n- SOC 返回的判定原因尚未解释，原始结果已保留\n- 检查边界：未验证服务响应或实际登录\n\n正式报告：\n\n[下载 HTML 巡检报告](https://172.16.138.232:18060/aidown/api/inspection/operations/runs/run-84bce4b767d84668b73966b15d99d9a3/report/download/html)\n\n## 故障排查状态\n\nSOC 故障排查委派仍在进行，尚未返回正式结果。在正式结果明确故障根因、受影响服务和可逆恢复动作前，不应直接修改放行策略或重启服务，以免在证据不足时扩大影响。\n\n## 下一步\n\n1. 等待 SOC 故障排查子任务返回正式取证结果。\n2. 根据正式结果确认受影响的具体服务、路径设备和根因。\n3. 再依据对应工具域准备恢复草案；如涉及新增访问策略，应进入策略配置流程并等待用户确认，不能自动下发。\n4. 恢复后重新执行同范围业务可达性巡检，以新的 `runId` 对比验证。\n\n**以上第 2–4 步均尚未执行。**"
+  ],
+  "session_id": "session-274aa366-1c6b-4bee-93df-29a1daeb8592",
+  "turns": [
+    {
+      "assistant_text": "## 结论\n\n**当前不能执行恢复。** 正式故障取证尚未返回可归因结论；已完成的正式业务可达性巡检结果为 **PARTIAL / INCOMPLETE**，明确表示 **SOC 尚不能确认该连接是否可达、路径结论“无法判断”**，且巡检仅依据已采集数据，**没有验证服务响应或实际登录**。\n\n因此目前没有足够证据确定受影响服务，也没有可基于正式故障结果执行并验证的恢复动作。**本轮未执行任何恢复、策略修改或应急处置。**\n\n## 正式巡检结果\n\n- 运行标识：`run-84bce4b767d84668b73966b15d99d9a3`\n- 范围：业务连接 `172.16.1.155 → 172.16.2.103`\n- 执行时间：**2026-10-22 17:22:57 至 2026-10-22 17:22:58**（服务返回值）\n- 状态：`PARTIAL`\n- 结论状态：`INCOMPLETE`\n- 错误信息：一个或多个巡检项存在证据缺口\n- 业务可达性：部分检查未完成；`incompleteCount = 1`\n\n关键原因：\n\n- SOC 尚不能确认该业务连接是否可达\n- SOC 路径结论：无法判断\n- SOC 尚未给出可查询的路径设备序列\n- SOC 返回的判定原因尚未解释，原始结果已保留\n- 检查边界：未验证服务响应或实际登录\n\n正式报告：\n\n[下载 HTML 巡检报告](https://172.16.138.232:18060/aidown/api/inspection/operations/runs/run-84bce4b767d84668b73966b15d99d9a3/report/download/html)\n\n## 故障排查状态\n\nSOC 故障排查委派仍在进行，尚未返回正式结果。在正式结果明确故障根因、受影响服务和可逆恢复动作前，不应直接修改放行策略或重启服务，以免在证据不足时扩大影响。\n\n## 下一步\n\n1. 等待 SOC 故障排查子任务返回正式取证结果。\n2. 根据正式结果确认受影响的具体服务、路径设备和根因。\n3. 再依据对应工具域准备恢复草案；如涉及新增访问策略，应进入策略配置流程并等待用户确认，不能自动下发。\n4. 恢复后重新执行同范围业务可达性巡检，以新的 `runId` 对比验证。\n\n**以上第 2–4 步均尚未执行。**",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "55a23eb9-70a6-48f4-a059-9c49e02cff3b"
+    }
+  ]
+}

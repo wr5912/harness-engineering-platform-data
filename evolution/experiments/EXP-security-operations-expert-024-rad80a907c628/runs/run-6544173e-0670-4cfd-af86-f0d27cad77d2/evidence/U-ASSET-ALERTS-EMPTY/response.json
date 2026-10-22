@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 9107 近 30 天的关联告警，首页最多 5 个分组。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "**结论：无法确认资产 9107 近 30 天关联告警。** 本轮仅完成了只读故障排查委派的启动，尚未取得任何 SOC 查询结果；未执行处置。\n\n- **事实**：已加载 `fault-analysis` 路由并发起只读委派，目标是查询资产 `9107` 近 30 天关联告警、首页最多 5 个分组。委派仅返回运行标识，未返回工具结果、告警数据或分页元数据。\n- **证据缺口**：未获得可核验的告警记录、分组数量、时间字段或查询执行状态。\n- **未执行建议**：待只读查询返回后，再核对时间范围（以当前 UTC 时间 `2026-10-22T09:45:15+00:00` 为基准）、5 个分组限制及分页信息；该核验尚未执行。"
+  ],
+  "session_id": "session-aacb8182-d580-4c3b-b3dc-9a92558c62d4",
+  "turns": [
+    {
+      "assistant_text": "**结论：无法确认资产 9107 近 30 天关联告警。** 本轮仅完成了只读故障排查委派的启动，尚未取得任何 SOC 查询结果；未执行处置。\n\n- **事实**：已加载 `fault-analysis` 路由并发起只读委派，目标是查询资产 `9107` 近 30 天关联告警、首页最多 5 个分组。委派仅返回运行标识，未返回工具结果、告警数据或分页元数据。\n- **证据缺口**：未获得可核验的告警记录、分组数量、时间字段或查询执行状态。\n- **未执行建议**：待只读查询返回后，再核对时间范围（以当前 UTC 时间 `2026-10-22T09:45:15+00:00` 为基准）、5 个分组限制及分页信息；该核验尚未执行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "bca7a5bf-ee89-4246-8ee7-403cacac2cb5"
+    }
+  ]
+}

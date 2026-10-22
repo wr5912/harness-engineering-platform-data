@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "指定设备：172.16.1.155；请为 172.16.1.155 到 172.16.2.103 开通 TCP 19730 访问策略。"
+  ],
+  "assistant_texts": [
+    "当前会话的策略准备能力未暴露端点解析工具，无法安全生成草稿。已识别参数为：源 `172.16.1.155`、目的 `172.16.2.103`、TCP 目的端口 `19730`、动作 `ALLOW`、指定设备 `172.16.1.155`；但尚未完成端点解析，也未创建或确认任何策略。请恢复策略端点解析能力后重试。"
+  ],
+  "session_id": "session-5e6f981d-a067-4aad-a886-cb55665193ef",
+  "turns": [
+    {
+      "assistant_text": "当前会话的策略准备能力未暴露端点解析工具，无法安全生成草稿。已识别参数为：源 `172.16.1.155`、目的 `172.16.2.103`、TCP 目的端口 `19730`、动作 `ALLOW`、指定设备 `172.16.1.155`；但尚未完成端点解析，也未创建或确认任何策略。请恢复策略端点解析能力后重试。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "26f9e428-0d08-410c-9e60-c24771fc3c33"
+    }
+  ]
+}

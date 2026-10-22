@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "资产运行状态巡检显示 172.16.2.103、172.16.1.165、172.16.138.214 离线或探测不可达，请分析。"
+  ],
+  "assistant_texts": [
+    "已委派故障分析子智能体对三个资产（172.16.2.103、172.16.1.165、172.16.138.214）进行只读取证，覆盖资产解析、拓扑可达性、监控覆盖与关联事件。子智能体运行结束后我会汇报结果。"
+  ],
+  "session_id": "session-caaf3d1e-87a6-41d7-ab0a-4229f38709ca",
+  "turns": [
+    {
+      "assistant_text": "已委派故障分析子智能体对三个资产（172.16.2.103、172.16.1.165、172.16.138.214）进行只读取证，覆盖资产解析、拓扑可达性、监控覆盖与关联事件。子智能体运行结束后我会汇报结果。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "8c122ea8-adac-4d4b-840d-cb2d78249feb"
+    }
+  ]
+}

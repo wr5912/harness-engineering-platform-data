@@ -1,0 +1,78 @@
+{
+  "inputs": [
+    "请研判威胁事件 INC-20260917-000001。",
+    "解释什么是横向移动，不要再研判事件。"
+  ],
+  "assistant_texts": [
+    "started subagent 0cb7438e-43d0-4807-8b54-935fff169828",
+    "**研判状态：未完成（能力缺口）**\n\n- 事件 ID：INC-20260917-000001\n- 结果：威胁研判子智能体调用 `analyze_threat_incident` 时返回连接错误 `trusted platform MCP group connection is unavailable`，未能获取任何 SOC 取证数据、分类结果或研判结论。\n- 因此，本事件的真实性、严重度、影响范围**均无法确认**，不存在可交付的研判摘要或报告下载链接。\n\n**缺口说明**\n\n- 取证所依赖的 trusted platform MCP 平台组当前不可达，SOC 认领、取证与报告存储链路全部中断。\n- 本次会话不支持 sandbox 升级审批，子智能体内无法自行恢复该连接。\n\n**建议（尚未执行）**\n\n- 由平台侧检查并恢复 trusted platform MCP 连接后重新发起研判。\n- 若需过渡，可提供该事件的原始告警或日志摘要，以便基于材料先行人工分析。\n\n需要我在连接恢复后重新委派研判时，直接告诉我即可。"
+  ],
+  "session_id": "session-7104b28c-88c9-4713-b51c-5f6b6c7936c8",
+  "turns": [
+    {
+      "assistant_text": "started subagent 0cb7438e-43d0-4807-8b54-935fff169828",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a9b336a8-4c2c-43c6-add2-53a712182042"
+    },
+    {
+      "assistant_text": "**研判状态：未完成（能力缺口）**\n\n- 事件 ID：INC-20260917-000001\n- 结果：威胁研判子智能体调用 `analyze_threat_incident` 时返回连接错误 `trusted platform MCP group connection is unavailable`，未能获取任何 SOC 取证数据、分类结果或研判结论。\n- 因此，本事件的真实性、严重度、影响范围**均无法确认**，不存在可交付的研判摘要或报告下载链接。\n\n**缺口说明**\n\n- 取证所依赖的 trusted platform MCP 平台组当前不可达，SOC 认领、取证与报告存储链路全部中断。\n- 本次会话不支持 sandbox 升级审批，子智能体内无法自行恢复该连接。\n\n**建议（尚未执行）**\n\n- 由平台侧检查并恢复 trusted platform MCP 连接后重新发起研判。\n- 若需过渡，可提供该事件的原始告警或日志摘要，以便基于材料先行人工分析。\n\n需要我在连接恢复后重新委派研判时，直接告诉我即可。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "d9b95ee2-543d-4ee9-9c4f-d2aeb6aa0094"
+    }
+  ]
+}

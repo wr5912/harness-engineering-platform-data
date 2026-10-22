@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "分析资产 172.16.2.103 的主机安全配置异常，并排查资产未纳管或关联对象异常。"
+  ],
+  "assistant_texts": [
+    "**已委派故障排查**\n- 对象：`172.16.2.103`\n- 范围：主机安全配置异常、资产纳管状态及关联对象异常\n- 方式：仅使用授权的 SOC 只读查询工具\n- 当前状态：子智能体正在取证，暂无可确认结论；不会执行任何处置。"
+  ],
+  "session_id": "session-3fb8343f-116d-4541-885f-950879cc8bde",
+  "turns": [
+    {
+      "assistant_text": "**已委派故障排查**\n- 对象：`172.16.2.103`\n- 范围：主机安全配置异常、资产纳管状态及关联对象异常\n- 方式：仅使用授权的 SOC 只读查询工具\n- 当前状态：子智能体正在取证，暂无可确认结论；不会执行任何处置。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "715597db-5177-4404-ae32-978a43d8750a"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具链事实与预期完全一致：先调用 list_executable_inspections（seq 24），目录中匹配“执行一次常规巡检”的唯一已发布模板为“设备综合巡检”（defaultForChat=true，matchPhrases 含该说法，taskId=task-bfc6f1c0e99a488988fa5d6949cd3a35，definitionVersion=V5）；随后仅调用一次 start_inspection，参数与返回一致且未传 scope；之后只用同一 runId 调用 get_inspection_result，未重复发起，且等到 status=PARTIAL、reportDownloadUrl 非空后才作答，未在运行中声称完成。回答依据同一回执的 conclusionStatus=ABNORMAL、businessSummary 与完整 reportMarkdown：设备数量准确（应检查 12 台、覆盖 12 台，在线 6、离线 5、未知 1，各巡检项计数与回执逐项一致，5 台离线设备名称与 IP 与报告一致），结论状态与 errorMessage 被如实转述，未改写；正确指出基线核查 12 台无报告属证据缺口、不代表达标，并按 resultStatus=PARTIAL（部分检查未完成）说明缺口；downloadUrl 非空且原样提供，未自行拼接。无捏造数据，建议部分明确标注为未执行。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-001"
+}

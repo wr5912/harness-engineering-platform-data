@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-004",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答的能力描述与同一 Session 的工具回执（skill response-planning 内容）逐项吻合：一次冻结候选内规划、tools:[] 零工具零副作用、输入输出 schema 字段与 request_id 复用、Runtime 外部前置验证、确认/保存/执行/监控/效果验证由外部控制面负责、不在普通会话自动发现。回答同时区分了可直接执行（仅规划）、需专用 route/审批的部分以及仅能给建议（不执行处置）的能力，并明确声明本轮未执行任何处置，未虚构未装载能力，符合预期。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-004"
+}

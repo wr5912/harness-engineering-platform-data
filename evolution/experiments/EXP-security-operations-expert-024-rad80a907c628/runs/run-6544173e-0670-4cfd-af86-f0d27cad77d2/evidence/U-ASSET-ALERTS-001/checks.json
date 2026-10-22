@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-ASSET-ALERTS-001",
+  "transport": "api",
+  "expected_behavior": "本轮实际执行资产详情查询，核对资产 ID 后将实际返回 ID 映射到关联告警查询；请求为第 1 页、每页 5 组、2592000 秒。保留 HTTP、业务码和完整响应证据。答复准确保留返回的资产标识、分组和告警总量、from/to、页码及截断状态，不将首页描述为全量明细，不推断没有风险。明确固定 Mock/replay 边界和未查询真实 SOC；未执行写入。两侧原子调用返回来自同一固定输入摘要，允许由生成的工作流执行这些原子步骤。",
+  "session_id": "session-fb5005c8-3479-4db1-8f01-e2341606c602",
+  "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+  "session_title": "评测 U-ASSET-ALERTS-001",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-cb7ec92b-2fbc-4396-bed7-a4813f8db1ba",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-ASSET-ALERTS-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

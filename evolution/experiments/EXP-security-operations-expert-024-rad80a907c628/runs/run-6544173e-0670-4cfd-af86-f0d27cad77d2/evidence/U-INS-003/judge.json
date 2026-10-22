@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "回答只返回了一个可解析的 JSON 对象，未混入额外文本；facts 字段完整准确保留了输入给出的四项事实（39 台/套、12 台/套、4 台/套、2 项），数值与单位均无改动；conclusion/notes 属于定性提示，suggestions 以「建议+尚未执行」形式明确与事实区分；notes 明确声明未调用工具核验、未添加输入之外的时间或状态字段，派生指标（离线率等）也未擅自计算，符合「不添加输入中没有的动态数据」的要求；本用例预期本身不要求真实工具数据，且未调用工具与之相符。"
+  },
+  "checks": {
+    "session_id": "session-c0151d1a-cf69-40e0-9886-950d0e5eb784",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-INS-003",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

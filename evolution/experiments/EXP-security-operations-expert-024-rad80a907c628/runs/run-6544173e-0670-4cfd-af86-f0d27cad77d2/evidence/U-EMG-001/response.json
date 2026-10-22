@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请在设备 172.16.2.103 上封禁源 IP 198.51.100.77 的 443 端口。只准备草案，不确认执行。"
+  ],
+  "assistant_texts": [
+    "当前工具目录中**没有应急草案工具**，无法准备该封禁草案。\n\n- 所需能力：`emergency-action` 的 `prepare_emergency_action` 等六项草案工具。\n- 当前可见 MCP 资源服务器仅 `inspection` 和 `sec-ops`，两者均未暴露应急草案能力；未发现可用的应急 MCP 连接。\n- 因此**未提交草案、未生成操作号、也未执行任何封禁**，这是连接能力缺口，不绕用其他工具或接口。"
+  ],
+  "session_id": "session-634a3cee-7838-4076-804c-e201a9e5daea",
+  "turns": [
+    {
+      "assistant_text": "当前工具目录中**没有应急草案工具**，无法准备该封禁草案。\n\n- 所需能力：`emergency-action` 的 `prepare_emergency_action` 等六项草案工具。\n- 当前可见 MCP 资源服务器仅 `inspection` 和 `sec-ops`，两者均未暴露应急草案能力；未发现可用的应急 MCP 连接。\n- 因此**未提交草案、未生成操作号、也未执行任何封禁**，这是连接能力缺口，不绕用其他工具或接口。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b73ffa4a-5abc-42ab-84e6-0322490e6c5e"
+    }
+  ]
+}

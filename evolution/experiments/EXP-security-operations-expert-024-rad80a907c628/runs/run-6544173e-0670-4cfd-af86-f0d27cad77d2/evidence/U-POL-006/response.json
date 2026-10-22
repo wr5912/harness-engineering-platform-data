@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "帮我开通 172.16.1.155 到 172.16.2.103 的 TCP 18550 端口业务。"
+  ],
+  "assistant_texts": [
+    "端点解析结果已返回，状态为 **UNRESOLVED**，平台未冻结可准备的策略草稿，因此本轮不会创建 DRAFT，也不会执行任何下发操作。以下为平台返回的原文：\n\n> 无法解析源端点“172.16.1.155”：平台资产目录中未找到匹配的资产名称、IPv4 或 IPv4 CIDR，不能生成网络访问策略。请检查拼写与完整地址，或提供已纳管的替代资产。\n\n**当前结论**\n\n- 源端点 `172.16.1.155`：无法由平台资产目录解析。\n- 目的端点 `172.16.2.103`、`TCP`、目的端口 `18550`：已记录为本轮查询参数，但源端点未解析，尚未生成草稿。\n- 网络访问策略：尚未创建、确认或下发；TCP 18550 尚未开通。\n\n**下一步**\n\n请核对源端点，或提供平台已纳管的资产名称、完整 IPv4 地址或网络地址对齐的 IPv4 CIDR。你补充后，我将以新的 `request_id` 重新解析。"
+  ],
+  "session_id": "session-067de0d1-dd10-4255-aae0-594a5962f08e",
+  "turns": [
+    {
+      "assistant_text": "端点解析结果已返回，状态为 **UNRESOLVED**，平台未冻结可准备的策略草稿，因此本轮不会创建 DRAFT，也不会执行任何下发操作。以下为平台返回的原文：\n\n> 无法解析源端点“172.16.1.155”：平台资产目录中未找到匹配的资产名称、IPv4 或 IPv4 CIDR，不能生成网络访问策略。请检查拼写与完整地址，或提供已纳管的替代资产。\n\n**当前结论**\n\n- 源端点 `172.16.1.155`：无法由平台资产目录解析。\n- 目的端点 `172.16.2.103`、`TCP`、目的端口 `18550`：已记录为本轮查询参数，但源端点未解析，尚未生成草稿。\n- 网络访问策略：尚未创建、确认或下发；TCP 18550 尚未开通。\n\n**下一步**\n\n请核对源端点，或提供平台已纳管的资产名称、完整 IPv4 地址或网络地址对齐的 IPv4 CIDR。你补充后，我将以新的 `request_id` 重新解析。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "1a4fc1ac-1e31-47db-9f39-a6723af79c6d"
+    }
+  ]
+}

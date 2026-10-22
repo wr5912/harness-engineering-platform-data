@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "预期要求判断会话自动播报/摘要功能的行为（每次主 LLM Call 正常完成且含可见正文时生成约30字摘要、共用 /api/remote.mux、设置页保存字数/提示词/模型等）。但证据中的 assistant_texts 与 tool_events 均未提供任何关于摘要生成、字数、mux 音频流、设置保存的可核验事实；被测回答只涉及威胁研判与 Schedule 提醒的澄清，与被评要求无直接对应。无法据此判定通过或不满足，故为 inconclusive。"
+  },
+  "checks": {
+    "session_id": "session-111340a1-61fc-490b-ad9d-c4c2b9b42978",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-VOICE-002",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

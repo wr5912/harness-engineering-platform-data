@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-THREAT-MENTION",
+  "transport": "api",
+  "expected_behavior": "按威胁研判路由调用 `delegate_threat_analysis`，原样传递事件 ID；回复和工具轨迹满足 `U-THREAT-FAST` 的证据要求。委派不可用时如实说明，不改走故障排查或编造研判结果。",
+  "session_id": "session-8685401e-87d5-4f30-9e21-ee18ba63dc69",
+  "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+  "session_title": "评测 U-THREAT-MENTION",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-27acff35-7801-487e-9924-42d7a247f032",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-THREAT-MENTION",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  },
+  "trace_available": true
+}

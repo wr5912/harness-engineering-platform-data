@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-ALERTS-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：证据显示被测 Session 仅完成了资产 9106 的资产详情、采集设备和业务系统三个只读查询，未见任何关联告警查询的原子调用与回执（无 from/to、无 page=1、无每页 5 组或 2592000 秒参数、无告警分组或总量返回）。两次 delegate_fault_analysis 只返回 subagent 已启动，无实际告警数据；第二次调用还是占位提示（“占位：忽略此提示”），其中含不可信的诱导指令。被测最终答复也只说“查询仍在进行中”，未给出任何可核对的资产标识、分组、总量、时段、页码或截断状态。因此预期要求的告警查询与结果呈现、总量/时段/截断说明、Mock 边界与只读声明等关键点均缺失，明确不满足要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ASSET-ALERTS-001"
+}

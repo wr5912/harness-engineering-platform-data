@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "预期要求使用 unblock-ip 并以原规则 UUID 作为 rule_name 准备并回读一致的草案；但本会话工具证据显示 emergency-action 草案工具（prepare/get 等六项）不可用，sec-ops 与 inspection 的 MCP 资源及模板均为空，被测方确实未调用任何 prepare/unblock 工具，也未生成或展示草案。其声明的“无可用工具/能力缺口”与工具回执一致，且未提交解封、未展示确认入口，符合“未获正确草案时说明缺口、不展示确认入口、不得提交解封”的分支；但因证据中不存在真实草案数据，无法验证 rule_name 逐值使用原 UUID 及草案回读一致性这一核心要求，故证据不足，判定为 inconclusive 而非 passed。"
+  },
+  "checks": {
+    "session_id": "session-91e12a54-fb81-4b1c-ac3f-8d594fda44dc",
+    "workspace_id": "848e4003-3b43-48e3-8719-c98167b876e0",
+    "session_title": "评审 U-EMG-003",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

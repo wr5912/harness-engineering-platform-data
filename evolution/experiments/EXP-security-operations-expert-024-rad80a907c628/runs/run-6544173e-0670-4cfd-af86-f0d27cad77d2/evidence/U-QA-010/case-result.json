@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-010",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：回答逐项满足预期：明确说明巡检服务不创建任务、三个巡检工具为目录查询/发起/按 runId 查报告，并给出查询→发起→续查→报告就绪后查看的流程与已知参数要求（taskId、definitionVersion、requestId、scope/ASSET_IDS），与 skill 回执一致；说明报告地址须为服务返回非空 reportDownloadUrl 时原样使用、不自行拼接；区分了平台侧任务创建（工具不提供）、本会话 schedule_create 仅创建提醒且不等于已执行巡检；分别说明响应规划、策略配置、应急处置的入口与权限边界（受控 Runtime 授权、草案确认执行流程、审批约束等），未把建议描述为已执行；权限描述为运行时授予的能力类别，未臆造未知权限名称。关键数据有同一 Session 工具回执支持：security-inspection、response-planning skill 内容，emergency-action 与 policy-configuration 的拒绝回执，以及 inspection 与 sec-ops 的 resources/resourceTemplates 均为空，与回答末尾关于无可枚举 MCP 资源的陈述一致。未发现明显不实或越界声明。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-010"
+}
