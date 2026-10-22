@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "enabled": true,
   "authentication": {
-    "endpoint": "http://172.17.0.1:53101/api/v1/control/identity/authenticate",
+    "endpoint": "http://172.17.0.1:50500/api/v1/control/identity/authenticate",
     "timeoutMs": 1500
   },
   "identityTrust": {
-    "endpoint": "http://172.17.0.1:53101/api/v1/control/identity/trust",
+    "endpoint": "http://172.17.0.1:50500/api/v1/control/identity/trust",
     "timeoutMs": 1500
   },
   "riskAssessment": {
@@ -51,16 +51,32 @@
       "serverId": "inspection",
       "operationId": "list_executable_inspections",
       "kind": "read",
-      "target": "http://172.17.0.1:53101/mcp/inspection/",
-      "method": "TOOLS/CALL",
-      "schemaDigest": "ff1b2d8857c8e4a2cd87b566a798c5d1cd937fe8a13363e59a51231b4b328939"
+      "target": "http://172.16.138.232:18150/mcp/inspection",
+      "method": "tools/call",
+      "schemaDigest": "ab7bd4d62ff6dceead46c152b2ebb362c3ff9bd30b5e7894f5d8835830218dcb"
+    },
+    {
+      "serverId": "inspection",
+      "operationId": "get_inspection_result",
+      "kind": "read",
+      "target": "http://172.16.138.232:18150/mcp/inspection",
+      "method": "tools/call",
+      "schemaDigest": "f18ad1bcadc1ab91db4bf7b5e73a0f3640bbf2f8ee7b10aa2112ebaa1d416695"
+    },
+    {
+      "serverId": "inspection",
+      "operationId": "start_inspection",
+      "kind": "read",
+      "target": "http://172.16.138.232:18150/mcp/inspection",
+      "method": "tools/call",
+      "schemaDigest": "8283fcee7657d222695f011dbbf0a85dda865841e2ba2b68803cbec956a90fef"
     }
   ],
   "gateway": {
-    "host": "10.0.160.32",
+    "host": "172.16.138.228",
     "port": 53105,
-    "publicOrigin": "http://10.0.160.32:53105",
-    "sharedSecretFile": "/home/admin/harness-engineering-platform-data/.local/business-control-mock/gateway-secret.bin",
+    "publicOrigin": "http://172.16.138.228:53105",
+    "sharedSecretFile": ".local/business-control-mock/gateway-secret.bin",
     "instances": [
       {
         "agentId": "security-operations-expert",
@@ -110,6 +126,14 @@
         "sourceId": "experiment:EXP-daily-inspection-assistant-002-r9eba480e9d2a",
         "sourceDigest": "sha256:7df02a9788ada56278d8f0c86ac2dc8a6c392b2e4e0e35db1e26efc95628b471",
         "accessMode": "authenticated",
+        "identityMode": "development"
+      },
+      {
+        "agentId": "security-operations-expert",
+        "instanceId": "security-operations-expert-2",
+        "sourceId": "experiment:EXP-security-operations-expert-024-rad80a907c628",
+        "sourceDigest": "sha256:77aba599e285d73c5de0abd027d46d5aa8b2cc2983f2577a9ff0cf69d6c57ae0",
+        "accessMode": "anonymous",
         "identityMode": "development"
       }
     ],

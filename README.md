@@ -2,13 +2,13 @@
 
 这是 Harness 工程平台的数据与管理助手业务 Harness 仓库，保存管理助手原则和技能、智能体研究资产、评测记录、决策样本、实际来源与工具配置，以及业务扩展。默认部署在 `~/harness-engineering-platform-data`；平台程序由独立的 [harness-engineering-platform](https://github.com/wr5912/harness-engineering-platform) 仓库维护。
 
-平台管理助手使用本仓库的 [AGENTS.md](AGENTS.md) 和 [.agents/skills](.agents/skills) 办理业务。它具备工作区管理、智能体构建维护、评测改进、继承融合、算力研究、MCP 编排、样本抽取和旧资产清点方法；真实执行能力以当前平台提供的工具为准，Skill 文件存在不代表任务已验证成功。
+平台管理助手使用本仓库的 [AGENTS.md](AGENTS.md) 和 [.agents/skills](.agents/skills) 办理业务。它具备工作区管理、智能体构建维护、评测改进、继承融合、算力研究、MCP 编排、样本抽取、技能审查和旧资产清点方法；真实执行能力以当前平台提供的工具为准，Skill 文件存在不代表任务已验证成功。
 
 ## 目录与维护职责
 
 ```text
 AGENTS.md                 管理身份、业务原则与约束
-.agents/skills/            12 项管理、研究及通用表达 Skill
+.agents/skills/            13 项管理、研究、审查及通用表达 Skill
 docs/harness-research/     当前研究方法、经验和固定来源索引
 agents/                   业务智能体入口、需求和共享评测口径
 evolution/                Experiment、Candidate、Run、决策样本和历史输入
@@ -18,7 +18,7 @@ workspace.json            工作区身份和原生扩展声明
 .local/                   会话、设置、实例 HOME、制品和凭据，忽略 Git
 ```
 
-管理技能共12项：`workspace-management`、`task-builder`、`agent-maintenance`、`mcp-composition`、`compute-variant-research`、`decision-sample-extraction`、`harness-guided-workflow`、`harness-evolution`、`harness-experiment-fusion`、`research-eval`、`legacy-asset-intake`、`user-facing-output`。方法入口见[研究方法索引](docs/harness-research/README.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本；其他智能体可在各自作用域内复用。
+管理技能共13项：`workspace-management`、`task-builder`、`agent-maintenance`、`mcp-composition`、`compute-variant-research`、`decision-sample-extraction`、`harness-guided-workflow`、`harness-evolution`、`harness-experiment-fusion`、`research-eval`、`legacy-asset-intake`、`reviewing-agent-skills`、`user-facing-output`。方法入口见[研究方法索引](docs/harness-research/README.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本；其他智能体可在各自作用域内复用。
 
 平台代码、研发 Skill、校验器和 Runtime 适配器仍在程序仓库；管理助手不承担平台源码开发。业务 Candidate 内的角色与 Skill 属于被管理智能体，不自动加入管理助手技能。两仓原则按职责独立维护。
 

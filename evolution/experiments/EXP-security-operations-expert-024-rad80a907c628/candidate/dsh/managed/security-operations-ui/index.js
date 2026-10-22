@@ -1,7 +1,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 
 export const name = 'dsh-security-operations-ui'
-export const inject = ['storageDomain', 'sessionController', 'connection']
+export const inject = ['storageDomain', 'sessionController', 'webServer']
 
 const ROLES = [
   ['delegate_threat_analysis', '威胁研判子智能体'],
@@ -116,9 +116,8 @@ export async function apply(ctx) {
           sessionId: String(session.id), at: event.time, toolCalls: 0, skillLoads: 1,
         })
       }))
-      disposers.push(ctx.connection.fetch.register({
-        path: '/api/security-operations/overview', methods: ['GET'], requestBody: 'buffered',
-        fetch: async () => {
+      disposers.push(ctx.webServer.register({ kind: 'exact', path: '/api/security-operations/overview', handler: async (req, res) => {
+        if (req.method !== 'GET') { res.writeHead(405, { allow: 'GET' }); res.end(); return }
           try {
             await queue
             if (storageFailed) throw new Error('overview storage unavailable')
@@ -151,16 +150,18 @@ export async function apply(ctx) {
                 unknown, recent: rows.slice(0, 5),
               }
             })
-            return Response.json({
+            res.writeHead(200, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' })
+            res.end(JSON.stringify({
               windowHours: hours, asOf: Date.now(),
               parent: { state: activeParent.length ? 'running' : 'idle', active: activeParent.length,
                 sessions: parent.length, recentSessionId: parent[0]?.sessionId ?? null,
                 ...counts(new Set(parent.map(item => String(item.sessionId)))) },
               roles,
-            }, { headers: { 'cache-control': 'no-store' } })
+            }))
           } catch (error) {
             ctx.logger.error('security-operations-ui overview unavailable', error)
-            return Response.json({ error: 'overview unavailable' }, { status: 503, headers: { 'cache-control': 'no-store' } })
+            res.writeHead(503, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' })
+            res.end(JSON.stringify({ error: 'overview unavailable' }))
           }
         },
       }))
