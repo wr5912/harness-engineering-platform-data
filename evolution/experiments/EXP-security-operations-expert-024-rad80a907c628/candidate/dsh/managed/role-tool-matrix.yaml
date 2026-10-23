@@ -82,11 +82,20 @@ denied_mcp_tools:
   - mcp__emergency-action__submit_emergency_action
 runtime_capabilities:
   local_tools:
+    - read
+    - write
+    - edit
+    - glob
+    - grep
     - skill
     - analyze_threat_incident
+    - analyze_pending_threat_incidents
     - delegate_threat_analysis
     - delegate_fault_analysis
+    - delegate_response_planning
   local_model_routes:
+    - provider: threat-analysis-automation
+      model: scheduled-batch
     - provider: threat-analysis-delivery
       model: fixed-summary
     - provider: security-operation-delivery

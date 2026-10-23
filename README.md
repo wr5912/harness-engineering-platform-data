@@ -24,6 +24,8 @@ workspace.json            工作区身份和原生扩展声明
 
 本仓库保留迁移前的 Git 历史，以便恢复固定 Baseline、父版本和历史算法。旧提交中的平台代码是历史来源，不是另一份当前程序。
 
+`security-operations-expert` 当前资产仅保留 [EXP024](evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/decision.md)。EXP001–023、对应 Run 和旧联调资料可从数据提交 `1f162a1ce12025ffeb9d2e36c7a3ae283b41e421` 恢复到独立目录；日常启动与开发使用当前 manifest 和来源登记。其他智能体资产及运行实例的会话、设置保持各自生命周期。
+
 ## 启动与验证
 
 准备与程序版本匹配的系统全局 DSH、Node.js、pnpm 和 Python 环境，具体版本以[平台启动说明](https://github.com/wr5912/harness-engineering-platform#快速启动)为准。在程序仓库运行：

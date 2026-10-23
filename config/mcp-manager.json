@@ -2,76 +2,34 @@
   "schemaVersion": 1,
   "servers": [
     {
-      "id": "mock-soc-readonly",
-      "description": "",
-      "enabled": true,
-      "specUrl": "http://10.0.160.32:53001/api/v1/security-operations/readonly/openapi.json",
-      "authType": "credential",
-      "authHeader": "Authorization",
-      "loginUrl": "",
-      "loginTokenPath": "data.token",
-      "tools": {
-        "mode": "all",
-        "names": []
-      },
-      "headers": []
-    },
-    {
-      "id": "mock-threat-soc",
-      "description": "",
-      "enabled": true,
-      "specUrl": "http://10.0.160.32:53001/api/v1/security-operations/openapi.json",
-      "authType": "credential",
-      "authHeader": "Authorization",
-      "loginUrl": "",
-      "loginTokenPath": "data.token",
-      "tools": {
-        "mode": "all",
-        "names": []
-      },
-      "headers": []
-    },
-    {
-      "id": "mock-threat-report",
-      "description": "",
-      "enabled": true,
-      "url": "http://10.0.160.32:53001/mcp/report/",
-      "tools": {
-        "mode": "all",
-        "names": []
-      },
-      "headers": []
-    },
-    {
       "id": "policy-configuration",
-      "serverName": "policy-configuration",
       "description": "",
-      "enabled": false,
-      "url": "http://172.16.138.232:50500/mcp/group",
-      "headers": [
-        {
-          "name": "Authorization"
-        }
-      ],
+      "specUrl": "http://127.0.0.1:58431/api/v1/policy-configurations/openapi.json",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "enabled": true,
       "tools": {
         "mode": "all",
         "names": []
-      }
+      },
+      "serverName": "policy-configuration"
     },
     {
       "id": "emergency-action",
-      "serverName": "emergency-action",
-      "enabled": false,
-      "url": "http://172.16.138.232:50500/mcp/group-3",
-      "headers": [
-        {
-          "name": "Authorization"
-        }
-      ],
+      "description": "",
+      "specUrl": "http://127.0.0.1:59420/api/v1/emergency-actions/openapi.json",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "enabled": true,
       "tools": {
         "mode": "all",
         "names": []
-      }
+      },
+      "serverName": "emergency-action"
     },
     {
       "id": "sec-ops",
@@ -217,39 +175,14 @@
   ],
   "groups": [
     {
-      "id": "AAA",
-      "members": [
-        {
-          "serverId": "platform-compositions",
-          "names": [
-            "query_asset_related_alerts"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "threat-analysis-mock",
-      "members": [
-        {
-          "serverId": "platform-compositions",
-          "names": [
-            "threat_collect",
-            "threat_infer",
-            "threat_writeback",
-            "threat_report",
-            "analyze_threat_incident"
-          ]
-        }
-      ]
-    },
-    {
       "id": "inspection-readonly",
       "members": [
         {
           "serverId": "inspection",
           "names": [
             "list_executable_inspections",
-            "get_inspection_result"
+            "get_inspection_result",
+            "start_inspection"
           ],
           "resourceUris": [],
           "resourceTemplates": []
@@ -329,6 +262,27 @@
             "http://172.16.138.223:18087/soc/asset/{assetId}",
             "http://172.16.138.223:18087/soc/asset/{assetId}/importance",
             "http://172.16.138.223:18087/soc/asset/{assetId}/biz-systems"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "policy-configuration",
+      "members": [
+        {
+          "serverId": "policy-configuration",
+          "names": [
+            "prepare_policy_configuration",
+            "resolve_policy_endpoints",
+            "choose_ambiguous_policy_endpoints",
+            "select_policy_configuration_candidate",
+            "decide_policy_configuration",
+            "confirm_policy_configuration"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://127.0.0.1:58431/api/v1/policy-configurations/{operationId}/result",
+            "http://127.0.0.1:58431/api/v1/policy-configurations/{operationId}"
           ]
         }
       ]

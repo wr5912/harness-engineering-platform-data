@@ -30,6 +30,7 @@ export function apply(ctx, config = {}, dependencies = {}) {
   const scheduledSteps = new Map()
   const originalRoutes = new Map()
   let activeAutomation
+  let lastAutomationFinishedAt = 0
   const processedOccurrences = new Set()
   // request/header 和本步 user/message 尚未落盘；只冻结原生 inbox 本次实际接纳的来源。
   ctx.on('agent/pre-step', async ({ agent, turn, step, messages, signal }, next) => {
@@ -176,6 +177,13 @@ export function apply(ctx, config = {}, dependencies = {}) {
         return { ...batchResult('skipped_busy', args.batch_size, 'busy'),
           ...(activeAutomation.incidentId ? { active_incident_id: activeAutomation.incidentId } : {}) }
       }
+      const previousBatch = events.findLast(event => event.type === 'tool/result'
+        && ['completed', 'failed'].includes(event.data.meta?.threat_analysis_batch?.status))
+      // Session 中的原生结果时间在重启后仍有效，不另存一份调度状态。
+      const finishedAt = Math.max(lastAutomationFinishedAt, previousBatch?.time ?? 0)
+      if (trigger && Date.parse(trigger.occurrenceAt) <= finishedAt) {
+        return batchResult('skipped_stale', args.batch_size, 'stale')
+      }
       activeAutomation = {}
       try {
         let pendingResult
@@ -222,6 +230,7 @@ export function apply(ctx, config = {}, dependencies = {}) {
           found: incidentIds.length, attempted, completed, skipped_locked: skippedLocked,
           failed: attempted - completed, stopped_reason: stoppedReason, results }
       } finally {
+        lastAutomationFinishedAt = Date.now()
         activeAutomation = undefined
       }
     },

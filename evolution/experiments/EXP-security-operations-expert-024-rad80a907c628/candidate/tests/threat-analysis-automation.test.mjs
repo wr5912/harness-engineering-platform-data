@@ -316,6 +316,7 @@ fi
     await instance.prepare([events[0].data])
     const first = tool.execute({ batch_size: 1 }, instance.execute('first'))
     await new Promise(resolve => setTimeout(resolve, 20))
+    const queued = scheduleEvent(prompt, 'schedule-queued')
     const overlappingEvents = []
     const otherAgent = { ...instance.agent, id: 'session-overlapping', session: { id: 'session-overlapping',
       header: { delegationDepth: 0 }, snapshotEvents: () => overlappingEvents,
@@ -325,6 +326,24 @@ fi
     assert.equal(overlapping.status, 'skipped_busy')
     assert.equal(overlapping.stopped_reason, 'busy')
     assert.equal((await first).status, 'completed')
+    await instance.prepare([queued.data], 2)
+    assert.equal((await tool.execute({ batch_size: 1 }, instance.execute('queued'))).status, 'skipped_stale',
+      '上一轮运行期间到期的心跳即使被原生 inbox 排队，也不得补跑')
+    await instance.prepare([scheduleEvent(prompt, 'schedule-fresh', new Date(Date.now() + 1).toISOString()).data], 3)
+    assert.equal((await tool.execute({ batch_size: 1 }, instance.execute('fresh'))).status, 'completed',
+      '上一轮完成后到期的新心跳仍可执行')
+
+    const restoredEvents = [{ type: 'tool/result', time: Date.now(), data: {
+      meta: { threat_analysis_batch: { status: 'completed' } },
+    } }]
+    const restored = harness(restoredEvents)
+    const restoredTool = restored.definitions.get('analyze_pending_threat_incidents')
+    await restored.prepare([queued.data])
+    assert.equal((await restoredTool.execute({ batch_size: 1 }, restored.execute('restored-queued'))).status,
+      'skipped_stale', '重启后仍从原生 Session 结果识别积压心跳')
+    await restored.prepare([scheduleEvent(prompt, 'schedule-restored-fresh', new Date(Date.now() + 1).toISOString()).data], 2)
+    assert.equal((await restoredTool.execute({ batch_size: 1 }, restored.execute('restored-fresh'))).status,
+      'completed', '重启后新的到期投递可继续执行')
 
     process.env.THREAT_AUTOMATION_TEST_MODE = 'locked'
     instance = harness(events)

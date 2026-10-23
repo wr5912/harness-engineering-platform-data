@@ -2,7 +2,7 @@
 
 ## 来源与资产边界
 
-本 Candidate 从 `EXP-security-operations-expert-022-r41bf6c2f0d3d` 在数据提交 `c903724269be0ef249182e2fd7024325c7124629` 的 Candidate 完整派生。历史 Experiment、Run 和当前实例没有改写。`config/sources.json` 新增独立 Experiment 来源，原来源继续可用。
+本 Candidate 从 `EXP-security-operations-expert-022-r41bf6c2f0d3d` 在数据提交 `c903724269be0ef249182e2fd7024325c7124629` 的 Candidate 完整派生。父版身份及原始 Run 可从固定 Git 提交恢复；当前工作树和 `config/sources.json` 只保留本 Agent 的 EXP024 来源。实例 HOME、Session 和运行制品按实例生命周期管理。
 
 业务指令及 Skills 只描述能力、步骤和失败处理，不写最终 DSH `mcp__` 工具名。威胁研判的 20 项逻辑路由在 `candidate/dsh/managed/threat-analysis/mcp-group-bridge.ts` 维护，以来源 ID、原始工具名或资源 URI/模板发现真实目标；v2 目标摘要变化、缺失或重名会停止调用。策略、应急、巡检、故障取证和结果投递通过实际注册名映射到内部稳定身份，角色 Guard 对未知或缺失能力继续拒绝。三个子 Agent 改用 rc2 `agentPreset` 与各自的权限 Guard。
 

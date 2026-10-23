@@ -61,6 +61,7 @@ _FACT_DECLARATION_MARKERS = (
     "事件类型为",
 )
 _PATH_TOKEN = re.compile(r"([^.\[\]]+)|\[(\d+)\]")
+_DOTTED_ARRAY_INDEX = re.compile(r"\.(\d+)(?=\.|\[|$)")
 _BARE_ENTITY_REF = re.compile(r"(?<![A-Za-z0-9_])E\d+(?![A-Za-z0-9_])")
 _EDR_SEGMENT_PATH = re.compile(
     r"^(assets|entities)\[(\d+)\]\.activity_segments\[(\d+)\]\.(.+)$"
@@ -175,14 +176,16 @@ def _resolve_path(root: Any, path: str) -> Any:
             raise KeyError(path)
         position = match.end()
         key, index = match.groups()
-        if key is not None:
-            if not isinstance(cursor, Mapping) or key not in cursor:
+        if key is not None and isinstance(cursor, Mapping):
+            if key not in cursor:
                 raise KeyError(path)
             cursor = cursor[key]
         else:
-            if not isinstance(cursor, Sequence) or isinstance(cursor, (str, bytes)):
+            array_index = index if index is not None else key
+            if (not isinstance(cursor, Sequence) or isinstance(cursor, (str, bytes))
+                    or array_index is None or not array_index.isdecimal()):
                 raise KeyError(path)
-            numeric_index = int(index)
+            numeric_index = int(array_index)
             if numeric_index >= len(cursor):
                 raise KeyError(path)
             cursor = cursor[numeric_index]
@@ -417,7 +420,7 @@ def _edr_evidence_location(
     field: str,
     five_source: Mapping[str, Any],
 ) -> tuple[Mapping[str, Any], Mapping[str, Any], str] | None:
-    match = _EDR_SEGMENT_PATH.match(field)
+    match = _EDR_SEGMENT_PATH.match(_DOTTED_ARRAY_INDEX.sub(r"[\1]", field))
     if not match:
         return None
     collection, asset_index, segment_index, remainder = match.groups()
@@ -469,7 +472,7 @@ def _is_stable_relation_evidence(
         return False
 
     if source == "graph":
-        match = _GRAPH_PATH_HINT.match(field)
+        match = _GRAPH_PATH_HINT.match(_DOTTED_ARRAY_INDEX.sub(r"[\1]", field))
         if not match:
             return False
         enriched = five_source.get("enriched_context")

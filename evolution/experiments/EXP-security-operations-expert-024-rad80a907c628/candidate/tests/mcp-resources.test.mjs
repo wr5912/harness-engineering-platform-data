@@ -19,6 +19,46 @@ const configOf = (servers, groups) => ({
 const member = (extra = {}) => ({ serverId: 'fixture', names: [], resourceUris: [], resourceTemplates: [], ...extra })
 const server = { id: 'fixture', enabled: true, url: 'http://127.0.0.1:1/mcp', tools: { mode: 'all', names: [] } }
 
+test('Runtime 能力声明覆盖实际本地工具、委派和三条受信模型路由', async () => {
+  const yaml = require('js-yaml')
+  const matrix = yaml.load(readFileSync(new URL('../dsh/managed/role-tool-matrix.yaml', import.meta.url), 'utf8'))
+  const schema = yaml.DEFAULT_SCHEMA.extend(new yaml.Type('tag:yaml.org,2002:js', { kind: 'scalar', construct: value => value }))
+  const patch = yaml.load(readFileSync(new URL('../dsh/managed/security-operations-expert.patch.yml', import.meta.url), 'utf8'), { schema })
+  const definitions = new Map(), adapters = new Map(), hooks = new Map(), events = []
+  const ctx = { tools: { register: tool => definitions.set(tool.name, tool) },
+    llm: { registerAdapter: (names, adapter) => names.forEach(name => adapters.set(name, adapter)) },
+    on: (event, hook) => hooks.set(event, hook) }
+  const threat = await import('../dsh/managed/threat-analysis.mjs')
+  threat.apply(ctx)
+  const delegates = patch.flatMap(item => item.insert ?? []).filter(item => item.name === '@deepseek-ai/dsh-tool-subagent').map(item => item.config.toolName)
+  const expectedTools = new Set([...matrix.parent_direct_tools.workspace, ...delegates, ...definitions.keys()])
+  assert.deepEqual(new Set(matrix.runtime_capabilities.local_tools), expectedTools)
+
+  const agent = { id: 'local-route-contract', session: { snapshotEvents: () => events } }
+  const native = { provider: 'fixture', model: 'fixture' }, signal = new AbortController().signal
+  const checkRoute = async turn => {
+    const route = await hooks.get('agent/request')({ agent, turn, step: 1, signal }, async () => native)
+    assert.ok(matrix.runtime_capabilities.local_model_routes.some(item => item.provider === route.provider && item.model === route.model),
+      `实际路由未声明：${route.provider}/${route.model}`)
+    assert.ok(adapters.has(route.provider), '声明的路由必须有实际适配器')
+    return route
+  }
+  const message = { id: 'trusted-contract', source: { kind: 'schedule' }, content: [{ type: 'text', text:
+    `[SCHEDULE REMINDER]\nschedule_id_json: "schedule-contract"\noccurrence_at: ${new Date().toISOString()}\nreminder_prompt_json: ${JSON.stringify(JSON.stringify({ type: 'threat-analysis.pending', version: 1, batchSize: 1 }))}` }] }
+  await hooks.get('agent/pre-step')({ agent, turn: 1, step: 1, messages: [message], signal }, async () => ({ kind: 'enter', messages: [message] }))
+  const automation = await checkRoute(1)
+  for await (const chunk of adapters.get(automation.provider).stream({ sessionId: agent.id })) {
+    if (chunk.type === 'tool-call-delta') assert.ok(matrix.runtime_capabilities.local_tools.includes(chunk.name), '受信模型调用的工具也必须声明')
+  }
+  events.push({ type: 'tool/result', data: { turn: 2, meta: { threat_analysis_batch: { status: 'completed', found: 0, results: [] } } } })
+  await checkRoute(2)
+  const delivery = await import('../dsh/managed/operation-result-delivery.mjs')
+  delivery.apply(ctx)
+  delivery.queueControlledOutput(agent.id, '本地固定结果')
+  await checkRoute(3)
+  assert.deepEqual(new Set(matrix.runtime_capabilities.local_model_routes.map(item => item.provider)), new Set(adapters.keys()))
+})
+
 test('实际新实例seed可通过manager snapshot，未配置资源的成员不会阻断插件激活', () => {
   const { load } = require('js-yaml')
   const seed = load(readFileSync(new URL('../dsh/managed/web-profile.seed.patch.yml', import.meta.url), 'utf8'))

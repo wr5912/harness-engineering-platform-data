@@ -14,13 +14,52 @@ sys.path.insert(0, str(ROOT))
 
 from mcp_gateway import FIXED_RUNTIME_TOOLS, McpGateway  # noqa: E402
 from model_inference import extract_json_output  # noqa: E402
-from forced_output_contract import _require_observed_target, _require_structured_target  # noqa: E402
+from forced_output_contract import _is_primary_scoped_behavior, _is_stable_relation_evidence, _require_observed_target, _require_structured_target, _resolve_path, _validate_evidence_reference  # noqa: E402
 from result_delivery import build_delivery, priority_pill  # noqa: E402
 from result_storage import SocJudgementClient, SocWriteError, build_writeback, persist  # noqa: E402
 import dsh_runner  # noqa: E402
 
 
 class ThreatAnalysisAutomationTest(unittest.TestCase):
+    def test_evidence_array_paths_resolve_both_model_notations(self) -> None:
+        payload = {"enriched_context": {"edr_detail": {"entities": [
+            {"activity_segments": [{"processes": [{"cmdline": "first"}, {"cmdline": "observed"}]}]}
+        ]}}}
+        for field in ("entities.0.activity_segments.0.processes.1.cmdline",
+                      "entities[0].activity_segments[0].processes[1].cmdline"):
+            warnings = []
+            evidence = {"source": "edr_detail", "field": field, "value": "observed"}
+            self.assertEqual(_validate_evidence_reference(evidence, payload, "claim evidence", warnings), "observed")
+            self.assertEqual(warnings, [])
+        for field in ("entities.-1", "entities.1", "entities.zero", "entities.0.missing",
+                      "entities.0.activity_segments.0.processes.1.cmdline.0"):
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                _validate_evidence_reference({"source": "edr_detail", "field": field, "value": "invented"},
+                                             payload, "claim evidence", [])
+        self.assertEqual(_resolve_path({"0": "mapping key"}, "0"), "mapping key")
+        with self.assertRaises(KeyError):
+            _resolve_path({"0": "mapping key"}, "[0]")
+
+    def test_evidence_scope_and_relation_accept_both_array_notations(self) -> None:
+        payload = {"event_snapshot": {"judgement_target": {"primary_entity": {"asset_id": "A-1"}}, "entities": []},
+                   "enriched_context": {"graph": {"path_hints": [{"relation": "connection", "basis": "observed"}]},
+                       "edr_detail": {"entities": [{"asset_id": "A-1", "activity_segments": [
+                           {"scope": "linked", "relation_basis": "observed", "processes": [{"cmdline": "observed"}]}
+                       ]}]}}}
+        for prefix in ("entities[0].activity_segments[0]", "entities.0.activity_segments.0",
+                       "entities[0].activity_segments.0"):
+            with self.subTest(prefix=prefix):
+                evidence = {"source": "edr_detail", "field": prefix + ".processes.0.cmdline", "value": "observed"}
+                _validate_evidence_reference(evidence, payload, "evidence", [])
+                self.assertTrue(_is_primary_scoped_behavior(evidence, payload))
+                self.assertTrue(_is_stable_relation_evidence(
+                    {"source": "edr_detail", "field": prefix + ".relation_basis"}, payload))
+        for field in ("path_hints[0].relation", "path_hints.0.relation"):
+            self.assertTrue(_is_stable_relation_evidence({"source": "graph", "field": field}, payload))
+        payload["enriched_context"]["edr_detail"]["entities"][0]["activity_segments"][0]["scope"] = "unrelated"
+        self.assertFalse(_is_primary_scoped_behavior(evidence, payload))
+        self.assertFalse(_is_stable_relation_evidence({"source": "graph", "field": "path_hints.1.relation"}, payload))
+
     def test_unknown_action_priority_is_not_rendered_as_p3(self) -> None:
         for value in ("P0", None):
             with self.subTest(value=value):
