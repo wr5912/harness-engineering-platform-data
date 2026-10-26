@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path'
 import { spawn } from 'node:child_process'
 
 export const name = 'task-example-tools'
-export const inject = ['tools', 'connection', 'webServer']
+export const inject = ['tools', 'connection', 'webServer', 'webApp']
 type Row = { asset_id: string; hostname: string; asset_type: string; risk_score: number }
 type SourceDocument = { url: string; path: string; sha256: string }
 type Config = { kind: 'inspection' | 'research' | 'training'; presetId?: string; workflowTool?: string; assetUrl?: string; sourceUrls?: string[]; sourceDocuments?: SourceDocument[] }
@@ -85,6 +85,12 @@ export function apply(ctx: any, config: Config) {
   if (config.workflowTool !== undefined && (typeof config.workflowTool !== 'string' || !/^[a-z][a-z0-9_]{0,63}$/.test(config.workflowTool))) throw new Error('workflowTool 必须是明确的工具名')
   const allowedTools = [...new Set(['task_' + config.kind, ...(config.workflowTool ? [config.workflowTool] : [])])]
   const isSubject = (agent: any) => agent?.session?.header?.agentPreset === subjectPreset
+  function artifactUrl(id: string, file: string) {
+    const url = new URL('api/task-examples/artifact', ctx.webApp.getAdvertisedUrl())
+    url.searchParams.set('run_id', id)
+    url.searchParams.set('file', file)
+    return url.href
+  }
   ctx.on('agent/pre-step', ({ agent }: any, next: () => unknown) => {
     if (isSubject(agent)) agent.ctx.tools.restrict({ allow: allowedTools })
     return next()
@@ -135,8 +141,8 @@ export function apply(ctx: any, config: Config) {
     value.report_sha256 = digest(content); value.completed_at = new Date().toISOString()
     await save(id, value)
     return { run_id: id, completed: true, source_kind: value.source_kind, report_sha256: value.report_sha256, markdown: content, ...(csv ? { csv } : {}),
-      download_url: `/assistant/api/task-examples/artifact?run_id=${id}&file=report.md`,
-      ...(csv ? { csv_url: `/assistant/api/task-examples/artifact?run_id=${id}&file=devices.csv` } : {}) }
+      download_url: artifactUrl(id, 'report.md'),
+      ...(csv ? { csv_url: artifactUrl(id, 'devices.csv') } : {}) }
   }
   const fixedTrainingFiles = ['prepare.py', 'pyproject.toml', 'uv.lock']
   async function trainingPreflight(signal: AbortSignal) {
@@ -283,8 +289,8 @@ export function apply(ctx: any, config: Config) {
       }
       return { run_id: id, attempt, best: value.best, candidates_used: value.candidates_used, max_candidates: 3, source_kind: 'real_training',
         fixed_inputs_changed: Boolean(value.fixed_inputs_changed), metric_source: 'executed_train_stdout', independently_evaluated: false,
-        results_url: `/assistant/api/task-examples/artifact?run_id=${id}&file=results.tsv`,
-        ...(value.best ? { best_code_url: `/assistant/api/task-examples/artifact?run_id=${id}&file=best-train.py` } : {}),
+        results_url: artifactUrl(id, 'results.tsv'),
+        ...(value.best ? { best_code_url: artifactUrl(id, 'best-train.py') } : {}),
         artifacts: ['results.tsv', ...(value.best ? ['best-train.py'] : []), `attempt-${attempt.index}/stdout.log`] }
     } finally { await lock.close(); await unlink(lockPath) }
   }
