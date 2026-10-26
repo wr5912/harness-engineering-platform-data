@@ -1,13 +1,10 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
+import { DELEGATE_ROLES } from './delegation.js'
 
 export const name = 'dsh-security-operations-ui'
 export const inject = ['storageDomain', 'sessionController', 'webServer']
 
-const ROLES = [
-  ['delegate_threat_analysis', '威胁研判子智能体'],
-  ['delegate_fault_analysis', '故障分析子智能体'],
-  ['delegate_response_planning', '响应规划子智能体'],
-]
+const ROLES = Object.entries(DELEGATE_ROLES)
 const ROLE_NAMES = new Map(ROLES)
 const context = new AsyncLocalStorage()
 const schema = { parse(value) {

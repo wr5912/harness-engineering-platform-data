@@ -10,7 +10,7 @@
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
-    "build": "npm run typecheck && esbuild client.tsx --bundle --platform=browser --format=iife --target=es2022 --loader:.gif=dataurl --loader:.webp=dataurl --outfile=client.js",
+    "build": "npm run typecheck && esbuild delegation.ts --platform=node --format=esm --target=es2022 --outfile=delegation.js && esbuild client.tsx --bundle --platform=browser --format=iife --target=es2022 --loader:.gif=dataurl --loader:.webp=dataurl --outfile=client.js",
     "test": "node test-ui.mjs"
   },
   "devDependencies": {
@@ -26,6 +26,7 @@
         "@deepseek-ai/dsh-client-ui-conversation",
         "@deepseek-ai/dsh-client-ui-renderer",
         "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-tool",
         "@deepseek-ai/dsh-client-ui-workspace",
         "@deepseek-ai/dsh-client-ui-sidebar-right",
         "@deepseek-ai/dsh-client-locale",

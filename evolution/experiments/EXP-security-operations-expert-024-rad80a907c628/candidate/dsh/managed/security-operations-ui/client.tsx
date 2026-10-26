@@ -1,6 +1,7 @@
 import type * as ReactTypes from 'react'
 import avatarUrl from './assets/live-chatbot.gif'
 import logoUrl from './assets/logo-v1.webp'
+import { DELEGATE_ROLES, delegationReceipt } from './delegation'
 
 type InputActions = {
   captureInsertion(): { start: number; end: number; draftRev: number }
@@ -118,11 +119,8 @@ type ModuleLoader = {
       openSession: (id: string) => void
     }) {
       const [expanded, setExpanded] = React.useState(false)
-      const roles = overview?.roles ?? [
-        { id: 'delegate_threat_analysis', title: '威胁研判子智能体' },
-        { id: 'delegate_fault_analysis', title: '故障分析子智能体' },
-        { id: 'delegate_response_planning', title: '响应规划子智能体' },
-      ].map(role => ({ ...role, state: 'unknown', active: 0, completed: 0, failed: 0, noChild: 0, unknown: 0, toolCalls: 0, skillLoads: 0, recent: [] }))
+      const roles = overview?.roles ?? Object.entries(DELEGATE_ROLES).map(([id, title]) =>
+        ({ id, title, state: 'unknown', active: 0, completed: 0, failed: 0, noChild: 0, unknown: 0, toolCalls: 0, skillLoads: 0, recent: [] }))
       const running = overview ? overview.parent.active + roles.reduce((sum, role) => sum + role.active, 0) : null
       const failed = overview ? roles.reduce((sum, role) => sum + role.failed + role.noChild, 0) : null
       const stateText = (state: string) => state === 'running' ? '执行中' : state === 'idle' ? '空闲' : '未知'
@@ -463,6 +461,12 @@ type ModuleLoader = {
       .soc-quick__empty{padding:30px 10px;color:var(--dsw-alias-label-secondary,#667085);font-size:13px;text-align:center}
       .soc-quick__notice{margin:0 0 10px;color:var(--dsw-alias-error-primary,#d92d20);font-size:12px}
       .soc-quick__favorite{margin:11px 2px 0;color:var(--dsw-alias-label-secondary,#667085);font-size:11px}
+      .soc-delegation{margin:6px 0;font-size:13px;line-height:1.7;color:var(--dsw-alias-label-primary,#242933)}
+      .soc-delegation summary{cursor:pointer;overflow-wrap:anywhere}
+      .soc-delegation summary span{color:var(--dsw-alias-label-secondary,#667085)}
+      .soc-delegation>p,.soc-delegation>details{margin:6px 0 6px 18px}
+      .soc-delegation pre{max-height:280px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+      .soc-delegation>button{margin-left:18px;padding:3px 8px;border:1px solid var(--dsw-alias-border-l2,#e4e7ec);border-radius:6px;background:transparent;color:inherit;font:inherit;cursor:pointer}
       .soc-status{height:100%;padding:18px;color:var(--dsw-alias-label-primary,#242933)}
       .soc-status header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--dsw-alias-border-l2,#e4e7ec)}
       .soc-status header span{color:var(--dsw-alias-label-secondary,#667085);font-size:12px}
@@ -476,8 +480,31 @@ type ModuleLoader = {
       @media(max-width:720px){.soc-quick__grid{grid-template-columns:1fr}.soc-quick__toolbar{align-items:stretch;flex-direction:column}.soc-quick__search{width:100%;box-sizing:border-box;margin-left:0}.soc-employee-form{grid-template-columns:1fr}.soc-employee-form label:nth-child(3){grid-column:auto}}
     `
 
+    function DelegationTool({ toolName, phase, block, inspect }: any) {
+      const role = DELEGATE_ROLES[toolName]
+      const argsRaw = phase === 'result' ? block.call?.argsRaw : block.argsRaw
+      const receipt = phase === 'result' && !block.isError
+        ? delegationReceipt(toolName, block.content, argsRaw) : undefined
+      const title = phase === 'preparing' ? `正在准备启动${role}`
+        : phase === 'start' ? `正在启动${role}`
+          : block.isError ? `启动${role}失败` : receipt?.title ?? `${role}已返回回执`
+      return <details className="soc-delegation">
+        <summary>{title}{receipt?.task && <span> · {receipt.task}</span>}</summary>
+        {receipt && <><p>结果将在任务结束后返回。</p><p>子会话 ID：<code>{receipt.subagentId}</code></p></>}
+        <details><summary>技术详情</summary>
+          <pre>{toolName}{'\n'}{argsRaw}{'\n'}{JSON.stringify(block.content ?? [], null, 2)}</pre>
+        </details>
+        {inspect && <button type="button" onClick={inspect}>查看调用记录</button>}
+      </details>
+    }
+
     const inject = ['slots', 'sidebarRight', 'sidebarRightTabs', 'uiWorkspace', 'locale', 'configForms']
     function apply(ctx: any) {
+      for (const toolName of Object.keys(DELEGATE_ROLES)) {
+        ctx.effect(() => ctx.slots.inject('tool.call.toolview', () => ctx.slots.register(
+          { name: 'tool.call.toolview', key: toolName }, DelegationTool,
+        )), `security-operations-ui: ${toolName} status`)
+      }
       ctx.effect(() => {
         const preference = ctx.configForms.get('locale')
         let settled = false

@@ -74,7 +74,10 @@ const context = {
     entries(name) { return [{ store: { create: () => name === 'sidebar.workspaces' ? workspaceView : layoutView } }] },
     subscribe() { return () => {} },
     inject(_name, register) { register() },
-    register(options, component) { entries.set(options.name, component) },
+    register(options, component) {
+      entries.set(options.name, component)
+      if (options.key) entries.set(`${options.name}:${options.key}`, component)
+    },
   },
   sidebarRight: { openTab() {} },
   sidebarRightTabs: { register() {} },
@@ -99,6 +102,43 @@ function nodes(root, predicate) {
   if (Array.isArray(root)) return root.flatMap(item => nodes(item, predicate))
   if (!root || typeof root !== 'object') return []
   return [...(predicate(root) ? [root] : []), ...nodes(root.props?.children, predicate)]
+}
+function textContent(root) {
+  if (Array.isArray(root)) return root.map(textContent).join('')
+  return root && typeof root === 'object' ? textContent(root.props?.children) : String(root ?? '')
+}
+for (const [toolName, role] of [
+  ['delegate_threat_analysis', '威胁研判子智能体'],
+  ['delegate_fault_analysis', '故障分析子智能体'],
+  ['delegate_response_planning', '响应规划子智能体'],
+]) {
+  const component = entries.get(`tool.call.toolview:${toolName}`)
+  const argsRaw = JSON.stringify({ description: '研判威胁事件 INC-20261026-000022' })
+  const content = [{ type: 'text', text: 'started subagent test-child-session' }]
+  let inspected = false
+  const view = component({ toolName, phase: 'result', block: { call: { argsRaw }, content, isError: false },
+    inspect() { inspected = true } })
+  assert.equal(view.type, 'details')
+  assert.equal(view.props.open, undefined)
+  const summary = textContent(view.props.children[0])
+  assert.match(summary, new RegExp(`已启动${role}`))
+  assert.match(summary, /INC-20261026-000022/)
+  assert.doesNotMatch(summary, /test-child-session|started subagent|已完成/)
+  assert.match(textContent(view), /结果将在任务结束后返回/)
+  assert.equal(nodes(view, node => node.type === 'code')[0].props.children[0], 'test-child-session')
+  assert.match(textContent(nodes(view, node => node.type === 'pre')[0]), /started subagent test-child-session/)
+  nodes(view, node => node.type === 'button')[0].props.onClick()
+  assert.equal(inspected, true)
+  for (const phase of ['preparing', 'start']) {
+    const pending = component({ toolName, phase, block: { argsRaw } })
+    assert.match(textContent(pending.props.children[0]), new RegExp(`正在.*启动${role}`))
+    assert.doesNotMatch(textContent(pending), /已启动|结果将在任务结束后返回/)
+  }
+  const failed = component({ toolName, phase: 'result', block: { call: { argsRaw }, content, isError: true } })
+  assert.equal(textContent(failed.props.children[0]), `启动${role}失败`)
+  assert.doesNotMatch(textContent(failed), /已启动|结果将在任务结束后返回/)
+  const other = component({ toolName, phase: 'result', block: { content: [{ type: 'text', text: '其他回执' }] } })
+  assert.equal(textContent(other.props.children[0]), `${role}已返回回执`)
 }
 function render() {
   cursor = 0

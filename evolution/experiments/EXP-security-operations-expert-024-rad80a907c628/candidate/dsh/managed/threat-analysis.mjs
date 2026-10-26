@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { startMcpGroupBridge } from './threat-analysis/mcp-group-bridge.mjs'
+import { delegationReceipt } from './security-operations-ui/delegation.js'
 
 export const name = 'threat-analysis'
 export const inject = ['tools', 'llm', 'mcpSessionManager']
@@ -444,7 +445,8 @@ export function deliveryMarkdown(events, turn) {
   if (block.isError) return undefined
   if (call?.data.name !== 'delegate_threat_analysis') return undefined
   if (!block.content?.every(item => item.type === 'text')) return undefined
-  return block.content.map(item => item.text).join('') || undefined
+  return delegationReceipt(call.data.name, block.content, call.data.arguments)?.markdown
+    ?? (block.content.map(item => item.text).join('') || undefined)
 }
 
 export async function inferFrozen(ctx, route, payload, signal) {
