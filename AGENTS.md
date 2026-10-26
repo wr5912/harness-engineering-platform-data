@@ -38,6 +38,8 @@
 
 `.agents/skills/` 维护管理助手业务技能；Candidate 内技能属于目标业务智能体，禁止递归当作管理助手技能加载。`agents/` 保存业务入口，`evolution/` 保存 Experiment、Run、决策样本和历史输入，`config/` 保存当前配置，`extensions/` 保存声明启用的业务扩展。只创建有真实内容的目录，不维护可变 `current/` 或重复 Baseline 树。
 
+KEV 流程按当前阶段选择 `compute-variant-research`、`kev-trace-pipeline` 或 `kev-training`，一次推进一个阶段。官方 `kev-finetune` 与 `kev-deploy` 是固定版本的完整参考，其训练、上传、部署和清理示例仍受本次授权及真实工具范围约束。`planning_intent=plan_only` 只策划；技能附带的离线脚本不新增平台训练接口。数据通过、编码通过、训练完成、服务绑定和等效验收分别取证。
+
 新 Experiment ID 由平台生成 `EXP-<agent-id>-NNN-r<12位随机十六进制>`；既有编号和引用保持原样。Run 使用 `run-<UUIDv4>`。固定 Git 引用记录实际数据来源；程序版本和资产版本分别核对。未经固定的工作树不得冒称已可恢复。
 
 `.local/` 包含 Session、设置、实例 HOME、制品和凭据，不全是缓存，全部忽略 Git；清理前区分持久数据并备份。不要将整个 DSH HOME、会话、缓存、附件回流 Candidate。需要保留的目标 Harness 新资产必须写回其 Experiment；运行设置不成为另一份 Harness。

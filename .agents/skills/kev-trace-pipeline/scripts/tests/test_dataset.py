@@ -1,0 +1,266 @@
+"""Manually authored synthetic unit tests; no records come from the user's trace."""
+from copy import deepcopy
+import json
+import math
+import unittest
+
+from dataset import (
+    BLOCKED_STATE_FIELDS, IR_SCHEMA, audit_partitions, compile_records, split_records,
+)
+
+
+def example(number, *, session=None, source_group=None, status="verified"):
+    suffix = str(number)
+    return {
+        "schema_version": IR_SCHEMA,
+        "sample_id": "synthetic/sample-" + suffix,
+        "decision_site_id": "synthetic.next-action",
+        "contract_version": "synthetic-contract/v1",
+        "state": {"request": "人工合成测试输入 " + suffix,
+                  "previous_step": {"status": "PARTIAL", "businessSummary": "已检查一部分候选"}},
+        "question": {
+            "type": "choice", "instructions": "人工合成：选择下一步。",
+            "criteria": {"search": "搜索未知位置", "read": "读取已知文件"},
+        },
+        "observed_action": {"tool": "search"},
+        "label": {
+            "status": status, "value": "search" if status != "unlabeled" else None,
+            "source": "synthetic-human-review" if status != "unlabeled" else "",
+            "evidence_refs": [{"kind": "review", "line": 20, "seq": 20}] if status != "unlabeled" else [],
+        },
+        "provenance": {
+            "trace_sha256": "a" * 64,
+            "session_id": session or "synthetic/session-" + suffix,
+            "source_group_id": source_group or "synthetic/source-" + suffix,
+            "state_evidence_refs": [{"kind": "user/message", "line": 1, "seq": 1}],
+            "candidate_evidence_refs": [{"kind": "contract", "contract_version": "synthetic-contract/v1"}],
+            "decision_seq": 10, "decision_line": 10,
+            "state_builder_version": "synthetic-state/v1",
+            "candidate_builder_version": "synthetic-candidates/v1",
+        },
+        "implementation": "model",
+    }
+
+
+def compile_ok(rows, **kwargs):
+    compiled, quarantine, report = compile_records(rows, **kwargs)
+    if quarantine:
+        raise AssertionError(json.dumps(quarantine, ensure_ascii=False, indent=2))
+    return compiled
+
+
+class CompilerTests(unittest.TestCase):
+    def test_unlabeled_observed_action_never_becomes_gold(self):
+        compiled, quarantine, report = compile_records([example(1, status="unlabeled")])
+        self.assertEqual(compiled, [])
+        self.assertIn("label_unlabeled", quarantine[0]["reason_codes"])
+        self.assertEqual(report["status"], "blocked")
+
+    def test_metadata_isolated_and_future_label_evidence_allowed(self):
+        original = example(1)
+        frozen = deepcopy(original)
+        result = compile_ok([original])[0]
+        self.assertEqual(original, frozen)
+        self.assertEqual(result["state"], original["state"])
+        self.assertEqual(result["_meta"]["variant"], "clean")
+        self.assertEqual(result["_meta"]["label"]["evidence_refs"][0]["seq"], 20)
+        self.assertNotIn("observed_action", result["state"])
+        self.assertNotIn("provenance", result["state"])
+        self.assertEqual(set(result["questions"]["synthetic.next-action"]), {"type", "instructions", "criteria", "label", "src"})
+
+    def test_soft_requires_hard_label_and_explicit_semantics(self):
+        row = example(1)
+        row["label"].update(value=None, target={"search": .8, "read": .2}, target_semantics="reviewer distribution")
+        compiled, quarantine, _ = compile_records([row])
+        self.assertFalse(compiled)
+        self.assertIn("invalid_hard_label", quarantine[0]["reason_codes"])
+        row["label"]["value"] = "search"
+        del row["label"]["target_semantics"]
+        self.assertIn("missing_target_semantics", compile_records([row])[1][0]["reason_codes"])
+
+    def test_soft_normalizes_by_name_and_rejects_invalid_weights(self):
+        row = example(1)
+        row["question"]["criteria"] = {"read": "读文件", "search": "搜索"}
+        row["label"].update(target={"search": 3, "read": 1}, target_semantics="reviewer distribution")
+        result = compile_ok([row])[0]
+        self.assertEqual(result["questions"]["synthetic.next-action"]["target"], {"read": .25, "search": .75})
+        for bad in (math.nan, math.inf, True, -1):
+            with self.subTest(weight=bad):
+                broken = deepcopy(row)
+                broken["label"]["target"]["read"] = bad
+                compiled, quarantine, _ = compile_records([broken])
+                self.assertFalse(compiled)
+                self.assertTrue(quarantine)
+                # Even quarantined NaN/Infinity can be persisted as strict JSON.
+                json.dumps(quarantine, allow_nan=False)
+        unknown = deepcopy(row)
+        unknown["label"]["target"]["future_tool"] = 1
+        self.assertIn("unknown_target_key", compile_records([unknown])[1][0]["reason_codes"])
+
+    def test_future_or_same_seq_visible_evidence_is_rejected(self):
+        for field in ("state_evidence_refs", "candidate_evidence_refs"):
+            for seq in (10, 11):
+                with self.subTest(field=field, seq=seq):
+                    row = example(1)
+                    row["provenance"][field] = [{"line": 11, "seq": seq}]
+                    compiled, quarantine, _ = compile_records([row])
+                    self.assertFalse(compiled)
+                    self.assertIn("future_visible_evidence", quarantine[0]["reason_codes"])
+        row = example(1)
+        row["provenance"]["state_evidence_refs"][0]["seq"] = True
+        self.assertIn("invalid_evidence_seq", compile_records([row])[1][0]["reason_codes"])
+
+    def test_eight_reserved_path_categories_not_business_values(self):
+        for category, fields in BLOCKED_STATE_FIELDS.items():
+            with self.subTest(category=category):
+                row = example(1)
+                row["state"][fields[0]] = "reserved-field-test"
+                self.assertIn("input_leakage", compile_records([row])[1][0]["reason_codes"])
+        row = example(1)
+        row["state"]["previous_step"].update(label="业务标签", outcome="PARTIAL", reward=1.0, result={"businessSummary": "合法的过去观察"})
+        row["state"]["label"] = "业务对象字段，需由contract确认"
+        row["state"]["request"] = "The text may mention observed_action, annotation_note or the word search."
+        compiled, quarantine, report = compile_records([row])
+        self.assertEqual(len(compiled), 1)
+        self.assertFalse(quarantine)
+        self.assertTrue(any(w["code"] == "ambiguous_business_field" for w in report["warnings"]))
+
+    def test_weak_and_code_are_explicit_opt_in(self):
+        weak = example(1, status="weak")
+        self.assertFalse(compile_records([weak])[0])
+        compiled = compile_ok([weak], allow_weak_train=True)
+        self.assertTrue(compiled[0]["_meta"]["training_only"])
+        self.assertFalse(compiled[0]["_meta"]["gold_eligible"])
+        code = example(2)
+        code["implementation"] = "code"
+        self.assertFalse(compile_records([code])[0])
+        self.assertEqual(len(compile_ok([code], include_code=True)), 1)
+
+    def test_duplicate_ids_and_malformed_status_are_quarantined(self):
+        compiled, quarantine, _ = compile_records([example(1), example(1)])
+        self.assertFalse(compiled)
+        self.assertEqual(len(quarantine), 2)
+        self.assertTrue(all("duplicate_sample_id" in row["reason_codes"] for row in quarantine))
+        row = example(1)
+        row["label"]["status"] = []
+        row["implementation"] = []
+        self.assertFalse(compile_records([row])[0])
+
+    def test_verified_input_conflict_quarantines_verified_and_fails_audit(self):
+        left, right, weak = example("left"), example("right"), example("weak", status="weak")
+        right["state"] = deepcopy(left["state"])
+        right["question"]["criteria"] = dict(reversed(list(right["question"]["criteria"].items())))
+        right["label"]["value"] = "read"
+        weak["state"] = deepcopy(left["state"])
+        weak["label"]["value"] = "read"
+        compiled, quarantine, report = compile_records(
+            [left, right, weak, example("unrelated")], allow_weak_train=True,
+        )
+        self.assertEqual({r["_meta"]["id"] for r in compiled},
+                         {"synthetic/sample-weak", "synthetic/sample-unrelated"})
+        self.assertEqual({r["sample_id"] for r in quarantine},
+                         {"synthetic/sample-left", "synthetic/sample-right"})
+        self.assertEqual(report["status"], "partial")
+        self.assertEqual(report["quarantine_by_reason"]["conflicting_verified_labels"], 2)
+        conflict = report["verified_label_conflicts"][0]
+        self.assertEqual(set(conflict["verified_label_ids"]), {"read", "search"})
+        self.assertEqual(set(conflict["related_verified_ids"]),
+                         {"synthetic/sample-left", "synthetic/sample-right"})
+        self.assertEqual(quarantine[0]["record"]["sample_id"], quarantine[0]["sample_id"])
+        # Compile separately to exercise auditing of previously exported, conflicting gold.
+        imported = compile_ok([left]) + compile_ok([right])
+        audit = audit_partitions({"train": imported})
+        self.assertFalse(audit["ok"])
+        self.assertTrue(any(e["code"] == "conflicting_verified_labels" for e in audit["errors"]))
+        blocked, _, conflict_report = compile_records([left, right])
+        self.assertFalse(blocked)
+        self.assertEqual(conflict_report["status"], "blocked")
+
+    def test_weak_input_disagreement_remains_warning_only(self):
+        for statuses in (("weak", "weak"), ("verified", "weak")):
+            with self.subTest(statuses=statuses):
+                left = example("left", status=statuses[0])
+                right = example("right", status=statuses[1])
+                right["state"] = deepcopy(left["state"])
+                right["label"]["value"] = "read"
+                compiled, quarantine, report = compile_records([left, right], allow_weak_train=True)
+                self.assertEqual(len(compiled), 2)
+                self.assertFalse(quarantine)
+                self.assertFalse(report["verified_label_conflicts"])
+                self.assertTrue(any(w["code"] == "conflicting_input_labels" for w in report["warnings"]))
+                audit = audit_partitions({"train": compiled})
+                self.assertTrue(audit["ok"])
+                self.assertTrue(any(w["code"] == "conflicting_input_labels" for w in audit["warnings"]))
+
+
+class GroupingTests(unittest.TestCase):
+    def test_one_session_cannot_fake_four_independent_partitions(self):
+        rows = compile_ok([example(i, session="only-session") for i in range(6)])
+        parts, manifest = split_records(rows)
+        self.assertEqual(manifest["status"], "blocked")
+        self.assertEqual(manifest["independent_groups"], 1)
+        self.assertIn("insufficient_independent_groups", manifest["blocked_reasons"])
+        self.assertTrue(all(not records for records in parts.values()))
+
+    def test_connected_source_session_and_duplicate_input_stay_together(self):
+        a = example("a", source_group="shared-source")
+        b = example("b", source_group="shared-source", session="shared-session")
+        c = example("c", session="shared-session")
+        d = example("d")
+        d["state"] = deepcopy(a["state"])
+        d["decision_site_id"] = "another-site-with-identical-model-input"
+        rows = compile_ok([a, b, c, d, *[example(i) for i in range(10, 14)]])
+        before = deepcopy(rows)
+        parts, manifest = split_records(rows)
+        self.assertEqual(rows, before)
+        self.assertEqual(manifest["status"], "ready")
+        self.assertEqual(manifest["independent_groups"], 5)
+        where = {r["_meta"]["id"]: name for name, records in parts.items() for r in records}
+        self.assertEqual(len({where["synthetic/sample-" + key] for key in "abcd"}), 1)
+        self.assertTrue(audit_partitions(parts)["ok"])
+        # Input ordering must not affect the deterministic group allocation.
+        parts2, manifest2 = split_records(list(reversed(rows)))
+        self.assertEqual(manifest["group_partition"], manifest2["group_partition"])
+
+    def test_weak_connected_group_is_train_only(self):
+        weak = example("weak", status="weak", source_group="mixed-source")
+        trusted = example("trusted", source_group="mixed-source")
+        rows = compile_ok([weak, trusted, *[example(i) for i in range(3)]], allow_weak_train=True)
+        parts, manifest = split_records(rows)
+        self.assertEqual(manifest["status"], "ready")
+        train_ids = {r["_meta"]["id"] for r in parts["train"]}
+        self.assertIn("synthetic/sample-weak", train_ids)
+        self.assertIn("synthetic/sample-trusted", train_ids)
+        self.assertTrue(audit_partitions(parts)["ok"])
+
+    def test_not_enough_gold_groups_is_blocked(self):
+        rows = compile_ok([example(i, status="weak" if i < 3 else "verified") for i in range(4)], allow_weak_train=True)
+        parts, manifest = split_records(rows)
+        self.assertEqual(manifest["status"], "blocked")
+        self.assertIn("insufficient_gold_groups_for_heldout_partitions", manifest["blocked_reasons"])
+        self.assertTrue(all(not records for records in parts.values()))
+
+    def test_audit_detects_cross_partition_session_input_id_and_weak_labels(self):
+        a = example(1, session="shared")
+        b = example(2, session="shared")
+        rows = compile_ok([a, b])
+        report = audit_partitions({"train": [rows[0]], "test": [rows[1]]})
+        self.assertFalse(report["ok"])
+        self.assertTrue(any(o["relation"] == "session" for o in report["overlaps"]))
+        report = audit_partitions({"train": [rows[0]], "test": [deepcopy(rows[0])]})
+        self.assertTrue(any(e["code"] == "duplicate_sample_id" for e in report["errors"]))
+        weak = compile_ok([example(3, status="weak")], allow_weak_train=True)[0]
+        report = audit_partitions({"test": [weak]})
+        self.assertTrue(any(e["code"] == "non_gold_in_evaluation" for e in report["errors"]))
+
+    def test_audit_detects_nonfinite_and_stale_inputs(self):
+        row = compile_ok([example(1)])[0]
+        row["state"]["unrecorded_change"] = "changed"
+        self.assertTrue(any(e["code"] == "input_hash_mismatch" for e in audit_partitions({"train": [row]})["errors"]))
+        row = compile_ok([example(1)])[0]
+        row["questions"]["synthetic.next-action"]["target"] = {"search": math.nan}
+        self.assertTrue(any(e["code"] == "nonfinite_number" for e in audit_partitions({"train": [row]})["errors"]))
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -26,10 +26,14 @@ description: 定位平台管理任务的工作区、目标和当前状态，选�
 | 研究算力变体、生成或比较变体 | `compute-variant-research` |
 | 接入或编排 MCP 工具、查看组合运行 | `mcp-composition` |
 | 从指定 Run 抽取决策样本 | `decision-sample-extraction` |
+| 审计本地 DSH 轨迹、发现 KEV 决策点、构建独立数据集 | `kev-trace-pipeline` |
+| 将已复核数据交给 KEV 训练、编码检查、校准或模型工件交接 | `kev-training` |
 | 审查、质疑或精简已有 Skill | `reviewing-agent-skills` |
 | 只读清点旧目录或归档 | `legacy-asset-intake` |
 
 任务已指定具体业务技能时直接使用；当前指定的是 workspace-management 时，按上表选择对应业务技能，实例查看与启停先加载 agent-maintenance。同一技能已加载就继续执行，不因相互引用重复加载。只有进入另一个实际业务域才补读对应技能；专用作用域不能借此加载未允许的技能或工具。抽样、特性整理和算力变体任务各自保持固定目标与专用工具范围。
+
+KEV 任务一次只进入当前阶段。中算力按钮仍走 `compute-variant-research`，不能新造 `task_context.skill=kev-*`；普通管理入口可按需读取已装载的新技能。官方 `kev-finetune`、`kev-deploy` 保留上游原文，由 `kev-training` 对齐来源、数据分组和实际授权后按需使用；不要因官方示例列出训练、部署或删除命令就连续执行全部步骤。
 
 ## 执行与停止
 
