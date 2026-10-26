@@ -76,6 +76,10 @@ def load_module(name, path):
     return module
 
 
+def reporting():
+    return load_module("kev_human_report", SKILLS / "kev-trace-pipeline/scripts/human_report.py")
+
+
 def verify_vendor():
     identities = {}
     for name in ("kev-finetune", "kev-deploy"):
@@ -120,6 +124,7 @@ def inspect_dataset(directory, kind):
     manifest = read_json(manifest_path)
     require(manifest.get("status") == "ready" and not manifest.get("blocked"), "split_not_ready")
     checker = load_module("kev_vendor_validator", SKILLS / "kev-finetune/scripts/split_data.py")
+    native_input = load_module("kev_native_input_identity", SKILLS / "kev-trace-pipeline/scripts/native_input.py")
     rows, files, identities, groups, forms = {}, {}, {}, {}, {}
     for partition in PARTITIONS:
         path = root / (partition + ".jsonl")
@@ -134,13 +139,15 @@ def inspect_dataset(directory, kind):
             rid = text(meta.get("id"), "_meta.id")
             require(rid not in identities, "duplicate_record_id: " + rid)
             identities[rid] = partition
-            group = text(meta.get("bridge_group_id") or meta.get("group_id"), "effective group")
+            group = text(meta.get("bridge_group_id") if kind == "platform-v2" else meta.get("group_id"), "effective group")
             group_set.add(group)
             require(groups.setdefault(group, partition) == partition, "cross_partition_group: " + group)
             for question in record["questions"].values():
                 key = json.dumps({"state": record["state"], "question": {k: question.get(k) for k in ("type", "instructions", "criteria")}},
                                  sort_keys=True, ensure_ascii=False, separators=(",", ":"))
                 require(forms.setdefault(key, partition) == partition, "cross_partition_identical_input")
+                rendered_key = "native-rendered:" + native_input.question_key(record["state"], question)
+                require(forms.setdefault(rendered_key, partition) == partition, "cross_partition_identical_rendered_input")
         require(manifest.get("partition_records", {}).get(partition) == len(records), "manifest_count_mismatch: " + partition)
         rows[partition] = records
         files[partition] = {"path": str(path.resolve()), "sha256": digest(path), "records": len(records),
@@ -153,6 +160,17 @@ def inspect_dataset(directory, kind):
                     for records in rows.values() for r in records), "this_recipe_requires_reviewed_labels_no_weak_rows")
         review_scope = "trace IR verified means traceable reviewer/rule evidence; it is not platform human approval"
         audit_identity = {"kind": "recomputed_trace_ir_audit", "ok": True}
+    elif kind == "legacy-native":
+        require(manifest.get("source_format") == "legacy-native", "legacy_native_manifest_required")
+        legacy = load_module("kev_legacy_native", SKILLS / "kev-trace-pipeline/scripts/legacy_native.py")
+        audit = legacy.audit_directory(root)
+        require(audit.get("ok") is True, "legacy_native_audit_failed: " + json.dumps(audit.get("errors", []), ensure_ascii=False))
+        for partition in PARTITIONS:
+            require(manifest.get("files", {}).get(partition, {}).get("sha256") == files[partition]["sha256"],
+                    "legacy_native_file_changed: " + partition)
+        review_scope = "legacy native records retain original origins; per-question review is an explicit claim, not DSH provenance or platform human approval"
+        audit_identity = {"kind": "recomputed_legacy_native_audit", "ok": True,
+                          "source_sha256": audit.get("source_sha256"), "reviews_sha256": audit.get("reviews_sha256")}
     elif kind == "platform-v2":
         require(manifest.get("source_format") == "platform-decision-dataset-v2", "platform_bridge_manifest_required")
         report_path = root / "platform-bridge-report.json"
@@ -171,7 +189,7 @@ def inspect_dataset(directory, kind):
         review_scope = "platform reviewed exports; original model suggestion and uncertainty provenance retained"
         audit_identity = {"kind": "platform_bridge", "path": str(report_path.resolve()), "sha256": digest(report_path)}
     else:
-        raise ValueError("dataset.kind must be trace-ir or platform-v2")
+        raise ValueError("dataset.kind must be trace-ir, platform-v2 or legacy-native")
     return {"kind": kind, "directory": str(root.resolve()), "files": files,
             "manifest": {"path": str(manifest_path.resolve()), "sha256": digest(manifest_path)},
             "audit": audit_identity, "review_scope": review_scope}
@@ -220,9 +238,11 @@ def build_plan(request, request_path):
     for key in ("agent_id", "parent_experiment_id"):
         text(source.get(key), "source." + key)
     require(re.fullmatch(r"git:[0-9a-f]{40}", source.get("parent_ref", "")), "fixed_parent_ref_required")
-    require(isinstance(source.get("source_run_ids"), list) and bool(source["source_run_ids"])
-            and all(isinstance(v, str) and v for v in source["source_run_ids"]), "real_source_run_ids_required")
     dataset_request = request.get("dataset", {})
+    run_ids = source.get("source_run_ids")
+    require(isinstance(run_ids, list) and all(isinstance(v, str) and v.strip() for v in run_ids),
+            "real_source_run_ids_required")
+    require(bool(run_ids) or dataset_request.get("kind") == "legacy-native", "real_source_run_ids_required")
     dataset = inspect_dataset(absolute(dataset_request.get("directory"), "dataset.directory"), dataset_request.get("kind"))
     checkpoint = checkpoint_contract(request.get("checkpoint", {}))
     environment = request.get("environment", {})
@@ -304,6 +324,13 @@ def authorized_training_card(plan_path, report_path):
             "encoding_population_mismatch")
     require(digest(plan["checkpoint"]["metadata_path"]) == plan["checkpoint"]["metadata_sha256"], "checkpoint_metadata_changed_after_encoding")
     require(digest(plan["dataset"]["manifest"]["path"]) == plan["dataset"]["manifest"]["sha256"], "split_manifest_changed_after_encoding")
+    if plan["dataset"].get("kind") == "legacy-native":
+        encoding = load_module("kev_encoding_identity", Path(__file__).with_name("check_encoding.py"))
+        try:
+            identity = encoding.check_legacy_identity(plan["dataset"])
+        except encoding.CheckFailure as error:
+            raise ValueError(error.failure["code"] + ": " + error.failure["detail"]) from error
+        require(report.get("legacy_review_identity") == identity, "encoding_legacy_review_identity_mismatch")
     for partition, item in plan["dataset"]["files"].items():
         require(digest(item["path"]) == item["sha256"], "dataset_changed_after_encoding: " + partition)
         checked = report.get("files", {}).get(partition, {})
@@ -317,14 +344,32 @@ def authorized_training_card(plan_path, report_path):
             "remaining": ["Verify executor authorization and actual CUDA/bf16/VRAM/budget", "Capture actual job id, logs and checkpoint receipt"]}
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="准备可复现的 KEV 训练方案；不启动训练或连接服务器。")
     sub = parser.add_subparsers(dest="action", required=True)
     prepare = sub.add_parser("prepare"); prepare.add_argument("--request", required=True); prepare.add_argument("--out", required=True)
     commands = sub.add_parser("commands"); commands.add_argument("--plan", required=True); commands.add_argument("--encoding-report", required=True)
-    args = parser.parse_args()
+    for command in (prepare, commands):
+        command.add_argument("--json", action="store_true", help="以 JSON 返回程序回执；文件中的训练数据不受影响")
+    args = parser.parse_args(argv)
+    human = reporting()
     if args.action == "commands":
-        print(json.dumps(authorized_training_card(args.plan, args.encoding_report), ensure_ascii=False, indent=2)); return 0
+        try:
+            result = authorized_training_card(args.plan, args.encoding_report)
+        except (ValueError, KeyError, TypeError, OSError) as exc:
+            if args.json:
+                print(json.dumps({"status": "blocked", "training": "not_run", "reason": str(exc)}, ensure_ascii=False))
+            else:
+                human.print_summary("training-commands", "blocked", "计划、编码报告或数据身份未通过核对，尚未启动训练。",
+                                    next_step="按诊断修正材料，再重新核对同一批数据。", diagnostics=[str(exc)])
+            return 2
+        if args.json:
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+        else:
+            human.print_summary("training-commands", "requires_review", "编码结果和文件身份已核对，训练命令已准备；尚未执行。",
+                                next_step="在实际训练环境核对执行授权、显存、时间和费用，再由执行器运行并保存日志。")
+            print("\n训练命令（执行目录与参数保持原样）：\n" + result["shell_display"])
+        return 0
     out = Path(args.out).resolve()
     require(not out.exists(), "output_directory_already_exists")
     out.mkdir(parents=True)
@@ -333,15 +378,28 @@ def main():
     except (ValueError, KeyError, TypeError, OSError) as exc:
         report = {"stage": "prepare-training", "status": "blocked", "reason_codes": [str(exc)], "next_allowed_stage": None}
         write_json(out / "stage-status.json", report)
-        print(json.dumps(report, ensure_ascii=False)); return 2
+        human.emit_result(out, "prepare-training", "blocked", "训练方案未生成，尚未启动训练。",
+                          ["invalid_input"], "按排查明细修正数据或模型信息后，使用新目录重新准备。",
+                          [("程序状态", "stage-status.json")], json_output=args.json, machine_result=report,
+                          diagnostics=[str(exc)])
+        return 2
     write_json(out / "training-plan.json", plan)
     write_json(out / "stage-status.json", {"stage": "prepare-training", "status": "requires_review", "reason_codes": ["encoding_not_run", "executor_not_started"], "next_allowed_stage": "encoding-review"})
-    print(json.dumps({"out": str(out), "status": "prepared", "training": "not_run", "next": "check_encoding.py"}, ensure_ascii=False)); return 0
+    result = {"out": str(out), "status": "prepared", "training": "not_run", "next": "check_encoding.py"}
+    counts = plan["dataset"]["files"]
+    names = {"train": "训练", "development": "开发", "calibration": "校准", "test": "最终测试"}
+    detail = "；".join(f"{names[key]}集 {counts[key]['records']} 条、{counts[key]['groups']} 个来源组" for key in PARTITIONS) + "。"
+    human.emit_result(out, "prepare-training", "requires_review", ["训练方案已保存，尚未启动训练。", detail],
+                      ["encoding_not_run", "executor_not_started"], "在同一训练环境使用所选模型的分词器检查这四份文件。",
+                      [("训练方案及逐阶段命令", "training-plan.json"), ("程序状态", "stage-status.json")],
+                      json_output=args.json, machine_result=result,
+                      limitations=["格式、复核记录和分组检查不证明标签语义、类别覆盖或完整任务效果。"])
+    return 0
 
 
 if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except (ValueError, KeyError, TypeError, OSError) as exc:
-        print("ERROR: " + str(exc), file=sys.stderr)
+        print("训练准备未完成：" + str(exc), file=sys.stderr)
         raise SystemExit(1)

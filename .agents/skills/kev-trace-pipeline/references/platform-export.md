@@ -38,6 +38,8 @@ python3 <core_dir>/scripts/platform_export.py MANIFEST.json --out NEW_DIR
 
 输出四个原生 JSONL、split-manifest.json、platform-bridge-report.json。继续条件：报告 status=ready、ok=true，清单 status=ready；实际文件哈希与计数一致。失败非零退出并保留阻断报告，不自动修复复核状态或切分。
 
+另生成中文 report.md，默认 stdout 先说明转换了多少记录、每份用途及还缺什么。机器调用需要原 JSON 回执时加 --json；训练 JSONL 本体不变。转换通过仍需实际编码检查和业务复核，不能称为已完成训练。
+
 ## 保留语义
 
 - 原 state/questions 是输入；targets、basis、observed_action、outcome_refs 和来源审计留在元数据侧。

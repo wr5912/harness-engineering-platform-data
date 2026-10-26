@@ -14,10 +14,17 @@ Token lengths must be checked separately using the chosen checkpoint tokenizer.
 from collections import Counter, defaultdict
 from copy import deepcopy
 import hashlib
+import importlib.util
 import json
 import math
+from pathlib import Path
 import random
 import re
+
+
+_native_spec = importlib.util.spec_from_file_location("kev_pipeline_native_input", Path(__file__).with_name("native_input.py"))
+_native_input = importlib.util.module_from_spec(_native_spec)
+_native_spec.loader.exec_module(_native_input)
 
 
 IR_SCHEMA = "kev-decision-ir/v1"
@@ -313,6 +320,9 @@ def _group_keys(record):
         ("source_group", prov["source_group_id"]),
         ("session", prov["session_id"]),
         ("model_input", _digest(input_value)),
+        ("rendered_state", _native_input.state_key(record["state"])),
+        *[("rendered_question", _native_input.question_key(record["state"], question))
+          for question in record["questions"].values()],
         ("task_state_question", _digest({
             "decision_site_id": meta["decision_site_id"],
             "contract_version": meta["contract_version"],
@@ -323,11 +333,25 @@ def _group_keys(record):
 
 def _label_disagreements(records):
     """Separate contradictory verified gold from disagreements involving weak labels."""
+    # Preserve the previous conservative JSON relation, and join inputs which
+    # render identically. This also handles object/string question descriptions.
+    records = list(records)
+    union, seen = _UnionFind(len(records)), {}
+    for index, record in enumerate(records):
+        question = next(iter(record["questions"].values()))
+        keys = (("canonical", _digest(_model_input(record))),
+                ("rendered", _native_input.question_key(record["state"], question)))
+        for key in keys:
+            if key in seen:
+                union.union(index, seen[key])
+            else:
+                seen[key] = index
     by_input = defaultdict(list)
-    for record in records:
-        by_input[_digest(_model_input(record))].append(record)
+    for index, record in enumerate(records):
+        by_input[union.find(index)].append(record)
     verified_conflicts, weak_disagreements = [], []
-    for input_hash, members in sorted(by_input.items()):
+    for _, members in sorted(by_input.items()):
+        input_hash = _digest(sorted({_digest(_model_input(record)) for record in members}))
         verified, weak = defaultdict(list), defaultdict(list)
         for record in members:
             label = next(iter(record["questions"].values()))["label"]
@@ -335,6 +359,7 @@ def _label_disagreements(records):
             destination[label].append(record["_meta"]["id"])
         detail = {
             "input_sha256": input_hash,
+            "input_identity_scope": "canonical-or-native-rendered-task-closure",
             "verified_label_ids": {label: sorted(ids) for label, ids in sorted(verified.items())},
             "weak_label_ids": {label: sorted(ids) for label, ids in sorted(weak.items())},
             "related_verified_ids": sorted(sample_id for ids in verified.values() for sample_id in ids),
@@ -415,6 +440,8 @@ def compile_records(records, allow_weak_train=False, *, include_code=False):
         result = {"state": deepcopy(record["state"]),
                   "questions": {record["decision_site_id"]: question}, "_meta": meta}
         meta["input_sha256"] = _digest(_model_input(result))
+        meta["native_input_sha256"] = _native_input.record_key(result)
+        meta["native_input_hash_algorithm"] = _native_input.IDENTITY_VERSION
         compiled.append(result)
         notices.extend({"sample_id": meta["id"], **warning} for warning in warnings)
     verified_conflicts, weak_disagreements = _label_disagreements(compiled)
@@ -429,7 +456,7 @@ def compile_records(records, allow_weak_train=False, *, include_code=False):
                 index, original = original_by_id[sample_id]
                 finding = _issue(
                     "conflicting_verified_labels", "label.value",
-                    "Identical canonical model input has contradictory verified hard labels; adjudication or an explicit multi-answer contract is required",
+                    "Canonical or native-rendered input has contradictory verified hard labels; adjudication or an explicit multi-answer contract is required",
                     **conflict,
                 )
                 quarantine.append({
@@ -521,19 +548,28 @@ def _validate_compiled(record):
         expected = _digest(_model_input(record))
         if meta.get("input_sha256") != expected:
             errors.append(_issue("input_hash_mismatch", "_meta.input_sha256", "Input changed after compilation or hash protocol differs"))
+        if (meta.get("native_input_hash_algorithm") != _native_input.IDENTITY_VERSION
+                or meta.get("native_input_sha256") != _native_input.record_key(record)):
+            errors.append(_issue("native_input_hash_mismatch", "_meta.native_input_sha256",
+                                 "Rendered input or its physical order changed after compilation"))
     return errors, warnings
 
 
-def audit_partitions(partitions):
+def audit_partitions(partitions, *, required_partitions=()):
     """Audit compiled partitions without inferring leakage from text-value coincidences.
 
-    Checks IDs, declared/effective groups, sessions, canonical model inputs,
+    Checks IDs, declared/effective groups, sessions, canonical and native-rendered inputs,
     explicit reserved input paths, numeric finiteness, supervision, and seq cuts.
     All non-train partitions require verified hard labels, including soft-target rows.
     """
     if not isinstance(partitions, dict):
         raise TypeError("partitions must be a mapping from partition name to record lists")
     errors, warnings = [], []
+    for name in required_partitions:
+        if name not in partitions:
+            errors.append(_issue("missing_partition", name, "A required physical partition is missing"))
+        elif isinstance(partitions[name], list) and not partitions[name]:
+            errors.append(_issue("empty_partition", name, "A required physical partition has no records"))
     identity_locations = defaultdict(list)
     relation_locations = defaultdict(lambda: defaultdict(list))
     counts, valid_records = {}, []
@@ -571,7 +607,7 @@ def audit_partitions(partitions):
     for conflict in verified_conflicts:
         errors.append(_issue(
             "conflicting_verified_labels", "questions",
-            "Identical canonical model input has contradictory verified hard labels; this choice contract requires one gold answer",
+            "Canonical or native-rendered input has contradictory verified hard labels; this choice contract requires one gold answer",
             **conflict,
         ))
     for disagreement in weak_disagreements:
@@ -622,6 +658,7 @@ def split_records(records, fractions=None, seed=20261026):
         "input_records": len(records), "minimum_independent_groups": 4,
         "grouping": ["same source_group_id", "same session_id",
                      "same canonical model input (ignoring label, metadata, qid and candidate key order)",
+                     "same native-rendered state or task (choice order is not an independent sample)",
                      "same canonical task/state/question", "transitive closure of all preceding relations"],
         "warnings": [
             "Group-preserving approximate allocation is not a guarantee of class coverage, statistical power, or production representativeness.",

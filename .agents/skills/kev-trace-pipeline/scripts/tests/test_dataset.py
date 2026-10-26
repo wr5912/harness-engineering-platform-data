@@ -194,6 +194,26 @@ class CompilerTests(unittest.TestCase):
 
 
 class GroupingTests(unittest.TestCase):
+    def test_native_rendered_collision_cannot_cross_partitions_or_hide_conflict(self):
+        left, right = example("object"), example("string")
+        left["state"], right["state"] = {"request": "same synthetic task"}, "request: same synthetic task"
+        rows = compile_ok([left, right])
+        audit = audit_partitions({"train": [rows[0]], "test": [rows[1]]})
+        self.assertFalse(audit["ok"])
+        self.assertTrue(any(item["relation"] == "rendered_question" for item in audit["overlaps"]))
+        right["label"]["value"] = "read"
+        compiled, quarantine, report = compile_records([left, right])
+        self.assertEqual(compiled, [])
+        self.assertEqual(len(quarantine), 2)
+        self.assertEqual(len(report["verified_label_conflicts"]), 1)
+
+    def test_reordering_object_fields_cannot_pass_the_existing_canonical_hash(self):
+        row = compile_ok([example("ordered")])[0]
+        row["state"] = dict(reversed(list(row["state"].items())))
+        audit = audit_partitions({"train": [row]})
+        self.assertTrue(any(issue["code"] == "native_input_hash_mismatch" for issue in audit["errors"]))
+        self.assertFalse(any(issue["code"] == "input_hash_mismatch" for issue in audit["errors"]))
+
     def test_one_session_cannot_fake_four_independent_partitions(self):
         rows = compile_ok([example(i, session="only-session") for i in range(6)])
         parts, manifest = split_records(rows)

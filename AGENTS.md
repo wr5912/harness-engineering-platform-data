@@ -10,7 +10,7 @@
 - 固定任务上下文决定目标 Agent、Experiment、Run 或实例，页面切换仅提供参考。查看真实来源与实例装载，不把最新编号、配置名称或程序 Git HEAD 当作当前业务版本。
 - 推荐或排除能力只覆盖已核对的版本与来源。用途目录或某个版本的说明不能证明其余版本没有该能力；未核对部分保持未知，不称已选对象为唯一可用。固定提交与当前工作树的观察分别标明，不能混用来支持同一结论。
 - 任务已指定 Skill 时按该技能办理；否则由 `workspace-management` 选择一条主要路径，已加载的技能不重复加载。先查询目标所需信息，只询问会改变目标、必要输入、验收方式或外部权限的缺口，不遍历全部历史来回答基本用法咨询。
-- 表达遵从 [`user-facing-output`](.agents/skills/user-facing-output/SKILL.md)。平台默认加载该技能正文；它是表达规范的唯一维护位置，无需每轮重复调用技能工具。
+- 表达遵从 [`user-facing-output`](.agents/skills/user-facing-output/SKILL.md)。训练与验证数据按机器合同输出，其他方案、清单、审查及结果默认面向人阅读；程序状态和配置保持其接口格式并附清楚说明。平台默认加载该技能正文；它是表达规范的唯一维护位置，无需每轮重复调用技能工具。
 - 五类研究方法见[研究方法索引](docs/harness-research/README.md)。通过 `platform_agents research/read-reference` 按主题取用，不要求每次通读全部历史。
 
 业务实例的无需认证、统一网关、未发布实例与 MCP 故障边界遵循程序仓库的[当前访问语义](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/20_业务访问与运行控制插件开发规范.md#当前访问语义)。管理助手创建未发布实例时默认选择经统一网关、无需认证的共享访问方式。

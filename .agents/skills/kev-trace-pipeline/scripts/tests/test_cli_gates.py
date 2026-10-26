@@ -81,12 +81,20 @@ class CliGateTests(unittest.TestCase):
             env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'},
         )
         self.assertEqual(result.returncode, code, result.stdout + result.stderr)
+        self.last_result = result
         gate = self.read_json(out / 'stage-status.json')
         self.assertEqual(set(gate), {'stage', 'status', 'reason_codes', 'next_allowed_stage'})
         self.assertEqual(gate['stage'], stage)
         if code:
             self.assertEqual(gate['status'], 'blocked')
             self.assertIsNone(gate['next_allowed_stage'])
+        self.assertTrue((out / 'report.md').is_file())
+        if '--json' not in arguments:
+            expected = {'completed':'完成当前检查', 'requires_review':'还需复核', 'blocked':'当前不能继续'}
+            self.assertIn(expected[gate['status']], result.stdout)
+            self.assertIn(str(out / 'report.md'), result.stdout)
+            self.assertFalse(result.stdout.lstrip().startswith('{'), result.stdout)
+            self.assertNotIn('Traceback', result.stdout + result.stderr)
         return out, gate
 
     def test_single_source_split_is_blocked_and_retains_compile(self):
@@ -102,6 +110,19 @@ class CliGateTests(unittest.TestCase):
         self.assertIn('insufficient_independent_groups', gate['reason_codes'])
         self.assertFalse((split / 'train.jsonl').exists())
         self.assertEqual((compiled / 'compiled.jsonl').read_bytes(), before)
+
+    def test_compile_split_audit_preserve_physical_input_order(self):
+        rows = [ir_record(index) for index in range(8)]
+        for row in rows:
+            row['state'] = {'z_request': row['state']['request'], 'a_background': {'z': 'first', 'a': 'second'}}
+            row['question']['criteria'] = {'respond': 'Respond', 'clarify': 'Ask for context'}
+        source = self.write_rows('ordered-source.jsonl', rows)
+        compiled, _ = self.run_stage('compile', '--input', source)
+        compiled_rows = self.read_rows(compiled / 'compiled.jsonl')
+        self.assertEqual(list(compiled_rows[0]['state']), ['z_request', 'a_background'])
+        self.assertEqual(list(compiled_rows[0]['questions']['synthetic-choice']['criteria']), ['respond', 'clarify'])
+        split, _ = self.run_stage('split', '--input', compiled / 'compiled.jsonl')
+        self.run_stage('audit-dataset', '--dataset-dir', split)
 
     def test_zero_compile_preserves_unlabeled_quarantine(self):
         source = self.write_rows('unlabeled.jsonl', [ir_record(1, status='unlabeled')])
@@ -139,6 +160,27 @@ class CliGateTests(unittest.TestCase):
         self.assertEqual(len(self.read_rows(out / 'samples.jsonl')), 1)
         self.assertIn('trace_audit_errors', gate['reason_codes'])
 
+    def test_routing_profile_reports_later_responses_as_skipped_without_blocking(self):
+        rows = trace_rows(1)
+        rows.append({'type':'assistant/message', 'surfaceOp':'append', 'seq':3, 'data':{
+            'turn':1, 'step':2, 'message':{'role':'assistant', 'source':{'kind':'model'},
+                'content':[{'type':'text', 'text':'Synthetic follow-up, outside initial routing.'}]},
+        }})
+        source = self.write_rows('routing-with-follow-up.jsonl', rows)
+        out, gate = self.run_stage('extract', source, '--profile', 'cybersecurity-routing-v1')
+        report = self.read_json(out / 'extraction-report.json')
+        self.assertEqual(report['samples'], 1)
+        self.assertEqual(report['blocked'], [])
+        self.assertEqual([item['reason'] for item in report['skipped']], ['not_initial_routing_boundary'])
+        self.assertEqual((gate['status'], gate['next_allowed_stage']), ('requires_review', 'annotate'))
+        self.assertEqual(self.read_rows(out / 'samples.jsonl')[0]['label']['status'], 'unlabeled')
+        self.assertIn('跳过 1 个后续处理时点', self.last_result.stdout)
+        discovery, _ = self.run_stage('discover', source, '--profile', 'cybersecurity-routing-v1')
+        inventory = self.read_json(discovery / 'decision-inventory.json')
+        self.assertEqual(len(inventory['candidates']), 1)
+        self.assertEqual(inventory['blocked'], [])
+        self.assertEqual(len(inventory['skipped']), 1)
+
     def test_annotate_unlabeled_is_nonfatal_and_requires_review(self):
         source = self.write_rows('unlabeled.jsonl', [ir_record(1, status='unlabeled')])
         annotations = self.write_rows('no-new-labels.jsonl', [])
@@ -161,9 +203,88 @@ class CliGateTests(unittest.TestCase):
         source = self.root / 'malformed.jsonl'
         source.write_text('{broken json}\n', encoding='utf-8')
         before = source.read_bytes()
-        _, gate = self.run_stage('audit', source, code=1)
+        out, gate = self.run_stage('audit', source, code=1)
         self.assertIn('invalid_input', gate['reason_codes'])
         self.assertEqual(source.read_bytes(), before)
+        diagnostic = self.read_json(out / 'error-report.json')
+        self.assertEqual(diagnostic['error']['code'], 'invalid_input')
+        self.assertIn(str(source), diagnostic['error']['message'])
+        report = (out / 'report.md').read_text()
+        self.assertIn('排查明细', report)
+        self.assertIn(diagnostic['error']['message'], report)
+
+    def test_missing_input_and_invalid_shape_have_human_and_machine_diagnostics(self):
+        missing, gate = self.run_stage('audit', self.root / 'missing.jsonl', code=1, out_name='missing')
+        self.assertEqual(gate['reason_codes'], ['io_error'])
+        self.assertEqual(self.read_json(missing / 'error-report.json')['error']['type'], 'FileNotFoundError')
+        invalid = self.write_rows('scalar.jsonl', [None])
+        shaped, gate = self.run_stage('audit', invalid, code=1, out_name='bad-shape')
+        self.assertEqual(gate['reason_codes'], ['invalid_input'])
+        self.assertTrue(self.read_json(shaped / 'error-report.json')['error']['message'])
+
+    def test_existing_output_is_not_overwritten_and_failure_json_is_explicit(self):
+        source = self.write_rows('trace.jsonl', trace_rows(1))
+        out = self.root / 'existing'
+        out.mkdir()
+        marker = out / 'keep.txt'
+        marker.write_text('keep this existing result', encoding='utf-8')
+        command = [sys.executable, str(CLI), 'audit', str(source), '--out', str(out)]
+        result = subprocess.run(command, capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('当前不能继续', result.stdout)
+        self.assertIn('output_not_empty', result.stdout)
+        self.assertIn('未保存新的可读报告', result.stdout)
+        self.assertEqual([path.name for path in out.iterdir()], ['keep.txt'])
+        machine = subprocess.run(command + ['--json'], capture_output=True, text=True, timeout=15)
+        payload = json.loads(machine.stdout)
+        self.assertEqual(machine.returncode, 1)
+        self.assertEqual(payload['error']['code'], 'output_not_empty')
+        self.assertEqual(marker.read_text(), 'keep this existing result')
+
+    def test_unwritable_destination_reports_io_failure_without_claiming_a_report(self):
+        source = self.write_rows('trace.jsonl', trace_rows(1))
+        parent = self.root / 'parent-is-a-file'
+        parent.write_text('keep', encoding='utf-8')
+        destination = parent / 'output'
+        result = subprocess.run([sys.executable, str(CLI), 'audit', str(source), '--out', str(destination)],
+                                capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('io_error', result.stdout)
+        self.assertIn('未保存新的可读报告', result.stdout)
+        self.assertIn('原始诊断', result.stdout)
+        self.assertNotIn('Traceback', result.stdout + result.stderr)
+        self.assertFalse(destination.exists())
+        self.assertEqual(parent.read_text(), 'keep')
+
+    def test_json_mode_preserves_data_and_existing_machine_reports(self):
+        source = self.write_rows('reviewed.jsonl', [ir_record(1), ir_record(2, status='unlabeled')])
+        human, human_gate = self.run_stage('compile', '--input', source, out_name='human-compile')
+        human_stdout = self.last_result.stdout
+        machine, machine_gate = self.run_stage('compile', '--input', source, '--json', out_name='machine-compile')
+        payload = json.loads(self.last_result.stdout)
+        self.assertEqual(payload['compiled'], 1)
+        self.assertEqual(payload['quarantine'], 1)
+        self.assertEqual(payload['report'], self.read_json(machine / 'compile-report.json'))
+        self.assertEqual(human_gate, machine_gate)
+        for name in ['compiled.jsonl', 'quarantine.jsonl', 'compile-report.json', 'stage-status.json', 'report.md']:
+            self.assertEqual((human / name).read_bytes(), (machine / name).read_bytes(), name)
+        self.assertIn('共检查 2 条样本，编译通过 1 条，隔离 1 条', human_stdout)
+        self.assertIn('尚未检查编码长度，也未运行训练', human_stdout)
+        self.assertNotIn('a' * 64, human_stdout)
+        self.assertEqual(self.read_rows(human / 'compiled.jsonl')[0]['_meta']['label_status'], 'verified')
+        self.assertEqual(self.read_rows(human / 'quarantine.jsonl')[0]['record']['label']['status'], 'unlabeled')
+
+    def test_global_json_flag_and_failure_payload_are_parseable(self):
+        invalid = self.root / 'invalid.jsonl'
+        invalid.write_text('{bad}\n', encoding='utf-8')
+        out = self.root / 'global-json'
+        result = subprocess.run([sys.executable, str(CLI), '--json', 'audit', str(invalid), '--out', str(out)],
+                                capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 1)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload['reason_codes'], ['invalid_input'])
+        self.assertEqual(payload, self.read_json(out / 'error-report.json'))
+        self.assertTrue((out / 'report.md').is_file())
 
     def test_dataset_audit_rejects_cross_partition_overlap(self):
         source = self.write_rows('independent.jsonl', [ir_record(number) for number in range(4)])
@@ -174,6 +295,19 @@ class CliGateTests(unittest.TestCase):
         out, gate = self.run_stage('audit-dataset', '--dataset-dir', split, code=2)
         self.assertFalse(self.read_json(out / 'dataset-audit.json')['ok'])
         self.assertIn('cross_partition_overlap', gate['reason_codes'])
+
+    def test_dataset_audit_rejects_an_empty_partition(self):
+        source = self.write_rows('independent.jsonl', [ir_record(number) for number in range(4)])
+        compiled, _ = self.run_stage('compile', '--input', source)
+        split, _ = self.run_stage('split', '--input', compiled / 'compiled.jsonl')
+        (split / 'test.jsonl').write_text('', encoding='utf-8')
+        out, gate = self.run_stage('audit-dataset', '--dataset-dir', split, code=2)
+        audit = self.read_json(out / 'dataset-audit.json')
+        self.assertFalse(audit['ok'])
+        self.assertEqual(audit['partition_counts']['test'], 0)
+        self.assertEqual(audit['records'], 3)
+        self.assertIn('empty_partition', gate['reason_codes'])
+        self.assertIn('独立测试 0 条', self.last_result.stdout)
 
     def test_valid_flow_stops_before_encoding_or_training_claims(self):
         traces = [self.write_rows(f'trace-{number}.jsonl', trace_rows(number)) for number in range(4)]

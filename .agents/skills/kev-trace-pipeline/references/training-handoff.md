@@ -4,7 +4,19 @@
 
 固定 Kev commit、基础 checkpoint 和 tokenizer revision；保存实际输入编码及长度分布。已核验参考版本 2074cc44256200bb37540103fa4572901faa10f3 的默认训练预算为 state 384、state+单问题分支 1024、packed 2048。以实际安装版本参数为准。完整 DSH prompt 远长于压缩决策状态，不能直接假定能装入。
 
-本套脚本不加载 tokenizer 或权重，报告 token_budget=not_checked。在选定训练环境执行原生 loader/renderer/encoder/长度过滤，并统计过滤后各 site/类/来源数。不要用字符长度作合格判定，也不要让隔离记录悄悄消失。
+本数据技能的脚本不加载分词器或权重，报告 token_budget=not_checked。实际编码检查由 `kev-training/scripts/check_encoding.py` 在选定训练环境执行，使用原生 loader/renderer/encoder/长度过滤。记录过滤后各决策点、类别和来源的数量，不用字符长度作合格判定，也不让隔离记录悄悄消失。
+
+## 交给训练技能的顺序
+
+数据审计通过后交接 `kev-training`。三步必须按顺序执行，每一步的完整命令和成功条件见 `kev-training/SKILL.md`：
+
+1. **先准备方案。** `training_plan.py prepare` 绑定四分区、来源、固定模型版本和训练环境，产出 `training-plan.json`。此时编码和训练都尚未运行。
+2. **再做编码检查。** `check_encoding.py` 读取刚生成的方案，用实际分词器核对全部数据。失败时保留报告并处理原因。
+3. **检查通过后取训练命令。** `training_plan.py commands` 核对方案、文件、复核快照及编码报告的一致性，交给已有授权的真实执行器。生成命令仍不等于启动训练。
+
+不得把“编码检查通过”说成“准备方案”的前提；编码脚本需要方案文件。这里说明顺序，不扩大当前会话的权限。固定中算力策划会话仍只交付计划。
+
+## 训练配方与数据文件
 
 对固定闭集首轮保留选项洗牌，明确设置 p_none=0、p_none_distract=0、p_distract=0、p_none_pair=0，作为无候选增删的可解释基线；动态候选任务按部署分布另做消融。该建议不是所有 Kev 任务的默认最佳值。
 

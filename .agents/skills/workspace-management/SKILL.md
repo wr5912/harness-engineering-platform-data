@@ -26,7 +26,7 @@ description: 定位平台管理任务的工作区、目标和当前状态，选�
 | 研究算力变体、生成或比较变体 | `compute-variant-research` |
 | 接入或编排 MCP 工具、查看组合运行 | `mcp-composition` |
 | 从指定 Run 抽取决策样本 | `decision-sample-extraction` |
-| 审计本地 DSH 轨迹、发现 KEV 决策点、构建独立数据集 | `kev-trace-pipeline` |
+| 审计本地 DSH 轨迹、发现 KEV 决策点，或复核既有 KEV 数据并构建独立数据集 | `kev-trace-pipeline` |
 | 将已复核数据交给 KEV 训练、编码检查、校准或模型工件交接 | `kev-training` |
 | 审查、质疑或精简已有 Skill | `reviewing-agent-skills` |
 | 只读清点旧目录或归档 | `legacy-asset-intake` |

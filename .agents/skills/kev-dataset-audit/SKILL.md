@@ -14,7 +14,7 @@ description: "对 Kev 数据和训练交接做对抗审查，核对输入泄漏�
 ## 本阶段操作
 
 
-1. 执行 core audit-dataset，检查实际四份文件的 ID、来源组、会话和相同输入交集。审查隔离记录，而不是默默丢弃。
+1. 先选正确格式：IR 产物执行 core audit-dataset；旧数据导入产物执行 legacy_native.py audit；平台桥接核对完整回执和桥接报告。检查实际四份非空文件的 ID、来源组、会话和相同输入交集。审查隔离记录，不默默丢弃，也不把 choice-only IR 字段要求套到平台三题型数据。
 2. 检查输入保留字段、未来证据、历史动作与答案是否混入 state。合法的上一步业务 result/status 不是自动泄漏；按时间与合同判断。
 3. 抽查高置信与分歧样本、少数类、短句、阶段变化、动态候选、多任务、失败恢复及域外/缺证据边界。分歧只作为检索线索。
 4. 核验固定 Kev 提交、基座 tokenizer、原生 renderer、长度过滤、候选洗牌映射和实际 loss。该脚本不加载 tokenizer；未完成时明确 token_budget=not_checked。
@@ -27,4 +27,4 @@ description: "对 Kev 数据和训练交接做对抗审查，核对输入泄漏�
 
 共享实现位置：`../kev-trace-pipeline/scripts/kev_trace.py`。所有同级 core 引用路径均相对于本技能目录。
 
-若输入是外部既有 Kev JSONL，先识别其来源格式并用目标版本原生 loader 审查；不要因缺少本套 IR 审计字段就称其不兼容 Kev。
+若输入是外部既有 Kev JSONL，先按 core `references/legacy-native.md` 检查原生格式、分组和复核缺口；不要因缺少本套 IR 审计字段就称其不兼容 Kev。报告先写会影响使用的结论，再用“问题、依据、影响、处理方法”表格呈现需要修改的事项。区分确定错误与待复核疑点，完整字段、错误码和哈希留在必要的定位明细中。

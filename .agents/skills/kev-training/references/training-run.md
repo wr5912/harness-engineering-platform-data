@@ -10,13 +10,17 @@
 
 `assets/training-request.example.json` 是字段示例，包含无效占位值。只填写本次所需真实值：
 
-- source：固定目标、完整父版和真实 source_run_ids。
-- dataset：目录与 kind（平台桥接产物 platform-v2，离线 IR 产物 trace-ir）。四份文件与 split-manifest.json 必须真实存在。
+- source：固定目标、完整父版和真实 source_run_ids。legacy-native 确实没有来源 Run 时允许空数组，来源绑定在导入文件中；不能填一个虚构 Run 来通过检查。
+- dataset：目录与 kind（平台桥接产物 platform-v2，离线 IR 产物 trace-ir，既有数据已复核导入产物 legacy-native）。四份非空文件与 split-manifest.json 必须真实存在。
 - checkpoint：init_from、同一固定来源的 training_config_path 与 sha256。
 - environment：实际训练环境的 kev_root、新 run_root，以及可选 server_id/credential_ref。路径改变使旧编码报告失效。
 - training：epochs/lr/batch/accum/seed/calibration_folds，以及 calibration_policy。默认超参只是初次 LoRA recipe；GPU、显存、时限、费用和效果仍需真实检查。
 
 模型建议不能自行补人员复核。trace-ir 的 verified 只表示其记录的复核/规则依据，不成为平台人工确认。当前准备器采用全部已复核标签的基线，不允许弱标签混入该 recipe。
+
+legacy-native 的准备器重新读取 source.jsonl 和 reviews.jsonl，重放复核、闭包分组与四用途构建，再核对实际派生文件；不只相信先前 report.ok。原文件身份、标签来源、复核方式和来源组保留，不转换成 DSH 来源。缺少可靠独立标签或真实业务测试时，只能说明格式与复核记录符合当前要求。
+
+编码检查前后及生成可执行命令前，还会核对原始文件、复核快照与分区清单的摘要。复核结果发生变化时，必须重新构建数据并准备方案；已有编码报告不能继续放行旧方案。输入重复检查同时比较原始结构与固定 KEV 实际渲染的内容，避免不同 JSON 写法掩盖重复样本。
 
 ## 执行顺序
 
@@ -26,6 +30,8 @@
 4. 执行器保存命令、环境、开始/结束时间、真实 job_id 或进程身份、日志与退出状态。没有作业 API 时由操作者在已授权训练环境执行；管理助手不伪造平台接口。
 5. 成功 checkpoint 至少核对 head.pt、LoRA 权重、adapter_config.json、training_config.json、training_metrics.json 与 tokenizer 文件；记录内容摘要。原生 trainer 不自动生成 train.log，执行器要捕获 stdout/stderr。
 6. 用独立 development 和 calibration 阶段核对；最终 test 单独冻结后使用。完成训练不自动生成或装载 Harness 变体。
+
+默认 prepare 输出中文摘要和 report.md；check_encoding 保存 JSON 结果及同名 .md 说明；commands 用中文说明仍未执行并显示准确命令。机器消费 stdout 时使用 --json。人工报告不改动命令参数，也不改写数据行。
 
 `commands.*.env` 是本次设置，`unset_env` 是需清除的继承值。特别固定 `KEV_LORA_SCALE=1` 和 torch 后端，避免意外关闭 LoRA 后还声称在评估训练工件。最终测试不继承 KEV_TEMPERATURE 覆盖。
 

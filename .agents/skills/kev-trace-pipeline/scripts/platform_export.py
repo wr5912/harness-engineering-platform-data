@@ -27,11 +27,20 @@ from copy import deepcopy
 from datetime import datetime
 from decimal import Decimal
 import hashlib
+import importlib.util
 import json
 import math
 from pathlib import Path
 import re
 import unicodedata
+import sys
+
+from human_report import print_summary, write_report
+
+
+_native_spec = importlib.util.spec_from_file_location("kev_bridge_native_input", Path(__file__).with_name("native_input.py"))
+_native_input = importlib.util.module_from_spec(_native_spec)
+_native_spec.loader.exec_module(_native_input)
 
 
 SCHEMA = "kev-platform-export-manifest/v1"
@@ -338,6 +347,9 @@ def group_tokens(row):
     tokens.add("state-task:" + sha(canonical(normalize([row["state"], row["task"]]))))
     questions = sorted((normalize(question) for question in row["questions"].values()), key=canonical)
     tokens.add("model-input:" + sha(canonical(normalize([row["state"], questions]))))
+    tokens.add("native-state:" + _native_input.state_key(row["state"]))
+    tokens.update("native-question:" + _native_input.question_key(row["state"], question)
+                  for question in row["questions"].values())
     return sorted(tokens)
 
 
@@ -383,6 +395,20 @@ def native_record(row, receipt, group_id):
     return {"state": deepcopy(row["state"]), "questions": questions, "_meta": meta}
 
 
+def validate_rendered_targets(items):
+    """Single-answer reviewed targets must not disagree on an identical task."""
+    seen = {}
+    for item in items:
+        row = item["row"]
+        for qid, question in row["questions"].items():
+            key = _native_input.question_key(row["state"], question)
+            target = row["targets"][qid]["label"]
+            previous = seen.get(key)
+            require(previous is None or type(previous[0]) is type(target) and previous[0] == target,
+                    "conflicting_reviewed_labels", "相同的模型输入有互相矛盾的复核标签。请核对这道题的答案后重新导出。")
+            seen[key] = (target, row["_meta"]["id"], qid)
+
+
 def convert(manifest_path, output):
     """返回报告。阻断不输出 JSONL；不读取任何未声明的来源或服务。"""
     manifest_path, output = Path(manifest_path).resolve(), Path(output).resolve()
@@ -426,6 +452,7 @@ def convert(manifest_path, output):
         for group in groups:
             partitions = sorted({item["partition"] for item in group["members"]})
             require(len(partitions) == 1, "cross_partition_group", "同源、Run、Session、历史关联组或相同输入的传递关联跨越用途：" + ", ".join(partitions))
+        validate_rendered_targets(items)
         native = {name: [] for name in PARTITIONS}
         group_members, group_partition = {}, {}
         for group in groups:
@@ -458,27 +485,91 @@ def convert(manifest_path, output):
             (output / files[name]["path"]).write_bytes(payloads[name])
         (output / "split-manifest.json").write_text(json.dumps(split_manifest, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
         report.update(status="ready", blocked=False, ok=True, records=len(items), independent_groups=len(groups), files=files)
-    except (BridgeError, OSError, ValueError, TypeError, KeyError, RecursionError) as exc:
-        report["errors"].append({"code": getattr(exc, "code", "invalid_input"), "message": str(exc)})
+    except (BridgeError, OSError, ValueError, TypeError, KeyError, AttributeError, IndexError, OverflowError, RecursionError) as exc:
+        report["errors"].append({"code": getattr(exc, "code", "io_error" if isinstance(exc, OSError) else "invalid_input"), "message": str(exc)})
         # 输出目录最初为空；只清理本命令可能写出的固定派生文件，保留全部输入。
         for name in [*(partition + ".jsonl" for partition in PARTITIONS), "split-manifest.json"]:
-            (output / name).unlink(missing_ok=True)
+            try:
+                (output / name).unlink(missing_ok=True)
+            except OSError as cleanup_error:
+                report["errors"].append({"code":"partial_output_cleanup_failed", "message":str(cleanup_error)})
         report["files"] = {}
     (output / "platform-bridge-report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    presentation = human_result(report)
+    try:
+        write_report(output, "platform-bridge", **presentation)
+    except OSError as exc:
+        raise BridgeError("report_write_failed", "机器报告已保存，但可读报告写入失败：" + str(exc)) from exc
     return report
 
 
+def human_result(report):
+    """Present only checked counts; ready describes conversion, never training."""
+    blocked = report["blocked"]
+    reasons = [error["code"] for error in report["errors"]]
+    artifacts = [("平台转换检查明细", "platform-bridge-report.json")]
+    if blocked:
+        summary = [f'转换未通过。已读取并逐份核对 {len(report["receipts"])} 份回执，尚未形成通过检查的四份用途数据。']
+        if "partial_output_cleanup_failed" in reasons:
+            summary.append('部分派生文件未能清理；这些残留文件不能作为转换通过的结果使用。')
+        next_step = '按报告中的具体原因修正导出清单或重新获取完整回执，再使用新的空目录转换。'
+    else:
+        questions = sum(info["questions"] for info in report["files"].values())
+        summary = [f'已核对 {len(report["receipts"])} 份平台导出回执，转换 {report["records"]} 条记录、{questions} 道题，形成 {report["independent_groups"]} 个关联来源组。',
+                   '保留平台原用途：' + '；'.join(f'{label} {report["files"][name]["records"]} 条' for name,label in
+                       [("train","训练"),("development","开发验证"),("calibration","校准"),("test","独立测试")]) + '。',
+                   '本次只完成离线核对与格式转换；编码长度尚未检查，训练尚未执行。']
+        artifacts.extend([(label, name + ".jsonl") for name,label in
+            [("train","训练数据"),("development","开发验证数据"),("calibration","校准数据"),("test","独立测试数据")]])
+        artifacts.append(("保留用途的分区清单", "split-manifest.json"))
+        next_step = '复核来源覆盖与输入可答性后，交接 kev-training：先生成训练方案，再按方案使用目标分词器检查编码长度。'
+    return {
+        "status": "blocked" if blocked else "requires_review", "summary": summary,
+        "reason_codes": reasons, "next_step": next_step, "artifacts": artifacts,
+        "limitations": [
+            '只核对本地留存回执与摘要；未回读平台或原始来源，当前服务器是否仍认可导出尚未确认。',
+            '人员复核不等同于独立真值；模型建议及未校准等原始状态保持原样。',
+            '自然语言中的泄漏、业务覆盖、编码长度、训练、部署及业务收益均未验证。',
+        ],
+        "diagnostics": [f'{error["code"]}: {error["message"]}' for error in report["errors"]],
+    }
+
+
+class ArgumentParser(argparse.ArgumentParser):
+    def error(self, message):
+        self.print_usage(sys.stderr)
+        if '--json' in sys.argv[1:]:
+            print(json.dumps({"status":"blocked", "blocked":True,
+                "errors":[{"code":"invalid_arguments", "message":message}]}, ensure_ascii=False))
+        else:
+            print('当前不能继续：命令参数有误（invalid_arguments）。', file=sys.stderr)
+            print('参数诊断：' + message, file=sys.stderr)
+        raise SystemExit(2)
+
+
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--out", required=True, type=Path)
+    parser.add_argument("--json", action="store_true", help="向标准输出返回机器 JSON；仍保存 report.md")
     args = parser.parse_args(argv)
     try:
         report = convert(args.manifest, args.out)
-    except (BridgeError, OSError) as exc:
-        print(json.dumps({"status": "blocked", "blocked": True, "errors": [{"code": getattr(exc, "code", "io_error"), "message": str(exc)}]}, ensure_ascii=False))
+    except (BridgeError, OSError, ValueError, TypeError, KeyError, AttributeError, IndexError, OverflowError, RecursionError) as exc:
+        code = getattr(exc, "code", "io_error" if isinstance(exc,OSError) else "invalid_input")
+        payload = {"status": "blocked", "blocked": True, "errors": [{"code": code, "message": str(exc)}]}
+        if args.json:
+            print(json.dumps(payload, ensure_ascii=False))
+        else:
+            print_summary("platform-bridge", "blocked", '本次操作未完成。未保存新的可读报告。', [code],
+                '检查输出位置和原始诊断，再使用新的空目录重试。', diagnostics=[f'{type(exc).__name__}: {exc}'])
         return 1
-    print(json.dumps({"status": report["status"], "blocked": report["blocked"], "report": str(args.out / "platform-bridge-report.json"), "errors": report["errors"]}, ensure_ascii=False))
+    if args.json:
+        print(json.dumps({"status": report["status"], "blocked": report["blocked"], "report": str(args.out / "platform-bridge-report.json"), "errors": report["errors"]}, ensure_ascii=False))
+    else:
+        presentation = human_result(report)
+        print_summary("platform-bridge", presentation["status"], presentation["summary"], presentation["reason_codes"],
+                      presentation["next_step"], args.out / "report.md")
     return 1 if report["blocked"] else 0
 
 

@@ -64,6 +64,44 @@ def absolute_path(value, field):
     return Path(value).resolve()
 
 
+def check_legacy_identity(dataset):
+    """Bind a legacy plan to the source/review snapshots that passed its audit."""
+    if dataset.get('kind') != 'legacy-native':
+        return None
+    root = absolute_path(dataset.get('directory'), 'dataset.directory')
+    audit = dataset.get('audit')
+    require(isinstance(audit, dict) and audit.get('kind') == 'recomputed_legacy_native_audit'
+            and audit.get('ok') is True, 'invalid_legacy_audit_identity',
+            'Legacy training needs the replayed source/review audit identity', malformed=True)
+    identity = {}
+    for name in ('source', 'reviews'):
+        expected = audit.get(name + '_sha256')
+        require(isinstance(expected, str) and HEX64.fullmatch(expected), 'invalid_legacy_audit_identity',
+                'Legacy source and review snapshots need SHA-256 identities', malformed=True)
+        path = root / (name + '.jsonl')
+        try:
+            actual = digest(path)
+        except OSError as exc:
+            raise CheckFailure('legacy_snapshot_unavailable', 'Cannot read the audited legacy snapshot',
+                               snapshot=name) from exc
+        require(actual == expected, 'legacy_snapshot_changed',
+                'Legacy source or review snapshot changed after preparation; rebuild and prepare again', snapshot=name)
+        identity[name] = {'path': str(path), 'sha256': actual}
+    manifest = dataset.get('manifest')
+    require(isinstance(manifest, dict), 'invalid_legacy_audit_identity',
+            'Legacy dataset needs its audited split manifest', malformed=True)
+    manifest_path = absolute_path(manifest.get('path'), 'dataset.manifest.path')
+    try:
+        actual_manifest = digest(manifest_path)
+    except OSError as exc:
+        raise CheckFailure('legacy_snapshot_unavailable', 'Cannot read the audited legacy manifest',
+                           snapshot='manifest') from exc
+    require(actual_manifest == manifest.get('sha256'), 'legacy_snapshot_changed',
+            'Legacy split manifest changed after preparation', snapshot='manifest')
+    identity['manifest'] = {'path': str(manifest_path), 'sha256': actual_manifest}
+    return identity
+
+
 def git(root, *arguments, allow_missing=False):
     try:
         result = subprocess.run(['git', '-C', str(root), *arguments], capture_output=True,
@@ -204,6 +242,9 @@ def check_metadata(plan_path, kev_root, report):
         except (UnicodeError, ValueError) as exc:
             raise CheckFailure('invalid_dataset_json', 'Dataset is not strict JSONL', partition=partition) from exc
         require(len(lines) == count, 'dataset_count_mismatch', 'Physical record count differs from the prepared plan', partition=partition)
+    legacy_identity = check_legacy_identity(dataset)
+    if legacy_identity is not None:
+        report['legacy_review_identity'] = legacy_identity
     report['checks']['metadata'] = 'passed'
     return plan
 
@@ -391,15 +432,17 @@ def run_checks(plan_path, kev_root, report, allow_download=False):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description="使用固定版本 KEV 和真实分词器检查数据长度；不加载模型权重或启动训练。")
     parser.add_argument('--plan', required=True)
     parser.add_argument('--kev-root', required=True)
     parser.add_argument('--out', required=True)
     parser.add_argument('--allow-tokenizer-download', action='store_true')
+    parser.add_argument('--json', action='store_true', help='以 JSON 返回程序回执；完整机器报告始终保存')
     args = parser.parse_args(argv)
     out = Path(args.out)
-    if out.exists() or out.is_symlink():
-        print('ERROR: output already exists; choose a new report path', file=sys.stderr)
+    human_path = out.with_suffix('.md') if out.suffix != '.md' else out.with_name(out.name + '.md')
+    if out.exists() or out.is_symlink() or human_path.exists() or human_path.is_symlink():
+        print('编码检查未开始：报告路径已有内容，请使用新的 JSON 报告路径。', file=sys.stderr)
         return 1
     report = empty_report()
     report['tokenizer_download_allowed'] = args.allow_tokenizer_download
@@ -418,10 +461,27 @@ def main(argv=None):
             json.dump(report, handle, ensure_ascii=False, indent=2, allow_nan=False)
             handle.write('\n')
     except OSError as exc:
-        print('ERROR: cannot create a new report: ' + type(exc).__name__, file=sys.stderr)
+        print('编码报告未能保存，请检查路径和写入权限：' + type(exc).__name__, file=sys.stderr)
         return 1
-    print(json.dumps({'status': report['status'], 'report': str(out.resolve()), 'checked_records': report['checked_records'],
-                      'failure_codes': [failure['code'] for failure in report['failures']]}, ensure_ascii=False))
+    result = {'status': report['status'], 'report': str(out.resolve()), 'checked_records': report['checked_records'],
+              'failure_codes': [failure['code'] for failure in report['failures']]}
+    spec = importlib.util.spec_from_file_location('kev_encoding_human_report', Path(__file__).resolve().parents[2] / 'kev-trace-pipeline/scripts/human_report.py')
+    human = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(human)
+    passed = report['status'] == 'ready'
+    summary = (f"已检查 {report['checked_records']} 条记录，当前数据的编码与长度检查通过。尚未启动训练。" if passed
+               else f"编码检查未通过，已检查 {report['checked_records']} 条记录；当前不能继续训练。")
+    try:
+        human.emit_result(out.parent, 'check-encoding', 'completed' if passed else 'blocked', summary,
+                          [] if passed else result['failure_codes'],
+                          '核对训练环境、预算和执行条件后，再取训练命令。' if passed else '按排查明细补齐依赖或修正数据，再使用新报告路径重新检查。',
+                          [('完整编码结果', out.resolve())], json_output=args.json, machine_result=result,
+                          diagnostics=[json.dumps(failure, ensure_ascii=False) for failure in report['failures']],
+                          limitations=['本次未验证标签语义、GPU 条件、实际训练、概率校准或完整业务效果。'],
+                          report_name=human_path.name)
+    except OSError as exc:
+        print('机器报告已保存，可读报告保存失败：' + type(exc).__name__, file=sys.stderr)
+        return 1
     return code
 
 

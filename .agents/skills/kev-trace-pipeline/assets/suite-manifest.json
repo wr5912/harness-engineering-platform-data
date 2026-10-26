@@ -1,6 +1,6 @@
 {
   "suite": "kev-trace-data-skills",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "skills": [
     "kev-trace-pipeline",
     "dsh-trace-audit",
@@ -15,11 +15,15 @@
   "dependencies": "standard library for data scripts",
   "supported_profiles": [
     "next-operation",
-    "inspection-v1"
+    "inspection-v1",
+    "cybersecurity-routing-v1"
   ],
+  "dataset_paths": ["trace-ir", "platform-v2", "legacy-native"],
+  "human_output": {"default": "Chinese summary and Markdown report", "machine_stdout": "--json", "training_records": "native KEV JSONL unchanged"},
   "model_training_implemented": false,
   "runtime_recorder_implemented": false,
   "token_budget_checker_implemented": false,
+  "token_budget_checker_scope": "core data scripts do not tokenize; kev-training/check_encoding.py implements the actual native preflight",
   "platform_integration": {
     "entry": "compute-variant-research",
     "ordinary_entry": "workspace-management",

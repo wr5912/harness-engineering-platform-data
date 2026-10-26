@@ -20,6 +20,8 @@ workspace.json            工作区身份和原生扩展声明
 
 管理技能共 23 项。原有 13 项管理、研究和表达技能保持原入口；新增 KEV 套件 10 项：`kev-trace-pipeline`、`dsh-trace-audit`、`kev-decision-discovery`、`kev-sample-extraction`、`kev-sample-labeling`、`kev-dataset-build`、`kev-dataset-audit`、`kev-training`，以及官方完整 `kev-finetune`、`kev-deploy`。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
 
+训练与验证数据保留机器格式；方案、清单、审查和结果默认用清楚的中文说明。KEV 数据工具支持原始 DSH 轨迹、平台 v2 导出和既有原生 JSONL，默认生成可读报告，程序回执可用 `--json`。格式、旧数据复核及八类路由的整改范围见[数据格式与可读输出整改](docs/harness-research/kev-data-format-and-output-plan.md)。
+
 平台代码、研发 Skill、平台核心校验器和 Runtime 适配器仍在程序仓库；管理助手不承担平台源码开发。本仓库 KEV 技能附带离线数据转换、验证和训练计划脚本，不新增平台训练执行接口。业务 Candidate 内的角色与 Skill 属于被管理智能体，不自动加入管理助手技能。两仓原则按职责独立维护。
 
 本仓库保留迁移前的 Git 历史，以便恢复固定 Baseline、父版本和历史算法。旧提交中的平台代码是历史来源，不是另一份当前程序。

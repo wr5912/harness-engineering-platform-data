@@ -23,6 +23,10 @@ description: "为抽取后的决策样本建立可追溯监督目标，区分 ob
 7. 使用 core 的 annotate 命令合并 sample_id + label 覆盖文件；它只允许修改监督侧，不改 state/question/provenance。
 8. 合成负例说明修改了什么、预期规则、是否实际执行；继承 source_group_id，并保留 synthetic_counterfactual=true。策略偏好对必须共享可比较状态。
 
+旧 KEV 文件的复核使用 core `references/legacy-native.md`，绑定真实原文件与记录摘要，不伪造 IR 来源。`difficulty`、`annotation_certainty` 和模型自报置信度仅供筛选复核，不自动变成 verified、训练权重或概率。数据阶段允许的 weak 与当前训练配方不同：默认训练准备只接受已复核记录，不能因为编译接纳 weak 就声称可直接训练。
+
+面向用户用“待标注、依据不足、已复核、已排除”等可理解的状态说明问题；保留机器文件中的原枚举。给出需要裁决的具体业务区别和证据，不要求用户先阅读完整嵌套对象。
+
 读取 `references/labeling.md` 与 core data-contract.md。让待标注/弱标签材料可继续积累；不要为了凑齐 train/test 把它们提升为独立金标。
 
 共享实现位置：`../kev-trace-pipeline/scripts/kev_trace.py`。所有同级 core 引用路径均相对于本技能目录。

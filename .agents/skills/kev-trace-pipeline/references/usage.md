@@ -35,6 +35,7 @@ annotations.todo.jsonl 是待填监督侧，不是已有答案。未标注样本
 - 输入：DSH session.v4 原始事件或 {session_log,event} 包装。按已经验证的事件和 block 子集解析。
 - profile next-operation：每个真实模型边界的完整前缀与当前工具候选，主要用于发现与后续投影；大状态不保证适合 Kev 默认预算。
 - profile inspection-v1：用户/技能目录路由、加载巡检后的目录发现、模板选择、沿既有运行查询、结果表达方式。阶段由前缀判断，历史动作只附在监督侧。
+- profile cybersecurity-routing-v1：仅初始请求首次响应前的八类业务意图分类；具体边界、背景来源和运行绑定缺口见 security-routing.md。
 - 没有 trace 执行器、自动教师调用、GPU训练、外部工具回放和完整性能验收。规则建议始终只是建议。
 - 使用新领域时先定义合同与投影；不能把巡检规则套到任何业务。
 
@@ -50,4 +51,8 @@ annotations.todo.jsonl 是待填监督侧，不是已有答案。未标注样本
 
 ## 既有 Kev 数据
 
-compile/split/audit-dataset 的自动检查面向本套 IR 与编译产物。外部已有的合法 Kev JSONL 不必伪造本套 provenance；先走原生 loader 兼容性审查，再补真实来源与分组映射。缺少本套审计元数据不能直接解释为 Kev 格式不合法。
+compile/split/audit-dataset 的自动检查面向本套 IR 与编译产物。外部已有的合法 Kev JSONL 不必伪造本套 provenance；按 legacy-native.md 使用 legacy_native.py inspect，补真实复核与分组映射后 build，再用 audit 回放核对来源与派生结果。缺少本套审计元数据不能直接解释为 Kev 格式不合法。
+
+## 结果给谁看
+
+默认命令行输出中文结果说明，并保存 report.md。机器报告、stage-status.json 和训练 JSONL 保持各自协议；依赖 stdout 的程序应显式加 --json。给用户先说明结果、主要问题与必要行动，哈希、完整字段和原始诊断按需展开。各数据层与分区用途见 dataset-formats.md。

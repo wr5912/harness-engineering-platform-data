@@ -14,13 +14,13 @@ description: "按明确决策合同从轨迹前缀构造 Kev 中间样本的 sta
 ## 本阶段操作
 
 
-1. 读取已审计边界和决策合同。运行 core 的 extract，选择 next-operation 或已支持的 inspection-v1；新领域先实现并验证专用投影。
+1. 先按 core `references/dataset-formats.md` 确认输入格式。轨迹读取已审计边界和决策合同，再选择 next-operation、inspection-v1 或 cybersecurity-routing-v1；八类初始路由的适用范围见 core `references/security-routing.md`。既有 KEV 文件走 legacy-native，不当作轨迹；其他新领域先实现并验证专用投影。
 2. 只读取 decision_seq 之前真正进入 surface 的消息及最近 request/header。只读 event.data 的 user/message 时保留 source；其他消息按 data.message 处理。
 3. 把模型输入与监督证据分开：state/question 来自前缀；observed_action、最终结果、标注理由和 reviewer 字段不进入输入。
 4. 候选由当时的工具/模板目录或明确的静态合同生成。不得只给历史选中项完整参数；记录 candidate_bindings 和候选生成版本。
 5. ID、版本、runId、requestId 与 URL 使用状态绑定或代码生成；不要让模型自由猜测。稳定 requestId 的重试规则属于执行层。
 6. 对输入做未来不变性检查：改变后续事件，state 与 question 应保持不变。元数据中的文件哈希变化不算输入泄漏。
-7. 保留 samples.jsonl、annotations.todo.jsonl、extraction-report.json。抽取默认不赋 gold label，规则建议只进入 review 字段。
+7. 保留 samples.jsonl、annotations.todo.jsonl、extraction-report.json。抽取默认不赋 gold label，规则建议只进入 review 字段。用户先看中文 report.md，说明抽出了什么、哪些没抽、原因和待复核事项；JSONL 中不插入这段说明。
 
 读取 core 的 data-contract.md 和本技能 `references/extraction.md`。真实环境应复用同一状态/候选构造函数，不能离线强模型摘要、上线另一套截断。
 

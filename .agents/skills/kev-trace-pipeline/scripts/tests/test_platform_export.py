@@ -107,7 +107,7 @@ class BridgeTests(unittest.TestCase):
         if expected:
             self.assertTrue(report["blocked"], report)
             self.assertEqual(report["errors"][0]["code"], expected, report["errors"])
-            self.assertEqual(sorted(path.name for path in output.iterdir()), ["platform-bridge-report.json"])
+            self.assertEqual(sorted(path.name for path in output.iterdir()), ["platform-bridge-report.json", "report.md"])
         else:
             self.assertFalse(report["blocked"], report["errors"])
         return report
@@ -121,6 +121,7 @@ class BridgeTests(unittest.TestCase):
             original = source[0]
             self.assertEqual(set(native), {"state", "questions", "_meta"})
             self.assertEqual(native["state"], original["state"])
+            self.assertEqual(bridge._native_input.record_key(native), bridge._native_input.record_key(original))
             for key in ["id", "source_group_id", "group_history", "split"]:
                 self.assertEqual(native["_meta"][key], original["_meta"][key])
             self.assertEqual(native["_meta"]["group_id"], native["_meta"]["bridge_group_id"])
@@ -203,6 +204,33 @@ class BridgeTests(unittest.TestCase):
                 change(self.rows["train"][0]); refresh_hash(self.rows["train"][0]); self.save()
                 self.run_bridge(code, self.root / f"leak-{index}")
 
+    def test_native_rendered_message_collision_cannot_cross_partitions(self):
+        train, development = self.rows["train"][0], self.rows["development"][0]
+        train["state"]["messages"] = [{"role": "user", "content": "synthetic payload\n    name: fixture"}]
+        development["state"]["messages"] = [{"role": "user", "content": "synthetic payload", "name": "fixture"}]
+        for row in (train, development):
+            row["_meta"]["source_group_id"] = bridge.source_group(row)
+            row["_meta"]["group_history"].append(row["_meta"]["source_group_id"])
+            refresh_hash(row)
+        self.assertNotEqual(train["_meta"]["source_group_id"], development["_meta"]["source_group_id"])
+        self.assertNotEqual(bridge.content_hash(train), bridge.content_hash(development))
+        self.assertEqual(bridge._native_input.render(train["state"]), bridge._native_input.render(development["state"]))
+        self.save()
+        self.run_bridge("cross_partition_group")
+
+    def test_conflicting_reviewed_answers_do_not_enter_the_same_training_partition(self):
+        original = self.rows["train"][0]
+        duplicate = deepcopy(original)
+        duplicate["_meta"]["id"] = f"decision-{5:032x}"
+        duplicate["_meta"]["decision_id"] = "decision-synthetic-5"
+        duplicate["questions"]["route"]["criteria"] = dict(reversed(list(duplicate["questions"]["route"]["criteria"].items())))
+        duplicate["targets"]["route"]["label"] = "stop"
+        refresh_hash(duplicate)
+        self.rows["train"].append(duplicate)
+        self.save()
+        self.run_bridge("conflicting_reviewed_labels")
+        self.assertEqual(duplicate["targets"]["route"]["provenance"]["kind"], "model_suggestion")
+
     def test_business_labels_inside_past_message_content_are_preserved(self):
         row = self.rows["train"][0]
         row["state"]["messages"].append({"role": "tool", "content": {"label": "业务标签", "outcome": "PARTIAL", "result": {"count": 2}}})
@@ -269,12 +297,70 @@ class BridgeTests(unittest.TestCase):
         self.manifest.write_text(json.dumps(manifest))
         result = subprocess.run([sys.executable, str(Path(bridge.__file__)), str(self.manifest), "--out", str(self.output)], capture_output=True, text=True)
         self.assertEqual(result.returncode, 1, result.stderr)
-        self.assertTrue(json.loads(result.stdout)["blocked"])
-        self.assertEqual(sorted(path.name for path in self.output.iterdir()), ["platform-bridge-report.json"])
+        self.assertIn('当前不能继续', result.stdout)
+        self.assertIn('empty_partition', result.stdout)
+        self.assertTrue(json.loads((self.output / 'platform-bridge-report.json').read_text())["blocked"])
+        self.assertEqual(sorted(path.name for path in self.output.iterdir()), ["platform-bridge-report.json", "report.md"])
         existing = (self.output / "platform-bridge-report.json").read_bytes()
+        existing_readable = (self.output / "report.md").read_bytes()
         with self.assertRaisesRegex(bridge.BridgeError, "输出目录"):
             bridge.convert(self.manifest, self.output)
         self.assertEqual(existing, (self.output / "platform-bridge-report.json").read_bytes())
+        self.assertEqual(existing_readable, (self.output / "report.md").read_bytes())
+
+    def test_default_and_json_cli_keep_identical_native_data(self):
+        self.save()
+        command = [sys.executable, str(Path(bridge.__file__)), str(self.manifest), '--out']
+        human = subprocess.run(command + [str(self.output)], capture_output=True, text=True, timeout=15)
+        machine_out = self.root / 'json-output'
+        machine = subprocess.run(command + [str(machine_out), '--json'], capture_output=True, text=True, timeout=15)
+        self.assertEqual(human.returncode, 0, human.stdout + human.stderr)
+        self.assertEqual(machine.returncode, 0, machine.stdout + machine.stderr)
+        self.assertIn('还需复核', human.stdout)
+        self.assertIn('转换 4 条记录、4 道题', human.stdout)
+        self.assertIn('编码长度尚未检查，训练尚未执行', human.stdout)
+        self.assertNotIn(self.rows['train'][0]['_meta']['trace_sha256'], human.stdout)
+        payload = json.loads(machine.stdout)
+        self.assertEqual(payload['status'], 'ready')
+        self.assertFalse(payload['blocked'])
+        self.assertEqual(payload['errors'], [])
+        for name in [*(partition + '.jsonl' for partition in bridge.PARTITIONS), 'split-manifest.json', 'platform-bridge-report.json', 'report.md']:
+            self.assertEqual((self.output / name).read_bytes(), (machine_out / name).read_bytes(), name)
+        native = json.loads((machine_out / 'train.jsonl').read_text())
+        self.assertEqual(native['_meta']['platform']['targets'], self.rows['train'][0]['targets'])
+        report = (machine_out / 'report.md').read_text()
+        self.assertIn('模型建议及未校准等原始状态保持原样', report)
+        self.assertNotIn('](http', report)
+
+    def test_invalid_json_and_missing_file_keep_diagnostics_without_traceback(self):
+        command = [sys.executable, str(Path(bridge.__file__)), str(self.manifest), '--out']
+        self.manifest.write_text('{broken}\n', encoding='utf-8')
+        broken = subprocess.run(command + [str(self.output)], capture_output=True, text=True, timeout=15)
+        self.assertEqual(broken.returncode, 1)
+        self.assertIn('当前不能继续', broken.stdout)
+        self.assertNotIn('Traceback', broken.stdout + broken.stderr)
+        report = json.loads((self.output / 'platform-bridge-report.json').read_text())
+        self.assertEqual(report['errors'][0]['code'], 'invalid_input')
+        self.assertIn(report['errors'][0]['message'], (self.output / 'report.md').read_text())
+        self.manifest.unlink()
+        missing_out = self.root / 'missing-input'
+        missing = subprocess.run(command + [str(missing_out), '--json'], capture_output=True, text=True, timeout=15)
+        self.assertEqual(missing.returncode, 1)
+        payload = json.loads(missing.stdout)
+        self.assertEqual(payload['errors'][0]['code'], 'io_error')
+        self.assertTrue((missing_out / 'report.md').is_file())
+
+    def test_cli_existing_output_keeps_all_previous_results(self):
+        self.save()
+        self.run_bridge()
+        before = {path.name:path.read_bytes() for path in self.output.iterdir()}
+        result = subprocess.run([sys.executable, str(Path(bridge.__file__)), str(self.manifest), '--out', str(self.output)],
+                                capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('当前不能继续', result.stdout)
+        self.assertIn('output_not_empty', result.stdout)
+        self.assertIn('未保存新的可读报告', result.stdout)
+        self.assertEqual(before, {path.name:path.read_bytes() for path in self.output.iterdir()})
 
     def test_multiple_export_files_keep_rows_and_question_mapping(self):
         manifest = self.save()

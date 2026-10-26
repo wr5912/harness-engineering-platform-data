@@ -95,6 +95,27 @@ class EncodingContractTests(unittest.TestCase):
         self.head = 'c' * 40
         self.assert_blocked_before_native('kev_commit_mismatch')
 
+    def test_encoding_failure_writes_readable_sidecar_without_overwriting_plan_report(self):
+        previous = self.root / 'report.md'
+        previous.write_text('已经保存的训练准备说明。', encoding='utf-8')
+        self.head = 'c' * 40
+        self.assert_blocked_before_native('kev_commit_mismatch')
+        readable = (self.root / 'encoding-report.md').read_text(encoding='utf-8')
+        self.assertIn('当前不能继续', readable)
+        self.assertIn('当前不能继续训练', readable)
+        self.assertIn('kev_commit_mismatch', readable)
+        self.assertEqual(previous.read_text(encoding='utf-8'), '已经保存的训练准备说明。')
+
+    def test_existing_readable_report_also_prevents_overwrite(self):
+        readable = self.root / 'encoding-report.md'
+        readable.write_text('以前的编码检查。', encoding='utf-8')
+        with patch.object(encoding, 'run_checks') as checks, contextlib.redirect_stderr(io.StringIO()):
+            code = encoding.main(['--plan', str(self.plan_path), '--kev-root', str(self.checkout),
+                                  '--out', str(self.root / 'encoding-report.json')])
+        self.assertEqual(code, 1)
+        self.assertFalse((self.root / 'encoding-report.json').exists())
+        checks.assert_not_called()
+
     def test_changed_dataset_hash_blocks_before_native_imports(self):
         path = Path(self.plan['dataset']['files']['test']['path'])
         path.write_text(path.read_text(encoding='utf-8') + '\n', encoding='utf-8')
@@ -104,6 +125,36 @@ class EncodingContractTests(unittest.TestCase):
     def test_changed_checkpoint_metadata_blocks_before_native_imports(self):
         self.metadata.write_text(self.metadata.read_text(encoding='utf-8') + '\n', encoding='utf-8')
         self.assert_blocked_before_native('checkpoint_metadata_changed')
+
+    def legacy_identity_fixture(self):
+        audit = {'kind': 'recomputed_legacy_native_audit', 'ok': True}
+        for name in ('source', 'reviews'):
+            path = self.root / (name + '.jsonl')
+            path.write_text(json.dumps({'synthetic_snapshot': name}) + '\n', encoding='utf-8')
+            audit[name + '_sha256'] = encoding.digest(path)
+        manifest = self.root / 'split-manifest.json'
+        manifest.write_text('{"synthetic_fixture": true}\n', encoding='utf-8')
+        self.plan['dataset'].update(kind='legacy-native', directory=str(self.root), audit=audit,
+                                    manifest={'path': str(manifest), 'sha256': encoding.digest(manifest)})
+        self.write_plan()
+
+    def test_changed_legacy_review_snapshot_blocks_before_native_imports(self):
+        self.legacy_identity_fixture()
+        (self.root / 'reviews.jsonl').write_text('{"synthetic_changed_review": true}\n', encoding='utf-8')
+        report = self.assert_blocked_before_native('legacy_snapshot_changed')
+        self.assertEqual(report['failures'][0]['snapshot'], 'reviews')
+
+    def test_legacy_source_change_during_encoding_cannot_produce_ready(self):
+        self.legacy_identity_fixture()
+        def change_source(*_):
+            (self.root / 'source.jsonl').write_text('{"synthetic_changed_source": true}\n', encoding='utf-8')
+        with patch.object(encoding, 'check_records', side_effect=change_source):
+            code, report = self.invoke()
+        self.assertEqual(code, 2)
+        self.assertEqual(report['status'], 'blocked')
+        self.assertEqual(report['failures'][0]['code'], 'legacy_snapshot_changed')
+        self.assertEqual(report['failures'][0]['snapshot'], 'source')
+        self.assertNotEqual(report['checks'].get('final_identity_recheck'), 'passed')
 
     def test_dirty_runtime_blocks_before_native_imports(self):
         self.dirty = b' M kev/model.py\0'

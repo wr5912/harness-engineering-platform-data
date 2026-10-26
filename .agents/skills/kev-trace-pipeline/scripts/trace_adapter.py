@@ -50,10 +50,11 @@ def parse_trace(path):
     rows=[]
     for line,s in enumerate(raw.decode('utf-8-sig').splitlines(),1):
         if not s.strip(): continue
-        value=strict_loads(s)
-        if not isinstance(value,dict): raise ValueError(f'line {line}: JSON object required')
+        try: value=strict_loads(s)
+        except ValueError as exc: raise ValueError(f'{Path(path)}:{line}: {exc}') from exc
+        if not isinstance(value,dict): raise ValueError(f'{Path(path)}:{line}: JSON object required')
         event=value.get('event',value)
-        if not isinstance(event,dict): raise ValueError(f'line {line}: event object required')
+        if not isinstance(event,dict): raise ValueError(f'{Path(path)}:{line}: event object required')
         rows.append({'line':line,'session_log':value.get('session_log'),'event':event})
     result=audit_rows(rows)
     result['source']={'filename':Path(path).name,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)}
@@ -78,7 +79,9 @@ def audit_rows(rows):
             sessions[sid]={'header':copy.deepcopy(ev),'session_log':log,'header_line':line,'surface':[],
                 'last_seq':-1,'header_event':None,'request_header':None,
                 'blocking_issues':[],'calls':{},'emitted':{},'results':{},'tool_headers':[],
-                'message_count':0,'turn':None,'step':None,'finished_turns':[], 'known_turns':set(),'seen_seqs':set()}
+                'message_count':0,'turn':None,'step':None,'finished_turns':[], 'known_turns':set(),'seen_seqs':set(),
+                'prior_model_response_count':0,'prior_assistant_message_count':0,
+                'prior_tool_activity_count':0,'latest_actual_user_seq':None}
             if ev.get('version')!=4: issue('unsupported_session_version',line,ev.get('version'),session=sid)
             if ev.get('isSeeded') or ev.get('parentSession'):
                 issue('lineage_requires_group_review',line,'Seeded/parent session: link all descendants to the same source family.','warning',sid)
@@ -162,11 +165,22 @@ def audit_rows(rows):
                 snapshots.append({'session_id':sid,'session_log':log,'turn':data.get('turn'),'step':data.get('step'),
                     'decision_line':line,'decision_seq':seq,'visible_event_seqs':[x['seq'] for x in surface],
                     'surface':surface,'request_header':header,'request_header_ref':ref(s['header_event']) if s['header_event'] else None,
+                    'prefix_context':{
+                        'prior_model_response_count':s['prior_model_response_count'],
+                        'prior_assistant_message_count':s['prior_assistant_message_count'],
+                        'prior_tool_activity_count':s['prior_tool_activity_count'],
+                        'latest_actual_user_seq':s['latest_actual_user_seq'],
+                        'session_has_inherited_context':bool(s['header'].get('isSeeded') or s['header'].get('parentSession'))},
                     'prefix_digest':digest({'surface':surface,'header':header}),
                     'visibility':'reconstructed_provider_neutral_input','adapter_version':VERSION,
                     'blocking_issues':copy.deepcopy(s['blocking_issues']),
                     'observed_action':{'tool_calls':copy.deepcopy(observed_calls),'text':text_of(message)},
                     'usage':copy.deepcopy(data.get('usage',{}))})
+                s['prior_model_response_count']+=1
+            s['prior_assistant_message_count']+=1
+        if typ in {'tool/call','tool/result'}: s['prior_tool_activity_count']+=1
+        if typ=='user/message' and isinstance(data,dict) and isinstance(data.get('source'),dict) and data['source'].get('kind')=='user':
+            s['latest_actual_user_seq']=seq
         if typ in MESSAGE_TYPES:
             message=_message(ev)
             if not isinstance(message,dict): issue('missing_message',line,typ,session=sid);continue
@@ -246,6 +260,9 @@ def _observed(snap):
 
 def build_sample(snap,profile='next-operation'):
     """Construct input from prefix only; attach observed output only afterwards."""
+    if profile=='cybersecurity-routing-v1':
+        from security_routing import build_sample as build_security_routing_sample
+        return build_security_routing_sample(snap)
     if snap['blocking_issues']: return None,{'decision_line':snap['decision_line'],'reason':'trace_integrity','issues':snap['blocking_issues']}
     user=_latest_user(snap)
     if user is None: return None,{'decision_line':snap['decision_line'],'reason':'missing_actual_user_message'}

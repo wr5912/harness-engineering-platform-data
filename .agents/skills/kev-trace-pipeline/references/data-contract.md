@@ -1,5 +1,7 @@
 # 中间样本与 Kev 导出合同
 
+格式总览与各入口见 dataset-formats.md。这里约束离线 trace IR，不能直接套到平台 v2 或旧原生 KEV 文件；旧数据使用 legacy-native.md，平台数据使用 platform-export.md。用户阅读的方案和审查用中文报告，以下字段用于程序记录与校验。
+
 ## 样本单位
 
 每个样本是一个明确定义的决策问题，不是一个日志事件。一个模型响应中多个工具调用需要联合/有序动作合同，不能无依据拆成互相独立的样本。shared source_group 必须保留。
@@ -29,6 +31,8 @@ state_evidence_refs/candidate_evidence_refs 中 event 类型必须带整数 seq�
 - invalid：无有效来源、损坏或不适用；说明原因。
 
 verified 是标注者的可追溯主张，脚本只验证结构和约束。source 字符串不能凭空把错误答案变成事实。评分 policy 时不要展示当前历史选中标记；评分给定动作的 verifier 要保留该动作和任务允许的证据。
+
+weak 的允许范围只到数据阶段；当前 kev-training 的默认 IR 配方要求全部 verified，不接收 training_only 行。不要把数据编译成功称为已经满足训练配方。
 
 ## 原生 Kev 导出
 

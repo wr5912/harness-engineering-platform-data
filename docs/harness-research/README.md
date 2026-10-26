@@ -12,6 +12,8 @@
 
 KEV 全流程套件见 [KEV 中算力变体技能](kev-medium-variant-skills.md)。中算力专项需要的方法已写入现有 `compute-variants` 主题，不新增程序尚未支持的 topic。官方训练与部署技能保留固定上游版本；平台适配入口按阶段调用。
 
+数据格式、既有 KEV 数据接入、八类路由投影和面向人的报告要求见[数据格式与可读输出整改](kev-data-format-and-output-plan.md)。这些是对应技能的离线方法，不新增平台 research topic。
+
 管理助手通过 `platform_agents research/read-reference {topic}` 按需读取。文档不扩展会话工具权限；专用任务只可读取其允许主题。原有详细资料保留在 [资产合同](../../.agents/skills/harness-evolution/references/repository-invariants.md) 和 [评估合同](../../.agents/skills/research-eval/references/experiment-contract.md)，不将它们误当当前平台已有全部发布能力。
 
 ## 固定来源与处置

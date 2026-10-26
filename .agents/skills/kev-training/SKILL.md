@@ -19,8 +19,8 @@ description: "将已复核且独立分组的数据交给固定版本 KEV，准�
 
 ## 2. 准备数据与模型身份
 
-1. 平台 v2 数据先按 `kev-trace-pipeline/references/platform-export.md` 转换；离线 IR 先完成自身标注与分组审计。保留四份实际文件，不再运行官方 convert_data.py 或 split_data.py。
-2. 用真实 agent/父 Experiment/固定 git ref/Run ID 绑定目标。界面的 `provider/model` 是运行路由；从实际可训练 checkpoint 的固定版本读取训练元数据，不直接将该路由拼成权重地址。
+1. 先按 `kev-trace-pipeline/references/dataset-formats.md` 区分材料：平台 v2 按 platform-export.md 转换，离线 IR 完成标注和分组审计，既有 KEV 文件按 legacy-native.md 复核、构建并审计。三种 dataset.kind 分别为 platform-v2、trace-ir、legacy-native。保留四份实际非空文件，不再运行官方 convert_data.py 或 split_data.py。
+2. 用真实 agent/父 Experiment/固定 git ref 绑定目标。轨迹和平台数据填写真实 source_run_ids；旧表格或既有 JSONL 确实没有 Run 时，legacy-native 允许空数组，来源留在导入材料中，不能补造 Run。界面的 `provider/model` 是运行路由；从实际可训练 checkpoint 的固定版本读取训练元数据，不直接将该路由拼成权重地址。
 3. 从固定 checkpoint 获取 training_config.json，记录来源与 SHA-256。准备 `assets/training-request.example.json` 所列字段；示例占位值不能直接提交。路径指向执行训练的同一环境；路径改变后重新准备计划并做编码检查。
 4. 当前脚本 recipe 支持原生 KEV LoRA + CUDA/bf16。全量权重、其他后端、提高上下文预算或混入公共 replay 属于独立 recipe，需要实际验证，不能临场改参数绕过检查。
 
@@ -35,6 +35,8 @@ description: "将已复核且独立分组的数据交给固定版本 KEV，准�
 | 取训练命令 | `python3 <skill_dir>/scripts/training_plan.py commands --plan FILE --encoding-report FILE` | encoding_ready_execution_not_started；仍需真实执行授权、硬件和预算检查 |
 
 编码默认只读本地 tokenizer 缓存；只有当前环境已获准下载时才使用 `--allow-tokenizer-download`。依赖或缓存缺失会留下 blocked 报告。不得用字符数、模拟 tokenizer 或上一次不同数据的报告替代。
+
+命令默认给出中文说明；prepare 保存 report.md，编码检查保存与 JSON 同名的 Markdown 报告。机器计划、编码结果和命令参数原样保留，程序接收 stdout 时显式加 `--json`。用户先看当前结果、待处理问题和下一步，不先看完整 JSON。命令卡的 cwd/argv/env/unset_env 仍必须精确使用。
 
 ## 4. 逐阶段执行与核对
 
@@ -52,4 +54,4 @@ description: "将已复核且独立分组的数据交给固定版本 KEV，准�
 
 `kev-finetune` 与 `kev-deploy` 是完整固定上游技能，具体原文及许可见各自 UPSTREAM.json。先读本阶段适配说明，再只读取所需上游部分；不连续执行其所有示例。两脚本默认 runtime pin 与本套原生训练 pin 的区别见 `references/training-run.md`。
 
-交付分别列出：数据、编码、训练、校准、服务绑定、完整比较的实际状态及唯一下一步。模型行为验收方法见 `references/model-evaluation.md`，不能把静态测试说成 GPT-5.5 已实测通过。
+交付先说用户关心的当前结果；按需要说明数据、编码、训练、校准、服务绑定和完整比较中哪些已完成、哪些未做。不要固定逐项倾倒内部状态。存在必要行动时给出下一步；技术身份和明细保留在可查报告。模型行为验收方法见 `references/model-evaluation.md`，不能把静态测试说成 GPT-5.5 已实测通过。

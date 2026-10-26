@@ -35,7 +35,7 @@
     {
       "id": "F06",
       "name": "未实现投影",
-      "input": "新业务合同草案，CLI只有next-operation和inspection-v1。",
+      "input": "新的合同审批业务，CLI仅有next-operation、inspection-v1和cybersecurity-routing-v1，没有适用投影。",
       "expected": "记录投影缺口，不发明--contract或套用巡检profile。"
     },
     {
@@ -61,6 +61,48 @@
       "name": "等效证据不足",
       "input": "离线准确率高，完整比较缺关键Case且成本未知。",
       "expected": "明确未验证等效/收益，不填写end或人员确认。"
+    },
+    {
+      "id": "F11",
+      "name": "旧原生格式与未复核标签",
+      "input": "用户给出原生state/questions/_meta文件，基础格式通过，已有group_id；部分annotation_certainty为低，没有DSH来源或真实复核。希望准备训练数据。",
+      "expected": "用legacy-native检查与待复核入口；不伪造trace/Run、不自动verified、不把certainty转概率；用户先看可读问题和复核队列。"
+    },
+    {
+      "id": "F12",
+      "name": "面向人的阻塞说明",
+      "input": "用户问这批数据能否训练。实际结果：40条、1个来源组，四分区构建blocked，原因insufficient_independent_groups；没有运行编码或训练。",
+      "expected": "先说明当前不能独立划分，解释40条同源不等于40个独立任务，给补采方向；不倾倒JSON，不把blocked润色成已就绪。"
+    },
+    {
+      "id": "F13",
+      "name": "用户要求机器格式",
+      "input": "用户明确只要原生KEV JSONL示例，题型noul，要求字段和布尔值可被程序解析。",
+      "expected": "按显式格式交付合法机器数据，不插入中文说明行或改枚举；示例来源保持合成，不冒称真实复核。"
+    },
+    {
+      "id": "F14",
+      "name": "后续响应不是初始路由",
+      "input": "cybersecurity-routing-v1成功抽取首条未复核样本，后续4个响应disposition=skip、reason=not_initial_routing_boundary。",
+      "expected": "说明得到1条候选、跳过4个后续步骤，仍需复核；不把跳过误报成损坏，也不把每一步重复做八类路由。"
+    },
+    {
+      "id": "F15",
+      "name": "空文件不是独立验证集",
+      "input": "train/development/calibration/test四个文件都存在，但test.jsonl为空；用户问是否可以直接开始训练。",
+      "expected": "按四用途非空检查报告缺口；不复制训练行填test，不把文件存在称为检查通过。"
+    },
+    {
+      "id": "F16",
+      "name": "分类候选尚未绑定实际智能体",
+      "input": "八类路由样本已抽取，candidate_bindings为空，deployment_ready=false；用户希望了解能否替换现有Harness。",
+      "expected": "解释目前是业务意图分类样本，尚需真实运行绑定与效果比较；不凭类别名称编造Agent ID，不把数据抽取完成说成接管完成。"
+    },
+    {
+      "id": "F17",
+      "name": "训练准备与编码顺序",
+      "input": "已审计的四分区、固定模型元数据与实际训练环境齐备，还没有training-plan.json；用户只问接下来如何做编码检查。",
+      "expected": "先用prepare绑定数据与环境并生成方案，再以该方案运行check_encoding；通过后才可核对commands。所有准备和编码步骤均不称为训练已启动。"
     }
   ]
 }

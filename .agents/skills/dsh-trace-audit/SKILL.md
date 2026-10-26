@@ -22,6 +22,8 @@ description: "只读审计 DSH 执行轨迹的版本、事件序列、surface �
 6. 使用最近的 request/header 工具清单；保留 tool-removal 等非文本 block。按 user/message 的 source.kind 区分真实用户请求与注入说明。
 7. 产出 trace-audit.json、request-snapshots.jsonl、usage.json。只使用 canonical usage 字段，不叠加 stream 副本；费用语义依供应商约定。
 
+默认交付中文 report.md，先说明检查了多少轨迹、能否可靠抽样、哪些缺口需要补；不要用事件名、完整 ID 和哈希串代替业务结论。原始机器报告仍保留，用户排查特定问题时再给对应定位。
+
 读取本技能 `references/adapter.md` 获取支持边界和在线采集方式。没有事件错误只表示已支持的结构检查通过，不证明标签正确、工具环境可重放或外部报告可访问。
 
 本技能依赖同级 `kev-trace-pipeline` 的唯一脚本实现；不要复制另一个解析器。若依赖缺失，继续阅读原始数据做有限审查，并明确自动检查未运行。

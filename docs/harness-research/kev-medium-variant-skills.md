@@ -8,7 +8,7 @@
 
 | 技能 | 职责 |
 |---|---|
-| kev-trace-pipeline | 原始轨迹与平台 v2 导出的数据工程入口 |
+| kev-trace-pipeline | 原始轨迹、平台 v2 导出和旧原生 JSONL 的数据入口 |
 | dsh-trace-audit | DSH v4 支持子集、可见前缀和工具集合审计 |
 | kev-decision-discovery | 区分模型判断、确定代码与待补上下文 |
 | kev-sample-extraction | 按已实现投影构造状态、问题、候选和绑定 |
@@ -29,15 +29,23 @@
 
 下一阶段沿用 Run 页面“请 AI 抽取决策样本”，一次提交一题，服务端绑定来源并自动保存 suggested。人员在决策样本页面逐题复核时点与标签，明确 train/development/calibration/test 用途后导出。后续获授权普通任务或独立训练环境使用本套脚本。
 
-## 两条数据输入路径
+## 三条数据输入路径
 
-**原始 DSH trace**：audit → discover → 已支持投影 extract → annotate → compile → 来源分组 split → audit-dataset。当前 profile 只有 next-operation 和 inspection-v1；新合同草案不自动实现新投影，没有 --contract 参数。不同业务需要先补真实投影及最小差异验证。
+**原始 DSH trace**：audit → discover → 已支持投影 extract → annotate → compile → 来源分组 split → audit-dataset。当前 profile 包含 next-operation、inspection-v1 和 cybersecurity-routing-v1。八类路由只覆盖真实初始请求的首次决策，背景只取真实用户原文；系统/开发/框架内容留在审计侧，不能事后借用来补标签。其他新业务仍需实现真实投影；新合同草案不会自动生效，没有 --contract 参数。
 
 **平台已复核 v2 导出**：保存真实 datasets/read 身份与 datasets/export 回执 → platform_export.py → 四份原生 JSONL、split-manifest、bridge-report。支持 choice/noul/score，保持硬标签、软分布、原 ID、人工状态及模型建议来源。不重新切分，不把 suggested 或 unassigned 升级为合格数据。
 
+**既有原生 KEV JSONL**：legacy_native.py inspect → 独立复核 → build → audit。保留旧文件来源、标签和组信息，先连接全量来源再筛选，生成四分区与可重放源/复核快照。低确定性只用于安排复核，不自动成为软概率；原生格式通过不能代替真实标签复核。训练入口 dataset.kind=legacy-native，无真实来源 Run 时保持 source_run_ids 为空。
+
 转换按 group_id/source_group_id/group_history、Run、Session 和等价输入形成关联闭包。派生原生 _meta.group_id 使用闭包，供实际 KEV 校准分折读取；原平台组保留在审计字段。未来信息、历史动作、标签理由不得混入决策前模型输入。未执行的候选不自动成为负例。
 
-具体命令与字段见 [.agents/skills/kev-trace-pipeline/SKILL.md](../../.agents/skills/kev-trace-pipeline/SKILL.md) 和其 references/platform-export.md。
+具体格式与用途见[数据格式规范](../../.agents/skills/kev-trace-pipeline/references/dataset-formats.md)，入口见 [.agents/skills/kev-trace-pipeline/SKILL.md](../../.agents/skills/kev-trace-pipeline/SKILL.md)。
+
+## 结果先让人看懂
+
+训练、开发、校准和测试 JSONL 保持机器合同；方案、决策点清单、审查和运行结果默认中文摘要及 Markdown 报告。报告先说明真实结果、主要问题和必要行动，程序状态、完整哈希和诊断保留在机器文件。需要原 stdout JSON 的程序显式加 --json。
+
+旧数据检查另提供最多 30 条优先复核预览，完整待复核模板与原文件保持。训练准备写 report.md；编码结果写同名 .md，避免覆盖前一阶段说明。表达规范只维护在 user-facing-output，整改计划和验证方法见[数据格式与可读输出整改](kev-data-format-and-output-plan.md)。
 
 ## 训练、校准与接入
 
@@ -59,15 +67,17 @@
 - 数据命令统一 stage-status.json：completed/requires_review/blocked、reason_codes、next_allowed_stage。blocked 返回非零且保留证据；退出 0 仍可能需要复核。
 - 使用已核对的绝对路径和固定参数；不让模型猜 CLI、SHA、模型架构、分区或训练作业 ID。
 - 状态未知先回读；不删除旧输出重跑，不因失败自动扩大任务范围。
-- 提供 10 个可重用模型行为场景。需要实际调用 GPT-5.5 等目标模型、记录配置与工具轨迹后，才能报告各模型效果；适配设计和单测不能替代跨模型成绩。
+- 提供 17 个可重用模型行为场景，包括旧数据、不确定标签、可读报告与机器格式、空分区、初始路由边界及“准备方案 → 编码检查”的顺序。需要实际调用 GPT-5.5 等目标模型、记录配置与工具轨迹后，才能报告各模型效果；适配设计和单测不能替代跨模型成绩。
 
 ## 已完成验证
 
-- 83 项针对性测试：33 项原有数据/适配器测试、10 项 CLI 阶段门禁、16 项平台桥接及完整 CLI 交接、11 项训练计划、13 项编码预检失败合同。
+- 158 项针对性测试全部通过，零跳过：数据核心 123 项，训练交接与编码合同 35 项。覆盖真实 CLI、旧格式接入、保组分区、原生渲染碰撞、输入保序、复核快照变化和可读报告。10 个修改的非官方技能通过格式校验。
 - 平台锁文件对应的 dsh-skill-filesystem 0.2.1-rc.2、dsh-skill 0.2.1-rc.2 与 yaml 2.9.1 实际函数：发现并加载 23 个根技能及 1 个已声明扩展，无解析警告；原有 13 项全部保留。
 - 两份官方 compatibility 元数据被实际 provider 接受。通用 skill-creator 的窄字段检查不接受该键，保留上游原文并以实际 provider 结果区分兼容性。
 - 实际 assistantConfiguration 对默认与 compute 入口 ready=true/missing=[]；新的 kev-training 不是已注册专项 context，仍通过现有普通管理入口使用。
-- 平台 v2 合成回执 → 原生四分区 → 训练计划的真实 CLI 通过；改变派生数据字节会阻断准备。原生 loader/materializer 兼容检查运行了固定上游原函数，未加载模型权重。
+- 平台 v2 与旧原生 JSONL 两条合成输入 → 原生四分区 → 训练计划的真实 CLI 均通过。修改派生数据、旧数据来源或复核快照会阻断相应后续步骤。固定上游的 renderer、to_record、loader/materializer 均运行了真实函数，未加载模型权重。
+- 独立对抗复核确认的 7 项消费链问题已修复并复测通过；两次独立试用核对了人读解释和准备/编码顺序。它们不等于指定目标模型的成绩。
+- 用户提供的旧数据只读检查：4,800 条均符合原生结构，60 条有去重后的优先复核线索；没有自动复核或构建真实训练数据。DSH 示例的 42 条记录含 5 个模型时点，初始路由抽取 1 条未标注候选并跳过 4 个后续步骤。原文件未改。
 
 未进行真实 GPU 训练、远端部署、当前线上 UI/Session 验收或 GPT-5.5 跨模型测试。编码帮助脚本的原生执行路径需要实际训练依赖和 tokenizer；本环境验证了失败合同，没有伪造 ready。上一次轨迹研究的编码结果只适用于当时那批样例，不替代新数据预检。
 

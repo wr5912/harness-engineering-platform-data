@@ -1,5 +1,7 @@
 """Synthetic handoff invariants. No user data, credentials, network or training."""
 from copy import deepcopy
+import contextlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -59,6 +61,39 @@ class TrainingPlanTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "plan_only"):
             self.build()
 
+    def test_trace_sources_cannot_be_replaced_with_empty_run_ids(self):
+        self.request["source"]["source_run_ids"] = []
+        with self.assertRaisesRegex(ValueError, "real_source_run_ids_required"):
+            self.build()
+
+    def test_prepare_cli_is_readable_and_preserves_machine_plan(self):
+        output = self.root / "prepared-human"
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            result = planner.main(["prepare", "--request", str(self.request_path), "--out", str(output)])
+        self.assertEqual(result, 0)
+        self.assertIn("训练方案已保存，尚未启动训练", stdout.getvalue())
+        self.assertNotIn('"schema_version"', stdout.getvalue())
+        self.assertIn("训练集", (output / "report.md").read_text())
+        self.assertEqual(planner.read_json(output / "training-plan.json")["execution"]["training"], "not_run")
+        machine_output = self.root / "prepared-json"
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            result = planner.main(["prepare", "--request", str(self.request_path), "--out", str(machine_output), "--json"])
+        self.assertEqual(result, 0)
+        self.assertEqual(json.loads(stdout.getvalue())["training"], "not_run")
+        self.assertTrue((machine_output / "report.md").is_file())
+
+    def test_missing_encoding_report_is_a_readable_failure(self):
+        plan = self.build(); pp = self.root / "plan.json"
+        planner.write_json(pp, plan)
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            code = planner.main(["commands", "--plan", str(pp), "--encoding-report", str(self.root / "absent.json")])
+        self.assertEqual(code, 2)
+        self.assertIn("当前不能继续", stdout.getvalue())
+        self.assertIn("尚未启动训练", stdout.getvalue())
+
     def test_reviewed_metadata_does_not_hide_split_overlap(self):
         path = self.data / "test.jsonl"
         rows = [json.loads(s) for s in path.read_text().splitlines()]
@@ -66,6 +101,17 @@ class TrainingPlanTests(unittest.TestCase):
         rows[0]["_meta"]["group_id"] = train["_meta"]["group_id"]
         path.write_text("".join(json.dumps(r) + "\n" for r in rows))
         with self.assertRaisesRegex(ValueError, "cross_partition_group"):
+            self.build()
+
+    def test_different_json_with_same_native_input_cannot_cross_partitions(self):
+        native = planner.load_module("synthetic_native_identity", SKILLS / "kev-trace-pipeline/scripts/native_input.py")
+        train = json.loads((self.data / "train.jsonl").read_text().splitlines()[0])
+        path = self.data / "test.jsonl"
+        rows = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+        rows[0]["state"] = native.render(train["state"])
+        rows[0]["questions"] = deepcopy(train["questions"])
+        path.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "cross_partition_identical_rendered_input"):
             self.build()
 
     def test_stale_checkpoint_metadata_is_blocked(self):

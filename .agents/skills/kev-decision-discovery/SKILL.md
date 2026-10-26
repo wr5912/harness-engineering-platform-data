@@ -20,7 +20,7 @@ description: "从已审计的智能体轨迹识别可交给 Kev 的决策职责�
 4. 不用当前历史选中动作作为上线触发条件。按当前前缀和流程状态判断是否进入该 site。
 5. 给出 implementation=model/code/hybrid。精确 matchPhrases、复制 runId/taskId/version、稳定 requestId、数字和 URL 绑定优先代码。开放报告正文不伪装成 choice。
 6. 估计收益时计入状态整理、候选构造、参数生成、回退和后续重试。只在工具执行前加判定器，不能声称省掉已发生的模型选择。
-7. 产出 decision-inventory.json 和明确的参考合同；列出已有覆盖、未知规则与新增轨迹需求。
+7. 程序清单保留 decision-inventory.json；给用户优先提供“决策职责、可见依据、建议由模型还是代码处理、仍缺什么”的中文表格或短段落。参考合同只放必要字段，先解释业务判断，再附机器版本；填写模板不等于已实现投影。
 
 读取 `references/discovery.md` 获取巡检示例、覆盖矩阵和合同评审要点。脚本输出的 implementation 是参考建议；业务合同未确认时不要自动训练。
 

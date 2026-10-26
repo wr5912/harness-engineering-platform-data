@@ -1,6 +1,6 @@
 {
   "date": "2026-10-26",
-  "suite_version": "0.2.0",
+  "suite_version": "0.3.0",
   "prior_suite_validation": {
     "date": "2026-10-26",
     "suite_version": "0.1.0",
@@ -43,6 +43,57 @@
     "declared_extension_skills_discovered_and_loaded": 1,
     "existing_skills_preserved": 13,
     "official_original_files_hash_verified": 16,
+    "native_provider_parser_warnings": 0,
+    "ordinary_and_compute_task_ready": true,
+    "new_kev_specialized_task_registered": false,
+    "authored_skill_validators_passed": 10,
+    "targeted_tests_passed": 158,
+    "tests_skipped": 0,
+    "test_breakdown": {
+      "test_cli_gates": 18,
+      "test_dataset": 18,
+      "test_legacy_native": 24,
+      "test_native_input": 3,
+      "test_platform_export": 21,
+      "test_security_routing": 22,
+      "test_trace_adapter": 17,
+      "test_encoding_contract": 17,
+      "test_legacy_handoff": 3,
+      "test_training_plan": 15
+    },
+    "native_compatibility": "pinned API render/to_record and native loader/materializer tested without model weights",
+    "synthetic_native_format_examples_passed": 1,
+    "independent_adversarial_findings_rechecked": 7,
+    "independent_adversarial_blockers_remaining": 0,
+    "independent_agent_use_checks": [
+      {
+        "scenario": "Explain one extracted, unlabeled routing sample",
+        "result": "Reported incomplete review, independent-source and encoding requirements; no external actions. Training-order wording was clarified in the shared handoff reference."
+      },
+      {
+        "scenario": "Explain length checking when training-plan.json does not exist",
+        "result": "Correct prepare -> encoding order and execution limits; no external actions."
+      }
+    ],
+    "target_model_behavior_cases_available": 17
+  },
+  "not_executed": [
+    "target-model GPT-5.5 or cross-model benchmark",
+    "native tokenizer on a new training dataset in this environment",
+    "GPU training",
+    "remote inference deployment",
+    "live UI/Session integration",
+    "complete Harness equivalence evaluation"
+  ],
+  "prior_integration_validation": {
+    "suite_version": "0.2.0",
+    "target_repository": "wr5912/harness-engineering-platform-data",
+    "platform_reference_commit": "19a877e337a288cc4364d1fbe0f440e65030ff37",
+    "kev_reference_commit": "2074cc44256200bb37540103fa4572901faa10f3",
+    "root_skills_discovered_and_loaded": 23,
+    "declared_extension_skills_discovered_and_loaded": 1,
+    "existing_skills_preserved": 13,
+    "official_original_files_hash_verified": 16,
     "authored_skill_validators_passed": 8,
     "targeted_tests_passed": 83,
     "test_breakdown": {
@@ -57,12 +108,28 @@
     "new_kev_specialized_task_registered": false,
     "independent_agent_plan_only_scenario": "completed_without_external_actions"
   },
-  "not_executed": [
-    "target-model GPT-5.5 or cross-model benchmark",
-    "native tokenizer on a new training dataset in this environment",
-    "GPU training",
-    "remote inference deployment",
-    "live UI/Session integration",
-    "complete Harness equivalence evaluation"
-  ]
+  "readonly_legacy_inspection": {
+    "records": 4800,
+    "native_valid_records": 4800,
+    "known_source_groups": 4586,
+    "priority_review_records": 60,
+    "medium_certainty_records": 102,
+    "human_preview_records": 30,
+    "status": "needs_review",
+    "source_unchanged": true,
+    "labels_reviewed_by_this_task": 0,
+    "training_dataset_built_from_user_records": false,
+    "notes": "Counts describe source claims and format checks, not a measured error rate. Private input and review outputs are not stored in this repository."
+  },
+  "current_trace_routing_smoke": {
+    "records": 42,
+    "model_boundaries": 5,
+    "samples": 1,
+    "labels": [
+      "unlabeled"
+    ],
+    "skipped": 4,
+    "status": "requires_review",
+    "source_unchanged": true
+  }
 }
