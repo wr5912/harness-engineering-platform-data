@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请在 OPNsense 防火墙 172.16.2.103 上解除源 IP 198.51.100.77 的封禁；原封禁规则 UUID 是 12345678-1234-4123-8123-123456789abc。只准备草案。"
+  ],
+  "assistant_texts": [
+    "**未准备解封草案：当前会话没有暴露应急草案工具。**\n\n已加载 `emergency-action` Skill。本轮可见的 MCP 服务器仅包括 `inspection` 与 `sec-ops`，其中资源列表均为空；可用工具里没有 `prepare_emergency_action`、`revise_emergency_action` 等应急草案能力。按当前工具契约，我不能猜测工具名，也不能通过 Shell、文件或底层 HTTP 绕过，因此没有调用任何准备接口。\n\n请求本身属于单动作、单目标应急操作，参数已明确：\n\n- 目标：防火墙 `172.16.2.103`\n- 动作：`unblock-ip`\n- 源 IP：`198.51.100.77`\n- 原封禁规则 UUID：`12345678-1234-4123-8123-123456789abc`\n\n**当前状态：草案未准备，未提交，未执行。** 需由运行时接入应急草案工具后才能继续；无需补充业务参数。"
+  ],
+  "session_id": "session-c19f49d2-874d-4179-99ff-1f4cbf3b3bff",
+  "turns": [
+    {
+      "assistant_text": "**未准备解封草案：当前会话没有暴露应急草案工具。**\n\n已加载 `emergency-action` Skill。本轮可见的 MCP 服务器仅包括 `inspection` 与 `sec-ops`，其中资源列表均为空；可用工具里没有 `prepare_emergency_action`、`revise_emergency_action` 等应急草案能力。按当前工具契约，我不能猜测工具名，也不能通过 Shell、文件或底层 HTTP 绕过，因此没有调用任何准备接口。\n\n请求本身属于单动作、单目标应急操作，参数已明确：\n\n- 目标：防火墙 `172.16.2.103`\n- 动作：`unblock-ip`\n- 源 IP：`198.51.100.77`\n- 原封禁规则 UUID：`12345678-1234-4123-8123-123456789abc`\n\n**当前状态：草案未准备，未提交，未执行。** 需由运行时接入应急草案工具后才能继续；无需补充业务参数。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "245fbaee-c920-4165-b3c8-2260cffc26e2"
+    }
+  ]
+}

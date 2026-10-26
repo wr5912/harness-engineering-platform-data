@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-THREAT-FAST",
+  "transport": "api",
+  "expected_behavior": "从本轮名单证据判断路由；若单侧命中且名单完整，应走快速分类，`llm_invoked=false`，表示未调用内层研判模型。主会话展示程序摘要和可下载报告，不只是工具卡片。证据、实体、时间和报告内容应与本轮结果一致。报告存储失败时如实说明，不伪造下载链接。\n\n未满足快速分类条件时，按实际证据转入完整研判并记录原因，不强行快速分类；本轮快速路径未覆盖，不据此认定快速研判验证通过。",
+  "session_id": "session-695da73b-dc1d-48d3-bb3e-0c0c1aefd7a6",
+  "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+  "session_title": "评测 U-THREAT-FAST",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-890c0c98-c57d-4964-8f88-22d768dee9d9",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-THREAT-FAST",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  },
+  "trace_available": true
+}

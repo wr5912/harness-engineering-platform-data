@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "工具轨迹显示已调用 delegate_threat_analysis 且 prompt 中包含原样事件 ID INC-20260917-000001，路由正确；但工具结果仅为 'started subagent 01a0b5df...'，未包含研判取证、模型推理、校验、摘要与报告、SOC 回写、下载链接等 U-THREAT-FAST 所要求的证据，回答文本也未说明委派进行中或任何结果。现有证据不足以确认满足全部证据要求，也不足以判定不满足（委派可能仍在进行），故为 inconclusive。"
+  },
+  "checks": {
+    "session_id": "session-f42a6f46-3004-40d8-b237-8f86b6658dd4",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-THREAT-MENTION",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

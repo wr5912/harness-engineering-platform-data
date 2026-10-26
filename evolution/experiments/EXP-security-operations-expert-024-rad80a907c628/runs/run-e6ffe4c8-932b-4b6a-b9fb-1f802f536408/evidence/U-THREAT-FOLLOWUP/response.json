@@ -1,0 +1,78 @@
+{
+  "inputs": [
+    "请研判威胁事件 INC-20260917-000001。",
+    "解释什么是横向移动，不要再研判事件。"
+  ],
+  "assistant_texts": [
+    "started subagent 49d97d98-c9db-4bc4-bad8-23bc4583ea20",
+    "**横向移动**：攻击者在攻破一台设备或获得一个入口后，利用该入口作为跳板，向同一网络中的其他主机、账户或系统扩展访问，以寻找更高价值资产、权限或数据。常见方式包括复用凭据、远程管理协议、共享资源、信任关系及已控制服务账户。\n\n**与本事件的关系**：本轮不再研判 `INC-20260917-000001`。之前已启动的研判后台是否继续、当前状态及结果未知，我不会臆测其结论。"
+  ],
+  "session_id": "session-3c581413-a840-4e75-bb4b-af6f876b679c",
+  "turns": [
+    {
+      "assistant_text": "started subagent 49d97d98-c9db-4bc4-bad8-23bc4583ea20",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f2011b1a-35d4-450f-88f9-5b48255e251b"
+    },
+    {
+      "assistant_text": "**横向移动**：攻击者在攻破一台设备或获得一个入口后，利用该入口作为跳板，向同一网络中的其他主机、账户或系统扩展访问，以寻找更高价值资产、权限或数据。常见方式包括复用凭据、远程管理协议、共享资源、信任关系及已控制服务账户。\n\n**与本事件的关系**：本轮不再研判 `INC-20260917-000001`。之前已启动的研判后台是否继续、当前状态及结果未知，我不会臆测其结论。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "993bdf5d-5cfc-4296-85de-7652343732ff"
+    }
+  ]
+}

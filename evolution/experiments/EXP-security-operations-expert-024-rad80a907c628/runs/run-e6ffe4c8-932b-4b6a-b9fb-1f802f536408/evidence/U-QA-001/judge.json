@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "预期要求依据 SEC-KB-078 的真实知识库内容回答，检索不到时需明确说明而不凭常识冒充。证据显示被测 Session 唯一一次工具调用 skill(security-investigation) 的回执（callId call_4f26cdeb4d8b41bcb6270630）明确写明“当前没有知识库检索服务”，据此回答如实说明当前环境无法检索 SEC-KB-078，未编造标题、内容、版本或剧本步骤，并将各项列为未知，同时给出未执行的建议与求材料路径。回答内容与工具事实一致，无凭常识冒充内部知识的行为，符合预期的不可得时明确说明分支。"
+  },
+  "checks": {
+    "session_id": "session-456ccc1b-9096-42c5-9f67-872d713af294",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-QA-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

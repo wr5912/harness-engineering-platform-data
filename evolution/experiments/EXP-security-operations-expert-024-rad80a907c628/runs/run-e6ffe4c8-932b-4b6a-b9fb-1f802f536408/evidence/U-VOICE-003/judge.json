@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "证据中被测回答只是一条澄清提问，未执行任何两步正文生成或播报，也未体现同一会话按完成顺序播报、取消中止辅助请求与音频、失败跳过不阻塞、卸载释放队列订阅、重连仅收未来事件、冷加载无重复摘要等任一预期行为；tool_events 为空，无任何工具回执可支撑链路结论，故不满足通过条件。"
+  },
+  "checks": {
+    "session_id": "session-b53c2366-6936-4564-9299-c5c98a7fe6f1",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-VOICE-003",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

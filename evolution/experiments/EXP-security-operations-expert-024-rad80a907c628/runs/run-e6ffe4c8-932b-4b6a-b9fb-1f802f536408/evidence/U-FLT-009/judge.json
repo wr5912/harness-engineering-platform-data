@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "第二轮回答完全基于同一 Session 第一轮真实巡检工具回执（run-974159beb4d642b9b62b79543a5be6e6）做根因分析并输出正式报告，关键数据均可与工具返回核对：conclusionStatus=ABNORMAL、resultStatus=PARTIAL、12 台设备、在线 6/离线 5/未取得 1、离线设备清单（172.16.1.20、172.16.1.40、172.16.2.102、10.10.10.10、172.16.1.10）、SOC-232 172.16.138.232 在线状态未取得、设备漏洞 12 台均未发现、基线核查 12 台无报告未纳入判定、报告时间 18:24:58–18:24:59 及服务原样返回的 reportDownloadUrl，均与 tool/result（seq 35）一致，无捏造数据。第二轮未调用任何工具，明确声明只分析不处置、根因未确认、建议未执行，符合只分析不处置的约束；由于巡检本身成功完成（非工具失败），报告未涉及对失败工具结果的虚假声称。"
+  },
+  "checks": {
+    "session_id": "session-7d412483-01e1-4f22-8f5e-defe4e9837c8",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-FLT-009",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

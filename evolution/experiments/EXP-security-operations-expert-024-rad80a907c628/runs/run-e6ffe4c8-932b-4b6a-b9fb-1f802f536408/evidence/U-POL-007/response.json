@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "对重复策略、无可达路径、预检失败或外部能力未接通的对象发起开通。"
+  ],
+  "assistant_texts": [
+    "本轮无法为这些对象发起开通。\n\n- **原因**：当前会话只暴露了 `inspection` 与 `sec-ops` 两个只读 MCP 资源源，且两者都没有可用资源或资源模板；本轮工具目录中没有策略端点解析、策略候选选择或策略草稿准备能力。`policy-configuration` 要求的端点解析工具因此无法调用，不能自行查询资产、拓扑或设备，也不能绕过该门禁。\n- **能力边界**：本路线只支持新增 `ADD` 的 IPv4 主机/CIDR 到主机/CIDR、TCP/UDP 单目的端口的 `ALLOW` 或 `DENY` 策略。重复策略、无可达路径、预检失败、外部能力未接通属于平台判断结果；只有策略草稿能力真实返回 `POLICY_ALREADY_COVERED`、`POLICY_BLOCKED` 等覆盖结果后，才能读取并交付相应结论。\n- **当前状态**：没有生成 `request_id`，没有端点解析回执，也没有 DRAFT、operation ID、taskId 或设备候选，因此无法续查任何开通任务。\n- **未知项**：上述四类对象的具体源、目的、协议、目的端口、允许/阻断动作，以及目标防火墙线索均未提供；即便参数补齐，也必须先恢复策略端点解析与准备工具。\n\n建议恢复或开放 `workbench-policy-endpoint-resolution/v1` 对应的策略 MCP 工具后，再重新发起；该恢复动作尚未执行。"
+  ],
+  "session_id": "session-b4ddd7ca-78fe-4c14-bac5-60313a7f1e41",
+  "turns": [
+    {
+      "assistant_text": "本轮无法为这些对象发起开通。\n\n- **原因**：当前会话只暴露了 `inspection` 与 `sec-ops` 两个只读 MCP 资源源，且两者都没有可用资源或资源模板；本轮工具目录中没有策略端点解析、策略候选选择或策略草稿准备能力。`policy-configuration` 要求的端点解析工具因此无法调用，不能自行查询资产、拓扑或设备，也不能绕过该门禁。\n- **能力边界**：本路线只支持新增 `ADD` 的 IPv4 主机/CIDR 到主机/CIDR、TCP/UDP 单目的端口的 `ALLOW` 或 `DENY` 策略。重复策略、无可达路径、预检失败、外部能力未接通属于平台判断结果；只有策略草稿能力真实返回 `POLICY_ALREADY_COVERED`、`POLICY_BLOCKED` 等覆盖结果后，才能读取并交付相应结论。\n- **当前状态**：没有生成 `request_id`，没有端点解析回执，也没有 DRAFT、operation ID、taskId 或设备候选，因此无法续查任何开通任务。\n- **未知项**：上述四类对象的具体源、目的、协议、目的端口、允许/阻断动作，以及目标防火墙线索均未提供；即便参数补齐，也必须先恢复策略端点解析与准备工具。\n\n建议恢复或开放 `workbench-policy-endpoint-resolution/v1` 对应的策略 MCP 工具后，再重新发起；该恢复动作尚未执行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "65d5b426-7cd1-4f42-901a-05f9fdd78e6d"
+    }
+  ]
+}

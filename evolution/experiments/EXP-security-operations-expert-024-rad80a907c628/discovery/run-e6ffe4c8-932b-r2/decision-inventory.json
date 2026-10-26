@@ -1,0 +1,3780 @@
+{
+  "schema": "decision-inventory/manual/v2",
+  "basis": {
+    "run_id": "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408",
+    "experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+    "agent_id": "security-operations-expert",
+    "traces": "evidence/<case>/trace.jsonl",
+    "cases": 65,
+    "sessions": 86,
+    "model_responses": 265,
+    "audit": {
+      "clean_cases": 49,
+      "blocked_cases": 16,
+      "blocked_reason": "unsupported subagent events (subagent/catalog, subagent/descriptor, agent-preset/selected)",
+      "artifacts": [
+        "01-audit",
+        "01b-audit-clean"
+      ]
+    },
+    "routing_projection": {
+      "profile": "cybersecurity-routing-v1",
+      "source": "02-discover-routing/decision-inventory.json",
+      "candidates": 49,
+      "skipped": 142,
+      "skipped_reason": "not_initial_routing_boundary",
+      "stage_status": "requires_review",
+      "reason_codes": [
+        "decision_contract_review_required"
+      ],
+      "unlabeled": true,
+      "agent_mapping": {},
+      "deployment_ready": false
+    },
+    "verdict_source": "Run 内语义判定（同一路由自评，仅作研究辅助）+ 工具回执；非业务验收"
+  },
+  "totals": {
+    "decision_points": 175,
+    "sites": 14,
+    "verdicts": {
+      "passed": 40,
+      "failed": 9,
+      "inconclusive": 16
+    },
+    "routing_suggestions": {
+      "响应处置": 3,
+      "故障排查": 10,
+      "安全巡检": 7,
+      "报告生成": 2,
+      "策略生成": 12,
+      "知识问答": 14,
+      "威胁研判": 15,
+      "其他": 2
+    }
+  },
+  "sites": [
+    {
+      "id": "S01",
+      "name": "主路由归属",
+      "question": "这段用户输入该进入哪条主路由（应急 / 策略 / 威胁研判 / 故障排查 / 巡检 / 通用调查 / 直接回答 / 澄清）",
+      "candidates": "8 类路由 + 直接回答 + 澄清",
+      "observed": "8 条主路由均出现；1 次误路由、1 次路由偏差",
+      "implementation": "model",
+      "coverage_count": 34,
+      "case_ids": [
+        "U-EMG-001",
+        "U-EMG-002",
+        "U-FLT-001",
+        "U-FLT-002",
+        "U-FLT-003",
+        "U-FLT-004",
+        "U-FLT-005",
+        "U-FLT-006",
+        "U-FLT-007",
+        "U-FLT-008",
+        "U-FLT-010",
+        "U-FLT-MENTION",
+        "U-INS-001",
+        "U-INS-003",
+        "U-POL-001",
+        "U-POL-002",
+        "U-POL-003",
+        "U-POL-004",
+        "U-POL-005",
+        "U-POL-006",
+        "U-POL-007",
+        "U-POL-008",
+        "U-POL-010",
+        "U-POL-011",
+        "U-POL-012",
+        "U-QA-001",
+        "U-QA-003",
+        "U-QA-006",
+        "U-QA-007",
+        "U-QA-008",
+        "U-QA-009",
+        "U-THREAT-MENTION",
+        "U-VOICE-001",
+        "U-VOICE-004"
+      ],
+      "missing": "49 条投影未标标签、无 Agent 映射；16 条未投影；后续路由点无触发协议"
+    },
+    {
+      "id": "S02",
+      "name": "技能加载与复用",
+      "question": "是否需要加载技能、加载哪一个、同一技能是否重复加载",
+      "candidates": "8 个候选技能 + 不加载",
+      "observed": "多为加载 1 个；存在重复加载与跨域加载",
+      "implementation": "hybrid",
+      "coverage_count": 21,
+      "case_ids": [
+        "U-EMG-003",
+        "U-INS-001",
+        "U-INS-002",
+        "U-INS-004",
+        "U-INS-005",
+        "U-INS-006",
+        "U-POL-001",
+        "U-POL-002",
+        "U-POL-008",
+        "U-POL-009",
+        "U-QA-001",
+        "U-QA-004",
+        "U-QA-010",
+        "U-QA-011",
+        "U-SCHED-001",
+        "U-SCHED-004",
+        "U-THREAT-CONTRACT",
+        "U-THREAT-FAST",
+        "U-THREAT-FULL",
+        "U-THREAT-MISSING",
+        "U-THREAT-WHITELIST"
+      ],
+      "missing": "重复加载的对照数据；技能缺失时的替代路径"
+    },
+    {
+      "id": "S03",
+      "name": "能力缺口探测",
+      "question": "所需工具不在目录时，探测到哪一步停止：直接声明缺口 / 枚举资源 / 检索文件 / 扩大探测面",
+      "candidates": "声明缺口 / 资源枚举 / 文件检索 / 继续扩大",
+      "observed": "多数为 2–4 轮枚举；个别达 8 轮",
+      "implementation": "hybrid",
+      "coverage_count": 18,
+      "case_ids": [
+        "U-EMG-001",
+        "U-EMG-002",
+        "U-EMG-003",
+        "U-FLT-006",
+        "U-POL-001",
+        "U-POL-002",
+        "U-POL-003",
+        "U-POL-004",
+        "U-POL-005",
+        "U-POL-006",
+        "U-POL-007",
+        "U-POL-010",
+        "U-POL-011",
+        "U-POL-012",
+        "U-QA-001",
+        "U-QA-002",
+        "U-QA-005",
+        "U-QA-011"
+      ],
+      "missing": "探测预算阈值无业务合同；凭据与实现面边界需运行时强制"
+    },
+    {
+      "id": "S04",
+      "name": "跨域调用取舍",
+      "question": "路由确定后是否借用其他业务域能力（委派、其他技能、其他 MCP）",
+      "candidates": "守边界 / 越域尝试",
+      "observed": "出现越域尝试，均被 Guard 或过滤器拒绝",
+      "implementation": "code",
+      "coverage_count": 7,
+      "case_ids": [
+        "U-EMG-001",
+        "U-EMG-002",
+        "U-POL-002",
+        "U-POL-003",
+        "U-POL-007",
+        "U-POL-009",
+        "U-QA-005"
+      ],
+      "missing": "拒绝原因的用户可见措辞；多路由并发请求的拆分协议"
+    },
+    {
+      "id": "S05",
+      "name": "候选对象选择",
+      "question": "从目录/搜索结果中选唯一模板、唯一任务、知识库或设备",
+      "candidates": "本轮目录中的 N 个候选 + 澄清",
+      "observed": "巡检从 5 个模板选 1；其余域无可选对象",
+      "implementation": "hybrid",
+      "coverage_count": 12,
+      "case_ids": [
+        "U-FLT-001",
+        "U-FLT-002",
+        "U-FLT-009",
+        "U-FLT-010",
+        "U-INS-001",
+        "U-INS-002",
+        "U-INS-004",
+        "U-INS-005",
+        "U-INS-006",
+        "U-INS-007",
+        "U-QA-010",
+        "U-THREAT-FOLLOWUP"
+      ],
+      "missing": "设备/知识库域无可用目录；多匹配澄清文案"
+    },
+    {
+      "id": "S06",
+      "name": "参数绑定与标识复用",
+      "question": "taskId / definitionVersion / requestId / runId / scope / 时区 / UUID 的取值与复用",
+      "candidates": "由回执派生 vs 猜测/改写",
+      "observed": "多为按回执填参；出现 1 次转录失真",
+      "implementation": "code",
+      "coverage_count": 5,
+      "case_ids": [
+        "U-FLT-009",
+        "U-INS-001",
+        "U-INS-006",
+        "U-INS-007",
+        "U-POL-003"
+      ],
+      "missing": "requestId 稳定生成规则未在 Harness 侧定义；重试复用证据"
+    },
+    {
+      "id": "S07",
+      "name": "执行—等待—重试",
+      "question": "发起后是否轮询、超时重试几次、是否改期续查、是否重复发起",
+      "candidates": "继续查询 / 重试 / 改期 / 重新发起",
+      "observed": "单次查询、超时重试、改期续查、跨轮复用均出现",
+      "implementation": "hybrid",
+      "coverage_count": 4,
+      "case_ids": [
+        "U-FLT-009",
+        "U-INS-001",
+        "U-INS-006",
+        "U-INS-007"
+      ],
+      "missing": "巡检超时后的改期续查授权；重试次数上限"
+    },
+    {
+      "id": "S08",
+      "name": "澄清 vs 执行",
+      "question": "缺参数或有歧义时先问还是先做",
+      "candidates": "询问 / 按推断执行",
+      "observed": "多数追问；少数直接执行或按推断处理",
+      "implementation": "model",
+      "coverage_count": 11,
+      "case_ids": [
+        "U-FLT-003",
+        "U-FLT-MENTION",
+        "U-INS-004",
+        "U-POL-005",
+        "U-POL-008",
+        "U-POL-009",
+        "U-POL-010",
+        "U-POL-012",
+        "U-QA-013",
+        "U-THREAT-MISSING",
+        "U-VOICE-003"
+      ],
+      "missing": "歧义判定标准；“继续刚才”类无背景请求的处理合同"
+    },
+    {
+      "id": "S09",
+      "name": "委派与子代理编排",
+      "question": "是否委派、委派粒度、是否重复委派、子代理结果如何收敛",
+      "candidates": "单次委派 / 并行委派 / 去重后委派 / 不委派",
+      "observed": "单次为主；存在同内容重复委派",
+      "implementation": "hybrid",
+      "coverage_count": 16,
+      "case_ids": [
+        "U-FLT-001",
+        "U-FLT-002",
+        "U-FLT-003",
+        "U-FLT-004",
+        "U-FLT-006",
+        "U-FLT-007",
+        "U-FLT-008",
+        "U-FLT-010",
+        "U-FLT-MENTION",
+        "U-THREAT-CONTRACT",
+        "U-THREAT-FAST",
+        "U-THREAT-FOLLOWUP",
+        "U-THREAT-FULL",
+        "U-THREAT-MENTION",
+        "U-THREAT-WHITELIST",
+        "U-VOICE-002"
+      ],
+      "missing": "子代理结果回流协议与超时语义（本 Run 16 个场景缺失）"
+    },
+    {
+      "id": "S10",
+      "name": "结果判定与结论表达",
+      "question": "基于回执判定结论：PARTIAL/ABNORMAL、事实-推断-缺口、数量、下载链接、是否声称完成",
+      "candidates": "按回执判定 / 泛化 / 补造",
+      "observed": "多数按回执判定；个别出现声明风险",
+      "implementation": "model",
+      "coverage_count": 32,
+      "case_ids": [
+        "U-FLT-001",
+        "U-FLT-002",
+        "U-FLT-003",
+        "U-FLT-004",
+        "U-FLT-005",
+        "U-FLT-006",
+        "U-FLT-007",
+        "U-FLT-008",
+        "U-FLT-009",
+        "U-FLT-MENTION",
+        "U-INS-001",
+        "U-INS-005",
+        "U-INS-006",
+        "U-INS-007",
+        "U-POL-007",
+        "U-QA-003",
+        "U-QA-007",
+        "U-QA-008",
+        "U-QA-009",
+        "U-QA-012",
+        "U-SCHED-001",
+        "U-SCHED-002",
+        "U-SCHED-004",
+        "U-THREAT-CONTRACT",
+        "U-THREAT-FAST",
+        "U-THREAT-FOLLOWUP",
+        "U-THREAT-FULL",
+        "U-THREAT-MENTION",
+        "U-THREAT-WHITELIST",
+        "U-VOICE-001",
+        "U-VOICE-002",
+        "U-VOICE-004"
+      ],
+      "missing": "PARTIAL 的业务解释标准；报告可访问性判定"
+    },
+    {
+      "id": "S11",
+      "name": "定时任务参数化",
+      "question": "daily / every / cron / 时间窗 / 标题 / 固定 prompt，以及更新与删除的前置查询",
+      "candidates": "直接创建 / 先问后建 / 先查后改",
+      "observed": "参数多正确；2 处流程错误",
+      "implementation": "code",
+      "coverage_count": 9,
+      "case_ids": [
+        "U-INS-005",
+        "U-SCHED-001",
+        "U-SCHED-002",
+        "U-SCHED-003",
+        "U-SCHED-004",
+        "U-SCHED-005",
+        "U-SCHED-006",
+        "U-SCHED-007",
+        "U-VOICE-002"
+      ],
+      "missing": "窗口不能准确表达时的产品回退；暂停/恢复能力"
+    },
+    {
+      "id": "S12",
+      "name": "能力与状态声明一致性",
+      "question": "是否声称某能力可用、任务已创建、报告已生成、已执行",
+      "candidates": "与工具目录/回执一致 / 与事实冲突",
+      "observed": "多数一致；1 处与工具目录冲突",
+      "implementation": "code",
+      "coverage_count": 21,
+      "case_ids": [
+        "U-EMG-001",
+        "U-EMG-002",
+        "U-EMG-003",
+        "U-FLT-010",
+        "U-INS-004",
+        "U-POL-001",
+        "U-POL-002",
+        "U-POL-004",
+        "U-POL-006",
+        "U-POL-008",
+        "U-QA-001",
+        "U-QA-002",
+        "U-QA-004",
+        "U-QA-005",
+        "U-QA-010",
+        "U-QA-011",
+        "U-SCHED-001",
+        "U-SCHED-002",
+        "U-SCHED-003",
+        "U-SCHED-006",
+        "U-SCHED-007"
+      ],
+      "missing": "受控实例能力开关的运行时可见性"
+    },
+    {
+      "id": "S13",
+      "name": "输出合同",
+      "question": "JSON-only、指定语言、格式与篇幅、事实与建议分离",
+      "candidates": "按用户指定 / 通用 markdown",
+      "observed": "JSON-only、指定语言、只列目录均满足",
+      "implementation": "code",
+      "coverage_count": 4,
+      "case_ids": [
+        "U-INS-002",
+        "U-INS-003",
+        "U-QA-006",
+        "U-QA-014"
+      ],
+      "missing": "JSON-only 结构校验；英文术语边界"
+    },
+    {
+      "id": "S14",
+      "name": "处置与确认边界",
+      "question": "只准备草案、不确认、不下发；不支持的动作是否明确停止",
+      "candidates": "停止并说明 / 继续尝试 / 声称已执行",
+      "observed": "均为停止并说明，未出现确认或下发",
+      "implementation": "code",
+      "coverage_count": 6,
+      "case_ids": [
+        "U-FLT-010",
+        "U-POL-001",
+        "U-POL-005",
+        "U-POL-008",
+        "U-POL-010",
+        "U-POL-011"
+      ],
+      "missing": "草案工具未装载时的用户可见回退；应急与策略动作互斥的运行时合同"
+    }
+  ],
+  "contracts": [
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S01",
+      "site_key": "agent_route",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "这段用户输入该进入哪条主路由（应急 / 策略 / 威胁研判 / 故障排查 / 巡检 / 通用调查 / 直接回答 / 澄清）",
+      "implementation": "model",
+      "runtime_trigger": "会话首个模型响应前；前缀有真实用户消息且此前无 assistant/tool 活动（cybersecurity-routing-v1 边界）",
+      "required_state_fields": [
+        "用户输入指令",
+        "背景信息（仅 source.kind=user）"
+      ],
+      "candidate_builder": "静态八类合同 cybersecurity-routing-contract/v1",
+      "candidate_parameter_binding": "候选绑定为空 {}",
+      "target_rule": "用户明确的首要业务意图；并列多任务无优先级时标 ambiguous",
+      "ambiguity_policy": "留待复核或澄清，不强行八选一",
+      "fallback": "现有 Harness 路由；未映射 Agent 时留空",
+      "replaced_call": "主模型对首轮请求的意图判断（决定后续技能与工具）",
+      "expected_savings": "一次 8 选 1 分类；不含后续工具选择与执行",
+      "full_path_cost": "1 次 8 选 1；省去主模型对整段请求的意图推理",
+      "source_refs": [
+        "49 条投影 / 16 条未投影"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S02",
+      "site_key": "skill_load",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "是否需要加载技能、加载哪一个、同一技能是否重复加载",
+      "implementation": "hybrid",
+      "runtime_trigger": "路由已定，当前步骤准备加载技能",
+      "required_state_fields": [
+        "技能目录",
+        "用户请求",
+        "已加载技能"
+      ],
+      "candidate_builder": "目录内技能名精确匹配",
+      "candidate_parameter_binding": "技能名精确字符串",
+      "target_rule": "只加载完成当前职责所需技能；同一技能不重复",
+      "ambiguity_policy": "无匹配技能时说明缺口，不猜技能名",
+      "fallback": "未加载技能，按通用能力处理",
+      "replaced_call": "每次响应中由模型决定是否加载技能",
+      "expected_savings": "减少重复加载与跨域加载",
+      "full_path_cost": "1 次技能选择；重复加载时额外 1–2 轮",
+      "source_refs": [
+        "EMG-003 重复 3 次；POL-009 跨域 2 次"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S03",
+      "site_key": "capability_gap",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "所需工具不在目录时，探测到哪一步停止：直接声明缺口 / 枚举资源 / 检索文件 / 扩大探测面",
+      "implementation": "hybrid",
+      "runtime_trigger": "所需能力不在工具目录，或工具返回不可用、空资源",
+      "required_state_fields": [
+        "工具目录",
+        "MCP 资源与模板",
+        "错误回执"
+      ],
+      "candidate_builder": "声明缺口 / 有限探测 / 换路径",
+      "candidate_parameter_binding": "探测次数上限；禁止凭据与实现面路径",
+      "target_rule": "以当前目录与回执为准；缺口说明可核对",
+      "ambiguity_policy": "目录与回执冲突时以回执为准并保留冲突",
+      "fallback": "停止该路线并说明缺口",
+      "replaced_call": "缺口下的多轮资源枚举与文件检索",
+      "expected_savings": "减少 8 轮重复枚举",
+      "full_path_cost": "观测 4–8 轮（EMG-001/003、POL-003/007）",
+      "source_refs": [
+        "EMG-001 14 步、EMG-003 12 步、POL-003/007 多轮"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S04",
+      "site_key": "cross_domain_call",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "路由确定后是否借用其他业务域能力（委派、其他技能、其他 MCP）",
+      "implementation": "code",
+      "runtime_trigger": "已进入某业务路由，下一步选择工具",
+      "required_state_fields": [
+        "当前路由",
+        "工具白名单",
+        "Guard 回执"
+      ],
+      "candidate_builder": "本路由允许的工具集合",
+      "candidate_parameter_binding": "无（工具名 + 既有参数）",
+      "target_rule": "只调用本路由允许的能力；跨域请求拆分或拒绝",
+      "ambiguity_policy": "多路由并发请求先请用户确认首项",
+      "fallback": "运行时 Guard 拒绝",
+      "replaced_call": "越域工具调用及其拒绝往返",
+      "expected_savings": "减少无效调用与轮次",
+      "full_path_cost": "每次 1 轮，含拒绝回执与重试",
+      "source_refs": [
+        "EMG-001/002、POL-002/007/009、QA-005"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S05",
+      "site_key": "candidate_select",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "从目录/搜索结果中选唯一模板、唯一任务、知识库或设备",
+      "implementation": "hybrid",
+      "runtime_trigger": "目录或检索返回多个候选",
+      "required_state_fields": [
+        "候选列表",
+        "必填参数",
+        "匹配说法"
+      ],
+      "candidate_builder": "当前目录或检索结果",
+      "candidate_parameter_binding": "候选字段原样保留",
+      "target_rule": "唯一匹配才执行；模糊或多匹配先澄清",
+      "ambiguity_policy": "多匹配列出候选并追问",
+      "fallback": "无匹配时说明并停止",
+      "replaced_call": "目录候选的逐个比较",
+      "expected_savings": "减少误发起与重复查询",
+      "full_path_cost": "1 次目录比对；多候选时可能追问 1 轮",
+      "source_refs": [
+        "INS-001/002/005/006、QA-002/010"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S06",
+      "site_key": "parameter_binding",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "taskId / definitionVersion / requestId / runId / scope / 时区 / UUID 的取值与复用",
+      "implementation": "code",
+      "runtime_trigger": "选定候选后构造调用参数",
+      "required_state_fields": [
+        "目录回执的 taskId/definitionVersion",
+        "本轮 requestId",
+        "已有 runId",
+        "scope"
+      ],
+      "candidate_builder": "已选定的单一候选",
+      "candidate_parameter_binding": "原样复制回执字段；requestId 稳定；续查复用 runId；全量巡检省略 scope",
+      "target_rule": "不得改写或猜测标识",
+      "ambiguity_policy": "无法取得必填字段时停止并说明",
+      "fallback": "参数缺失时澄清",
+      "replaced_call": "参数复制、改写与重试",
+      "expected_savings": "避免重复运行与参数失真",
+      "full_path_cost": "1 次参数构造；重试时按次数累加",
+      "source_refs": [
+        "INS-001/005/006/007、POL-003 转录失真"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S07",
+      "site_key": "wait_retry",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "发起后是否轮询、超时重试几次、是否改期续查、是否重复发起",
+      "implementation": "hybrid",
+      "runtime_trigger": "发起返回运行中，或查询超时、失败",
+      "required_state_fields": [
+        "运行状态",
+        "错误类型",
+        "重试计数",
+        "已有 runId"
+      ],
+      "candidate_builder": "继续查询 / 有限重试 / 说明后改期",
+      "candidate_parameter_binding": "同一 runId；重试间隔与上限固定",
+      "target_rule": "不在不确定状态下重复发起；改期需授权",
+      "ambiguity_policy": "超限后保留 runId 交后续轮次",
+      "fallback": "说明当前状态并保留 runId",
+      "replaced_call": "轮询与重试循环",
+      "expected_savings": "减少重复发起与无效轮询",
+      "full_path_cost": "1–3 次查询；超时后改期另计",
+      "source_refs": [
+        "INS-006 三次超时后改期；INS-007 跨轮复用"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S08",
+      "site_key": "clarify",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "缺参数或有歧义时先问还是先做",
+      "implementation": "model",
+      "runtime_trigger": "必填参数缺失、指代无可见背景、请求含歧义",
+      "required_state_fields": [
+        "必填参数表",
+        "当前可见用户背景"
+      ],
+      "candidate_builder": "询问 / 按明确默认执行 / 停下",
+      "candidate_parameter_binding": "追问中列出的字段与工具 schema 一致",
+      "target_rule": "缺必要输入先问，不猜 ID 或对象",
+      "ambiguity_policy": "给出最小澄清问题",
+      "fallback": "无背景时请求补充",
+      "replaced_call": "缺参时的试错执行",
+      "expected_savings": "减少错误执行与返工",
+      "full_path_cost": "1 轮澄清；试错时额外 1–2 轮",
+      "source_refs": [
+        "QA-013、INS-004、POL-008/012、THREAT-MISSING、VOICE-003"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S09",
+      "site_key": "delegate",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "是否委派、委派粒度、是否重复委派、子代理结果如何收敛",
+      "implementation": "hybrid",
+      "runtime_trigger": "请求属于需要子代理的路线，或已有同内容委派",
+      "required_state_fields": [
+        "委派回执（started subagent）",
+        "子会话结果",
+        "超时状态"
+      ],
+      "candidate_builder": "单次委派 / 去重后委派 / 不委派",
+      "candidate_parameter_binding": "事件 ID 等参数原样传递",
+      "target_rule": "同内容只委派一次；结果回流后收敛并交付",
+      "ambiguity_policy": "子代理未返回时说明进行中或缺口",
+      "fallback": "主代理自行只读取证或请用户补充",
+      "replaced_call": "重复委派与结果等待",
+      "expected_savings": "减少并行重复子会话",
+      "full_path_cost": "每次委派 1 轮；重复委派成倍增加",
+      "source_refs": [
+        "FLT-001 3 次、FLT-002 2 次、FLT-006 4 次"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S10",
+      "site_key": "result_judge",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "基于回执判定结论：PARTIAL/ABNORMAL、事实-推断-缺口、数量、下载链接、是否声称完成",
+      "implementation": "model",
+      "runtime_trigger": "收到终态回执（巡检/研判/查询）",
+      "required_state_fields": [
+        "conclusionStatus",
+        "businessSummary",
+        "reportMarkdown",
+        "reportDownloadUrl",
+        "证据缺口"
+      ],
+      "candidate_builder": "按回执判定 / 说明缺口",
+      "candidate_parameter_binding": "字段原样引用；链接仅非空时给出",
+      "target_rule": "不改写结论；PARTIAL 必须说明缺口",
+      "ambiguity_policy": "字段互相矛盾时并列呈现并说明",
+      "fallback": "字段缺失时说明缺口，不补造",
+      "replaced_call": "结论段的自由生成（判定与措辞）",
+      "expected_savings": "避免结论与证据不一致",
+      "full_path_cost": "1 次回答；不一致时返工 1 轮",
+      "source_refs": [
+        "INS-001/007、FLT-009、POL-003、THREAT 全族"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S11",
+      "site_key": "schedule_param",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "daily / every / cron / 时间窗 / 标题 / 固定 prompt，以及更新与删除的前置查询",
+      "implementation": "code",
+      "runtime_trigger": "用户要求周期执行或修改、删除定时任务",
+      "required_state_fields": [
+        "周期/窗口/时区",
+        "固定 prompt",
+        "任务回执"
+      ],
+      "candidate_builder": "daily / every / cron / 先问后建 / 先查后改",
+      "candidate_parameter_binding": "规则、标题、prompt 按固定模板；任务 ID 来自回执",
+      "target_rule": "规则与回执一致；窗口不能准确表达时说明",
+      "ambiguity_policy": "多匹配任务时列出 ID、标题、规则",
+      "fallback": "能力不支持时说明缺口并建议外部调度",
+      "replaced_call": "定时规则的参数构造与改删前置查询",
+      "expected_savings": "减少错误创建与多触发",
+      "full_path_cost": "1 次创建；改/删各 1 轮，缺前置查询多 1 轮",
+      "source_refs": [
+        "SCHED-001–007、INS-005、VOICE-002"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S12",
+      "site_key": "capability_claim",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "是否声称某能力可用、任务已创建、报告已生成、已执行",
+      "implementation": "code",
+      "runtime_trigger": "回答中要声明能力可用、任务已创建、报告已生成或已执行",
+      "required_state_fields": [
+        "当前工具目录",
+        "MCP 资源",
+        "工具回执"
+      ],
+      "candidate_builder": "与目录/回执一致 / 说明未执行",
+      "candidate_parameter_binding": "声明引用回执字段原文",
+      "target_rule": "声明必须有目录或回执支持",
+      "ambiguity_policy": "目录与自述冲突时以目录为准并说明",
+      "fallback": "说明未执行或未验证",
+      "replaced_call": "能力可用性与完成度声明",
+      "expected_savings": "消除矛盾声明",
+      "full_path_cost": "1 次回答；矛盾声明导致复核返工",
+      "source_refs": [
+        "INS-004 与工具目录冲突；FLT-009 报告仅正文"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S13",
+      "site_key": "output_contract",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "JSON-only、指定语言、格式与篇幅、事实与建议分离",
+      "implementation": "code",
+      "runtime_trigger": "生成最终回答",
+      "required_state_fields": [
+        "用户指定的格式/语言/范围"
+      ],
+      "candidate_builder": "按用户指定 / 通用 Markdown",
+      "candidate_parameter_binding": "JSON-only 时全文为单个可解析对象",
+      "target_rule": "按指定格式与语言输出；事实与建议分离",
+      "ambiguity_policy": "格式要求与内容冲突时以格式为准并说明",
+      "fallback": "通用 Markdown",
+      "replaced_call": "回答格式与语言构造",
+      "expected_savings": "减少返工",
+      "full_path_cost": "1 次回答；不符合格式时返工",
+      "source_refs": [
+        "INS-003、QA-014、QA-006–009"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S14",
+      "site_key": "action_boundary",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "只准备草案、不确认、不下发；不支持的动作是否明确停止",
+      "implementation": "code",
+      "runtime_trigger": "涉及草案、确认、下发、恢复等写动作",
+      "required_state_fields": [
+        "路由态",
+        "确认词",
+        "Gate/Guard 回执"
+      ],
+      "candidate_builder": "只准备草案 / 停止 / 交受信插件",
+      "candidate_parameter_binding": "确认由受信插件绑定最新草案，模型不传签名",
+      "target_rule": "不得自行确认或下发；不支持时明确停止",
+      "ambiguity_policy": "能力边界不明时先核对工具目录",
+      "fallback": "说明能力边界与替代流程",
+      "replaced_call": "确认与下发判断",
+      "expected_savings": "避免越权与假成功",
+      "full_path_cost": "1 轮；越权尝试被拒时多 1 轮",
+      "source_refs": [
+        "EMG-001–003、POL-005/008/010/011、FLT-010"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "U-EMG-001",
+      "title": "封禁草案",
+      "scene": "独立应急指令",
+      "fast": true,
+      "verdict": "failed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 15,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "响应处置",
+        "observed_first_action": "skill(emergency-action)",
+        "note": "",
+        "sample_id": "dsh-e17ddce3478d3196a74bcc23",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "单动作封禁草案走哪条主路由",
+          "chosen": "→ emergency-action",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2、s4、s9、s12、s14",
+          "sites": [
+            "S04"
+          ],
+          "question": "应急轮次内是否借道其他业务能力",
+          "chosen": "5 次 delegate_*，全部被 Guard 拒绝",
+          "assessment": "偏差：均被拒，无副作用但耗 5 轮"
+        },
+        {
+          "locator": "t1/s3、s5–s8、s10、s11、s13",
+          "sites": [
+            "S03"
+          ],
+          "question": "草案工具缺失后探测到哪一步",
+          "chosen": "资源枚举 → glob/grep → 读 .env → 再枚举",
+          "assessment": "偏差：8 轮探测，含凭据面读取被拒"
+        },
+        {
+          "locator": "t1/s15",
+          "sites": [
+            "S12"
+          ],
+          "question": "工具缺失时如何声明",
+          "chosen": "明确说明无 prepare_emergency_action、未执行",
+          "assessment": "与工具事实一致；核心草案缺失致本 Case 不通过"
+        }
+      ]
+    },
+    {
+      "case_id": "U-EMG-002",
+      "title": "防火墙封禁草案",
+      "scene": "独立应急指令",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 8,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "响应处置",
+        "observed_first_action": "skill(emergency-action)",
+        "note": "",
+        "sample_id": "dsh-723dab26897073e8952c9b2f",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "防火墙单目标封禁的路由",
+          "chosen": "→ emergency-action",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3、s5",
+          "sites": [
+            "S04"
+          ],
+          "question": "应急轮次内加载 policy-configuration",
+          "chosen": "2 次越域加载，被拒",
+          "assessment": "偏差：同一错误重复一次"
+        },
+        {
+          "locator": "t1/s2、s4、s7",
+          "sites": [
+            "S03"
+          ],
+          "question": "工具发现路径",
+          "chosen": "MCP 资源枚举 3 轮；s6 出现缺参调用",
+          "assessment": "合规但低效"
+        },
+        {
+          "locator": "t1/s8",
+          "sites": [
+            "S12"
+          ],
+          "question": "能力缺口的表述边界",
+          "chosen": "只报草案工具缺失，未区分防火墙 block-ip 与主机 host-block-ip",
+          "assessment": "通过；设备类型差异未核对"
+        }
+      ]
+    },
+    {
+      "case_id": "U-EMG-003",
+      "title": "防火墙解封须绑定规则 UUID",
+      "scene": "独立应急指令",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 13,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "响应处置",
+        "observed_first_action": "skill(emergency-action)",
+        "note": "",
+        "sample_id": "dsh-4b380062bfd87901ba5df2a0",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1、s3、s6",
+          "sites": [
+            "S02"
+          ],
+          "question": "同一技能是否重复加载",
+          "chosen": "3 次加载 emergency-action",
+          "assessment": "冗余"
+        },
+        {
+          "locator": "t1/s2、s4、s5、s8–s12",
+          "sites": [
+            "S03"
+          ],
+          "question": "资源枚举的停止点",
+          "chosen": "8 次近似相同的资源枚举",
+          "assessment": "明显低效：12 步内无新增信息"
+        },
+        {
+          "locator": "t1/s13",
+          "sites": [
+            "S12"
+          ],
+          "question": "UUID 绑定规则与缺口声明",
+          "chosen": "只报工具缺失，未说明 unblock-ip 的 rule_name 须逐值使用原 UUID",
+          "assessment": "通过（工具缺失）；业务规则未验证"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-001",
+      "title": "连通故障分析与后续处置",
+      "scene": "故障排查",
+      "fast": true,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 4,
+      "model_responses": 7,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "跨主机不可达的排查路由",
+          "chosen": "→ fault-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2–s4",
+          "sites": [
+            "S09"
+          ],
+          "question": "并行委派是否去重",
+          "chosen": "3 次同内容 delegate_fault_analysis",
+          "assessment": "重复：产生 3 个并行子会话"
+        },
+        {
+          "locator": "t1/s5",
+          "sites": [
+            "S10"
+          ],
+          "question": "委派后如何收敛",
+          "chosen": "只声明“等待结果”，未汇总",
+          "assessment": "无正式结论（证据不足）"
+        },
+        {
+          "locator": "子会话 t1/s1",
+          "sites": [
+            "S05"
+          ],
+          "question": "子代理取证工具选择",
+          "chosen": "resolve_ip_host×2 + reachability_path",
+          "assessment": "回执空或 UNKNOWN，属证据缺口"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-002",
+      "title": "离线设备分析",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "failed",
+      "audit_status": "blocked",
+      "sessions": 3,
+      "model_responses": 6,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "三台离线资产的排查路由",
+          "chosen": "→ fault-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2、s3",
+          "sites": [
+            "S09"
+          ],
+          "question": "委派去重",
+          "chosen": "2 次同内容委派",
+          "assessment": "重复"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S10"
+          ],
+          "question": "无子代理结果时如何交付",
+          "chosen": "仅“已启动子智能体，等待结果”",
+          "assessment": "failed：无任何分析结论"
+        },
+        {
+          "locator": "子会话 t1/s1",
+          "sites": [
+            "S05"
+          ],
+          "question": "取证工具选择",
+          "chosen": "仅 resolve_ip_host×3",
+          "assessment": "回执无实质数据，轨迹截断"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-003",
+      "title": "业务系统访问异常",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "“业务系统访问异常”的排查路由",
+          "chosen": "→ fault-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S08",
+            "S09"
+          ],
+          "question": "缺源/目的/协议/端口时先问还是先查",
+          "chosen": "直接委派并要求子代理先尝试枚举",
+          "assessment": "与预期（先询问）不一致"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "交付形态",
+          "chosen": "只说明已启动",
+          "assessment": "无结论（子会话 0 步）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-004",
+      "title": "主备切换后访问失败",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "主备切换后访问失败的路由",
+          "chosen": "→ fault-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S09"
+          ],
+          "question": "委派粒度",
+          "chosen": "单次委派",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "结果收敛",
+          "chosen": "只说明已启动，未等结果",
+          "assessment": "inconclusive（子会话 0 步）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-005",
+      "title": "换参数仍无法解决",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "failed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 2,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "故障排查（上下文不足，待澄清）",
+        "observed_first_action": "schedule_list",
+        "note": "误路由：按定时任务处理",
+        "sample_id": "dsh-461d52e9c4c581f4df466192",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "“换 IP、端口、提示词都解决不了”的语义归属",
+          "chosen": "→ schedule_list（按定时任务理解）",
+          "assessment": "误路由"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S10"
+          ],
+          "question": "回答重心的选择",
+          "chosen": "说明当前无定时任务并请用户给出规则",
+          "assessment": "未回到故障证据或链路状态，failed"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-006",
+      "title": "变更后访问失败与配置漂移",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "blocked",
+      "sessions": 4,
+      "model_responses": 14,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "策略变更后访问失败的路由",
+          "chosen": "→ fault-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2、s5、s8",
+          "sites": [
+            "S09"
+          ],
+          "question": "多次委派与去重",
+          "chosen": "4 次委派（含“继续上一委派任务”）",
+          "assessment": "重复/低效"
+        },
+        {
+          "locator": "t1/s3、s4、s9、s14",
+          "sites": [
+            "S03"
+          ],
+          "question": "资源与能力核对",
+          "chosen": "4 轮 MCP 资源枚举",
+          "assessment": "无新增信息"
+        },
+        {
+          "locator": "t1/s6、s7",
+          "sites": [
+            "S03"
+          ],
+          "question": "补充探测动作",
+          "chosen": "read 自身 SKILL.md、schedule_list",
+          "assessment": "s7 属无关工具"
+        },
+        {
+          "locator": "t1/s10",
+          "sites": [
+            "S10"
+          ],
+          "question": "证据不足时的结论",
+          "chosen": "明确“无法确认”，分事实/推断/缺口",
+          "assessment": "正确（passed）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-007",
+      "title": "主机安全配置与纳管异常",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 4,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "主机安全配置与纳管异常的路由",
+          "chosen": "→ fault-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S09"
+          ],
+          "question": "委派",
+          "chosen": "单次委派",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "结果收敛",
+          "chosen": "只说明已启动",
+          "assessment": "无结论（子会话 1 步截断）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-008",
+      "title": "数据链路无数据",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "数据链路无数据的路由",
+          "chosen": "→ fault-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S09"
+          ],
+          "question": "委派",
+          "chosen": "单次委派",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "结果收敛",
+          "chosen": "只说明已委派",
+          "assessment": "无结论（子会话 0 步）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-009",
+      "title": "巡检异常根因报告",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 6,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "安全巡检",
+        "observed_first_action": "skill(security-inspection)",
+        "note": "首轮为巡检；第二轮根因报告属后续边界",
+        "sample_id": "dsh-19d9221c126b67a48c9bc0e4",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1–s5",
+          "sites": [
+            "S05",
+            "S06",
+            "S07"
+          ],
+          "question": "巡检执行链",
+          "chosen": "目录 → 发起 → 单次查询 → 报告",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t2/s1",
+          "sites": [
+            "S10"
+          ],
+          "question": "“正式报告”的产出判定",
+          "chosen": "在回复正文生成 RCA-20261022-01，无落盘或可访问产物",
+          "assessment": "通过；但“正式报告”缺可访问证据，属声明风险"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-010",
+      "title": "基于正式结果恢复服务",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 8,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1、s2",
+          "sites": [
+            "S01",
+            "S09"
+          ],
+          "question": "故障取证路由与委派",
+          "chosen": "fault-analysis + 单次委派",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S14"
+          ],
+          "question": "恢复动作的授权路径",
+          "chosen": "delegate_response_planning（Gate 未开被拒）",
+          "assessment": "正确：未绕过 Gate"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S12"
+          ],
+          "question": "无结果时是否声称已恢复",
+          "chosen": "明确未恢复、未验证",
+          "assessment": "正确"
+        },
+        {
+          "locator": "子会话 t1/s1–s4",
+          "sites": [
+            "S05"
+          ],
+          "question": "只读取证工具选择",
+          "chosen": "resolve / path / list / coverage",
+          "assessment": "空结果与 UNKNOWN，证据缺口"
+        }
+      ]
+    },
+    {
+      "case_id": "U-FLT-MENTION",
+      "title": "数字员工故障分析入口",
+      "scene": "故障排查",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "故障排查",
+        "observed_first_action": "skill(fault-analysis)",
+        "note": "@提及路由正确"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "“@故障分析子智能体”的入口路由",
+          "chosen": "→ fault-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S08",
+            "S09"
+          ],
+          "question": "缺参时是否先问",
+          "chosen": "委派并要求子代理先尝试枚举",
+          "assessment": "与预期（先问）不一致；主代理文本已列出缺口"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "交付",
+          "chosen": "只报已启动",
+          "assessment": "无结论（子会话 0 步）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-INS-001",
+      "title": "常规巡检",
+      "scene": "安全巡检",
+      "fast": true,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 5,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "安全巡检",
+        "observed_first_action": "skill(security-inspection)",
+        "note": "",
+        "sample_id": "dsh-46dd5c0e235462ab31739483",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S02"
+          ],
+          "question": "常规巡检的路由与技能",
+          "chosen": "→ security-inspection",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S05"
+          ],
+          "question": "从 5 个模板中选唯一匹配",
+          "chosen": "→ 设备综合巡检（V5）",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S06"
+          ],
+          "question": "发起参数绑定",
+          "chosen": "taskId + definitionVersion + 本次 requestId，省略 scope",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S07"
+          ],
+          "question": "查询节奏",
+          "chosen": "单次 get_inspection_result 即得就绪结果",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s5",
+          "sites": [
+            "S10"
+          ],
+          "question": "PARTIAL/ABNORMAL 的结论表达",
+          "chosen": "数量、缺口、下载链接均按回执",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-INS-002",
+      "title": "查询巡检项",
+      "scene": "安全巡检",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 3,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "安全巡检",
+        "observed_first_action": "skill(security-inspection)",
+        "note": "",
+        "sample_id": "dsh-e6924ba7d40ab15b19d818ea",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02"
+          ],
+          "question": "查询类请求是否加载技能",
+          "chosen": "→ security-inspection",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S05"
+          ],
+          "question": "只查目录",
+          "chosen": "→ list_executable_inspections",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S13"
+          ],
+          "question": "只列目录、不发起",
+          "chosen": "5 个模板逐项列出，声明未发起",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-INS-003",
+      "title": "根据巡检事实生成 JSON",
+      "scene": "安全巡检",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "报告生成",
+        "observed_first_action": "直接回答(JSON)",
+        "note": "按给定事实整理，未调工具",
+        "sample_id": "dsh-81bec17919ce23e0a14d8f02",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S13"
+          ],
+          "question": "只整理既有事实的路由与输出",
+          "chosen": "直接答，单个 JSON，事实/建议分离，不调工具",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-INS-004",
+      "title": "创建巡检任务",
+      "scene": "安全巡检",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 3,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "安全巡检",
+        "observed_first_action": "skill(security-inspection)",
+        "note": "",
+        "sample_id": "dsh-7721bb77951cf90e11ae0cb6",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02"
+          ],
+          "question": "“创建巡检任务”先加载什么",
+          "chosen": "→ security-inspection",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S05"
+          ],
+          "question": "模糊请求下先查目录",
+          "chosen": "→ list_executable_inspections",
+          "assessment": "合理"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S08",
+            "S12"
+          ],
+          "question": "立即执行 vs 周期任务如何澄清；顺带声明 schedule_create 不可用",
+          "chosen": "澄清正确；但该会话工具目录含 schedule_create，声明与事实冲突",
+          "assessment": "澄清正确；能力声明存在矛盾（判 passed）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-INS-005",
+      "title": "创建周期巡检任务",
+      "scene": "安全巡检",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "安全巡检",
+        "observed_first_action": "skill(security-inspection)",
+        "note": "",
+        "sample_id": "dsh-315768aa000c0745144eccfc",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1、s2",
+          "sites": [
+            "S02",
+            "S05"
+          ],
+          "question": "周期巡检的模板选择",
+          "chosen": "→ 设备状态专项巡检（描述含“当前资产清单”）",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S11"
+          ],
+          "question": "周期任务参数化",
+          "chosen": "every_seconds=600、标题、含授权的 prompt",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S10"
+          ],
+          "question": "状态声明",
+          "chosen": "说明只创建提醒、尚未执行巡检",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-INS-006",
+      "title": "指定资产巡检",
+      "scene": "安全巡检",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 8,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "安全巡检",
+        "observed_first_action": "skill(security-inspection)",
+        "note": "",
+        "sample_id": "dsh-46a08f97a067cf67907497db",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1、s2",
+          "sites": [
+            "S02",
+            "S05"
+          ],
+          "question": "指定资产巡检的模板选择",
+          "chosen": "→ 设备综合巡检（V5）",
+          "assessment": "可选；未选设备状态专项"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S06"
+          ],
+          "question": "scope 绑定",
+          "chosen": "scope={ASSET_IDS:[A-001]} + 稳定 requestId",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s4–s6",
+          "sites": [
+            "S07"
+          ],
+          "question": "查询超时后的重试",
+          "chosen": "连续 3 次 get_inspection_result 超时",
+          "assessment": "重试 3 次后转降级"
+        },
+        {
+          "locator": "t1/s7",
+          "sites": [
+            "S07"
+          ],
+          "question": "超时后的续查方式",
+          "chosen": "schedule_create(after_seconds=60) 绑定原 runId 续查",
+          "assessment": "边界选择：技能未要求改期，属自创恢复路径"
+        },
+        {
+          "locator": "t1/s8",
+          "sites": [
+            "S10"
+          ],
+          "question": "运行中状态表达",
+          "chosen": "说明运行中、未取得报告、给 runId",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-INS-007",
+      "title": "续查同一次巡检",
+      "scene": "安全巡检",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 7,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "安全巡检",
+        "observed_first_action": "skill(security-inspection)",
+        "note": "",
+        "sample_id": "dsh-124948c69b3c1bd3e9157685",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1–s5",
+          "sites": [
+            "S05",
+            "S06",
+            "S07"
+          ],
+          "question": "首轮常规巡检",
+          "chosen": "目录 → 发起 → 单次查询 → 报告",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t2/s1",
+          "sites": [
+            "S07"
+          ],
+          "question": "跨轮续查如何复用",
+          "chosen": "复用同一 runId 只调 get_inspection_result",
+          "assessment": "正确（未重复发起）"
+        },
+        {
+          "locator": "t2/s2",
+          "sites": [
+            "S10"
+          ],
+          "question": "与上轮结果一致性",
+          "chosen": "状态与结论一致",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-001",
+      "title": "防火墙策略开通",
+      "scene": "策略配置",
+      "fast": true,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-50bd1b456dc4537e92820bf7",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S02"
+          ],
+          "question": "防火墙策略开通的路由与技能",
+          "chosen": "→ policy-configuration（同时输出过程性正文）",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2、s3",
+          "sites": [
+            "S03"
+          ],
+          "question": "策略端点解析工具的发现",
+          "chosen": "sec-ops / inspection 资源枚举，均为空",
+          "assessment": "合规"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S12",
+            "S14"
+          ],
+          "question": "能力缺口与停止点",
+          "chosen": "声明无端点解析工具，未建草稿、未下发",
+          "assessment": "正确（无假成功）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-002",
+      "title": "指定设备开通策略",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 7,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-4ddeb9c75f4fe87f34b38ea5",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S02"
+          ],
+          "question": "指定设备开通策略的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2–s5",
+          "sites": [
+            "S03"
+          ],
+          "question": "工具发现顺序",
+          "chosen": "逐服务器串行枚举 4 次",
+          "assessment": "低效（可并行）"
+        },
+        {
+          "locator": "t1/s6",
+          "sites": [
+            "S04"
+          ],
+          "question": "是否借道子代理核对工具合同",
+          "chosen": "delegate_response_planning，被拒",
+          "assessment": "偏差：越域"
+        },
+        {
+          "locator": "t1/s7",
+          "sites": [
+            "S12"
+          ],
+          "question": "“指定设备”语义的核对",
+          "chosen": "只报工具缺失，未校验该设备是否为可配置防火墙",
+          "assessment": "通过；设备能力未校验"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-003",
+      "title": "自动识别策略设备",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 10,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-01c5e6c7e8c77ce5e1546920",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "自动识别策略设备的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2–s5、s7–s9",
+          "sites": [
+            "S03"
+          ],
+          "question": "端点解析工具的检索",
+          "chosen": "资源枚举 + 工作区 grep/glob",
+          "assessment": "合规但多轮"
+        },
+        {
+          "locator": "t1/s6",
+          "sites": [
+            "S04",
+            "S03"
+          ],
+          "question": "越界检索实现平面",
+          "chosen": "glob /opt/dsh，被拒",
+          "assessment": "偏差：越界探测被拒"
+        },
+        {
+          "locator": "t1/s10",
+          "sites": [
+            "S06"
+          ],
+          "question": "目的端点参数转录",
+          "chosen": "把 172.16.2.103 转述为 172.16.103",
+          "assessment": "缺陷：参数失真（判 inconclusive）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-004",
+      "title": "指定设备能力校验",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-fd86234a6d27f816f71f114d",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "指定设备能力校验的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2、s3",
+          "sites": [
+            "S03"
+          ],
+          "question": "能力核对",
+          "chosen": "资源枚举 + 工作区 glob ×2",
+          "assessment": "合规"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S12"
+          ],
+          "question": "能力不匹配时的处理",
+          "chosen": "说明无端点解析工具、未创建草稿",
+          "assessment": "正确（未改用未确认设备）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-005",
+      "title": "限时 UDP 策略",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "failed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-46ef014f140be4b54c962098",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "限时 UDP 策略的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2、s3",
+          "sites": [
+            "S03"
+          ],
+          "question": "能力核对",
+          "chosen": "grep + 4 路资源枚举",
+          "assessment": "合规"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S08",
+            "S14"
+          ],
+          "question": "地址语义与有效期边界",
+          "chosen": "指出 7 天有效期未验证；未指出 172.16.1.155 是主机地址而非网段",
+          "assessment": "failed：核心辨析缺失"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-006",
+      "title": "端口业务开通",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 6,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-c6fde02eed35c4ce2b1b6494",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "端口业务开通的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2–s5",
+          "sites": [
+            "S03"
+          ],
+          "question": "能力核对",
+          "chosen": "4 轮资源枚举",
+          "assessment": "低效"
+        },
+        {
+          "locator": "t1/s6",
+          "sites": [
+            "S12"
+          ],
+          "question": "能力缺口声明",
+          "chosen": "明确未建草稿、未下发",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-007",
+      "title": "异常对象不得强行开通",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "failed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-4f30ba4c186ac2b9bf4f3a50",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "异常对象开通的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S03"
+          ],
+          "question": "能力核对",
+          "chosen": "工作区 glob + 4 路资源",
+          "assessment": "合规"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S04"
+          ],
+          "question": "一次性并发越域调用",
+          "chosen": "skill + 3 个 delegate + 巡检工具，全部被拒",
+          "assessment": "明显偏差：单步 5 个越域调用"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S10"
+          ],
+          "question": "四类异常状态是否分别识别",
+          "chosen": "只报能力未接通，未区分重复/无路径/预检失败",
+          "assessment": "failed"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-008",
+      "title": "多轮策略变更",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 5,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-335b930527d464208e493c8f",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S02"
+          ],
+          "question": "模糊“开通策略”的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S08"
+          ],
+          "question": "缺参处理",
+          "chosen": "追问源/目的/协议/端口/动作/设备线索",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t2/s1",
+          "sites": [
+            "S12"
+          ],
+          "question": "无草稿时的状态查询",
+          "chosen": "说明无操作号可查",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t3/s1",
+          "sites": [
+            "S08"
+          ],
+          "question": "调整端口需明确新端口",
+          "chosen": "追问操作号或完整参数",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t4/s1",
+          "sites": [
+            "S14"
+          ],
+          "question": "关闭策略的能力边界",
+          "chosen": "说明仅支持 ADD，停止并转外部流程",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-009",
+      "title": "开通后验证与回退预览",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 3,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)+skill(fault-analysis)",
+        "note": "第二个技能属跨域加载，被拒",
+        "sample_id": "dsh-b581a74f036b2bd7885dd159",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02",
+            "S04"
+          ],
+          "question": "开通后验证需要故障能力",
+          "chosen": "同时加载 policy + fault-analysis（后者被拒）",
+          "assessment": "偏差：跨能力加载"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S04"
+          ],
+          "question": "故障取证委派",
+          "chosen": "delegate_fault_analysis，被拒",
+          "assessment": "偏差：越域"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S08"
+          ],
+          "question": "验证所需信息",
+          "chosen": "追问操作号、源/目的、协议端口、测试点",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-010",
+      "title": "完整无状态 Preview",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "failed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-ec12ea9f361f820878fe5e47",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "完整无状态 Preview 的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2、s3",
+          "sites": [
+            "S03"
+          ],
+          "question": "真实资产/拓扑查询的前提",
+          "chosen": "仅 2 轮资源枚举，均空",
+          "assessment": "不足：未获得任何真实查询"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S08",
+            "S14"
+          ],
+          "question": "限时语义与 Preview 的取舍",
+          "chosen": "以“5 小时有效期未验证”停止，未生成 PPV",
+          "assessment": "failed：核心产物缺失"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-011",
+      "title": "阻断业务",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(emergency-action)",
+        "note": "路由偏差：阻断业务按应急处理",
+        "sample_id": "dsh-583d0084e09ff638e4ba22ed",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "“阻断业务”的路由归属",
+          "chosen": "→ emergency-action（预期为策略阻断）",
+          "assessment": "路由偏差"
+        },
+        {
+          "locator": "t1/s2、s3",
+          "sites": [
+            "S03"
+          ],
+          "question": "能力核对",
+          "chosen": "2 轮资源枚举",
+          "assessment": "合规"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S14"
+          ],
+          "question": "双端点阻断的处理",
+          "chosen": "以“应急仅支持单目标”停止并给替代方案",
+          "assessment": "未伪造成功（判 passed）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-POL-012",
+      "title": "已确认参数的 ACL 预览",
+      "scene": "策略配置",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "策略生成",
+        "observed_first_action": "skill(policy-configuration)",
+        "note": "",
+        "sample_id": "dsh-ed1356cfe398896b9d79a3b7",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "已确认参数 ACL 预览的路由",
+          "chosen": "→ policy-configuration",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2、s3",
+          "sites": [
+            "S03"
+          ],
+          "question": "能力核对",
+          "chosen": "资源枚举 2 轮（重复叙述同一句过程正文）",
+          "assessment": "低效"
+        },
+        {
+          "locator": "t1/s4",
+          "sites": [
+            "S08"
+          ],
+          "question": "无完整参数时是否索取",
+          "chosen": "索取源/目的/协议/端口/动作，未查资产",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-001",
+      "title": "SOAR 剧本定义",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 2,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "skill(security-investigation)",
+        "note": "无知识库，按缺口回答",
+        "sample_id": "dsh-6aadc3eda3e44107bf8e271f",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S02"
+          ],
+          "question": "内部知识条目提问的路由",
+          "chosen": "→ security-investigation",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S03",
+            "S12"
+          ],
+          "question": "无知识库检索时如何回答",
+          "chosen": "说明未配置检索、不冒充内部知识",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-002",
+      "title": "勒索软件知识库检索",
+      "scene": "智能问答",
+      "fast": true,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 3,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "list_mcp_resources+skill(knowledge-base-search)",
+        "note": "知识库不可用",
+        "sample_id": "dsh-caf241dea9ce43ad4b5c3e65",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S03"
+          ],
+          "question": "按指定能力探测知识库",
+          "chosen": "同时探测 knowledge-base-search 资源/模板/skill，均失败",
+          "assessment": "正确（失败即记录）"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S03"
+          ],
+          "question": "替代能力探测",
+          "chosen": "枚举 inspection / sec-ops",
+          "assessment": "合理"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S12"
+          ],
+          "question": "不可用时的交付",
+          "chosen": "列明尝试与失败原因，不给出无来源流程",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-003",
+      "title": "故障分析权限边界",
+      "scene": "智能问答",
+      "fast": true,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "直接回答",
+        "note": "",
+        "sample_id": "dsh-5b62c961211a0129c2e87269",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S10"
+          ],
+          "question": "权限边界问题",
+          "chosen": "直接回答不能执行、应转策略配置或变更流程",
+          "assessment": "正确（未展开具体故障）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-004",
+      "title": "响应处置能力",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 2,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "skill(response-planning)",
+        "note": "回答为能力边界",
+        "sample_id": "dsh-6cc1e3e2be150e078b5523dd",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02"
+          ],
+          "question": "响应处置能力问题先加载什么",
+          "chosen": "→ response-planning",
+          "assessment": "合理"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S12"
+          ],
+          "question": "能力范围表述",
+          "chosen": "说明零工具、默认拒绝、不含确认执行",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-005",
+      "title": "sec-ops 配置含义",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "glob(.mcp.json)",
+        "note": "配置不可读，按连接事实回答",
+        "sample_id": "dsh-07b00b19649137ab48177414",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S03"
+          ],
+          "question": "配置文件定位",
+          "chosen": "工作区 glob .mcp.json，未找到",
+          "assessment": "合理"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S03",
+            "S04"
+          ],
+          "question": "越界目录与连接核对",
+          "chosen": "glob /opt/dsh 被拒；sec-ops 资源为空",
+          "assessment": "偏差：越界被拒，但结论仍成立"
+        },
+        {
+          "locator": "t1/s3、s4",
+          "sites": [
+            "S12"
+          ],
+          "question": "“连接存在”与“配置不可读”的区分",
+          "chosen": "明确区分并给出事实",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-006",
+      "title": "能力简介与追问",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "直接回答",
+        "note": "",
+        "sample_id": "dsh-ffea7ba033a9b55ba1249287",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S13"
+          ],
+          "question": "能力介绍与追问建议",
+          "chosen": "直接给能力清单与追问方向",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-007",
+      "title": "CVE 基础概念",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "直接回答",
+        "note": "",
+        "sample_id": "dsh-19abd65225655f81afa34294",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S10"
+          ],
+          "question": "CVE 概念题",
+          "chosen": "直接回答，未调工具",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-008",
+      "title": "CVSS、EPSS 与 KEV",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "直接回答",
+        "note": "",
+        "sample_id": "dsh-d947dc92fd25012a9653cc15",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S10"
+          ],
+          "question": "CVSS/EPSS/KEV 辨析",
+          "chosen": "直接回答并说明内部优先级取决于上下文",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-009",
+      "title": "IOC、TTP、Technique、告警与事件",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "直接回答",
+        "note": "",
+        "sample_id": "dsh-8d13d8dbd0d9ed1d34a607d7",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S10"
+          ],
+          "question": "IOC/TTP/Technique/告警/事件辨析",
+          "chosen": "直接回答并说明可关联不等同",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-010",
+      "title": "操作入口与权限",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 3,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "skill(security-inspection)",
+        "note": "先查目录再回答入口",
+        "sample_id": "dsh-cd38fa6bb0a5c97d65383a72",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02"
+          ],
+          "question": "询问操作入口",
+          "chosen": "→ security-inspection",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S05"
+          ],
+          "question": "目录查询",
+          "chosen": "→ list_executable_inspections",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S12"
+          ],
+          "question": "入口与权限表述",
+          "chosen": "说明无任务创建能力、可发起一次、需周期任务能力",
+          "assessment": "正确（未把建议说成已执行）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-011",
+      "title": "内部事件分级规范",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 2,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "skill(security-investigation)",
+        "note": "无规范原文，按缺口回答",
+        "sample_id": "dsh-d323899fb9dee45d1f01eb75",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02"
+          ],
+          "question": "内部规范提问",
+          "chosen": "→ security-investigation",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S03",
+            "S12"
+          ],
+          "question": "无原文时如何回答",
+          "chosen": "说明无规范原文，不用通用经验冒充",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-012",
+      "title": "结论时效与证据冲突",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "直接回答",
+        "note": "",
+        "sample_id": "dsh-72950d78f0f217de46ab8a15",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S10"
+          ],
+          "question": "“是否最新”的判定",
+          "chosen": "说明无法判断、给出比较维度与升级建议",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-013",
+      "title": "漏洞根因类型",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "直接回答",
+        "note": "缺漏洞标识，先追问",
+        "sample_id": "dsh-ce349206713c59581a377886",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S08"
+          ],
+          "question": "缺漏洞标识时先询问",
+          "chosen": "列所需信息并追问",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-QA-014",
+      "title": "明确指定英语",
+      "scene": "智能问答",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "知识问答",
+        "observed_first_action": "直接回答",
+        "note": "英文输出",
+        "sample_id": "dsh-7ed72dac3af9e21e5ae15d35",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S13"
+          ],
+          "question": "指定英语输出",
+          "chosen": "用英语回答并说明编号边界",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-SCHED-001",
+      "title": "每天固定时刻研判",
+      "scene": "原生定时研判",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 3,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": "请求的是周期研判设置",
+        "sample_id": "dsh-55870ef4483f0bd9eef98c3c",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02"
+          ],
+          "question": "每天定时研判是否先加载技能",
+          "chosen": "→ threat-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S11"
+          ],
+          "question": "时间规则与固定字段",
+          "chosen": "daily 12:00:00 / Asia/Shanghai，固定 prompt，标题 自动威胁研判-每天12:00",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10",
+            "S12"
+          ],
+          "question": "回执与状态",
+          "chosen": "任务 ID、规则、下次到期与回执一致，声明尚未执行",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-SCHED-002",
+      "title": "每隔 N 分钟研判",
+      "scene": "原生定时研判",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 2,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "schedule_create",
+        "note": "未加载技能，直接创建",
+        "sample_id": "dsh-0c44d3c4b6543b12cb148111",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S11"
+          ],
+          "question": "“每隔 30 分钟”的参数化",
+          "chosen": "every_seconds=1800，标题 自动威胁研判-每30分钟",
+          "assessment": "正确（未加载技能）"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S10",
+            "S12"
+          ],
+          "question": "回执与状态",
+          "chosen": "与回执一致，声明尚未执行",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-SCHED-003",
+      "title": "每隔 N 分钟从 SOC 拉取研判",
+      "scene": "原生定时研判",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 2,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "schedule_create",
+        "note": "",
+        "sample_id": "dsh-9797bafae2cedeadf0f8a2a5",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S11"
+          ],
+          "question": "“从 SOC 拉取”的理解",
+          "chosen": "every_seconds=600，不额外追问",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S12"
+          ],
+          "question": "状态声明",
+          "chosen": "与回执一致",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-SCHED-004",
+      "title": "每天窗口内每 N 分钟",
+      "scene": "原生定时研判",
+      "fast": false,
+      "verdict": "failed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 8,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": "",
+        "sample_id": "dsh-260ba1fdd73c36d13c836ae2",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1、s2",
+          "sites": [
+            "S02",
+            "S11"
+          ],
+          "question": "窗口任务是否先问结束时间",
+          "chosen": "加载技能、schedule_list 后直接创建 every 1800",
+          "assessment": "failed：应第一轮追问窗口"
+        },
+        {
+          "locator": "t1/s3、s4",
+          "sites": [
+            "S11"
+          ],
+          "question": "窗口表达的取舍",
+          "chosen": "说明单条规则不能表达窗口，但保留固定间隔任务",
+          "assessment": "偏差：以固定间隔冒充时间窗"
+        },
+        {
+          "locator": "t2/s1–s3",
+          "sites": [
+            "S11"
+          ],
+          "question": "修正路径",
+          "chosen": "删除旧任务，建 */30 9-17 与 0 18 两条 cron",
+          "assessment": "正确（第二轮）"
+        },
+        {
+          "locator": "t2/s4",
+          "sites": [
+            "S10"
+          ],
+          "question": "窗口覆盖说明",
+          "chosen": "说明两条任务如何覆盖 09:00–18:00 且不含 18:30",
+          "assessment": "正确（但第一轮已失分）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-SCHED-005",
+      "title": "修改周期",
+      "scene": "原生定时研判",
+      "fast": false,
+      "verdict": "failed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 4,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "schedule_create",
+        "note": "",
+        "sample_id": "dsh-44933457b0fae37042f966a8",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S11"
+          ],
+          "question": "首次创建",
+          "chosen": "every 1800 + 固定 prompt",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t2/s1",
+          "sites": [
+            "S11"
+          ],
+          "question": "修改前是否先查询",
+          "chosen": "直接 schedule_update(every_seconds=1200)",
+          "assessment": "failed：未先 schedule_list"
+        }
+      ]
+    },
+    {
+      "case_id": "U-SCHED-006",
+      "title": "删除任务",
+      "scene": "原生定时研判",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 5,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "schedule_create",
+        "note": "",
+        "sample_id": "dsh-b5e4a5051bd6295cfd50cb3c",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S11"
+          ],
+          "question": "首次创建",
+          "chosen": "every 1800",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t2/s1",
+          "sites": [
+            "S11"
+          ],
+          "question": "删除前先查询",
+          "chosen": "→ schedule_list，唯一匹配",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t2/s2、s3",
+          "sites": [
+            "S11",
+            "S12"
+          ],
+          "question": "删除与状态说明",
+          "chosen": "按 ID 删除，说明只停后续心跳、不影响在跑研判",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-SCHED-007",
+      "title": "受控业务实例不得误报定时可用",
+      "scene": "原生定时研判",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 2,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "schedule_create",
+        "note": "受控实例前提待核",
+        "sample_id": "dsh-4efed39a3e5ec516c30d8921",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S11"
+          ],
+          "question": "受控实例下的定时创建",
+          "chosen": "→ schedule_create(daily)，回执成功",
+          "assessment": "与回执一致，但 Case 前提为“受控实例未开放”，证据不足"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S12"
+          ],
+          "question": "是否声称已创建",
+          "chosen": "声称已创建并给出 ID",
+          "assessment": "与回执一致；判 inconclusive"
+        }
+      ]
+    },
+    {
+      "case_id": "U-THREAT-CONTRACT",
+      "title": "基本模拟事件的研判输出合同",
+      "scene": "威胁事件研判",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02"
+          ],
+          "question": "研判前加载技能",
+          "chosen": "→ threat-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S09"
+          ],
+          "question": "按固定流程委派",
+          "chosen": "→ delegate_threat_analysis，原样事件 ID",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "委派后的交付",
+          "chosen": "只回 started subagent，未等结果、未说明进行中",
+          "assessment": "无研判产物（子会话 0 步）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-THREAT-FAST",
+      "title": "名单快速研判",
+      "scene": "威胁事件研判",
+      "fast": true,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1、s2",
+          "sites": [
+            "S02",
+            "S09"
+          ],
+          "question": "名单快速研判的委派",
+          "chosen": "→ 单次委派，原样事件 ID",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "结果交付",
+          "chosen": "只回 started subagent",
+          "assessment": "无 llm_invoked / 分类证据（inconclusive）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-THREAT-FULL",
+      "title": "完整研判",
+      "scene": "威胁事件研判",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1、s2",
+          "sites": [
+            "S02",
+            "S09"
+          ],
+          "question": "完整研判的委派",
+          "chosen": "→ 单次委派",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "结果交付",
+          "chosen": "只回 started subagent",
+          "assessment": "无五源/校验/报告证据（inconclusive）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-THREAT-MENTION",
+      "title": "数字员工威胁研判入口",
+      "scene": "威胁事件研判",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": "@提及路由正确"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01"
+          ],
+          "question": "“@威胁研判子智能体”的入口路由",
+          "chosen": "→ threat-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S09"
+          ],
+          "question": "事件 ID 原样传递",
+          "chosen": "→ delegate，prompt 含原 ID",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "结果交付",
+          "chosen": "只回 started subagent",
+          "assessment": "无摘要/下载证据（inconclusive）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-THREAT-MISSING",
+      "title": "缺少事件 ID",
+      "scene": "威胁事件研判",
+      "fast": false,
+      "verdict": "passed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 2,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": "缺事件 ID，先追问",
+        "sample_id": "dsh-e73ac694606c5f7670751bb5",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S02"
+          ],
+          "question": "缺事件 ID 是否加载技能",
+          "chosen": "→ threat-analysis",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S08"
+          ],
+          "question": "缺事件 ID 的处理",
+          "chosen": "追问 INC-YYYYMMDD-NNNNNN，不发起认领",
+          "assessment": "正确"
+        }
+      ]
+    },
+    {
+      "case_id": "U-THREAT-WHITELIST",
+      "title": "名单业务限制",
+      "scene": "威胁事件研判",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": ""
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1、s2",
+          "sites": [
+            "S02",
+            "S09"
+          ],
+          "question": "名单事件研判",
+          "chosen": "→ 单次委派，原样事件 ID",
+          "assessment": "正确"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "业务正确性与技术状态的分列",
+          "chosen": "未产出任何名单结果",
+          "assessment": "无证据（inconclusive）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-THREAT-FOLLOWUP",
+      "title": "研判后普通问答",
+      "scene": "威胁事件研判",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 5,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "威胁研判",
+        "observed_first_action": "skill(threat-analysis)",
+        "note": "第二轮概念问答属后续边界"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1–s3",
+          "sites": [
+            "S09"
+          ],
+          "question": "首轮研判的委派",
+          "chosen": "→ 单次委派",
+          "assessment": "正确，但未等结果"
+        },
+        {
+          "locator": "t2/s1",
+          "sites": [
+            "S10"
+          ],
+          "question": "第二轮概念问答的边界",
+          "chosen": "解释横向移动，不重复研判、不复用旧摘要",
+          "assessment": "正确"
+        },
+        {
+          "locator": "子会话 t1/s1",
+          "sites": [
+            "S05"
+          ],
+          "question": "子代理内部取证",
+          "chosen": "analyze_threat_incident → MCP group 连接不可用",
+          "assessment": "连接失败（错误被如实保留）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-VOICE-001",
+      "title": "语音发送与回复",
+      "scene": "语音交互",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "其他（兜底）",
+        "observed_first_action": "直接回答",
+        "note": "语音链路测试",
+        "sample_id": "dsh-89447424965969582ad34ba3",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S01",
+            "S10"
+          ],
+          "question": "语音问候的处理",
+          "chosen": "直接寒暄并介绍能力，未调工具",
+          "assessment": "正确但无法验证 UI/音频"
+        }
+      ]
+    },
+    {
+      "case_id": "U-VOICE-002",
+      "title": "自动摘要播报",
+      "scene": "语音交互",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "blocked",
+      "sessions": 2,
+      "model_responses": 3,
+      "routing": {
+        "source": "manual_not_projected",
+        "suggested_class": "威胁研判（并列“开启播报”，优先级待核）",
+        "observed_first_action": "schedule_create",
+        "note": "把播报设置建成定时任务"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S11"
+          ],
+          "question": "“开启自动播报”的理解",
+          "chosen": "创建 every 1800 的定时任务（与摘要播报无关）",
+          "assessment": "偏差：把功能开关当成定时任务"
+        },
+        {
+          "locator": "t1/s2",
+          "sites": [
+            "S09"
+          ],
+          "question": "研判请求的委派",
+          "chosen": "→ delegate_threat_analysis",
+          "assessment": "合理"
+        },
+        {
+          "locator": "t1/s3",
+          "sites": [
+            "S10"
+          ],
+          "question": "交付",
+          "chosen": "只回 started subagent",
+          "assessment": "无摘要/播放证据（inconclusive）"
+        }
+      ]
+    },
+    {
+      "case_id": "U-VOICE-003",
+      "title": "摘要队列与取消",
+      "scene": "语音交互",
+      "fast": false,
+      "verdict": "failed",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 1,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "其他（兜底）",
+        "observed_first_action": "直接回答(澄清)",
+        "note": "播报队列测试",
+        "sample_id": "dsh-0ce4bacf52af51f599ebd796",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1",
+          "sites": [
+            "S08"
+          ],
+          "question": "播报队列测试的缺参处理",
+          "chosen": "追问两个事件 ID，未执行任何播报步骤",
+          "assessment": "failed：预期要求执行队列/取消场景"
+        }
+      ]
+    },
+    {
+      "case_id": "U-VOICE-004",
+      "title": "摘要播报响应时间与保真",
+      "scene": "语音交互",
+      "fast": false,
+      "verdict": "inconclusive",
+      "audit_status": "clean",
+      "sessions": 1,
+      "model_responses": 3,
+      "routing": {
+        "source": "projection",
+        "suggested_class": "报告生成",
+        "observed_first_action": "直接回答",
+        "note": "按给定事实总结",
+        "sample_id": "dsh-978edc7107ebcb1c9c77811d",
+        "line": 18,
+        "seq": 16,
+        "label_status": "unlabeled"
+      },
+      "decisions": [
+        {
+          "locator": "t1/s1–s3",
+          "sites": [
+            "S01",
+            "S10"
+          ],
+          "question": "“只根据事实回答、不调工具”的三轮",
+          "chosen": "三轮均直接回答，保留否定/未确认/未完成",
+          "assessment": "文本正确；无摘要/TTS/耗时证据（inconclusive）"
+        }
+      ]
+    }
+  ],
+  "gaps": [
+    "16 个含子代理会话的场景无法通过当前适配器审计（63 个 subagent 事件），因此没有路由投影，也未进入后续阶段。",
+    "路由投影只覆盖初始请求后的第一次模型响应；142 个后续决策时点返回 not_initial_routing_boundary，需要单独的触发协议。",
+    "路由样本全部未标标签，candidate_bindings 为空、deployment_ready=false；建议类别仅为人工复核建议。",
+    "策略/应急草案工具、知识库在本 Run 未装载：策略参数绑定、PPV、应急动作选择、知识检索只有缺口分支。",
+    "委派结果未回流：威胁子代理多为 0 步、故障子代理多在首个查询截断，无法核对收敛与报告下载判定。",
+    "语音链路（/api/remote.mux、摘要字数、TTS 首包、播放）无证据。"
+  ]
+}

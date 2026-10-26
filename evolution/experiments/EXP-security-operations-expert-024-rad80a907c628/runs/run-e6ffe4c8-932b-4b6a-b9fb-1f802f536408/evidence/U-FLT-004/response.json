@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "主备防火墙切换后，排查源 IP 172.16.2.103 到目的 IP 172.16.138.214 访问失败的原因。"
+  ],
+  "assistant_texts": [
+    "故障排查子智能体已启动，正在通过 SOC 只读工具取证（资产解析、拓扑/可达性、覆盖与事件）。等其返回结果后我会整理事实、推断、证据缺口与未执行建议。"
+  ],
+  "session_id": "session-76df17e4-69e1-428f-94de-85c1e6265454",
+  "turns": [
+    {
+      "assistant_text": "故障排查子智能体已启动，正在通过 SOC 只读工具取证（资产解析、拓扑/可达性、覆盖与事件）。等其返回结果后我会整理事实、推断、证据缺口与未执行建议。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "9e9f7a41-7974-4929-9678-1d424a99d115"
+    }
+  ]
+}

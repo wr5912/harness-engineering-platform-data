@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "@故障分析子智能体 业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "已启动故障分析子智能体（运行 ID：`b9b2d90c-09a7-46dd-9042-b051b6275e64`），正在用 SOC 只读工具排查“业务系统访问异常”。\n\n目前缺少业务系统名称/IP/资产 ID 和异常发生时间；子智能体会先尝试从可枚举的资产与近期事件中寻找线索。若你能补充这些信息，可缩小排查范围。分析完成后我会汇报事实、推断、证据缺口与建议（均未执行处置）。"
+  ],
+  "session_id": "session-c4153aa2-661a-4642-a1cc-3aa149bd9435",
+  "turns": [
+    {
+      "assistant_text": "已启动故障分析子智能体（运行 ID：`b9b2d90c-09a7-46dd-9042-b051b6275e64`），正在用 SOC 只读工具排查“业务系统访问异常”。\n\n目前缺少业务系统名称/IP/资产 ID 和异常发生时间；子智能体会先尝试从可枚举的资产与近期事件中寻找线索。若你能补充这些信息，可缩小排查范围。分析完成后我会汇报事实、推断、证据缺口与建议（均未执行处置）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "8336966e-5134-4cc9-81bb-7b0688ad953c"
+    }
+  ]
+}

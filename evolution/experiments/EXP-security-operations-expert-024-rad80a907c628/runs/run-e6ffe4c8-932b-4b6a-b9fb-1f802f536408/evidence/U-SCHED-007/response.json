@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "帮我创建每天中午 12 点自动威胁研判的任务。"
+  ],
+  "assistant_texts": [
+    "已成功创建每日自动威胁研判任务。\n\n**任务信息**\n- 任务 ID：`schedule-63322635-20c2-4064-871e-0ddc201577a7`\n- 任务名称：自动威胁研判-每天12:00\n- 执行规则：每天 `12:00:00`（时区 `Asia/Shanghai`）\n- 下次执行时间：`2026-10-23 12:00:00`（北京时间，对应 UTC `2026-10-23T04:00:00Z`）\n- 当前状态：`scheduled`（已排期，尚未执行）\n\n**说明**\n- 该任务绑定当前会话，到期后每次只研判一条待处理威胁事件；若上一条研判仍在运行，本次心跳会跳过，不排队积压。\n- 创建成功仅代表定时规则已生效，任务尚未实际执行；研判结果需以到期执行后的事件 ID 和 Run ID 为准。\n- 本任务仅作用于当前会话，会话结束或调度被删除后将不再触发。"
+  ],
+  "session_id": "session-b0a9c2a1-4d8e-41c3-b9d4-df83517e18db",
+  "turns": [
+    {
+      "assistant_text": "已成功创建每日自动威胁研判任务。\n\n**任务信息**\n- 任务 ID：`schedule-63322635-20c2-4064-871e-0ddc201577a7`\n- 任务名称：自动威胁研判-每天12:00\n- 执行规则：每天 `12:00:00`（时区 `Asia/Shanghai`）\n- 下次执行时间：`2026-10-23 12:00:00`（北京时间，对应 UTC `2026-10-23T04:00:00Z`）\n- 当前状态：`scheduled`（已排期，尚未执行）\n\n**说明**\n- 该任务绑定当前会话，到期后每次只研判一条待处理威胁事件；若上一条研判仍在运行，本次心跳会跳过，不排队积压。\n- 创建成功仅代表定时规则已生效，任务尚未实际执行；研判结果需以到期执行后的事件 ID 和 Run ID 为准。\n- 本任务仅作用于当前会话，会话结束或调度被删除后将不再触发。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "95459502-c3b7-4eab-8b78-5e38698fa03d"
+    }
+  ]
+}

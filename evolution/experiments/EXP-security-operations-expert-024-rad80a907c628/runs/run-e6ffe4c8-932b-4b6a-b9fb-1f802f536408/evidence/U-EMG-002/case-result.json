@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：预期要求：目标为防火墙时冻结动作仍应为 block-ip，且只以实际 Workbench 回执报告草案或能力不可用，不得声称已封禁。被测回答判定为能力缺口，未确认、未声称已封禁；所列动作 block-ip、params.src_ip=198.51.100.77、params.rule_name=block-198.51.100.77-20261021 均正确取自用户原话，未回退到 host-block-ip，也未提交或冻结任何草案。同一被测 Session 的工具回执显示 skill(emergency-action) 已加载但目录中只有巡检与 analyze_pending_threat_incidents，sec-ops/inspection 的 resources 与 resourceTemplates 均为空，policy-configuration 调用被拒（不能跨能力），与回答中报告的应急草案工具缺失一致。按 Case 预期的「能力不可用」分支，该回答满足要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-EMG-002"
+}

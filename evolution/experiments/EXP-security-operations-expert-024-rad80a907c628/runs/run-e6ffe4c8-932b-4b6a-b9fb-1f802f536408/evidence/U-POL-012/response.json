@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请从头执行交换机 ACL 策略预览，完整参数已确认，禁止查询资产或改写标识。"
+  ],
+  "assistant_texts": [
+    "我需要提供具体参数才能执行 ACL 策略预览。请提供以下信息：\n\n1. **源端点**（资产名称、IPv4 或 IPv4 CIDR）\n2. **目的端点**（资产名称、IPv4 或 IPv4 CIDR）\n3. **协议**（TCP 或 UDP）\n4. **目的端口**（1–65535）\n5. **动作**（ALLOW 允许 / DENY 阻断）\n6. **设备线索**（可选：如\"在防火墙上\"或具体设备名称）"
+  ],
+  "session_id": "session-5b4ed86e-a44a-4fe9-a582-d06579aff03c",
+  "turns": [
+    {
+      "assistant_text": "我需要提供具体参数才能执行 ACL 策略预览。请提供以下信息：\n\n1. **源端点**（资产名称、IPv4 或 IPv4 CIDR）\n2. **目的端点**（资产名称、IPv4 或 IPv4 CIDR）\n3. **协议**（TCP 或 UDP）\n4. **目的端口**（1–65535）\n5. **动作**（ALLOW 允许 / DENY 阻断）\n6. **设备线索**（可选：如\"在防火墙上\"或具体设备名称）",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "83b03024-d7c7-48e4-a77f-a9e509217a61"
+    }
+  ]
+}

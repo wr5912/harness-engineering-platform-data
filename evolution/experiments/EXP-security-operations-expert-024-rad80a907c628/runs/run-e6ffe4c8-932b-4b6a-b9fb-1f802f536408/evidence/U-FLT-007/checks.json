@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-FLT-007",
+  "transport": "api",
+  "expected_behavior": "查询真实资产、纳管状态、关联对象和相关安全配置，回复与工具结果一致；明确异常证据、未知项和建议，不伪造资产关系。",
+  "session_id": "session-2d1d2053-7640-4b2f-8a48-12af6eb3e5a0",
+  "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+  "session_title": "评测 U-FLT-007",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-30c0dc7f-ca5a-4674-b3c3-25f4f04374f2",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-FLT-007",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

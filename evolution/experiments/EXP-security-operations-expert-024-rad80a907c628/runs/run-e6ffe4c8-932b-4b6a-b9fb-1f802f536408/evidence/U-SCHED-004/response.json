@@ -1,0 +1,79 @@
+{
+  "inputs": [
+    "创建一个每天 9 点开始每隔 30 分钟从 SOC 获取威胁事件进行研判的任务。",
+    "每天 18 点结束。"
+  ],
+  "assistant_texts": [
+    "已创建定时任务：`自动威胁研判-每30分钟`，任务 ID 为 `schedule-f125cb15-d569-4791-bac5-7d73dd811f1a`。\n\n任务规则是绑定本会话，每天 **09:00 起**至任务被停止前，每 **30 分钟**从 SOC 拉取并研判 1 条待处理威胁事件。当前运行时没有提供按“仅工作时段窗口执行”表达的原生规则，因此任务按固定间隔持续运行，并非只在某个时间窗内运行。\n\n下一次到期时间：**2026-10-22 19:12（Asia/Shanghai）**，相对当前样本时间约 30 分钟后。\n\n说明：\n\n- 该任务已创建并处于 `scheduled` 状态，但尚未执行研判。\n- 到期后，本地受信桥会调用威胁研判入口；每次最多研判 1 条事件。\n- 如果上一条研判尚未完成，本次心跳会跳过，不会重复排队。\n- 这是绑定当前会话的任务；当前会话结束后，后续心跳不会继续。\n- 如需停止任务，可以删除该任务。当前运行时没有“暂停/恢复”能力。",
+    "已将原任务调整为每天 **09:00 至 18:00**（含 18:00），每 **30 分钟**从 SOC 获取并研判 1 条待处理威胁事件。\n\n由于单条原生定时规则不能准确表达“09:00–18:00 每 30 分钟、18:30 不运行”，当前运行时使用了两条任务覆盖完整窗口：\n\n| 任务 | 任务 ID | 规则 | 下次到期 |\n|---|---|---|---|\n| `自动威胁研判-窗口09-17` | `schedule-24168414-bcb9-43e4-bddd-c9be54b8dfad` | `*/30 9-17 * * *`，Asia/Shanghai | **2026-10-23 09:00** |\n| `自动威胁研判-窗口18` | `schedule-9afd1d6e-6664-47ad-b5e5-66f369bd04a3` | `0 18 * * *`，Asia/Shanghai | **2026-10-23 18:00** |\n\n原全天运行任务 `schedule-f125cb15-d569-4791-bac5-7d73dd811f1a` 已删除。\n\n说明：\n\n- 两条任务均已创建并处于 `scheduled` 状态，但尚未执行研判。\n- 每次到期后由本地受信桥解析固定 prompt，最多研判 1 条事件。\n- 上一条研判未完成时，本次心跳跳过且不重复排队。\n- 任务绑定当前会话，会话结束后不再继续投递。\n- 当前运行时没有暂停或恢复能力；如需停止，需要删除对应任务。"
+  ],
+  "session_id": "session-3671a4e8-b89b-48d3-8d90-16e50fbe9ceb",
+  "turns": [
+    {
+      "assistant_text": "已创建定时任务：`自动威胁研判-每30分钟`，任务 ID 为 `schedule-f125cb15-d569-4791-bac5-7d73dd811f1a`。\n\n任务规则是绑定本会话，每天 **09:00 起**至任务被停止前，每 **30 分钟**从 SOC 拉取并研判 1 条待处理威胁事件。当前运行时没有提供按“仅工作时段窗口执行”表达的原生规则，因此任务按固定间隔持续运行，并非只在某个时间窗内运行。\n\n下一次到期时间：**2026-10-22 19:12（Asia/Shanghai）**，相对当前样本时间约 30 分钟后。\n\n说明：\n\n- 该任务已创建并处于 `scheduled` 状态，但尚未执行研判。\n- 到期后，本地受信桥会调用威胁研判入口；每次最多研判 1 条事件。\n- 如果上一条研判尚未完成，本次心跳会跳过，不会重复排队。\n- 这是绑定当前会话的任务；当前会话结束后，后续心跳不会继续。\n- 如需停止任务，可以删除该任务。当前运行时没有“暂停/恢复”能力。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f91a0ead-9ccb-4e68-a091-425fadcaf18e"
+    },
+    {
+      "assistant_text": "已将原任务调整为每天 **09:00 至 18:00**（含 18:00），每 **30 分钟**从 SOC 获取并研判 1 条待处理威胁事件。\n\n由于单条原生定时规则不能准确表达“09:00–18:00 每 30 分钟、18:30 不运行”，当前运行时使用了两条任务覆盖完整窗口：\n\n| 任务 | 任务 ID | 规则 | 下次到期 |\n|---|---|---|---|\n| `自动威胁研判-窗口09-17` | `schedule-24168414-bcb9-43e4-bddd-c9be54b8dfad` | `*/30 9-17 * * *`，Asia/Shanghai | **2026-10-23 09:00** |\n| `自动威胁研判-窗口18` | `schedule-9afd1d6e-6664-47ad-b5e5-66f369bd04a3` | `0 18 * * *`，Asia/Shanghai | **2026-10-23 18:00** |\n\n原全天运行任务 `schedule-f125cb15-d569-4791-bac5-7d73dd811f1a` 已删除。\n\n说明：\n\n- 两条任务均已创建并处于 `scheduled` 状态，但尚未执行研判。\n- 每次到期后由本地受信桥解析固定 prompt，最多研判 1 条事件。\n- 上一条研判未完成时，本次心跳跳过且不重复排队。\n- 任务绑定当前会话，会话结束后不再继续投递。\n- 当前运行时没有暂停或恢复能力；如需停止，需要删除对应任务。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "430bb46f-8f91-45ce-a098-d21d9be8254e"
+    }
+  ]
+}

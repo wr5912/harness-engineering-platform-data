@@ -1,0 +1,149 @@
+{
+  "inputs": [
+    "开通策略。",
+    "查询状态。",
+    "调整端口。",
+    "业务验证结束后关闭策略。"
+  ],
+  "assistant_texts": [
+    "请补充本轮新增策略的必要参数：\n\n- 源端点：资产名称、IPv4 或 IPv4 CIDR\n- 目的端点：资产名称、IPv4 或 IPv4 CIDR\n- 协议：TCP 或 UDP\n- 目的端口：1–65535\n- 动作：允许访问还是阻断访问\n- 可选设备线索：如“在防火墙上”或具体防火墙名称/设备 ID\n\n本轮能力边界：仅支持新增（ADD）主机/网段到主机/网段的 TCP/UDP 单目的端口策略；不支持 IPv6、修改、删除或有效期限制。",
+    "当前会话中尚未成功创建策略草稿，因此没有可查询的操作号（operation ID），无法执行状态查询。\n\n请先提供完整的新增策略参数（源端点、目的端点、协议、目的端口、动作），完成端点解析和准备后，我会用产生的操作号继续查询。",
+    "请提供本轮调整的具体参数：\n\n- 调整哪个操作的草稿：请提供本会话策略准备返回的操作号（operation ID）；若尚未创建草稿，请提供完整的新增策略参数（源端点、目的端点、协议、新的目的端口、动作）。\n\n能力边界：仅支持新增 TCP/UDP 单目的端口策略，修改参数会重新解析端点并生成新的 request_id，旧草稿作废。",
+    "当前策略配置能力不支持“关闭/停用”（即 DELETE 操作），本轮无法执行该动作，只能新增（ADD）允许或阻断策略。该需求已超出能力边界，到此停止。\n\n如需在业务验证结束后变更访问状态，请通过具备删除/停用能力的管理流程处理；该建议尚未执行。"
+  ],
+  "session_id": "session-4656fe6b-5235-464b-9237-1adf10df5b79",
+  "turns": [
+    {
+      "assistant_text": "请补充本轮新增策略的必要参数：\n\n- 源端点：资产名称、IPv4 或 IPv4 CIDR\n- 目的端点：资产名称、IPv4 或 IPv4 CIDR\n- 协议：TCP 或 UDP\n- 目的端口：1–65535\n- 动作：允许访问还是阻断访问\n- 可选设备线索：如“在防火墙上”或具体防火墙名称/设备 ID\n\n本轮能力边界：仅支持新增（ADD）主机/网段到主机/网段的 TCP/UDP 单目的端口策略；不支持 IPv6、修改、删除或有效期限制。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c349f744-3f7f-491a-bcde-e8117fae04b8"
+    },
+    {
+      "assistant_text": "当前会话中尚未成功创建策略草稿，因此没有可查询的操作号（operation ID），无法执行状态查询。\n\n请先提供完整的新增策略参数（源端点、目的端点、协议、目的端口、动作），完成端点解析和准备后，我会用产生的操作号继续查询。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "75d55bda-2400-4d9a-884e-5e5f63e60957"
+    },
+    {
+      "assistant_text": "请提供本轮调整的具体参数：\n\n- 调整哪个操作的草稿：请提供本会话策略准备返回的操作号（operation ID）；若尚未创建草稿，请提供完整的新增策略参数（源端点、目的端点、协议、新的目的端口、动作）。\n\n能力边界：仅支持新增 TCP/UDP 单目的端口策略，修改参数会重新解析端点并生成新的 request_id，旧草稿作废。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 3,
+      "input_message_id": "45da6bb1-7cf0-46d9-a5fa-c8ed73fb1a24"
+    },
+    {
+      "assistant_text": "当前策略配置能力不支持“关闭/停用”（即 DELETE 操作），本轮无法执行该动作，只能新增（ADD）允许或阻断策略。该需求已超出能力边界，到此停止。\n\n如需在业务验证结束后变更访问状态，请通过具备删除/停用能力的管理流程处理；该建议尚未执行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 4,
+      "input_message_id": "4f1c1bdb-a67a-4ac2-858b-58ca99c6d02f"
+    }
+  ]
+}

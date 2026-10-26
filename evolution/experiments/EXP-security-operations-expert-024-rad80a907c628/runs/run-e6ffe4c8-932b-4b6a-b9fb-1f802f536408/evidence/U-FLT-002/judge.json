@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求基于真实资产、巡检或探测结果逐台分析三台设备状态，区分离线与探测不可达，并给出可核对的下一步。被测回答仅声明已启动子智能体并等待结果，未给出任何具体分析结论、状态区分或下一步动作。工具证据显示主会话两次 delegate_fault_analysis 只返回 started subagent，子智能体中三个 get_graph_resolve_ip_host 调用的回执均为 {\"msg\":\"操作成功\",\"code\":200}，不包含资产、状态、覆盖或事件等实质数据，也未见子智能体最终结论回传。因此没有任何真实工具数据支撑回答中的关键分析，且回答本身不满足预期要求，应判 failed。"
+  },
+  "checks": {
+    "session_id": "session-af6947cd-bcd0-4980-af52-4b4906a8a4d4",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-FLT-002",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

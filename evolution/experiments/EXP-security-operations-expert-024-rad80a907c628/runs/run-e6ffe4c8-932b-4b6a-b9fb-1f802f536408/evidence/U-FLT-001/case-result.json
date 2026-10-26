@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-001",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：被测回答仅说明已委派 SOC 只读取证并等待结果，未给出故障结论、根因、证据区分或修复建议，因此无法确认其正式分析结果是否区分证据/根因/建议。工具回执显示：三次 delegate_fault_analysis 均只返回 'started subagent'，未返回子代理的完整分析结论；子代理的可达性查询（get_reachability_path_by_ip、get_graph_path_query）返回 verdict=UNKNOWN、reason=nat_snapshot_pending/SRC_NOT_FOUND、gaps 提示端点未登记为资产，证据不足以确认故障根因；resolve_ip_host 仅返回 code=200 无实质资产数据。回答未编造诊断或处置状态，符合不编造要求，但也未形成正式故障结论，且处置环节尚未发生、无法评估是否基于正式结果并经确认。故对被测结果的满足情况证据不足，判定为 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-001"
+}

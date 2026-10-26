@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "内部《安全事件分级规范》如何定义重大事件？值班人员应该怎么升级？"
+  ],
+  "assistant_texts": [
+    "**结论**\n\n当前会话中没有配置知识库检索或《安全事件分级规范》原文，因此**无法确认该规范对“重大事件”的具体定义、判定阈值或升级路径**；也不能把通用行业做法冒充为贵方内部规范。\n\n**已知事实**\n\n- 本环境仅能依据你已提供的材料或明确指向的 SOC 事件开展调查。\n- 本轮未提供规范文件、制度链接、条款编号，也没有明确的事件 ID。\n- 当前无法判断现有材料是否为最新版本，也无法确认适用范围、审批权限和升级时限。\n\n**待核验项与建议**\n\n- 建议从内部制度库、应急响应预案或安全运营流程页获取规范原文，并重点确认：\n  - 重大事件的分级指标，例如业务影响范围、数据敏感度、攻击是否成功、是否仍在扩散；\n  - 责任人、值班经理、安全负责人及管理层的通知顺序；\n  - 升级触发条件、允许的口头或书面升级方式、升级时限；\n  - 跨部门、外部监管或客户通报要求；\n  - 事件编号、证据留存和处置记录要求。\n- 取得原文后，应核对其发布日期、版本号、适用对象和权威来源。\n- 如果当前正在处置具体事件，请提供形如 `INC-YYYYMMDD-NNNNNN` 的事件 ID，以便转入威胁研判流程；**这不等同于已经执行升级或处置**。\n- 上述核验和升级动作均**尚未执行**。"
+  ],
+  "session_id": "session-d89f2682-cd6e-46bb-9290-fd9783b33338",
+  "turns": [
+    {
+      "assistant_text": "**结论**\n\n当前会话中没有配置知识库检索或《安全事件分级规范》原文，因此**无法确认该规范对“重大事件”的具体定义、判定阈值或升级路径**；也不能把通用行业做法冒充为贵方内部规范。\n\n**已知事实**\n\n- 本环境仅能依据你已提供的材料或明确指向的 SOC 事件开展调查。\n- 本轮未提供规范文件、制度链接、条款编号，也没有明确的事件 ID。\n- 当前无法判断现有材料是否为最新版本，也无法确认适用范围、审批权限和升级时限。\n\n**待核验项与建议**\n\n- 建议从内部制度库、应急响应预案或安全运营流程页获取规范原文，并重点确认：\n  - 重大事件的分级指标，例如业务影响范围、数据敏感度、攻击是否成功、是否仍在扩散；\n  - 责任人、值班经理、安全负责人及管理层的通知顺序；\n  - 升级触发条件、允许的口头或书面升级方式、升级时限；\n  - 跨部门、外部监管或客户通报要求；\n  - 事件编号、证据留存和处置记录要求。\n- 取得原文后，应核对其发布日期、版本号、适用对象和权威来源。\n- 如果当前正在处置具体事件，请提供形如 `INC-YYYYMMDD-NNNNNN` 的事件 ID，以便转入威胁研判流程；**这不等同于已经执行升级或处置**。\n- 上述核验和升级动作均**尚未执行**。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "9887bb15-c756-48a8-b1eb-715fba3bd6f8"
+    }
+  ]
+}

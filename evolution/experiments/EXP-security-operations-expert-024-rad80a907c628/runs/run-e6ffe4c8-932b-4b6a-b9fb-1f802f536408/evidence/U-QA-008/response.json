@@ -1,0 +1,62 @@
+{
+  "inputs": [
+    "CVSS、EPSS 和 CISA KEV 分别表示什么？为什么 CVSS 9.8 也不一定是我司最高优先级？"
+  ],
+  "assistant_texts": [
+    "## 结论先行\n\nCVSS、EPSS、CISA KEV 是三种**互补而非替代**的漏洞度量标准。CVSS 9.8 只说明“技术上很好利用”，不等于“对我司威胁最大”。真正的优先级应由三者叠加**业务暴露面与资产上下文**决定——一个 CVSS 9.8 但部署在隔离网段、无业务流量的测试机漏洞，可能远不如一个 CVSS 7.5 但暴露在公网、承载核心业务且已被在野利用的漏洞紧急。\n\n---\n\n## 三个指标分别是什么\n\n| 指标 | 全称/维护方 | 衡量什么 | 关键点 |\n|---|---|---|---|\n| **CVSS** | Common Vulnerability Scoring System，FIRST.org 维护 | 漏洞**固有的技术严重性**（攻击向量、复杂度、权限要求、影响机密性/完整性/可用性等） | 反映“利用起来有多容易、后果多严重”，但**不考虑你是否真的有这台资产、暴露在哪** |\n| **EPSS** | Exploit Prediction Scoring System，FIRST.org 维护 | 未来 30 天内**被实际利用的概率**（0–1，百分比形式） | 概率模型，每天更新；高 CVSS ≠ 高 EPSS（很多 9.8 漏洞从未被利用） |\n| **CISA KEV** | Known Exploited Vulnerabilities catalog，美国 CISA 维护 | 漏洞是否已被**确认在野利用**（事实清单，非评分） | 只有已发生的事，没有分数；被列入即代表“确实有人在用它打人”，且附带修复时限要求 |\n\n---\n\n## 为什么 CVSS 9.8 不一定是你司最高优先级\n\n### 1. CVSS 不包含“你是否受影响”\nCVSS 是漏洞本身的属性，与你的资产清单无关。如果 CVSS 9.8 的漏洞对应的软件版本在你司根本没有部署，它的实际风险是零，优先级自然排最后。\n\n### 2. EPSS 提供了“概率”维度\n大量 CVSS 高分漏洞实际被利用的概率极低（EPSS < 1%）。把资源全砸在高 CVSS 低 EPSS 上，是很多团队的常见浪费。反过来，CVSS 7.x 但 EPSS > 10% 的漏洞更值得先修。\n\n### 3. KEV 是“已经发生”的硬证据\nCISA KEV 列表意味着**已经观察到真实攻击活动**。一个 CVSS 8.8 但已入 KEV 的漏洞，风险高于一个 CVSS 9.8 但从未被利用的漏洞——因为前者的攻击路径已被验证可用。\n\n### 4. 业务上下文才是最终权重\n即使 CVSS 高、EPSS 高、在 KEV 中，如果该资产：\n- 不在互联网暴露面\n- 无横向移动路径到核心资产\n- 承载的业务等级低\n\n那它的优先级也应该被降权。反之，核心业务系统哪怕 CVSS 只有 7.0，只要暴露面大、可利用、有补丁延迟风险，就应排在前面。\n\n---\n\n## 一个可操作的优先级决策框架\n\n1. **先筛**：从资产漏洞清单中过滤出“实际部署且在线”的漏洞，排除理论漏洞。\n2. **叠加三指标**：\n   - KEV 命中 → 自动升到最高优先级（已知在野利用）。\n   - EPSS 高（例如 > 5%~10%，按你司容忍度调整）+ CVSS 高 → 高优先级。\n   - CVSS 高但 EPSS 极低且不在 KEV → 中低优先级，按补丁窗口排期。\n3. **加入资产上下文**：业务等级、暴露面（互联网/内网/隔离区）、资产关键性、可达性路径。\n4. **输出一个融合优先级**，而不是直接拿 CVSS 9.8 排序。\n\n---\n\n## 说明\n\n- 以上是**基于行业通用实践的方法论说明**，未对你司实际资产或漏洞数据做任何查询，属于**未执行的建议**。\n- 如需把这套框架落到你司真实漏洞清单，我可以基于你司当前资产漏洞数据做一次优先级排序演示——需要你明确发起。\n\n**参考来源**：[FIRST.org – CVSS](https://www.first.org/cvss/)、[FIRST.org – EPSS](https://www.first.org/epss/)、[CISA – Known Exploited Vulnerabilities Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)。"
+  ],
+  "session_id": "session-f17aaba4-bd01-4f0f-b6e6-1a06e3eb5b0a",
+  "turns": [
+    {
+      "assistant_text": "## 结论先行\n\nCVSS、EPSS、CISA KEV 是三种**互补而非替代**的漏洞度量标准。CVSS 9.8 只说明“技术上很好利用”，不等于“对我司威胁最大”。真正的优先级应由三者叠加**业务暴露面与资产上下文**决定——一个 CVSS 9.8 但部署在隔离网段、无业务流量的测试机漏洞，可能远不如一个 CVSS 7.5 但暴露在公网、承载核心业务且已被在野利用的漏洞紧急。\n\n---\n\n## 三个指标分别是什么\n\n| 指标 | 全称/维护方 | 衡量什么 | 关键点 |\n|---|---|---|---|\n| **CVSS** | Common Vulnerability Scoring System，FIRST.org 维护 | 漏洞**固有的技术严重性**（攻击向量、复杂度、权限要求、影响机密性/完整性/可用性等） | 反映“利用起来有多容易、后果多严重”，但**不考虑你是否真的有这台资产、暴露在哪** |\n| **EPSS** | Exploit Prediction Scoring System，FIRST.org 维护 | 未来 30 天内**被实际利用的概率**（0–1，百分比形式） | 概率模型，每天更新；高 CVSS ≠ 高 EPSS（很多 9.8 漏洞从未被利用） |\n| **CISA KEV** | Known Exploited Vulnerabilities catalog，美国 CISA 维护 | 漏洞是否已被**确认在野利用**（事实清单，非评分） | 只有已发生的事，没有分数；被列入即代表“确实有人在用它打人”，且附带修复时限要求 |\n\n---\n\n## 为什么 CVSS 9.8 不一定是你司最高优先级\n\n### 1. CVSS 不包含“你是否受影响”\nCVSS 是漏洞本身的属性，与你的资产清单无关。如果 CVSS 9.8 的漏洞对应的软件版本在你司根本没有部署，它的实际风险是零，优先级自然排最后。\n\n### 2. EPSS 提供了“概率”维度\n大量 CVSS 高分漏洞实际被利用的概率极低（EPSS < 1%）。把资源全砸在高 CVSS 低 EPSS 上，是很多团队的常见浪费。反过来，CVSS 7.x 但 EPSS > 10% 的漏洞更值得先修。\n\n### 3. KEV 是“已经发生”的硬证据\nCISA KEV 列表意味着**已经观察到真实攻击活动**。一个 CVSS 8.8 但已入 KEV 的漏洞，风险高于一个 CVSS 9.8 但从未被利用的漏洞——因为前者的攻击路径已被验证可用。\n\n### 4. 业务上下文才是最终权重\n即使 CVSS 高、EPSS 高、在 KEV 中，如果该资产：\n- 不在互联网暴露面\n- 无横向移动路径到核心资产\n- 承载的业务等级低\n\n那它的优先级也应该被降权。反之，核心业务系统哪怕 CVSS 只有 7.0，只要暴露面大、可利用、有补丁延迟风险，就应排在前面。\n\n---\n\n## 一个可操作的优先级决策框架\n\n1. **先筛**：从资产漏洞清单中过滤出“实际部署且在线”的漏洞，排除理论漏洞。\n2. **叠加三指标**：\n   - KEV 命中 → 自动升到最高优先级（已知在野利用）。\n   - EPSS 高（例如 > 5%~10%，按你司容忍度调整）+ CVSS 高 → 高优先级。\n   - CVSS 高但 EPSS 极低且不在 KEV → 中低优先级，按补丁窗口排期。\n3. **加入资产上下文**：业务等级、暴露面（互联网/内网/隔离区）、资产关键性、可达性路径。\n4. **输出一个融合优先级**，而不是直接拿 CVSS 9.8 排序。\n\n---\n\n## 说明\n\n- 以上是**基于行业通用实践的方法论说明**，未对你司实际资产或漏洞数据做任何查询，属于**未执行的建议**。\n- 如需把这套框架落到你司真实漏洞清单，我可以基于你司当前资产漏洞数据做一次优先级排序演示——需要你明确发起。\n\n**参考来源**：[FIRST.org – CVSS](https://www.first.org/cvss/)、[FIRST.org – EPSS](https://www.first.org/epss/)、[CISA – Known Exploited Vulnerabilities Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f41f79e7-e1eb-4484-bb43-9c1292029048"
+    }
+  ]
+}

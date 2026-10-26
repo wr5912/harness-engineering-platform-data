@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期明确要求第二轮先调用 schedule_list 查询，再用匹配任务的 ID 调 schedule_update。工具回执显示第二轮直接调用了 schedule_update（seq 32），未见任何 schedule_list 调用。虽然 schedule_update 未改动 prompt 且回复正确说明了更新后的 everySeconds:1200，但缺少前置查询这一硬性要求，因此判定失败。"
+  },
+  "checks": {
+    "session_id": "session-ce90e2b5-14ea-4323-85ed-c04c18c32797",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-SCHED-005",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

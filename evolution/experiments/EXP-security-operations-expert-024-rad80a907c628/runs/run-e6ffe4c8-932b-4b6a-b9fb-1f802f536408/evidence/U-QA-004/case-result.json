@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-004",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答基于实际调用 skill 工具返回的 response-planning Skill 内容，准确描述了当前可用的响应处置能力：受控、零工具、单次模型内规划，输出结构化 plan/assumptions/risks/evidence_refs；明确区分了不支持的能力（确认、保存、下发、执行、监控、效果验证等由外部控制面负责），并说明 delegate_response_planning 默认被 Guard 拒绝、本轮未实际执行规划，同时指出可用的受信确认路线。内容与工具回执一致，未虚构未装载能力，符合预期。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-004"
+}

@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求：①指出 172.16.1.155 是主机地址而非网段；②确认或按主机对象处理；③生成包含 UDP 53 和七天有效期的预览；④不得静默扩大地址范围。被测回答确实指出有效期 7 天未验证并停止、未生成永久策略（未违反第④条），且工具证据显示策略端点解析工具在本会话目录中确实缺失（grep 无匹配、MCP resources 为空），因此无法生成真实预览。但被测回答完全未提及 172.16.1.155 是主机地址而非网段这一关键点，未要求澄清单主机还是 CIDR，也未给出任何包含 UDP 53 与七天有效期的预览或澄清。预期中的核心行为（主机/网段辨析）完全缺失，仅凭工具缺失无法补足该明确要求，故判定未通过。"
+  },
+  "checks": {
+    "session_id": "session-909b4378-15bc-4923-b68c-9f38a80763ab",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-POL-005",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

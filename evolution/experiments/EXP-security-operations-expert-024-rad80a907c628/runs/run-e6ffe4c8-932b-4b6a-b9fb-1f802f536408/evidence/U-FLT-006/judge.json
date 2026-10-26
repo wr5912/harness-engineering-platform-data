@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答未在证据不足时认定任何漂移或影响范围，明确结论为无法确认，并区分了事实、推断、证据缺口与未执行建议。工具回证支持该结论：同会话及子代理工具回执显示 sec-ops/inspection MCP 资源与模板均为空，list_soc_asset 按 IP 172.16.138.214 及关键字查询 total 为 0，search_graph_assets 与 get_graph_resolve_ip_host 返回空数据，可达性交叉信号与合规违规查询均为空，schedule_list 为空，即确实未获得策略变更、主备一致性、设备漂移或连通性证据。回答中未出现具体数据编造，未把查询未命中当作否定证据，与预期行为一致。"
+  },
+  "checks": {
+    "session_id": "session-6c9e8b41-03a3-488d-80a1-2eaf8326abbf",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-FLT-006",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

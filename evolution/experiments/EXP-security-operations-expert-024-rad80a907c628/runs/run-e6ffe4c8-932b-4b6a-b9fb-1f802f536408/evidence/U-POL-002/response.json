@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "指定设备：172.16.1.155；请为 172.16.1.155 到 172.16.2.103 开通 TCP 19730 访问策略。"
+  ],
+  "assistant_texts": [
+    "当前 DSH 工具目录中没有暴露策略配置所需的 **端点解析工具**，因此无法按 `workbench-policy-configuration/v2` 流程创建草稿；本轮已在策略配置路由，不能改用其他业务工具或 SOC 查询绕过。\n\n已识别的请求参数：\n\n- **源**：`172.16.1.155`\n- **目的**：`172.16.2.103`\n- **协议**：`TCP`\n- **目的端口**：`19730`\n- **动作**：`ALLOW`（“开通”）\n- **操作类型**：`ADD`\n- **设备线索**：`172.16.1.155`（将按原话作为 `device_query` 传入解析）\n\n**结论**：未创建草稿、未解析端点、未下发策略，也没有可查询的操作号。  \n**下一步**：请在当前会话提供策略配置的端点解析能力（即 `workbench-policy-endpoint-resolution/v1` 对应工具）后重新发起；如该能力本应存在但不可见，需要先修复本会话的策略 MCP 工具绑定。"
+  ],
+  "session_id": "session-2c35f85b-43aa-4323-8b1b-cb0aac28d4bb",
+  "turns": [
+    {
+      "assistant_text": "当前 DSH 工具目录中没有暴露策略配置所需的 **端点解析工具**，因此无法按 `workbench-policy-configuration/v2` 流程创建草稿；本轮已在策略配置路由，不能改用其他业务工具或 SOC 查询绕过。\n\n已识别的请求参数：\n\n- **源**：`172.16.1.155`\n- **目的**：`172.16.2.103`\n- **协议**：`TCP`\n- **目的端口**：`19730`\n- **动作**：`ALLOW`（“开通”）\n- **操作类型**：`ADD`\n- **设备线索**：`172.16.1.155`（将按原话作为 `device_query` 传入解析）\n\n**结论**：未创建草稿、未解析端点、未下发策略，也没有可查询的操作号。  \n**下一步**：请在当前会话提供策略配置的端点解析能力（即 `workbench-policy-endpoint-resolution/v1` 对应工具）后重新发起；如该能力本应存在但不可见，需要先修复本会话的策略 MCP 工具绑定。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "91458bf1-74ec-44ef-bd0f-8729d8c81d4d"
+    }
+  ]
+}

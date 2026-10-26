@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "工具链与回答均符合预期：先调用 list_executable_inspections（seq24/25），从目录中唯一匹配到 matchPhrases 含“执行一次常规巡检”、defaultForChat 为 true 的“设备综合巡检”模板，使用返回的 taskId=task-bfc6f1c0e99a488988fa5d6949cd3a35、definitionVersion=V5 及本次请求 requestId 调用一次 start_inspection（seq29/30），未传 scope，仅返回一次 runId=run-52fc6839f4e14110af4bc886755084de，无重复发起。随后用同一 runId 调用 get_inspection_result（seq34/35）即取得就绪报告。回答的结论 ABNORMAL/PARTIAL 与服务 conclusionStatus、businessSummary、reportMarkdown 一致：在线6台、离线5台、状态未取得1台、涉及问题设备5台、1台检查未完成、应检查/观察12台，设备数量准确且与工具数据完全一致，未改写结论；明确标注 PARTIAL 的证据缺口（12台无基线报告不参与达标判定、离线原因待核实）。downloadUrl 非空且原样提供了服务返回的绝对地址，无自行拼接。运行中未声称完成，建议与未执行动作分清。"
+  },
+  "checks": {
+    "session_id": "session-881fc507-a49b-4035-988f-9a9ad9aaf9dd",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-INS-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

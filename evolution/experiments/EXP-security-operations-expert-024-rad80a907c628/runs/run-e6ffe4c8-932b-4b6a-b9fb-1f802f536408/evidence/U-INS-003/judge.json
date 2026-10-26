@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "回答返回了单个可解析的 JSON 对象，无多余文本；四项事实（39 台/套资产、12 台/套离线、4 台/套严重或高危漏洞、2 项异常结论）准确保留且逐条标注来源为用户输入，未添加输入之外的动态数据；事实与建议通过 key_findings 与 recommendations 分离，且明确声明未经工具核验、未调用工具，符合预期要求。"
+  },
+  "checks": {
+    "session_id": "session-85dd492f-e0df-499b-a0ed-3ea0d19d1e43",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-INS-003",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

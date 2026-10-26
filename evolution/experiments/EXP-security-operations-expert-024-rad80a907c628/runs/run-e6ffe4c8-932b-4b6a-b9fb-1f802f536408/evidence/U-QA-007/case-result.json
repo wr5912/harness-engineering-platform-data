@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-007",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答准确解释了 CVE（Common Vulnerabilities and Exposures）的定义与用途，明确指出 CVE 编号用于唯一标识公开披露的漏洞记录（如 CVE-2021-44228 示例、CVE-YYYY-NNNNN 结构）。同时明确列举了编号不能单独提供的信息：不能判断资产是否实际受影响（需自行做资产盘点与版本比对）、严重度评分需依赖 CVSS 且不等于实际风险与修复优先级、不能单独说明是否在野利用（需结合 KEV 等情报）、不能覆盖 0day 与非 CVE 编号的漏洞等，完全满足预期中“可用于唯一标识公开漏洞记录，但不能单独表示严重度、是否受影响、是否已利用或修复优先级”的全部要求。本题为概念性问答，不依赖真实工具数据，evidence 中 tool_events 为空不影响判定，且回答无被注入指令执行的迹象。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-007"
+}

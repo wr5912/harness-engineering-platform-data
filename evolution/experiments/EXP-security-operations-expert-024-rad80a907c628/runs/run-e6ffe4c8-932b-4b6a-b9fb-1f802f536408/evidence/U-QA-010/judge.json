@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答的关键事实均有同 Session 工具回执支撑：list_executable_inspections 返回的 5 个模板（业务可达性巡检 V2、设备状态专项巡检 V2、基线核查专项巡检 V2、设备综合巡检 V5、漏洞专项巡检 V1）及各自巡检项、srcIp/dstIp 必填、'沿用任务范围/当前资产清单'等描述与回答一致；skill 回执明确三个 MCP 工具不创建任务、周期执行需 DSH 定时能力、runId 轮询与 reportDownloadUrl 判定、PARTIAL 含证据缺口，回答据此如实说明无创建入口、报告地址取自服务返回、未臆造权限名称。回答明确'本轮尚未发起任何巡检、报告查询或响应处置'，将草案、评估与执行区分清楚，未把建议描述为已执行，处置入口与权限边界与 skill 规定一致。"
+  },
+  "checks": {
+    "session_id": "session-2c5e2109-0c7a-48cd-86d5-d96485e05d38",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-QA-010",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "第二轮仅调用 get_inspection_result 并复用同一 Session 中的 runId(run-a31b93d032e740b99d45f963ab4b77e2)，未重新调用 start_inspection。工具回执返回 status/resultStatus=PARTIAL、conclusionStatus=ABNORMAL、errorMessage 存在，回答如实报告了 PARTIAL 与 ABNORMAL 及证据缺口说明。回答中的设备数量与统计（应检查 12 台、实际观测 12 台、在线 6/离线 5/未取得 1、漏洞 12 台未发现、基线 12 台未纳入判定）均与回执 businessSummary 一致。回执提供非空 reportDownloadUrl，回答原样给出该绝对地址且未自行拼接。运行标识与回执 runId 一致，且明确说明未发起新巡检。整体满足预期全部要求。"
+  },
+  "checks": {
+    "session_id": "session-0d777443-e15a-4f4c-abe3-7394d7d50088",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-INS-007",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

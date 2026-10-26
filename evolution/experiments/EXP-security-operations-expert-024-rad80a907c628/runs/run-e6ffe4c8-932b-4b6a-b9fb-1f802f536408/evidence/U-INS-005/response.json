@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "创建一个每 10 分钟执行一次、覆盖当前巡检服务全部资产的设备在线状态巡检任务；每次执行时以当时的资产清单为准。"
+  ],
+  "assistant_texts": [
+    "已创建周期巡检提醒。\n\n**结论**\n- 已匹配模板：**设备状态专项巡检**，巡检项“设备在线状态”；描述明确为“检查**当前资产清单**中的设备在线状态”，可满足“每次以当时资产清单为准”的要求。\n- 目录核对结果：`taskId` `task-ffbb9db47ecb4176a724547a965b4bde`，`definitionVersion` `V2`，全量巡检无必填运行时参数。\n- 提醒 ID：`schedule-d617fa1e-6092-478d-8e9d-778a282f5b87`\n- 规则：每 600 秒（10 分钟）一次\n- 下次到期：`2026-10-22T10:13:56.620Z`（状态 `scheduled`）\n\n**重要说明**\n- 此时只是 **DSH 定时提醒已创建，尚未执行任何巡检**，本次也没有产生巡检报告。\n- 到期执行时会**重新查询巡检目录**核对模板仍可执行；常规全量巡检将**省略 `scope`，沿用任务范围**，并以执行时的资产清单为准。报告就绪后还会核对 `scopeLabel` 与设备数量，再判断是否覆盖当前全部资产。\n- 若届时模板版本变化或服务不可用，将如实报告原因，不猜测、不扩大范围。"
+  ],
+  "session_id": "session-ec338359-8ec0-4fe4-b69a-03cb9cc04422",
+  "turns": [
+    {
+      "assistant_text": "已创建周期巡检提醒。\n\n**结论**\n- 已匹配模板：**设备状态专项巡检**，巡检项“设备在线状态”；描述明确为“检查**当前资产清单**中的设备在线状态”，可满足“每次以当时资产清单为准”的要求。\n- 目录核对结果：`taskId` `task-ffbb9db47ecb4176a724547a965b4bde`，`definitionVersion` `V2`，全量巡检无必填运行时参数。\n- 提醒 ID：`schedule-d617fa1e-6092-478d-8e9d-778a282f5b87`\n- 规则：每 600 秒（10 分钟）一次\n- 下次到期：`2026-10-22T10:13:56.620Z`（状态 `scheduled`）\n\n**重要说明**\n- 此时只是 **DSH 定时提醒已创建，尚未执行任何巡检**，本次也没有产生巡检报告。\n- 到期执行时会**重新查询巡检目录**核对模板仍可执行；常规全量巡检将**省略 `scope`，沿用任务范围**，并以执行时的资产清单为准。报告就绪后还会核对 `scopeLabel` 与设备数量，再判断是否覆盖当前全部资产。\n- 若届时模板版本变化或服务不可用，将如实报告原因，不猜测、不扩大范围。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "89012025-046f-4d70-bdda-a2a8d2cc8cb8"
+    }
+  ]
+}

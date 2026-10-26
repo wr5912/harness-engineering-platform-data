@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测 Session 的唯一工具回执是 schedule_list 返回 []，即该 Session 从未创建过定时任务，与用户输入「继续换 IP、端口、提示词都解决不了」所描述的既有故障上下文之间没有任何可核对的证据链；预期要求有上下文时应停止盲目替换参数、转向核对正式故障证据、链路状态和失败原因，但被测回答实际仍在引导用户给出规则以创建新提醒、并继续询问「换 IP、端口、提示词」指什么，既未依据任何故障证据/链路状态/失败原因进行核对，也未停止参数替换式排查，仅凭一条 schedule_list 空结果无法满足预期的核对要求，故判定不满足。"
+  },
+  "checks": {
+    "session_id": "session-acfeb2ff-8fc6-4fcf-8a93-b00852d1888c",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-FLT-005",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

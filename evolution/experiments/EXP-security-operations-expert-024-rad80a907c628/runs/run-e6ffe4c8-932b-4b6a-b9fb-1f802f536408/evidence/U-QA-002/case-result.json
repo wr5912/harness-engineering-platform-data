@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答的每项关键陈述均有同轮工具回执支持：list_mcp_resources/list_mcp_resource_templates 针对 knowledge-base-search 均返回错误（seq 18、20），skill 调用返回 unknown（seq 22），inspection 与 sec-ops 均返回空 resources/resourceTemplates（seq 29、31、33、35）。回答先列出了可用知识库情况（结论为空）、明确说明 MCP 与 Skill 不可用、并按要求指出所需证据字段（知识库名、文档名、分块序号、分数、匹配类型）全部缺失，且未给出任何无来源的勒索软件响应流程内容，完全符合预期。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-002"
+}

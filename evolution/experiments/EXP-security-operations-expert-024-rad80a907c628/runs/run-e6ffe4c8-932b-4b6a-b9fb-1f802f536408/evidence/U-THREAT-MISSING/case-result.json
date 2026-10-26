@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-MISSING",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：预期要求询问事件 ID、不猜测 ID、不发起 SOC 认领或研判写入。被测回答明确请求提供威胁事件 ID 并给出格式示例，未猜测任何 ID；工具回执显示仅调用 skill 读取 threat-analysis 技能说明，结果为指令性文本，未出现 delegate_threat_analysis、analyze_threat_incident 等委派或 SOC 认领/研判写入操作。行为符合预期。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-MISSING"
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-006",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具回执显示：先调用 list_executable_inspections 取得目录，并从中选定唯一默认匹配的“设备综合巡检”(definitionVersion V5，runtimeInputSchema 为空，无需额外必填输入)；随后用返回的 taskId=task-bfc6f1c0e99a488988fa5d6949cd3a35、definitionVersion=V5 和稳定 requestId=inspection-A-001-20261022T100418Z 调用 start_inspection，scope 为 {\"type\":\"ASSET_IDS\",\"assetIds\":[\"A-001\"]}，回执返回 runId=run-4074cb8db6f14ceeabec1c1622ff363c、状态 RUNNING、conclusionStatus PENDING。结果查询连续三次超时后，回答如实说明未取得结论/报告/下载链接，未编造结果、未重复发起、未以全量巡检冒充完成，并用同一 runId 建立续查提醒。回答中的关键数据（模板名、V5、scope、runId、状态、超时情况、提醒 ID）均可由同一 Session 的工具回执佐证，符合预期要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-006"
+}

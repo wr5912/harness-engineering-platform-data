@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "指定设备：172.16.1.155；请为 172.16.1.155 到 172.16.2.103 开通 TCP 19433 访问策略。"
+  ],
+  "assistant_texts": [
+    "**结论：本轮未能进入策略草稿准备 —— 当前会话未暴露策略端点解析工具，按合同要求停止，未创建草稿、未下发。**\n\n你提供的参数本身是完整的，我已提取如下（仅本轮请求，尚未执行）：\n\n| 参数 | 值 |\n|---|---|\n| 操作 / 动作 | `ADD` / `ALLOW`（\"开通\"） |\n| 源端点 | `172.16.1.155` |\n| 目的端点 | `172.16.2.103` |\n| 协议 / 目的端口 | `TCP` / `19433` |\n| 设备线索 | `172.16.1.155`（原话\"指定设备\"，原样透传给 Platform 解析） |\n\n**能力缺口与证据：**\n- 按 `workbench-policy-endpoint-resolution/v1` 合同，第一个动作必须是端点解析工具；当前工具目录只返回了巡检相关的 `mcp__inspection__*`，以及委派、文件、搜索类工具，**没有策略端点解析能力**。\n- 已额外核验 `sec-ops` MCP 服务器的资源与资源模板，均为空（`resources: []`、`resourceTemplates: []`），不构成替代的策略工具入口。\n- 按规则，工具目录缺少或重复对应工具时停止并报告，不改用相似工具、不调用 SOC 资产查询自行解析、不猜测设备。\n\n**这说明什么、不说明什么：** 这是本 DSH 运行时的策略工具目录缺口，**不**意味着 `172.16.1.155` 或 `172.16.2.103` 不存在、未纳管，也不代表 Platform 已受理或拒绝过该请求。\n\n**下一步（未执行）：** 请在挂载了 `workbench-policy-endpoint-resolution/v1` 端点解析及后续 prepare 能力的会话/Profile 中重新发起同一请求；参数如上，无需修改。工具可用后我会先解析端点（含设备门禁），展示五元组需求理解与草稿，\"执行\"一词另行触发受信确认。"
+  ],
+  "session_id": "session-4a48324f-50d7-4ca4-8532-7d45493efe3c",
+  "turns": [
+    {
+      "assistant_text": "**结论：本轮未能进入策略草稿准备 —— 当前会话未暴露策略端点解析工具，按合同要求停止，未创建草稿、未下发。**\n\n你提供的参数本身是完整的，我已提取如下（仅本轮请求，尚未执行）：\n\n| 参数 | 值 |\n|---|---|\n| 操作 / 动作 | `ADD` / `ALLOW`（\"开通\"） |\n| 源端点 | `172.16.1.155` |\n| 目的端点 | `172.16.2.103` |\n| 协议 / 目的端口 | `TCP` / `19433` |\n| 设备线索 | `172.16.1.155`（原话\"指定设备\"，原样透传给 Platform 解析） |\n\n**能力缺口与证据：**\n- 按 `workbench-policy-endpoint-resolution/v1` 合同，第一个动作必须是端点解析工具；当前工具目录只返回了巡检相关的 `mcp__inspection__*`，以及委派、文件、搜索类工具，**没有策略端点解析能力**。\n- 已额外核验 `sec-ops` MCP 服务器的资源与资源模板，均为空（`resources: []`、`resourceTemplates: []`），不构成替代的策略工具入口。\n- 按规则，工具目录缺少或重复对应工具时停止并报告，不改用相似工具、不调用 SOC 资产查询自行解析、不猜测设备。\n\n**这说明什么、不说明什么：** 这是本 DSH 运行时的策略工具目录缺口，**不**意味着 `172.16.1.155` 或 `172.16.2.103` 不存在、未纳管，也不代表 Platform 已受理或拒绝过该请求。\n\n**下一步（未执行）：** 请在挂载了 `workbench-policy-endpoint-resolution/v1` 端点解析及后续 prepare 能力的会话/Profile 中重新发起同一请求；参数如上，无需修改。工具可用后我会先解析端点（含设备门禁），展示五元组需求理解与草稿，\"执行\"一词另行触发受信确认。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "24ba29b8-11f9-4a3b-8fb5-62ee5a499437"
+    }
+  ]
+}

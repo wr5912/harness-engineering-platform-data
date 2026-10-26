@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期要求基于真实资产、巡检或探测结果逐台分析三台设备状态，区分离线与探测不可达，并给出可核对的下一步。被测回答仅声明已启动子智能体并等待结果，未给出任何具体分析结论、状态区分或下一步动作。工具证据显示主会话两次 delegate_fault_analysis 只返回 started subagent，子智能体中三个 get_graph_resolve_ip_host 调用的回执均为 {\"msg\":\"操作成功\",\"code\":200}，不包含资产、状态、覆盖或事件等实质数据，也未见子智能体最终结论回传。因此没有任何真实工具数据支撑回答中的关键分析，且回答本身不满足预期要求，应判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-002"
+}

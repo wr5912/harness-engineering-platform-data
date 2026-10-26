@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-007",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：第二轮仅调用 get_inspection_result 并复用同一 Session 中的 runId(run-a31b93d032e740b99d45f963ab4b77e2)，未重新调用 start_inspection。工具回执返回 status/resultStatus=PARTIAL、conclusionStatus=ABNORMAL、errorMessage 存在，回答如实报告了 PARTIAL 与 ABNORMAL 及证据缺口说明。回答中的设备数量与统计（应检查 12 台、实际观测 12 台、在线 6/离线 5/未取得 1、漏洞 12 台未发现、基线 12 台未纳入判定）均与回执 businessSummary 一致。回执提供非空 reportDownloadUrl，回答原样给出该绝对地址且未自行拼接。运行标识与回执 runId 一致，且明确说明未发起新巡检。整体满足预期全部要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-007"
+}

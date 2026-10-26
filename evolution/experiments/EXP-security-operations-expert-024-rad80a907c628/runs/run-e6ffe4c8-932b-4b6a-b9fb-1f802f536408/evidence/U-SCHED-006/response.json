@@ -1,0 +1,79 @@
+{
+  "inputs": [
+    "创建一个每隔 30 分钟威胁研判的定时任务。",
+    "删除这个定时研判任务。"
+  ],
+  "assistant_texts": [
+    "已创建每隔 30 分钟自动威胁研判定时任务。\n\n- **任务 ID**：`schedule-764f0b9a-44b8-478d-affc-8b8e645d66f2`\n- **规则**：每隔 30 分钟（1800 秒）\n- **下次到期时间**：2026-10-22 11:16:18 UTC（北京时间 19:16:18）\n- **当前状态**：`scheduled`（已排期，绑定本 Session）\n\n说明：\n- 任务尚未执行，仅完成创建和排期。到期后由本地受信桥调用研判流程，每次只研判一条待研判事件；若上一条研判仍在运行，会跳过本次心跳、不排队。\n- 该提醒仅绑定当前会话；会话结束后不再投递。",
+    "已删除定时研判任务 `schedule-764f0b9a-44b8-478d-affc-8b8e645d66f2`（自动威胁研判-每30分钟）。\n\n后续不再触发自动威胁研判。如之前有已排队但未投递的心跳已一并停止；该操作不影响正在运行中的研判（本次查询时无运行中任务）。"
+  ],
+  "session_id": "session-10a06f15-78ea-4b7c-a921-43cbae58e8d5",
+  "turns": [
+    {
+      "assistant_text": "已创建每隔 30 分钟自动威胁研判定时任务。\n\n- **任务 ID**：`schedule-764f0b9a-44b8-478d-affc-8b8e645d66f2`\n- **规则**：每隔 30 分钟（1800 秒）\n- **下次到期时间**：2026-10-22 11:16:18 UTC（北京时间 19:16:18）\n- **当前状态**：`scheduled`（已排期，绑定本 Session）\n\n说明：\n- 任务尚未执行，仅完成创建和排期。到期后由本地受信桥调用研判流程，每次只研判一条待研判事件；若上一条研判仍在运行，会跳过本次心跳、不排队。\n- 该提醒仅绑定当前会话；会话结束后不再投递。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "15ebb8c4-0d40-48b8-9f37-f3364b7fdf2d"
+    },
+    {
+      "assistant_text": "已删除定时研判任务 `schedule-764f0b9a-44b8-478d-affc-8b8e645d66f2`（自动威胁研判-每30分钟）。\n\n后续不再触发自动威胁研判。如之前有已排队但未投递的心跳已一并停止；该操作不影响正在运行中的研判（本次查询时无运行中任务）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "59dcf5c5-081d-40d6-bd9c-39d3deee0401"
+    }
+  ]
+}

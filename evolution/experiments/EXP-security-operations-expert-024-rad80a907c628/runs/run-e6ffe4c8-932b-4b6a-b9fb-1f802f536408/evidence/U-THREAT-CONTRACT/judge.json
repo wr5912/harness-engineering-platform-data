@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "证据中仅有主会话两次工具调用：调用 skill(threat-analysis) 与 delegate_threat_analysis(事件 INC-20261015-000002)，后者仅返回 'started subagent 3b92ac73-...'，即子会话尚未产出任何结果。没有任何 JSON 分析产物、五源证据内容、模型原始响应、模型与推理设置、原机械校验结果、四阶段完成记录、run_id 摘要/报告保存回执，也没有报告 persistence MCP 返回的下载地址，更无法核对可读文字中是否出现内部 E 编号、verified_facts 是否把事件或规则声明当作独立观察、处置建议 target 是否只含 host_name/ip/port/asset_id 且端口范围合法等输出合同细则。因此既无证据表明输出合同校验通过，也无证据表明明确失败，只能判 inconclusive。"
+  },
+  "checks": {
+    "session_id": "session-ccfc59eb-316d-4a24-9fd6-390d76acf1d4",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-THREAT-CONTRACT",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

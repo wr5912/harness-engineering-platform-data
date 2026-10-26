@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "响应处置支持哪些能力？"
+  ],
+  "assistant_texts": [
+    "## 结论\n\n“响应规划”能力是**受控、零工具、单次**的模型内规划，且默认由 Guard 拒绝；它**不包含**确认、保存、执行或监控。\n\n## 当前能力范围\n\n| 项目 | 支持情况 |\n|---|---|\n| 结构化响应规划 | 仅在受信 Runtime 于模型外完成身份、租户、会话、授权、候选集合与冻结上下文验证，并开启受信 Gate 后，执行**一次**零工具规划 |\n| 输入 | 严格符合冻结的输入 schema，只含 `schema_version`、`request_id`、`incident_summary`、`confirmed_evidence`、`constraints`、`requested_output` |\n| 输出 | 严格符合输出 schema，只含 `schema_version`、`request_id`、`plan`、`assumptions`、`risks`、`evidence_refs`，并原样复用 `request_id` |\n| 工具与副作用 | 无（不调用 SOC、巡检、策略、应急、Schedule 等任何工具） |\n\n## 不支持的能力\n\n- 模型自行判断或补造授权来源；\n- 确认、保存、下发、执行、监控与效果验证——这些均由**外部响应生命周期控制面**负责；\n- 绕过审批或 Gate 的规划调用。\n\n**能力缺口说明**：`delegate_response_planning` 默认被 Guard 拒绝，本会话未见模型外受信 Gate 输入，因此本轮**尚未执行**任何响应规划。如需实际处置，请走应急指令（`确认执行`）或策略配置（`执行`）的受信确认路线。"
+  ],
+  "session_id": "session-79491d32-a4b7-4b80-9e1d-0585042d68a2",
+  "turns": [
+    {
+      "assistant_text": "## 结论\n\n“响应规划”能力是**受控、零工具、单次**的模型内规划，且默认由 Guard 拒绝；它**不包含**确认、保存、执行或监控。\n\n## 当前能力范围\n\n| 项目 | 支持情况 |\n|---|---|\n| 结构化响应规划 | 仅在受信 Runtime 于模型外完成身份、租户、会话、授权、候选集合与冻结上下文验证，并开启受信 Gate 后，执行**一次**零工具规划 |\n| 输入 | 严格符合冻结的输入 schema，只含 `schema_version`、`request_id`、`incident_summary`、`confirmed_evidence`、`constraints`、`requested_output` |\n| 输出 | 严格符合输出 schema，只含 `schema_version`、`request_id`、`plan`、`assumptions`、`risks`、`evidence_refs`，并原样复用 `request_id` |\n| 工具与副作用 | 无（不调用 SOC、巡检、策略、应急、Schedule 等任何工具） |\n\n## 不支持的能力\n\n- 模型自行判断或补造授权来源；\n- 确认、保存、下发、执行、监控与效果验证——这些均由**外部响应生命周期控制面**负责；\n- 绕过审批或 Gate 的规划调用。\n\n**能力缺口说明**：`delegate_response_planning` 默认被 Guard 拒绝，本会话未见模型外受信 Gate 输入，因此本轮**尚未执行**任何响应规划。如需实际处置，请走应急指令（`确认执行`）或策略配置（`执行`）的受信确认路线。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "d73c386d-4a79-4bde-a3ac-4789caaea446"
+    }
+  ]
+}

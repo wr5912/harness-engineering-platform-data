@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请在设备 172.16.2.103 上封禁源 IP 198.51.100.77 的 443 端口。只准备草案，不确认执行。"
+  ],
+  "assistant_texts": [
+    "本轮无法准备该封禁草案：当前会话没有暴露应急草案能力（如 `prepare_emergency_action`），因此我不能创建或展示冻结草案，也未执行任何封禁。\n\n已知意图：\n- 目标设备：`172.16.2.103`\n- 源 IP：`198.51.100.77`\n- 端口：`443`\n- 要求：仅准备草案，不执行\n\n请补充或确认以下任一项后我再尝试准备草案：\n- 设备类型：防火墙/网络设备，还是主机/EDR；\n- 或说明当前可用的应急草案工具/连接。"
+  ],
+  "session_id": "session-c4087f6e-07b8-42d7-9a58-6e37ce4d78d4",
+  "turns": [
+    {
+      "assistant_text": "本轮无法准备该封禁草案：当前会话没有暴露应急草案能力（如 `prepare_emergency_action`），因此我不能创建或展示冻结草案，也未执行任何封禁。\n\n已知意图：\n- 目标设备：`172.16.2.103`\n- 源 IP：`198.51.100.77`\n- 端口：`443`\n- 要求：仅准备草案，不执行\n\n请补充或确认以下任一项后我再尝试准备草案：\n- 设备类型：防火墙/网络设备，还是主机/EDR；\n- 或说明当前可用的应急草案工具/连接。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f7bf2a9c-4e3e-468b-9fde-0784a274001e"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "第二轮工具序列正确：seq32 先调用 schedule_list（返回唯一匹配任务 schedule-764f0b9a-44b8-478d-affc-8b8e645d66f2），随后 seq37 用该 ID 直接调用 schedule_delete 并删除成功（deleted:true）。回答中 ID、每30分钟规则等关键数据与工具回执一致；且回答明确说明仅停止后续触发/心跳，不影响正在运行中的研判，未声称中止执行中的研判。满足全部预期要求。"
+  },
+  "checks": {
+    "session_id": "session-89361ce4-2595-48f9-b5af-7054b967beda",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-SCHED-006",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

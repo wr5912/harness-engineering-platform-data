@@ -1,0 +1,79 @@
+{
+  "inputs": [
+    "创建一个每隔 30 分钟威胁研判的定时任务。",
+    "把刚才的定时研判改成每隔 20 分钟。"
+  ],
+  "assistant_texts": [
+    "已创建自动威胁研判定时任务：\n\n- **任务 ID**：`schedule-1bca2e6d-26c1-43c3-91fc-3786f4f38448`\n- **规则**：每 30 分钟触发一次（`everySeconds: 1800`）\n- **下次到期时间**：2026-10-22 19:13:38（北京时间，UTC+8；对应 UTC 11:13:38）\n- **绑定**：本 Session\n\n说明：\n- 该提醒已创建并进入调度，但**尚未执行**任何研判。\n- 到期后由本地受信桥触发威胁研判，每次只研判一条待处理事件；若上一条研判仍在运行，本次心跳会跳过且不排队。\n- 研判是否完成，需以返回事件 ID 和 Run ID 的工具结果为准，提醒投递成功不等于研判完成。",
+    "已修改定时研判任务：\n\n- **任务 ID**：`schedule-1bca2e6d-26c1-43c3-91fc-3786f4f38448`（未变）\n- **新周期**：每 20 分钟触发一次（`everySeconds: 1200`）\n- **下次到期时间**：2026-10-22 19:03:56（北京时间，UTC+8；对应 UTC 11:03:56）\n- 任务标题仍为“自动威胁研判-每30分钟”，绑定本 Session，规则已按新周期原地更新，`prompt` 未改动。\n\n注意：本次修改尚未触发任何研判；到期后仍按每次一条待处理事件执行，上一条未完成时跳过本次心跳。"
+  ],
+  "session_id": "session-d15a5b3d-9361-4e2d-a0e8-b9b4b224b7be",
+  "turns": [
+    {
+      "assistant_text": "已创建自动威胁研判定时任务：\n\n- **任务 ID**：`schedule-1bca2e6d-26c1-43c3-91fc-3786f4f38448`\n- **规则**：每 30 分钟触发一次（`everySeconds: 1800`）\n- **下次到期时间**：2026-10-22 19:13:38（北京时间，UTC+8；对应 UTC 11:13:38）\n- **绑定**：本 Session\n\n说明：\n- 该提醒已创建并进入调度，但**尚未执行**任何研判。\n- 到期后由本地受信桥触发威胁研判，每次只研判一条待处理事件；若上一条研判仍在运行，本次心跳会跳过且不排队。\n- 研判是否完成，需以返回事件 ID 和 Run ID 的工具结果为准，提醒投递成功不等于研判完成。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "d2b6a452-ad14-46d8-8f9b-0cd9ad37f752"
+    },
+    {
+      "assistant_text": "已修改定时研判任务：\n\n- **任务 ID**：`schedule-1bca2e6d-26c1-43c3-91fc-3786f4f38448`（未变）\n- **新周期**：每 20 分钟触发一次（`everySeconds: 1200`）\n- **下次到期时间**：2026-10-22 19:03:56（北京时间，UTC+8；对应 UTC 11:03:56）\n- 任务标题仍为“自动威胁研判-每30分钟”，绑定本 Session，规则已按新周期原地更新，`prompt` 未改动。\n\n注意：本次修改尚未触发任何研判；到期后仍按每次一条待处理事件执行，上一条未完成时跳过本次心跳。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "073259cc-86ac-42a1-80b9-ab0982080a32"
+    }
+  ]
+}

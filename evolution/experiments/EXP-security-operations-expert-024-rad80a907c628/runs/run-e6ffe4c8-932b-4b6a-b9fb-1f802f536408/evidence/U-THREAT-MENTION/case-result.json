@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-MENTION",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：工具轨迹显示已调用 delegate_threat_analysis 且 prompt 中包含原样事件 ID INC-20260917-000001，路由正确；但工具结果仅为 'started subagent 01a0b5df...'，未包含研判取证、模型推理、校验、摘要与报告、SOC 回写、下载链接等 U-THREAT-FAST 所要求的证据，回答文本也未说明委派进行中或任何结果。现有证据不足以确认满足全部证据要求，也不足以判定不满足（委派可能仍在进行），故为 inconclusive。",
+  "evidence_ref": "evidence/U-THREAT-MENTION"
+}

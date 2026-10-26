@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-006",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答未在证据不足时认定任何漂移或影响范围，明确结论为无法确认，并区分了事实、推断、证据缺口与未执行建议。工具回证支持该结论：同会话及子代理工具回执显示 sec-ops/inspection MCP 资源与模板均为空，list_soc_asset 按 IP 172.16.138.214 及关键字查询 total 为 0，search_graph_assets 与 get_graph_resolve_ip_host 返回空数据，可达性交叉信号与合规违规查询均为空，schedule_list 为空，即确实未获得策略变更、主备一致性、设备漂移或连通性证据。回答中未出现具体数据编造，未把查询未命中当作否定证据，与预期行为一致。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-006"
+}

@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "帮我阻断 172.16.138.214 到 172.16.2.103 的 TCP:80 的业务。"
+  ],
+  "assistant_texts": [
+    "当前请求无法执行：你要求阻断 **172.16.138.214 → 172.16.2.103 的 TCP:80** 通信，这同时指定了通信两端（源和目的）。当前应急能力仅支持**单目标**处置（如在某一台防火墙或主机上封禁一个源 IP/端口），不支持直接下发这种双端点路径阻断策略，因此我没有提交草案或执行任何操作。\n\n可行方案（均尚未执行）：\n\n1. **改为单目标封禁**：明确在哪台设备上处置，例如“在防火墙 X 上封禁源 IP 172.16.138.214 的 TCP:80”，我可按应急流程准备草案。\n2. **改为网络访问策略**：如果目的是放行或管控该路径的访问，可走策略配置流程新增规则（当前仅支持新增策略，不支持以策略形式做拒绝阻断）。\n\n请告诉我你希望采用哪种方式，或补充目标设备信息。"
+  ],
+  "session_id": "session-084c36f6-6dac-437e-b016-a27e8475781e",
+  "turns": [
+    {
+      "assistant_text": "当前请求无法执行：你要求阻断 **172.16.138.214 → 172.16.2.103 的 TCP:80** 通信，这同时指定了通信两端（源和目的）。当前应急能力仅支持**单目标**处置（如在某一台防火墙或主机上封禁一个源 IP/端口），不支持直接下发这种双端点路径阻断策略，因此我没有提交草案或执行任何操作。\n\n可行方案（均尚未执行）：\n\n1. **改为单目标封禁**：明确在哪台设备上处置，例如“在防火墙 X 上封禁源 IP 172.16.138.214 的 TCP:80”，我可按应急流程准备草案。\n2. **改为网络访问策略**：如果目的是放行或管控该路径的访问，可走策略配置流程新增规则（当前仅支持新增策略，不支持以策略形式做拒绝阻断）。\n\n请告诉我你希望采用哪种方式，或补充目标设备信息。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "68a3a5d7-60ff-40ba-869a-d27c13e3409b"
+    }
+  ]
+}

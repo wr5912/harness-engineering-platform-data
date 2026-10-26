@@ -1,0 +1,62 @@
+{
+  "inputs": [
+    "你好，这是语音测试。"
+  ],
+  "assistant_texts": [
+    "你好！语音测试已收到，一切正常。\n\n我是运行在容器内的网络安全运营专家，可以协助你完成以下防御性安全工作：\n\n- **威胁研判**：对指定 SOC 事件 ID（`INC-YYYYMMDD-NNNNNN`）执行取证与研判\n- **故障排查**：调查资产、事件、网络路径、采集覆盖与可达性问题\n- **即时巡检**：查询巡检模板、发起巡检并获取报告\n- **策略配置**：准备新增网络访问策略草稿（确认前不下发）\n- **应急指令**：准备单动作、单目标应急处置草案\n- **安全调查**：基于已有材料开展防御性安全分析\n\n请告诉我你需要处理什么任务，或直接描述你的需求即可。如果涉及具体事件、资产或 IP，也一并提供，方便我快速定位。"
+  ],
+  "session_id": "session-69d2a1c8-eb10-4402-b0a2-d7f21dd8dc6b",
+  "turns": [
+    {
+      "assistant_text": "你好！语音测试已收到，一切正常。\n\n我是运行在容器内的网络安全运营专家，可以协助你完成以下防御性安全工作：\n\n- **威胁研判**：对指定 SOC 事件 ID（`INC-YYYYMMDD-NNNNNN`）执行取证与研判\n- **故障排查**：调查资产、事件、网络路径、采集覆盖与可达性问题\n- **即时巡检**：查询巡检模板、发起巡检并获取报告\n- **策略配置**：准备新增网络访问策略草稿（确认前不下发）\n- **应急指令**：准备单动作、单目标应急处置草案\n- **安全调查**：基于已有材料开展防御性安全分析\n\n请告诉我你需要处理什么任务，或直接描述你的需求即可。如果涉及具体事件、资产或 IP，也一并提供，方便我快速定位。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "eed39d00-7ac1-4c25-a652-d267ed5a1987"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-005",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期明确要求第二轮先调用 schedule_list 查询，再用匹配任务的 ID 调 schedule_update。工具回执显示第二轮直接调用了 schedule_update（seq 32），未见任何 schedule_list 调用。虽然 schedule_update 未改动 prompt 且回复正确说明了更新后的 everySeconds:1200，但缺少前置查询这一硬性要求，因此判定失败。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-005"
+}

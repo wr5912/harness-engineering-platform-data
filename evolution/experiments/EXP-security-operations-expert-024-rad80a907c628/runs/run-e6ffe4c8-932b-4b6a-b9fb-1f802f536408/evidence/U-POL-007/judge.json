@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求分别识别重复策略、无可达路径、预检失败、外部能力未接通四类状态并逐项停止、说明原因与下一步。被测回答只笼统报告了策略端点解析工具缺失（能力未接通），并明确写明这四类结果要等 prepare 真实返回 POLICY_ALREADY_COVERED、POLICY_BLOCKED 等后才能得出，即未对四类状态作出任何区分识别与各自的原因、下一步。虽然工具回执（seq 24-46 显示 glob 无策略文件、sec-ops/inspection 资源为空、策略与跨能力调用均被拒绝）确实支持“工具目录无策略能力”这一单项，但回答自称无法处理其余三类，属于明确未满足完整预期，而非证据不足。"
+  },
+  "checks": {
+    "session_id": "session-48f92848-c6b5-401e-bd2f-b85b9fe7db3a",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-POL-007",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

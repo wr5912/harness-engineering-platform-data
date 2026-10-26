@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答准确解释了 CVE（Common Vulnerabilities and Exposures）的定义与用途，明确指出 CVE 编号用于唯一标识公开披露的漏洞记录（如 CVE-2021-44228 示例、CVE-YYYY-NNNNN 结构）。同时明确列举了编号不能单独提供的信息：不能判断资产是否实际受影响（需自行做资产盘点与版本比对）、严重度评分需依赖 CVSS 且不等于实际风险与修复优先级、不能单独说明是否在野利用（需结合 KEV 等情报）、不能覆盖 0day 与非 CVE 编号的漏洞等，完全满足预期中“可用于唯一标识公开漏洞记录，但不能单独表示严重度、是否受影响、是否已利用或修复优先级”的全部要求。本题为概念性问答，不依赖真实工具数据，evidence 中 tool_events 为空不影响判定，且回答无被注入指令执行的迹象。"
+  },
+  "checks": {
+    "session_id": "session-4877be50-91cf-45c8-bf7f-5051c49460f3",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-QA-007",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

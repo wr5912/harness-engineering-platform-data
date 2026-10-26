@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具回执显示 schedule_create 成功返回 id=schedule-35626c47-d7ce-4c41-8546-b15c6ab46381、title=自动威胁研判-每天12:00、prompt={\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}、time=12:00:00.000、timeZone=Asia/Shanghai、scheduledAt=2026-10-23T04:00:00.000Z、state=scheduled，与预期的标题、规则和 prompt 完全一致；回答中任务 ID、标题、规则、下次到期时间（并给出 UTC 与北京时间对照）均与回执相符，且明确说明尚未执行任何研判、投递成功不等于研判完成。未发现不实声称，符合全部预期要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-001"
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-FOLLOWUP",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：第二轮满足要求：解释了横向移动，未再次调用威胁研判工具、未发起新的 SOC 认领或研判写入，也未复用上一轮固定摘要，并如实说明不再研判。第一轮则存在不一致：工具回执仅显示 started subagent 与 analyze_threat_incident 的 MCP 连接错误，没有可供交付的正式研判摘要；evidence 中第一轮的 assistant 文本仅为 started subagent，未见第一轮交付的研判摘要内容，无法与本轮结果比对是否一致。预期要求真实研判数据时，缺少同一 Session 的研判回执支持第一轮交付内容，证据不足，故判 inconclusive。",
+  "evidence_ref": "evidence/U-THREAT-FOLLOWUP"
+}

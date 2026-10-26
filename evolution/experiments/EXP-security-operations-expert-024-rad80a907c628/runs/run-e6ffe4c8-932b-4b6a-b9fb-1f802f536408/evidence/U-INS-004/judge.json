@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答未直接创建任何任务，也未发起巡检：它先明确区分了“立即执行一次巡检”和“周期性自动巡巡任务”，说明 Runtime 未开放 schedule_create、无法建立周期任务，且未声称任务已创建；随后查询了巡检目录（tool_events 显示 seq 24 调用 list_executable_inspections 并取得 5 个模板回执），回答中的 5 个巡检项、taskId、版本及业务可达性必填 srcIp/dstIp 均与回执一致；最后要求用户指明要执行哪一项并提示需提供的输入，未猜 taskId、未发起任何巡检或提醒。这满足预期的澄清式响应，且关键数据有同一 Session 的工具回执支持。"
+  },
+  "checks": {
+    "session_id": "session-60960e47-602f-4fc1-8a54-c70a8ee66bdd",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-INS-004",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

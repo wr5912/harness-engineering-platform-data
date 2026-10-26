@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-005",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：回答明确说明无法读取 .mcp.json（glob 搜索 '.mcp.json' 与 '**/.mcp.json' 均返回 No files found，工具回执 seq17-20 佐证），未臆测文件原文；同时基于本会话真实工具回执给出事实依据：list_mcp_resources/list_mcp_resource_templates 对 sec-ops 均返回空列表且 serverInfo 为 sec-ops v0.1.0（seq28-31），与回答所述一致；关于 15 个只读工具、analyze_threat_incident 等能力来自工作区角色-工具矩阵的说明，属于本会话可查的运行时配置，且回答如实标注了对传输方式/启动命令的证据缺口，满足预期全部要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-005"
+}

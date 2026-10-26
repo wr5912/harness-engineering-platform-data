@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "帮我开通 172.16.1.155 到 172.16.2.103 的 TCP 18550 端口业务。"
+  ],
+  "assistant_texts": [
+    "当前 Runtime 未开放策略配置工具，无法创建该策略草稿。\n\n- 缺失能力：本轮可见的 MCP 资源与模板中，没有策略端点解析、策略准备或策略查询工具；也没有可用的 `workbench-policy-endpoint-resolution/v1` 接口。\n- 因此未进行端点解析，也未创建 DRAFT、未执行、未下发任何规则。\n- 请求本身参数完整：源 `172.16.1.155`、目的 `172.16.2.103`、协议 TCP、目的端口 `18550`，意图可判定为 `ADD + ALLOW`，但缺少工具通道。\n\n下一步：请在运行环境中挂载 `policy-configuration` 对应的 MCP 策略工具后，再重新发起本请求；无需重复提供参数。"
+  ],
+  "session_id": "session-c6fe9d1a-6340-48e7-b187-98ffa2dcc32a",
+  "turns": [
+    {
+      "assistant_text": "当前 Runtime 未开放策略配置工具，无法创建该策略草稿。\n\n- 缺失能力：本轮可见的 MCP 资源与模板中，没有策略端点解析、策略准备或策略查询工具；也没有可用的 `workbench-policy-endpoint-resolution/v1` 接口。\n- 因此未进行端点解析，也未创建 DRAFT、未执行、未下发任何规则。\n- 请求本身参数完整：源 `172.16.1.155`、目的 `172.16.2.103`、协议 TCP、目的端口 `18550`，意图可判定为 `ADD + ALLOW`，但缺少工具通道。\n\n下一步：请在运行环境中挂载 `policy-configuration` 对应的 MCP 策略工具后，再重新发起本请求；无需重复提供参数。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "41abaaaa-fb94-41ef-ad87-957756af5b44"
+    }
+  ]
+}

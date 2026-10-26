@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-010",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答的关键事实均有同 Session 工具回执支撑：list_executable_inspections 返回的 5 个模板（业务可达性巡检 V2、设备状态专项巡检 V2、基线核查专项巡检 V2、设备综合巡检 V5、漏洞专项巡检 V1）及各自巡检项、srcIp/dstIp 必填、'沿用任务范围/当前资产清单'等描述与回答一致；skill 回执明确三个 MCP 工具不创建任务、周期执行需 DSH 定时能力、runId 轮询与 reportDownloadUrl 判定、PARTIAL 含证据缺口，回答据此如实说明无创建入口、报告地址取自服务返回、未臆造权限名称。回答明确'本轮尚未发起任何巡检、报告查询或响应处置'，将草案、评估与执行区分清楚，未把建议描述为已执行，处置入口与权限边界与 skill 规定一致。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-010"
+}

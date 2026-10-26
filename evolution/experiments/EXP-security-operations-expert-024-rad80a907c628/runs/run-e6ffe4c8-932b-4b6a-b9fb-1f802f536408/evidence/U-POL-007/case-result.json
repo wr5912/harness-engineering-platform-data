@@ -1,0 +1,7 @@
+{
+  "case_id": "U-POL-007",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期要求分别识别重复策略、无可达路径、预检失败、外部能力未接通四类状态并逐项停止、说明原因与下一步。被测回答只笼统报告了策略端点解析工具缺失（能力未接通），并明确写明这四类结果要等 prepare 真实返回 POLICY_ALREADY_COVERED、POLICY_BLOCKED 等后才能得出，即未对四类状态作出任何区分识别与各自的原因、下一步。虽然工具回执（seq 24-46 显示 glob 无策略文件、sec-ops/inspection 资源为空、策略与跨能力调用均被拒绝）确实支持“工具目录无策略能力”这一单项，但回答自称无法处理其余三类，属于明确未满足完整预期，而非证据不足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-POL-007"
+}

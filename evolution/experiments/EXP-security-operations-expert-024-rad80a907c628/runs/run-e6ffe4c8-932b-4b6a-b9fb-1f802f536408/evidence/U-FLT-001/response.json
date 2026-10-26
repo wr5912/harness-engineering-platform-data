@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "排查 172.16.1.165 到 172.16.2.100（版本服务业务服务器）无法访问，并给出修复建议；后续基于正式故障结果发起处置。"
+  ],
+  "assistant_texts": [
+    "我先按故障排查流程委派 SOC 只读取证，当前有三个同内容的委派请求被重复发起（前两次返回启动成功）。我会等待同一实际调查结果返回，避免重复发起新巡检或处置。"
+  ],
+  "session_id": "session-be739b11-1a06-4c17-a5f3-05f1cff1c467",
+  "turns": [
+    {
+      "assistant_text": "我先按故障排查流程委派 SOC 只读取证，当前有三个同内容的委派请求被重复发起（前两次返回启动成功）。我会等待同一实际调查结果返回，避免重复发起新巡检或处置。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "d0027113-0545-43f7-a9cd-5c007aebd31e"
+    }
+  ]
+}

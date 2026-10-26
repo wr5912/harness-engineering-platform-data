@@ -1,0 +1,62 @@
+{
+  "inputs": [
+    "请简短说明你能提供哪些安全分析帮助，并给出适合继续追问的问题。"
+  ],
+  "assistant_texts": [
+    "我提供**防御性安全运营**方面的帮助，主要能力如下：\n\n**核心能力**\n- **威胁研判**：对 SOC 事件（`INC-YYYYMMDD-NNNNNN`）执行固定取证与研判，生成可下载报告。\n- **故障排查**：查资产、事件、网络路径、采集覆盖、可达性等，区分事实与推断。\n- **即时巡检**：查询巡检模板、发起一次巡检并获取结果与报告链接。\n- **应急指令**：单动作、单目标处置（防火墙封禁/解封、主机隔离等）的草案准备与结果查询。\n- **策略配置**：新增 IPv4 主机到主机、单端口网络访问策略的草稿准备。\n- **定时任务**：周期自动威胁研判或周期巡检（当前会话若开放 Schedule 能力）。\n- **通用安全调查**：基于你提供的材料做结构化分析与风险梳理。\n\n**边界**：不提供攻击步骤、不泄露凭据；未执行的操作我会明确标注\"尚未执行\"。\n\n---\n\n**适合继续追问的问题示例：**\n\n1. 事件研判：`请研判 INC-20261022-000001`\n2. 故障排查：`10.x.x.x 到 10.x.x.x 的 3389 端口为什么不通？`（或\"这台资产的采集为什么失败？\"）\n3. 巡检：`有哪些可执行的巡检模板？` / `对全部资产发起一次巡检`\n4. 应急：`封禁 IP x.x.x.x` / `查询刚才的应急操作状态`\n5. 策略：`允许 10.0.0.5 访问 10.0.0.8 的 443 端口`\n6. 定时任务：`每天中午 12 点自动从 SOC 拉取一条威胁事件研判`\n\n你想从哪一项开始？"
+  ],
+  "session_id": "session-75b7ed83-c7a9-4964-b9dd-93f53809d6f0",
+  "turns": [
+    {
+      "assistant_text": "我提供**防御性安全运营**方面的帮助，主要能力如下：\n\n**核心能力**\n- **威胁研判**：对 SOC 事件（`INC-YYYYMMDD-NNNNNN`）执行固定取证与研判，生成可下载报告。\n- **故障排查**：查资产、事件、网络路径、采集覆盖、可达性等，区分事实与推断。\n- **即时巡检**：查询巡检模板、发起一次巡检并获取结果与报告链接。\n- **应急指令**：单动作、单目标处置（防火墙封禁/解封、主机隔离等）的草案准备与结果查询。\n- **策略配置**：新增 IPv4 主机到主机、单端口网络访问策略的草稿准备。\n- **定时任务**：周期自动威胁研判或周期巡检（当前会话若开放 Schedule 能力）。\n- **通用安全调查**：基于你提供的材料做结构化分析与风险梳理。\n\n**边界**：不提供攻击步骤、不泄露凭据；未执行的操作我会明确标注\"尚未执行\"。\n\n---\n\n**适合继续追问的问题示例：**\n\n1. 事件研判：`请研判 INC-20261022-000001`\n2. 故障排查：`10.x.x.x 到 10.x.x.x 的 3389 端口为什么不通？`（或\"这台资产的采集为什么失败？\"）\n3. 巡检：`有哪些可执行的巡检模板？` / `对全部资产发起一次巡检`\n4. 应急：`封禁 IP x.x.x.x` / `查询刚才的应急操作状态`\n5. 策略：`允许 10.0.0.5 访问 10.0.0.8 的 443 端口`\n6. 定时任务：`每天中午 12 点自动从 SOC 拉取一条威胁事件研判`\n\n你想从哪一项开始？",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "1c3d94cd-8328-4627-971f-0cbb8ac8f0e5"
+    }
+  ]
+}

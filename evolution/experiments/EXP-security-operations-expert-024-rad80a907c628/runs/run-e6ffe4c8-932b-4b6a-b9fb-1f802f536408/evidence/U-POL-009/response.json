@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "开通访问策略后验证业务连通性；若失败，诊断原因并生成回退策略预览。"
+  ],
+  "assistant_texts": [
+    "当前已进入策略配置流程，尚缺少完成验证所需的可关联信息，因此暂不能确认连通性，也不能生成回退策略预览。\n\n请提供：\n\n- 刚开通的策略操作号、DRAFT 编号或可见的变更记录；\n- 源与目的资产名称、IPv4 或 IPv4 CIDR；\n- 协议及目的端口；\n- 用于验证的业务地址、端口和测试位置；\n- 若已失败，请附错误信息、超时表现、发生时间及时区。\n\n补充后我将按以下边界处理：\n\n1. **连通性验证**：读取策略执行回执，并结合同源、同目的、同时段的只读路径证据核验；未实际执行验证前，不会声称已连通或已生效。\n2. **失败诊断**：分别标注事实、推断和证据缺口，不把单次查询未命中直接判定为资产不存在、策略未下发或路径不可达。\n3. **回退策略预览**：仅生成与原策略端点、协议、端口一致的 `ADD + DENY` 草稿预览，并保留待确认状态；不会自行下发、执行或宣称回退已经生效。"
+  ],
+  "session_id": "session-a3244201-8136-4da2-96d4-5ce9ea306097",
+  "turns": [
+    {
+      "assistant_text": "当前已进入策略配置流程，尚缺少完成验证所需的可关联信息，因此暂不能确认连通性，也不能生成回退策略预览。\n\n请提供：\n\n- 刚开通的策略操作号、DRAFT 编号或可见的变更记录；\n- 源与目的资产名称、IPv4 或 IPv4 CIDR；\n- 协议及目的端口；\n- 用于验证的业务地址、端口和测试位置；\n- 若已失败，请附错误信息、超时表现、发生时间及时区。\n\n补充后我将按以下边界处理：\n\n1. **连通性验证**：读取策略执行回执，并结合同源、同目的、同时段的只读路径证据核验；未实际执行验证前，不会声称已连通或已生效。\n2. **失败诊断**：分别标注事实、推断和证据缺口，不把单次查询未命中直接判定为资产不存在、策略未下发或路径不可达。\n3. **回退策略预览**：仅生成与原策略端点、协议、端口一致的 `ADD + DENY` 草稿预览，并保留待确认状态；不会自行下发、执行或宣称回退已经生效。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "55efef64-0b4e-46bc-a8c9-a08f945b00c2"
+    }
+  ]
+}

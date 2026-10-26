@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "工具回执显示同一 Session 仅调用了 skill 加载与 mcp__inspection__list_executable_inspections，未调用 start_inspection；list 返回 5 个模板，回答中的名称、巡检项、版本与说明均与回执一致（设备综合巡检 V5 含三项及“帮我做一次巡检”说法、设备状态专项 V2、基线核查专项 V2、漏洞专项 V1、业务可达性 V2 且 srcIp/dstIp 必填），并如实说明本轮仅查询目录未发起巡检，无编造内容。"
+  },
+  "checks": {
+    "session_id": "session-befd0100-939c-4f78-87ee-0ce664c5c7f9",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-INS-002",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

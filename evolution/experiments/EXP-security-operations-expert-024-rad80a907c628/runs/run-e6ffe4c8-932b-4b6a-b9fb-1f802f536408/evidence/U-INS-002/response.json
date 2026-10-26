@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "请列出当前可用的巡检项，只查询目录，不要执行巡检。"
+  ],
+  "assistant_texts": [
+    "当前可执行巡检项共 **5 个**（均为已发布、绑定启用任务且版本一致的模板）：\n\n| 名称 | 巡检项 | 版本 | 说明 |\n|---|---|---|---|\n| 设备综合巡检（默认） | 设备在线状态、设备漏洞、基线核查 | V5 | 检查全域设备并按设备汇总问题、生成报告；支持“帮我做一次巡检”等说法 |\n| 设备状态专项巡检 | 设备在线状态 | V2 | 检查当前资产清单中的设备在线状态，不含漏洞和基线 |\n| 基线核查专项巡检 | 基线核查 | V2 | 读取 SOC 最近一次基线核查结论、未核查原因和问题明细 |\n| 漏洞专项巡检 | 设备漏洞 | V1 | 检查当前资产清单中的设备漏洞及风险建议，不含在线状态和基线 |\n| 业务可达性巡检 | 业务可达性 | V2 | 需执行时提供源 IP 和目标 IP（必填，可选协议/端口/业务名称），查询 SOC 拓扑与策略计算结果，不代表应用访问实测 |\n\n说明：\n- 本轮仅查询目录，**未发起任何巡检**。\n- 需要执行时请指定巡检项；如选择业务可达性巡检，还需提供源 IP 和目标 IP。"
+  ],
+  "session_id": "session-efe7b086-2348-417d-9e89-4d3afa8a05d8",
+  "turns": [
+    {
+      "assistant_text": "当前可执行巡检项共 **5 个**（均为已发布、绑定启用任务且版本一致的模板）：\n\n| 名称 | 巡检项 | 版本 | 说明 |\n|---|---|---|---|\n| 设备综合巡检（默认） | 设备在线状态、设备漏洞、基线核查 | V5 | 检查全域设备并按设备汇总问题、生成报告；支持“帮我做一次巡检”等说法 |\n| 设备状态专项巡检 | 设备在线状态 | V2 | 检查当前资产清单中的设备在线状态，不含漏洞和基线 |\n| 基线核查专项巡检 | 基线核查 | V2 | 读取 SOC 最近一次基线核查结论、未核查原因和问题明细 |\n| 漏洞专项巡检 | 设备漏洞 | V1 | 检查当前资产清单中的设备漏洞及风险建议，不含在线状态和基线 |\n| 业务可达性巡检 | 业务可达性 | V2 | 需执行时提供源 IP 和目标 IP（必填，可选协议/端口/业务名称），查询 SOC 拓扑与策略计算结果，不代表应用访问实测 |\n\n说明：\n- 本轮仅查询目录，**未发起任何巡检**。\n- 需要执行时请指定巡检项；如选择业务可达性巡检，还需提供源 IP 和目标 IP。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "1ab5069f-9a12-46a9-b1dd-25d6c5febac9"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-FAST",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：证据仅显示主会话调用了 threat-analysis 技能并委派 delegate_threat_analysis，返回子智能体启动 ID 51a4d27d-f39b-430f-9f6b-659adf19e79a；没有任何子智能体内部工具回执（如 analyze_threat_incident、名单匹配、LLM 调用标记、报告存储结果），也没有主会话最终摘要文本。无法确认名单命中情况、llm_invoked=false、快速分类路径是否走通，也无法核对证据/实体/时间/报告内容与下载链接是否真实且一致，故不能判定通过或失败。",
+  "evidence_ref": "evidence/U-THREAT-FAST"
+}

@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "预期要求询问事件 ID、不猜测 ID、不发起 SOC 认领或研判写入。被测回答明确请求提供威胁事件 ID 并给出格式示例，未猜测任何 ID；工具回执显示仅调用 skill 读取 threat-analysis 技能说明，结果为指令性文本，未出现 delegate_threat_analysis、analyze_threat_incident 等委派或 SOC 认领/研判写入操作。行为符合预期。"
+  },
+  "checks": {
+    "session_id": "session-56d74d89-847d-498b-aa55-f5007270a496",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-THREAT-MISSING",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

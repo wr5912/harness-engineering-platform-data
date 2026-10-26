@@ -1,0 +1,43 @@
+{
+  "inputs": [
+    "开启会话自动播报，分析可疑登录，并保留尚未确认的状态。"
+  ],
+  "assistant_texts": [
+    "started subagent d663dbb1-b5de-4694-b249-53df6ec8953b"
+  ],
+  "session_id": "session-a06c27d0-dc77-491c-9306-6eaa6fdfe116",
+  "turns": [
+    {
+      "assistant_text": "started subagent d663dbb1-b5de-4694-b249-53df6ec8953b",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5852f601-3be6-4dd5-9abc-b796b5024b4e"
+    }
+  ]
+}

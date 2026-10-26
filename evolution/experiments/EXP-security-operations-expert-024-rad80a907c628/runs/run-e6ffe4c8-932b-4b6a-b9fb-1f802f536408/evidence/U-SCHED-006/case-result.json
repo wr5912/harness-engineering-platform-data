@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-006",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：第二轮工具序列正确：seq32 先调用 schedule_list（返回唯一匹配任务 schedule-764f0b9a-44b8-478d-affc-8b8e645d66f2），随后 seq37 用该 ID 直接调用 schedule_delete 并删除成功（deleted:true）。回答中 ID、每30分钟规则等关键数据与工具回执一致；且回答明确说明仅停止后续触发/心跳，不影响正在运行中的研判，未声称中止执行中的研判。满足全部预期要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-006"
+}

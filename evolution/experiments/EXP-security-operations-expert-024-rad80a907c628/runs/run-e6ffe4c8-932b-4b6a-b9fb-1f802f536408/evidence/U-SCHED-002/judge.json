@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "schedule_create 调用参数 title=自动威胁研判-每30分钟、every_seconds=1800 符合预期；工具回执返回 id=schedule-d90ecffc-3d0e-4f1f-b655-923ad0e1e7ca、everySeconds=1800、scheduledAt=2026-10-22T11:11:30.756Z、state=scheduled，回答中的任务标识、规则与下次到期时间与回执一致，并明确尚未执行威胁研判；未对周期或批量参数额外追问。"
+  },
+  "checks": {
+    "session_id": "session-d9c2406f-aabd-4754-af2c-5eaa427112f5",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-SCHED-002",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

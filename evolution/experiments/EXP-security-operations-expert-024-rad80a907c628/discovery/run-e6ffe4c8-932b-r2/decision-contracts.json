@@ -1,0 +1,371 @@
+{
+  "schema": "kev-decision-contracts/draft-set/v1",
+  "run_id": "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408",
+  "note": "仅参考合同草案，填写模板不等于已实现投影；CLI 没有 --contract 参数",
+  "contracts": [
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S01",
+      "site_key": "agent_route",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "这段用户输入该进入哪条主路由（应急 / 策略 / 威胁研判 / 故障排查 / 巡检 / 通用调查 / 直接回答 / 澄清）",
+      "implementation": "model",
+      "runtime_trigger": "会话首个模型响应前；前缀有真实用户消息且此前无 assistant/tool 活动（cybersecurity-routing-v1 边界）",
+      "required_state_fields": [
+        "用户输入指令",
+        "背景信息（仅 source.kind=user）"
+      ],
+      "candidate_builder": "静态八类合同 cybersecurity-routing-contract/v1",
+      "candidate_parameter_binding": "候选绑定为空 {}",
+      "target_rule": "用户明确的首要业务意图；并列多任务无优先级时标 ambiguous",
+      "ambiguity_policy": "留待复核或澄清，不强行八选一",
+      "fallback": "现有 Harness 路由；未映射 Agent 时留空",
+      "replaced_call": "主模型对首轮请求的意图判断（决定后续技能与工具）",
+      "expected_savings": "一次 8 选 1 分类；不含后续工具选择与执行",
+      "full_path_cost": "1 次 8 选 1；省去主模型对整段请求的意图推理",
+      "source_refs": [
+        "49 条投影 / 16 条未投影"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S02",
+      "site_key": "skill_load",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "是否需要加载技能、加载哪一个、同一技能是否重复加载",
+      "implementation": "hybrid",
+      "runtime_trigger": "路由已定，当前步骤准备加载技能",
+      "required_state_fields": [
+        "技能目录",
+        "用户请求",
+        "已加载技能"
+      ],
+      "candidate_builder": "目录内技能名精确匹配",
+      "candidate_parameter_binding": "技能名精确字符串",
+      "target_rule": "只加载完成当前职责所需技能；同一技能不重复",
+      "ambiguity_policy": "无匹配技能时说明缺口，不猜技能名",
+      "fallback": "未加载技能，按通用能力处理",
+      "replaced_call": "每次响应中由模型决定是否加载技能",
+      "expected_savings": "减少重复加载与跨域加载",
+      "full_path_cost": "1 次技能选择；重复加载时额外 1–2 轮",
+      "source_refs": [
+        "EMG-003 重复 3 次；POL-009 跨域 2 次"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S03",
+      "site_key": "capability_gap",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "所需工具不在目录时，探测到哪一步停止：直接声明缺口 / 枚举资源 / 检索文件 / 扩大探测面",
+      "implementation": "hybrid",
+      "runtime_trigger": "所需能力不在工具目录，或工具返回不可用、空资源",
+      "required_state_fields": [
+        "工具目录",
+        "MCP 资源与模板",
+        "错误回执"
+      ],
+      "candidate_builder": "声明缺口 / 有限探测 / 换路径",
+      "candidate_parameter_binding": "探测次数上限；禁止凭据与实现面路径",
+      "target_rule": "以当前目录与回执为准；缺口说明可核对",
+      "ambiguity_policy": "目录与回执冲突时以回执为准并保留冲突",
+      "fallback": "停止该路线并说明缺口",
+      "replaced_call": "缺口下的多轮资源枚举与文件检索",
+      "expected_savings": "减少 8 轮重复枚举",
+      "full_path_cost": "观测 4–8 轮（EMG-001/003、POL-003/007）",
+      "source_refs": [
+        "EMG-001 14 步、EMG-003 12 步、POL-003/007 多轮"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S04",
+      "site_key": "cross_domain_call",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "路由确定后是否借用其他业务域能力（委派、其他技能、其他 MCP）",
+      "implementation": "code",
+      "runtime_trigger": "已进入某业务路由，下一步选择工具",
+      "required_state_fields": [
+        "当前路由",
+        "工具白名单",
+        "Guard 回执"
+      ],
+      "candidate_builder": "本路由允许的工具集合",
+      "candidate_parameter_binding": "无（工具名 + 既有参数）",
+      "target_rule": "只调用本路由允许的能力；跨域请求拆分或拒绝",
+      "ambiguity_policy": "多路由并发请求先请用户确认首项",
+      "fallback": "运行时 Guard 拒绝",
+      "replaced_call": "越域工具调用及其拒绝往返",
+      "expected_savings": "减少无效调用与轮次",
+      "full_path_cost": "每次 1 轮，含拒绝回执与重试",
+      "source_refs": [
+        "EMG-001/002、POL-002/007/009、QA-005"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S05",
+      "site_key": "candidate_select",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "从目录/搜索结果中选唯一模板、唯一任务、知识库或设备",
+      "implementation": "hybrid",
+      "runtime_trigger": "目录或检索返回多个候选",
+      "required_state_fields": [
+        "候选列表",
+        "必填参数",
+        "匹配说法"
+      ],
+      "candidate_builder": "当前目录或检索结果",
+      "candidate_parameter_binding": "候选字段原样保留",
+      "target_rule": "唯一匹配才执行；模糊或多匹配先澄清",
+      "ambiguity_policy": "多匹配列出候选并追问",
+      "fallback": "无匹配时说明并停止",
+      "replaced_call": "目录候选的逐个比较",
+      "expected_savings": "减少误发起与重复查询",
+      "full_path_cost": "1 次目录比对；多候选时可能追问 1 轮",
+      "source_refs": [
+        "INS-001/002/005/006、QA-002/010"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S06",
+      "site_key": "parameter_binding",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "taskId / definitionVersion / requestId / runId / scope / 时区 / UUID 的取值与复用",
+      "implementation": "code",
+      "runtime_trigger": "选定候选后构造调用参数",
+      "required_state_fields": [
+        "目录回执的 taskId/definitionVersion",
+        "本轮 requestId",
+        "已有 runId",
+        "scope"
+      ],
+      "candidate_builder": "已选定的单一候选",
+      "candidate_parameter_binding": "原样复制回执字段；requestId 稳定；续查复用 runId；全量巡检省略 scope",
+      "target_rule": "不得改写或猜测标识",
+      "ambiguity_policy": "无法取得必填字段时停止并说明",
+      "fallback": "参数缺失时澄清",
+      "replaced_call": "参数复制、改写与重试",
+      "expected_savings": "避免重复运行与参数失真",
+      "full_path_cost": "1 次参数构造；重试时按次数累加",
+      "source_refs": [
+        "INS-001/005/006/007、POL-003 转录失真"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S07",
+      "site_key": "wait_retry",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "发起后是否轮询、超时重试几次、是否改期续查、是否重复发起",
+      "implementation": "hybrid",
+      "runtime_trigger": "发起返回运行中，或查询超时、失败",
+      "required_state_fields": [
+        "运行状态",
+        "错误类型",
+        "重试计数",
+        "已有 runId"
+      ],
+      "candidate_builder": "继续查询 / 有限重试 / 说明后改期",
+      "candidate_parameter_binding": "同一 runId；重试间隔与上限固定",
+      "target_rule": "不在不确定状态下重复发起；改期需授权",
+      "ambiguity_policy": "超限后保留 runId 交后续轮次",
+      "fallback": "说明当前状态并保留 runId",
+      "replaced_call": "轮询与重试循环",
+      "expected_savings": "减少重复发起与无效轮询",
+      "full_path_cost": "1–3 次查询；超时后改期另计",
+      "source_refs": [
+        "INS-006 三次超时后改期；INS-007 跨轮复用"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S08",
+      "site_key": "clarify",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "缺参数或有歧义时先问还是先做",
+      "implementation": "model",
+      "runtime_trigger": "必填参数缺失、指代无可见背景、请求含歧义",
+      "required_state_fields": [
+        "必填参数表",
+        "当前可见用户背景"
+      ],
+      "candidate_builder": "询问 / 按明确默认执行 / 停下",
+      "candidate_parameter_binding": "追问中列出的字段与工具 schema 一致",
+      "target_rule": "缺必要输入先问，不猜 ID 或对象",
+      "ambiguity_policy": "给出最小澄清问题",
+      "fallback": "无背景时请求补充",
+      "replaced_call": "缺参时的试错执行",
+      "expected_savings": "减少错误执行与返工",
+      "full_path_cost": "1 轮澄清；试错时额外 1–2 轮",
+      "source_refs": [
+        "QA-013、INS-004、POL-008/012、THREAT-MISSING、VOICE-003"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S09",
+      "site_key": "delegate",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "是否委派、委派粒度、是否重复委派、子代理结果如何收敛",
+      "implementation": "hybrid",
+      "runtime_trigger": "请求属于需要子代理的路线，或已有同内容委派",
+      "required_state_fields": [
+        "委派回执（started subagent）",
+        "子会话结果",
+        "超时状态"
+      ],
+      "candidate_builder": "单次委派 / 去重后委派 / 不委派",
+      "candidate_parameter_binding": "事件 ID 等参数原样传递",
+      "target_rule": "同内容只委派一次；结果回流后收敛并交付",
+      "ambiguity_policy": "子代理未返回时说明进行中或缺口",
+      "fallback": "主代理自行只读取证或请用户补充",
+      "replaced_call": "重复委派与结果等待",
+      "expected_savings": "减少并行重复子会话",
+      "full_path_cost": "每次委派 1 轮；重复委派成倍增加",
+      "source_refs": [
+        "FLT-001 3 次、FLT-002 2 次、FLT-006 4 次"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S10",
+      "site_key": "result_judge",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "基于回执判定结论：PARTIAL/ABNORMAL、事实-推断-缺口、数量、下载链接、是否声称完成",
+      "implementation": "model",
+      "runtime_trigger": "收到终态回执（巡检/研判/查询）",
+      "required_state_fields": [
+        "conclusionStatus",
+        "businessSummary",
+        "reportMarkdown",
+        "reportDownloadUrl",
+        "证据缺口"
+      ],
+      "candidate_builder": "按回执判定 / 说明缺口",
+      "candidate_parameter_binding": "字段原样引用；链接仅非空时给出",
+      "target_rule": "不改写结论；PARTIAL 必须说明缺口",
+      "ambiguity_policy": "字段互相矛盾时并列呈现并说明",
+      "fallback": "字段缺失时说明缺口，不补造",
+      "replaced_call": "结论段的自由生成（判定与措辞）",
+      "expected_savings": "避免结论与证据不一致",
+      "full_path_cost": "1 次回答；不一致时返工 1 轮",
+      "source_refs": [
+        "INS-001/007、FLT-009、POL-003、THREAT 全族"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S11",
+      "site_key": "schedule_param",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "daily / every / cron / 时间窗 / 标题 / 固定 prompt，以及更新与删除的前置查询",
+      "implementation": "code",
+      "runtime_trigger": "用户要求周期执行或修改、删除定时任务",
+      "required_state_fields": [
+        "周期/窗口/时区",
+        "固定 prompt",
+        "任务回执"
+      ],
+      "candidate_builder": "daily / every / cron / 先问后建 / 先查后改",
+      "candidate_parameter_binding": "规则、标题、prompt 按固定模板；任务 ID 来自回执",
+      "target_rule": "规则与回执一致；窗口不能准确表达时说明",
+      "ambiguity_policy": "多匹配任务时列出 ID、标题、规则",
+      "fallback": "能力不支持时说明缺口并建议外部调度",
+      "replaced_call": "定时规则的参数构造与改删前置查询",
+      "expected_savings": "减少错误创建与多触发",
+      "full_path_cost": "1 次创建；改/删各 1 轮，缺前置查询多 1 轮",
+      "source_refs": [
+        "SCHED-001–007、INS-005、VOICE-002"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S12",
+      "site_key": "capability_claim",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "是否声称某能力可用、任务已创建、报告已生成、已执行",
+      "implementation": "code",
+      "runtime_trigger": "回答中要声明能力可用、任务已创建、报告已生成或已执行",
+      "required_state_fields": [
+        "当前工具目录",
+        "MCP 资源",
+        "工具回执"
+      ],
+      "candidate_builder": "与目录/回执一致 / 说明未执行",
+      "candidate_parameter_binding": "声明引用回执字段原文",
+      "target_rule": "声明必须有目录或回执支持",
+      "ambiguity_policy": "目录与自述冲突时以目录为准并说明",
+      "fallback": "说明未执行或未验证",
+      "replaced_call": "能力可用性与完成度声明",
+      "expected_savings": "消除矛盾声明",
+      "full_path_cost": "1 次回答；矛盾声明导致复核返工",
+      "source_refs": [
+        "INS-004 与工具目录冲突；FLT-009 报告仅正文"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S13",
+      "site_key": "output_contract",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "JSON-only、指定语言、格式与篇幅、事实与建议分离",
+      "implementation": "code",
+      "runtime_trigger": "生成最终回答",
+      "required_state_fields": [
+        "用户指定的格式/语言/范围"
+      ],
+      "candidate_builder": "按用户指定 / 通用 Markdown",
+      "candidate_parameter_binding": "JSON-only 时全文为单个可解析对象",
+      "target_rule": "按指定格式与语言输出；事实与建议分离",
+      "ambiguity_policy": "格式要求与内容冲突时以格式为准并说明",
+      "fallback": "通用 Markdown",
+      "replaced_call": "回答格式与语言构造",
+      "expected_savings": "减少返工",
+      "full_path_cost": "1 次回答；不符合格式时返工",
+      "source_refs": [
+        "INS-003、QA-014、QA-006–009"
+      ]
+    },
+    {
+      "schema_version": "kev-decision-contract/v1",
+      "decision_site_id": "S14",
+      "site_key": "action_boundary",
+      "contract_version": "draft/v1",
+      "status": "draft",
+      "decision_question": "只准备草案、不确认、不下发；不支持的动作是否明确停止",
+      "implementation": "code",
+      "runtime_trigger": "涉及草案、确认、下发、恢复等写动作",
+      "required_state_fields": [
+        "路由态",
+        "确认词",
+        "Gate/Guard 回执"
+      ],
+      "candidate_builder": "只准备草案 / 停止 / 交受信插件",
+      "candidate_parameter_binding": "确认由受信插件绑定最新草案，模型不传签名",
+      "target_rule": "不得自行确认或下发；不支持时明确停止",
+      "ambiguity_policy": "能力边界不明时先核对工具目录",
+      "fallback": "说明能力边界与替代流程",
+      "replaced_call": "确认与下发判断",
+      "expected_savings": "避免越权与假成功",
+      "full_path_cost": "1 轮；越权尝试被拒时多 1 轮",
+      "source_refs": [
+        "EMG-001–003、POL-005/008/010/011、FLT-010"
+      ]
+    }
+  ]
+}

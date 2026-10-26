@@ -1,0 +1,7 @@
+{
+  "case_id": "U-POL-010",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期要求真实查询资产、拓扑、设备映射、型号能力和 ACL 模板，并调用一次无状态 Preview 生成 PPV 与确认提示。但工具回执显示本轮只调用了 skill 装载和 MCP 资源列表（均为空资源），没有调用端点解析、prepare 或 Preview，被测回答也自认“本轮尚未调用端点解析、prepare 或 Preview……没有真实资产/拓扑回执、设备候选、DRAFT、PPV 或 operation ID”，未生成任何 PPV。虽然该停手行为符合 Skill 对“要求有效期”时的边界规则，且没有确认/创建/提交/执行动作，但用户要求的核心产物（一次真实 Preview + PPV + 确认提示）明确缺失，属于明确不满足预期。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-POL-010"
+}

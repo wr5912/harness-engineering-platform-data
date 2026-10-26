@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "对资产标识 A-001 执行匹配的巡检。"
+  ],
+  "assistant_texts": [
+    "已按资产 `A-001` 发起匹配的**设备综合巡检**，当前运行中，尚未取得报告。\n\n- **巡检模板**：设备综合巡检（V5），巡检项：设备在线状态、设备漏洞、基线核查\n- **巡检范围**：`ASSET_IDS = [\"A-001\"]`\n- **runId**：`run-4074cb8db6f14ceeabec1c1622ff363c`\n- **状态**：`RUNNING`，结论状态 `PENDING`\n\n结果查询接口连续三次超时，因此未获得结论、报告正文或下载链接。已创建续查提醒 `schedule-076346e0-f1b7-4239-b02c-2711e6fb25ec`，计划于 60 秒后按原 `runId` 续查；这只是查询提醒，巡检不会重复发起。若续查仍不可用，我会如实报告状态和 `runId`，不补造结论。"
+  ],
+  "session_id": "session-ecdb7dc5-590e-490c-88b1-d409101a84f7",
+  "turns": [
+    {
+      "assistant_text": "已按资产 `A-001` 发起匹配的**设备综合巡检**，当前运行中，尚未取得报告。\n\n- **巡检模板**：设备综合巡检（V5），巡检项：设备在线状态、设备漏洞、基线核查\n- **巡检范围**：`ASSET_IDS = [\"A-001\"]`\n- **runId**：`run-4074cb8db6f14ceeabec1c1622ff363c`\n- **状态**：`RUNNING`，结论状态 `PENDING`\n\n结果查询接口连续三次超时，因此未获得结论、报告正文或下载链接。已创建续查提醒 `schedule-076346e0-f1b7-4239-b02c-2711e6fb25ec`，计划于 60 秒后按原 `runId` 续查；这只是查询提醒，巡检不会重复发起。若续查仍不可用，我会如实报告状态和 `runId`，不补造结论。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "33d9983c-07da-4a48-a775-0d2d654c1f25"
+    }
+  ]
+}

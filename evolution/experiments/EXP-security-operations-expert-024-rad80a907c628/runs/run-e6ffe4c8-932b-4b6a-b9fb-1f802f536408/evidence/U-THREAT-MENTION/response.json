@@ -1,0 +1,43 @@
+{
+  "inputs": [
+    "@威胁研判子智能体 请研判威胁事件 INC-20260917-000001。"
+  ],
+  "assistant_texts": [
+    "started subagent 01a0b5df-55fa-4d41-ac99-95bced36b423"
+  ],
+  "session_id": "session-64b26e1a-d682-4c6c-beee-44c4f5fc5e7d",
+  "turns": [
+    {
+      "assistant_text": "started subagent 01a0b5df-55fa-4d41-ac99-95bced36b423",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a846b11b-c6a7-40b2-9137-8dead6639457"
+    }
+  ]
+}

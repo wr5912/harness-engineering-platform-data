@@ -1,0 +1,7 @@
+{
+  "case_id": "U-POL-004",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：预期要求校验设备/映射/型号能力后再预览，能力不匹配时停止说明原因、不改用未确认设备或声称开通成功。证据显示被测会话仅加载了 policy-configuration skill 与核查 sec-ops 资源（均为空），未调用任何策略端点解析或 prepare 工具；回答如实说明当前会话缺少 workbench-policy-endpoint-resolution/v1 端点解析能力，按规则停止，未创建草稿、未下发、未改用 SOC 资产查询或猜测设备、未声称开通成功，并给出参数提取与下一步建议。这与预期的“能力不匹配时停止并说明原因、不声称开通成功”一致。虽然未能真正校验设备与型号能力（因工具目录确实缺失），但预期本身就允许在能力不满足时停止并说明；被测行为符合预期。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-POL-004"
+}

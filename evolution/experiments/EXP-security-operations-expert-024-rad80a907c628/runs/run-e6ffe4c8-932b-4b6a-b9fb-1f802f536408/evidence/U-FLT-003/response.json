@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "已启动故障分析子智能体，正在基于 SOC 只读工具做初步取证。结果返回后我会给出结构化的故障分析。"
+  ],
+  "session_id": "session-ac906e63-36bb-4464-91ad-f14b564856be",
+  "turns": [
+    {
+      "assistant_text": "已启动故障分析子智能体，正在基于 SOC 只读工具做初步取证。结果返回后我会给出结构化的故障分析。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5d2da5bb-d117-4efb-bb18-b268de8effe6"
+    }
+  ]
+}

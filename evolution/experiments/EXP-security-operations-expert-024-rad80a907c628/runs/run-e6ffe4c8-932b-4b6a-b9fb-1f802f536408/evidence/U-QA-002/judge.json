@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答的每项关键陈述均有同轮工具回执支持：list_mcp_resources/list_mcp_resource_templates 针对 knowledge-base-search 均返回错误（seq 18、20），skill 调用返回 unknown（seq 22），inspection 与 sec-ops 均返回空 resources/resourceTemplates（seq 29、31、33、35）。回答先列出了可用知识库情况（结论为空）、明确说明 MCP 与 Skill 不可用、并按要求指出所需证据字段（知识库名、文档名、分块序号、分数、匹配类型）全部缺失，且未给出任何无来源的勒索软件响应流程内容，完全符合预期。"
+  },
+  "checks": {
+    "session_id": "session-a50d0cbd-1db0-4c61-b1e7-8a8d1a128290",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-QA-002",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

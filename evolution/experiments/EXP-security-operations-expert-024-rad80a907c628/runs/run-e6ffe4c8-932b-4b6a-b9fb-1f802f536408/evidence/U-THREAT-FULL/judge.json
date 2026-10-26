@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "证据中仅有 skill 调用与 delegate_threat_analysis 的委派回执（started subagent 9637bdee-...），未见子智能体返回的研判结论、置信度、推理摘要、resultJson、校验结果、运行 ID、下载链接或 HTML 报告内容。无法判定五源融合/快速分类路由是否执行、结论与摘要是否来自同一 Run、报告呈现是否符合要求，也无从确认是否编造结论或展示校验提示，证据不足。"
+  },
+  "checks": {
+    "session_id": "session-e3b2f886-ec66-43a2-8347-9b084efff8a7",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-THREAT-FULL",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

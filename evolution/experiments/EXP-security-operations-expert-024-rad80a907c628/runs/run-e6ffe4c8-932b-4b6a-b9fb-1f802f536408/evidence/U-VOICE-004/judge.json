@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "被测三条回答均未调用工具，逐条保留了否定、风险、未确认与未完成状态，未见强行截断，与输入事实一致。但预期核心是自动播报场景下的摘要合成、TTS 分段关联、流式起播、关闭思考的摘要调用记录，以及双模型原版与整改版各重复三次的性能数据；证据中无任何工具回执、耗时、字数偏差、漏播或物理播放记录，无法核实这些要求，故判为证据不足而非通过或失败。"
+  },
+  "checks": {
+    "session_id": "session-eeae5be7-6196-48b8-bf66-2765c994394f",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-VOICE-004",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

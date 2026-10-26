@@ -1,0 +1,22 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答的关键数据均有同一 Session 的工具回执支撑：目录查询返回模板「设备状态专项巡检」（taskId task-ffbb9db47ecb4176a724547a965b4bde、V2、巡检项设备在线状态），描述明确含「检查当前资产清单中的设备在线状态」，支持“每次以当时资产清单为准”的表述；schedule_create 回执返回的提醒 ID schedule-d617fa1e-6092-478d-8e9d-778a282f5b87、everySeconds 600、scheduledAt 2026-10-22T10:13:56.620Z、state scheduled 与回答完全一致。回答明确说明仅为提醒创建、尚未执行巡检，未虚报执行结果，未虚构 scopeLabel 或设备数量。注意：本用例属隔离研究 Runtime 实际装载 DSH 原生 Schedule 的分支，schedule_create 真实成功返回，因此按预期创建阶段应通过；到期执行需后续真实到期消息与巡检回执另行判定，本证据集未含到期投递，但回答亦未声称已周期执行。"
+  },
+  "checks": {
+    "session_id": "session-74664602-656c-4b86-8bcb-15b74c925d44",
+    "workspace_id": "a8aa4a29-3bfc-499e-9be4-96a316f41fcd",
+    "session_title": "评审 U-INS-005",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}
