@@ -5,10 +5,14 @@ const assetIds = ['asset-0001', 'asset-0002', 'asset-0003', 'asset-0004', 'asset
 /** 规则只识别本智能体已声明的有限业务意图，不把测试题目作为路由键。 */
 export function classifyRequest(request: string): Intent {
   const text = request.toLowerCase().replace(/\s/g, '')
-  if (/重启|关机|下发|配置更改|删除设备|真实(?:设备)?健康检测|漏洞扫描/.test(text) && !/是不是|是否|说明|明确/.test(text)) return 'unsupported'
-  if (/只(?:读取|读|看|取|拉取)?(?:第?一|1|首)页|不要(?:继续|再读|读取后续|读后续)|仅(?:读取|读|看)?(?:第?一|1|首)页/.test(text)) return 'first-page'
+  if (/重启|关机|下发|配置更改|删除设备|漏洞扫描/.test(text)) return 'unsupported'
+  if (/(?:实际|真实)(?:设备)?健康检测/.test(text) && !/(?:是不是|是否(?:属于|是)?)(?:实际|真实)(?:设备)?健康检测/.test(text)) return 'unsupported'
+  const roleRequest = /你能|能如何|如何帮助|怎么开始|主要职责|说明职责|介绍职责|工作范围|业务范围|信息不足|需要.*了解/.test(text)
+  if (/(?:不要|禁止|暂不|先不|不必|无需|不允许)(?:执行|开始|进行|完成|启动|开展|做)?(?:一次)?(?:完整|全部|所有)?(?:的)?(?:台账)?巡检/.test(text)) return roleRequest ? 'role' : 'unsupported'
+  const firstPage = /(?:第?一|第?1|首)页/.test(text)
+  if (firstPage && /只(?:读取|读|看|取|拉取)?(?:第?一|第?1|首)页|仅(?:读取|读|看)?(?:第?一|第?1|首)页|不要(?:继续|再读|读取后续|读后续)/.test(text)) return 'first-page'
   if (/你是谁|你的身份|什么身份|介绍自己/.test(text)) return 'identity'
-  if (/你能|能如何|如何帮助|怎么开始|主要职责|工作范围|业务范围|信息不足|需要.*了解/.test(text)) return 'role'
+  if (roleRequest) return 'role'
   if (/(巡检|台账|资产|设备)/.test(text) && /(全部|所有|完整|五台|5台|生成.*报告|处理.*分页|开始.*巡检|执行.*巡检|做.*巡检)/.test(text)) return 'full'
   return 'unsupported'
 }

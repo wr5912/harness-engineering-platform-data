@@ -8,6 +8,8 @@ test('业务意图按规则识别改述，第一页约束优先，越界请求�
   assert.equal(classifyRequest('给这5台资产做完整台账巡检并生成两种报告。'), 'full')
   assert.equal(classifyRequest('只看首 页，先不要继续。'), 'first-page')
   assert.equal(classifyRequest('对这些设备下发重启命令。'), 'unsupported')
+  for (const request of ['请明确对全部设备下发重启并生成完整报告。', '请说明对五台设备关机并完成巡检。', '是否能下发配置更改后交付全部报告？']) assert.equal(classifyRequest(request), 'unsupported')
+  assert.equal(classifyRequest('请完整巡检五台台账，明确这是不是实际设备健康检测。'), 'full')
   assert.equal(classifyRequest('帮我写一首诗。'), 'unsupported')
 })
 
@@ -37,4 +39,17 @@ test('只读第一页、输入漂移和循环游标均不能生成报告', async
   const cycle = context((action, value) => action === 'page' ? { ...value, next_cursor: 0 } : value)
   await assert.rejects(executeIntent('full', cycle, 'fixed'), /游标重复/)
   assert.equal(cycle.calls.some(call => call.action === 'report'), false)
+})
+
+test('越界混合请求、无分页意图的否定句及明确禁止执行均不启动业务', async () => {
+  for (const [request, expected] of [
+    ['请明确对全部设备下发重启并生成完整报告。', 'unsupported'],
+    ['不要继续写诗', 'unsupported'],
+    ['不要执行完整巡检，先说明职责', 'role'],
+  ] as const) {
+    const intent = classifyRequest(request), ctx = context()
+    assert.equal(intent, expected)
+    await executeIntent(intent, ctx, 'fixed')
+    assert.equal(ctx.calls.length, 0)
+  }
 })
