@@ -1,0 +1,19 @@
+{
+  "schema_version": "kev-decision-contract/v1",
+  "decision_site_id": "replace-with-specific-site",
+  "contract_version": "v1",
+  "status": "draft",
+  "runtime_trigger": "Only from prefix state; not the current logged choice",
+  "decision_question": "Which bounded action should be selected?",
+  "implementation": "model|code|hybrid",
+  "state_builder": "versioned pure function",
+  "required_state_fields": [],
+  "candidate_builder": "current registry or explicit static contract",
+  "candidate_parameter_binding": "same rules for every candidate; no future IDs",
+  "target_rule": "independent evidence and acceptable-action policy",
+  "ambiguity_policy": "clarify, defer, or multiple acceptable actions as explicitly defined",
+  "fallback": "existing Harness or explicit unsupported state",
+  "expected_savings": "avoidable full-path cost including parameter generation and fallback",
+  "evaluation_slices": [],
+  "source_refs": []
+}

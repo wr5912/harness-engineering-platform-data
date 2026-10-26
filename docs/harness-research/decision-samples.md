@@ -37,3 +37,10 @@
 本次结构参考 [LocalLLaMA/typed-decisions 的固定版本](https://huggingface.co/datasets/LocalLLaMA/typed-decisions/tree/7189f46b02248bd2569df7325c9df8e3b24e90a7)（Apache-2.0）：共享 `state` 下的命名问题、类型与规则、独立监督分布及构造来源。借鉴结构，不导入整套数据；其中教师多次采样得到的 `gold` 不等于人工真值，平台单次模型建议也不能自称具有相同构造依据。
 
 原研究结合用户提供的决策模型资料、Kev 固定版数据读取合同，以及 Agent Lightning 的局部决策、过程监督、AgentTuning 的轨迹质量、去重与分组划分、教师标签及校准分离方法。它们支持数据构建选择，不证明本平台数据或下游模型已经通过质量验收。Kev 旧版格式属于历史互操作依据，不能覆盖当前程序的版本合同。原资料摘要、一手论文及接口链接保留于[固定来源](README.md)，采用外部新版本时另行核验。
+
+
+## KEV 原生训练交接
+
+人员复核并明确用途后保存平台实际导出回执；kev-trace-pipeline/scripts/platform_export.py 支持 choice/noul/score 的 v2 到原生格式转换，保持标签、软分布、来源和用途。转换与原始轨迹 IR 是两条输入路径，不能把 IR verified 当作平台人员复核。真实回执缺失、未分组、同源跨用途或来源核验不通过时阻断；不靠新组名或重写摘要修补。
+
+详细办理路径见[算力变体研究](compute-variants.md)与[KEV 技能配置](kev-medium-variant-skills.md)。当前固定抽样任务到保存与回读结束；后续技能不通过改变会话范围接管当前任务。

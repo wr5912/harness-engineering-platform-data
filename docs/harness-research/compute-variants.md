@@ -37,3 +37,46 @@
 比较既看任务质量，也看资源证据及来源可比性。关键任务退步、两侧都失败、重复不足、输入变化、资源未知或收益未达标都不能认定等效。保留 continue 或 inconclusive，不放宽原计划让比较通过。
 
 平台的 `eligible_for_end` 只是当前计划下的条件判断，不代表总体任务分布上的统计非劣性。人员复核实际 Run、输出与完整工具结果后，由界面确认 `end`；助手不伪造确认或直接写状态绕过。终端身份限定继承关系，不代表发布、实例切换或所有环境成本更低。
+
+
+## KEV 中算力变体：当前平台的办理路径
+
+前端中算力请求为 planning_intent=plan_only。当前专项只允许 compute-variant-research、platform_agents、platform_task，不能调用 datasets/* 或其他技能；本次只做诊断和计划，不连接服务器、不训练、不创建变体。计划先写固定来源、真实决策点、已有证据、缺口与下一阶段，不要求用户先补齐所有训练参数才能策划。
+
+### 一次一阶段
+
+| 阶段 | 当前入口/产物 | 通过依据 |
+|---|---|---|
+| 策划 | 当前算力专项 | 完整固定父版、实际 Run、候选决策职责及缺口 |
+| 抽取 | 指定 Run 的 decision-sample-extraction | 单题 v2 合同，真实来源，自动保存 suggested 后回读 |
+| 复核与用途 | 现有决策样本页面 | 逐题 reviewed、decision_time_reviewed，显式四种用途 |
+| KEV 数据转换 | 后续获授权任务中的平台 v2 桥接器 | 回执/分组/标签检查通过，四份实际文件与摘要 |
+| 编码与训练准备 | kev-training | 固定 checkout/checkpoint/tokenizer，实际原生编码通过 |
+| 训练与校准 | 真实获授权训练环境 | 作业回执、日志、模型工件、独立校准及开发报告 |
+| 接入与等效比较 | 实际服务/工具绑定后按现有算力流程 | generated/built/frozen/loaded/compared 分别取证，end 由人员确认 |
+
+语义路由与多候选判断可进入模型候选；固定目录读取、精确匹配、ID/版本绑定和结构化状态映射优先代码。模型调用边界不是正确标签，工具外层成功也不是业务成功。缺少当时上下文、预算或合法候选时保留歧义，允许零条训练数据。
+
+### 模型与训练资源字段
+
+保留任务上下文 medium 的实际值：base_model_mode/base_model_id/base_model_revision、training_server_mode、server_id、工作目录与 credential_ref 等。catalog 的 provider/model 是运行路由，不自动等于可下载、可 LoRA 训练的权重。suggest/later 保持待选；只询问会改变当前阶段决策的缺口。服务器 probe 只检查 TCP/SSH banner，不证明认证、GPU、依赖或训练可用。
+
+训练参数属于独立 handoff 工件，不塞入现有严格 ComputePlan/platform_task.plan。当前平台没有训练 start/status/cancel/collect 动作，kind=training 只是已有任务类别；不得猜 API、清空 task_context、执行临时 shell 或调用内部实现弥补接口缺失。
+
+### 四份数据与来源
+
+平台导出的 training/development/calibration/test 分别保持用途；原始 AI 建议经人员复核仍保留 model_suggestion 与 uncalibrated 来源。转换只把真实标签放到 KEV 问题监督字段，不把 basis、observed_action 或未来 outcome 塞入 state。按来源组、历史组、Run、Session 和等价输入连接分组；同一来源家族不跨用途。原生 group_id 使用关联闭包，原平台组另存审计字段，防止下游校准忽略自定义组字段。
+
+已有分区不再运行官方通用转换或随机 split。训练只传 train.jsonl；开发选配方，校准拟合概率和约定阈值，test 冻结后作最终验收。一条 trace 拆成多行不能制造独立验证。
+
+### 固定配方与官方技能
+
+本套新增八个适配技能以及官方完整 kev-finetune、kev-deploy，统一存于 .agents/skills。主流程按当前阶段取用，不一开始加载全部正文。官方原文固定于 2074cc44256200bb37540103fa4572901faa10f3，许可及文件摘要在各目录 UPSTREAM.json。
+
+平台适配采用原生 KEV LoRA recipe，四项候选增删增强显式关闭，保留候选顺序洗牌；它不等于官方 Modal 默认配方。实际原生 tokenizer/renderer 检查使用 384/1024/2048 的固定初始预算；字符数不是合格依据。训练命令、checkpoint、校准报告、保存的温度、服务与完整效果分别判断。
+
+calibration-report 仅生成报告；只有按已评审业务校准口径执行对应写入步骤，才能说新 checkpoint 应用了温度。最终 test 不参与拟合。原生上游对自定义业务分布校准有明确限制，具体支持选项和含义在训练技能 calibration 参考中说明，不能隐去偏差。
+
+训练完成后还需真实推理服务或工具 schema。当前生成合同是 LangGraph AOT + callTool + 文本 infer，没有专用 KEV 权重/概率绑定；不能凭模型工件存在说 Variant 已装载。完整路径成本包括状态构造、候选生成、回退、重试、工具和服务延迟。
+
+管理模型能力较弱时，使用一次一阶段、单题提交、实际字段复制和脚本状态判定。报告 blocked 就停止依赖步骤，保存已有成果。此适配不自动更改业务父版模型，也不构成 GPT-5.5 等模型的实测成绩。

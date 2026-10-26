@@ -1,0 +1,36 @@
+{
+  "schema_version": "kev-training-request/v1",
+  "intent": "prepare_training",
+  "source": {
+    "agent_id": "REPLACE_WITH_REAL_AGENT_ID",
+    "parent_experiment_id": "REPLACE_WITH_REAL_EXPERIMENT_ID",
+    "parent_ref": "git:REPLACE_WITH_REAL_40_HEX_COMMIT",
+    "source_run_ids": [
+      "REPLACE_WITH_REAL_RUN_ID"
+    ]
+  },
+  "dataset": {
+    "kind": "platform-v2",
+    "directory": "/absolute/training-host/reviewed-kev-dataset"
+  },
+  "checkpoint": {
+    "init_from": "jaredpalmer/kev-4b@REPLACE_WITH_PINNED_40_HEX_REVISION",
+    "training_config_path": "/absolute/training-host/checkpoint-source/training_config.json",
+    "training_config_sha256": "REPLACE_WITH_VERIFIED_64_HEX_SHA256"
+  },
+  "environment": {
+    "kev_root": "/absolute/training-host/kev",
+    "run_root": "/absolute/training-host/new-run",
+    "server_id": "REPLACE_WITH_REGISTERED_SERVER_ID",
+    "credential_ref": "ref:replace-with-existing-reference"
+  },
+  "training": {
+    "epochs": 1,
+    "lr": 2e-05,
+    "batch": 1,
+    "accum": 8,
+    "seed": 0,
+    "calibration_folds": 5,
+    "calibration_policy": "report_only"
+  }
+}

@@ -8,7 +8,7 @@
 
 ```text
 AGENTS.md                 管理身份、业务原则与约束
-.agents/skills/            13 项管理、研究、审查及通用表达 Skill
+.agents/skills/            23 项管理、研究、KEV 数据训练及通用表达 Skill
 docs/harness-research/     当前研究方法、经验和固定来源索引
 agents/                   业务智能体入口、需求和共享评测口径
 evolution/                Experiment、Candidate、Run、决策样本和历史输入
@@ -18,9 +18,9 @@ workspace.json            工作区身份和原生扩展声明
 .local/                   会话、设置、实例 HOME、制品和凭据，忽略 Git
 ```
 
-管理技能共13项：`workspace-management`、`task-builder`、`agent-maintenance`、`mcp-composition`、`compute-variant-research`、`decision-sample-extraction`、`harness-guided-workflow`、`harness-evolution`、`harness-experiment-fusion`、`research-eval`、`legacy-asset-intake`、`reviewing-agent-skills`、`user-facing-output`。方法入口见[研究方法索引](docs/harness-research/README.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本；其他智能体可在各自作用域内复用。
+管理技能共 23 项。原有 13 项管理、研究和表达技能保持原入口；新增 KEV 套件 10 项：`kev-trace-pipeline`、`dsh-trace-audit`、`kev-decision-discovery`、`kev-sample-extraction`、`kev-sample-labeling`、`kev-dataset-build`、`kev-dataset-audit`、`kev-training`，以及官方完整 `kev-finetune`、`kev-deploy`。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
 
-平台代码、研发 Skill、校验器和 Runtime 适配器仍在程序仓库；管理助手不承担平台源码开发。业务 Candidate 内的角色与 Skill 属于被管理智能体，不自动加入管理助手技能。两仓原则按职责独立维护。
+平台代码、研发 Skill、平台核心校验器和 Runtime 适配器仍在程序仓库；管理助手不承担平台源码开发。本仓库 KEV 技能附带离线数据转换、验证和训练计划脚本，不新增平台训练执行接口。业务 Candidate 内的角色与 Skill 属于被管理智能体，不自动加入管理助手技能。两仓原则按职责独立维护。
 
 本仓库保留迁移前的 Git 历史，以便恢复固定 Baseline、父版本和历史算法。旧提交中的平台代码是历史来源，不是另一份当前程序。
 
@@ -40,6 +40,8 @@ export HARNESS_ASSET_ROOT="$HOME/harness-engineering-platform-data"
 数据根由 `HARNESS_ASSET_ROOT`、本机部署定位文件或默认位置选择，不依赖当前目录。首次启动缺数据仓库、必要配置或平台账号时进入初始化向导，可选择已有目录、克隆或新建。新建空白工作区可以使用基础平台；完整管理能力还需本仓库的管理资产，页面按实际缺失项给出连接或恢复提示，不从程序目录回退加载业务副本。
 
 平台默认加载数据根规则和表达 Skill，其余管理 Skill 按任务读取。技能目录只扫描本工作区 `.agents/skills/` 与显式声明扩展的技能目录。变更后用新管理会话或恢复会话核对实际规则与任务行为，保存文件不能代替生效验证。
+
+“请 AI 策划算力变体 → 中算力变体”沿用 `compute-variant-research`，本次只策划。原始 Run 抽样、人员复核与分用途导出沿用现有页面；普通管理入口可按需发现 KEV 技能，独立获授权训练环境可使用随附脚本。当前程序没有训练作业执行器或专门 KEV 工件绑定合同；增加技能不意味着按钮已经自动训练或变体已经等效。
 
 平台账号保存在 `.local/credentials/admin.json`，模型环境按需保存到 `.local/credentials/models.llm-api-key`。原生 MCP 设置和模型偏好由对应平台或实例 HOME 维护。业务扩展在 `workspace.json` 声明，通过平台 prepare 构建并由 DSH 原生 Plugin 装载。当前平台不提供自动提交推送或 Research Release 创建入口。
 

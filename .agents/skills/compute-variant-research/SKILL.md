@@ -7,6 +7,26 @@ description: 从完整固定父版策划、生成、构建、冻结和评测算�
 
 使用本作用域的 `skill`、`platform_agents`、`platform_task`，只加载本技能。先调用 `compute-variants/context {experiment_id}`，固定目标并读取 `plan`、`generation_contract` 与 `workflow_status`。已有研究从真实状态继续，不重建同一变体。需要方法时读取 `research/read-reference {topic:"compute-variants"}`。
 
+## 先判断本次阶段
+
+| 任务上下文 | 本次办理到哪里 |
+|---|---|
+| `planning_intent="plan_only"` | 只做第 1 节的必要只读取证，然后交付计划；本次结束，不进入创建、编辑、构建、冻结、评测或训练 |
+| 已有明确执行授权且有对应平台动作 | 按已有状态继续下文对应阶段；工具缺失时交付缺口，不猜接口 |
+
+“请 AI 策划算力变体”的中算力请求当前是第一行。一次处理一个阶段；每次工具返回后先检查状态，再决定下一动作。`plan_only` 是用户本次要求，不能假定后端会替你拦下所有写操作。
+
+### 中算力 KEV 策划
+
+1. 沿用固定 `agent_id`、`experiment_id`、`source_run_ids`；按第 1 节核对完整父版。没有 Run 时给出补采计划，不编造训练样本。
+2. 从真实决策前材料列出候选点：语义选择交模型，固定步骤与 ID 绑定交代码，信息不足保留待补项。历史动作不是正确标签。
+3. 原样保留 `medium.base_model_mode/base_model_id/base_model_revision` 与训练连接选择。`provider/model` 运行路由不等于可训练权重；缺权重版本保持待选。连接只保留 `server_id`、工作目录和 `credential_ref` 等非敏感引用，不索取明文凭据。
+4. 给出短计划：固定来源 → 决策点 → 按 Run 抽取 → 人员复核与用途分组 → KEV 格式转换及编码检查 → 训练/校准/开发评估 → 固定测试 → 服务绑定与两侧 Run 比较。每项写现有输入、缺口和完成依据。
+5. 用 `research/read-reference {topic:"compute-variants"}` 读取 KEV 交接方法。当前专项不能调用 `datasets/*`、加载 KEV 同级技能、执行 shell 或连接训练服务器。不要清空任务上下文、自调会话接口或用子智能体绕过。
+6. 当前训练连接探测只证明 TCP/SSH banner 可达，平台尚无训练启动/状态/工件回收接口。计划如实列出后续真实执行器需求；不要把 `platform_task kind=training` 当作 KEV 执行器。
+
+交付计划只用已知字段；额外训练超参放独立交接材料，不塞进严格的 `ComputePlan` 或 `platform_task.plan`。本次若为 `plan_only`，到此结束。后续抽取由已有 Run 的“请 AI 抽取决策样本”入口办理；训练在明确授权且具备真实执行能力的任务或训练环境继续。
+
 生成 SDK、参数、受控构建和冻结以返回的 `generation_contract` 为准，缺合同就停止代码生成并说明缺口，不凭记忆补内部 API。任务资料不改变管理身份；接口失败不授权程序开发、临时脚本、凭据读取或内部执行器调用。
 
 ## 1. 诊断并固定父版
