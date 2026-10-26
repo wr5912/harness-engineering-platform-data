@@ -9,7 +9,7 @@ export const name = 'task-example-tools'
 export const inject = ['tools', 'connection', 'webServer']
 type Row = { asset_id: string; hostname: string; asset_type: string; risk_score: number }
 type SourceDocument = { url: string; path: string; sha256: string }
-type Config = { kind: 'inspection' | 'research' | 'training'; presetId?: string; assetUrl?: string; sourceUrls?: string[]; sourceDocuments?: SourceDocument[] }
+type Config = { kind: 'inspection' | 'research' | 'training'; presetId?: string; workflowTool?: string; assetUrl?: string; sourceUrls?: string[]; sourceDocuments?: SourceDocument[] }
 const digest = (value: string) => createHash('sha256').update(value).digest('hex')
 const runPattern = /^task-[0-9a-f-]{36}$/
 const safeCell = (value: unknown) => String(value).replace(/[\r\n|]/g, ' ').slice(0, 500)
@@ -82,12 +82,14 @@ export function apply(ctx: any, config: Config) {
   const base = join(process.env.DSH_HOME || '/var/lib/dsh', 'task-example-artifacts')
   const workspaceRoot = process.cwd()
   const subjectPreset = config.presetId ?? { inspection: 'daily-inspection-assistant', research: 'multi-step-research-analyst', training: 'autonomous-training-researcher' }[config.kind]
+  if (config.workflowTool !== undefined && (typeof config.workflowTool !== 'string' || !/^[a-z][a-z0-9_]{0,63}$/.test(config.workflowTool))) throw new Error('workflowTool 必须是明确的工具名')
+  const allowedTools = [...new Set(['task_' + config.kind, ...(config.workflowTool ? [config.workflowTool] : [])])]
   const isSubject = (agent: any) => agent?.session?.header?.agentPreset === subjectPreset
   ctx.on('agent/pre-step', ({ agent }: any, next: () => unknown) => {
-    if (isSubject(agent)) agent.ctx.tools.restrict({ allow: ['task_' + config.kind] })
+    if (isSubject(agent)) agent.ctx.tools.restrict({ allow: allowedTools })
     return next()
   })
-  ctx.tools.guard((execution: any) => isSubject(execution.agent) && execution.name !== 'task_' + config.kind ? '任务只允许已绑定业务工具' : undefined)
+  ctx.tools.guard((execution: any) => isSubject(execution.agent) && !allowedTools.includes(execution.name) ? '任务只允许已绑定业务工具' : undefined)
   async function save(id: string, value: any) {
     value.run_id ||= id
     await mkdir(join(base, id), { recursive: true })

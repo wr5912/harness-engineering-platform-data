@@ -17,7 +17,7 @@ const selected = process.argv.length > 2 ? process.argv.slice(2) : prefix.map(va
   if (matches.length !== 1) throw new Error('样例来源不唯一，请明确传入需要构建的Experiment ID：' + value)
   return matches[0]
 })
-if (new Set(selected).size !== selected.length || selected.some(id => !available.includes(id) || !prefix.some(value => id.startsWith(value)) || !/^EXP-[a-z0-9-]+-r[0-9a-f]{12}$/.test(id))) throw new Error('构建目标必须是已存在且不重复的任务样例Experiment')
+if (new Set(selected).size !== selected.length || selected.some(id => !available.includes(id) || !(prefix.some(value => id.startsWith(value)) || /^EXP-inspection-delivery-demo-\d{3}-r[0-9a-f]{12}$/.test(id)) || !/^EXP-[a-z0-9-]+-r[0-9a-f]{12}$/.test(id))) throw new Error('构建目标必须是已存在且不重复的任务样例Experiment')
 for (const id of selected) {
   await build({ entryPoints: [join(root, 'extensions/task-examples/src/runtime.ts')],
     outfile: join(root, 'evolution/experiments', id, 'candidate/dsh/managed/task-example-tools.mjs'),

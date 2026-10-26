@@ -71,6 +71,20 @@ test('装配到新智能体时，限制绑定新Preset而不沿用来源身份',
   assert.equal(ctx.guard({ name: 'task_inspection', agent }), undefined)
 })
 
+test('代码变体仅额外放行明确绑定的工作流工具，原子业务工具仍可调用', () => {
+  const ctx = toolContext({ kind: 'inspection', presetId: 'inspection-delivery-demo', workflowTool: 'inspection_code_only' })
+  let allowed
+  const agent = { session: { header: { agentPreset: 'inspection-delivery-demo' } }, ctx: { tools: { restrict(value) { allowed = value.allow } } } }
+  ctx.preStep({ agent }, () => undefined)
+  assert.deepEqual(allowed, ['task_inspection', 'inspection_code_only'])
+  assert.equal(ctx.guard({ name: 'inspection_code_only', agent }), undefined)
+  assert.equal(ctx.guard({ name: 'task_inspection', agent }), undefined)
+  assert.match(ctx.guard({ name: 'other_workflow', agent }), /只允许/)
+  for (const workflowTool of ['*', '../tool', '', ['inspection_code_only']]) {
+    assert.throws(() => toolContext({ kind: 'inspection', workflowTool }), /明确的工具名/)
+  }
+})
+
 test('巡检上游缺失设备时拒绝造全量报告', async t => {
   environment(t, { DSH_HOME: temporary(t) })
   const url = await http(t, (_req, res) => res.end('[]'))
