@@ -5,7 +5,7 @@ import { createReadStream } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
 var name = "task-example-tools";
-var inject = ["tools", "connection", "webServer"];
+var inject = ["tools", "connection", "webServer", "webApp"];
 var digest = (value) => createHash("sha256").update(value).digest("hex");
 var runPattern = /^task-[0-9a-f-]{36}$/;
 var safeCell = (value) => String(value).replace(/[\r\n|]/g, " ").slice(0, 500);
@@ -90,6 +90,12 @@ function apply(ctx, config) {
   if (config.workflowTool !== void 0 && (typeof config.workflowTool !== "string" || !/^[a-z][a-z0-9_]{0,63}$/.test(config.workflowTool))) throw new Error("workflowTool \u5FC5\u987B\u662F\u660E\u786E\u7684\u5DE5\u5177\u540D");
   const allowedTools = [.../* @__PURE__ */ new Set(["task_" + config.kind, ...config.workflowTool ? [config.workflowTool] : []])];
   const isSubject = (agent) => agent?.session?.header?.agentPreset === subjectPreset;
+  function artifactUrl(id, file) {
+    const url = new URL("api/task-examples/artifact", ctx.webApp.getAdvertisedUrl());
+    url.searchParams.set("run_id", id);
+    url.searchParams.set("file", file);
+    return url.href;
+  }
   ctx.on("agent/pre-step", ({ agent }, next) => {
     if (isSubject(agent)) agent.ctx.tools.restrict({ allow: allowedTools });
     return next();
@@ -152,8 +158,8 @@ function apply(ctx, config) {
       report_sha256: value.report_sha256,
       markdown: content,
       ...csv ? { csv } : {},
-      download_url: `/assistant/api/task-examples/artifact?run_id=${id}&file=report.md`,
-      ...csv ? { csv_url: `/assistant/api/task-examples/artifact?run_id=${id}&file=devices.csv` } : {}
+      download_url: artifactUrl(id, "report.md"),
+      ...csv ? { csv_url: artifactUrl(id, "devices.csv") } : {}
     };
   }
   const fixedTrainingFiles = ["prepare.py", "pyproject.toml", "uv.lock"];
@@ -396,8 +402,8 @@ function apply(ctx, config) {
         fixed_inputs_changed: Boolean(value.fixed_inputs_changed),
         metric_source: "executed_train_stdout",
         independently_evaluated: false,
-        results_url: `/assistant/api/task-examples/artifact?run_id=${id}&file=results.tsv`,
-        ...value.best ? { best_code_url: `/assistant/api/task-examples/artifact?run_id=${id}&file=best-train.py` } : {},
+        results_url: artifactUrl(id, "results.tsv"),
+        ...value.best ? { best_code_url: artifactUrl(id, "best-train.py") } : {},
         artifacts: ["results.tsv", ...value.best ? ["best-train.py"] : [], `attempt-${attempt.index}/stdout.log`]
       };
     } finally {

@@ -65406,7 +65406,7 @@ function registerWorkflowTool(ctx, definition, options = {}) {
         workflow_id: definition.id,
         complete: true,
         ...options.executionMode ? { execution_mode: options.executionMode } : {},
-        ...true ? { build_digest: "04f66321b1275990b172d778e19f75df7abd5787cf809fb5a48f25fe92abfd0f", source_digest: "50148da585838fe4ea47f504a5a7110363475512d4a4038334caf85894eff920" } : {},
+        ...true ? { build_digest: "d194e8f51c305c33cbfd9b710aaa72af1447f9f9658a5cb33c20de0c6413ff73", source_digest: "50148da585838fe4ea47f504a5a7110363475512d4a4038334caf85894eff920" } : {},
         esm_sha256: loadedEsmSha256,
         status: failure ? exec.signal.aborted ? "cancelled" : "failed" : "completed",
         trace,
@@ -65482,7 +65482,9 @@ function registerCodeOnlyWorkflowAgent(ctx, options) {
     providerInfo: (provider) => ({ id: provider, name: "\u7EAF\u4EE3\u7801\u5DE5\u4F5C\u6D41\uFF08\u672C\u5730\u6267\u884C\uFF09" }),
     providerRetryPolicy: () => void 0,
     imageRequestPricing: () => void 0,
-    listModels: async () => [],
+    async listModels() {
+      return [await this.resolveModel(CODE_ONLY_PROVIDER, CODE_ONLY_MODEL)];
+    },
     resolveModel: async (provider, model) => {
       if (provider !== CODE_ONLY_PROVIDER || model !== CODE_ONLY_MODEL) throw new Error("\u7EAF\u4EE3\u7801\u5DE5\u4F5C\u6D41\u8DEF\u7531\u65E0\u6548");
       return { provider, id: model, name: "\u7EAF\u4EE3\u7801\u5DE5\u4F5C\u6D41", reasoning: { efforts: [{ id: "off", name: "\u5173\u95ED" }] } };
