@@ -65090,15 +65090,6 @@ function observeLlm(llm, context2, record2) {
   };
 }
 
-// ../work/harness-engineering-platform/platform/plugin/src/workflows/graph.ts
-function compileSequence(annotation, nodes) {
-  if (!nodes.length) throw new Error("\u987A\u5E8F\u56FE\u81F3\u5C11\u9700\u8981\u4E00\u4E2A\u8282\u70B9");
-  let builder = new StateGraph(annotation);
-  for (const node of nodes) builder = builder.addNode(node.id, node.run, node.metadata ? { metadata: node.metadata } : void 0);
-  for (let index2 = 0; index2 < nodes.length; index2++) builder = builder.addEdge(index2 ? nodes[index2 - 1].id : START, nodes[index2].id);
-  return builder.addEdge(nodes.at(-1).id, END).compile({ checkpointer: false });
-}
-
 // ../work/harness-engineering-platform/platform/plugin/src/workflows/fixed-composition.ts
 import { AsyncLocalStorage as AsyncLocalStorage2 } from "node:async_hooks";
 import { createHash, randomUUID as randomUUID2 } from "node:crypto";
@@ -65297,24 +65288,6 @@ var { snapshotJsonValue } = await runtimeModule("@deepseek-ai/dsh-util-values", 
 function defineWorkflow(definition) {
   return definition;
 }
-async function runWorkflow(context2, steps) {
-  if (!steps.length || new Set(steps.map((step) => step.id)).size !== steps.length) throw new Error("\u5DE5\u4F5C\u6D41\u8282\u70B9\u4E0D\u80FD\u4E3A\u7A7A\u6216\u91CD\u540D");
-  const State = Annotation.Root({ values: Annotation() });
-  const graph = compileSequence(State, steps.map((step) => ({ id: step.id, run: async (state) => {
-    context2.signal.throwIfAborted();
-    const started = Date.now();
-    try {
-      const result2 = await step.run(state.values, context2);
-      context2.trace.push({ node: step.id, status: "completed", elapsed_ms: Date.now() - started });
-      return { values: { ...state.values, [step.id]: result2 } };
-    } catch (error51) {
-      context2.trace.push({ node: step.id, status: context2.signal.aborted ? "cancelled" : "failed", elapsed_ms: Date.now() - started });
-      throw error51;
-    }
-  } })));
-  const result = await graph.invoke({ values: {} }, { signal: context2.signal });
-  return result.values;
-}
 function registerWorkflowTool(ctx, definition, options = {}) {
   const aliases = registerFixedCompositionTools(ctx, definition.fixedCompositions ?? {});
   return ctx.tools.register({
@@ -65406,7 +65379,7 @@ function registerWorkflowTool(ctx, definition, options = {}) {
         workflow_id: definition.id,
         complete: true,
         ...options.executionMode ? { execution_mode: options.executionMode } : {},
-        ...true ? { build_digest: "d194e8f51c305c33cbfd9b710aaa72af1447f9f9658a5cb33c20de0c6413ff73", source_digest: "50148da585838fe4ea47f504a5a7110363475512d4a4038334caf85894eff920" } : {},
+        ...true ? { build_digest: "f51cc11a7d9a5be8f1b08b24264ac21e10be3d6048eb9cb58a7bcf804e1db790", source_digest: "d0019fc95acce0485cece33ffa2e0268df456cfb52251baea52c937620f54b19" } : {},
         esm_sha256: loadedEsmSha256,
         status: failure ? exec.signal.aborted ? "cancelled" : "failed" : "completed",
         trace,
@@ -65624,17 +65597,68 @@ var name = "inspection-delivery-code-only";
 var inject = ["tools", "llm", "sessionTitle"];
 var fixture = JSON.parse(readFileSync4(new URL("./fixtures.json", import.meta.url), "utf8"));
 if (!/^[0-9a-f]{64}$/.test(fixture.projected_source_sha256 ?? "")) throw new Error("\u56FA\u5B9A Mock \u8F93\u5165\u7F3A\u5C11\u8D44\u4EA7\u6295\u5F71\u6458\u8981");
+async function traceNode(context2, node, run) {
+  const started = Date.now();
+  try {
+    context2.signal.throwIfAborted();
+    const result = await run();
+    context2.signal.throwIfAborted();
+    context2.trace.push({ node, status: "completed", elapsed_ms: Date.now() - started });
+    return result;
+  } catch (error51) {
+    context2.trace.push({ node, status: context2.signal.aborted ? "cancelled" : "failed", elapsed_ms: Date.now() - started });
+    throw error51;
+  }
+}
 var workflow = defineWorkflow({
   id: "inspection-delivery-code-only",
   toolName: "inspection_code_only",
-  description: "\u7528\u672C\u5730\u89C4\u5219\u548C\u771F\u5B9E\u5206\u9875\u5DE5\u5177\u6267\u884C\u57FA\u7840\u53F0\u8D26\u4E1A\u52A1\uFF1B\u4E0D\u8C03\u7528\u6A21\u578B\uFF0C\u672A\u8986\u76D6\u8F93\u5165\u4E2D\u6B62\u3002",
+  description: "\u901A\u8FC7\u663E\u5F0F\u6761\u4EF6\u56FE\u9009\u62E9\u8EAB\u4EFD\u3001\u804C\u8D23\u3001\u5B8C\u6574\u5DE1\u68C0\u3001\u7B2C\u4E00\u9875\u6216\u4E2D\u6B62\uFF1B\u590D\u7528\u771F\u5B9E\u5206\u9875\u5DE5\u5177\uFF0C\u4E0D\u8C03\u7528\u6A21\u578B\u3002",
   inputSchema: { type: "object", properties: { request: { type: "string" } }, required: ["request"], additionalProperties: false },
   async run(context2) {
-    const values = await runWorkflow(context2, [
-      { id: "route-request", run: async () => ({ intent: classifyRequest(String(context2.input.request ?? "")) }) },
-      { id: "execute-business", run: async (values2) => executeIntent(values2["route-request"].intent, context2, fixture.projected_source_sha256) }
-    ]);
-    return values["execute-business"];
+    const inFlight = /* @__PURE__ */ new Set();
+    const node = (id, run) => {
+      const pending = traceNode(context2, id, run);
+      inFlight.add(pending);
+      pending.then(() => inFlight.delete(pending), () => inFlight.delete(pending));
+      return pending;
+    };
+    const State = Annotation.Root({
+      intent: Annotation(),
+      result: Annotation()
+    });
+    const graph = new StateGraph(State).addNode("route-request", () => node("route-request", async () => ({
+      intent: classifyRequest(String(context2.input.request ?? ""))
+    }))).addNode("identity", () => node("identity", async () => ({
+      result: await executeIntent("identity", context2, fixture.projected_source_sha256)
+    }))).addNode("role", () => node("role", async () => ({
+      result: await executeIntent("role", context2, fixture.projected_source_sha256)
+    }))).addNode("full-inspection", () => node("full-inspection", async () => ({
+      result: await executeIntent("full", context2, fixture.projected_source_sha256)
+    }))).addNode("first-page", () => node("first-page", async () => ({
+      result: await executeIntent("first-page", context2, fixture.projected_source_sha256)
+    }))).addNode("unsupported", () => node("unsupported", async () => ({
+      result: await executeIntent("unsupported", context2, fixture.projected_source_sha256)
+    }))).addEdge(START, "route-request").addConditionalEdges("route-request", (state) => {
+      if (state.intent === "identity") {
+        return "identity";
+      } else if (state.intent === "role") {
+        return "role";
+      } else if (state.intent === "full") {
+        return "full-inspection";
+      } else if (state.intent === "first-page") {
+        return "first-page";
+      } else {
+        return "unsupported";
+      }
+    }, ["identity", "role", "full-inspection", "first-page", "unsupported"]).addEdge("identity", END).addEdge("role", END).addEdge("full-inspection", END).addEdge("first-page", END).addEdge("unsupported", END).compile();
+    try {
+      const state = await graph.invoke({ intent: "unsupported", result: null }, { signal: context2.signal });
+      if (state.result === null) throw new Error("\u6761\u4EF6\u56FE\u672A\u8FD4\u56DE\u4E1A\u52A1\u7ED3\u679C");
+      return state.result;
+    } finally {
+      await Promise.allSettled(inFlight);
+    }
   }
 });
 function apply(ctx) {
@@ -65643,7 +65667,8 @@ function apply(ctx) {
 export {
   apply,
   inject,
-  name
+  name,
+  workflow
 };
 /*! Bundled license information:
 
