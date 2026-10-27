@@ -8,7 +8,7 @@
 - DSH agent-loop： https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/core/agent-loop/README.md
 - DSH tools： https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/tools.md
 - Kev 原生格式/训练： https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3
-- Kev 官方训练 Skill： https://github.com/jaredpalmer/kev/tree/main/skills/kev-finetune
+- Kev 官方训练 Skill（本地完整参考的固定来源）： https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/skills/kev-finetune
 - 通用轨迹转训练工作流： https://github.com/wshobson/agents/tree/main/plugins/llm-finetuning/skills
 - smithtune： https://github.com/langchain-ai/smithtune
 - TabAgent 前缀特征： https://github.com/dolev31/TabAgent/blob/main/docs/concepts/three-phases.md

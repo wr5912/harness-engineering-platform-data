@@ -2,15 +2,17 @@
 
 ## 目录
 
-1. 七个阶段与共享实现
+1. 阶段参考与共享实现
 2. 本地命令
 3. 当前支持边界
 4. 添加新领域
 5. 示例轨迹的正确用法
 
-## 七个阶段与共享实现
+## 阶段参考与共享实现
 
-将七个同级技能一起保留。kev-trace-pipeline 是总入口及唯一脚本所有者；其余技能只描述阶段职责和引用，避免复制解析器、分割器和格式规则。Python 标准库即可运行数据工具；模型训练与 tokenizer 检查在明确选择的 Kev 环境执行。
+kev-trace-pipeline 是数据入口及唯一脚本所有者。发现、抽取、标注、编译/切分分别读取 [discovery](stages/discovery.md)、[extraction](stages/extraction.md)、[labeling](stages/labeling.md)、[build](stages/build.md)；它们不再注册为独立 Skill。dsh-trace-audit 与 kev-dataset-audit 保留独立诊断/审查入口并共享同一实现。Python 标准库即可运行数据工具；模型训练与 tokenizer 检查在明确选择的 Kev 环境执行。
+
+已有产物可直接继续任一阶段，不要求从头执行。旧调用名 kev-decision-discovery、kev-sample-extraction、kev-sample-labeling、kev-dataset-build 改用 kev-trace-pipeline 并说明所需阶段；没有运行时别名，也不因此改变 CLI 子命令或数据格式。
 
 入口提示：使用 $kev-trace-pipeline 审计这批 DSH trace，识别 model/code/hybrid 决策点。只从当时可见信息抽取样本，保留未定标签；有足够独立来源后再编译和切分，交付缺口和训练交接报告。
 

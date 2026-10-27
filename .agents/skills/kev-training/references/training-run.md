@@ -37,6 +37,8 @@ legacy-native 的准备器重新读取 source.jsonl 和 reviews.jsonl，重放�
 
 ## 官方 Modal 路径的差别
 
+官方[微调包](upstream/kev-finetune/UPSTREAM.md)与[部署包](../../kev-deploy/references/upstream/kev-deploy/UPSTREAM.md)均保留原 SKILL、脚本、许可及来源记录，不再从旧顶层官方目录取文件。仅需通用工作负载微调时从 [modal-workload.md](modal-workload.md) 继续；本节原生准备器不包装 Modal 配方。
+
 官方训练 Skill 的 kev_modal.py 默认 KEV_REF 为 fc4a17e194bca35a48c57211392ec49ea54a94ac，可用环境变量覆盖。官方部署 kev_serve.py 把相同值写成常量，环境变量不会覆盖它。两提交当前 kev/*.py 和 pyproject.toml 一致，但实际运行身份仍分开记录。
 
 官方 Modal train 只暴露 p_none_pair；仅把它设为 0 不能关闭另外三项候选增强。本套使用原生 kev.train 并显式把 p_none、p_none_distract、p_distract、p_none_pair 四项设为 0，不向 Modal 猜造参数。需要 Modal 配方时另行核对实际支持与用户环境选择，不把已登记 SSH 服务器静默替换成付费云。

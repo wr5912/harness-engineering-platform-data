@@ -49,21 +49,23 @@ description: 从完整固定父版策划、生成、构建、冻结和评测算�
 - 明确改变模型时才填 allow_model_change、variant_model、variant_reasoning_effort；这些计划字段不自动修改 Candidate 路由。
 - 生成代码时按 generation_contract 填 generation，必须有固定父版的真实诊断 source_run_ids；没有轨迹不能虚构生成依据。
 
-先补足必要 Case，再冻结选择；运行后不修改共享评测迎合结果。预览通过后以同一计划调用 `compute-variants/create`，使用真实预览摘要并按平台确认。创建回执只证明派生与计划保存；后续目标用返回的 Experiment ID，保留父版和历史 Run。
+先补足必要 Case，再冻结选择；运行后不修改共享评测迎合结果。预览通过后以同一计划调用 `compute-variants/create`，使用真实预览摘要，由 DSH 原生访问策略处理执行权限，按回执继续，不另等平台确认。创建回执只证明派生与计划保存；后续目标用返回的 Experiment ID，保留父版和历史 Run。
 
 ## 3. 修改、构建与冻结
 
-需要连续生成任务时，`platform_task preview` 后 `start`：kind 为 compute-variant，source 为已派生目标，compute_variant 使用已固定父版，evaluation_case_ids 与计划相同。它不创建第二个 Agent 或变体，也不替代本地冻结确认。
+需要连续生成任务时，`platform_task preview` 后 `start`：kind 为 compute-variant，source 为已派生目标，compute_variant 使用已固定父版，evaluation_case_ids 与计划相同。它不创建第二个 Agent 或变体，也不替代后续本地冻结动作及其差异、摘要核对。
 
 | 当前步骤 | 平台动作 | 可以继续的条件 |
 |---|---|---|
 | 修改目标 | `edit/read` → `edit/preview` → `edit/apply` | 提交完整文本和真实 expected_sha256；新文件先读到 exists:false、sha256:null |
 | 生成工作流 | 按 generation_contract.sdk 编辑 Managed 源码与 Preset 绑定 | 只用公开 SDK；实际模型、工具和固定组合身份来自父版与能力目录，不猜函数或第三方能力 |
 | 受控构建 | `compute-variants/build-preview` → `compute-variants/build` | 用最新 candidate_sha256 和真实预览摘要；类型检查与固定 ESM 编译通过 |
-| 本地冻结 | `compute-variants/freeze-preview` → `compute-variants/freeze` | 审阅真实差异，完整传回返回的 freeze_input，并完成单独确认 |
+| 本地冻结 | `compute-variants/freeze-preview` → `compute-variants/freeze` | 核对真实差异，完整传回返回的 freeze_input；由原生访问策略处理写入权限，依据冻结回执继续 |
 | 核对状态 | 重读 `compute-variants/context` | 以 workflow_status 和实际回执判断 generated/built/frozen，不凭文件存在推定 |
 
 普通提示词变体按其实际计划处理，不虚构代码生成或构建结果。代码变体用 `tasks/capabilities` 获取真实工具及固定组合，按合同同步 Preset/Guard 的绑定。运行库保留原生工具权限、取消和回执，不用 HTTP 绕过；输出符合合同的无损 JSON。
+
+create、build、freeze 均需调用对应的显式写动作；preview 本身不执行它们。待原生批准、取消或失败不视为完成，不另设平台确认步骤。
 
 构建不执行 Candidate，也不证明实例装载；源码、runner、依赖或 ESM 改变后旧构建失效。冻结只在本地提交约定资产与评测差异，不推送，不覆盖用户并行变更。冻结前提或摘要不满足时重新读取，不能执行任意 Git 代替接口。两侧新 Run 的提交必须包含同一冻结计划，父侧 Candidate 仍与固定父版一致。
 

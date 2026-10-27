@@ -1,25 +1,30 @@
 # KEV 中算力变体技能配置
 
-更新日期：2026-10-26。适用对象：平台管理助手；目标是从 DSH 轨迹建立决策数据、训练 KEV，并为同一 Harness 的中算力等效变体提供可复现交接。
+更新日期：2026-10-27。适用对象：平台管理助手；目标是从 DSH 轨迹建立决策数据、训练 KEV，并为同一 Harness 的中算力等效变体提供可复现交接。
 
 ## 已配置内容
 
-新增 10 个根技能，与原有 13 个管理技能共同使用。主入口保留 workspace-management；前端“请 AI 策划算力变体 → 中算力变体”继续使用 compute-variant-research。
+KEV 套件保留 5 个顶层入口；与已有 compute-variant-research、decision-sample-extraction 共形成 7 个分工明确的算力/数据/模型入口。普通会话由 workspace-management 分流；前端中算力策划和固定 Run 抽样仍使用原入口及专用作用域。
 
 | 技能 | 职责 |
 |---|---|
 | kev-trace-pipeline | 原始轨迹、平台 v2 导出和旧原生 JSONL 的数据入口 |
 | dsh-trace-audit | DSH v4 支持子集、可见前缀和工具集合审计 |
-| kev-decision-discovery | 区分模型判断、确定代码与待补上下文 |
-| kev-sample-extraction | 按已实现投影构造状态、问题、候选和绑定 |
-| kev-sample-labeling | 监督证据、弱标签、歧义与复核记录 |
-| kev-dataset-build | 原生格式、关联分组与四用途文件 |
 | kev-dataset-audit | 输入泄漏、分组、标签和训练前缺口 |
-| kev-training | 固定训练计划、实际编码预检、训练/校准/评估命令与变体交接 |
-| kev-finetune | 完整官方训练 Skill，原文与许可保留 |
-| kev-deploy | 完整官方部署 Skill，原文与许可保留 |
+| kev-training | 原生训练准备与交接，以及官方 Modal 工作负载微调的阶段选择 |
+| kev-deploy | 已有 checkpoint 的独立部署、验证、保温和停服；本地入口按需读取官方参考 |
 
-官方两技能固定在 [jaredpalmer/kev@2074cc4](https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/skills)。两目录 UPSTREAM.json 保存完整清单、Git blob、SHA-256、许可和运行时差异；16 个上游文件逐字节保留。适配层单独维护，后续升级先核对差异，不覆盖业务规则。
+发现、抽取、标注和编译/切分改为 kev-trace-pipeline 下的按需参考，职责判断、复核节点和七个 CLI 子命令保留。已有产物直接进入所需阶段，不强制从头重跑。
+
+| 原调用入口 | 当前入口与方法 |
+|---|---|
+| kev-decision-discovery | kev-trace-pipeline → [发现](../../.agents/skills/kev-trace-pipeline/references/stages/discovery.md) |
+| kev-sample-extraction | kev-trace-pipeline → [抽取](../../.agents/skills/kev-trace-pipeline/references/stages/extraction.md) |
+| kev-sample-labeling | kev-trace-pipeline → [标注与裁决](../../.agents/skills/kev-trace-pipeline/references/stages/labeling.md) |
+| kev-dataset-build | kev-trace-pipeline → [编译与切分](../../.agents/skills/kev-trace-pipeline/references/stages/build.md) |
+| kev-finetune | kev-training → [官方 Modal 工作负载路径](../../.agents/skills/kev-training/references/modal-workload.md) |
+
+旧名称不再注册为 Skill，也没有新增运行时别名。官方两包固定在 [jaredpalmer/kev@2074cc4](https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/skills)，完整存于 `kev-training/references/upstream/kev-finetune/` 和 `kev-deploy/references/upstream/kev-deploy/`。16 个上游文件、许可和本地 UPSTREAM.json/UPSTREAM.md 原样保留；嵌套 SKILL.md 只作参考。包外相对链接按固定上游仓库解析，不声称报告已包含在本地。适配层单独维护。
 
 ## 当前按钮如何工作
 
@@ -59,6 +64,8 @@
 
 具体步骤与示例见 [.agents/skills/kev-training/SKILL.md](../../.agents/skills/kev-training/SKILL.md)。外部数据目录、模型缓存、训练日志和权重放忽略的本地状态或独立训练环境；不要提交凭据、真实会话附件或模型权重。
 
+上述是原生数据配方。只有业务问题、Jev/TypeSafe 调用或标注表时，可从 kev-training 的官方 Modal 工作负载路径扫描、转换、规划或生成数据，再按所选环境继续；不强制先满足原生四分区准备器。已有 checkpoint 只需部署或停服时直接使用 kev-deploy，不重新训练。两条配方的数据语义、候选增强和执行副作用分别核对。
+
 ## 为较弱管理模型做的适配
 
 - 一条主入口，一次一阶段；当前阶段只读取必要参考，不提前加载所有官方脚本。
@@ -69,7 +76,16 @@
 - 状态未知先回读；不删除旧输出重跑，不因失败自动扩大任务范围。
 - 提供 17 个可重用模型行为场景，包括旧数据、不确定标签、可读报告与机器格式、空分区、初始路由边界及“准备方案 → 编码检查”的顺序。需要实际调用 GPT-5.5 等目标模型、记录配置与工具轨迹后，才能报告各模型效果；适配设计和单测不能替代跨模型成绩。
 
-## 已完成验证
+## 本次入口整理验证（2026-10-27）
+
+- 数据套件运行 123 项：121 项通过；2 项依赖外部固定 KEV checkout 的原生函数兼容检查未配置，明确跳过。训练准备/编码合同套件运行 38 项，全部通过；其中新增 3 项覆盖完整上游包、许可摘要、修改后的拒绝行为及跨工作目录的官方本地辅助脚本导入。
+- 两个迁移包共 22 个原有文件与整改前基线逐字节相同，包括 16 个官方原文件、2 份 LICENSE 和 4 份本地 UPSTREAM 记录。官方数据辅助脚本仅检查 `--help`，未生成数据、调用模型或导入 Modal 服务入口。
+- 已检查本地五个 KEV 套件入口、修改的 Skill YAML、Python 语法和新 Markdown 相对链接。另在隔离环境使用平台锁定的 DSH 0.2.1-rc.2 原生 SkillRegistry 与 FileSystemSkillProvider，实际发现并逐项读取 18 个根技能和 1 个已声明扩展；嵌套官方 SKILL.md 未重复注册。配套程序的 assistantConfiguration 对默认入口及旧 harness-guided-workflow 上下文均就绪，旧名解释为 workspace-management；固定任务清单为 12 项。此检查不等于运行中平台或业务实例已更新。
+- 未启动训练、加载模型或 tokenizer、联网部署、接入真实服务或测试目标管理模型。历史验证记录保持原样，不将旧测试结果冒充本次运行。
+
+## 历史验证（2026-10-26，入口整理前）
+
+以下保留原版本验证记录，不能视为本次目录迁移后的运行成绩。当前迁移的验证应另行记录，尤其核对实际技能发现是否忽略嵌套官方参考。
 
 - 158 项针对性测试全部通过，零跳过：数据核心 123 项，训练交接与编码合同 35 项。覆盖真实 CLI、旧格式接入、保组分区、原生渲染碰撞、输入保序、复核快照变化和可读报告。10 个修改的非官方技能通过格式校验。
 - 平台锁文件对应的 dsh-skill-filesystem 0.2.1-rc.2、dsh-skill 0.2.1-rc.2 与 yaml 2.9.1 实际函数：发现并加载 23 个根技能及 1 个已声明扩展，无解析警告；原有 13 项全部保留。
@@ -85,7 +101,7 @@
 
 ## 程序侧仍需接入的能力
 
-本次只修改数据仓库。程序依据固定为 [19a877e3](https://github.com/wr5912/harness-engineering-platform/tree/19a877e337a288cc4364d1fbe0f440e65030ff37)。
+下表是 KEV 套件首次接入时记录的程序能力边界，依据固定为 [19a877e3](https://github.com/wr5912/harness-engineering-platform/tree/19a877e337a288cc4364d1fbe0f440e65030ff37)。本次入口整理另有程序侧旧会话兼容改动，未新增下表中的训练执行或工件绑定能力。
 
 | 当前边界 | 后续程序侧最小工作 |
 |---|---|

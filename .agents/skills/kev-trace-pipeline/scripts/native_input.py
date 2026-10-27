@@ -2,7 +2,7 @@
 
 Rendering semantics follow jaredpalmer/kev ``kev/api.py`` at commit
 2074cc44256200bb37540103fa4572901faa10f3 (Apache-2.0; license copy in
-../../kev-finetune/LICENSE). The rendering helpers below are adapted from that
+../../kev-training/references/upstream/kev-finetune/LICENSE). The rendering helpers below are adapted from that
 source; the grouping and integrity hashes are additions for this data pipeline.
 
 JSON canonicalization alone misses model-visible collisions: an object and a

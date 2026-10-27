@@ -1,6 +1,6 @@
 ---
 name: agent-maintenance
-description: 整理智能体版本用途和特性，通过平台工具维护资产、用例及实例；涉及业务语义演进时转入对应研究技能。
+description: 整理智能体版本用途和特性，维护已授权目标的说明、资产、用例及实例；从已有版本改变业务行为时转入 Harness 演进，不将日常维护变成新研究。
 ---
 
 # 智能体维护
@@ -20,16 +20,16 @@ description: 整理智能体版本用途和特性，通过平台工具维护资�
 
 ## 日常操作
 
-按所需操作选择一条，不依次执行整张表。写入沿用平台确认机制；成功后按实际返回 ID 回读。
+按所需操作选择一条，不依次执行整张表。写入由 DSH 原生访问策略处理，待批准、取消或失败不视为已执行；成功后按实际返回 ID 回读，不另等平台提案确认。
 
-核对“是否已交付”时读取已返回的交付记录入口、相关 Run 与实例状态；没有可读记录就说明尚未核实，不推断未交付。`tasks/delivery` 与 `platform_task deliver` 会执行交付检查，可能新开业务 Session，不是历史状态查询；日常状态查看和启停不据此重新验收。用户要求同一实例停止再启动时，先核实其约定前提，停止确认并取得完成回执后，再启动同名实例并回读状态、来源与入口，不重新创建或操作其他实例。
+核对“是否已交付”时读取已返回的交付记录入口、相关 Run 与实例状态；没有可读记录就说明尚未核实，不推断未交付。`tasks/delivery` 与 `platform_task deliver` 会执行交付检查，可能新开业务 Session，不是历史状态查询；日常状态查看和启停不据此重新验收。用户要求同一实例停止再启动时，先核实其约定前提，停止操作取得完成回执后，再启动同名实例并回读状态、来源与入口，不重新创建或操作其他实例。
 
 | 操作 | 读取与执行 | 完成条件 |
 |---|---|---|
 | 新建智能体 | `new {agent_id,name,description,role}`，ID 为小写 kebab-case，先明确职责与最低业务验证输入 | 回读 Agent、首次 Experiment、角色与用例；创建不包含启动或业务验收 |
 | 查看实例 | `platform_instances` 的 `list`、`detail`；排障再按需 `logs`、`url` | 核对实际状态、来源与真实入口，不通过 shell 操作 Docker |
-| 实例变更 | `preview {name,operation,source?,port?}` 核对影响，再由 `run` 发起原生提案，用户确认后由平台执行；批量用 `batch-preview` 核对后由 `batch` 发起提案 | 执行完成后回读每项状态和来源，部分失败分别说明；重新执行业务验收须属于用户明确要求 |
-| 编辑资产 | `edit/read` 得到内容和摘要，`edit/preview` 后 `edit/apply`，每项为 `{path,content,expected_sha256}` | 提交完整文本并回读；不存在的目标须先读到不存在才使用空摘要 |
+| 实例变更 | 直接调用 `run {name,operation,source?,port?}`，批量用 `batch`；平台内部预览并核对来源及访问设置，按原生访问策略执行。用户仅要求查看影响时使用 `preview` 或 `batch-preview`，到此结束 | 执行完成后回读每项状态和来源，部分失败分别说明；重新执行业务验收须属于用户明确要求 |
+| 编辑资产 | 先确定是非语义整理或已授权独立 Candidate 的续作；改变已有版本业务行为先按 `harness-evolution` 派生。目标确定后 `edit/read` 得到内容和摘要，`edit/preview` 后 `edit/apply`，每项为 `{path,content,expected_sha256}` | 提交完整文本并回读；不存在的目标须先读到不存在才使用空摘要 |
 | 修改用例 | `cases/read` 后 `cases/update {experiment_id,case_id,title,inputs,expected_behavior,fast,expected_sha256}` | 回读该 Case，比较期间不改口径 |
 | 新增用例 | `cases/create-context` 取模板，必要时 `cases/from-run {experiment_id,run_id,case_id}` 取冻结输入，再 `cases/create-preview` 与 `cases/create` | 回读新增 Case；预期由需求确定，不将失败输出改成标准答案 |
 

@@ -71,7 +71,9 @@
 
 ### 固定配方与官方技能
 
-本套新增八个适配技能以及官方完整 kev-finetune、kev-deploy，统一存于 .agents/skills。主流程按当前阶段取用，不一开始加载全部正文。官方原文固定于 2074cc44256200bb37540103fa4572901faa10f3，许可及文件摘要在各目录 UPSTREAM.json。
+本套保留 kev-trace-pipeline、dsh-trace-audit、kev-dataset-audit、kev-training、kev-deploy 五个专用入口；发现、抽取、标注、编译/切分按需读取 pipeline 阶段参考。当前已有产物直接续做，不从头重跑。官方 kev-finetune 全包保存在 kev-training/references/upstream/kev-finetune，官方部署全包保存在 kev-deploy/references/upstream/kev-deploy，原文、脚本、许可及 UPSTREAM 记录保持完整，固定于 2074cc44256200bb37540103fa4572901faa10f3。本地适配入口负责阶段和环境选择，不一开始加载全部官方正文。
+
+通用 Jev/TypeSafe 工作负载扫描、数据生成或官方 Modal 微调仍可由 kev-training 的对应参考办理；已有 checkpoint 只部署或停服时直接进入 kev-deploy，不要求重新准备训练数据。平台固定策划/抽样任务仍保持原作用域。
 
 平台适配采用原生 KEV LoRA recipe，四项候选增删增强显式关闭，保留候选顺序洗牌；它不等于官方 Modal 默认配方。实际原生 tokenizer/renderer 检查使用 384/1024/2048 的固定初始预算；字符数不是合格依据。训练命令、checkpoint、校准报告、保存的温度、服务与完整效果分别判断。
 

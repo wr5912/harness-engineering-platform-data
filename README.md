@@ -8,7 +8,7 @@
 
 ```text
 AGENTS.md                 管理身份、业务原则与约束
-.agents/skills/            24 项管理、研究、KEV 数据训练及通用表达 Skill
+.agents/skills/            18 项管理、研究、KEV 数据训练及通用表达 Skill
 docs/harness-research/     当前研究方法、经验和固定来源索引
 agents/                   业务智能体入口、需求和共享评测口径
 evolution/                Experiment、Candidate、Run、决策样本和历史输入
@@ -18,7 +18,7 @@ workspace.json            工作区身份和原生扩展声明
 .local/                   会话、设置、实例 HOME、制品和凭据，忽略 Git
 ```
 
-管理技能共 24 项。原有 13 项管理、研究和表达技能保持原入口；业务插件开发使用下述专项技能；KEV 套件 10 项：`kev-trace-pipeline`、`dsh-trace-audit`、`kev-decision-discovery`、`kev-sample-extraction`、`kev-sample-labeling`、`kev-dataset-build`、`kev-dataset-audit`、`kev-training`，以及官方完整 `kev-finetune`、`kev-deploy`。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
+根目录保留 18 个管理 Skill 入口；需求澄清由 `workspace-management` 直接完成。KEV 数据、训练和部署使用 `kev-trace-pipeline`、`dsh-trace-audit`、`kev-dataset-audit`、`kev-training`、`kev-deploy` 五个入口，发现、抽取、标注和构建方法按需读取阶段参考；平台算力研究和固定 Run 抽样继续使用各自专项入口。官方微调、部署及 DSH 插件开发 Skill 完整保存在对应入口的参考目录，不重复注册。已声明的 `security-operations-composition` 扩展入口另计。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
 
 [DSH 业务插件开发](.agents/skills/dsh-business-plugin-development/SKILL.md)通过现有工作区管理、任务构建或 Harness 演进入口按需使用。技能完整保留匹配固定提交的官方 `cordis-plugin-development` 及两个组合配置 Skill，原文、模板和许可证不改写；平台入口只补目标业务智能体、Candidate、执行环境和验证交接。上游引用及逐文件摘要见 [UPSTREAM.json](.agents/skills/dsh-business-plugin-development/references/upstream/UPSTREAM.json)。当前未新增独立任务类型或插件构建执行器，真实开发、安装及装载能力以目标环境工具为准。
 
@@ -44,6 +44,8 @@ export HARNESS_ASSET_ROOT="$HOME/harness-engineering-platform-data"
 数据根由 `HARNESS_ASSET_ROOT`、本机部署定位文件或默认位置选择，不依赖当前目录。首次启动缺数据仓库、必要配置或平台账号时进入初始化向导，可选择已有目录、克隆或新建。新建空白工作区可以使用基础平台；完整管理能力还需本仓库的管理资产，页面按实际缺失项给出连接或恢复提示，不从程序目录回退加载业务副本。
 
 平台默认加载数据根规则和表达 Skill，其余管理 Skill 按任务读取。技能目录只扫描本工作区 `.agents/skills/` 与显式声明扩展的技能目录。变更后用新管理会话或恢复会话核对实际规则与任务行为，保存文件不能代替生效验证。
+
+本次入口合并需配套更新程序：旧 `harness-guided-workflow` 任务入口由程序映射为 `workspace-management`，历史 Session 事件保持原貌。先更新支持该映射的程序，再使用已撤销旧入口的数据版本；不只删除 Skill 文件而保留旧入口校验。新建和恢复管理会话均需核对目标及当前阶段。
 
 “请 AI 策划算力变体 → 中算力变体”沿用 `compute-variant-research`，本次只策划。原始 Run 抽样、人员复核与分用途导出沿用现有页面；普通管理入口可按需发现 KEV 技能，独立获授权训练环境可使用随附脚本。当前程序没有训练作业执行器或专门 KEV 工件绑定合同；增加技能不意味着按钮已经自动训练或变体已经等效。
 

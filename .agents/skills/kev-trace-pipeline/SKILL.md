@@ -1,6 +1,6 @@
 ---
 name: kev-trace-pipeline
-description: "从本地 DSH 轨迹、平台已复核 v2 导出或既有 KEV JSONL 构建可追溯的训练、开发、校准和测试数据。用于决策点识别、格式核对、旧数据复核与保组切分；默认交付清楚的中文报告，数据文件保持机器格式，按当前阶段继续。"
+description: "从本地 DSH 轨迹、平台已复核 v2 导出或既有 KEV JSONL 构建可追溯的数据。用于发现决策点、抽取、标注、标签冲突裁决、编译、旧数据复核和保组切分；可从已有产物只做一个阶段，交付中文报告及机器格式数据。"
 ---
 
 # KEV 轨迹数据入口
@@ -22,16 +22,16 @@ description: "从本地 DSH 轨迹、平台已复核 v2 导出或既有 KEV JSON
 
 ## 2. 一次只做当前阶段
 
-从技能工具提供的实际位置解析 `core_dir`；下表命令使用 `<core_dir>/scripts/kev_trace.py` 的绝对路径。输入、输出也用已核对的绝对路径，不根据旧 cwd 猜位置。
+从技能工具提供的实际位置解析 `core_dir`；下表命令使用 `<core_dir>/scripts/kev_trace.py` 的绝对路径。输入、输出也用已核对的绝对路径，不根据旧 cwd 猜位置。已有审计、样本、标签或编译产物时直接进入相应阶段，先核对其状态和来源，不为补齐流程重跑已完成步骤。只读取当前阶段的参考。
 
-| 当前阶段 | 只加载这个技能 | 命令 | 继续依据 |
+| 当前阶段 | 按需读取或独立入口 | 命令 | 继续依据 |
 |---|---|---|---|
 | 轨迹审计 | `dsh-trace-audit` | `audit TRACE --out NEW_DIR` | `stage-status.json.status=completed` |
-| 决策点发现 | `kev-decision-discovery` | `discover TRACE --profile PROFILE --out NEW_DIR` | 清单是建议；先复核决策职责与可用投影 |
-| 抽取 | `kev-sample-extraction` | `extract TRACE --profile PROFILE --out NEW_DIR` | 有可用样本；标签仍待复核 |
-| 标注 | `kev-sample-labeling` | `annotate --samples FILE --annotations FILE --out NEW_DIR` | 标签证据可追查；不能只复制历史动作 |
-| 编译 | `kev-dataset-build` | `compile --input FILE --out NEW_DIR` | 有 accepted，隔离记录保留 |
-| 分组切分 | `kev-dataset-build` | `split --input FILE --out NEW_DIR` | `split-manifest.status=ready` 且 `audit.ok=true` |
+| 决策点发现 | [发现方法](references/stages/discovery.md) | `discover TRACE --profile PROFILE --out NEW_DIR` | 清单是建议；先复核决策职责与可用投影 |
+| 抽取 | [抽取方法](references/stages/extraction.md) | `extract TRACE --profile PROFILE --out NEW_DIR` | 有可用样本；标签仍待复核 |
+| 标注 | [标注与裁决](references/stages/labeling.md) | `annotate --samples FILE --annotations FILE --out NEW_DIR` | 标签证据可追查；不能只复制历史动作 |
+| 编译 | [编译与切分](references/stages/build.md) | `compile --input FILE --out NEW_DIR` | 有 accepted，隔离记录保留 |
+| 分组切分 | [编译与切分](references/stages/build.md) | `split --input FILE --out NEW_DIR` | `split-manifest.status=ready` 且 `audit.ok=true` |
 | 数据审计 | `kev-dataset-audit` | `audit-dataset --dataset-dir DIR --out NEW_DIR` | `dataset-audit.ok=true`；交接 kev-training，先 prepare 生成方案，再做实际编码检查 |
 
 先读当前输出的 `stage-status.json`。`blocked` 时停止依赖阶段，报告 `reason_codes`；`requires_review` 时完成该项复核。`next_allowed_stage` 是阶段名，`contract-review`、`encoding-review` 不是 CLI 子命令。退出 0 也可能要求复核；退出 2 表示报告已确认阻断，退出 1 表示输入或 I/O 异常。

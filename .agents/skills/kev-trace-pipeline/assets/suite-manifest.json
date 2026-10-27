@@ -1,15 +1,18 @@
 {
   "suite": "kev-trace-data-skills",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "skills": [
     "kev-trace-pipeline",
     "dsh-trace-audit",
-    "kev-decision-discovery",
-    "kev-sample-extraction",
-    "kev-sample-labeling",
-    "kev-dataset-build",
     "kev-dataset-audit"
   ],
+  "stage_references": {
+    "discover": "references/stages/discovery.md",
+    "extract": "references/stages/extraction.md",
+    "annotate": "references/stages/labeling.md",
+    "compile": "references/stages/build.md",
+    "split": "references/stages/build.md"
+  },
   "core": "kev-trace-pipeline",
   "python": "3.10+",
   "dependencies": "standard library for data scripts",
@@ -28,10 +31,11 @@
     "entry": "compute-variant-research",
     "ordinary_entry": "workspace-management",
     "training": "kev-training",
-    "official_skills": [
-      "kev-finetune",
-      "kev-deploy"
-    ],
+    "deployment": "kev-deploy",
+    "official_references": {
+      "kev-finetune": "../kev-training/references/upstream/kev-finetune",
+      "kev-deploy": "../kev-deploy/references/upstream/kev-deploy"
+    },
     "official_commit": "2074cc44256200bb37540103fa4572901faa10f3",
     "scope": "data-repository skills and offline utilities; no platform training executor"
   }

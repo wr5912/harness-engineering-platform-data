@@ -105,7 +105,7 @@ def _read_jsonl(data, name):
 def _loader():
     global _LOADER
     if _LOADER is None:
-        path = Path(__file__).resolve().parents[2] / "kev-finetune/scripts/split_data.py"
+        path = Path(__file__).resolve().parents[2] / "kev-training/references/upstream/kev-finetune/scripts/split_data.py"
         spec = importlib.util.spec_from_file_location("_kev_native_check", path)
         _LOADER = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(_LOADER)

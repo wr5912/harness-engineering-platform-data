@@ -18,7 +18,7 @@
 python3 /absolute/kev-trace-pipeline/scripts/legacy_native.py inspect --input /absolute/data/native.jsonl --out /absolute/work/01-native-inspect
 ```
 
-检查复用固定版本 `.agents/skills/kev-finetune/scripts/split_data.py::check_record`，另外拒绝重复 JSON 键、NaN、Infinity、数值溢出为 infinity、bool 概率权重及不合法 soft 总量。它不调用官方 `split()`。检查会生成 `reviews.todo.jsonl`；**所有题均为 `unreviewed`，`label` 和 `target` 均为空**。`original_label`、`original_target` 只是复核时的原始声明。旧 certainty、review_agent 字段和模型建议不会自动升级标签。
+检查复用固定版本 `.agents/skills/kev-training/references/upstream/kev-finetune/scripts/split_data.py::check_record`，另外拒绝重复 JSON 键、NaN、Infinity、数值溢出为 infinity、bool 概率权重及不合法 soft 总量。它不调用官方 `split()`。检查会生成 `reviews.todo.jsonl`；**所有题均为 `unreviewed`，`label` 和 `target` 均为空**。`original_label`、`original_target` 只是复核时的原始声明。旧 certainty、review_agent 字段和模型建议不会自动升级标签。
 
 另外直接复用 `dataset.py::_input_leaks` 的现有根字段检查：模型可见状态顶层出现 `gold_label`、`future_tool_result` 等保留监督/后续信息字段时，保留原文并隔离，不静默清洗。原生格式合法与训练输入合格分别报告。检查不匹配文本词语，不一概拒绝合法嵌套业务 `status`、`result` 等字段；其他语义泄漏仍须合同复核。
 

@@ -24,15 +24,6 @@ description: 通过平台工具创建、修改和审查 DSH Harness Experiment�
 
 调用 `research/validate {experiment_id}` 检查确定性合同。它不能证明业务语义正确，也不执行任意资产脚本。验证失败先修正目标资料或说明阻塞，不通过安装依赖、执行程序内部脚本绕过。
 
-保存观察用 `edit/read` 后提交 `evaluation/observations.md` 的确认编辑。研究结论按以下字段来源调用 `decision/update`，成功后回读 `detail`：
-
-| 字段 | 来源与含义 |
-|---|---|
-| experiment_id、content | 当前目标与基于真实证据的结论正文，保留反例、回归、限制及下一步 |
-| expected_sha256 | 当前 detail.decision.sha256 |
-| status、outcome | 完成本轮研究时 status 为 completed，outcome 为 adopt/continue/reject/inconclusive；仅维护说明可省略 |
-| expected_change_sha256 | 更新结构化状态时取 detail 顶层 change_sha256 |
-
-摘要冲突重新读取，不猜值；仅写“adopt”正文不等于状态已更新。失败或未知状态先核对实际记录，不重复保存。
+按[观察与 Decision 保存合同](references/decision-update.md)保存本轮证据与结论，使用当前摘要更新并回读。评测后继续当前目标，不为保存结论重新创建 Experiment；查询任务仅报告，不额外写入。
 
 当前管理平台只支持固定 Git 来源的实际派生路径，没有 Research Release 创建、发布或 `release:<id>` 运行入口。值得长期保留的版本可提出复现需求，不能虚构发布成功。`adopt` 也不等于实例切换或生产发布。

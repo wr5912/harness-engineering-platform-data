@@ -24,6 +24,10 @@ PARTITIONS = ("train", "development", "calibration", "test")
 LIMITS = {"max_state": 384, "max_branch": 1024, "max_packed": 2048}
 PREDICTOR_UNSET = ("KEV_MERGE", "KEV_ATTN", "KEV_CUDA_GRAPHS", "KEV_FUSED")
 SKILLS = Path(__file__).resolve().parents[2]
+VENDOR_ROOTS = {
+    "kev-finetune": SKILLS / "kev-training/references/upstream/kev-finetune",
+    "kev-deploy": SKILLS / "kev-deploy/references/upstream/kev-deploy",
+}
 HEX40 = re.compile(r"[0-9a-f]{40}\Z")
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
 
@@ -82,8 +86,7 @@ def reporting():
 
 def verify_vendor():
     identities = {}
-    for name in ("kev-finetune", "kev-deploy"):
-        root = SKILLS / name
+    for name, root in VENDOR_ROOTS.items():
         manifest = read_json(root / "UPSTREAM.json")
         require(manifest.get("upstream", {}).get("commit") == KEV_COMMIT, "unexpected_vendor_revision: " + name)
         for item in manifest["upstream_files"]:
@@ -123,7 +126,7 @@ def inspect_dataset(directory, kind):
     manifest_path = root / "split-manifest.json"
     manifest = read_json(manifest_path)
     require(manifest.get("status") == "ready" and not manifest.get("blocked"), "split_not_ready")
-    checker = load_module("kev_vendor_validator", SKILLS / "kev-finetune/scripts/split_data.py")
+    checker = load_module("kev_vendor_validator", VENDOR_ROOTS["kev-finetune"] / "scripts/split_data.py")
     native_input = load_module("kev_native_input_identity", SKILLS / "kev-trace-pipeline/scripts/native_input.py")
     rows, files, identities, groups, forms = {}, {}, {}, {}, {}
     for partition in PARTITIONS:

@@ -9,12 +9,12 @@ description: 为已启用的安全运营业务扩展配置、发布和验证资�
 
 Mock service 只提供基本、良性的模拟业务数据。配置样例、测试输入和验证建议不得生成或要求恶意代码、病毒、渗透相关的数据或命令，也不以补齐覆盖为由建议这些 Mock 场景。验证分支只使用普通资产、状态、告警元数据或缺失字段等无害样例，未覆盖的业务效果如实保留为限制。
 
-原生服务连接由 MCP 配置管理维护，编排定义、草稿和发布版本只在数据根 `config/mcp-compositions.json` 维护。通过 `platform_mcp` 读取、预览、按现有确认保存并回读，不直接编辑配置或另存凭据。执行回执与冻结产物保存在数据根 `.local/artifacts/security-operations/`，不回流业务 Candidate。
+原生服务连接由 MCP 配置管理维护，编排定义、草稿和发布版本只在数据根 `config/mcp-compositions.json` 维护。通过 `platform_mcp` 读取、预览，沿 DSH 原生访问策略保存并回读，不另等平台确认，不直接编辑配置或另存凭据。执行回执与冻结产物保存在数据根 `.local/artifacts/security-operations/`，不回流业务 Candidate。
 
 ## 威胁分析组合
 
 1. 仅在配置或接入时读取 `configuration` 与 `list` 核对连接和扩展；查看运行不重新发现全部连接。SOC 使用原生 OpenAPI 服务，规范须覆盖完整研判操作，只有资产/告警两个 GET 不够；报告 MCP 须有 `save_persistence_result`。缺少能力就停止依赖配置，地址、鉴权与模型凭据沿用原生配置，不回显或复制。
-2. 确需创建样例且 `list.extension.seed` 为 true 时，通过 `seedThreatCompositions {revision,bindings:{socConnectionId,reportConnectionId,model?}}` 提交确认，创建四个阶段和一个总组合草稿；revision 和连接 ID 来自实际读取结果。已有组合优先读取和维护，不重复创建。页面在“全部编排”中展示草稿和发布状态，没有单独的“威胁分析样例”按钮。
+2. 确需创建样例且 `list.extension.seed` 为 true 时，通过 `seedThreatCompositions {revision,bindings:{socConnectionId,reportConnectionId,model?}}` 创建四个阶段和一个总组合草稿，按原生权限与执行回执继续；revision 和连接 ID 来自实际读取结果。已有组合优先读取和维护，不重复创建。页面在“全部编排”中展示草稿和发布状态，没有单独的“威胁分析样例”按钮。
 3. 分别保存、dry 校验并发布四个子组合，再为总组合选择具体已发布版本。保留输入映射与分支条件；父组合固定这些版本，子组合再次发布不自动改变父组合。完整研判阶段可选择平台默认模型或用户指定的原生 Provider、模型和推理强度，不自行改变用户选择。
 4. 仅在用户要求实际研判时，对总组合传入已核对的 `incident_id`；格式为 `INC-YYYYMMDD-NNNNNN`。只读或 dry 请求不得升级为实际执行来排障。独立测试后续阶段时输入同一 `run_id`，不重新发起取证，已完成阶段读取原结果，不重复 infer 重新采样。
 
