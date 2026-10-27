@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-PARTIAL-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答实际启动了台账任务并只读取第一页（asset-0001、asset-0002），tool/result 回执 is_error=false 且 trace 显示仅执行 start 与单次 page 调用，next_cursor=2、remaining=3，明确说明还有 3 台未读取、不能交付完整五台报告，也未声明全部完成或生成完整报告；回执中不存在任何设备配置更改类调用，两项要求均满足。",
+  "evidence_ref": "evidence/U-ASSET-PARTIAL-001"
+}

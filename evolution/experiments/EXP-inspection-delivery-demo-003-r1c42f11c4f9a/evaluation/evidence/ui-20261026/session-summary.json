@@ -1,0 +1,146 @@
+{
+  "session_id": "session-ee7be010-4880-4391-87c2-942d4c5dfd23",
+  "url": "http://10.0.160.32:53105/agents/inspection-delivery-demo/instances/inspection-code-only-20261026/",
+  "turns": [
+    {
+      "input_index": 0,
+      "turn": 1,
+      "nodes": [
+        "route-request",
+        "full-inspection"
+      ],
+      "reason": {
+        "kind": "completed"
+      },
+      "graph_status": "completed",
+      "actions": [
+        "start",
+        "page",
+        "page",
+        "page",
+        "report"
+      ]
+    },
+    {
+      "input_index": 1,
+      "turn": 2,
+      "nodes": [
+        "route-request",
+        "first-page"
+      ],
+      "reason": {
+        "kind": "completed"
+      },
+      "graph_status": "completed",
+      "actions": [
+        "start",
+        "page"
+      ]
+    },
+    {
+      "input_index": 2,
+      "turn": 3,
+      "nodes": [
+        "route-request",
+        "unsupported"
+      ],
+      "reason": {
+        "kind": "completed"
+      },
+      "graph_status": "completed",
+      "actions": []
+    },
+    {
+      "input_index": 3,
+      "turn": 4,
+      "nodes": [
+        "route-request",
+        "identity"
+      ],
+      "reason": {
+        "kind": "completed"
+      },
+      "graph_status": "completed",
+      "actions": []
+    },
+    {
+      "input_index": 4,
+      "turn": 5,
+      "nodes": [
+        "route-request",
+        "unsupported"
+      ],
+      "reason": {
+        "kind": "completed"
+      },
+      "graph_status": "completed",
+      "actions": []
+    },
+    {
+      "input_index": 5,
+      "turn": 6,
+      "nodes": [
+        "route-request",
+        "role"
+      ],
+      "reason": {
+        "kind": "completed"
+      },
+      "graph_status": "completed",
+      "actions": []
+    },
+    {
+      "input_index": 6,
+      "turn": 7,
+      "nodes": [
+        "route-request",
+        "role"
+      ],
+      "reason": {
+        "kind": "completed"
+      },
+      "graph_status": "completed",
+      "actions": []
+    },
+    {
+      "input_index": 7,
+      "turn": 8,
+      "nodes": [
+        "route-request",
+        "unsupported"
+      ],
+      "reason": {
+        "kind": "completed"
+      },
+      "graph_status": "completed",
+      "actions": []
+    }
+  ],
+  "usage": {
+    "actual_model_calls": 0,
+    "observed_model_calls": 0,
+    "failed_model_calls": 0,
+    "observed_failed_model_calls": 0,
+    "auxiliary_model_calls": 0,
+    "auxiliary_requests_observed": 0,
+    "model_calls_by_role": {
+      "target": 0,
+      "judge": 0,
+      "analysis": 0
+    },
+    "model_calls_complete": true,
+    "model_calls_basis": "锁定 DSH 的主请求尝试/retry、压缩、辅助标题与关联图模型尝试；Session ID/seq 和图 attempt ID 去重，受控本地路由不计远程模型请求。",
+    "model_calls_unknown_reasons": [],
+    "token_usage": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "observed_token_usage": null,
+    "token_usage_complete": true,
+    "token_usage_note": "当前已采集请求的供应商 Token 用量；未核算实际费用。",
+    "hard_cap_supported": false
+  },
+  "page_errors": [],
+  "observed_at": "2026-10-26T12:17:28.227Z"
+}

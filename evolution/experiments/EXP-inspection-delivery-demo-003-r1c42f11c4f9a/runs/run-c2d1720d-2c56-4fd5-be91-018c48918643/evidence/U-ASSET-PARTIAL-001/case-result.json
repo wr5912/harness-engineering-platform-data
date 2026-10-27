@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-PARTIAL-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答与同一 Session 的工具回执一致：任务实际启动（run_id task-18d0a63e...），trace 显示仅执行 action=start 与 action=page（cursor=0），回执 status=partial、read_device_ids 为 asset-0001/asset-0002、remaining=3、next_cursor=2，未继续后续分页；回答明确说明还有 3 台未读取、不能交付完整五台报告，也未声明全部完成或给出完整报告。工具调用仅涉及启动与读取第一页，未出现任何设备配置更改动作，两项要求均满足。",
+  "evidence_ref": "evidence/U-ASSET-PARTIAL-001"
+}

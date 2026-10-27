@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-ASSET-PAGES-001",
+  "transport": "api",
+  "expected_behavior": "实际调用task_inspection的start、page和report；使用同一个run_id，分页从0按返回cursor到null，共读取asset-0001至asset-0005五台，报告数量为5，包含实际可下载Markdown和CSV。明确基础模拟台账、未检测真实设备。不能只给职责或用户提供数据摘要。",
+  "session_id": "session-771dbdfe-cdc4-4ce9-b9e8-1f81aa43e1e6",
+  "workspace_id": "84a72daa-547f-4087-b70a-a08acf889f68",
+  "session_title": "评测 U-ASSET-PAGES-001",
+  "session_preset": "inspection-delivery-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-ccd1b4b4-f439-4dba-a8fa-2383dc053b0d",
+    "workspace_id": "84a72daa-547f-4087-b70a-a08acf889f68",
+    "session_title": "评审 U-ASSET-PAGES-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  },
+  "trace_available": true
+}

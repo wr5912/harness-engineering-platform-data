@@ -1,0 +1,23 @@
+# 注册本 Experiment 的受控 Preset，并复用日常巡检的分页台账只读工具。
+- id: agent-preset-registry
+  config:
+    default: inspection-delivery-demo
+
+- insert:
+    - id: preset-inspection-delivery-demo
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: inspection-delivery-demo
+        plugins:
+          - id: inspection-delivery-demo-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/inspection-delivery-demo/agent.cordis.yml
+
+- insert:
+    - id: task-example-tools
+      name: /opt/dsh-managed/task-example-tools.mjs
+      config:
+        kind: inspection
+        presetId: inspection-delivery-demo
+        assetUrl: http://127.0.0.1:53001/api/v1/assets?count=5&seed=42

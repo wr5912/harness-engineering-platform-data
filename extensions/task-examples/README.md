@@ -1,6 +1,8 @@
 # 任务智能体样例工具
 
-源码在 `src/runtime.ts`；三个 Candidate 中的 `task-example-tools.mjs` 由 `build.mjs` 生成，不直接编辑。构建时设置 `HARNESS_PROGRAM_ROOT`，执行 `node extensions/task-examples/build.mjs`。可追加 Experiment ID 只重生选定 Candidate；未选择的制品保持原 Git 版本，不能由当前共用源码推断它们已同步更新。
+源码在 `src/runtime.ts`；三个 Candidate 中的 `task-example-tools.mjs` 由 `build.mjs` 生成，不直接编辑。构建时设置 `HARNESS_PROGRAM_ROOT`，执行 `node extensions/task-examples/build.mjs`。可追加 Experiment ID 只重生选定 Candidate，并从数据侧 `.agents/skills/user-facing-output/SKILL.md` 正文更新其表达原则后缀；未选择的制品保持原 Git 版本，不能由当前共用源码推断它们已同步更新。
+
+基础台账巡检助手的派生 Experiment 也可显式选择构建。代码变体通过 `workflowTool` 绑定一个工作流工具名，与原子业务工具一并通过同一 Preset 的工具限制；未配置时沿用原限制。
 
 巡检样例实际读取现有 Mock 的基础资产接口，固定范围为 asset-0001 至 asset-0005。每个运行固定快照，按两条分页，未读完时不生成完整报告；下载的 Markdown/CSV 是本轮实际生成正文，不是 Mock 固定报告模板。它只证明基础模拟台账读取，不证明真实设备健康。
 

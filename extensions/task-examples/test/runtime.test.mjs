@@ -16,12 +16,12 @@ function environment(t, values) {
   Object.assign(process.env, values)
   t.after(() => { for (const [key, value] of Object.entries(before)) if (value === undefined) delete process.env[key]; else process.env[key] = value })
 }
-function toolContext(config, install = apply) {
+function toolContext(config, install = apply, advertisedUrl = 'http://localhost/assistant/') {
   let tool, fetchHandler, guard, preStep
   install({ tools: { register(value) { tool = value }, guard(value) { guard = value } }, on(event, handler) { if (event === 'agent/pre-step') preStep = handler },
-    connection: { fetch: { register(value) { fetchHandler = value.fetch } } } }, config)
+    connection: { fetch: { register(value) { fetchHandler = value.fetch } } }, webApp: { getAdvertisedUrl: () => advertisedUrl } }, config)
   const execute = (args, session = 'session-1', signal = new AbortController().signal) => tool.execute(args, { agent: { session: { header: { id: session, agentPreset: config.kind === 'training' ? 'autonomous-training-researcher' : config.kind === 'inspection' ? 'daily-inspection-assistant' : 'multi-step-research-analyst' } } }, signal })
-  return { get tool() { return tool }, execute, download: url => fetchHandler(new Request('http://localhost' + url)), guard, preStep }
+  return { get tool() { return tool }, execute, download: url => fetchHandler(new Request(new URL(url, 'http://localhost'))), guard, preStep }
 }
 async function http(t, reply) {
   const server = createServer(reply)
@@ -69,6 +69,42 @@ test('装配到新智能体时，限制绑定新Preset而不沿用来源身份',
   assert.equal(restricted, true)
   assert.match(ctx.guard({ name: 'write', agent }), /只允许/)
   assert.equal(ctx.guard({ name: 'task_inspection', agent }), undefined)
+})
+
+test('源码及巡检Candidate使用原生公开地址生成产物链接，保留代理前缀并可回读真实文件', async t => {
+  environment(t, { DSH_HOME: temporary(t) })
+  const rows = Array.from({ length: 5 }, (_, index) => ({ asset_id: `asset-000${index + 1}`, hostname: `设备${index + 1}`, asset_type: '基本台账', risk_score: index }))
+  const source = await http(t, (_req, res) => res.end(JSON.stringify(rows)))
+  const generated = await import('../../../evolution/experiments/EXP-inspection-delivery-demo-003-r1c42f11c4f9a/candidate/dsh/managed/task-example-tools.mjs')
+  for (const install of [apply, generated.apply]) for (const advertisedUrl of ['https://public.example/', 'https://public.example/assistant/', 'https://public.example/hep/business/inspection-delivery-demo/']) {
+    const ctx = toolContext({ kind: 'inspection', assetUrl: source }, install, advertisedUrl)
+    const started = await ctx.execute({ action: 'start' })
+    for (const cursor of [0, 2, 4]) await ctx.execute({ action: 'page', run_id: started.run_id, cursor })
+    const report = await ctx.execute({ action: 'report', run_id: started.run_id })
+    for (const [field, file, content] of [['download_url', 'report.md', report.markdown], ['csv_url', 'devices.csv', report.csv]]) {
+      const url = new URL(report[field])
+      assert.equal(url.origin + url.pathname, advertisedUrl + 'api/task-examples/artifact')
+      assert.equal(url.searchParams.get('run_id'), started.run_id)
+      assert.equal(url.searchParams.get('file'), file)
+      const downloaded = await ctx.download(url.href)
+      assert.equal(downloaded.status, 200)
+      assert.equal(await downloaded.text(), content)
+    }
+  }
+})
+
+test('代码变体仅额外放行明确绑定的工作流工具，原子业务工具仍可调用', () => {
+  const ctx = toolContext({ kind: 'inspection', presetId: 'inspection-delivery-demo', workflowTool: 'inspection_code_only' })
+  let allowed
+  const agent = { session: { header: { agentPreset: 'inspection-delivery-demo' } }, ctx: { tools: { restrict(value) { allowed = value.allow } } } }
+  ctx.preStep({ agent }, () => undefined)
+  assert.deepEqual(allowed, ['task_inspection', 'inspection_code_only'])
+  assert.equal(ctx.guard({ name: 'inspection_code_only', agent }), undefined)
+  assert.equal(ctx.guard({ name: 'task_inspection', agent }), undefined)
+  assert.match(ctx.guard({ name: 'other_workflow', agent }), /只允许/)
+  for (const workflowTool of ['*', '../tool', '', ['inspection_code_only']]) {
+    assert.throws(() => toolContext({ kind: 'inspection', workflowTool }), /明确的工具名/)
+  }
 })
 
 test('巡检上游缺失设备时拒绝造全量报告', async t => {
@@ -126,6 +162,13 @@ test('没有GPU和依赖时真实预检明确拒绝，不能返回训练指标',
 test('训练真实runtime在外部命令夹具下验证一次基线、三个候选、失败回退和日志；不能重开基线绕预算', async t => {
   const { ctx, dsh } = trainingFixture(t), baseline = await ctx.execute({ action: 'baseline' })
   assert.equal(baseline.attempt.status, 'keep')
+  for (const [field, file] of [['results_url', 'results.tsv'], ['best_code_url', 'best-train.py']]) {
+    const url = new URL(baseline[field])
+    assert.equal(url.origin + url.pathname, 'http://localhost/assistant/api/task-examples/artifact')
+    assert.equal(url.searchParams.get('run_id'), baseline.run_id)
+    assert.equal(url.searchParams.get('file'), file)
+    assert.equal((await ctx.download(url.href)).status, 200)
+  }
   await assert.rejects(ctx.execute({ action: 'baseline' }), /已使用一次基线/)
   const first = await ctx.execute({ action: 'candidate', run_id: baseline.run_id, train_py: '# fixture metric: 1.2\n' })
   assert.equal(first.attempt.status, 'keep')

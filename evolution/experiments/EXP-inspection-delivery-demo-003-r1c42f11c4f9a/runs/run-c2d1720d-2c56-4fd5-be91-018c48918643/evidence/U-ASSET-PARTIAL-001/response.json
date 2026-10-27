@@ -1,0 +1,26 @@
+{
+  "inputs": [
+    "请启动一次基础台账任务，只读取第一页，然后报告现在能否交付完整五台报告。不要继续读取后续页。"
+  ],
+  "assistant_texts": [
+    "现在不能交付完整五台报告。任务 task-18d0a63e-cdf8-4e53-ac6d-1a28aa4c270c 已启动，只读取第一页 2 台（asset-0001、asset-0002）；next_cursor=2，还有 3 台未读取。已按要求停止，没有继续后续分页，也没有调用 report 或生成完整报告。数据为基础模拟台账，未连接或检测真实设备。"
+  ],
+  "session_id": "session-f63329e7-fdb1-4fcb-8e3f-f72bcd9a1cb7",
+  "turns": [
+    {
+      "assistant_text": "现在不能交付完整五台报告。任务 task-18d0a63e-cdf8-4e53-ac6d-1a28aa4c270c 已启动，只读取第一页 2 台（asset-0001、asset-0002）；next_cursor=2，还有 3 台未读取。已按要求停止，没有继续后续分页，也没有调用 report 或生成完整报告。数据为基础模拟台账，未连接或检测真实设备。",
+      "route": {
+        "provider": "harness-code-only",
+        "model": "workflow-v1",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "inspection_code_only",
+        "task_inspection"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "9043bc89-9598-430f-be7d-9f725e55818b"
+    }
+  ]
+}

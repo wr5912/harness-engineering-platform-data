@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-PAGES-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：indexed_evidence[2] 为同一被测 Session 的 task_inspection 工具回执，原生 is_error=false 且 status=completed，其 trace 显示依次调用 action=start、三次 action=page（cursor 0→2→4→null）与 action=report，均使用同一 run_id task-27e083bf-39f8-476d-ab00-6fc7a02e052b，读取 asset-0001 至 asset-0005 共 5 台，device_count=5，并返回实际的 Markdown 与 CSV 内容及 download_url/csv_url 下载地址；报告与回答均明确为 basic_mock 基础模拟台账、未连接或检测真实设备。四项要求均有 citation_allowed=true 的证据支持，未出现仅给职责或数据摘要的情况。",
+  "evidence_ref": "evidence/U-ASSET-PAGES-001"
+}

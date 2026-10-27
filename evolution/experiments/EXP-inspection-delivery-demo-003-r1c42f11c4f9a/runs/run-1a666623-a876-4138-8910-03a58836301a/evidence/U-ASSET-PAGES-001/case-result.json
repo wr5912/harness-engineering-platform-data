@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-PAGES-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：索引2的tool/result回执is_error为false，其graph_execution.trace完整记录了task_inspection的start、cursor=0/2/4三次page及report调用，run_id全程为task-a63d6701-6c7a-4285-8c5f-ff380ca4b419，next_cursor从0递进至null，rows覆盖asset-0001至asset-0005，device_count=5，并返回markdown/csv正文及download_url、csv_url；索引0的最终回答逐项复述了相同数据、下载链接并明确声明读取基础模拟台账、未连接或检测真实设备，且提供了具体设备明细而非职责或用户数据摘要，四项要求均有同Session可引用证据支撑。",
+  "evidence_ref": "evidence/U-ASSET-PAGES-001"
+}
