@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "upstream": {
+    "repository": "https://github.com/deepseek-ai/deepseek-harness",
+    "commit": "687f282e8625c6b8d11ff58211a90524be2e4317",
+    "skills": [
+      {
+        "skill_path": "packages/preset/agent-preset/skills/cordis-plugin-development",
+        "local_path": "cordis-plugin-development",
+        "skill_tree_sha1": "5946cec3ad88a53d4261767ce621937da42d9347"
+      },
+      {
+        "skill_path": "packages/preset/agent-preset/skills/editing-cordis-compositions",
+        "local_path": "editing-cordis-compositions",
+        "skill_tree_sha1": "5c1ca4382b8ace5195597ff08619caf89edc93cb"
+      },
+      {
+        "skill_path": "packages/preset/agent-preset/skills/cordis-composition-reference",
+        "local_path": "cordis-composition-reference",
+        "skill_tree_sha1": "49bb5a57fbf5c63c61612e80f59c92f492cfd4bc"
+      }
+    ]
+  },
+  "copy_policy": "Complete upstream skill subtrees; original files and directory-relative references are byte-for-byte unmodified. Platform adaptation lives in the parent skill, not in these copies.",
+  "scope": "Skill documentation and templates only; runtime dependencies and vendor implementations are not distributed here. The pinned commit identifies these references, not the current version of every target runtime.",
+  "upstream_files": [
+    {
+      "path": "cordis-composition-reference/SKILL.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-composition-reference/SKILL.md",
+      "git_blob_sha1": "8fcb9d59b6b5ed74aa15670830a61aa39f6d1f71",
+      "sha256": "6583a81d9f4de07032ebdee0d5ea1a925067277805798936a5297cf2bac4f5e3",
+      "size_bytes": 2806,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-composition-reference/references/packages.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-composition-reference/references/packages.md",
+      "git_blob_sha1": "eee345a99c533b7ebb5355acd65509d9055b2ce4",
+      "sha256": "dce58b653277bbcd25cf245178916e5f7b06e558382bb98a566f00b63318474c",
+      "size_bytes": 41003,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/SKILL.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/SKILL.md",
+      "git_blob_sha1": "938798a37451b2c2d9ffb842d7db46edf435f670",
+      "sha256": "83561b4d4fed0dd8051b3e998c6f567a5676a43b7321eecd12c255f4c0478ecf",
+      "size_bytes": 8147,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/references/host-plugin.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/references/host-plugin.md",
+      "git_blob_sha1": "fe88761ae47a73e0d98eb6305b8e724f9dcb57bf",
+      "sha256": "1d5b6ee648b5dd04462fb29075167a5dc570a8f4fd162b3c94ad40a78f2f627a",
+      "size_bytes": 5300,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/references/mcp-bundle.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/references/mcp-bundle.md",
+      "git_blob_sha1": "f1159538ec35a683bd16230d111e97202d17ccce",
+      "sha256": "944b431411ba50582d690f03aa239044556d7a1395d50d3db69cff3920f61ff3",
+      "size_bytes": 984,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/references/practices.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/references/practices.md",
+      "git_blob_sha1": "0f42e10f0c0d81e1f1dc151fd96825a511db3a46",
+      "sha256": "5a61f4e0f754eded6116e55bbf72471fd9b128e138ea3faca120cda76701a042",
+      "size_bytes": 7825,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/references/ui-plugin.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/references/ui-plugin.md",
+      "git_blob_sha1": "d647923d75f2267e751a5d265dc378c9aa4755c5",
+      "sha256": "830a1710af97e3930ba5f29062e46ff78f7be3337995fbb20e85867f80339e23",
+      "size_bytes": 1992,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/references/user-actions.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/references/user-actions.md",
+      "git_blob_sha1": "8b0e00c9860149e529e09185781c99ed2395abb0",
+      "sha256": "ecc7f1226536584d781af8f1f9dee30d7262943dada67bfd997eb7902b34a9be",
+      "size_bytes": 1375,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/references/verification.md",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/references/verification.md",
+      "git_blob_sha1": "350f6a3d84b38cdd90a88a463da3ea0ea4d64480",
+      "sha256": "a28f7b91d0ec4592533360d11fd8a65dc2f103058e2ebf2f7e1497ad90afa9e2",
+      "size_bytes": 1277,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/decoration/client.js",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/decoration/client.js",
+      "git_blob_sha1": "b35a29dedd473cea8522ef18bf79f8f094b9890a",
+      "sha256": "bb17be70ae65f05d2cb26dd18f54448d706a89a1ba4da7ee3fe46ed46ac89f69",
+      "size_bytes": 686,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/decoration/cordis.patch.yml",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/decoration/cordis.patch.yml",
+      "git_blob_sha1": "8affe81b9a3aaa813e25bc25da24624c754dc9c8",
+      "sha256": "542639675b704bbdfa7c6694011c6e57d05c403e4499baa35731902a9063e7fc",
+      "size_bytes": 69,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/decoration/icon.svg",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/decoration/icon.svg",
+      "git_blob_sha1": "5c7caf5c24e06c10fd342b37356175a1d4e0f24f",
+      "sha256": "4adcba5c2950e778c213101265820e287ed6b6248ba58e22840eef7690960935",
+      "size_bytes": 118,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/decoration/index.js",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/decoration/index.js",
+      "git_blob_sha1": "7ef024475de69977f7e2180b92262c66064c5cd5",
+      "sha256": "87edbe4014ee569545ade02f7aa1915f2d2135ffebad84016a247d4542d6f39a",
+      "size_bytes": 108,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/decoration/locale/en.json",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/decoration/locale/en.json",
+      "git_blob_sha1": "28dfb853d7b55392cb198e4808162ae273ed88c0",
+      "sha256": "38e7b64efc9c510ac98199baf79c5195560e7ab222692c27dacd0b4aaababa20",
+      "size_bytes": 128,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/decoration/package.json",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/decoration/package.json",
+      "git_blob_sha1": "375f34957232ea291c75623a4c7d9478b35db25c",
+      "sha256": "08a8d23db9b417c706bd57084b99781631a95f9fd556558da0a3920ac7fa7690",
+      "size_bytes": 527,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/mcp/cordis.patch.yml",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/mcp/cordis.patch.yml",
+      "git_blob_sha1": "d507d4e9db624887e4a09d9c4b2814db05f409cf",
+      "sha256": "9a828bb02bd1aa07a6f873d823b725e85279b7ddf4bebbba40aa391ac501e9b5",
+      "size_bytes": 217,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/mcp/icon.svg",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/mcp/icon.svg",
+      "git_blob_sha1": "4a2710adeb806fe1cfaa4c48814e7b6e4c86c87e",
+      "sha256": "3afa45f14c22ab9f88075411708861bc35fc54bcffd0cbed7c508d2b4a0f6d1a",
+      "size_bytes": 335,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/mcp/locale/en.json",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/mcp/locale/en.json",
+      "git_blob_sha1": "1498e598000e9d778a40b66c9dbf125121318ef6",
+      "sha256": "3f78c51e20992541807f3cd2686b742dfd8d17d284845d5c75e781e85c444b82",
+      "size_bytes": 148,
+      "git_mode": "100644"
+    },
+    {
+      "path": "cordis-plugin-development/templates/mcp/package.json",
+      "upstream_path": "packages/preset/agent-preset/skills/cordis-plugin-development/templates/mcp/package.json",
+      "git_blob_sha1": "d3e24817128da13d1e8dd397922544bf43b69077",
+      "sha256": "592eb1cc8b7072ab06ca96afefefe444a9dfb519877a225a076966aae37082cc",
+      "size_bytes": 292,
+      "git_mode": "100644"
+    },
+    {
+      "path": "editing-cordis-compositions/SKILL.md",
+      "upstream_path": "packages/preset/agent-preset/skills/editing-cordis-compositions/SKILL.md",
+      "git_blob_sha1": "86daf27621b8a7ce9dac54bb0022830916beae3c",
+      "sha256": "974cc1e115bf07a8de7229c20a7e7aa7fa5cc5bfe0fbc22f86b5bc776a7298e6",
+      "size_bytes": 5739,
+      "git_mode": "100644"
+    }
+  ],
+  "license": {
+    "spdx": "MIT",
+    "copyright": "Copyright (c) 2026 DeepSeek",
+    "path": "LICENSE",
+    "upstream_path": "LICENSE",
+    "git_blob_sha1": "c1f7a78e89e4e4dc7b86664c3b3c76eb5eee1785",
+    "sha256": "ebb4f09972aee8608be255debaf78451a68e95c290f55c240dec2ecfa16ea6be",
+    "size_bytes": 1065,
+    "git_mode": "100644"
+  },
+  "third_party_notices_url": "https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/THIRD_PARTY_NOTICES.md",
+  "local_additions": [
+    "UPSTREAM.json"
+  ]
+}

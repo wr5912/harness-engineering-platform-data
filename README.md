@@ -2,13 +2,13 @@
 
 这是 Harness 工程平台的数据与管理助手业务 Harness 仓库，保存管理助手原则和技能、智能体研究资产、评测记录、决策样本、实际来源与工具配置，以及业务扩展。默认部署在 `~/harness-engineering-platform-data`；平台程序由独立的 [harness-engineering-platform](https://github.com/wr5912/harness-engineering-platform) 仓库维护。
 
-平台管理助手使用本仓库的 [AGENTS.md](AGENTS.md) 和 [.agents/skills](.agents/skills) 办理业务。它具备工作区管理、智能体构建维护、评测改进、继承融合、算力研究、MCP 编排、样本抽取、技能审查和旧资产清点方法；真实执行能力以当前平台提供的工具为准，Skill 文件存在不代表任务已验证成功。
+平台管理助手使用本仓库的 [AGENTS.md](AGENTS.md) 和 [.agents/skills](.agents/skills) 办理业务。它具备工作区管理、智能体构建维护、业务插件开发、评测改进、继承融合、算力研究、MCP 编排、样本抽取、技能审查和旧资产清点方法；真实执行能力以当前平台提供的工具为准，Skill 文件存在不代表任务已验证成功。
 
 ## 目录与维护职责
 
 ```text
 AGENTS.md                 管理身份、业务原则与约束
-.agents/skills/            23 项管理、研究、KEV 数据训练及通用表达 Skill
+.agents/skills/            24 项管理、研究、KEV 数据训练及通用表达 Skill
 docs/harness-research/     当前研究方法、经验和固定来源索引
 agents/                   业务智能体入口、需求和共享评测口径
 evolution/                Experiment、Candidate、Run、决策样本和历史输入
@@ -18,7 +18,9 @@ workspace.json            工作区身份和原生扩展声明
 .local/                   会话、设置、实例 HOME、制品和凭据，忽略 Git
 ```
 
-管理技能共 23 项。原有 13 项管理、研究和表达技能保持原入口；新增 KEV 套件 10 项：`kev-trace-pipeline`、`dsh-trace-audit`、`kev-decision-discovery`、`kev-sample-extraction`、`kev-sample-labeling`、`kev-dataset-build`、`kev-dataset-audit`、`kev-training`，以及官方完整 `kev-finetune`、`kev-deploy`。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
+管理技能共 24 项。原有 13 项管理、研究和表达技能保持原入口；业务插件开发使用下述专项技能；KEV 套件 10 项：`kev-trace-pipeline`、`dsh-trace-audit`、`kev-decision-discovery`、`kev-sample-extraction`、`kev-sample-labeling`、`kev-dataset-build`、`kev-dataset-audit`、`kev-training`，以及官方完整 `kev-finetune`、`kev-deploy`。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
+
+[DSH 业务插件开发](.agents/skills/dsh-business-plugin-development/SKILL.md)通过现有工作区管理、任务构建或 Harness 演进入口按需使用。技能完整保留匹配固定提交的官方 `cordis-plugin-development` 及两个组合配置 Skill，原文、模板和许可证不改写；平台入口只补目标业务智能体、Candidate、执行环境和验证交接。上游引用及逐文件摘要见 [UPSTREAM.json](.agents/skills/dsh-business-plugin-development/references/upstream/UPSTREAM.json)。当前未新增独立任务类型或插件构建执行器，真实开发、安装及装载能力以目标环境工具为准。
 
 训练与验证数据保留机器格式；方案、清单、审查和结果默认用清楚的中文说明。KEV 数据工具支持原始 DSH 轨迹、平台 v2 导出和既有原生 JSONL，默认生成可读报告，程序回执可用 `--json`。格式、旧数据复核及八类路由的整改范围见[数据格式与可读输出整改](docs/harness-research/kev-data-format-and-output-plan.md)。
 

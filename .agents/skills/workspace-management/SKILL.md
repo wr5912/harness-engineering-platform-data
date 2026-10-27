@@ -25,6 +25,7 @@ description: 定位平台管理任务的工作区、目标和当前状态，选�
 | 执行评测、比较结果 | `research-eval` |
 | 研究算力变体、生成或比较变体 | `compute-variant-research` |
 | 接入或编排 MCP 工具、查看组合运行 | `mcp-composition` |
+| 为业务智能体设计、开发、适配或审查 DSH 插件 | `dsh-business-plugin-development` |
 | 从指定 Run 抽取决策样本 | `decision-sample-extraction` |
 | 审计本地 DSH 轨迹、发现 KEV 决策点，或复核既有 KEV 数据并构建独立数据集 | `kev-trace-pipeline` |
 | 将已复核数据交给 KEV 训练、编码检查、校准或模型工件交接 | `kev-training` |
@@ -32,6 +33,8 @@ description: 定位平台管理任务的工作区、目标和当前状态，选�
 | 只读清点旧目录或归档 | `legacy-asset-intake` |
 
 任务已指定具体业务技能时直接使用；当前指定的是 workspace-management 时，按上表选择对应业务技能，实例查看与启停先加载 agent-maintenance。同一技能已加载就继续执行，不因相互引用重复加载。只有进入另一个实际业务域才补读对应技能；专用作用域不能借此加载未允许的技能或工具。抽样、特性整理和算力变体任务各自保持固定目标与专用工具范围。
+
+业务插件开发在普通管理入口或现有构建、演进任务中按需读取 `dsh-business-plugin-development`，不新造 `task_context.skill` 或扩大专用任务范围。官方技能在其引用目录中按需读取；目录内的原文与模板不授权在当前管理 Profile 安装目标业务插件。
 
 KEV 任务一次只进入当前阶段。中算力按钮仍走 `compute-variant-research`，不能新造 `task_context.skill=kev-*`；普通管理入口可按需读取已装载的新技能。官方 `kev-finetune`、`kev-deploy` 保留上游原文，由 `kev-training` 对齐来源、数据分组和实际授权后按需使用；不要因官方示例列出训练、部署或删除命令就连续执行全部步骤。
 

@@ -16,6 +16,8 @@ description: 通过平台工具创建、修改和审查 DSH Harness Experiment�
 
 `assets/diff` 与其他 Experiment 的比较针对当前工作树，不能冒称固定提交。`assets/read-fixed` 的脱敏、截断预览或二进制元数据也不能当作完整正文迁移。
 
+修改涉及业务插件代码、配置或装配时，按需使用 `dsh-business-plugin-development` 复用对应版本的官方 Skill，继续使用本次 Candidate 和来源。该技能不另建 Experiment，不把管理助手当前 Profile 当作目标业务环境；完成后回到下述评测与结论。
+
 ## 评测与决定
 
 以 `research-eval` 固定 Case 和比较环境，用真实新 Run 检查修改与必要回归；该技能已加载就继续相应步骤，评测结束回到下述保存结论，不重新创建 Experiment。检查配置、制品与实际加载；旧来源测试不能证明目标集成。Decision 前只核对本次相关并行来源的新增变化，说明取舍；需要跨来源能力时使用 `harness-experiment-fusion`。
