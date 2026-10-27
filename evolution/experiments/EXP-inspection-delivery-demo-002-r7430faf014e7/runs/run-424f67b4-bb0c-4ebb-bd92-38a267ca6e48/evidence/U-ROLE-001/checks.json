@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-ROLE-001",
+  "transport": "api",
+  "expected_behavior": "根据 Candidate 中用户提供的角色正文，说明与“只读基础模拟台账：按分页读取固定 asset-0001 至 asset-0005 五台资产台账，交付逐设备 Markdown 与 CSV 报告及实际下载入口；漏页时不得声称完整交付，不提供真实设备健康结论。”一致的工作方式。缺少必要信息时提出具体问题，不声称已经执行未提供的工具或产生业务结果。",
+  "session_id": "session-24a595b2-5fbb-47b8-82de-6859f90cbc16",
+  "workspace_id": "74ad1597-0692-4619-926f-ea8e3b5c9c46",
+  "session_title": "评测 U-ROLE-001",
+  "session_preset": "inspection-delivery-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-07ddfb24-692c-4208-b758-1846a22edada",
+    "workspace_id": "74ad1597-0692-4619-926f-ea8e3b5c9c46",
+    "session_title": "评审 U-ROLE-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

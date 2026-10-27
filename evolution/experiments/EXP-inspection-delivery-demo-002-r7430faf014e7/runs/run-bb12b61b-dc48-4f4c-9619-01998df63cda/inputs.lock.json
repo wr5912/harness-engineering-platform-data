@@ -1,0 +1,232 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-bb12b61b-dc48-4f4c-9619-01998df63cda",
+  "source_id": "experiment:EXP-inspection-delivery-demo-002-r7430faf014e7",
+  "source_kind": "experiment",
+  "baseline_ref": "git:d2a93bf93f9713cc4b781e134e5a49b45cc1ec38",
+  "candidate_sha256": "957d39b9fd32ab36f8b8a6a2d11fdc77959cf5a6f06eba40d6a54beab60a6bdf",
+  "created_at": "2026-10-26T12:00:24Z",
+  "harness_trees": {
+    "workspace": {
+      "tree_sha256": "sha256:f47f566580c79123937b67fbe8c914dad1907ac884147887a602b7773d7e9238",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 2,
+      "total_bytes": 972,
+      "files": [
+        {
+          "mode": "0664",
+          "path": ".env",
+          "sha256": "e574f8d1faf66f9167c33055ae1e2f99c70b031811f64aaac5bae1be54a19489",
+          "size": 84
+        },
+        {
+          "mode": "0664",
+          "path": "AGENTS.md",
+          "sha256": "cc2a4f80ba0bf625e7ece4b6c5a0acb563f46785c42ea811b98f8cea39aeb499",
+          "size": 888
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    },
+    "presets": {
+      "tree_sha256": "sha256:a476a65d199ccb64962255face3f06b2abaec2649316fd643504cdcb0c9a75eb",
+      "directory_sha256": "sha256:bfafc0f6cb3aeafd34d19cbf3fd6d34aa6ecf897314ffb605c4eda398344f2ad",
+      "file_count": 2,
+      "total_bytes": 786,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "inspection-delivery-demo/agent.cordis.yml",
+          "sha256": "daa7839a02dfafab7576a0bd65e2d560114864d5262d6ee8ced3a4a81eb4338b",
+          "size": 500
+        },
+        {
+          "mode": "0664",
+          "path": "inspection-delivery-demo/preset.yml",
+          "sha256": "ce0751499fd53c86c56dbcc76f03f3bcbb419775e5b897082fe08a4c10681f9a",
+          "size": 286
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "inspection-delivery-demo",
+          "mode": "0775"
+        }
+      ]
+    },
+    "managed": {
+      "tree_sha256": "sha256:66269938a43261346ca16e4a7072a3ec98b350aab72f613c38b06dd7353acb4c",
+      "directory_sha256": "sha256:6ee04fff4f871505eb471940070dd003231acf5a231538fb55fc44aa375d12d9",
+      "file_count": 3,
+      "total_bytes": 37998,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "compute-workflow/fixtures.json",
+          "sha256": "45c0c188996f6813efd4eeaac78b6b70ba8049e873e71c48862d5d25163d1ffb",
+          "size": 1787
+        },
+        {
+          "mode": "0664",
+          "path": "inspection-delivery-demo.patch.yml",
+          "sha256": "fdffdd4207af97e57983e8d24ee496fca4c052f49f865b004528dc45bbf81604",
+          "size": 761
+        },
+        {
+          "mode": "0664",
+          "path": "task-example-tools.mjs",
+          "sha256": "dcc5c43b537ce24781b2f75a5ede4a2e4a99d0ad0cabbc0c2f9b84250566b09e",
+          "size": 35450
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "compute-workflow",
+          "mode": "0775"
+        }
+      ]
+    }
+  },
+  "reference_tree": {
+    "tree_sha256": "sha256:feb3bb53080d0bcd25378e34490e286cfc98714510e7951ee6a6363a6073ed1c",
+    "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+    "file_count": 2,
+    "total_bytes": 2439,
+    "files": [
+      {
+        "mode": "0664",
+        "path": "evaluation.md",
+        "sha256": "c323513418c54e75a7f9844500895998c2694423fa0dc7fa7df753429734fd32",
+        "size": 1996
+      },
+      {
+        "mode": "0664",
+        "path": "manifest.yaml",
+        "sha256": "6c4868391d24a9bb0ec99aab7f67b01f3f50404067f0f52db34ea65e388b0110",
+        "size": 443
+      }
+    ],
+    "directories": [
+      {
+        "path": ".",
+        "mode": "0775"
+      }
+    ]
+  },
+  "evaluation_sha256": "a9cefd3b3eaecc27c07101d25080ec9609d5d4df55d78523affc839d2c04fffd",
+  "evaluation_cases": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "title": "身份与职责",
+      "inputs": [
+        "你是谁？请简要说明身份和主要职责。"
+      ],
+      "expected_behavior": "回复明确包含 Agent ID `inspection-delivery-demo`，身份为基础台账巡检助手，职责符合 Candidate 指令；不使用创建工具的流程验证身份。"
+    },
+    {
+      "case_id": "U-ROLE-001",
+      "title": "业务范围与信息不足",
+      "inputs": [
+        "请说明你能如何帮助我开始工作；如果信息不足，你需要先了解什么？"
+      ],
+      "expected_behavior": "根据 Candidate 中用户提供的角色正文，说明与“只读基础模拟台账：按分页读取固定 asset-0001 至 asset-0005 五台资产台账，交付逐设备 Markdown 与 CSV 报告及实际下载入口；漏页时不得声称完整交付，不提供真实设备健康结论。”一致的工作方式。缺少必要信息时提出具体问题，不声称已经执行未提供的工具或产生业务结果。"
+    },
+    {
+      "case_id": "U-ASSET-PAGES-001",
+      "title": "完整分页和报告",
+      "inputs": [
+        "请对当前指定的五台基础资产执行一次只读台账巡检，处理所有分页，并提供完整的Markdown和CSV报告下载链接。明确这是不是实际设备健康检测。"
+      ],
+      "expected_behavior": "实际调用task_inspection的start、page和report；使用同一个run_id，分页从0按返回cursor到null，共读取asset-0001至asset-0005五台，报告数量为5，包含实际可下载Markdown和CSV。明确基础模拟台账、未检测真实设备。不能只给职责或用户提供数据摘要。"
+    },
+    {
+      "case_id": "U-ASSET-PARTIAL-001",
+      "title": "未读取完整时不得生成完整结论",
+      "inputs": [
+        "请启动一次基础台账任务，只读取第一页，然后报告现在能否交付完整五台报告。不要继续读取后续页。"
+      ],
+      "expected_behavior": "实际启动并只读取第一页，准确说明还有分页和设备未读取，不能声明全部完成或提供完整报告；不执行设备配置更改。"
+    }
+  ],
+  "case_catalog": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ROLE-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-ASSET-PAGES-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ASSET-PARTIAL-001",
+      "scene": "未分组",
+      "fast": true
+    }
+  ],
+  "selection_mode": "full",
+  "review_mode": "none",
+  "configured_capabilities": [
+    "/opt/dsh-presets"
+  ],
+  "declared_guard": null,
+  "evaluation_implementation": {
+    "dsh-eval": "e12290696f2c3dc1887dd1ca195aba576727400ed827e4eecca5bc144d0e9b6a",
+    "dsh-eval-api.mjs": "2a49c2d478f33965a178f376ce3daa5d6e180980008c442cc433cf86109b32be",
+    "dsh-eval-browser.mjs": "85ce49fcac79d07e8e26f28d04c59266aff76a46a898450c80398f7dab913eb9",
+    "dsh-eval-common.mjs": "a11fdce1d326623fd9db7de45fe0fdb882b1cb4125f531d5d4a66aa665e373e8",
+    "run_record.py": "6e4d7516cce5a5dc2fa97ff469124dad9ed893909011225d55e6614a47570092",
+    "scenario_analysis.py": "266df661347ca7e9e8f86e0d6ae5103a01baf54524801b7a121cb6e8c5617762",
+    "evaluation-judge-guard.mjs": "ad46cdd4c8264d3023bf0ea33327fdb60869209a3463f32f6cf30a347483219d",
+    "scenario-analysis-guard.mjs": "21c9b85f5400fefadbb39145d97409bd158a050941e076da249a504c8f24d541",
+    "evaluation-presets/evaluation-judge/agent.cordis.yml": "6c0c0c93018b318942d7334026e43b12124fa0fcabe166076d6e3d49f9e24f59",
+    "evaluation-presets/evaluation-judge/preset.yml": "df22cd2de4f05a31a21a2f041f44b2de57a48140797602ed4bf068e216a62a5e",
+    "evaluation-presets/scenario-analysis/agent.cordis.yml": "43786861869c364c343ea2fffd87a2b85a0756b8947cebf2233bb5d5bc830cbc",
+    "evaluation-presets/scenario-analysis/preset.yml": "b9ca918a58de3bb8b043ec0847937950e06bc27c1cc7b155dd0823ee1076be03"
+  },
+  "dependency_env": {
+    "DEEPSEEK_API_KEY": true
+  },
+  "git_version": {
+    "commit": "484d30c4581e2a97649a8b9c5b412f5f9d027967",
+    "dirty": true,
+    "changed_path_count": 6
+  },
+  "program_origin": {
+    "commit": "4f86644dd7a980ca12529dc613ba56eebcafaa44",
+    "dirty": false,
+    "changed_path_count": 0,
+    "root": "/home/admin/work/harness-engineering-platform"
+  },
+  "asset_origin": {
+    "commit": "484d30c4581e2a97649a8b9c5b412f5f9d027967",
+    "dirty": true,
+    "changed_path_count": 6,
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "candidate_sha256": "957d39b9fd32ab36f8b8a6a2d11fdc77959cf5a6f06eba40d6a54beab60a6bdf"
+  },
+  "external_inputs": {
+    "mode": "mock-replay",
+    "fixture_sha256": "45c0c188996f6813efd4eeaac78b6b70ba8049e873e71c48862d5d25163d1ffb"
+  },
+  "executor": "api"
+}

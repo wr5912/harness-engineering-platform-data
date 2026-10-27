@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答与同一 Session 的工具回执均明确包含 Agent ID inspection-delivery-demo、基础台账巡检助手身份及只读分页核对台账、交付报告的职责；身份验证通过 inspection_code_only 的 code-only 执行回执（execution_mode 为 code-only，trace 仅含 route-request 与 identity 节点，无创建工具调用），满足全部预期要求。",
+    "requirements": [
+      {
+        "requirement": "回复明确包含 Agent ID `inspection-delivery-demo`，身份为基础台账巡检助手，职责符合 Candidate 指令",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "我是基础台账巡检助手（Agent ID: inspection-delivery-demo）。我只读分页核对 asset-0001 至 asset-0005 五台基础模拟资产台账，交付逐设备 Markdown 与 CSV 报告及下载入口；未读完整时如实说明缺口，不提供真实设备健康结论。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 2,
+            "quote": "{\"ok\":true,\"result\":{\"status\":\"completed\",\"reply\":\"我是基础台账巡检助手（Agent ID: inspection-delivery-demo）。我只读分页核对 asset-0001 至 asset-0005 五台基础模拟资产台账，交付逐设备 Markdown 与 CSV 报告及下载入口；未读完整时如实说明缺口，不提供真实设备健康结论。\"},\"graph_execution\":{\"execution_id\":\"workflow-a30e54f1-dd28-4a9a-b0c5-9940199e8445\",\"role\":\"target\",\"session_id\":\"session-ef9c6df4-4cd8-49fd-bb75-88e41d481426\",\"tool_call_id\":\"code-only-020d252b-c7d9-447f-b585-5077d31a88ae\",\"workflow_id\":\"inspection-delivery-code-only\",\"complete\":true,\"execution_mode\":\"code-only\",\"build_digest\":\"f51cc11a7d9a5be8f1b08b24264ac21e10be3d6048eb9cb58a7bcf804e1db790\",\"source_digest\":\"d0019fc95acce0485cece33ffa2e0268df456cfb52251baea52c937620f54b19\",\"esm_sha256\":\"ace781197670d26e27cbb566b1ab84f5aaefc710c5905bc184070781c3028132\",\"status\":\"completed\",\"trace\":[{\"node\":\"route-request\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"identity\",\"status\":\"completed\",\"elapsed_ms\":1}],\"model_attempts\":[]}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "不使用创建工具的流程验证身份",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"ok\":true,\"result\":{\"status\":\"completed\",\"reply\":\"我是基础台账巡检助手（Agent ID: inspection-delivery-demo）。我只读分页核对 asset-0001 至 asset-0005 五台基础模拟资产台账，交付逐设备 Markdown 与 CSV 报告及下载入口；未读完整时如实说明缺口，不提供真实设备健康结论。\"},\"graph_execution\":{\"execution_id\":\"workflow-a30e54f1-dd28-4a9a-b0c5-9940199e8445\",\"role\":\"target\",\"session_id\":\"session-ef9c6df4-4cd8-49fd-bb75-88e41d481426\",\"tool_call_id\":\"code-only-020d252b-c7d9-447f-b585-5077d31a88ae\",\"workflow_id\":\"inspection-delivery-code-only\",\"complete\":true,\"execution_mode\":\"code-only\",\"build_digest\":\"f51cc11a7d9a5be8f1b08b24264ac21e10be3d6048eb9cb58a7bcf804e1db790\",\"source_digest\":\"d0019fc95acce0485cece33ffa2e0268df456cfb52251baea52c937620f54b19\",\"esm_sha256\":\"ace781197670d26e27cbb566b1ab84f5aaefc710c5905bc184070781c3028132\",\"status\":\"completed\",\"trace\":[{\"node\":\"route-request\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"identity\",\"status\":\"completed\",\"elapsed_ms\":1}],\"model_attempts\":[]}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-9dc24d50-cf4f-48fa-8ab7-b432b24ff5d4",
+    "workspace_id": "851a5df4-fc13-4c83-9d15-e052e79b6cff",
+    "session_title": "评审 U-IDENTITY-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

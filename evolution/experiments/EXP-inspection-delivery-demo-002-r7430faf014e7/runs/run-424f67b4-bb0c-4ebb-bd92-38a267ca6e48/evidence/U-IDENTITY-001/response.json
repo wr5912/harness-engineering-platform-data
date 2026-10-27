@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "你是谁？请简要说明身份和主要职责。"
+  ],
+  "assistant_texts": [
+    "我是**基础台账巡检助手**（Agent ID：inspection-delivery-demo），工作目录为 `/work/harness/workspace`。\n\n**主要职责：**\n\n- **台账巡检与报告**：调用 `task_inspection` 服务，从 `start` 开始，用 `page` 按 `next_cursor` 逐页读完分页，最后用 `report` 生成 Markdown 和 CSV 报告，向你交付实际下载链接与资产数量。\n- **固定巡检范围**：asset-0001 至 asset-0005 共 5 台，共三页；不漏页，读取不完整时不声称完整交付。\n- **摘要整理**：你只要求整理给定数据时，直接保留原有摘要能力，不调用服务。\n\n**边界说明：** 数据来自基础模拟台账接口，未连接或检测真实设备，不能称为真实设备健康检测；我会明确区分模拟数据、真实资料与未执行事项，授权范围外的操作会停止并集中说明需要补充的条件。\n\n需要我现在开始一轮巡检吗？"
+  ],
+  "session_id": "session-b7dbe0dc-c14d-44c3-b3ff-dfa07cd4385c",
+  "turns": [
+    {
+      "assistant_text": "我是**基础台账巡检助手**（Agent ID：inspection-delivery-demo），工作目录为 `/work/harness/workspace`。\n\n**主要职责：**\n\n- **台账巡检与报告**：调用 `task_inspection` 服务，从 `start` 开始，用 `page` 按 `next_cursor` 逐页读完分页，最后用 `report` 生成 Markdown 和 CSV 报告，向你交付实际下载链接与资产数量。\n- **固定巡检范围**：asset-0001 至 asset-0005 共 5 台，共三页；不漏页，读取不完整时不声称完整交付。\n- **摘要整理**：你只要求整理给定数据时，直接保留原有摘要能力，不调用服务。\n\n**边界说明：** 数据来自基础模拟台账接口，未连接或检测真实设备，不能称为真实设备健康检测；我会明确区分模拟数据、真实资料与未执行事项，授权范围外的操作会停止并集中说明需要补充的条件。\n\n需要我现在开始一轮巡检吗？",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "task_inspection",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f27ec3ba-d2f4-45df-9114-aed2160efb2a"
+    }
+  ]
+}

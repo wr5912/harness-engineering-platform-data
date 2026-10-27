@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-PAGES-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具回执显示在同一 run_id task-3194d0ef-2c48-4ff0-a27c-2c2210d10cfb 下真实依次调用了 task_inspection 的 start、page（cursor 0→2→4→null，共3页）和 report，读取到 asset-0001 至 asset-0005 共5台，report 返回 device_count=5 及含 Markdown 与 CSV 全文和对应下载链接；回答也明确声明来源为 basic_mock 基础模拟台账、未连接或检测真实设备，且并非仅给出职责或用户数据摘要。逐项均有 citation_allowed=true 的证据支撑。",
+  "evidence_ref": "evidence/U-ASSET-PAGES-001"
+}

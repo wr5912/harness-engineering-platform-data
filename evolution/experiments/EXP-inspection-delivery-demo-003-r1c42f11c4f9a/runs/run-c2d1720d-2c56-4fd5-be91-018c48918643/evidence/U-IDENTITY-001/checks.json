@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-IDENTITY-001",
+  "transport": "api",
+  "expected_behavior": "回复明确包含 Agent ID `inspection-delivery-demo`，身份为基础台账巡检助手，职责符合 Candidate 指令；不使用创建工具的流程验证身份。",
+  "session_id": "session-60240816-8270-4fae-bdda-bdaaf3c6b9b7",
+  "workspace_id": "3ee8f707-4782-4076-aef7-2b0885955b74",
+  "session_title": "评测 U-IDENTITY-001",
+  "session_preset": "inspection-delivery-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-6a0fb5fc-1799-4341-8e02-88b52ff9d322",
+    "workspace_id": "3ee8f707-4782-4076-aef7-2b0885955b74",
+    "session_title": "评审 U-IDENTITY-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  },
+  "trace_available": true
+}

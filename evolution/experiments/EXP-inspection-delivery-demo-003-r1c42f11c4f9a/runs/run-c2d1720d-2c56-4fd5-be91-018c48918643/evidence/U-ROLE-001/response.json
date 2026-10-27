@@ -1,0 +1,26 @@
+{
+  "inputs": [
+    "请说明你能如何帮助我开始工作；如果信息不足，你需要先了解什么？"
+  ],
+  "assistant_texts": [
+    "我可以按分页读取固定 asset-0001 至 asset-0005 五台基础模拟资产台账，核对完整后生成逐设备 Markdown 与 CSV 报告，并提供实际下载入口。若只读第一页，我会保留未完成状态并说明剩余设备，不生成完整报告。这些台账不是真实设备健康检测。开始前需要明确你希望完整巡检还是只读第一页；本轮仅说明职责，尚未启动任务或调用业务工具。"
+  ],
+  "session_id": "session-8ebf7cc7-62f9-4ddd-a563-304efb75e22d",
+  "turns": [
+    {
+      "assistant_text": "我可以按分页读取固定 asset-0001 至 asset-0005 五台基础模拟资产台账，核对完整后生成逐设备 Markdown 与 CSV 报告，并提供实际下载入口。若只读第一页，我会保留未完成状态并说明剩余设备，不生成完整报告。这些台账不是真实设备健康检测。开始前需要明确你希望完整巡检还是只读第一页；本轮仅说明职责，尚未启动任务或调用业务工具。",
+      "route": {
+        "provider": "harness-code-only",
+        "model": "workflow-v1",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "inspection_code_only",
+        "task_inspection"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "eee233b3-7f12-456e-aad3-fb1bbb719152"
+    }
+  ]
+}
