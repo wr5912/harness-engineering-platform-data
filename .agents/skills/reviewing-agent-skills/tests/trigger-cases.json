@@ -13,6 +13,10 @@
   {"id":"N06","input":"解释什么叫做渐进披露","expected_activation":false},
   {"id":"E01","input":"只根据这两段 SKILL.md 内容提出可能的问题，不要宣称已运行测试","expected_activation":true},
   {"id":"E02","input":"审查一个引用了稳定 MCP 工具名的 Skill，判断是否真的需要动态发现","expected_activation":true},
-  {"id":"E03","input":"仅给出最小修改 Diff，不要改我的原始文件","expected_activation":true},
-  {"id":"E04","input":"这个 Skill 中没有可执行脚本，是否还必须创建 scripts/？","expected_activation":true}
+  {"id":"E03","input":"仅针对这份 SKILL.md 给出最小修改 Diff，不要改我的原始文件","expected_activation":true},
+  {"id":"E04","input":"这个 Skill 中没有可执行脚本，是否还必须创建 scripts/？","expected_activation":true},
+  {"id":"P07","input":"严格检查这个 Skill 是否符合官方格式，正文是否完整、工整，并给逐项证据","expected_activation":true},
+  {"id":"P08","input":"审查每个 Skill 的章节内容和写法，区分官方要求、建议和平台约定","expected_activation":true},
+  {"id":"E05","input":"这个短 Skill 没有 Goal、Inputs、Done 标题，是否违反官方规范？","expected_activation":true},
+  {"id":"E06","input":"通用验证器拒绝 user-invocable 字段，但目标是 DSH，请核对是否真的违规","expected_activation":true}
 ]

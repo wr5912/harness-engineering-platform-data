@@ -1,15 +1,43 @@
-# 公开资料与来源（检索日期：2026-10-22）
+# 来源、版本与规则适用性
 
-该 Skill 独立实现；以下链接为设计参考，并非使用或复制第三方项目代码。
+核查日期：**2026-10-28**。以下官方规范与实现用于判断规则来源；设计文章不能新增格式义务。复审不同版本时重新核对适用性，不用本日期冒充“始终最新”。
 
-1. [Agent Skills Specification](https://agentskills.io/specification) — 名称、描述、目录与可选资源约束。
-2. [Anthropic Skill Best Practices](https://platform.claude.com/docs/zh-CN/agents-and-tools/agent-skills/best-practices) — 简洁、渐进披露、自由度、测试。
-3. [Anthropic: Equipping agents for the real world with Agent Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills) — Skills 的能力包模型。
-4. [Anthropic: Lessons from Building Claude Code: How We Use Skills](https://www.linkedin.com/pulse/lessons-from-building-claude-code-how-we-use-skills-thariq-shihipar-iclmc) — 工程踩坑与 Gotchas。
-5. [Lavi Nigam: 5 Agent Skill Design Patterns](https://lavinigam.com/posts/adk-skill-design-patterns/) — 五种常见设计模式。
-6. [colchuck-ai/agent-skill-review](https://github.com/colchuck-ai/agent-skill-review) — Steelman/Attack 等对抗式审查思路。
-7. [Anthropic skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator) — 创建、评估与改进闭环。
-8. [Anthropic: Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp) — 通过程序化编排减少工具/上下文开销。
-9. [MCP: Tools](https://modelcontextprotocol.io/specification/2025-06-18/server/tools) — 工具发现、调用及变化通知的协议机制；不等同于自动语义兼容。
+## 官方规范与参考实现
 
-补充原则：用户开发中的两个经验问题——MCP 名称重构导致 Skill 失效、细粒度 MCP 导致 Agent 编排推理链过长——是本包的重点专项，不宜被一般安全合规检查覆盖。
+| 来源 | 固定版本/定位 | 用途与边界 |
+|---|---|---|
+| [Agent Skills Specification](https://agentskills.io/specification) | [规范源码](https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/docs/specification.mdx)，提交 `69ef37e9424c0a7ea9dd2293b559e43ec8176379` | 通用格式与组织建议；正文没有固定章节限制 |
+| [skills-ref validator](https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/src/skills_ref/validator.py) | 同一提交，包版本 `0.1.0` | 官方参考实现；接受 Unicode 名称，拒绝未列顶层字段，但没有覆盖全部可选字段和正文 |
+| [skills-ref parser](https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/src/skills_ref/parser.py) | 同一提交 | 使用 StrictYAML，标量按字符串处理；某些表示与分隔符处理有参考实现限制 |
+| [skills-ref tests](https://github.com/agentskills/agentskills/tree/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/tests) | 同一提交 | 官方用例接受未加引号的 `metadata.version: 1.0`；不能用另一解析器的隐式 float 类型误报 |
+| [skills-ref package](https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/pyproject.toml) | Python >=3.11；StrictYAML >=1.7.3、Click >=8.0 | 官方命令的依赖要求，与本包 Python 3.9+ 检查器分开 |
+| [YAML 1.2.2 nodes](https://yaml.org/spec/1.2.2/#3211-nodes) | YAML 1.2.2 | 映射键唯一；不能静默忽略重复字段 |
+| [Anthropic authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) | 在线文档，按核查日期 | 简洁、渐进披露、自由度、反馈与示例的官方建议；产品特有约束不自动扩展为所有运行时的通用格式 |
+
+## DSH 官方目标合同
+
+目标版本 `0.2.1-rc.2`，固定提交 `687f282e8625c6b8d11ff58211a90524be2e4317`：
+
+- [skill-filesystem README](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/skill/skill-filesystem/README.md)：目录/扁平入口、发现深度、可选字段和调用开关。
+- [skill-filesystem 实现](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/skill/skill-filesystem/src/index.ts)：原生 frontmatter、`whenToUse`、`metadata`、开关合法值和旧字段拒绝。
+- [skill registry 实现](https://github.com/deepseek-ai/deepseek-harness/blob/687f282e8625c6b8d11ff58211a90524be2e4317/packages/skill/skill/src/index.ts)：ASCII kebab-case 名称及注册合同。
+
+DSH 扩展合法性、通用可移植性、原生装载和实际调用效果分别报告。官方参考拒绝扩展字段不自动等于 DSH 缺陷；DSH 宽松接收某字段也不自动满足通用规范。
+
+## 实现复用与已知边界
+
+本检查器使用 StrictYAML `1.7.3` 的解析能力，不复制官方 `skills-ref` 源码。自行实现的补充检查注明来源，结果不标成官方命令回执；依赖缺失不静默降级。
+
+`skills-ref 0.1.0` 的检查范围不能等同完整规范：它没有完整校验 `metadata`、`allowed-tools`、`license` 的形状，也未落实 `compatibility` 非空下限；不检查正文章节、任务方法或运行时效果。参考解析器对普通标量的字符串处理与 YAML 1.1/1.2 的隐式类型解析不同，遇到边界要保留原文及各解析器结果，按目标合同判断。
+
+## 设计与专项参考
+
+以下仅提供审查思想和专项知识，不作为通用格式新增硬要求：
+
+- [Anthropic: Equipping agents for the real world with Agent Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills)。
+- [Anthropic skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)：评估与改进闭环。
+- [Anthropic: Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp)：确定性编排与上下文成本。
+- [MCP Tools](https://modelcontextprotocol.io/specification/2025-06-18/server/tools)：发现、调用和变化通知；不保证自动语义兼容。
+- [Lessons from Building Claude Code](https://www.linkedin.com/pulse/lessons-from-building-claude-code-how-we-use-skills-thariq-shihipar-iclmc)、[5 Agent Skill Design Patterns](https://lavinigam.com/posts/adk-skill-design-patterns/)、[agent-skill-review](https://github.com/colchuck-ai/agent-skill-review)：设计经验，不能覆盖上述官方条款或实际平台合同。
+
+MCP 名称变化与过细编排仍是重点，但格式、正文内容与工整性检查不得因此省略。

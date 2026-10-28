@@ -1,67 +1,49 @@
-# reviewing-agent-skills v1.0.0
+# reviewing-agent-skills v1.1.0
 
-一个面向现有 **Agent Skills** 的离线友好、对抗式、证据驱动的审查技能包。**审查并提出最小整改建议**，默认不会修改目标 Skill。
+面向已有 Agent Skills 的严格规范、内容与工整性审查，同时保留职责、触发、MCP 耦合和编排效率审查。默认给证据与最小整改建议，用户授权后才修改目标。
 
-## 它重点检查什么？
+## 审查范围
 
-1. Skill 是否真的需要存在，还是应该删除、拆分、合并或下沉到脚本/MCP。
-2. `name`/`description` 的触发精准度、规范有效性和渐进加载。
-3. 过度约束、长提示词、无限自检、错误的职责边界。
-4. **MCP 服务名/工具名硬编码与版本变化带来的耦合风险**。
-5. **细粒度 MCP 造成 Agent 冗长编排、额外推理与 Token 消耗**，并据此建议原 MCP 复合工具、组合 MCP 或局部脚本。
-6. 缺陷证据、最小修改 Diff 和可运行/待运行的验收方案。
+- 逐项核对官方格式：目录入口、YAML、必需/可选字段、命名及引用。
+- 区分官方规范、官方参考实现策略、运行时扩展与本地质量要求；固定来源和版本。
+- 按任务类型核对正文信息是否充分，再检查标题、列表、术语、表格、代码、示例与链接；不强制官方未规定的统一章节模板。
+- 每个 Skill 留覆盖记录；没有证据、缺依赖或未执行的检查不能记为通过。
+- 继续检查触发边界、职责冲突、平台 v2 分组 MCP 的公开命名合同与实际编排收益。
 
-它不提供真实模型调用、自动发现全部已安装 MCP Server、自动运行未知脚本或自动优化模型 Prompt 的执行平台。这些测试需要目标 Agent 环境或日志配合。
+规则见 [SKILL.md](SKILL.md)、[格式与内容检查表](references/format-and-structure.md)、[审查量表](references/review-rubric.md) 和 [来源](references/sources.md)。报告使用 [模板](assets/review-report-template.md)。
 
-## 安装
+## 使用
 
-解压后保留 `reviewing-agent-skills/` 整个文件夹，放到目标 Agent Runtime 支持的 Skills 目录中。例如 Claude Code 项目层目录可使用 `.claude/skills/reviewing-agent-skills/`；其他 Runtime（包括 DSH）请依其实际发现/加载机制配置，不假设完整兼容。
+保留完整文件夹，放入目标运行时支持的 Skill 目录；本平台目录为 `.agents/skills/reviewing-agent-skills/`。装载遵循实际运行时发现规则。
 
-如果你的安装器只接受纯 Skill 文件夹，可以直接使用 ZIP 内 `reviewing-agent-skills/`，根目录入口是 `SKILL.md`。
+示例请求：
 
-## 用法
+> 请严格审查这个 Skill 的官方格式、正文内容完整性和工整性。逐项给出依据、定位、检查状态和最小整改；区分 DSH 扩展与通用规范，不把模板标题当官方必填章节。
 
-请求 Agent：
+## 离线静态检查
 
-> 请使用 reviewing-agent-skills 对 `/path/to/skill` 做对抗式审查，重点检查 MCP 工具名硬编码、过长的 Agent 编排链，输出证据、最小整改 Diff 和验收测试，不要直接修改原 Skill。
-
-### 可选：本地静态提示检查（Python 3.9+，无第三方依赖）
+人工审查只需读取文件。可选检查器需要 Python 3.9+ 和 **StrictYAML 1.7.3**，与官方参考采用相同的成熟 YAML 解析库，不再用正则提取标量冒充 YAML 验证。依赖列在 [requirements.txt](scripts/requirements.txt)，由执行环境预先提供；有环境准备授权时可按该文件安装。检查器不联网、不自动安装依赖、不执行目标脚本。
 
 ```bash
-python3 reviewing-agent-skills/scripts/inspect_skill.py /path/to/target-skill
-python3 reviewing-agent-skills/scripts/inspect_skill.py /path/to/target-skill --format json
+python3 reviewing-agent-skills/scripts/inspect_skill.py /path/to/target-skill --format json --fail-on-error
+python3 reviewing-agent-skills/scripts/inspect_skill.py /path/to/target-skill --profile dsh --format json --fail-on-error
 python3 -m unittest discover -s reviewing-agent-skills/tests -v
 ```
 
-- 脚本只读取目标文件，不执行目标 Skill 的代码；只做**启发式静态检查**，不代表模型能力评估。
-- 输出的 `REVIEW` 是人工复核线索，不代表已经证实的缺陷。
-- 使用 `--fail-on-error` 时，结构性错误导致非 0 退出，方便可选地接入 CI。
+- 默认 `agent-skills` 检查通用目录包。`dsh` 额外核对固定 `0.2.1-rc.2` 的已知字段与名称合同，列出扩展和可移植性差异；不证明实际原生加载。
+- 输出保留 `findings`，并增加 `basis`、`source_url`、`coverage`、`runtime_extensions` 与 `overall_status`。
+- 总状态为 `FAIL`、`BLOCKED` 或 `REVIEW_REQUIRED`；静态检查不会自行宣布全部审查通过。`--fail-on-error` 在错误或阻塞时非零退出，零退出仍需完成内容/工整性与目标验证。
+- `coverage.metadata` 通过只说明本检查器已实现的元数据检查通过；资源正则、Markdown 简化扫描及有限深读有边界，未覆盖部分须人工核对。
+- 工整性、MCP 名称或危险命令的 `REVIEW` 是线索，要结合上下文判断；工具动作如 `assets/read-fixed` 不等于包内文件。
+- 缺依赖或解析器不支持当前表示时显式报告，不回退到正则后声称已验证。StrictYAML 的表示限制与 DSH 原生解析结果分开记录。
+- DSH profile 额外检查精确分隔符和 BOM 合同；涉及必需字符串、`whenToUse` 或数字调用开关的原生隐式类型时保守报告受阻，等待匹配解析器核验，不用 StrictYAML 字符串结果断言原生支持或失败。
 
-## 目录
+## 官方参考与验证边界
 
-```text
-reviewing-agent-skills/
-├── SKILL.md                         # 被 Agent 发现和加载的核心指令
-├── README.md                        # 安装、使用、限制
-├── references/
-│   ├── review-rubric.md             # 审查维度、严重度、证据等级
-│   ├── mcp-boundaries.md            # MCP 耦合与编排专项
-│   ├── adversarial-cases.md         # 反例/边界/异常测试问题库
-│   ├── evaluation-guide.md          # 实证对照及回归建议
-│   └── sources.md                   # 公开参考与边界说明
-├── assets/
-│   └── review-report-template.md    # 审查报告模板
-├── scripts/
-│   └── inspect_skill.py             # 只读离线静态检查
-├── tests/
-│   ├── test_inspect_skill.py        # 检查器自测
-│   └── trigger-cases.json           # Agent 触发测试样例（不自动执行）
-└── examples/
-    └── sample-review.md            # 人造案例示例
-```
+优先使用环境中已有的官方 `skills-ref validate /path/to/target-skill` 交叉验证；版本、运行要求与局限见 [固定来源](references/sources.md)。本地脚本没有内置或自动运行该命令，输出的 `official_validator=NOT_RUN` 必须按真实情况保留，再由报告记录实际独立执行的结果。
 
-## 设计取向
+官方参考当前不完整检查可选字段或正文内容，DSH 合法扩展也可能被其拒绝；两种工具的结果不能互相冒充。合法而未被参考解析器支持的 YAML 表示应交给目标解析器，不仅凭参考错误判定 DSH 必然失败。
 
-优先精简、修复真实问题、保留合理的模型自主性。检查 MCP 工具硬编码时先验证工具契约是否稳定；检查工具调用次数时先验证是否真有可确定性下沉的固定流程。不要把静态匹配当成事实，也不要为了“专业”引入不必要的平台治理。
+[检查器测试](tests/test_inspect_skill.py) 验证工具本身；[触发样例](tests/trigger-cases.json) 是未自动执行的任务输入。它们不代替每个目标的格式、正文、原生装载与业务验收。评估方法见 [evaluation-guide.md](references/evaluation-guide.md)。
 
-**说明**：本包为独立编写的技能与脚本，参考公开规范与思想；未复制第三方审查项目源码。无联网、无遥测、无外部依赖。
+本包是独立实现的审查规则与补充检查器，复用 StrictYAML 依赖并参考官方规范/参考实现行为；未复制官方验证器源码。官方格式没有规定统一正文章节、强制脚本目录或一律删除 README。

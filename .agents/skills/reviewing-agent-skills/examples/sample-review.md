@@ -6,6 +6,10 @@
 
 `sample/SKILL.md:20-27`：每次必须依次调用 `mcp__old_agent__list`、`mcp__old_agent__get`、`mcp__old_agent__read_config`、`mcp__old_agent__diff`、`mcp__old_agent__test`，然后让 Agent 拼接所有结果。
 
+## 范围与覆盖
+
+仅提供上述指令摘录，未提供完整 Skill 或目标运行轨迹。官方格式、正文完整性、工整性、原生装载及行为均为**未验证**；不能从该摘录判定完整合规。适用的 MCP 合同也尚待核对，以下仅分析工具耦合与编排线索。
+
 ## Steelman
 
 明确工具序列降低了初次编写成本，也让执行步骤可理解。若 MCP 工具名称由统一团队长期承诺兼容、步骤需要动态判断，就可能合理。
