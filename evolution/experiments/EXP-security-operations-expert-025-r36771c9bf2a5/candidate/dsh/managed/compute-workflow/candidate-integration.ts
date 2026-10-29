@@ -29,7 +29,7 @@ export function candidateIntegrationEdits(files: EditableFile[], config: MediumP
       content = replace(content, '    if (WORKSPACE_TOOLS.has(tool)) {', `    if (TOOL_ROUTES.mediumWorkflow.includes(tool)) {\n      if (depth !== 0) return '中算力工作流只能在主Agent当前作用域运行'\n      return undefined\n    }\n\n    if (WORKSPACE_TOOLS.has(tool)) {`)
     } else if (path.endsWith('role-tool-matrix.yaml')) {
       content = replace(content, '  local_tools:\n', `  local_tools:\n${tools.map(tool => `    - ${tool}\n`).join('')}`)
-      content = replace(content, '  local_model_routes:\n', '  local_model_routes:\n    - provider: harness-workflow\n      model: hybrid-v1\n')
+      content = replace(content, '  local_model_routes:\n', `  local_model_routes:\n    - provider: harness-workflow\n      model: hybrid-v1\n    - provider: ${JSON.stringify(config.qwen.provider)}\n      model: ${JSON.stringify(config.qwen.model)}\n`)
     } else if (path.includes('/presets/')) {
       invariant(!content.includes('id: security-ops-medium-workflow'), 'MEDIUM_PLUGIN_ALREADY_PRESENT')
       content += `\n- id: security-ops-medium-workflow\n  name: /opt/dsh-managed/compute-workflow/index.mjs\n  disabled: false\n  config: ${JSON.stringify(config)}\n`

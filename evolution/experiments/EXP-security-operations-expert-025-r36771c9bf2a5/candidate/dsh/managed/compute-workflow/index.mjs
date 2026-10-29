@@ -65384,14 +65384,26 @@ function registerWorkflowTool(ctx, definition, options = {}) {
           if (options.executionMode === "hybrid" && !matchesWorkflowModelBinding({ ...config2, reasoning_effort: config2.reasoningEffort }, modelRoles.language)) throw new Error("\u8BED\u8A00\u63A8\u7406\u8DEF\u7531\u4E0D\u7B26\u5408\u6DF7\u5408\u5DE5\u4F5C\u6D41\u89D2\u8272\u7ED1\u5B9A");
           if (!observed) throw new Error("\u5DE5\u4F5C\u6D41\u6A21\u578B\u670D\u52A1\u672A\u88C5\u8F7D");
           const prepared = await observed.prepareCall(config2, exec.signal);
-          let content = "", completed = false;
-          for await (const chunk of prepared.stream({ ...prepared.config, ...payload.system === void 0 ? {} : { system: payload.system }, messages: payload.messages, signal: exec.signal })) {
+          let content = "", completed = false, failure2;
+          for await (const chunk of prepared.stream({
+            ...prepared.config,
+            ...payload.system === void 0 ? {} : { system: payload.system },
+            messages: payload.messages,
+            sessionId: identity.session_id,
+            signal: exec.signal
+          })) {
             if (chunk.type === "text-delta") content += chunk.text;
             if (chunk.type === "finish") {
-              if (chunk.reason?.kind !== "stop") throw new Error("\u5DE5\u4F5C\u6D41\u6A21\u578B\u54CD\u5E94\u672A\u5B8C\u6210");
-              completed = true;
+              if (chunk.reason?.kind === "stop") completed = true;
+              else {
+                const detail = chunk.reason?.failure;
+                const error51 = detail ? new LlmError(detail.message, detail.code, { status: detail.status, requestId: detail.requestId }) : new Error("\u5DE5\u4F5C\u6D41\u6A21\u578B\u54CD\u5E94\u672A\u5B8C\u6210");
+                if (chunk.reason?.kind !== "error" || !detail) throw error51;
+                failure2 = error51;
+              }
             }
           }
+          if (failure2) throw failure2;
           if (!completed) throw new Error("\u5DE5\u4F5C\u6D41\u6A21\u578B\u54CD\u5E94\u672A\u5B8C\u6210");
           return { content };
         },
@@ -65437,24 +65449,34 @@ function registerWorkflowTool(ctx, definition, options = {}) {
           }
         }
       };
-      let result2, failure, errorCode;
+      let result2, failure, errorCode, modelFailure;
       try {
         result2 = snapshotJsonValue(await definition.run(context2));
         if (result2 === void 0) {
           failure = "\u5DE5\u4F5C\u6D41\u8FD4\u56DE\u503C\u4E0D\u662F\u65E0\u635F JSON\uFF1B\u8BF7\u4FEE\u590D\u4E1A\u52A1\u6E90\u7801\u4E2D\u7684 undefined \u6216\u5176\u4ED6\u975E JSON \u503C";
           errorCode = "WORKFLOW_INVALID_RESULT";
         }
-      } catch {
+      } catch (error51) {
         failure = exec.signal.aborted ? "\u5DE5\u4F5C\u6D41\u5DF2\u53D6\u6D88" : "\u5DE5\u4F5C\u6D41\u6267\u884C\u5931\u8D25\uFF0C\u8BF7\u67E5\u770B\u8282\u70B9\u56DE\u6267";
+        if (!exec.signal.aborted && error51 instanceof LlmError) {
+          const detail = error51.failure;
+          modelFailure = {
+            code: detail.code,
+            message: detail.message,
+            ...detail.status === void 0 ? {} : { status: detail.status },
+            ...detail.requestId === void 0 ? {} : { requestId: detail.requestId }
+          };
+        }
       }
       const graph_execution = {
         ...identity,
         workflow_id: definition.id,
         complete: true,
         ...options.executionMode ? { execution_mode: options.executionMode } : {},
-        ...true ? { build_digest: "1f5356cc82573f0df03faa6c3b3c61b5ad2fdfc38ba59ded37e175724a4a0025", source_digest: "7cd96edfab86286e63c06ead0ebf810f5e978283e40c852bbf4316f2d2bce5ff" } : {},
+        ...true ? { build_digest: "bd556670ba8f9be9c4574e67266675e2d1c3cb0faa28f46d6b067af56cf3a7e8", source_digest: "7cd96edfab86286e63c06ead0ebf810f5e978283e40c852bbf4316f2d2bce5ff" } : {},
         esm_sha256: loadedEsmSha256,
         status: failure ? exec.signal.aborted ? "cancelled" : "failed" : "completed",
+        ...modelFailure ? { failure: modelFailure } : {},
         trace,
         model_attempts: attempts
       };

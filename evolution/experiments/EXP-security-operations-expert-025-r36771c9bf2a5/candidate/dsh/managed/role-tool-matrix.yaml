@@ -111,6 +111,8 @@ runtime_capabilities:
   local_model_routes:
     - provider: harness-workflow
       model: hybrid-v1
+    - provider: "transformers-serve"
+      model: "/root/autodl-tmp/hep-medium-security/models/Qwen3.5-2B"
     - provider: threat-analysis-automation
       model: scheduled-batch
     - provider: threat-analysis-delivery
