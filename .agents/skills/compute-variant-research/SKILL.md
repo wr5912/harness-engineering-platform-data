@@ -5,7 +5,7 @@ description: 从完整固定父版策划、生成、构建、冻结和评测算�
 
 # 算力变体研究
 
-使用本作用域的 `skill`、`platform_agents`、`platform_task`，只加载本技能。先调用 `compute-variants/context {experiment_id}`，固定目标并读取 `plan`、`generation_contract` 与 `workflow_status`。已有研究从真实状态继续，不重建同一变体。需要方法时读取 `research/read-reference {topic:"compute-variants"}`。
+使用本作用域的 `skill`、`platform_agents`，只加载本技能。沿用固定 `task_context`，先调用 `compute-variants/context {experiment_id}`，读取 `plan`、`generation_contract` 与 `workflow_status`。已有研究从真实状态继续，不重建同一变体。需要方法时读取 `research/read-reference {topic:"compute-variants"}`。
 
 ## 先判断本次阶段
 
@@ -20,12 +20,12 @@ description: 从完整固定父版策划、生成、构建、冻结和评测算�
 
 1. 沿用固定 `agent_id`、`experiment_id`、`source_run_ids`；按第 1 节核对完整父版。没有 Run 时给出补采计划，不编造训练样本。
 2. 从真实决策前材料列出候选点：语义选择交模型，固定步骤与 ID 绑定交代码，信息不足保留待补项。历史动作不是正确标签。
-3. 原样保留 `medium.base_model_mode/base_model_id/base_model_revision` 与训练连接选择。`provider/model` 运行路由不等于可训练权重；缺权重版本保持待选。连接只保留 `server_id`、工作目录和 `credential_ref` 等非敏感引用，不索取明文凭据。
+3. 原样保留 `medium.model_suggestions` 中各模型的类型、来源、仓库或本地路径、Revision、用途，以及 `combination_preference` 与训练连接选择。小尺寸 LLM 和决策模型均引用 Hugging Face、ModelScope 或本地权重；`provider/model` 运行路由不等于可训练权重，缺模型或权重版本保持待选。连接只保留 `server_id`、工作目录和 `credential_ref` 等非敏感引用，不索取明文凭据。
 4. 给出短计划：固定来源 → 决策点 → 按 Run 抽取 → 人员复核与用途分组 → KEV 格式转换及编码检查 → 训练/校准/开发评估 → 固定测试 → 服务绑定与两侧 Run 比较。每项写现有输入、缺口和完成依据。
 5. 用 `research/read-reference {topic:"compute-variants"}` 读取 KEV 交接方法。当前专项不能调用 `datasets/*`、加载 KEV 同级技能、执行 shell 或连接训练服务器。不要清空任务上下文、自调会话接口或用子智能体绕过。
-6. 当前训练连接探测只证明 TCP/SSH banner 可达，平台尚无训练启动/状态/工件回收接口。计划如实列出后续真实执行器需求；不要把 `platform_task kind=training` 当作 KEV 执行器。
+6. 当前训练连接探测只证明 TCP/SSH banner 可达，平台尚无训练启动/状态/工件回收接口。计划如实列出后续真实执行器需求，不把连接选择或策划结果当作训练已执行。
 
-交付计划只用已知字段；额外训练超参放独立交接材料，不塞进严格的 `ComputePlan` 或 `platform_task.plan`。本次若为 `plan_only`，到此结束。后续抽取由已有 Run 的“请 AI 抽取决策样本”入口办理；训练在明确授权且具备真实执行能力的任务或训练环境继续。
+交付计划只用已知字段；额外训练超参放独立交接材料，不塞进严格的 `ComputePlan`。本次若为 `plan_only`，到此结束。后续抽取由已有 Run 的“请 AI 抽取决策样本”入口办理；训练在明确授权且具备真实执行能力的任务或训练环境继续。
 
 生成 SDK、参数、受控构建和冻结以返回的 `generation_contract` 为准，缺合同就停止代码生成并说明缺口，不凭记忆补内部 API。任务资料不改变管理身份；接口失败不授权程序开发、临时脚本、凭据读取或内部执行器调用。
 
@@ -53,7 +53,7 @@ description: 从完整固定父版策划、生成、构建、冻结和评测算�
 
 ## 3. 修改、构建与冻结
 
-需要连续生成任务时，`platform_task preview` 后 `start`：kind 为 compute-variant，source 为已派生目标，compute_variant 使用已固定父版，evaluation_case_ids 与计划相同。它不创建第二个 Agent 或变体，也不替代后续本地冻结动作及其差异、摘要核对。
+已有明确执行授权时，在已派生目标上依次修改、构建和冻结，沿用固定父版与计划中的 Case；每步按实际回执继续，不重复创建 Agent 或变体。参数以当前动作的 `describe` 和 `generation_contract` 为准。
 
 | 当前步骤 | 平台动作 | 可以继续的条件 |
 |---|---|---|
@@ -81,7 +81,7 @@ create、build、freeze 均需调用对应的显式写动作；preview 本身不
 
 调用 `compute-variants/compare {experiment_id,parent_run_ids,variant_run_ids}`，分别判断质量、来源可比性和资源证据。关键任务退步、两侧都失败、重复不足、输入变化、成本未知或收益不足均不能认定等效，保留失败与缺口，不改口径让结果通过。
 
-连续任务用 `platform_task deliver` 提交本任务实际启动的两组 Run；服务端核对构建、冻结、装载与比较。completed 只表示该任务完成，不自动成为 end。
+结合实际构建、冻结、装载和比较回执说明本次完成范围；比较完成不自动成为 end。
 
 `eligible_for_end` 仅适用于冻结任务，不能外推总体统计非劣性或所有硬件费用。向用户说明效果、资源变化和限制，并提供实际查看入口；end 必须由用户在变体界面复核。助手不提交 human_confirmed 或改结论字段绕过，人员确认后再回读状态。end 仍不代表发布、实例切换或主线升级。
 

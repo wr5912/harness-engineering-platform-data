@@ -41,7 +41,7 @@
 
 ## KEV 中算力变体：当前平台的办理路径
 
-前端中算力请求为 planning_intent=plan_only。当前专项只允许 compute-variant-research、platform_agents、platform_task，不能调用 datasets/* 或其他技能；本次只做诊断和计划，不连接服务器、不训练、不创建变体。计划先写固定来源、真实决策点、已有证据、缺口与下一阶段，不要求用户先补齐所有训练参数才能策划。
+前端中算力请求为 planning_intent=plan_only。当前专项仅允许 skill 与 platform_agents，skill 只加载 compute-variant-research，不能调用 datasets/* 或其他技能；沿用固定 task_context，本次只做诊断和计划，不连接服务器、不训练、不创建变体。计划先写固定来源、真实决策点、已有证据、缺口与下一阶段，不要求用户先补齐所有训练参数才能策划。
 
 ### 一次一阶段
 
@@ -59,9 +59,9 @@
 
 ### 模型与训练资源字段
 
-保留任务上下文 medium 的实际值：base_model_mode/base_model_id/base_model_revision、training_server_mode、server_id、工作目录与 credential_ref 等。catalog 的 provider/model 是运行路由，不自动等于可下载、可 LoRA 训练的权重。suggest/later 保持待选；只询问会改变当前阶段决策的缺口。服务器 probe 只检查 TCP/SSH banner，不证明认证、GPU、依赖或训练可用。
+保留任务上下文 medium 的实际值：model_suggestions 中各模型的 kind、source、baseModel、revision、purpose，combination_preference，以及 training_server_mode、server_id、工作目录与 credential_ref 等。小尺寸 LLM 和决策模型均可引用 Hugging Face、ModelScope 或本地权重；推理供应商的 provider/model 是运行路由，不自动等于可下载、可 LoRA 训练的权重。未选模型、来源或版本时保留待选；只询问会改变当前阶段决策的缺口。服务器 probe 只检查 TCP/SSH banner，不证明认证、GPU、依赖或训练可用。
 
-训练参数属于独立 handoff 工件，不塞入现有严格 ComputePlan/platform_task.plan。当前平台没有训练 start/status/cancel/collect 动作，kind=training 只是已有任务类别；不得猜 API、清空 task_context、执行临时 shell 或调用内部实现弥补接口缺失。
+训练参数属于独立 handoff 工件，不塞入现有严格 ComputePlan。已有授权范围内的变体创建、构建、冻结和比较直接按当前平台动作办理，写入遵循 DSH 原生权限。当前平台没有训练 start/status/cancel/collect 动作；不得猜 API、清空 task_context、执行临时 shell 或调用内部实现弥补接口缺失。
 
 ### 四份数据与来源
 
