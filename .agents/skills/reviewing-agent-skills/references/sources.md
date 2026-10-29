@@ -2,6 +2,8 @@
 
 核查日期：**2026-10-28**。以下官方规范与实现用于判断规则来源；设计文章不能新增格式义务。复审不同版本时重新核对适用性，不用本日期冒充“始终最新”。
 
+架构专项的官方设计资料于 **2026-10-29** 补充核查；其建议标为 `official-guidance`，本包由此制定的审查协议标为 `local-quality`。未重新核验的固定格式实现不因新增本节而改称最新版。
+
 ## 官方规范与参考实现
 
 | 来源 | 固定版本/定位 | 用途与边界 |
@@ -36,8 +38,15 @@ DSH 扩展合法性、通用可移植性、原生装载和实际调用效果分�
 
 - [Anthropic: Equipping agents for the real world with Agent Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills)。
 - [Anthropic skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)：评估与改进闭环。
+- [Agent Skills: Evaluating skill output quality](https://agentskills.io/skill-creation/evaluating-skills)：代表任务、干净上下文、旧版/无 Skill 基线、结果与时间/Token 对照；示例数量和目录组织不是通用格式义务。
+- [Claude Code: Skills](https://code.claude.com/docs/en/skills)：按需加载、触发评估和描述预算；具体字段、预算与配置属于该产品，不直接写进 DSH 合同。
+- [Claude Code: Subagents](https://code.claude.com/docs/en/sub-agents)：独立上下文、可用工具、Skill 预加载和主/子任务取舍；独立上下文不自动代表文件系统、进程或权限隔离，也不证明 DSH 具备相同配置字段。
+- [Anthropic: Building effective agents](https://www.anthropic.com/research/building-effective-agents)：固定路径与动态判断、路由、并行及编排者/执行者模式；2024 年设计文章，页面已提示工具生态变化，不能作为当前 API 合同。
+- [Anthropic: Effective context engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)：按需获取信息、控制上下文以及子任务分工；长上下文和更多执行者的收益仍须按任务验证。
+- [Anthropic: Multi-agent research system](https://www.anthropic.com/research/multi-agent-research-system)：委派输入、边界、输出、协调成本和并行条件；文中成本倍数与效果数字来自其研究环境，不将其外推为本平台承诺。
 - [Anthropic: Code execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp)：确定性编排与上下文成本。
 - [MCP Tools](https://modelcontextprotocol.io/specification/2025-06-18/server/tools)：发现、调用和变化通知；不保证自动语义兼容。
-- [Lessons from Building Claude Code](https://www.linkedin.com/pulse/lessons-from-building-claude-code-how-we-use-skills-thariq-shihipar-iclmc)、[5 Agent Skill Design Patterns](https://lavinigam.com/posts/adk-skill-design-patterns/)、[agent-skill-review](https://github.com/colchuck-ai/agent-skill-review)：设计经验，不能覆盖上述官方条款或实际平台合同。
 
-MCP 名称变化与过细编排仍是重点，但格式、正文内容与工整性检查不得因此省略。
+已核对的资料没有给出跨任务、模型和运行时通用的最佳 Skill 数量。500 行、正文 Token 规模和较浅引用是组织建议，不是自动拆 Skill、创建子智能体或判定装载失败的规则。架构建议须回到 [专项检查](architecture-review.md) 的任务、配置和实际轨迹取证。
+
+DSH 的 Skill/子智能体装配、作用域、继承与工具权限按目标实际版本及发现结果核实；本包没有新增原生接口、调用额度或审批层。MCP 名称变化与过细编排仍是重点，但格式、正文内容与工整性检查不得因此省略。

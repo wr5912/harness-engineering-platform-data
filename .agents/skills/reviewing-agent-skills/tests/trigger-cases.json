@@ -18,5 +18,13 @@
   {"id":"P07","input":"严格检查这个 Skill 是否符合官方格式，正文是否完整、工整，并给逐项证据","expected_activation":true},
   {"id":"P08","input":"审查每个 Skill 的章节内容和写法，区分官方要求、建议和平台约定","expected_activation":true},
   {"id":"E05","input":"这个短 Skill 没有 Goal、Inputs、Done 标题，是否违反官方规范？","expected_activation":true},
-  {"id":"E06","input":"通用验证器拒绝 user-invocable 字段，但目标是 DSH，请核对是否真的违规","expected_activation":true}
+  {"id":"E06","input":"通用验证器拒绝 user-invocable 字段，但目标是 DSH，请核对是否真的违规","expected_activation":true},
+  {"id":"P09","input":"审查管理助手的 Skill 数量和任务覆盖，哪些入口应该保留或合并？","expected_activation":true},
+  {"id":"P10","input":"审查哪些现有技能应由子智能体使用，以及什么时候值得把几个 Skill 配给同一执行者","expected_activation":true},
+  {"id":"P11","input":"核查这些 Skill 的调用流、跨技能交接和重试，判断是否需要合并、拆分或下沉工具","expected_activation":true},
+  {"id":"P12","input":"审查这组 Skill 委派方案，主线程 Token 降低是否代表总体成本降低？","expected_activation":true},
+  {"id":"E07","input":"这份 Skill 的两个参考文件互相链接，请判断是否真的存在执行循环","expected_activation":true},
+  {"id":"E08","input":"只有一个 Skill 片段，没有目录和轨迹，能否判断整个技能集合的数量最佳？请审查证据范围","expected_activation":true},
+  {"id":"N07","input":"从零创建一个日志分析子智能体并配置工具","expected_activation":false},
+  {"id":"N08","input":"把这24个城市按人口排序","expected_activation":false}
 ]
