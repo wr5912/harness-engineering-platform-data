@@ -2,13 +2,14 @@
 
 这是 Harness 工程平台的数据与管理助手业务 Harness 仓库，保存管理助手原则和技能、智能体研究资产、评测记录、决策样本、实际来源与工具配置，以及业务扩展。默认部署在 `~/harness-engineering-platform-data`；平台程序由独立的 [harness-engineering-platform](https://github.com/wr5912/harness-engineering-platform) 仓库维护。
 
-平台管理助手使用本仓库的 [AGENTS.md](AGENTS.md) 和 [.agents/skills](.agents/skills) 办理业务。它具备工作区管理、智能体构建维护、业务插件开发、评测改进、继承融合、算力研究、MCP 编排、样本抽取、技能审查和旧资产清点方法；真实执行能力以当前平台提供的工具为准，Skill 文件存在不代表任务已验证成功。
+平台管理助手使用本仓库的 [AGENTS.md](AGENTS.md) 和 [.agents/skills](.agents/skills) 办理业务。它具备工作区管理、智能体构建维护、业务插件开发、评测改进、继承融合、算力研究、MCP 编排、样本抽取、[LLM Wiki 知识整理](.agents/skills/llm-wiki/SKILL.md)、技能审查和旧资产清点方法；真实执行能力以当前平台提供的工具为准，Skill 文件存在不代表任务已验证成功。
 
 ## 目录与维护职责
 
 ```text
 AGENTS.md                 管理身份、业务原则与约束
-.agents/skills/            18 项管理、研究、KEV 数据训练及通用表达 Skill
+.agents/skills/            19 项管理、研究、KEV 数据训练及通用表达 Skill
+knowledge/                按需创建的管理知识库；业务运行按 Agent 与版本保存独立副本
 docs/harness-research/     当前研究方法、经验和固定来源索引
 agents/                   业务智能体入口、需求和共享评测口径
 evolution/                Experiment、Candidate、Run、决策样本和历史输入
@@ -18,7 +19,7 @@ workspace.json            工作区身份和原生扩展声明
 .local/                   会话、设置、实例 HOME、制品和凭据，忽略 Git
 ```
 
-根目录保留 18 个管理 Skill 入口；需求澄清由 `workspace-management` 直接完成。KEV 数据、训练和部署使用 `kev-trace-pipeline`、`dsh-trace-audit`、`kev-dataset-audit`、`kev-training`、`kev-deploy` 五个入口，发现、抽取、标注和构建方法按需读取阶段参考；平台算力研究和固定 Run 抽样继续使用各自专项入口。官方微调、部署及 DSH 插件开发 Skill 完整保存在对应入口的参考目录，不重复注册。已声明的 `security-operations-composition` 扩展入口另计。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
+根目录保留 19 个管理 Skill 入口；需求澄清由 `workspace-management` 直接完成。KEV 数据、训练和部署使用 `kev-trace-pipeline`、`dsh-trace-audit`、`kev-dataset-audit`、`kev-training`、`kev-deploy` 五个入口，发现、抽取、标注和构建方法按需读取阶段参考；平台算力研究和固定 Run 抽样继续使用各自专项入口。官方微调、部署及 DSH 插件开发 Skill 完整保存在对应入口的参考目录，不重复注册。已声明的 `security-operations-composition` 扩展入口另计。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
 
 [DSH 业务插件开发](.agents/skills/dsh-business-plugin-development/SKILL.md)通过现有工作区管理、任务构建或 Harness 演进入口按需使用。技能完整保留匹配固定提交的官方 `cordis-plugin-development` 及两个组合配置 Skill，原文、模板和许可证不改写；平台入口只补目标业务智能体、Candidate、执行环境和验证交接。上游引用及逐文件摘要见 [UPSTREAM.json](.agents/skills/dsh-business-plugin-development/references/upstream/UPSTREAM.json)。当前未新增独立任务类型或插件构建执行器，真实开发、安装及装载能力以目标环境工具为准。
 

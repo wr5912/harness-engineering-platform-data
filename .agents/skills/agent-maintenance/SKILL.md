@@ -29,7 +29,7 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 | 新建智能体 | `new {agent_id,name,description,role}`，ID 为小写 kebab-case，先明确职责与最低业务验证输入 | 回读 Agent、首次 Experiment、角色与用例；创建不包含启动或业务验收 |
 | 查看实例 | `platform_instances` 的 `list`、`detail`；排障再按需 `logs`、`url` | 核对实际状态、来源与真实入口，不通过 shell 操作 Docker |
 | 实例变更 | 直接调用 `run {name,operation,source?,port?}`，批量用 `batch`；平台内部预览并核对来源及访问设置，按原生访问策略执行。用户仅要求查看影响时使用 `preview` 或 `batch-preview`，到此结束 | 执行完成后回读每项状态和来源，部分失败分别说明；重新执行业务验收须属于用户明确要求 |
-| 编辑资产 | 先确定是非语义整理或已授权独立 Candidate 的续作；改变已有版本业务行为先按 `harness-evolution` 派生。目标确定后 `edit/read` 得到内容和摘要，`edit/preview` 后 `edit/apply`，每项为 `{path,content,expected_sha256}` | 提交完整文本并回读；不存在的目标须先读到不存在才使用空摘要 |
+| 编辑资产 | 先确定是非语义整理或已授权独立 Candidate 的续作；改变已有版本业务行为先按 `harness-evolution` 派生。目标确定后 `edit/read` 得到内容和摘要，`edit/preview` 后 `edit/apply`，每项为 `{path,content,expected_sha256}` | 提交完整文本并回读；新文件须先 `edit/read` 确认不存在，再使用 `expected_sha256:null` |
 | 修改用例 | `cases/read` 后 `cases/update {experiment_id,case_id,title,inputs,expected_behavior,fast,expected_sha256}` | 回读该 Case，比较期间不改口径 |
 | 新增用例 | `cases/create-context` 取模板，必要时 `cases/from-run {experiment_id,run_id,case_id}` 取冻结输入，再 `cases/create-preview` 与 `cases/create` | 回读新增 Case；预期由需求确定，不将失败输出改成标准答案 |
 
