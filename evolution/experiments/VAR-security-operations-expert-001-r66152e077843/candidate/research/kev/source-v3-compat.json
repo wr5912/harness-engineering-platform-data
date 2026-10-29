@@ -1,0 +1,54 @@
+{
+  "schema_version": "medium-variant-source-v3-compat-index/v3",
+  "created_at": "2026-10-29T23:55:33.548Z",
+  "experiment_id": "VAR-security-operations-expert-001-r66152e077843",
+  "stage_v3_manifest": {
+    "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/generated-source-v3/manifest.json",
+    "sha256": "5e1cf86700d258400bf977e096699ce9195729eadb4eda8c113bc3505471488f"
+  },
+  "compatibility_receipt": {
+    "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/generated-source-v3/compatibility-receipt.json",
+    "sha256": "2c8f277da60e8251a7a3bcc882a0c6341fe7fd7b58fce05a2c8bf2f6c6eaa5d4"
+  },
+  "compat_proof": {
+    "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/generated-source-v3/tests/compat-v1.json",
+    "sha256": "bba09fe79abee461de720087d300d842b7b153f84da6f25062dea87c176976d7",
+    "prepare": {
+      "old_status": "ready",
+      "new_status": "ready",
+      "payload_equal": true,
+      "request_sha_equal": true,
+      "request_sha256": "496e9932b44d7d9c1cb07e028f0bc29fe67cec5bd9d8702d4fa2512881f0ab47",
+      "payload_sha256": "496e9932b44d7d9c1cb07e028f0bc29fe67cec5bd9d8702d4fa2512881f0ab47"
+    },
+    "replay": {
+      "old_status": "unlabeled",
+      "new_status": "unlabeled",
+      "state_equal": true,
+      "questions_equal": true,
+      "supervision_equal": true,
+      "state_sha256": "f1f307ebee9502fd7a64f8a3437b2947f722b73b3ee639da469db73d78e9b54b",
+      "questions_sha256": "c244d8b9ae81b45e4fa80ab50132ee390a5732972f1d92e9ac9723acdbd7c820",
+      "understanding_status": {
+        "old": "unlabeled",
+        "new": "unlabeled"
+      }
+    },
+    "identity_fixture_note": "VAR fixture 是纯合同测试，不是已创建 VAR，也不是原 Run 新来源"
+  },
+  "modifications": {
+    "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/generated-source-v3/modifications-v1.diff",
+    "sha256": "d085e7683182b2162f82db3841ab34135c7743203bbd026283c70eb2f4de2149"
+  },
+  "identity": {
+    "exp_language_source_sha256": "195b1f3a26de313b9ecc7c72cae42bf7ca48a1fb22418cf5d9f7e23e3ea19ea3",
+    "var_compatible_language_source_sha256": "b90ffd40203582adcd4bec2c88f7579884f3178770e4ca9d6e6efad4d9595948",
+    "context_sha256": "16b6d1d7569e25030609d324968b3a5b30b5467b965891e0cbdca5ceb210b93d",
+    "note": "训练证据保留原 195b；未来 VAR Candidate constructor.language_understanding_source_sha256 使用 b90ffd40；三 semantic 原字节"
+  },
+  "boundaries": [
+    "生成源非 Candidate、未训练",
+    "VAR fixture 非已创建 VAR",
+    "未重发模型请求；复用原保存 request/response"
+  ]
+}

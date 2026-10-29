@@ -1,0 +1,44 @@
+# MCP 管理插件将服务器工具注册在 Preset 作用域；业务 Guard 和
+# 子 Agent 的独立 Preset Guard 再按任务缩小可用工具集合。
+- id: persona
+  name: /opt/dsh/packages/preset/persona/lib/index.js
+  disabled: false
+  config:
+    prefix: >-
+      你是运行在容器内 DSH 的网络安全运营专家。你只开展防御性安全运营，
+      区分事实、推断和未执行建议；Prompt 不授予权限，所有高风险能力以
+      Runtime、MCP 服务端、审批和审计的强制结果为准。
+    suffix: 你的工作目录是 {{cwd}}。
+
+- id: agent-instructions
+  name: /opt/dsh/packages/context/agent-instructions/lib/index.js
+  disabled: false
+  config:
+    maxBytes: 65536
+
+- id: security-operations-guard
+  name: /opt/dsh-managed/security-operations-guard.mjs
+  disabled: false
+
+- id: policy-selection-runtime
+  name: /opt/dsh-managed/policy-selection-runtime.mjs
+  disabled: false
+
+# 确认器共用 DSH 原生问题面，保留精确确认词兼容入口，不向模型授予确认工具。
+- id: policy-confirmation-runtime
+  name: /opt/dsh-managed/policy-confirmation-runtime.mjs
+  disabled: false
+
+- id: emergency-confirmation-runtime
+  name: /opt/dsh-managed/emergency-confirmation-runtime.mjs
+  disabled: false
+
+# 策略与应急结果由原程序交付，不由模型改写权威字段。
+- id: operation-result-delivery
+  name: /opt/dsh-managed/operation-result-delivery.mjs
+  disabled: false
+
+- id: security-ops-medium-workflow
+  name: /opt/dsh-managed/compute-workflow/index.mjs
+  disabled: false
+  config: {"experiment_id":"VAR-security-operations-expert-001-r66152e077843","model_roles":{"language":{"provider":"transformers-serve","model":"/root/autodl-tmp/hep-medium-security/models/Qwen3.5-2B","reasoning_effort":"off"},"decision":{"provider":"kev-serving","model":"kev-latest","reasoning_effort":"off","checkpoint_sha256":"2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd","state_constructor_sha256":"5d01d43bdfd5220977ad62ad6f2cf7510e266e0200925b358a28189bff8515f0","calibration_sha256":"2af0cbc77cec56ee85cd53fe0de790b609cc27fcae5badaf2c03d8c0f995e1b2"}},"qwen":{"provider":"transformers-serve","model":"/root/autodl-tmp/hep-medium-security/models/Qwen3.5-2B","repository":"Qwen/Qwen3.5-2B","source_kind":"modelscope","source_url":"https://www.modelscope.cn/models/Qwen/Qwen3.5-2B","revision":"c00cc5fd7803c60b7788e053dcce33d0d26b11ef"},"qwen_endpoint":"http://10.0.160.32:18891","qwen_expected_response_model":"/root/autodl-tmp/hep-medium-security/models/Qwen3.5-2B@main","kev_endpoint":"http://10.0.160.32:18892","kev_serving":{"run":"/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint","base":"Qwen/Qwen3.5-0.8B-Base","temperature":0.25,"dtype":"float32","backend":"torch","device":"cuda"},"kev_encoding":{"encoder_revision":"2074cc44256200bb37540103fa4572901faa10f3","encoder_source_sha256":"2ff3b2e67c048e3bc5a0d1a32aafe50804ed315a5564fce06bb4b95697c5271c","admission_source_sha256":"73cba319c6213c0b605c07fa83f2ac3ed88b70d751b7fa0e5009e8357e06ba66"},"constructor":{"state_constructor_sha256":"5d01d43bdfd5220977ad62ad6f2cf7510e266e0200925b358a28189bff8515f0","questions_source_sha256":"26c147cc0af061cc78932403dd638674e2af4b9b1d2e767558e3f33d10154145","language_understanding_source_sha256":"b90ffd40203582adcd4bec2c88f7579884f3178770e4ca9d6e6efad4d9595948"}}

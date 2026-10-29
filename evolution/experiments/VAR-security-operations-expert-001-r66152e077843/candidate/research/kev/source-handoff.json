@@ -1,0 +1,48 @@
+{
+  "schema_version": "medium-variant-source-handoff/v3",
+  "created_at": "2026-10-29T23:55:33.547Z",
+  "agent": "security-operations-expert",
+  "experiment_id": "VAR-security-operations-expert-001-r66152e077843",
+  "fixed_parent": {
+    "experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+    "parent_ref": "git:d499a1a3e3484bf97f6b5646a8d80e20313a7120",
+    "candidate_sha256": "d2572e8c4a89db14c9fa042b21c77ff98284e16805aa2c6ea7a003b6678eb2af"
+  },
+  "generation_diagnostic_run": "run-f62533d0-87fe-4258-8ca2-cb76adbecbb5",
+  "training_seed_run": {
+    "run_id": "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408",
+    "note": "训练时 dirty 历史来源，保留原 SHA；不是当前固定父版诊断"
+  },
+  "code_reuse": {
+    "experiment_id": "EXP-security-operations-expert-025-r36771c9bf2a5",
+    "candidate_sha256": "c62d81f88b460876691c5cf8e096ee2af0e533adf8397f812c3739ebc10bfabb",
+    "role": "仅代码资产复用，不是继承 parent"
+  },
+  "stage_v3": {
+    "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/generated-source-v3/manifest.json",
+    "sha256": "5e1cf86700d258400bf977e096699ce9195729eadb4eda8c113bc3505471488f"
+  },
+  "upstream": {
+    "trained_handoff": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/trained-model-handoff.json",
+      "sha256": "1eedefe33e9119e96abd8a12d355e67476b5cd9587a8d2a54aab858fd461fdd5"
+    },
+    "deployment_v2": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/deployment-v2/model-deployment-handoff.json",
+      "sha256": "2c44fd8cd6317a5e2eb32112fe292709bd89380035d53031a312446886406503"
+    }
+  },
+  "runtime_state": {
+    "deployment_v3_handoff_present": true,
+    "note": "部署 v3 恢复 handoff 尚未生成；runtime 状态尚未重新验证"
+  },
+  "boundaries": [
+    "checkpoint_sha256 binds only the four core files (adapter_model.safetensors, head.pt, adapter_config.json, training_config.json); tokenizer and other small files are in the artifact list but are not covered by it.",
+    "Full Harness business equivalence, candidate recall, tool behavior and service latency were not evaluated; offline test metrics do not prove business equivalence.",
+    "Test and development partitions have 4 records each; the final-test accuracy 0.5 (2/4) and ECE 0.525 are descriptive only.",
+    "Calibration is in-distribution per the upstream definition; the in-distribution problems are preserved in head.pt metadata.",
+    "Labels are AI functional validation, not human approval or independent truth.",
+    "No variant, service, Git commit/push or page end was created by this task; releasing a wrapper is the root owner's next step.",
+    "The training used the fixed fp32 LoRA recipe with 3 optimizer steps; convergence is not established."
+  ]
+}
