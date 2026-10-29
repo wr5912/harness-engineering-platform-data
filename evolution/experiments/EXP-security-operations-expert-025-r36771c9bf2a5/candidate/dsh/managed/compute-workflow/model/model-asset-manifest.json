@@ -1,0 +1,284 @@
+{
+  "schema_version": "medium-variant-model-asset-manifest/v1",
+  "created_at": "2026-10-29T19:51:07.852Z",
+  "purpose": "trained_adapter_increment_recovered_to_candidate",
+  "agent": "security-operations-expert",
+  "experiment_id": "EXP-security-operations-expert-025-r36771c9bf2a5",
+  "parent_experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+  "parent_ref": "git:d499a1a3e3484bf97f6b5646a8d80e20313a7120",
+  "checkpoint": {
+    "checkpoint_sha256": "2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd",
+    "algorithm_id": "js-json-stringify-sha256/v1",
+    "algorithm": "checkpoint_sha256 = sha256(UTF8(JSON.stringify(sorted_by_path([{path,bytes,sha256}]))))",
+    "canonical_core_files": [
+      {
+        "path": "adapter_config.json",
+        "bytes": 1273,
+        "sha256": "726c1cf3f9ee4ebf45059b9bbbade267571469edcf373d203a7a95abe2cae9d6"
+      },
+      {
+        "path": "adapter_model.safetensors",
+        "bytes": 43338624,
+        "sha256": "b94af89ab408e18958a76d0a5ec325b247faf9eaf3ba14b50e008750b3ddd1a4"
+      },
+      {
+        "path": "head.pt",
+        "bytes": 2104831,
+        "sha256": "75acaaadc161e3e7bb218c40a85d64e98b3410059252c2c76ebba30c90cd2931"
+      },
+      {
+        "path": "training_config.json",
+        "bytes": 2178,
+        "sha256": "7a36917e4d137ed2e2ee297d0b07b0da0095a0a2a06e1c4cde227d0c05a75db0"
+      }
+    ],
+    "temperature": 0.25,
+    "temperature_key": "head.pt:temperature",
+    "decision_rule": "native choice argmax over the closed candidate set; no extra confidence threshold",
+    "tokenizer_excluded_from_binding": "tokenizer.json/tokenizer_config.json/chat_template.jinja/README.md are recovered in the artifact list but excluded from checkpoint_sha256",
+    "base_dependency": {
+      "base": "Qwen/Qwen3.5-0.8B-Base",
+      "base_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+      "included": false,
+      "note": "base 权重只作依赖来源引用，未进入本 Candidate"
+    }
+  },
+  "files": [
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/README.md",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/README.md",
+      "bytes": 5168,
+      "sha256": "6e5499dcafd9a541503164c3a9f0ab5e8c181046139e8344801030342d12d132",
+      "declared_sha256": "6e5499dcafd9a541503164c3a9f0ab5e8c181046139e8344801030342d12d132",
+      "verified": true
+    },
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/adapter_config.json",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/adapter_config.json",
+      "bytes": 1273,
+      "sha256": "726c1cf3f9ee4ebf45059b9bbbade267571469edcf373d203a7a95abe2cae9d6",
+      "declared_sha256": "726c1cf3f9ee4ebf45059b9bbbade267571469edcf373d203a7a95abe2cae9d6",
+      "verified": true
+    },
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/adapter_model.safetensors",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/adapter_model.safetensors",
+      "bytes": 43338624,
+      "sha256": "b94af89ab408e18958a76d0a5ec325b247faf9eaf3ba14b50e008750b3ddd1a4",
+      "declared_sha256": "b94af89ab408e18958a76d0a5ec325b247faf9eaf3ba14b50e008750b3ddd1a4",
+      "verified": true
+    },
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/chat_template.jinja",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/chat_template.jinja",
+      "bytes": 7755,
+      "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+      "declared_sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+      "verified": true
+    },
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/head.pt",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/head.pt",
+      "bytes": 2104831,
+      "sha256": "75acaaadc161e3e7bb218c40a85d64e98b3410059252c2c76ebba30c90cd2931",
+      "declared_sha256": "75acaaadc161e3e7bb218c40a85d64e98b3410059252c2c76ebba30c90cd2931",
+      "verified": true
+    },
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/tokenizer.json",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/tokenizer.json",
+      "bytes": 19989325,
+      "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+      "declared_sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+      "verified": true
+    },
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/tokenizer_config.json",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/tokenizer_config.json",
+      "bytes": 1127,
+      "sha256": "e0792bce4d2d44981188cea9b75ceaa12ab0ae24a55473f032905fc6a782a771",
+      "declared_sha256": "e0792bce4d2d44981188cea9b75ceaa12ab0ae24a55473f032905fc6a782a771",
+      "verified": true
+    },
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/training_config.json",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/training_config.json",
+      "bytes": 2178,
+      "sha256": "7a36917e4d137ed2e2ee297d0b07b0da0095a0a2a06e1c4cde227d0c05a75db0",
+      "declared_sha256": "7a36917e4d137ed2e2ee297d0b07b0da0095a0a2a06e1c4cde227d0c05a75db0",
+      "verified": true
+    },
+    {
+      "path": "dsh/managed/compute-workflow/model/checkpoint/training_metrics.json",
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/training_metrics.json",
+      "bytes": 710,
+      "sha256": "fba26749c7ef3de346cae1a6cd300b9ae4e00632fa860df675aaab30f5a8a216",
+      "declared_sha256": "fba26749c7ef3de346cae1a6cd300b9ae4e00632fa860df675aaab30f5a8a216",
+      "verified": true
+    }
+  ],
+  "total_bytes": 65450991,
+  "recovery": {
+    "method": "runtime/research/training-ssh.mts transfer --direction download（原生 Job bash-0ce357f2f0d64926）",
+    "server_id": "train-a39ea74a-4e6f-4455-83c8-5735f34d2d9d",
+    "remote_checkpoint": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint",
+    "receipts": [
+      {
+        "file": "README.md",
+        "receipt_id": "621cb7d9-6d6b-4a4a-82bb-a1d0331b1535",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/README.md.json",
+        "status": "completed",
+        "sha256": "6e5499dcafd9a541503164c3a9f0ab5e8c181046139e8344801030342d12d132",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/README.md"
+      },
+      {
+        "file": "adapter_config.json",
+        "receipt_id": "0ecae0a4-4fdd-4605-b20f-037a542330f6",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/adapter_config.json.json",
+        "status": "completed",
+        "sha256": "726c1cf3f9ee4ebf45059b9bbbade267571469edcf373d203a7a95abe2cae9d6",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/adapter_config.json"
+      },
+      {
+        "file": "adapter_model.safetensors",
+        "receipt_id": "dc8ce4a0-6697-4f5d-a9c4-bd8950a59aaa",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/adapter_model.safetensors.json",
+        "status": "completed",
+        "sha256": "b94af89ab408e18958a76d0a5ec325b247faf9eaf3ba14b50e008750b3ddd1a4",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/adapter_model.safetensors"
+      },
+      {
+        "file": "chat_template.jinja",
+        "receipt_id": "5e8d1e7d-da0e-4522-8c42-ef289275f6e6",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/chat_template.jinja.json",
+        "status": "completed",
+        "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/chat_template.jinja"
+      },
+      {
+        "file": "head.pt",
+        "receipt_id": "182ecd13-1b30-4aef-905b-88afe4f3d42c",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/head.pt.json",
+        "status": "completed",
+        "sha256": "75acaaadc161e3e7bb218c40a85d64e98b3410059252c2c76ebba30c90cd2931",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/head.pt"
+      },
+      {
+        "file": "tokenizer.json",
+        "receipt_id": "2399063f-be65-4d7a-8998-d6e42bd396af",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/tokenizer.json.json",
+        "status": "completed",
+        "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/tokenizer.json"
+      },
+      {
+        "file": "tokenizer_config.json",
+        "receipt_id": "373869fd-c13d-425a-9238-6b3dd0b95013",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/tokenizer_config.json.json",
+        "status": "completed",
+        "sha256": "e0792bce4d2d44981188cea9b75ceaa12ab0ae24a55473f032905fc6a782a771",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/tokenizer_config.json"
+      },
+      {
+        "file": "training_config.json",
+        "receipt_id": "533d52bc-78dd-4ac7-a1ca-6ce51526166c",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/training_config.json.json",
+        "status": "completed",
+        "sha256": "7a36917e4d137ed2e2ee297d0b07b0da0095a0a2a06e1c4cde227d0c05a75db0",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/training_config.json"
+      },
+      {
+        "file": "training_metrics.json",
+        "receipt_id": "e52a431d-d6b3-4f2f-be6f-5055f442100a",
+        "receipt_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/candidate-materialization-v1/transfer-receipts/training_metrics.json.json",
+        "status": "completed",
+        "sha256": "fba26749c7ef3de346cae1a6cd300b9ae4e00632fa860df675aaab30f5a8a216",
+        "local": "/home/admin/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-025-r36771c9bf2a5/candidate/dsh/managed/compute-workflow/model/checkpoint/training_metrics.json"
+      }
+    ],
+    "note": "逐文件 scp 与两侧 SHA-256 核对通过；回收不代表已装载或业务等效。"
+  },
+  "training": {
+    "recipe": "cuda-fp32-lora",
+    "epochs": 1,
+    "optimizer_steps": 3,
+    "records_seen": 22,
+    "dtype": "fp32",
+    "convergence": "not_established"
+  },
+  "calibration": {
+    "policy": "workload_heldout",
+    "temperature": 0.25,
+    "folds": 2,
+    "n": 7,
+    "groups": 7,
+    "oof_ece": 0.040559564127319994,
+    "raw_ece": 0.44108970479398607,
+    "report": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/artifacts/calibration-report.json",
+      "sha256": "2af0cbc77cec56ee85cd53fe0de790b609cc27fcae5badaf2c03d8c0f995e1b2",
+      "bytes": 3211
+    },
+    "behavior_report": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/artifacts/calibration-raw/report.json",
+      "sha256": "67775a62b437ef8f7c02c06871f1f942eb36fc0622752ea81e6ed53b903a4576"
+    },
+    "in_distribution_statement": "temperature fitted on same-business-distribution calibration split, held out by source group; explicitly in-distribution, not suite-level OOD"
+  },
+  "final_test": {
+    "runs": 1,
+    "n": 4,
+    "correct": 2,
+    "accuracy": 0.5,
+    "temperature": 0.25,
+    "ece": 0.5252499568062563,
+    "report": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/artifacts/final-test/report.json",
+      "sha256": "ce9dcf2b1c08453019dbc13cc96a65686adcaa39917baf78017694795670452d"
+    },
+    "predictions": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/artifacts/final-test/predictions.jsonl",
+      "sha256": "eea51310e9fecacebdaf0c746d8f13e8898f06f81b1658e5ac023baff35b9a8f"
+    },
+    "note": "唯一 final test，仅 4 条、2/4=0.5，描述性，不证明业务等效"
+  },
+  "evidence_refs": {
+    "trained_model_handoff": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/trained-model-handoff.json",
+      "sha256": "1eedefe33e9119e96abd8a12d355e67476b5cd9587a8d2a54aab858fd461fdd5"
+    },
+    "checkpoint_core_binding": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/checkpoint-core-binding.json",
+      "sha256": "2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd"
+    },
+    "checkpoint_core_manifest": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/checkpoint-core-manifest.json",
+      "sha256": "6ab533ac8d46e1483962f9d9456541f6a817237c4a2d9a6f91423df130b18ff2"
+    },
+    "freeze": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/freeze.json",
+      "sha256": "578a86e8e8c0fd61702482e34c1911f23e3dd9be9894dc325c549d096a74c087"
+    },
+    "freeze_erratum": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/freeze-erratum-01.json",
+      "sha256": "d4fc3fafa4003fb3d6c632e767cfaeaffd9a43d80d3e2eea26bf8517639abc23"
+    },
+    "training_evidence_index": {
+      "path": "research/kev/training-evidence-index.json",
+      "sha256": "81601d065d99ea4a8e286e87dc19c8cbe6d137e9b2f660dc1eb5b757725f0825"
+    },
+    "source_handoff": {
+      "path": "research/kev/source-handoff.json",
+      "sha256": "8a477d497d4226a53cc63f8be8d4a86d61ce32db25672531389499a07dde1ffa"
+    }
+  },
+  "boundaries": [
+    "checkpoint_sha256 binds only the four core files (adapter_model.safetensors, head.pt, adapter_config.json, training_config.json); tokenizer and other small files are in the artifact list but are not covered by it.",
+    "Full Harness business equivalence, candidate recall, tool behavior and service latency were not evaluated; offline test metrics do not prove business equivalence.",
+    "Test and development partitions have 4 records each; the final-test accuracy 0.5 (2/4) and ECE 0.525 are descriptive only.",
+    "Calibration is in-distribution per the upstream definition; the in-distribution problems are preserved in head.pt metadata.",
+    "Labels are AI functional validation, not human approval or independent truth.",
+    "No variant, service, Git commit/push or page end was created by this task; releasing a wrapper is the root owner's next step.",
+    "The training used the fixed fp32 LoRA recipe with 3 optimizer steps; convergence is not established."
+  ]
+}

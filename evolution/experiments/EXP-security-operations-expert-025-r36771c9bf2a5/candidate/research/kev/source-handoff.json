@@ -1,0 +1,76 @@
+{
+  "schema_version": "medium-variant-training-source-handoff/v1",
+  "created_at": "2026-10-29T19:51:07.850Z",
+  "agent": "security-operations-expert",
+  "experiment_id": "EXP-security-operations-expert-025-r36771c9bf2a5",
+  "source_experiment": "EXP-security-operations-expert-024-rad80a907c628",
+  "parent_ref": "git:d499a1a3e3484bf97f6b5646a8d80e20313a7120",
+  "source_run_ids": [
+    "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408"
+  ],
+  "seed_run": "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408",
+  "upstream": {
+    "trained_model_handoff": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/trained-model-handoff.json",
+      "sha256": "1eedefe33e9119e96abd8a12d355e67476b5cd9587a8d2a54aab858fd461fdd5"
+    },
+    "training_stage_summary": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/training-stage-summary.json",
+      "sha256": "e4f8df7103ce03a91ba8cfc2e067430e4299dd63c51557845a1d53a57423bb33"
+    },
+    "data_stage_summary": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/data-stage-summary.json",
+      "sha256": "68510184e7d205af56457fa3c15829a6a1e0a1ffdfda19ec743cc114011c4666"
+    }
+  },
+  "provenance": {
+    "request": {
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/training-request.json",
+      "sha256": "d4854d86ac941208def348ada5c45314fcc11752bc40079e9d943855dca9b17d"
+    },
+    "plan": {
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/plan-v1/training-plan.json",
+      "sha256": "ef5096a653722779b29c4aec003075a1d725a5c675312607b53de22075e8327e"
+    },
+    "encoding_report": {
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/encoding-report-v1.json",
+      "sha256": "bfdf42632159aa0479ceeda46e6f633ab82397c2d510bb15bfd5bf7e350386c8"
+    },
+    "commands": {
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/commands-v1.json",
+      "sha256": "972a745e1109ba65fc9e6b88a81fd8462e34c82e32ace967a3a530080d75eca6"
+    },
+    "freeze": {
+      "remote": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/freeze.json",
+      "local": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/freeze.json",
+      "sha256": "578a86e8e8c0fd61702482e34c1911f23e3dd9be9894dc325c549d096a74c087"
+    },
+    "freeze_core_binding_addendum": {
+      "local": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/freeze-core-binding-01.json",
+      "sha256": "382c3bc58196b1d99e02f609bb5ca94f67a11939f81d395f8113ee73f26fdd0f"
+    },
+    "freeze_erratum": {
+      "local": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/freeze-erratum-01.json",
+      "sha256": "d4fc3fafa4003fb3d6c632e767cfaeaffd9a43d80d3e2eea26bf8517639abc23"
+    },
+    "business_source_manifest": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/generated-source-v1/manifest.json",
+      "sha256": "b3386871c924017210c607750e924c4ba3fabec90de337f673a3886bcabee813",
+      "semantic_sources": {
+        "state": "5d01d43bdfd5220977ad62ad6f2cf7510e266e0200925b358a28189bff8515f0",
+        "questions": "26c147cc0af061cc78932403dd638674e2af4b9b1d2e767558e3f33d10154145",
+        "language_understanding": "195b1f3a26de313b9ecc7c72cae42bf7ca48a1fb22418cf5d9f7e23e3ea19ea3",
+        "replay": "7d4177ed2a9174bef5ec4c11df5d01dab8259ad44f299cd56d2238df7b6127ea"
+      }
+    }
+  },
+  "boundaries": [
+    "checkpoint_sha256 binds only the four core files (adapter_model.safetensors, head.pt, adapter_config.json, training_config.json); tokenizer and other small files are in the artifact list but are not covered by it.",
+    "Full Harness business equivalence, candidate recall, tool behavior and service latency were not evaluated; offline test metrics do not prove business equivalence.",
+    "Test and development partitions have 4 records each; the final-test accuracy 0.5 (2/4) and ECE 0.525 are descriptive only.",
+    "Calibration is in-distribution per the upstream definition; the in-distribution problems are preserved in head.pt metadata.",
+    "Labels are AI functional validation, not human approval or independent truth.",
+    "No variant, service, Git commit/push or page end was created by this task; releasing a wrapper is the root owner's next step.",
+    "The training used the fixed fp32 LoRA recipe with 3 optimizer steps; convergence is not established."
+  ]
+}

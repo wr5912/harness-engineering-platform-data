@@ -1,0 +1,80 @@
+schema_version: '1.0'
+experiment_id: EXP-security-operations-expert-025-r36771c9bf2a5
+agent_id: security-operations-expert
+baseline_ref: git:d499a1a3e3484bf97f6b5646a8d80e20313a7120
+parent_experiment_id: EXP-security-operations-expert-024-rad80a907c628
+parent_ref: git:d499a1a3e3484bf97f6b5646a8d80e20313a7120
+status: active
+compute_variant:
+  schema_version: 1
+  created_at: '2026-10-29T19:35:09.901Z'
+  strategy: 本轮仅验证主路由 functional E2E：使用固定父版原两 Case（U-INS-002、U-QA-001）与真实诊断 Run-f62533d0 验证生成、实际装载、独立两侧 Run 与比较。语言理解及必要文本由 Qwen3.5-2B 承担，类型化决策由 KEV 0.8B 经原生 typed_decision 产生，主路由由 LangGraph 编排；四 semantic 源码保持冻结。其他 12 个站点未覆盖。沿用公开默认 10% 资源降幅仅作待检验比较条件，绝不预称达成；失败或不可比较如实记 inconclusive 或 failed，不提交 end/human_confirmed。正式 final test 仅 2/4=0.5（T=0.25），不证明业务等效。
+  case_hashes:
+    U-INS-002: 696e8e5bef4358a7ef9e0d3b9ce29b0d837662f02ca683ac6f0aa5026740181d
+    U-QA-001: 4f7ddfc111de4ace3285a693b09b1544d1daefda74bf6979c497d9d409bb248a
+  critical_case_ids: []
+  min_runs_per_case: 1
+  max_pass_rate_drop_pp: 0
+  resource_metric: actual_model_calls
+  min_resource_reduction_pct: 10
+  model_change: null
+  generation:
+    mode: langgraph-aot
+    entry_path: dsh/managed/compute-workflow/index.ts
+    source_run_ids:
+      - run-f62533d0-87fe-4258-8ca2-cb76adbecbb5
+    source_evidence:
+      - run_id: run-f62533d0-87fe-4258-8ca2-cb76adbecbb5
+        path: evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-f62533d0-87fe-4258-8ca2-cb76adbecbb5/evidence/U-INS-002/trace.jsonl
+        sha256: cafd43c58d5a3c7f4f735eb4ed822132f79a9ee7bd48d41206383b8b15cc29ea
+      - run_id: run-f62533d0-87fe-4258-8ca2-cb76adbecbb5
+        path: evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-f62533d0-87fe-4258-8ca2-cb76adbecbb5/evidence/U-QA-001/trace.jsonl
+        sha256: 11256826aa73e4d6f58f2b7b64b93c8bf691273f70fe9ebbb8c750c2a63d45a5
+  execution_mode: hybrid
+  model_roles:
+    language:
+      provider: transformers-serve
+      model: /root/autodl-tmp/hep-medium-security/models/Qwen3.5-2B
+      reasoning_effort: 'off'
+    decision:
+      provider: kev-serving
+      model: kev-latest
+      reasoning_effort: 'off'
+      checkpoint_sha256: 2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd
+      state_constructor_sha256: 5d01d43bdfd5220977ad62ad6f2cf7510e266e0200925b358a28189bff8515f0
+      calibration_sha256: 2af0cbc77cec56ee85cd53fe0de790b609cc27fcae5badaf2c03d8c0f995e1b2
+  measurement_schema_version: 2
+variant_kind: exploratory
+variant_name: 安全运营中算力主路由（Qwen3.5-2B+KEV0.8B）
+compute_variant_build:
+  schema_version: 1
+  entry_path: dsh/managed/compute-workflow/index.ts
+  output_path: dsh/managed/compute-workflow/index.mjs
+  source_sha256: 7cd96edfab86286e63c06ead0ebf810f5e978283e40c852bbf4316f2d2bce5ff
+  source_files:
+    - path: dsh/managed/compute-workflow/decision-questions.ts
+      sha256: 26c147cc0af061cc78932403dd638674e2af4b9b1d2e767558e3f33d10154145
+    - path: dsh/managed/compute-workflow/decision-replay.ts
+      sha256: 7d4177ed2a9174bef5ec4c11df5d01dab8259ad44f299cd56d2238df7b6127ea
+    - path: dsh/managed/compute-workflow/decision-state.ts
+      sha256: 5d01d43bdfd5220977ad62ad6f2cf7510e266e0200925b358a28189bff8515f0
+    - path: dsh/managed/compute-workflow/index.ts
+      sha256: 912e7443e9489e47d23fd4966642a62c5fe346301196802633cfd85b3dd0a743
+    - path: dsh/managed/compute-workflow/kev-decision-tool.ts
+      sha256: bd07e29a88fb7c8844d6f9b42ddc3dae19dfc4b06c2345be4c9ee21c675b2543
+    - path: dsh/managed/compute-workflow/language-understanding.ts
+      sha256: 195b1f3a26de313b9ecc7c72cae42bf7ca48a1fb22418cf5d9f7e23e3ea19ea3
+    - path: dsh/managed/compute-workflow/qwen-http-adapter.ts
+      sha256: 32b2b184635fc1879181fcea7401cdaa4329415acad8942b242566219f630c71
+    - path: dsh/managed/compute-workflow/security-ops-context.ts
+      sha256: 14b6130670515a0b5c47b2ae37397bacec628a63d20059b64c1bbe3d5f69f24e
+    - path: dsh/managed/compute-workflow/security-ops-workflow.ts
+      sha256: ca6a755db61e96424365edf0396e42c21fa36220ca5f2ed4724fa05d643ff028
+  runner_sha256: f855ac37f41f2658b1f4043eb1b6240b40e7fd59c3c3ea4168e96b9d68b970e6
+  deps_sha256: b60dd5d5ba59ccdc7ee2eb88864a13705ffab9570da1697c2df3cb7af85438bb
+  compiler:
+    typescript: 5.9.3
+    esbuild: 0.25.12
+  build_digest: 1f5356cc82573f0df03faa6c3b3c61b5ad2fdfc38ba59ded37e175724a4a0025
+  esm_sha256: cc8663d5ea052a0e939e7a79afe9f3bca1f5c68f581a49bb2d04f47c7d4038a4
+  candidate_sha256: 0123391f5f80b685945be9963b4dbe8717be6e840d8efcfe47cb931b58a86d4c
