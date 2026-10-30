@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 from collections import Counter
 from trace_adapter import parse_trace, audit_summary, extract, strict_loads, stable, VERSION
-from dataset import compile_records, split_records, audit_partitions
+from dataset import compile_records, split_records, audit_partitions, label_key
 from human_report import emit_result, print_summary, write_report, reason_text
 
 
@@ -278,8 +278,11 @@ def execute_command(args,out):
         for r in records:
             if r['sample_id'] in by_id:
                 label=by_id[r['sample_id']]
-                if label.get('value') is not None and label['value'] not in r['question']['criteria']:
-                    raise ValueError('Annotation target not in current candidates: '+r['sample_id'])
+                if label.get('value') is not None:
+                    try:
+                        label_key(r['question'], label['value'])
+                    except ValueError:
+                        raise ValueError('Annotation target does not match current question: '+r['sample_id']) from None
                 r['label']=copy.deepcopy(label)
         write_jsonl(out/'samples.labeled.jsonl',records)
         report={'updates':len(by_id),'labels':dict(Counter(r['label']['status'] for r in records)),
@@ -349,7 +352,7 @@ def execute_command(args,out):
         reasons=['missing_label_coverage'] if manifest.get('missing_label_coverage') else []
         if manifest.get('missing_label_coverage'):
             names={'train':'训练','development':'开发验证','calibration':'校准','test':'独立测试'}
-            details.append('类别覆盖缺口：'+'；'.join(f'{names.get(name,name)}缺少 {len(labels)} 个类别' for name,labels in manifest['missing_label_coverage'].items())+'。具体类别见 split-manifest.json。')
+            details.append('类别覆盖缺口：'+'；'.join(f'{names.get(name,name)}缺少 {sum(len(values) for values in labels.values())} 个问题类别' for name,labels in manifest['missing_label_coverage'].items())+'。具体问题与类别见 split-manifest.json。')
         return finish(args,out,'requires_review' if reasons else 'completed',{'manifest':manifest},summary,reasons,'audit-dataset',
             next_step='对四份文件运行 audit-dataset，并复核来源多样性和业务类别覆盖。',
             artifacts=artifacts,details=details,

@@ -38,7 +38,8 @@ def fixture_row(number, partition="train"):
     row = {"schema_version": 2, "state": {"messages": [{"role": "user", "content": f"合成任务 {number}"}], "available_tools": []},
            "workflow": "合成流程", "task": {"id": "synthetic-task", "semantics": "recommended_decision"},
            "questions": {"route": question}, "targets": {"route": target},
-           "_meta": {"id": f"decision-{number:032x}", "source": "dsh_run", "variant": "clean", "run_id": run,
+           "_meta": {"id": f"decision-{number:032x}", "dataset_id": f"decision-dataset-{number:08x}-2222-4222-8222-222222222222",
+               "source_bundle_sha256": bridge.sha("synthetic-bundle-" + str(number)), "source": "dsh_run", "variant": "clean", "run_id": run,
                "trace_path": path, "trace_sha256": trace_hash, "decision_id": f"decision-synthetic-{number}",
                "cutoff": cutoff, "context_mode": "actual_request",
                "evidence_refs": [{**cutoff, "line": 3, "seq": 2}], "observed_action": {"name": "read"},
@@ -54,6 +55,21 @@ def fixture_row(number, partition="train"):
 def refresh_hash(row):
     row["_meta"]["content_sha256"] = bridge.content_hash(row)
     row["_meta"]["source_record_content_sha256"] = bridge.content_hash(row)
+
+
+def ai_review(row, fragments=False):
+    meta = row["_meta"]
+    proof = {"schema_version": 1, "session_id": "synthetic-reviewer", "dataset_id": meta["dataset_id"],
+             "record_id": meta["id"], "run_id": meta["run_id"], "path": meta["trace_path"],
+             "trace_sha256": meta["trace_sha256"], "source_bundle_sha256": meta["source_bundle_sha256"],
+             "state_sha256": bridge.sha(bridge.js_json(row["state"])),
+             "read_method": "datasets/source-fragments" if fragments else "datasets/read",
+             "receipt_refs": [{"call_id": "synthetic-source-read", "call_seq": 2, "result_seq": 3}]}
+    if fragments:
+        proof.update(content_sha256=bridge.sha("synthetic-complete-document"), source_identity_sha256=bridge.sha("synthetic-source-identity"))
+    return {"kind": "ai_delegated", "session_id": "synthetic-reviewer",
+            "model": {"provider": "synthetic", "model": "reviewer", "reasoningEffort": None},
+            "reviewed_at": STAMP, "purpose": "functional_validation", "input_evidence": proof}
 
 
 def envelope(number, partition, rows):
@@ -162,6 +178,88 @@ class BridgeTests(unittest.TestCase):
             self.assertEqual(target["provenance"]["kind"], "model_suggestion")
             self.assertEqual(target["provenance"]["calibration"], "uncalibrated")
             self.assertNotIn("label_status", row["_meta"])
+
+    def test_ai_delegated_review_and_annotation_preserved_without_human_or_gold(self):
+        for number, rows in enumerate(self.rows.values()):
+            review = ai_review(rows[0], fragments=number % 2 == 1)
+            target = rows[0]["targets"]["route"]
+            target["review"] = deepcopy(review)
+            target["provenance"] = {"kind": "ai_annotation", "annotated_at": STAMP,
+                "session_id": review["session_id"], "model": deepcopy(review["model"]),
+                "purpose": review["purpose"], "origin": deepcopy(target["provenance"])}
+        self.save(); self.run_bridge()
+        for name in bridge.PARTITIONS:
+            row = json.loads((self.output / (name + ".jsonl")).read_text())
+            target = row["_meta"]["platform"]["targets"]["route"]
+            self.assertEqual(target, self.rows[name][0]["targets"]["route"])
+            self.assertEqual(target["review"], self.rows[name][0]["targets"]["route"]["review"])
+            self.assertEqual(target["provenance"]["kind"], "ai_annotation")
+            self.assertEqual(target["provenance"]["origin"]["calibration"], "uncalibrated")
+
+    def test_ai_review_rejects_missing_actor_wrong_purpose_and_changed_time(self):
+        for patch in [{"session_id": ""}, {"model": {}}, {"purpose": "gold"}, {"kind": "human"}, {"reviewed_at": "2026-10-28T00:00:00.000Z"}]:
+            with self.subTest(patch=patch):
+                target = fixture_row(1)["targets"]["route"]
+                target["review"] = {"kind": "ai_delegated", "session_id": "synthetic-reviewer",
+                    "model": {"provider": "synthetic", "model": "reviewer"}, "reviewed_at": STAMP,
+                    "purpose": "functional_validation", **patch}
+                with self.assertRaises(bridge.BridgeError) as error:
+                    bridge.validate_review(target)
+                self.assertEqual(error.exception.code, "invalid_ai_review")
+
+    def test_ai_review_requires_complete_input_proof_and_exact_binding(self):
+        for patch in [None, {"session_id": "forged"}, {"dataset_id": "forged"}, {"record_id": "forged"},
+                      {"run_id": "forged"}, {"path": "forged"}, {"trace_sha256": "f" * 64},
+                      {"source_bundle_sha256": "f" * 64}, {"state_sha256": "f" * 64},
+                      {"receipt_refs": []}, {"receipt_refs": [{"call_id": "synthetic", "call_seq": 3, "result_seq": 3}]},
+                      {"receipt_refs": [{"call_id": "synthetic", "call_seq": True, "result_seq": 3}]},
+                      {"receipt_refs": [{"call_id": "synthetic", "call_seq": 1, "result_seq": 3}] * 2},
+                      {"read_method": "datasets/source-fragments"}]:
+            with self.subTest(patch=patch):
+                row = fixture_row(1)
+                row["targets"]["route"]["review"] = ai_review(row)
+                if patch is None:
+                    del row["targets"]["route"]["review"]["input_evidence"]
+                else:
+                    row["targets"]["route"]["review"]["input_evidence"].update(patch)
+                with self.assertRaises(bridge.BridgeError) as error:
+                    bridge.validate_row(row, "train")
+                self.assertIn(error.exception.code, {"invalid_review_input", "review_input_mismatch"})
+
+    def test_ai_review_batch_binding_matches_enclosing_export_receipt(self):
+        row = self.rows["train"][0]
+        row["targets"]["route"]["review"] = ai_review(row)
+        self.save()
+        def swap_batch(wrapper):
+            current = json.loads(wrapper["export"]["content"])
+            current["_meta"]["dataset_id"] = "decision-dataset-ffffffff-2222-4222-8222-222222222222"
+            current["targets"]["route"]["review"]["input_evidence"]["dataset_id"] = current["_meta"]["dataset_id"]
+            wrapper["export"]["content"] = json.dumps(current)
+        self.rewrite_wrapper("train", swap_batch)
+        self.run_bridge("receipt_identity_mismatch")
+
+    def test_native_message_sources_preserve_delegation_and_context_without_role_rewrite(self):
+        for rows in self.rows.values():
+            row = rows[0]
+            row["state"]["messages"][0]["source"] = {"kind": "subagent", "senderSessionId": "synthetic-parent", "delegationCallId": "synthetic-call"}
+            row["state"]["messages"].append({"role": "user", "content": "合成运行上下文", "source": {"kind": "context", "form": "notice"}})
+            refresh_hash(row)
+        self.save(); self.run_bridge()
+        for partition in bridge.PARTITIONS:
+            native = json.loads((self.output / (partition + ".jsonl")).read_text())
+            self.assertEqual(native["state"], self.rows[partition][0]["state"])
+            self.assertEqual(native["state"]["messages"][0]["source"]["kind"], "subagent")
+            self.assertEqual(native["state"]["messages"][1]["source"]["kind"], "context")
+
+    def test_message_source_rejects_replay_and_supervision_fields(self):
+        for source in [{}, {"kind": "model", "replayState": {"private": "hidden"}}, {"kind": "context", "label": "read"}]:
+            with self.subTest(source=source):
+                row = fixture_row(1)
+                row["state"]["messages"][0]["source"] = source
+                refresh_hash(row)
+                with self.assertRaises(bridge.BridgeError) as error:
+                    bridge.validate_row(row, "train")
+                self.assertEqual(error.exception.code, "input_target_leakage")
 
     def test_transitive_group_history_and_run_session_links_block_cross_split(self):
         for relation in ["history", "run", "session"]:

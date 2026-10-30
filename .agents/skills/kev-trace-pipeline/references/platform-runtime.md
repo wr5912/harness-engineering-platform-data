@@ -5,7 +5,7 @@
 | 入口 | 实际能力 | 本套用法 |
 |---|---|---|
 | 中算力策划按钮 | 固定 `compute-variant-research`，仅 `skill` 与 `platform_agents`，`planning_intent=plan_only` | 在已有 compute Skill 与 `research/read-reference` 的 compute-variants 主题中策划 |
-| 固定 Run 抽样 | 单题 v2 合同；服务端绑定来源并自动保存 suggested | 保留原生抽样入口；人员在页面复核并指定用途 |
+| 固定 Run 抽样 | 单题 v2 合同；服务端绑定来源并自动保存 suggested | 保留原生抽样入口；按授权逐题复核并指定用途，明确委托的 AI 复核保留实际主体、依据与 functional_validation 用途 |
 | 普通管理会话 | 原生 Skill 可发现数据根新目录；实际动作仍由当前工具与授权决定 | 使用 workspace-management 分流；不能伪造新 task_context.skill 专项 |
 | 独立训练环境 | 用户提供且实际可用的文件、Python、KEV 与硬件 | 运行本套离线脚本和经核对的训练命令，记录真实回执 |
 

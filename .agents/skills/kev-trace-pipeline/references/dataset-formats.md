@@ -35,7 +35,7 @@
 | 字段组 | 必要内容 |
 |---|---|
 | 身份与职责 | `schema_version=kev-decision-ir/v1`、`sample_id`、`decision_site_id`、`contract_version`、`implementation` |
-| 决策输入 | `state`、单数 `question`；当前 IR 编译器仅支持 choice。 |
+| 决策输入 | `state`、单数 `question`；支持 choice、noul、score，并保留原生标签类型。同站点多题各自成行且共享来源组。 |
 | 监督目标 | `label.status/value/source/evidence_refs`；有 soft target 时增加 `target/target_semantics`。 |
 | 来源与时点 | `trace_sha256`、`session_id`、`source_group_id`、`decision_seq`、`decision_line` |
 | 输入证据与构造版本 | `state_evidence_refs`、`candidate_evidence_refs`、`state_builder_version`、`candidate_builder_version` |

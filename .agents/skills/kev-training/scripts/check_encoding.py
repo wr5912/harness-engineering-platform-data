@@ -167,6 +167,13 @@ def check_metadata(plan_path, kev_root, report):
         raise CheckFailure('invalid_plan', 'Cannot read a strict JSON training plan', malformed=True) from exc
     require(isinstance(plan, dict) and plan.get('schema_version') == 'kev-training-plan/v1'
             and plan.get('status') == 'prepared', 'plan_not_prepared', 'Expected a prepared kev-training-plan/v1', malformed=True)
+    spec = importlib.util.spec_from_file_location('kev_encoding_training_plan', Path(__file__).with_name('training_plan.py'))
+    planner = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(planner)
+    try:
+        report['training_recipe'] = planner.training_recipe(plan)
+    except ValueError as exc:
+        raise CheckFailure(str(exc), 'Training recipe, command dtype, and hardware requirements must agree', malformed=True) from exc
     commit = plan.get('kev_commit')
     require(isinstance(commit, str) and HEX40.fullmatch(commit), 'invalid_kev_commit', 'kev_commit must be a full commit SHA', malformed=True)
     report['kev_commit'] = commit
@@ -213,6 +220,13 @@ def check_metadata(plan_path, kev_root, report):
             and (not args.get('base_revision') or args['base_revision'] == revision)
             and type(args.get('option_isolation')) in (int, bool) and args.get('option_isolation') == isolation,
             'checkpoint_metadata_conflict', 'Base, revision, or option isolation differs from checkpoint metadata')
+    if report['training_recipe'] == 'cuda-fp32-lora':
+        require(args.get('weights_dtype') == checkpoint.get('weights_dtype'), 'checkpoint_metadata_conflict',
+                'FP32 recipe weights dtype differs from checkpoint metadata')
+    try:
+        report['checkpoint_source'] = planner.verify_checkpoint_source(checkpoint)
+    except (ValueError, OSError) as exc:
+        raise CheckFailure(str(exc), 'Pinned checkpoint source or local snapshot bytes no longer match the plan') from exc
     report['checkpoint_metadata'] = {'path': str(metadata_path), 'sha256': expected_metadata}
     dataset = plan.get('dataset')
     files = dataset.get('files') if isinstance(dataset, dict) else None
@@ -406,7 +420,7 @@ def check_records(plan, kev_root, report, allow_download):
 def empty_report():
     return {
         'schema_version': 'kev-encoding-report/v1', 'status': 'blocked', 'plan_sha256': None,
-        'kev_commit': None, 'base': None, 'base_revision': None, 'files': {}, 'checked_records': 0, 'failures': [],
+        'kev_commit': None, 'training_recipe': None, 'checkpoint_source': None, 'base': None, 'base_revision': None, 'files': {}, 'checked_records': 0, 'failures': [],
         'tokenstats': {'limits': dict(LIMITS), 'shuffle_seeds': list(SHUFFLE_SEEDS), 'partitions': {}},
         'checks': dict.fromkeys(('metadata', 'native_imports', 'tokenizer', 'native_loader', 'native_materialize',
                                  'strict_encoding', 'native_fits', 'target_mapping', 'choice_shuffle'), 'not_run'),
@@ -464,13 +478,15 @@ def main(argv=None):
         print('编码报告未能保存，请检查路径和写入权限：' + type(exc).__name__, file=sys.stderr)
         return 1
     result = {'status': report['status'], 'report': str(out.resolve()), 'checked_records': report['checked_records'],
-              'failure_codes': [failure['code'] for failure in report['failures']]}
+              'training_recipe': report['training_recipe'], 'failure_codes': [failure['code'] for failure in report['failures']]}
     spec = importlib.util.spec_from_file_location('kev_encoding_human_report', Path(__file__).resolve().parents[2] / 'kev-trace-pipeline/scripts/human_report.py')
     human = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(human)
     passed = report['status'] == 'ready'
-    summary = (f"已检查 {report['checked_records']} 条记录，当前数据的编码与长度检查通过。尚未启动训练。" if passed
+    summary = (f"配方 {report['training_recipe']}，已检查 {report['checked_records']} 条记录，当前数据的编码与长度检查通过。尚未启动训练。" if passed
                else f"编码检查未通过，已检查 {report['checked_records']} 条记录；当前不能继续训练。")
+    if report['checkpoint_source']:
+        summary += " 模型来源：" + report['checkpoint_source']['init_from'] + "；执行位置：" + report['checkpoint_source']['execution_init_from'] + "。"
     try:
         human.emit_result(out.parent, 'check-encoding', 'completed' if passed else 'blocked', summary,
                           [] if passed else result['failure_codes'],

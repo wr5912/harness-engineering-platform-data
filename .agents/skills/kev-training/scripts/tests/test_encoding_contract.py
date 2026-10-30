@@ -8,12 +8,16 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+from snapshot_fixture import make_snapshot
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'check_encoding.py'
 SPEC = importlib.util.spec_from_file_location('encoding_preflight_contract', SCRIPT)
 encoding = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(encoding)
+PLANNER_SPEC = importlib.util.spec_from_file_location('training_plan_contract', SCRIPT.with_name('training_plan.py'))
+planner = importlib.util.module_from_spec(PLANNER_SPEC)
+PLANNER_SPEC.loader.exec_module(planner)
 
 
 class EncodingContractTests(unittest.TestCase):
@@ -34,7 +38,7 @@ class EncodingContractTests(unittest.TestCase):
         self.untracked = b''
         self.metadata = self.root / 'checkpoint-config.json'
         self.metadata.write_text(json.dumps({'base_revision': 'b' * 40, 'args': {
-            'base': 'synthetic/base', 'base_revision': 'b' * 40, 'option_isolation': 0,
+            'base': 'synthetic/base', 'base_revision': 'b' * 40, 'option_isolation': 0, 'weights_dtype': 'fp32',
         }}), encoding='utf-8')
         files = {}
         for partition in encoding.PARTITIONS:
@@ -46,12 +50,18 @@ class EncodingContractTests(unittest.TestCase):
             files[partition] = {'path': str(path), 'sha256': encoding.digest(path), 'records': 1}
         self.plan = {
             'schema_version': 'kev-training-plan/v1', 'status': 'prepared', 'kev_commit': self.head,
-            'checkpoint': {'base': 'synthetic/base', 'base_revision': 'b' * 40, 'option_isolation': 0,
+            'checkpoint': {'base': 'synthetic/base', 'base_revision': 'b' * 40, 'option_isolation': 0, 'weights_dtype': 'fp32',
+                           'init_from': 'synthetic/checkpoint@' + 'c' * 40, 'lora': 16, 'head_dim': 256,
+                           'lora_targets': 'all', 'special_embeddings': 0,
                            'metadata_path': str(self.metadata), 'metadata_sha256': encoding.digest(self.metadata)},
-            'dataset': {'files': files}, 'environment': {'kev_root': str(self.checkout)},
+            'dataset': {'files': files}, 'environment': {'kev_root': str(self.checkout), 'run_root': str(self.root / 'job')},
+            'training': {'recipe': 'cuda-bf16-lora', 'epochs': 1, 'lr': 2e-5, 'batch': 1, 'accum': 8, 'seed': 0},
+            'commands': {'train': {'requires': ['CUDA/bf16/VRAM-checked']}},
             'context_limits': dict(encoding.LIMITS),
             'augmentation': {'choice_shuffle': True, 'p_none': 0, 'p_none_distract': 0, 'p_distract': 0, 'p_none_pair': 0},
         }
+        self.plan['commands']['train']['argv'] = planner.training_argv(self.plan['checkpoint'], self.plan['dataset'],
+                                                                       self.plan['training'], self.plan['environment']['run_root'])
         self.plan_path = self.root / 'training-plan.json'
         self.write_plan()
 
@@ -94,6 +104,112 @@ class EncodingContractTests(unittest.TestCase):
     def test_stale_commit_pin_blocks_before_native_imports(self):
         self.head = 'c' * 40
         self.assert_blocked_before_native('kev_commit_mismatch')
+
+    def test_fp32_recipe_identity_is_recorded_without_claiming_hardware_check(self):
+        self.plan['training']['recipe'] = 'cuda-fp32-lora'
+        argv = self.plan['commands']['train']['argv']
+        argv[argv.index('--dtype') + 1] = 'fp32'
+        self.plan['commands']['train']['requires'] = ['CUDA/fp32/VRAM-checked']
+        self.write_plan()
+        with patch.object(encoding.importlib.util, 'find_spec', return_value=None):
+            code, report = self.invoke()
+        self.assertEqual(code, 2)
+        self.assertEqual(report['checks']['metadata'], 'passed')
+        self.assertEqual(report['training_recipe'], 'cuda-fp32-lora')
+        self.assertIn('GPU_hardware', report['not_verified'])
+        self.assertEqual(report['training'], 'not_run')
+
+    def test_recipe_and_dtype_mismatch_blocks_before_native_imports(self):
+        self.plan['training']['recipe'] = 'cuda-fp32-lora'
+        self.write_plan()
+        self.assert_blocked_before_native('training_recipe_command_mismatch', exit_code=1)
+
+    def test_argparse_override_blocks_before_native_imports(self):
+        self.plan['training']['recipe'] = 'cuda-fp32-lora'
+        argv = self.plan['commands']['train']['argv']
+        argv[argv.index('--dtype') + 1] = 'fp32'
+        argv.append('--dtype=bf16')
+        self.plan['commands']['train']['requires'] = ['CUDA/fp32/VRAM-checked']
+        self.write_plan()
+        self.assert_blocked_before_native('training_recipe_command_mismatch', exit_code=1)
+
+    def local_plan(self):
+        checkpoint = self.plan['checkpoint']
+        binding = make_snapshot(self.root, self.metadata, checkpoint['init_from'])
+        checkpoint['local_snapshot'] = binding
+        self.plan['commands']['train']['argv'] = planner.training_argv(checkpoint, self.plan['dataset'],
+                                                                       self.plan['training'], self.plan['environment']['run_root'])
+        self.write_plan()
+        return binding
+
+    def test_local_snapshot_identity_in_encoding_report_does_not_claim_model_loading(self):
+        binding = self.local_plan()
+        with patch.object(encoding.importlib.util, 'find_spec', return_value=None):
+            code, report = self.invoke()
+        self.assertEqual(code, 2)
+        self.assertEqual(report['checks']['metadata'], 'passed')
+        self.assertEqual(report['checkpoint_source']['init_from'], self.plan['checkpoint']['init_from'])
+        self.assertEqual(report['checkpoint_source']['execution_init_from'], binding['path'])
+        self.assertEqual(report['checkpoint_source']['verified_files'], 4)
+        self.assertEqual(report['training'], 'not_run')
+
+    def test_local_snapshot_drift_blocks_before_native_imports(self):
+        binding = self.local_plan()
+        path = Path(binding['path']) / 'head.pt'
+        original = path.read_bytes(); path.write_bytes(original[:-1] + b'!')
+        self.assert_blocked_before_native('local_snapshot_file_hash_mismatch: head.pt')
+
+    def test_local_snapshot_drift_during_encoding_cannot_produce_ready(self):
+        binding = self.local_plan()
+        def change_snapshot(*_args):
+            path = Path(binding['path']) / 'adapter_model.safetensors'
+            original = path.read_bytes(); path.write_bytes(original[:-1] + b'!')
+        with patch.object(encoding, 'check_records', side_effect=change_snapshot):
+            code, report = self.invoke()
+        self.assertEqual(code, 2)
+        self.assertEqual(report['status'], 'blocked')
+        self.assertEqual(report['failures'][0]['code'], 'local_snapshot_file_hash_mismatch: adapter_model.safetensors')
+        self.assertNotEqual(report['checks'].get('final_identity_recheck'), 'passed')
+
+    def test_fp32_recipe_cannot_execute_bf16_weight_dtype(self):
+        self.plan['training']['recipe'] = 'cuda-fp32-lora'
+        argv = self.plan['commands']['train']['argv']
+        argv[argv.index('--dtype') + 1] = 'fp32'
+        argv[argv.index('--weights_dtype') + 1] = 'bf16'
+        self.plan['commands']['train']['requires'] = ['CUDA/fp32/VRAM-checked']
+        self.write_plan()
+        self.assert_blocked_before_native('training_recipe_command_mismatch', exit_code=1)
+
+    def test_fp32_recipe_checks_the_original_metadata_weight_dtype(self):
+        self.plan['training']['recipe'] = 'cuda-fp32-lora'
+        argv = self.plan['commands']['train']['argv']
+        argv[argv.index('--dtype') + 1] = 'fp32'
+        self.plan['commands']['train']['requires'] = ['CUDA/fp32/VRAM-checked']
+        metadata = json.loads(self.metadata.read_text())
+        metadata['args']['weights_dtype'] = 'bf16'
+        self.metadata.write_text(json.dumps(metadata), encoding='utf-8')
+        self.plan['checkpoint']['metadata_sha256'] = encoding.digest(self.metadata)
+        self.write_plan()
+        self.assert_blocked_before_native('checkpoint_metadata_conflict')
+
+    def test_recipe_and_hardware_requirement_mismatch_blocks_before_native_imports(self):
+        self.plan['commands']['train']['requires'] = ['CUDA/fp32/VRAM-checked']
+        self.write_plan()
+        self.assert_blocked_before_native('training_recipe_requirement_mismatch', exit_code=1)
+
+    def test_unsupported_recipe_blocks_before_native_imports(self):
+        self.plan['training']['recipe'] = 'cuda-fp16-lora'
+        self.write_plan()
+        self.assert_blocked_before_native('unsupported_training_recipe', exit_code=1)
+
+    def test_legacy_unnamed_bf16_recipe_remains_valid(self):
+        del self.plan['training']['recipe']
+        self.write_plan()
+        with patch.object(encoding.importlib.util, 'find_spec', return_value=None):
+            code, report = self.invoke()
+        self.assertEqual(code, 2)
+        self.assertEqual(report['checks']['metadata'], 'passed')
+        self.assertEqual(report['training_recipe'], 'cuda-bf16-lora')
 
     def test_encoding_failure_writes_readable_sidecar_without_overwriting_plan_report(self):
         previous = self.root / 'report.md'

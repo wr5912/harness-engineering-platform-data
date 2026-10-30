@@ -10,14 +10,14 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 | 当前状态 | 唯一下一步 |
 |---|---|
 | 固定算力专项或 `planning_intent=plan_only` | 留在 `compute-variant-research`，交付只读计划；不执行本技能脚本 |
-| 固定 Run 抽样专项 | 完成 `decision-sample-extraction` 的保存与回读；人员复核后再交接 |
+| 固定 Run 抽样专项 | 完成 `decision-sample-extraction` 的保存与回读；按授权逐题复核后再交接 |
 | 已有 checkpoint，只需部署、验证服务、保温或停服 | 使用 `kev-deploy`；不要求重新准备训练数据或先训练 |
 | 已有 DSH trace，或待复核的本套 IR/原生 KEV 样本 | 当前作用域允许时交给 `kev-trace-pipeline`；不训练 |
 | 从 Jev/TypeSafe 调用、业务问题或已有标注表开始，选择官方 Modal 工作负载微调 | 读取 [Modal 工作负载路径](references/modal-workload.md)，只继续所需阶段；可先扫描、转换、规划或生成数据，不强制进入下述原生配方 |
 | 已复核四分区，但没有真实训练执行工具 | 整理下述交接材料，说明执行器缺口；不猜平台接口 |
 | 已选择原生训练配方且具备相应授权和真实环境 | 从下述首个未完成步骤继续；一次处理一个阶段 |
 
-当前平台没有训练启动/状态/取消/工件回收动作。训练服务器登记与 SSH banner 探测不证明训练环境可用或 KEV 已运行。原生 shell 的存在也不授权绕过专项接口。实际环境由用户或真实工具提供，凭据使用既有引用。
+普通管理任务通过18120管理助手实际注册的原生 `bash` 与 `job_output/job_list/job_kill` 执行授权阶段；浏览器侧终端是独立用户接口，不能当作模型工具。远端命令、状态、取消与逐文件回收使用程序仓库的 `runtime/research/training-ssh.mts`，准确调用和持久回执见[原生执行交接](references/native-execution.md)。Host重启后先按既有回执核对远端进程，不重发训练。服务器登记与SSH banner不证明认证、环境或KEV已运行；专项仍遵守原范围，凭据只由CLI内部按引用读取。
 
 第 2–4 节是平台/轨迹数据的原生配方，不是官方 Modal 工作负载路径的必经前置。保持用户已选环境；从首个未完成阶段继续，不因切换入口重复生成数据、启动作业或部署。
 
@@ -25,8 +25,8 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 
 1. 先按 `kev-trace-pipeline/references/dataset-formats.md` 区分材料：平台 v2 按 platform-export.md 转换，离线 IR 完成标注和分组审计，既有 KEV 文件按 legacy-native.md 复核、构建并审计。三种 dataset.kind 分别为 platform-v2、trace-ir、legacy-native。保留四份实际非空文件，不再运行官方 convert_data.py 或 split_data.py。
 2. 用真实 agent/父 Experiment/固定 git ref 绑定目标。轨迹和平台数据填写真实 source_run_ids；旧表格或既有 JSONL 确实没有 Run 时，legacy-native 允许空数组，来源留在导入材料中，不能补造 Run。界面的 `provider/model` 是运行路由；从实际可训练 checkpoint 的固定版本读取训练元数据，不直接将该路由拼成权重地址。
-3. 从固定 checkpoint 获取 training_config.json，记录来源与 SHA-256。准备 `assets/training-request.example.json` 所列字段；示例占位值不能直接提交。路径指向执行训练的同一环境；路径改变后重新准备计划并做编码检查。
-4. 当前脚本 recipe 支持原生 KEV LoRA + CUDA/bf16。全量权重、其他后端、提高上下文预算或混入公共 replay 属于独立 recipe，需要实际验证，不能临场改参数绕过检查。
+3. 从固定 checkpoint 获取 training_config.json，记录来源与 SHA-256。准备 `assets/training-request.example.json` 所列字段；示例占位值不能直接提交。`init_from` 保留固定 Hub 来源身份；需要从已下载目录执行时，按 [训练交接合同](references/training-run.md#请求合同) 提供可选 `checkpoint.local_snapshot`，以固定仓库元数据及摘要绑定实际目录，不手改 argv。路径指向执行训练的同一环境；路径或内容改变后重新准备计划并做编码检查。
+4. 当前脚本支持原生 KEV LoRA 的 `cuda-bf16-lora`（默认）和 `cuda-fp32-lora` 两种 recipe。无原生 BF16 的 CUDA GPU 可显式选择 FP32；实际显存和训练可行性仍需核对。全量权重、其他后端、提高上下文预算或混入公共 replay 属于独立 recipe，需要实际验证，不能临场改参数绕过检查。
 
 ## 3. 准备 → 编码 → 取训练命令
 

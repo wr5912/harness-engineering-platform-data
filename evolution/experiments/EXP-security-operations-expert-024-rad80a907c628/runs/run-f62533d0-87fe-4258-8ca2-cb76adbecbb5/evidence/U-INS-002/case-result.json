@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测轮次始终没有调用要求中的 `list_executable_inspections`：工具日志显示它改为调用了 `list_mcp_resources` 和 `list_mcp_resource_templates`，两次回执均为 `is_error=true` 的 `server is disconnected`（索引2、6）。由于从未发起对指定目录查询工具的调用，也就不存在“本轮真实返回的可执行模板”数据；回答（索引0）如实报告服务断开、不编造内容且未调用 `start_inspection`，这部分符合预期的失败说明要求，但“只调用 `list_executable_inspections`”这一核心要求明确未满足，且无法证明该工具本身不可用（未见对其的调用尝试或报错回执），故整体判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

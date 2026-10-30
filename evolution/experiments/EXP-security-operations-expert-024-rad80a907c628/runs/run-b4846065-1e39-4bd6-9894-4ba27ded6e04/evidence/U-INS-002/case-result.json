@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 本轮并未调用要求的 `list_executable_inspections`：可核对到的实际调用是 `skill` 加载（索引2）以及 `list_mcp_resources`/`list_mcp_resource_templates`（索引4、6，均返回 `mcp-client(inspection): server is disconnected`），冻结要求“只调用 `list_executable_inspections`”未被满足。另一方面，回答确未调用 `start_inspection`，并对巡检服务断连、未取得任何模板/巡检项如实说明且未编造目录内容（索引0，且与索引4、6 的真实错误回执一致），这部分满足预期的失败兜底条款；但 Skill 的“工具缺失即停止”只能解释失败，不能改变冻结要求，故整体判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

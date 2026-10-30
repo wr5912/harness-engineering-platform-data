@@ -1,0 +1,50 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "工具回执（索引2）显示工作流 status=failed，qwen_understanding 节点失败，ok:false，全程未产生任何针对 SEC-KB-078 的知识库检索结果、文档或分块来源，因此要求1被明确不满足。被测回答（索引0）如实说明工作流未完成并停止，未凭常识编造内容，这一部分符合要求2的精神；但因没有任何检索命中或明确的“检索不到”结论，且核心要求1失败，整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "检索并依据 SEC-KB-078 的真实知识库内容回答，给出可核对的文档或分块来源",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "检索不到时明确说明，不凭常识冒充内部知识",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-eba0e8e4-c725-4943-9d58-06c5990ec2bc",
+    "workspace_id": "78d09f9f-dc15-404d-9779-872456a41e15",
+    "session_title": "评审 U-QA-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

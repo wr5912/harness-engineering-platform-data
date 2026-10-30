@@ -1,0 +1,1628 @@
+{
+  "schema_version": 2,
+  "id": "decision-dataset-d43ae0b4-da1c-4415-9fa8-14e501b6ca3e",
+  "agent_id": "security-operations-expert",
+  "experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+  "run_id": "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408",
+  "source_version": {
+    "candidate_sha256": "3e03b643cc65535b0cbbe763ec86878e35b56294a7de921372826877c6660b7e",
+    "git_version": {
+      "commit": "1f162a1ce12025ffeb9d2e36c7a3ae283b41e421",
+      "dirty": true
+    }
+  },
+  "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+  "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+  "source_bundle": {
+    "schema_version": 1,
+    "sha256": "9516b450d0482409c7b94f1671e937e18ac41f1e51514c6f796bd358602985c4",
+    "files": [
+      {
+        "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/checks.json",
+        "source_sha256": "c49433ab17ba4753d3d2015bfdfe31f2e3d58ff8c0938e96c2e584aed30c35b9"
+      },
+      {
+        "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/judge.json",
+        "source_sha256": "f158bf3a4759702e9c74c53a7952076d13dd9f2df756eab33bd0f849c84f997e"
+      },
+      {
+        "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+        "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b"
+      },
+      {
+        "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/inputs.lock.json",
+        "source_sha256": "824a53c3f0351e593fabb9debf688783cde93d96775b5463a6894749b5369e81"
+      },
+      {
+        "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/run.json",
+        "source_sha256": null
+      },
+      {
+        "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/run.yaml",
+        "source_sha256": "e12e92d64421a607ffe9195d5c2dc1e3648749fdeab164b7659ee73945f2cca5"
+      }
+    ],
+    "issues": []
+  },
+  "created_at": "2026-10-29T15:20:24.599Z",
+  "extractor": {
+    "session_id": "session-92b91af4-a1a1-49bd-a60d-99d06d5966a2",
+    "model": {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash",
+      "reasoningEffort": "max"
+    },
+    "skill": "decision-sample-extraction",
+    "skill_path": ".agents/skills/decision-sample-extraction/SKILL.md",
+    "skill_sha256": "44a3b6c7df3dfa43ed144fd7a0d7b1aa7dff1d6943e7b05062df61b17d4497eb",
+    "harness_sources": {
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "source_sha256": "0c029c80d4b031a4f3ee019793c9b90e0506d596fc4ba08180402b2a96d9a1e8"
+        },
+        {
+          "path": ".agents/skills/decision-sample-extraction/SKILL.md",
+          "source_sha256": "44a3b6c7df3dfa43ed144fd7a0d7b1aa7dff1d6943e7b05062df61b17d4497eb"
+        },
+        {
+          "path": "docs/harness-research/decision-samples.md",
+          "source_sha256": "9127f6099a0e5cb384132db25445e2ea7853d1cb66ac718e2a61bf7cb77cc47e"
+        }
+      ],
+      "sha256": "e90d28851011dd9c32ec335d2cd1fcc6a88d16212d0b156a78b32eb6f397738e",
+      "skill_path": ".agents/skills/decision-sample-extraction/SKILL.md",
+      "skill_sha256": "44a3b6c7df3dfa43ed144fd7a0d7b1aa7dff1d6943e7b05062df61b17d4497eb"
+    },
+    "format": "decision-dataset-v2"
+  },
+  "records": [
+    {
+      "state": {
+        "messages": [
+          {
+            "role": "system",
+            "content": [
+              {
+                "type": "text",
+                "text": "You are an AI agent powered by DeepSeek Harness.\n\n你是只读故障取证子 Agent。仅按当前工具目录调用必需的授权 SOC 查询能力，区分事实、推断和证据缺口，不执行处置、不创建运行、不读写文件，也不补造结果。\n\nTokens prefixed with @ are paths the user explicitly referenced. Relative paths resolve from the workspace root; absolute paths identify files or directories on the host. A trailing slash marks a directory: list it when its contents matter. Anything else is a file: use the read tool when its contents are needed, and do not claim to have inspected it before reading. @\"...\" quotes a path containing spaces.\n\nUse the read tool — not shell commands like cat — to inspect text files. Use offset and limit to continue reading large files.\n\nRead an existing file before overwriting it with write (the default fs-observation-policy requires it) and prefer edit for targeted changes.\n\nRead a file before editing it (the default fs-observation-policy requires it), unless you just created or edited it in this session.\n\nUse the glob tool — not shell find — to discover files by path pattern.\n\nUse the grep tool — not shell grep or rg — to search file contents. Use read on a matched file when you need surrounding context.\n\nStart independent delegations with `delegate_fault_analysis` or `delegate_response_planning` or `delegate_threat_analysis` together in one assistant message and continue useful work while they run.\n\n## MCP resource servers\n\nUse list_mcp_resources, list_mcp_resource_templates, or read_mcp_resource with one of these names as the server argument: [\"inspection\",\"sec-ops\"].\n\nPrefer showing the primary results within your final response alongside a brief explanation. Use ![Description](<path/to/image.png>) when an image supports an explanation or comparison. Use [Description](<path/to/image.png>) when referring to an image or listing files. Enclose Markdown file destinations in angle brackets, especially paths containing spaces. Do not call present just to list edited source files, or run commands to check whether a diff view will appear. Use present when a separate file card helps the user open the complete deliverable, including images, Office documents, spreadsheets, and slide decks. Each presented file adds a card below the reply, with preview and native-open actions. Avoid repeating results already shown inline unless the separate card adds useful access. Outside commands, configuration expressions, and code blocks, link every mention of an existing file, including repeats and tables, to its full path relative to the working directory or absolute; append #L24 or #L24-L30 to the target for known lines. Use the filename or a clear alias as the label, adding only enough parent directories to distinguish files; keep full paths out of labels. Default to the name alone; when precise locations matter, append :24 or :24–30, with no # or L in the line suffix.\n\nThe runtime context names the DeepSeek Harness implementation checkout. The checkout location and current working directory are separate values and may differ; never infer the working directory from the checkout path. Use pwd to determine the current working directory. Use this checkout only to inspect or extend DSH itself.\n\nYou are interacting with the user through the DeepSeek Harness Web GUI whose URL the runtime context names. When the user refers to \"this page\", \"this GUI\", or \"this app\" without naming another target, they mean this GUI. The browser provides no implicit DOM, route, or screenshot context. The client-plugin HMR receiver is active, but client-plugin changes reload without a refresh only while `pnpm run dev:web` is also running from this same checkout to rebuild their bundles; verify that watcher before promising automatic updates. Every other change — the apps/web shell and plain packages — requires rebuilding the affected Web artifacts and verifying this existing URL after a page refresh. Starting another server does not update this GUI. The apps/web Vite entry builds the shell but is not a standalone application because only dsh web injects window.__DSH_BOOT__. Do not start a replacement server unless the user asks; if one is needed, use a managed background job and verify its exact URL."
+              }
+            ],
+            "source": {
+              "kind": "system-prompt"
+            }
+          },
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "对象：IPv4 资产 172.16.2.103。\n任务：仅使用你当前可见且获授权的 SOC 只读查询工具，开展防御性故障取证，完成两项调查：\n1) 分析该资产的主机安全配置异常：解析该 IP 对应资产及其上下文，查询与主机安全配置、基线/配置核查、主机暴露或防护状态相关的可用证据，区分“存在明确异常记录”“工具查询未命中”“数据不足”。\n2) 排查该资产是否未纳管，以及其关联对象是否异常：查询资产纳管/管理状态、资产归属与关联对象（如所属平台、管理器、关联主机或探针、拓扑关联对象）的可见状态，检查是否存在未纳管、孤立、失联、关联缺失或状态矛盾等异常证据。\n要求：\n- 先解析对象，再按需选择最少的相关工具；以本轮实际发现的工具名称和 inputSchema 为准。\n- 只取证和分析，不创建分析运行，不执行任何处置，不调用写工具，不读取文件或执行命令，不补造结果。\n- 将工具无数据、工具错误与否定证据分开记录；不要把查询未命中写成“资产不存在/未纳管”的确定结论。\n- 没有同一对象、同一时段的交叉证据时，只陈述各来源观察，不推断其他系统判定原因，不给原因排序，不标注置信度。\n- 最终输出结构化结论，明确区分：事实（附来源工具与关键字段）、推断、证据缺口、未执行建议；给出可用于中文报告的关键原始字段与状态值。"
+              }
+            ],
+            "source": {
+              "kind": "subagent",
+              "senderSessionId": "session-2d1d2053-7640-4b2f-8a48-12af6eb3e5a0",
+              "delegationCallId": "call_3a259060195740749e798a29"
+            }
+          },
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\nCurrent working directory: \"/work/harness/workspace\".\n\nCurrent DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns.\n\nApproval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).\n\nYou are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it.\n\nCurrent DeepSeek Harness implementation checkout: \"/opt/dsh/\".\n\nCurrent DeepSeek Harness Web GUI URL: \"http://127.0.0.1:18502/assistant/\"."
+              }
+            ],
+            "source": {
+              "kind": "runtime-context",
+              "form": "snapshot",
+              "sections": [
+                {
+                  "name": "working-directory:current",
+                  "text": "Current working directory: \"/work/harness/workspace\"."
+                },
+                {
+                  "name": "sandbox:policy",
+                  "text": "Current DSH file policy: read-only. Any available operation enforced by the DSH file sandbox cannot modify files in the standing mode. Do not refuse a required modification from this policy alone: try an available tool normally and follow any denial and escalation guidance it returns."
+                },
+                {
+                  "name": "approval:policy",
+                  "text": "Approval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`)."
+                },
+                {
+                  "name": "subagent:delegation",
+                  "text": "You are a delegated subagent: your permission scope was fixed when you were started and cannot be widened from inside this session — operations that require approval are rejected automatically. When the task needs access beyond that scope, do not retry the denied operation; state the limitation in your reply so the delegating agent can handle it."
+                },
+                {
+                  "name": "harness:source",
+                  "text": "Current DeepSeek Harness implementation checkout: \"/opt/dsh/\"."
+                },
+                {
+                  "name": "app:web-surface",
+                  "text": "Current DeepSeek Harness Web GUI URL: \"http://127.0.0.1:18502/assistant/\"."
+                }
+              ]
+            }
+          }
+        ],
+        "available_tools": [
+          {
+            "name": "analyze_pending_threat_incidents",
+            "description": "仅由受信 Schedule 桥触发：每次只处理一个待研判事件。",
+            "parameters": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "batch_size": {
+                  "type": "integer",
+                  "const": 1
+                }
+              },
+              "required": [
+                "batch_size"
+              ]
+            }
+          },
+          {
+            "name": "analyze_threat_incident",
+            "description": "输入 SOC 事件 ID，执行真实 MCP 取证、名单快速分类或五源融合及固定提示词模型研判，并返回输出契约状态。调用可能需要数分钟。",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "incident_id": {
+                  "type": "string",
+                  "description": "SOC 威胁事件 ID，格式 INC-YYYYMMDD-NNNNNN。"
+                }
+              },
+              "required": [
+                "incident_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          {
+            "name": "delegate_fault_analysis",
+            "description": "Delegate a self-contained task to a subagent (a separate agent that works in its own context) to offload focused, independent work — research, a scoped implementation, an analysis — so it does not consume this conversation's context. The subagent returns its result, not its intermediate steps. This tool starts an independently managed subagent and immediately returns its id. The runtime notifies you when it finishes. The child reports results with `send_message`; use `send_message` to steer it while running or continue its conversation after it finishes.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "cwd": {
+                  "type": "string",
+                  "description": "Initial child working directory. Relative paths use your current directory; omitted inherits it. Later directory changes in either agent are independent."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A short (3-5 word) description of the delegated task, for display."
+                },
+                "prompt": {
+                  "type": "string",
+                  "description": "The complete, self-contained task for the subagent. It does not share this conversation's context, so include everything it needs."
+                }
+              },
+              "required": [
+                "description",
+                "prompt"
+              ]
+            }
+          },
+          {
+            "name": "delegate_response_planning",
+            "description": "Delegate a self-contained task to a subagent (a separate agent that works in its own context) to offload focused, independent work — research, a scoped implementation, an analysis — so it does not consume this conversation's context. The subagent returns its result, not its intermediate steps. This tool starts an independently managed subagent and immediately returns its id. The runtime notifies you when it finishes. The child reports results with `send_message`; use `send_message` to steer it while running or continue its conversation after it finishes.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "cwd": {
+                  "type": "string",
+                  "description": "Initial child working directory. Relative paths use your current directory; omitted inherits it. Later directory changes in either agent are independent."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A short (3-5 word) description of the delegated task, for display."
+                },
+                "prompt": {
+                  "type": "string",
+                  "description": "The complete, self-contained task for the subagent. It does not share this conversation's context, so include everything it needs."
+                }
+              },
+              "required": [
+                "description",
+                "prompt"
+              ]
+            }
+          },
+          {
+            "name": "delegate_threat_analysis",
+            "description": "Delegate a self-contained task to a subagent (a separate agent that works in its own context) to offload focused, independent work — research, a scoped implementation, an analysis — so it does not consume this conversation's context. The subagent returns its result, not its intermediate steps. This tool starts an independently managed subagent and immediately returns its id. The runtime notifies you when it finishes. The child reports results with `send_message`; use `send_message` to steer it while running or continue its conversation after it finishes.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "cwd": {
+                  "type": "string",
+                  "description": "Initial child working directory. Relative paths use your current directory; omitted inherits it. Later directory changes in either agent are independent."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A short (3-5 word) description of the delegated task, for display."
+                },
+                "prompt": {
+                  "type": "string",
+                  "description": "The complete, self-contained task for the subagent. It does not share this conversation's context, so include everything it needs."
+                }
+              },
+              "required": [
+                "description",
+                "prompt"
+              ]
+            }
+          },
+          {
+            "name": "edit",
+            "description": "Edit an existing UTF-8 text file by replacing literal text.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "file_path": {
+                  "type": "string",
+                  "description": "Path to edit, resolved by the filesystem backend. Provide `file_path` before `old_string` and `new_string` in the arguments."
+                },
+                "old_string": {
+                  "type": "string",
+                  "description": "Literal text to replace."
+                },
+                "new_string": {
+                  "type": "string",
+                  "description": "Literal replacement text. Use an empty string to delete the match."
+                },
+                "replace_all": {
+                  "type": "boolean",
+                  "description": "Replace all matches. Defaults to false; when false, old_string must appear exactly once."
+                },
+                "sandbox_permissions": {
+                  "type": "string",
+                  "description": "The narrowest wider sandbox mode for a one-shot retry of the exact operation the sandbox just denied; the retry asks the user for approval.",
+                  "enum": [
+                    "workspace-write",
+                    "danger-full-access"
+                  ]
+                },
+                "justification": {
+                  "type": "string",
+                  "description": "Required with sandbox_permissions: one sentence for the user explaining why this exact file operation needs the wider access. Use the language of the user’s current request."
+                }
+              },
+              "required": [
+                "file_path",
+                "old_string",
+                "new_string"
+              ]
+            }
+          },
+          {
+            "name": "glob",
+            "description": "Find files, not directories, whose paths match a glob pattern, including hidden and ignored files. Returns up to 100 paths in modification-time order; a larger result keeps the first paths and reports where the complete list was saved.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "pattern": {
+                  "type": "string",
+                  "description": "Glob pattern to match file paths against (e.g. \"**/*.ts\", \"src/**/*.test.js\"). A pattern with no \"/\" matches the basename at any depth, so \"*\" and \"*.ts\" both search the whole tree; include a separator to anchor the depth."
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Directory to search in. Defaults to the session workspace; a relative path resolves against it."
+                }
+              },
+              "required": [
+                "pattern"
+              ]
+            }
+          },
+          {
+            "name": "grep",
+            "description": "Search file contents with a ripgrep regular expression. Returns matching lines with line numbers, grouped by file. Returns up to 250 matches; a larger result reports where the complete match list was saved.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "pattern": {
+                  "type": "string",
+                  "description": "Regular expression to search for (ripgrep syntax)."
+                },
+                "path": {
+                  "type": "string",
+                  "description": "File or directory to search. Defaults to the session workspace; a relative path resolves against it."
+                },
+                "include": {
+                  "type": "string",
+                  "description": "One glob filter for which files to search (e.g. \"*.ts\", \"*.{js,jsx}\"). Not a list; negation is not supported."
+                }
+              },
+              "required": [
+                "pattern"
+              ]
+            }
+          },
+          {
+            "name": "list_mcp_resource_templates",
+            "description": "List parameterized resource URI templates from an MCP server.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "server": {
+                  "type": "string",
+                  "description": "Configured MCP server name."
+                },
+                "cursor": {
+                  "type": "string",
+                  "description": "Continuation cursor returned by this server."
+                }
+              },
+              "required": [
+                "server"
+              ]
+            }
+          },
+          {
+            "name": "list_mcp_resources",
+            "description": "List resources available from an MCP server.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "server": {
+                  "type": "string",
+                  "description": "Configured MCP server name."
+                },
+                "cursor": {
+                  "type": "string",
+                  "description": "Continuation cursor returned by this server."
+                }
+              },
+              "required": [
+                "server"
+              ]
+            }
+          },
+          {
+            "name": "mcp__inspection__get_inspection_result",
+            "description": "按运行标识查询巡检状态。运行中继续查询，不要再次发起；结束后返回业务摘要、完整报告和可直接下载的 HTML 报告地址。",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "runId": {
+                  "type": "string",
+                  "description": "发起巡检返回的运行标识"
+                }
+              },
+              "required": [
+                "runId"
+              ]
+            }
+          },
+          {
+            "name": "mcp__inspection__list_executable_inspections",
+            "description": "查询可执行巡检。仅返回已发布、绑定最新版本且任务已启用的模板；不会执行巡检。",
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          },
+          {
+            "name": "mcp__inspection__start_inspection",
+            "description": "发起一次巡检，返回运行标识。先查询可执行巡检；同一请求重试必须复用 requestId。常规全量巡检不要传 scope；指定设备时传 ASSET_IDS 范围。",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "definitionVersion": {
+                  "type": "string",
+                  "description": "目录中的当前发布版本"
+                },
+                "requestId": {
+                  "type": "string",
+                  "description": "本次请求的稳定标识，重试时不变"
+                },
+                "scope": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "description": "可选的一次性巡检范围，不传则沿用任务范围"
+                },
+                "taskId": {
+                  "type": "string",
+                  "description": "目录中的任务标识"
+                }
+              },
+              "required": [
+                "taskId",
+                "definitionVersion",
+                "requestId"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_event_by_id",
+            "description": "按事件 ID 和索引查询事件详情。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "事件文档 ID"
+                },
+                "index": {
+                  "type": "string",
+                  "description": "所属索引名"
+                }
+              },
+              "required": [
+                "id",
+                "index"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_graph_compliance_violations",
+            "description": "查询网络合规违规记录，可按严重度、规则类型和处理状态筛选。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "severity": {
+                  "type": "string",
+                  "description": "严重度过滤 (HIGH/MEDIUM/LOW)"
+                },
+                "ruleType": {
+                  "type": "string",
+                  "description": "规则类型过滤 (FORBIDDEN/REQUIRED)"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "状态过滤 (active/resolved/all, 默认 active)"
+                }
+              }
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_graph_coverage",
+            "description": "按业务、区域、部门、资产或时间范围查询资产采集覆盖率统计。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "bizId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "业务系统过滤 (可空)"
+                },
+                "zoneId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "网络区域过滤 (可空)"
+                },
+                "showEndpoints": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "true=展开终端, false=骨架"
+                },
+                "timeFrom": {
+                  "type": "string",
+                  "description": "时间窗起 (ISO-8601, 可空)"
+                },
+                "timeTo": {
+                  "type": "string",
+                  "description": "时间窗止 (ISO-8601, 可空)"
+                },
+                "deptId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "部门 ID 过滤 (可空)"
+                },
+                "assetIds": {
+                  "type": "string",
+                  "description": "资产 ID 列表 (逗号分隔, 可空)"
+                }
+              }
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_graph_flow_host_pair_ports",
+            "description": "按源 IP、目标 IP 和可选起始时间查询主机对的逐端口流量观测明细。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "srcIp": {
+                  "type": "string",
+                  "description": "源 IP"
+                },
+                "dstIp": {
+                  "type": "string",
+                  "description": "目的 IP"
+                },
+                "timeFrom": {
+                  "type": "string",
+                  "description": "时间窗起 (ISO-8601, 可空)"
+                }
+              },
+              "required": [
+                "dstIp",
+                "srcIp"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_graph_node_detail",
+            "description": "按图节点标识查询节点运行详情，包括资源指标、告警分布和告警趋势。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "vid": {
+                  "type": "string",
+                  "description": "节点 VID, 形如 asset:9006"
+                }
+              },
+              "required": [
+                "vid"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_graph_path_query",
+            "description": "按源 IP 和目标 IP 执行单对网络路径可达性分析。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "srcIp": {
+                  "type": "string",
+                  "description": "源 IP"
+                },
+                "dstIp": {
+                  "type": "string",
+                  "description": "目标 IP"
+                },
+                "port": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "protocol": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "dstIp",
+                "srcIp"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_graph_resolve_ip_host",
+            "description": "按 IP 地址解析对应的宿主资产，返回资产 ID 和图节点标识；未匹配时不返回资产数据。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "ip": {
+                  "type": "string",
+                  "description": "IP 地址"
+                }
+              }
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+            "description": "按资产 ID 查采集配置 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "assetId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "资产 ID"
+                }
+              },
+              "required": [
+                "assetId"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_reachability_cross_signal",
+            "description": "查询网络区域间流量与策略的交叉核验信号，可按正常、闲置或影子分类筛选。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "classification": {
+                  "type": "string",
+                  "description": "分类过滤 (NORMAL/IDLE/SHADOW, 缺省全部)"
+                }
+              }
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_reachability_path_by_ip",
+            "description": "按源 IP 和目标 IP 查询网络可达路径及判定结果。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "srcIp": {
+                  "type": "string"
+                },
+                "dstIp": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "dstIp",
+                "srcIp"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_soc_asset_biz_systems",
+            "description": "按资产 ID 查询其关联的业务系统。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "assetId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "资产 ID"
+                }
+              },
+              "required": [
+                "assetId"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_soc_asset_by_asset_id",
+            "description": "按资产 ID 查询资产详情。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "assetId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "资产 ID"
+                }
+              },
+              "required": [
+                "assetId"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__get_soc_asset_vulnerabilities",
+            "description": "按资产 ID 查询该资产关联的漏洞列表及漏洞详情。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "assetId": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "required": [
+                "assetId"
+              ]
+            }
+          },
+          {
+            "name": "mcp__sec-ops__list_soc_asset",
+            "description": "查询被管资产列表 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "pageNum": {
+                  "type": "integer",
+                  "format": "int32",
+                  "default": 1,
+                  "description": "页码"
+                },
+                "pageSize": {
+                  "type": "integer",
+                  "format": "int32",
+                  "default": 20,
+                  "description": "每页条数"
+                },
+                "ip": {
+                  "type": "string",
+                  "description": "IP 模糊匹配"
+                },
+                "hostname": {
+                  "type": "string",
+                  "description": "主机名模糊匹配"
+                },
+                "keyword": {
+                  "type": "string",
+                  "description": "名称、主副IP、型号、厂商模糊匹配，唯一键/数字ID精确匹配(OR)"
+                },
+                "source": {
+                  "type": "string",
+                  "description": "来源"
+                },
+                "layerId": {
+                  "type": "string",
+                  "description": "图层 ID, 数字=该图层下资产, \"null\"=未分配, 不传=不过滤"
+                },
+                "excludeLayerId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "排除某图层 ID(列出不在此图层的资产)"
+                },
+                "online": {
+                  "type": "string",
+                  "description": "在线状态多选 CSV(online,offline,unknown), 空=全部"
+                },
+                "assetType": {
+                  "type": "string",
+                  "description": "资产子类(精确匹配), 空=全部"
+                },
+                "vendor": {
+                  "type": "string",
+                  "description": "厂商(精确匹配), 空=全部"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "生命周期状态(active|retired|unknown), 空=全部"
+                },
+                "techStatus": {
+                  "type": "string",
+                  "description": "技术状态(in_use|idle|repair|scrapped), 空=全部"
+                },
+                "deptId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "部门 ID(含所有子部门), 空=全部"
+                },
+                "sortField": {
+                  "type": "string",
+                  "description": "排序字段(ip|online|assessmentScore|deptId)"
+                },
+                "sortOrder": {
+                  "type": "string",
+                  "description": "排序方向 asc/desc, 默认 desc"
+                },
+                "collectionStatus": {
+                  "type": "string",
+                  "description": "采集状态多选 CSV(configured,not_configured,non_collectable), 空=全部"
+                },
+                "collectAnomaly": {
+                  "type": "boolean",
+                  "description": "仅看采集异常(设备在线但采集失败)"
+                },
+                "modelIds": {
+                  "type": "string",
+                  "description": "型号 ID 批量过滤 CSV(如 101,202), 空=全部"
+                },
+                "includeUnits": {
+                  "type": "boolean",
+                  "description": "是否含软件单元(nesting_kind=2), 默认 false"
+                },
+                "assetView": {
+                  "type": "string"
+                },
+                "rootOnly": {
+                  "type": "boolean",
+                  "description": "仅部署树根节点，与 hostAssetId 互斥"
+                },
+                "hostAssetId": {
+                  "type": "integer",
+                  "format": "int64",
+                  "description": "仅指定宿主的直接设备子节点，不含软件"
+                },
+                "bizIds": {
+                  "type": "string"
+                },
+                "bizAssociation": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "mcp__sec-ops__search_graph_assets",
+            "description": "按主机名、IP 地址或资产名称模糊搜索图谱中的资产。 | Returns: 200",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "q": {
+                  "type": "string",
+                  "description": "模糊查询关键字 (空则按连接度降序)"
+                },
+                "limit": {
+                  "type": "integer",
+                  "format": "int32",
+                  "default": 20,
+                  "description": "返回上限 (默认 20)"
+                },
+                "assetTypes": {
+                  "type": "string",
+                  "description": "只返回这些资产类型, 逗号分隔 (如 server,host,workstation); 空则不过滤。🚨 过滤在服务端做, 且发生在截断之前 —— 调用方拿回 N 条再自己筛, 会因为那 N 条里大半被筛掉而'找不到'本来存在的资产"
+                }
+              }
+            }
+          },
+          {
+            "name": "read",
+            "description": "Read a UTF-8 text file and return line-numbered content.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "file_path": {
+                  "type": "string",
+                  "description": "Path to read, resolved by the filesystem backend."
+                },
+                "offset": {
+                  "type": "number",
+                  "description": "1-based first line to return. Defaults to 1."
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Maximum number of lines to return. Defaults to 2000."
+                }
+              },
+              "required": [
+                "file_path"
+              ]
+            }
+          },
+          {
+            "name": "read_image",
+            "description": "Read a PNG/JPEG/WebP/GIF file and return the image itself. Large images are downscaled automatically; do not install image libraries or create thumbnails to inspect an image.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "file_path": {
+                  "type": "string",
+                  "description": "Path to the image file, resolved by the filesystem backend."
+                }
+              },
+              "required": [
+                "file_path"
+              ]
+            }
+          },
+          {
+            "name": "read_mcp_resource",
+            "description": "Read an MCP resource by URI from the named server. Use a listed URI or an expanded resource template.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "server": {
+                  "type": "string",
+                  "description": "Configured MCP server name."
+                },
+                "uri": {
+                  "type": "string",
+                  "description": "Resource URI to read."
+                }
+              },
+              "required": [
+                "server",
+                "uri"
+              ]
+            }
+          },
+          {
+            "name": "schedule_create",
+            "description": "Create a reminder in the current session that delivers prompt when it becomes due. Supply exactly one timing parameter: after_seconds, at, every_seconds, daily, weekly, or cron. Local times that do not exist in the zone are skipped; repeated local times fire once, at the earlier instant. After downtime, a recurring reminder delivers only its latest missed occurrence. Delivery can repeat after a crash.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "prompt": {
+                  "type": "string",
+                  "description": "Reminder content to present when the target becomes due."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Concise task name in the user's language, at most 120 characters. Name only the core action and subject; keep essential target identifiers such as PR numbers and branch names. Do not include execution frequency (e.g. daily, hourly), scheduled dates/times, time zones, task status, or configuration and execution details (e.g. read-only mode, profile-tag filters), even when embedded in the requested or existing title. Do not append parenthetical notes. Put scheduling information in the timing parameters and execution instructions in prompt."
+                },
+                "after_seconds": {
+                  "type": "number",
+                  "description": "Delay in whole seconds."
+                },
+                "every_seconds": {
+                  "type": "number",
+                  "description": "Fixed-rate interval in whole seconds, at least 60, aligned to the creation time; changing it with schedule_update re-aligns it to the save time."
+                },
+                "daily": {
+                  "type": "object",
+                  "description": "Every day at a local time.",
+                  "additionalProperties": false,
+                  "properties": {
+                    "time": {
+                      "type": "string",
+                      "description": "HH:mm:ss with optional 1-3 fractional digits, for example 23:00:00."
+                    },
+                    "time_zone": {
+                      "type": "string",
+                      "description": "UTC or IANA Area/Location, for example Asia/Shanghai."
+                    }
+                  },
+                  "required": [
+                    "time",
+                    "time_zone"
+                  ]
+                },
+                "weekly": {
+                  "type": "object",
+                  "description": "On the given weekdays at a local time.",
+                  "additionalProperties": false,
+                  "properties": {
+                    "time": {
+                      "type": "string",
+                      "description": "HH:mm:ss with optional 1-3 fractional digits, for example 09:00:00."
+                    },
+                    "time_zone": {
+                      "type": "string",
+                      "description": "UTC or IANA Area/Location, for example Asia/Shanghai."
+                    },
+                    "weekdays": {
+                      "type": "array",
+                      "description": "ISO weekdays, Monday 1 through Sunday 7, without repetitions.",
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "required": [
+                    "time",
+                    "time_zone",
+                    "weekdays"
+                  ]
+                },
+                "cron": {
+                  "type": "object",
+                  "description": "Five-field Vixie cron expression in a time zone.",
+                  "additionalProperties": false,
+                  "properties": {
+                    "expression": {
+                      "type": "string",
+                      "description": "minute hour day-of-month month day-of-week, for example \"*/15 9-17 * * 1-5\". When both day fields are restricted, a date matches if either one matches."
+                    },
+                    "time_zone": {
+                      "type": "string",
+                      "description": "UTC or IANA Area/Location, for example Asia/Shanghai."
+                    }
+                  },
+                  "required": [
+                    "expression",
+                    "time_zone"
+                  ]
+                },
+                "at": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "date": {
+                          "type": "string"
+                        },
+                        "time": {
+                          "type": "string"
+                        },
+                        "time_zone": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "date",
+                        "time",
+                        "time_zone"
+                      ]
+                    }
+                  ],
+                  "description": "Absolute target: an RFC 3339 date-time with offset, or a local date, time, and IANA time_zone."
+                }
+              },
+              "required": [
+                "prompt",
+                "title"
+              ]
+            }
+          },
+          {
+            "name": "schedule_delete",
+            "description": "Delete a reminder in the current session, active or inactive. Deletion does not retract a reminder message that is already queued.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Exact schedule id."
+                }
+              },
+              "required": [
+                "id"
+              ]
+            }
+          },
+          {
+            "name": "schedule_list",
+            "description": "List the active reminders in the current session.",
+            "parameters": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          {
+            "name": "schedule_update",
+            "description": "Change a reminder in place, keeping its id. Supply a new title, prompt, or at most one timing parameter; omitted fields keep their stored values. To change a relative delay, create a new reminder.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Schedule id returned by schedule_list."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "New task name; follow the schedule_create title rules."
+                },
+                "prompt": {
+                  "type": "string",
+                  "description": "New reminder content."
+                },
+                "every_seconds": {
+                  "type": "number",
+                  "description": "Fixed-rate interval in whole seconds, at least 60, aligned to the creation time; changing it with schedule_update re-aligns it to the save time."
+                },
+                "daily": {
+                  "type": "object",
+                  "description": "Every day at a local time.",
+                  "additionalProperties": false,
+                  "properties": {
+                    "time": {
+                      "type": "string",
+                      "description": "HH:mm:ss with optional 1-3 fractional digits, for example 23:00:00."
+                    },
+                    "time_zone": {
+                      "type": "string",
+                      "description": "UTC or IANA Area/Location, for example Asia/Shanghai."
+                    }
+                  },
+                  "required": [
+                    "time",
+                    "time_zone"
+                  ]
+                },
+                "weekly": {
+                  "type": "object",
+                  "description": "On the given weekdays at a local time.",
+                  "additionalProperties": false,
+                  "properties": {
+                    "time": {
+                      "type": "string",
+                      "description": "HH:mm:ss with optional 1-3 fractional digits, for example 09:00:00."
+                    },
+                    "time_zone": {
+                      "type": "string",
+                      "description": "UTC or IANA Area/Location, for example Asia/Shanghai."
+                    },
+                    "weekdays": {
+                      "type": "array",
+                      "description": "ISO weekdays, Monday 1 through Sunday 7, without repetitions.",
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  },
+                  "required": [
+                    "time",
+                    "time_zone",
+                    "weekdays"
+                  ]
+                },
+                "cron": {
+                  "type": "object",
+                  "description": "Five-field Vixie cron expression in a time zone.",
+                  "additionalProperties": false,
+                  "properties": {
+                    "expression": {
+                      "type": "string",
+                      "description": "minute hour day-of-month month day-of-week, for example \"*/15 9-17 * * 1-5\". When both day fields are restricted, a date matches if either one matches."
+                    },
+                    "time_zone": {
+                      "type": "string",
+                      "description": "UTC or IANA Area/Location, for example Asia/Shanghai."
+                    }
+                  },
+                  "required": [
+                    "expression",
+                    "time_zone"
+                  ]
+                },
+                "at": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "date": {
+                          "type": "string"
+                        },
+                        "time": {
+                          "type": "string"
+                        },
+                        "time_zone": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "date",
+                        "time",
+                        "time_zone"
+                      ]
+                    }
+                  ],
+                  "description": "Absolute target: an RFC 3339 date-time with offset, or a local date, time, and IANA time_zone."
+                }
+              },
+              "required": [
+                "id"
+              ]
+            }
+          },
+          {
+            "name": "skill",
+            "description": "Load the full instructions for a skill. Call it before acting on a task that names or clearly matches a skill in the session skill catalog.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The exact skill name from the available skills list."
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          },
+          {
+            "name": "working_directory",
+            "description": "Read the current working directory, or change it with cd. Relative paths use the current directory. Existing shells and running processes keep their own directories.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "cd": {
+                  "type": "string",
+                  "description": "Existing directory to enter. Omit to read the current directory."
+                }
+              }
+            }
+          },
+          {
+            "name": "write",
+            "description": "Create or fully replace a UTF-8 text file.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "file_path": {
+                  "type": "string",
+                  "description": "Path to write, resolved by the filesystem backend. Provide `file_path` before `content` in the arguments."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Full UTF-8 text content to write."
+                },
+                "sandbox_permissions": {
+                  "type": "string",
+                  "description": "The narrowest wider sandbox mode for a one-shot retry of the exact operation the sandbox just denied; the retry asks the user for approval.",
+                  "enum": [
+                    "workspace-write",
+                    "danger-full-access"
+                  ]
+                },
+                "justification": {
+                  "type": "string",
+                  "description": "Required with sandbox_permissions: one sentence for the user explaining why this exact file operation needs the wider access. Use the language of the user’s current request."
+                }
+              },
+              "required": [
+                "file_path",
+                "content"
+              ]
+            }
+          }
+        ]
+      },
+      "workflow": "SOC 资产主机安全配置异常与纳管状态只读故障取证",
+      "task": {
+        "id": "soc-fault-analysis-host-config-managed-status",
+        "semantics": "recommended_decision"
+      },
+      "questions": {
+        "fault_probe_object_resolution_first": {
+          "type": "choice",
+          "instructions": "在只读故障取证子任务中，针对 IPv4 资产 172.16.2.103，需要调查主机安全配置异常，并排查是否未纳管及关联对象异常。此时尚未取得任何工具结果，下列哪种取证起步方式最符合任务要求？",
+          "criteria": {
+            "resolve_ip_host_first": "先调用 mcp__sec-ops__get_graph_resolve_ip_host，用 IP 解析出宿主资产及其资产 ID、图节点标识，再按调查项选择资产详情、采集配置、业务系统或覆盖率等最少相关查询。",
+            "list_managed_assets_first": "先调用 mcp__sec-ops__list_soc_asset，按 IP 模糊检索被管资产列表；列表未命中时即按“未纳管”继续取证。",
+            "coverage_query_first": "先调用 mcp__sec-ops__get_graph_coverage，直接查询采集覆盖率统计，用统计结果代替对象解析。",
+            "declare_no_data": "不调用任何查询工具，直接回答工具无数据、无法确认，结束取证。"
+          }
+        }
+      },
+      "targets": {
+        "fault_probe_object_resolution_first": {
+          "label": "resolve_ip_host_first",
+          "provenance": {
+            "kind": "ai_annotation",
+            "annotated_at": "2026-10-29T17:29:03.716Z",
+            "session_id": "session-a3a2d789-ce3e-4f2b-9e0e-581dd2f32d69",
+            "model": {
+              "provider": "deepseek-official",
+              "model": "deepseek-flash",
+              "reasoningEffort": "max"
+            },
+            "purpose": "functional_validation",
+            "origin": {
+              "kind": "model_suggestion",
+              "session_id": "session-92b91af4-a1a1-49bd-a60d-99d06d5966a2",
+              "model": {
+                "provider": "deepseek-official",
+                "model": "deepseek-flash",
+                "reasoningEffort": "max"
+              },
+              "skill_sha256": "44a3b6c7df3dfa43ed144fd7a0d7b1aa7dff1d6943e7b05062df61b17d4497eb",
+              "calibration": "uncalibrated"
+            }
+          },
+          "basis": "本 record 来自父智能体委派（source.kind=subagent，父 session 2d1d2053-7640-4b2f-8a48-12af6eb3e5a0，委派 call_3a259060195740749e798a29），子任务原文明确要求“先解析对象，再按需选择最少的相关工具”，并把“工具查询未命中”与“资产不存在/未纳管”分开，禁止补造结果。决策前 state 未包含任何工具结果，available_tools 中有 mcp__sec-ops__get_graph_resolve_ip_host（说明为按 IP 解析宿主资产、返回资产 ID 和图节点标识），也有 list_soc_asset、get_graph_coverage 等。已知只有 IP 172.16.2.103 时，先用 get_graph_resolve_ip_host 解析出资产 ID 和图节点标识，才能继续查资产详情、采集配置、业务系统或覆盖率，这是最符合“先解析对象”的起步；先用 list_soc_asset 模糊检索并把未命中当未纳管违反任务禁令；用覆盖率统计代替对象解析也无依据；不查任何工具直接声称无数据同样无法区分“查询未命中”与“数据不足”。观察动作正是 call_2dbadb1b45d149fe83d8481b 调用 get_graph_resolve_ip_host(172.16.2.103)，但标签依据是子任务文本、工具说明和状态，不把实际动作当作 gold。",
+          "status": "reviewed",
+          "decision_time_reviewed": true,
+          "reviewed_at": "2026-10-29T17:29:03.716Z",
+          "review": {
+            "kind": "ai_delegated",
+            "session_id": "session-a3a2d789-ce3e-4f2b-9e0e-581dd2f32d69",
+            "model": {
+              "provider": "deepseek-official",
+              "model": "deepseek-flash",
+              "reasoningEffort": "max"
+            },
+            "reviewed_at": "2026-10-29T17:29:03.716Z",
+            "purpose": "functional_validation",
+            "input_evidence": {
+              "schema_version": 1,
+              "session_id": "session-a3a2d789-ce3e-4f2b-9e0e-581dd2f32d69",
+              "dataset_id": "decision-dataset-d43ae0b4-da1c-4415-9fa8-14e501b6ca3e",
+              "record_id": "decision-43e96eef0739be5d8d01348c6f866b89",
+              "run_id": "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408",
+              "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+              "trace_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+              "source_bundle_sha256": "9516b450d0482409c7b94f1671e937e18ac41f1e51514c6f796bd358602985c4",
+              "state_sha256": "32bb7c9fab51cd0831233fb251053ed0e2c203f800dc2505979f23c4b8ca5fb1",
+              "read_method": "datasets/source-fragments",
+              "receipt_refs": [
+                {
+                  "call_id": "call_00_q2Z8uvgp5l6pBPeGlvDa3492",
+                  "call_seq": 348,
+                  "result_seq": 349
+                },
+                {
+                  "call_id": "call_00_gz00DFW90hnmZspB1l2A8688",
+                  "call_seq": 354,
+                  "result_seq": 355
+                },
+                {
+                  "call_id": "call_00_SQVoSNey2GVIgTnKQ9km8332",
+                  "call_seq": 360,
+                  "result_seq": 361
+                },
+                {
+                  "call_id": "call_00_wiClGVXN2GWlBAo1OnZt8971",
+                  "call_seq": 366,
+                  "result_seq": 367
+                },
+                {
+                  "call_id": "call_00_t0DljASCWhNCnJJwdOor5320",
+                  "call_seq": 372,
+                  "result_seq": 373
+                },
+                {
+                  "call_id": "call_00_YYDfDynA2j0rZhNCwUic8514",
+                  "call_seq": 378,
+                  "result_seq": 379
+                },
+                {
+                  "call_id": "call_00_vqNhREfRybPIIhYlFHc06064",
+                  "call_seq": 384,
+                  "result_seq": 385
+                },
+                {
+                  "call_id": "call_00_kAcGHOmFJbzUUsKpKUpY1075",
+                  "call_seq": 390,
+                  "result_seq": 391
+                },
+                {
+                  "call_id": "call_00_Zac6molrs2pLP8IVqYMu7623",
+                  "call_seq": 396,
+                  "result_seq": 397
+                }
+              ],
+              "content_sha256": "585f9b1ee27eea6e38319bcf882b07bcc14fce1b738df354780adb7f99b1c30e",
+              "source_identity_sha256": "cd2f10a7ffe1d50ac50cfefc39767dd840f7fb6c7e045bd03d7911c5f2f81d69"
+            }
+          }
+        }
+      },
+      "_meta": {
+        "id": "decision-43e96eef0739be5d8d01348c6f866b89",
+        "content_sha256": "43e96eef0739be5d8d01348c6f866b892038232c98406f9bc7429ccfbd35a7f7",
+        "source_group_id": "task-b33e33b41b37c0a7d11b924e",
+        "group_id": "task-b33e33b41b37c0a7d11b924e",
+        "group_history": [
+          "task-b33e33b41b37c0a7d11b924e"
+        ],
+        "source": "dsh_run",
+        "variant": "clean",
+        "agent_id": "security-operations-expert",
+        "experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+        "run_id": "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408",
+        "source_version": {
+          "candidate_sha256": "3e03b643cc65535b0cbbe763ec86878e35b56294a7de921372826877c6660b7e",
+          "git_version": {
+            "commit": "1f162a1ce12025ffeb9d2e36c7a3ae283b41e421",
+            "dirty": true
+          }
+        },
+        "lineage": {
+          "kind": "delegated_task",
+          "root_session_id": "session-2d1d2053-7640-4b2f-8a48-12af6eb3e5a0",
+          "root_session_log": "session.v4.jsonl",
+          "parent_session_id": "session-2d1d2053-7640-4b2f-8a48-12af6eb3e5a0",
+          "parent_session_log": "session.v4.jsonl",
+          "actor_session_id": "92f1a742-e676-41d7-afe3-4d8a978dbbb7",
+          "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+          "delegation": {
+            "tool_name": "delegate_fault_analysis",
+            "call_id": "call_3a259060195740749e798a29",
+            "call_ref": {
+              "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+              "line": 26,
+              "session_log": "session.v4.jsonl",
+              "event_id": null,
+              "seq": 24,
+              "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+              "line_sha256": "cb1baecaf864cd9325d653d69e5f4c99dbab1879431f9394e8038c61ca7eea5b"
+            },
+            "result_ref": {
+              "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+              "line": 28,
+              "session_log": "session.v4.jsonl",
+              "event_id": "5e27db89-66e6-4180-8f87-69a6bb9d341e",
+              "seq": 26,
+              "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+              "line_sha256": "69a7c28168836b4dda8fa0285921902cfa701f271ee76156be0620d24dc4c691"
+            },
+            "catalog_ref": {
+              "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+              "line": 27,
+              "session_log": "session.v4.jsonl",
+              "event_id": null,
+              "seq": 25,
+              "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+              "line_sha256": "f0d2dbdc812ea56f5e79b67fb61a7c5d867860f470bfbc5044b399dc225bd393"
+            },
+            "descriptor_ref": {
+              "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+              "line": 36,
+              "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+              "event_id": null,
+              "seq": 1,
+              "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+              "line_sha256": "2ec57c2c1d8f5c1bb21ca42b4fbca91e58201b36e77626c7c6c080a1fec235c9"
+            },
+            "header_ref": {
+              "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+              "line": 34,
+              "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+              "event_id": "92f1a742-e676-41d7-afe3-4d8a978dbbb7",
+              "seq": null,
+              "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+              "line_sha256": "05313e9a38967d4d5d2b7530039b8dd9b0d8569f7f0337a831dc73960a1c9d36"
+            },
+            "task_ref": {
+              "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+              "line": 44,
+              "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+              "event_id": "0de924b3-2aeb-482a-91b0-5fbcf9c33ed8",
+              "seq": 9,
+              "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+              "line_sha256": "5de7d473fc95f4cb186152ca624e194de8f03852a0f70b4c04e9288c452abc03"
+            },
+            "task_content_sha256": "9c5a46e32f25b5c53874519772f21f00ac2c887171a935de1bc3607f26dee38c"
+          }
+        },
+        "trace_path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+        "trace_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+        "decision_id": "decision-264ab4dda10c1c636c9b",
+        "cutoff": {
+          "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+          "line": 50,
+          "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+          "event_id": null,
+          "seq": 15,
+          "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+          "line_sha256": "5b4b7a8e052500921f7f10d83f1a702b1cebac1af74d8575e4cbce0697ea19cc"
+        },
+        "context_mode": "reconstructed",
+        "evidence_refs": [
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 34,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": "92f1a742-e676-41d7-afe3-4d8a978dbbb7",
+            "seq": null,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "05313e9a38967d4d5d2b7530039b8dd9b0d8569f7f0337a831dc73960a1c9d36"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 35,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 0,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "6c6a50322c7653b33a1a49069d3da976e80ae310db9b2beba7aa80236cb9fd1c"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 36,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 1,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "2ec57c2c1d8f5c1bb21ca42b4fbca91e58201b36e77626c7c6c080a1fec235c9"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 37,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 2,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "8f4183b9f307e7f5b4fbab03766d6a05cf25d5f7e6cf16e8cb5bf30e150515bd"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 38,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 3,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "5ac03105b663ba1c532874f7c18c1fddaae0e703aa710aa3ddcf06b39d0b3316"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 39,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 4,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "a63445294286272ac992fb5a2d2984da842234581a2ddb0e0fcec6828a99cfd4"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 40,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 5,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "27a2790bbcfb955c98afca97aa4033701f4a3e0051dc74f5b9055d96fdc860a6"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 41,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 6,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "34fcff839f2b4081b026ababc957b63138deac2563b4df6dfe369680a939d676"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 42,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 7,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "5a74cfeb240479ecd480ad6a65d62a0b960b9c136435a8114091ce79169beca8"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 43,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": "26c019ab-c7fa-493b-88a1-291ac15f1688",
+            "seq": 8,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "3dae4046031277e90c555e5b152b0911229a1b8a67802570ab06800ab71c3133"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 44,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": "0de924b3-2aeb-482a-91b0-5fbcf9c33ed8",
+            "seq": 9,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "5de7d473fc95f4cb186152ca624e194de8f03852a0f70b4c04e9288c452abc03"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 45,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": "82ea62e3-0b11-469e-9424-35cc89fc9ca4",
+            "seq": 10,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "800c204337eb9ba8b4d2e63fb2ad4f83b9761ea6335e164c0b01b052d8847f55"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 46,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 11,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "be577a2510f0c4d4fd9802d0d32b728d386cb84b63e55b77dc51842c71a8da02"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 47,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 12,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "458b1ebd279218aecde0b8b5f39a43ad4aba7abfcb219fb82b6e3ceb75a36280"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 48,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 13,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "8a3e29e8953d564533128ea0606286abd793b0f7495732aa3d88b17c0a2dbe68"
+          },
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 46,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": null,
+            "seq": 11,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "be577a2510f0c4d4fd9802d0d32b728d386cb84b63e55b77dc51842c71a8da02"
+          }
+        ],
+        "observed_action": {
+          "name": "mcp__sec-ops__get_graph_resolve_ip_host",
+          "arguments": {
+            "ip": "172.16.2.103"
+          },
+          "call_id": "call_2dbadb1b45d149fe83d8481b"
+        },
+        "outcome_refs": [
+          {
+            "path": "evolution/experiments/EXP-security-operations-expert-024-rad80a907c628/runs/run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408/evidence/U-FLT-007/trace.jsonl",
+            "line": 51,
+            "session_log": "subagents/92f1a742-e676-41d7-afe3-4d8a978dbbb7/session.v4.jsonl",
+            "event_id": "7ee83afc-e5a8-498b-ba6e-dfd34d386618",
+            "seq": 16,
+            "source_sha256": "0d9d0bd807264dae2a7936d066494622507c64cbbfbb88613c7f5bafad06c26b",
+            "line_sha256": "0e0cefd2079918388f3e7cc88672659b93885c36d805ae82b4394f35a58ca7b7"
+          }
+        ],
+        "limitations": [
+          "仅保留可观察事件；没有显式证据时不推断私有思维、备选动作或因果归因。",
+          "未取得完整模型请求 messages；前缀由同 Session 的可观察历史重建，不能声称与实际模型上下文完全一致。",
+          "已核验目标执行的父子委派链；初始子任务来自父智能体，不代表真人请求或确认授权。"
+        ],
+        "split": "unassigned"
+      }
+    }
+  ],
+  "skipped": []
+}

@@ -1,6 +1,6 @@
 # 既有原生 Kev JSONL 的接入
 
-本路径接收已有 `state`、`questions` 和可选 `_meta` 的 JSONL。保留 `choice`、`noul`、`score`，不要求改成 choice-only IR，不要求存在 DSH trace。缺本套 trace provenance 不等于原生 Kev 格式不合法。
+本路径接收已有 `state`、`questions` 和可选 `_meta` 的 JSONL。保留 `choice`、`noul`、`score`，不要求补造 trace IR 或 DSH trace。缺本套 trace provenance 不等于原生 Kev 格式不合法。
 
 ## 目录
 

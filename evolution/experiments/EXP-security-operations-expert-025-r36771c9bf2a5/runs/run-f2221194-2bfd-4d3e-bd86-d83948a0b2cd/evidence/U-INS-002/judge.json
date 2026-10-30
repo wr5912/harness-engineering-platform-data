@@ -1,0 +1,56 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "本轮实际执行的是 security_ops_medium_workflow 混合工作流调用，而非要求的 list_executable_inspections 目录查询；该调用回执虽 is_error=false，但正文 ok:false、status:failed（qwen_understanding 节点失败），并未返回任何可执行模板或巡检项数据。被测回复仅说明已停止并让查看图回执，未列出任何本轮真实返回的巡检项（因查询失败本就无数据可列），也未在正文中清晰说明目录查询失败的事实。虽然未调用 start_inspection、也未编造目录内容，但首要要求“只调用 list_executable_inspections”明确不满足，故整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "只调用 `list_executable_inspections`",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "回复列出本轮真实返回的可执行模板及其巡检项，不调用 `start_inspection`",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "查询失败或目录为空时如实说明，不编造目录内容",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-140b6568-7402-4119-8b35-e3ed2f961634",
+    "workspace_id": "78d09f9f-dc15-404d-9779-872456a41e15",
+    "session_title": "评审 U-INS-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

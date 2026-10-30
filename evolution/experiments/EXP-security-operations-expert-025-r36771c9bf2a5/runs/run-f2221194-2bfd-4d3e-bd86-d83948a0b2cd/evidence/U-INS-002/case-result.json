@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：本轮实际执行的是 security_ops_medium_workflow 混合工作流调用，而非要求的 list_executable_inspections 目录查询；该调用回执虽 is_error=false，但正文 ok:false、status:failed（qwen_understanding 节点失败），并未返回任何可执行模板或巡检项数据。被测回复仅说明已停止并让查看图回执，未列出任何本轮真实返回的巡检项（因查询失败本就无数据可列），也未在正文中清晰说明目录查询失败的事实。虽然未调用 start_inspection、也未编造目录内容，但首要要求“只调用 list_executable_inspections”明确不满足，故整体判定 failed。",
+  "evidence_ref": "evidence/U-INS-002"
+}

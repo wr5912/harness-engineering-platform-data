@@ -47,6 +47,8 @@ description: 定位平台管理任务的工作区、目标和当前状态，澄�
 
 KEV 任务一次只进入当前阶段。中算力按钮仍走 `compute-variant-research`，不能新造 `task_context.skill=kev-*`；普通管理入口可按需读取已装载的技能。四个数据中间阶段的方法由 `kev-trace-pipeline` 按需引用，不重跑已完成步骤。官方微调和部署完整包分别由 `kev-training`、`kev-deploy` 的本地入口适配后读取；已有模型只部署不要求先训练，官方示例不授权连续执行训练、上传、部署和清理。
 
+用户在普通管理会话明确授权端到端生成变体时，沿固定 Agent、完整父版、来源 Run 和实际产物连续办理：`compute-variant-research` 定位与派生 → 抽取及真实逐题复核 → `kev-trace-pipeline` 转换 → `kev-training` 编码、训练和校准 → `kev-deploy` 服务核对 → 原变体的构建、装载与两侧 Run。每阶段只加载其当前所需 Skill，成功回执后进入首个未完成阶段，已有整体授权不因换 Skill 再次索取。普通会话使用实际注册的 `bash`、`job_output`、`job_list`、`job_kill` 与平台工具；SSH命令卡和工件传输按 `kev-training/references/native-execution.md`。固定 `plan_only` 或抽样专项仍在原边界交付，不能清空上下文、换身份或调用 Session 接口自行解除范围。
+
 ## 执行与停止
 
 普通管理会话按工作区 `AGENTS.md` 使用 DSH 原生工具与平台工具；专项任务按其更窄范围办理。资产变更与实例操作通过平台工具读取、按当前动作合同执行并回读；需要的预览和摘要以该动作合同为准。特性整理与抽样在固定目标内自动保存；其他写动作遵循 DSH 原生权限和真实回执，已有授权内连续办理，不另等平台二次确认。只读或 dry 请求始终保持原范围。

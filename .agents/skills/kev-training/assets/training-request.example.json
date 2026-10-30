@@ -22,9 +22,18 @@
     "kev_root": "/absolute/training-host/kev",
     "run_root": "/absolute/training-host/new-run",
     "server_id": "REPLACE_WITH_REGISTERED_SERVER_ID",
-    "credential_ref": "ref:replace-with-existing-reference"
+    "credential_ref": "ref:replace-with-existing-reference",
+    "env": {
+      "HF_HUB_CACHE": "/absolute/training-host/hub",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1",
+      "USE_HUB_KERNELS": "NO",
+      "UV_PROJECT_ENVIRONMENT": "/absolute/training-host/venv",
+      "UV_NO_SYNC": "1"
+    }
   },
   "training": {
+    "recipe": "cuda-bf16-lora",
     "epochs": 1,
     "lr": 2e-05,
     "batch": 1,

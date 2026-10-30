@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "请列出当前可用的巡检项，只查询目录，不要执行巡检。"
+  ],
+  "assistant_texts": [
+    "当前实例未发现巡检目录查询的可调用工具，本次未启动巡检、未创建或修改调度，也没有取得实际结果；请继续使用固定父版办理完整业务。"
+  ],
+  "session_id": "session-4bc41848-0c87-4aa6-889a-46e8294c23c7",
+  "turns": [
+    {
+      "assistant_text": "当前实例未发现巡检目录查询的可调用工具，本次未启动巡检、未创建或修改调度，也没有取得实际结果；请继续使用固定父版办理完整业务。",
+      "route": {
+        "provider": "harness-workflow",
+        "model": "hybrid-v1",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_emergency_action_match",
+        "security_ops_decide_emergency_scope",
+        "security_ops_decide_fault_hypothesis",
+        "security_ops_decide_fault_next_probe",
+        "security_ops_decide_frozen_plan_step",
+        "security_ops_decide_inspection_template_match",
+        "security_ops_decide_main_route",
+        "security_ops_decide_material_answer",
+        "security_ops_decide_policy_action",
+        "security_ops_decide_threat_evidence",
+        "security_ops_decide_threat_judgement",
+        "security_ops_decide_threat_recommendation",
+        "security_ops_decide_threat_verdict_reliability",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f1387b23-9c3b-498c-9c4c-9a7144888738"
+    }
+  ]
+}

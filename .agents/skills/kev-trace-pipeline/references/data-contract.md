@@ -13,7 +13,7 @@ IR schema_version: kev-decision-ir/v1。
 | sample_id / decision_site_id / contract_version | 样本身份、职责与定义版本 |
 | implementation | model、code、hybrid；是可修订建议 |
 | state | 决策前可读状态，字符串或对象 |
-| question | type=choice、instructions、criteria 名称到说明的映射 |
+| question | type 为 choice、noul 或 score；instructions 与 criteria 保持实际推理定义 |
 | candidate_bindings | 候选对应的执行对象与参数来源；默认不作为训练答案 |
 | observed_action / observed_candidate | 历史行为，永不自动等于 gold |
 | label | status、value、source、evidence_refs；可选 target 和 target_semantics |
@@ -32,13 +32,17 @@ state_evidence_refs/candidate_evidence_refs 中 event 类型必须带整数 seq�
 
 verified 是标注者的可追溯主张，脚本只验证结构和约束。source 字符串不能凭空把错误答案变成事实。评分 policy 时不要展示当前历史选中标记；评分给定动作的 verifier 要保留该动作和任务允许的证据。
 
+AI 功能复核可以形成明确范围内的 verified 主张，source 与 evidence_refs 必须保留实际复核者、请求/响应及判定依据；这不等于人员审批或独立业务真值。仅有教师建议、模型投票或用户允许 AI 复核，不能自动把未复核目标提升为 verified。功能标签上的训练与校准指标按该标签来源解释，业务效果仍须独立验证。
+
 weak 的允许范围只到数据阶段；当前 kev-training 的默认 IR 配方要求全部 verified，不接收 training_only 行。不要把数据编译成功称为已经满足训练配方。
 
 ## 原生 Kev 导出
 
-输出 state、questions 和 _meta。每个 questions 项保留 type/instructions/criteria/label；criteria key 与 label 必须精确一致。导出 _meta.id、group_id、source 和 variant=clean，审核信息放元数据。不会把原始整行 IR 序列化到 state。
+输出 state、questions 和 _meta；一条 IR 对应一道题，同站点多题各自成行并继承同源组与会话。每个 questions 项保留 type/instructions/criteria/label：choice 标签为精确候选字符串，noul 为 JSON 布尔值，score 为从 0 开始的整数等级（布尔值不能充当整数）。noul 的 criteria 可省略或说明 false/true；score 的 criteria 为有序等级说明，顺序不排序。导出 _meta.id、group_id、source 和 variant=clean，审核信息放元数据。不会把原始整行 IR 序列化到 state。
 
 soft target 即使存在也要有合法 hard label。其权重必须有限非负、总和正、无未知选项；记录概率来源与语义。标准评估和温度拟合仍依赖 hard label；不能把没有可确定答案的样本混入常规校准金标。避免随意均分来掩盖争议。
+
+软目标键与原生概率键一致：choice 使用候选名，noul 使用字符串 false/true，score 使用字符串等级索引。split-manifest 的 label_statistics_version=question-native-label/v1 表示 partition_labels 按 question_definitions 中的职责、合同及题目定义分别统计这些键；missing_label_coverage 也按题报告，避免混淆不同题目的同名标签。
 
 ## 来源分组与切分
 

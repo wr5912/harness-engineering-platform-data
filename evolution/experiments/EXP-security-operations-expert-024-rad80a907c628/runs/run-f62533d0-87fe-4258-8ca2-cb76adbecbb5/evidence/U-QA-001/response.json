@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "**结论：无法确认 SEC-KB-078 的内容。** 当前会话没有配置知识库检索服务，无法查询编号为 `SEC-KB-078` 的条目，因此不能给出该 SOAR 剧本的名称、适用场景、处置步骤或版本信息，也不会凭编号推测内容。\n\n**事实**\n- 当前 DSH 工作区未配置知识库检索能力，`SEC-KB-078` 不在本轮任何输入材料中出现。\n- 本轮没有调用巡检、策略、应急或 SOC 取证工具，因为它们不能代替知识库查询。\n\n**缺口**\n- 缺少 SEC-KB-078 对应的知识库条目原文、发布日期/版本及适用范围。\n\n**未执行建议（需要你操作）**\n- 直接粘贴 SEC-KB-078 的原文或导出内容，我可以帮你梳理该剧本的目标、触发条件、处置步骤、影响范围与可逆性（可用 `playbook-impact-assessment` 做影响评估）。\n- 如果该编号实际对应某个具体的 SOC 事件 ID 或巡检需求，请提供完整 ID 或巡检模板名称，我按对应路由处理。"
+  ],
+  "session_id": "session-04f3d393-96c3-4d6e-b42a-0664d04ae889",
+  "turns": [
+    {
+      "assistant_text": "**结论：无法确认 SEC-KB-078 的内容。** 当前会话没有配置知识库检索服务，无法查询编号为 `SEC-KB-078` 的条目，因此不能给出该 SOAR 剧本的名称、适用场景、处置步骤或版本信息，也不会凭编号推测内容。\n\n**事实**\n- 当前 DSH 工作区未配置知识库检索能力，`SEC-KB-078` 不在本轮任何输入材料中出现。\n- 本轮没有调用巡检、策略、应急或 SOC 取证工具，因为它们不能代替知识库查询。\n\n**缺口**\n- 缺少 SEC-KB-078 对应的知识库条目原文、发布日期/版本及适用范围。\n\n**未执行建议（需要你操作）**\n- 直接粘贴 SEC-KB-078 的原文或导出内容，我可以帮你梳理该剧本的目标、触发条件、处置步骤、影响范围与可逆性（可用 `playbook-impact-assessment` 做影响评估）。\n- 如果该编号实际对应某个具体的 SOC 事件 ID 或巡检需求，请提供完整 ID 或巡检模板名称，我按对应路由处理。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "2a4c173a-a6e3-4f03-bba8-fbf821b6fa30"
+    }
+  ]
+}

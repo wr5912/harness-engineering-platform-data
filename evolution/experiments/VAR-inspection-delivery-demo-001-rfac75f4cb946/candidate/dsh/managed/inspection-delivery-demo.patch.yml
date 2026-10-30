@@ -1,0 +1,36 @@
+# 注册本 Experiment 的受控 Preset，并复用日常巡检的分页台账只读工具。
+- id: agent-preset-registry
+  config:
+    default: inspection-delivery-demo
+
+- insert:
+    - id: preset-inspection-delivery-demo
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: inspection-delivery-demo
+        plugins:
+          - id: inspection-delivery-demo-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/inspection-delivery-demo/agent.cordis.yml
+
+- insert:
+    - id: task-example-tools
+      name: /opt/dsh-managed/task-example-tools.mjs
+      config:
+        kind: inspection
+        presetId: inspection-delivery-demo
+        workflowTool: inspection_code_only
+        assetUrl: http://host.docker.internal:53001/api/v1/assets?count=5&seed=42
+
+# 纯代码变体不装载模型标题或模型压缩入口。
+- id: session-title-llm
+  disabled: true
+- id: compaction-basic
+  disabled: true
+- id: command-compact
+  disabled: true
+
+- insert:
+    - id: inspection-delivery-code-only
+      name: /opt/dsh-managed/compute-workflow/index.mjs

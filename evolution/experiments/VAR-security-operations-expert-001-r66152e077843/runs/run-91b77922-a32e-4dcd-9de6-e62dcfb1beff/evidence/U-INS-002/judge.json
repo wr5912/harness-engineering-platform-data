@@ -1,0 +1,62 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求只调用 `list_executable_inspections` 并基于真实回执列出可执行模板及巡检项。被测回执显示的能力目录中只有 `schedule_list`，从未调用 `list_executable_inspections`，也未取得任何巡检模板数据；被测回答明确说明“未发现巡检目录查询的可调用工具”且未编造目录内容，因此“查询失败时如实说明、不编造”一项成立，但前两项核心要求（调用指定工具、列出真实返回的模板及巡检项）均未满足，故整体判定不通过。",
+    "requirements": [
+      {
+        "requirement": "只调用 `list_executable_inspections`",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "回复列出本轮真实返回的可执行模板及其巡检项，不调用 `start_inspection`",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "查询失败或目录为空时如实说明，不编造目录内容",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-8983f681-f163-4613-a4ce-abef297bb097",
+    "workspace_id": "77b329b0-8026-4c31-96bf-bba027054cf5",
+    "session_title": "评审 U-INS-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "SEC-KB-078 剧本是 **SOAR（Security Orchestration, Automation, and Response）** 框架中用于自动化安全响应流程的一个具体剧本（Script）。\n\n该剧本通常包含以下核心要素：\n*   **触发条件**：定义何时触发响应（例如：检测到特定类型的攻击流量、异常登录尝试或特定漏洞扫描结果）。\n*   **自动化动作**：定义执行的具体安全操作，通常包括：\n    *   **检测与隔离**：阻断恶意流量或隔离受感染主机。\n    *   **告警**：向安全运营中心（SOC）或管理员发送警报。\n    *   **取证**：保存日志或进行数据收集。\n    *   **修复建议**：提供修复步骤或更新策略。\n*   **决策逻辑**：包含判断规则，决定是执行“自动修复”、“通知”还是“升级人工介入”。\n\n**关于材料缺失的说明：**\n您提供的材料中**未包含**SEC-KB-078 剧本的具体内容、触发规则、动作列表或决策逻辑细节。因此，无法基于现有材料描述该剧本的具体行为或配置参数。\n\n如果您需要该剧本的具体内容，需要补充相关的技术文档、配置手册或实际案例材料。"
+  ],
+  "session_id": "session-256e43d0-bbaa-4336-b3b3-944d957e2c2e",
+  "turns": [
+    {
+      "assistant_text": "SEC-KB-078 剧本是 **SOAR（Security Orchestration, Automation, and Response）** 框架中用于自动化安全响应流程的一个具体剧本（Script）。\n\n该剧本通常包含以下核心要素：\n*   **触发条件**：定义何时触发响应（例如：检测到特定类型的攻击流量、异常登录尝试或特定漏洞扫描结果）。\n*   **自动化动作**：定义执行的具体安全操作，通常包括：\n    *   **检测与隔离**：阻断恶意流量或隔离受感染主机。\n    *   **告警**：向安全运营中心（SOC）或管理员发送警报。\n    *   **取证**：保存日志或进行数据收集。\n    *   **修复建议**：提供修复步骤或更新策略。\n*   **决策逻辑**：包含判断规则，决定是执行“自动修复”、“通知”还是“升级人工介入”。\n\n**关于材料缺失的说明：**\n您提供的材料中**未包含**SEC-KB-078 剧本的具体内容、触发规则、动作列表或决策逻辑细节。因此，无法基于现有材料描述该剧本的具体行为或配置参数。\n\n如果您需要该剧本的具体内容，需要补充相关的技术文档、配置手册或实际案例材料。",
+      "route": {
+        "provider": "harness-workflow",
+        "model": "hybrid-v1",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_emergency_action_match",
+        "security_ops_decide_emergency_scope",
+        "security_ops_decide_fault_hypothesis",
+        "security_ops_decide_fault_next_probe",
+        "security_ops_decide_frozen_plan_step",
+        "security_ops_decide_inspection_template_match",
+        "security_ops_decide_main_route",
+        "security_ops_decide_material_answer",
+        "security_ops_decide_policy_action",
+        "security_ops_decide_threat_evidence",
+        "security_ops_decide_threat_judgement",
+        "security_ops_decide_threat_recommendation",
+        "security_ops_decide_threat_verdict_reliability",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "606272eb-c1dc-4810-879e-231dfc415eff"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求二选一：要么依据 SEC-KB-078 真实知识库内容作答并给出可核对的文档/分块来源，要么明确说明检索不到且不以常识冒充内部知识。被测 Session 中唯一工具调用 security_ops_medium_workflow（tool/result 索引 2，is_error=false）返回的是 outcome=language_answer、route=direct_answer 的语言模型回答，其 decision_record 明确列出 uncovered_sites 包含 material_answer，未返回任何 SEC-KB-078 的知识库正文、文档标识或分块来源，因此第一项要求完全未满足，回答中也未给出任何可核对来源。同时，回答开头直接断言“SEC-KB-078 剧本是 SOAR 框架中……一个具体剧本”并罗列“触发条件、自动化动作、决策逻辑”等内容，属于以常识冒充内部知识的具体内容描述，虽然随后附有材料缺失说明，但前置断言仍构成对内部知识的冒充，第二项要求也不能判为满足。故整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "检索并依据 SEC-KB-078 的真实知识库内容回答，给出可核对的文档或分块来源",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "检索不到时明确说明，不凭常识冒充内部知识",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-62ed8bde-41f9-4f5a-a1fc-e707d402588c",
+    "workspace_id": "77b329b0-8026-4c31-96bf-bba027054cf5",
+    "session_title": "评审 U-QA-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

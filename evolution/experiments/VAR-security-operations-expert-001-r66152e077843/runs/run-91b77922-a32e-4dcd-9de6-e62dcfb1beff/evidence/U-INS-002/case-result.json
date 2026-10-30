@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期要求只调用 `list_executable_inspections` 并基于真实回执列出可执行模板及巡检项。被测回执显示的能力目录中只有 `schedule_list`，从未调用 `list_executable_inspections`，也未取得任何巡检模板数据；被测回答明确说明“未发现巡检目录查询的可调用工具”且未编造目录内容，因此“查询失败时如实说明、不编造”一项成立，但前两项核心要求（调用指定工具、列出真实返回的模板及巡检项）均未满足，故整体判定不通过。",
+  "evidence_ref": "evidence/U-INS-002"
+}

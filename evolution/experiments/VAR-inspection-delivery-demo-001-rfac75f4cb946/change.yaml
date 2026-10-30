@@ -1,0 +1,68 @@
+schema_version: '1.0'
+experiment_id: VAR-inspection-delivery-demo-001-rfac75f4cb946
+agent_id: inspection-delivery-demo
+baseline_ref: git:e3b61ee610707a972c6e9ad2968685a6b93f402e
+parent_experiment_id: EXP-inspection-delivery-demo-002-r7430faf014e7
+parent_ref: git:e3b61ee610707a972c6e9ad2968685a6b93f402e
+status: active
+compute_variant:
+  schema_version: 1
+  created_at: '2026-10-26T11:10:13.155Z'
+  strategy: 依据固定父版真实诊断轨迹，将身份、职责、完整分页与仅第一页的规则分支实现为LangGraph TypeScript。沿用task_inspection真实start/page/report工具和相同Mock快照；会话调度、图节点、结果渲染与标题均本地代码执行，未覆盖输入中止报告，不回退模型。
+  case_hashes:
+    U-ASSET-PAGES-001: bd9f09a73ffb68b7cdcbebb3b76b8602e585f3d72182f0e97bf2dab922d59a1f
+    U-ASSET-PARTIAL-001: 3c92db25d468dd5218381daee6655b312748bbf84a188ab8d3e3c89290de8647
+    U-IDENTITY-001: 66151f61dc2e4bc3e188855a1e69506030df665517d321845b4d45eb86edb4ba
+    U-ROLE-001: c8938671feedda71f6317e01df93f3e3a17d7822a0ced7b9689dc97fc603a70b
+  critical_case_ids:
+    - U-ASSET-PAGES-001
+    - U-ASSET-PARTIAL-001
+    - U-IDENTITY-001
+    - U-ROLE-001
+  min_runs_per_case: 2
+  max_pass_rate_drop_pp: 0
+  resource_metric: actual_model_calls
+  min_resource_reduction_pct: 100
+  model_change: null
+  generation:
+    mode: langgraph-aot
+    entry_path: dsh/managed/compute-workflow/index.ts
+    source_run_ids:
+      - run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48
+    fixture_sha256: 45c0c188996f6813efd4eeaac78b6b70ba8049e873e71c48862d5d25163d1ffb
+    source_evidence:
+      - run_id: run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48
+        path: evolution/experiments/EXP-inspection-delivery-demo-002-r7430faf014e7/runs/run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48/evidence/U-IDENTITY-001/trace.jsonl
+        sha256: 7439e638fd479b5cae2dadbe34875a45755281518f59f16d902d23d360f603c5
+      - run_id: run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48
+        path: evolution/experiments/EXP-inspection-delivery-demo-002-r7430faf014e7/runs/run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48/evidence/U-ROLE-001/trace.jsonl
+        sha256: 642e40bf161ccbc4fabb5b8a3ffbf23eba61303e218bf4beb717a58e63b712ef
+      - run_id: run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48
+        path: evolution/experiments/EXP-inspection-delivery-demo-002-r7430faf014e7/runs/run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48/evidence/U-ASSET-PAGES-001/trace.jsonl
+        sha256: 762e3c379e05b669e9bb31bd50426e8505a28190a5269a43d57eee1724293b13
+      - run_id: run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48
+        path: evolution/experiments/EXP-inspection-delivery-demo-002-r7430faf014e7/runs/run-424f67b4-bb0c-4ebb-bd92-38a267ca6e48/evidence/U-ASSET-PARTIAL-001/trace.jsonl
+        sha256: 3cc3a18386a281f19c9123745917fdccceeacba4bbc183ce406036ddf34c2271
+  execution_mode: code-only
+  measurement_schema_version: 2
+variant_kind: exploratory
+variant_name: 基础台账巡检·零模型代码变体
+outcome: inconclusive
+compute_variant_build:
+  schema_version: 1
+  entry_path: dsh/managed/compute-workflow/index.ts
+  output_path: dsh/managed/compute-workflow/index.mjs
+  source_sha256: d0019fc95acce0485cece33ffa2e0268df456cfb52251baea52c937620f54b19
+  source_files:
+    - path: dsh/managed/compute-workflow/index.ts
+      sha256: 25c6eb49943c7132b4e2baec38d6f56101dce52b6d06b621293e1a5a3e6006b7
+    - path: dsh/managed/compute-workflow/logic.ts
+      sha256: 8649ec05715bbc4ba65f2ce8b669545ac9c750d6c91ccc16d8f4739df02e6632
+  runner_sha256: a5a08600750842ac71f37dc73d44f7147a06e530222253512f69c3a2fed8fcfe
+  deps_sha256: b60dd5d5ba59ccdc7ee2eb88864a13705ffab9570da1697c2df3cb7af85438bb
+  compiler:
+    typescript: 5.9.3
+    esbuild: 0.25.12
+  build_digest: 657ea4afd0782dd0e7f201ac35398fc94798795156f8be60fac569514de42dab
+  esm_sha256: 9399cec9135ac91077c6b3c6735562701c0b39ff1251055e3005c3898a74c7a3
+  candidate_sha256: 9cceec4f6ed93d626059777a43ba8cac38882febe7cca71587edcff0d9f1a5a4

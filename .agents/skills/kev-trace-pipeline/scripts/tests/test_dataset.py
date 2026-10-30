@@ -5,7 +5,7 @@ import math
 import unittest
 
 from dataset import (
-    BLOCKED_STATE_FIELDS, IR_SCHEMA, audit_partitions, compile_records, split_records,
+    BLOCKED_STATE_FIELDS, IR_SCHEMA, audit_partitions, compile_records, split_records, label_key,
 )
 
 
@@ -50,6 +50,93 @@ def compile_ok(rows, **kwargs):
 
 
 class CompilerTests(unittest.TestCase):
+    def test_typed_questions_preserve_hard_labels_soft_keys_and_ai_review_metadata(self):
+        rows = []
+        for index, (question, value, target) in enumerate((
+            ({"type": "choice", "instructions": "选择字面选项", "criteria": {"false": "字面字符串", "0": "字面零"}}, "false", {"false": 3, "0": 1}),
+            ({"type": "noul", "instructions": "事实是否成立", "criteria": {"false": "不成立", "true": "成立"}}, False, {"false": 3, "true": 1}),
+            ({"type": "score", "instructions": "按原顺序评分", "criteria": ["low", "high"]}, 0, {"0": 3, "1": 1}),
+        )):
+            row = example(index)
+            row["question"] = question
+            row["label"].update(value=value, source="synthetic-ai-functional-review", target=target,
+                                target_semantics="synthetic reviewer weights, not calibrated confidence")
+            row["review"] = {"scope": "functional_ai_labels", "business_effect": "inconclusive"}
+            rows.append(row)
+        compiled = compile_ok(rows)
+        for original, result in zip(rows, compiled):
+            question = next(iter(result["questions"].values()))
+            self.assertIs(type(question["label"]), type(original["label"]["value"]))
+            self.assertEqual(question["label"], original["label"]["value"])
+            self.assertEqual(question["target"][label_key(question, question["label"])], .75)
+            self.assertEqual(result["_meta"]["ir_extra"]["review"], original["review"])
+            self.assertNotIn("review", result["state"])
+        self.assertTrue(audit_partitions({"train": compiled})["ok"])
+        bare = example("bare-bool")
+        bare["question"] = {"type": "noul", "instructions": "成立吗"}
+        bare["label"]["value"] = True
+        self.assertIs(next(iter(compile_ok([bare])[0]["questions"].values()))["label"], True)
+
+    def test_typed_labels_reject_boolean_integer_and_string_substitutions(self):
+        cases = (
+            ({"type": "choice", "instructions": "选择", "criteria": {"false": "否", "0": "零"}}, [False, 0, True]),
+            ({"type": "noul", "instructions": "成立吗"}, [0, 1, "false", "true"]),
+            ({"type": "score", "instructions": "评分", "criteria": ["low", "high"]}, [False, True, 0.0, "0", -1, 2]),
+        )
+        for question, values in cases:
+            for value in values:
+                with self.subTest(kind=question["type"], value=value):
+                    row = example(1)
+                    row.update(question=question)
+                    row["label"]["value"] = value
+                    compiled, quarantine, _ = compile_records([row])
+                    self.assertFalse(compiled)
+                    self.assertIn("invalid_hard_label", quarantine[0]["reason_codes"])
+
+    def test_typed_criteria_validation_and_soft_target_keys(self):
+        for criteria in (["no", "yes"], {"yes": "成立"}, {"false": []}):
+            row = example(1)
+            row["question"] = {"type": "noul", "instructions": "成立吗", "criteria": criteria}
+            row["label"]["value"] = False
+            self.assertIn("invalid_criteria", compile_records([row])[1][0]["reason_codes"])
+        for criteria in ({"low": "低", "high": "高"}, ["only"], ["low", ""], ["low", 1]):
+            row = example(1)
+            row["question"] = {"type": "score", "instructions": "评分", "criteria": criteria}
+            row["label"]["value"] = 0
+            self.assertIn("invalid_criteria", compile_records([row])[1][0]["reason_codes"])
+        row = example(1)
+        row["question"] = {"type": "noul", "instructions": "成立吗"}
+        row["label"].update(value=False, target={"0": 1}, target_semantics="invalid boolean key")
+        self.assertIn("unknown_target_key", compile_records([row])[1][0]["reason_codes"])
+        row["label"].update(target={"false": 1, "true": 3})
+        _, quarantine, report = compile_records([row])
+        self.assertFalse(quarantine)
+        self.assertTrue(any(w["code"] == "hard_soft_disagreement" for w in report["warnings"]))
+
+    def test_typed_audit_rechecks_metadata_label_types(self):
+        row = example(1)
+        row["question"] = {"type": "noul", "instructions": "成立吗"}
+        row["label"]["value"] = False
+        compiled = compile_ok([row])[0]
+        # False == 0 in Python; metadata must still reject the wrong JSON type.
+        compiled["_meta"]["label"]["value"] = 0
+        self.assertTrue(any(e["code"] == "invalid_hard_label" for e in audit_partitions({"train": [compiled]})["errors"]))
+
+    def test_typed_verified_conflicts_remain_quarantined(self):
+        for kind, criteria, first, second in (("noul", None, False, True), ("score", ["low", "high"], 0, 1)):
+            with self.subTest(kind=kind):
+                left, right = example("left"), example("right")
+                left["question"] = {"type": kind, "instructions": "合成复核题"}
+                if criteria is not None:
+                    left["question"]["criteria"] = criteria
+                left["label"]["value"] = first
+                right["state"], right["question"] = deepcopy(left["state"]), deepcopy(left["question"])
+                right["label"]["value"] = second
+                compiled, quarantine, report = compile_records([left, right])
+                self.assertFalse(compiled)
+                self.assertEqual(len(quarantine), 2)
+                self.assertEqual(len(report["verified_label_conflicts"]), 1)
+
     def test_unlabeled_observed_action_never_becomes_gold(self):
         compiled, quarantine, report = compile_records([example(1, status="unlabeled")])
         self.assertEqual(compiled, [])
@@ -194,6 +281,43 @@ class CompilerTests(unittest.TestCase):
 
 
 class GroupingTests(unittest.TestCase):
+    def test_mixed_type_statistics_keep_questions_and_zero_false_labels_distinct(self):
+        rows = []
+        for index in range(5):
+            for kind, criteria, value in (("choice", {"false": "字面否", "0": "字面零"}, "false"),
+                                          ("noul", {"false": "不成立", "true": "成立"}, False),
+                                          ("score", ["low", "high"], 0)):
+                row = example(f"{index}-{kind}", session=f"synthetic/session-{index}", source_group=f"synthetic/source-{index}")
+                row["state"] = {"request": f"synthetic independent task {index}"}
+                row["decision_site_id"] = "same-site-name"
+                row["question"] = {"type": kind, "instructions": "合成混合题型", "criteria": criteria}
+                row["label"]["value"] = value
+                rows.append(row)
+        parts, manifest = split_records(compile_ok(rows), {"train": .2, "development": .2, "calibration": .4, "test": .2})
+        self.assertEqual(manifest["status"], "ready")
+        self.assertEqual(manifest["partition_groups"]["calibration"], 2)
+        self.assertTrue(audit_partitions(parts)["ok"])
+        self.assertEqual(len(manifest["question_definitions"]), 3)
+        for name, counts in manifest["partition_labels"].items():
+            by_type = {manifest["question_definitions"][key]["type"]: values for key, values in counts.items()}
+            size = manifest["partition_groups"][name]
+            self.assertEqual(by_type, {"choice": {"false": size}, "noul": {"false": size}, "score": {"0": size}})
+        json.dumps(manifest, allow_nan=False)
+        self.assertNotIn("missing_label_coverage", manifest)
+
+    def test_missing_label_coverage_is_scoped_to_each_question(self):
+        rows = []
+        for index in range(4):
+            row = example(index)
+            row["decision_site_id"] = f"site-{index % 2}"
+            row["question"] = {"type": "noul", "instructions": "合成二值题"}
+            row["label"]["value"] = False
+            rows.append(row)
+        _, manifest = split_records(compile_ok(rows))
+        self.assertTrue(manifest["missing_label_coverage"])
+        for missing in manifest["missing_label_coverage"].values():
+            self.assertEqual(list(missing.values()), [["false"]])
+
     def test_native_rendered_collision_cannot_cross_partitions_or_hide_conflict(self):
         left, right = example("object"), example("string")
         left["state"], right["state"] = {"request": "same synthetic task"}, "request: same synthetic task"

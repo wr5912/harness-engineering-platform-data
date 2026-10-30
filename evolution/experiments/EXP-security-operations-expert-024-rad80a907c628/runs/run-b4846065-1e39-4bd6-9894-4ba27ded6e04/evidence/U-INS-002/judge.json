@@ -1,0 +1,53 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测 Session 本轮并未调用要求的 `list_executable_inspections`：可核对到的实际调用是 `skill` 加载（索引2）以及 `list_mcp_resources`/`list_mcp_resource_templates`（索引4、6，均返回 `mcp-client(inspection): server is disconnected`），冻结要求“只调用 `list_executable_inspections`”未被满足。另一方面，回答确未调用 `start_inspection`，并对巡检服务断连、未取得任何模板/巡检项如实说明且未编造目录内容（索引0，且与索引4、6 的真实错误回执一致），这部分满足预期的失败兜底条款；但 Skill 的“工具缺失即停止”只能解释失败，不能改变冻结要求，故整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "只调用 `list_executable_inspections`",
+        "status": "failed",
+        "evidence": [
+          4,
+          6
+        ]
+      },
+      {
+        "requirement": "回复列出本轮真实返回的可执行模板及其巡检项，不调用 `start_inspection`",
+        "status": "satisfied",
+        "evidence": [
+          0
+        ]
+      },
+      {
+        "requirement": "查询失败或目录为空时如实说明，不编造目录内容",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          4,
+          6
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-cb9d013f-1ffc-442b-8aff-691dded41180",
+    "workspace_id": "3cb269a3-7e29-4e8f-955f-6bf902976821",
+    "session_title": "评审 U-INS-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

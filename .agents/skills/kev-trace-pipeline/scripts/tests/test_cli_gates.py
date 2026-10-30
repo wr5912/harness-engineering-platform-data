@@ -190,6 +190,55 @@ class CliGateTests(unittest.TestCase):
         self.assertIn('no_default_export_eligible_labels', gate['reason_codes'])
         self.assertEqual(self.read_json(out / 'annotation-report.json')['labels'], {'unlabeled': 1})
 
+    def test_mixed_types_annotate_compile_split_and_audit_preserve_native_labels(self):
+        rows, annotations = [], []
+        definitions = (("choice", {"false": "字面否", "0": "字面零"}, "false"),
+                       ("noul", {"false": "不成立", "true": "成立"}, False),
+                       ("score", ["low", "high"], 0))
+        for group in range(5):
+            for kind, criteria, value in definitions:
+                row = ir_record(f'{group}-{kind}', session=f'session-{group}', status='unlabeled')
+                row['provenance']['source_group_id'] = f'source-{group}'
+                row['state'] = {'request': f'Synthetic independent task {group}'}
+                row['decision_site_id'] = f'synthetic-{kind}'
+                row['question'] = {'type': kind, 'instructions': 'Synthetic typed question', 'criteria': criteria}
+                rows.append(row)
+                annotations.append({'sample_id': row['sample_id'], 'label': {
+                    'status': 'verified', 'value': value, 'source': 'synthetic-ai-functional-review',
+                    'evidence_refs': ['synthetic-review-only'],
+                }})
+        source = self.write_rows('typed-unlabeled.jsonl', rows)
+        reviews = self.write_rows('typed-annotations.jsonl', annotations)
+        annotated, _ = self.run_stage('annotate', '--samples', source, '--annotations', reviews)
+        compiled, _ = self.run_stage('compile', '--input', annotated / 'samples.labeled.jsonl')
+        exported = self.read_rows(compiled / 'compiled.jsonl')
+        labels = {next(iter(row['questions'].values()))['type']: next(iter(row['questions'].values()))['label'] for row in exported}
+        self.assertEqual(labels['choice'], 'false')
+        self.assertIs(labels['noul'], False)
+        self.assertIs(type(labels['score']), int)
+        self.assertEqual(labels['score'], 0)
+        split, _ = self.run_stage('split', '--input', compiled / 'compiled.jsonl', '--fractions', '0.2,0.2,0.4,0.2')
+        manifest = self.read_json(split / 'split-manifest.json')
+        self.assertEqual(manifest['partition_groups']['calibration'], 2)
+        audited, gate = self.run_stage('audit-dataset', '--dataset-dir', split)
+        self.assertEqual(gate['status'], 'requires_review')
+        self.assertEqual(gate['next_allowed_stage'], 'encoding-review')
+        self.assertTrue(self.read_json(audited / 'dataset-audit.json')['ok'])
+        self.assertEqual(self.read_rows(source), rows)
+
+    def test_annotate_rejects_integer_for_boolean_and_boolean_for_score(self):
+        for kind, value in (('noul', 0), ('score', False)):
+            row = ir_record(kind, status='unlabeled')
+            row['question'] = {'type': kind, 'instructions': 'Synthetic typed question'}
+            if kind == 'score':
+                row['question']['criteria'] = ['low', 'high']
+            source = self.write_rows(f'{kind}.jsonl', [row])
+            reviews = self.write_rows(f'{kind}-review.jsonl', [{'sample_id': row['sample_id'], 'label': {
+                'status': 'verified', 'value': value, 'source': 'synthetic-review', 'evidence_refs': ['synthetic'],
+            }}])
+            _, gate = self.run_stage('annotate', '--samples', source, '--annotations', reviews, out_name=f'{kind}-invalid', code=1)
+            self.assertEqual(gate['reason_codes'], ['invalid_input'])
+
     def test_partial_compile_is_nonfatal_but_requires_review(self):
         source = self.write_rows('mixed-labels.jsonl', [ir_record(1), ir_record(2, status='unlabeled')])
         out, gate = self.run_stage('compile', '--input', source)

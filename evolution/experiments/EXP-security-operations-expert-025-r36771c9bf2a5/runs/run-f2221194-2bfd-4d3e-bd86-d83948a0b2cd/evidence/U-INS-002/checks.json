@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-002",
+  "transport": "api",
+  "expected_behavior": "只调用 `list_executable_inspections`；回复列出本轮真实返回的可执行模板及其巡检项，不调用 `start_inspection`。查询失败或目录为空时如实说明，不编造目录内容。",
+  "session_id": "session-892f91f6-9fa8-4c0e-b099-fc3a9ffe3912",
+  "workspace_id": "78d09f9f-dc15-404d-9779-872456a41e15",
+  "session_title": "评测 U-INS-002",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-140b6568-7402-4119-8b35-e3ed2f961634",
+    "workspace_id": "78d09f9f-dc15-404d-9779-872456a41e15",
+    "session_title": "评审 U-INS-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  },
+  "trace_available": true
+}

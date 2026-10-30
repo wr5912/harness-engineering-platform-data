@@ -13,7 +13,7 @@ description: "部署或运维已有 Kev checkpoint：获取 TypeSafe/System One 
 |---|---|---|
 | 公共或自定义 Hub checkpoint，选择 Modal | [官方部署 Skill](references/upstream/kev-deploy/SKILL.md) 与其 scripts/kev_serve.py | 选定模型/版本、资源和认证后部署、验证 |
 | 已在官方 Modal 微调卷中的 run | [官方微调部署说明](../kev-training/references/upstream/kev-finetune/references/deploy.md) | 使用同包 kev_modal.py 的 Serve 路径，不假装它是 Hub checkpoint |
-| 已有本地 checkpoint，选择本地 CUDA 服务 | 上述官方微调部署说明的 local serving 部分 | 沿用已选环境的真实服务入口，不把 Modal 示例套给 SSH 服务器 |
+| 已有本地 checkpoint，选择本地 CUDA 服务 | 上述官方微调部署说明的 local serving 部分；接入当前 Harness 预算证明时读[原生 CUDA 接入](references/native-cuda.md) | 沿用已选环境的真实服务入口，核对所用接入合同与实际证明 |
 | 已有服务，只验证、调整保温或停服 | 对应部署路径中的验证/配置/清理部分 | 直接处理指定服务，不重新训练或默认部署另一模型 |
 | 需要微调、生成训练数据或评估训练工件 | `kev-training` | 交接所需训练阶段 |
 

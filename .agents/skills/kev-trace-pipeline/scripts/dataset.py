@@ -6,7 +6,7 @@ All functions return new data and leave caller-owned records unchanged.
 Compatibility reference: jaredpalmer/kev commit
 2074cc44256200bb37540103fa4572901faa10f3.
 
-compile_records accepts the kev-decision-ir/v1 choice-only IR.
+compile_records accepts the kev-decision-ir/v1 typed decision IR.
 split_records and audit_partitions accept compiled records produced by this module.
 Weak labels are opt-in for training and never eligible for held-out gold partitions.
 Token lengths must be checked separately using the chosen checkpoint tokenizer.
@@ -154,27 +154,61 @@ def _validate_state(state, errors, warnings):
 def _validate_question(question, errors, path="question", compiled=False):
     if not isinstance(question, dict):
         errors.append(_issue("invalid_question", path, "A question object is required"))
-        return {}
+        return []
     allowed = {"type", "instructions", "criteria"}
     if compiled:
         allowed |= {"label", "target", "src"}
     extra = set(question) - allowed
     if extra:
         errors.append(_issue("unknown_question_fields", path, f"Unsupported question fields: {sorted(map(str, extra))}"))
-    if question.get("type") != "choice":
-        errors.append(_issue("unsupported_question_type", f"{path}.type", "This IR compiler supports choice only"))
     if not _text(question.get("instructions")):
         errors.append(_issue("invalid_instructions", f"{path}.instructions", "instructions must be a non-empty string"))
-    criteria = question.get("criteria")
-    if not isinstance(criteria, dict) or not 1 <= len(criteria) <= 255:
-        errors.append(_issue("invalid_criteria", f"{path}.criteria", "criteria must contain 1..255 candidate names"))
-        return {}
-    for key, description in criteria.items():
-        if not _text(key):
-            errors.append(_issue("invalid_candidate_id", f"{path}.criteria", "Candidate IDs must be non-empty strings"))
-        if description is not None and not isinstance(description, str):
-            errors.append(_issue("invalid_candidate_description", f"{path}.criteria.{key}", "Candidate descriptions must be strings or null"))
-    return criteria
+    kind, criteria = question.get("type"), question.get("criteria")
+    if kind == "choice":
+        if not isinstance(criteria, dict) or not 1 <= len(criteria) <= 255:
+            errors.append(_issue("invalid_criteria", f"{path}.criteria", "choice criteria must contain 1..255 candidate names"))
+            return []
+        for key, description in criteria.items():
+            if not _text(key):
+                errors.append(_issue("invalid_candidate_id", f"{path}.criteria", "Candidate IDs must be non-empty strings"))
+            if description is not None and not isinstance(description, str):
+                errors.append(_issue("invalid_candidate_description", f"{path}.criteria.{key}", "Candidate descriptions must be strings or null"))
+    elif kind == "noul":
+        if criteria is not None and (not isinstance(criteria, dict) or set(criteria) - {"false", "true"}
+                                     or any(value is not None and not isinstance(value, str) for value in criteria.values())):
+            errors.append(_issue("invalid_criteria", f"{path}.criteria", "noul criteria may only describe false/true with strings or null"))
+    elif kind == "score":
+        if not isinstance(criteria, list) or not 2 <= len(criteria) <= 255 or not all(_text(value) for value in criteria):
+            errors.append(_issue("invalid_criteria", f"{path}.criteria", "score criteria must contain 2..255 ordered non-empty level descriptions"))
+            return []
+    else:
+        errors.append(_issue("unsupported_question_type", f"{path}.type", "Expected choice, noul or score"))
+        return []
+    return question_keys(question)
+
+
+def question_keys(question):
+    """原生概率键；score 的等级顺序不排序，noul 始终为 false/true。"""
+    kind, criteria = question.get("type"), question.get("criteria")
+    if kind == "choice" and isinstance(criteria, dict):
+        return list(criteria)
+    if kind == "noul":
+        return ["false", "true"]
+    if kind == "score" and isinstance(criteria, list):
+        return [str(index) for index in range(len(criteria))]
+    return []
+
+
+def label_key(question, value):
+    """校验硬标签的 JSON 类型并返回 KEV 概率键，不把 bool 当成整数。"""
+    kind = question.get("type")
+    if kind == "choice" and isinstance(value, str) and value in question_keys(question):
+        return value
+    if kind == "noul" and type(value) is bool:
+        return "true" if value else "false"
+    if kind == "score" and type(value) is int and 0 <= value < len(question_keys(question)):
+        return str(value)
+    raise ValueError("Hard label must match the question type and current candidates/levels")
 
 
 def _normalise_target(target, keys, errors, path):
@@ -263,7 +297,7 @@ def _validate_provenance(provenance, contract_version, errors):
                 errors.append(_issue("cross_trace_evidence", path, "A trace evidence reference must identify this provenance trace"))
 
 
-def _validate_label(label, criteria, allow_weak, errors, warnings):
+def _validate_label(label, question, allow_weak, errors, warnings):
     if not isinstance(label, dict):
         errors.append(_issue("missing_label", "label", "A label object is required; observed_action is never a substitute"))
         return None, False
@@ -279,8 +313,11 @@ def _validate_label(label, criteria, allow_weak, errors, warnings):
     normalised = None
     if eligible:
         value = label.get("value")
-        if not isinstance(value, str) or value not in criteria:
-            errors.append(_issue("invalid_hard_label", "label.value", "A valid hard candidate name is required even when a soft target is supplied"))
+        try:
+            hard_key = label_key(question, value)
+        except ValueError:
+            hard_key = None
+            errors.append(_issue("invalid_hard_label", "label.value", "A valid typed hard label is required even when a soft target is supplied"))
         if not _text(label.get("source")):
             errors.append(_issue("missing_label_source", "label.source", "An explicit label source is required"))
         evidence = label.get("evidence_refs")
@@ -290,10 +327,10 @@ def _validate_label(label, criteria, allow_weak, errors, warnings):
             errors.append(_issue("missing_label_evidence", "label.evidence_refs", "Non-empty label evidence references are required"))
         # Outcome evidence may be later than decision_seq. It is kept only in _meta.
         if "target" in label:
-            normalised = _normalise_target(label["target"], criteria, errors, "label.target")
+            normalised = _normalise_target(label["target"], question_keys(question), errors, "label.target")
             if not _text(label.get("target_semantics")):
                 errors.append(_issue("missing_target_semantics", "label.target_semantics", "A soft target requires an explicit meaning/source description"))
-            if normalised is not None and value in normalised and normalised[value] < max(normalised.values()):
+            if normalised is not None and hard_key in normalised and normalised[hard_key] < max(normalised.values()):
                 warnings.append(_issue(
                     "hard_soft_disagreement", "label.target",
                     "The hard gold label differs from a soft-target mode; retain only when that disagreement is intentional and reviewed",
@@ -354,7 +391,8 @@ def _label_disagreements(records):
         input_hash = _digest(sorted({_digest(_model_input(record)) for record in members}))
         verified, weak = defaultdict(list), defaultdict(list)
         for record in members:
-            label = next(iter(record["questions"].values()))["label"]
+            question = next(iter(record["questions"].values()))
+            label = label_key(question, question["label"])
             destination = verified if record["_meta"]["label_status"] == "verified" else weak
             destination[label].append(record["_meta"]["id"])
         detail = {
@@ -372,7 +410,7 @@ def _label_disagreements(records):
 
 
 def compile_records(records, allow_weak_train=False, *, include_code=False):
-    """Return (compiled_records, quarantine, report) from choice-only decision IR.
+    """Return (compiled_records, quarantine, report) from typed decision IR.
 
     verified labels need a valid hard value, source, and evidence. Weak labels are
     optional and marked train-only. code implementations are excluded by default.
@@ -403,11 +441,11 @@ def compile_records(records, allow_weak_train=False, *, include_code=False):
             elif implementation == "code" and not include_code:
                 errors.append(_issue("code_site_excluded", "implementation", "Code-only decision sites are excluded unless include_code=True"))
             _validate_state(record.get("state"), errors, warnings)
-            criteria = _validate_question(record.get("question"), errors)
+            _validate_question(record.get("question"), errors)
             _validate_provenance(record.get("provenance"), record.get("contract_version"), errors)
             label = record.get("label")
             statuses[str(label.get("status")) if isinstance(label, dict) else "missing"] += 1
-            target, train_only = _validate_label(label, criteria, allow_weak_train, errors, warnings)
+            target, train_only = _validate_label(label, record.get("question") if isinstance(record.get("question"), dict) else {}, allow_weak_train, errors, warnings)
         if errors:
             reasons.update(set(error["code"] for error in errors))
             quarantine.append({
@@ -508,14 +546,16 @@ def _validate_compiled(record):
         for qid, question in questions.items():
             if not _text(qid):
                 errors.append(_issue("invalid_question_id", "questions", "Question IDs must be non-empty strings"))
-            criteria = _validate_question(question, errors, f"questions.{qid}", compiled=True)
+            keys = _validate_question(question, errors, f"questions.{qid}", compiled=True)
             if isinstance(question, dict):
-                if not isinstance(question.get("label"), str) or question.get("label") not in criteria:
-                    errors.append(_issue("invalid_hard_label", f"questions.{qid}.label", "Hard label must be a current candidate name"))
+                try:
+                    label_key(question, question.get("label"))
+                except ValueError:
+                    errors.append(_issue("invalid_hard_label", f"questions.{qid}.label", "Hard label must match the current question type"))
                 if not _text(question.get("src")):
                     errors.append(_issue("missing_question_source", f"questions.{qid}.src", "A stable decision-site src is required"))
                 if "target" in question:
-                    _normalise_target(question["target"], criteria, errors, f"questions.{qid}.target")
+                    _normalise_target(question["target"], keys, errors, f"questions.{qid}.target")
     if not isinstance(meta, dict):
         errors.append(_issue("missing_compiled_metadata", "_meta", "Compiler provenance metadata is required"))
         return errors, warnings
@@ -531,8 +571,7 @@ def _validate_compiled(record):
     _validate_provenance(meta.get("provenance"), meta.get("contract_version"), errors)
     if isinstance(questions, dict) and len(questions) == 1 and isinstance(meta.get("label"), dict):
         question = next(iter(questions.values()))
-        criteria = question.get("criteria", {}) if isinstance(question, dict) else {}
-        target, _ = _validate_label(meta["label"], criteria, True, errors, warnings)
+        target, _ = _validate_label(meta["label"], question if isinstance(question, dict) else {}, True, errors, warnings)
         if meta["label"].get("status") != meta.get("label_status"):
             errors.append(_issue("label_status_mismatch", "_meta.label_status", "Compiled label status differs from its audited label object"))
         if isinstance(question, dict):
@@ -607,7 +646,7 @@ def audit_partitions(partitions, *, required_partitions=()):
     for conflict in verified_conflicts:
         errors.append(_issue(
             "conflicting_verified_labels", "questions",
-            "Canonical or native-rendered input has contradictory verified hard labels; this choice contract requires one gold answer",
+            "Canonical or native-rendered input has contradictory verified hard labels; this typed contract requires one reviewed answer",
             **conflict,
         ))
     for disagreement in weak_disagreements:
@@ -640,6 +679,20 @@ class _UnionFind:
         left, right = self.find(left), self.find(right)
         if left != right:
             self.parent[right] = left
+
+
+def _question_labels(records):
+    """按职责和问题定义统计；不同题型的 false、0 及字符串同名标签不合并。"""
+    definitions, counts = {}, defaultdict(Counter)
+    for record in records:
+        meta = record["_meta"]
+        for question in record["questions"].values():
+            definition = {"decision_site_id": meta["decision_site_id"], "contract_version": meta["contract_version"],
+                          **{key: deepcopy(question.get(key)) for key in ("type", "instructions", "criteria")}}
+            key = "question/" + _digest(definition)
+            definitions[key] = definition
+            counts[key][label_key(question, question["label"])] += 1
+    return definitions, {key: dict(value) for key, value in sorted(counts.items())}
 
 
 def split_records(records, fractions=None, seed=20261026):
@@ -754,19 +807,25 @@ def split_records(records, fractions=None, seed=20261026):
         manifest["blocked_reasons"] = ["post_split_audit_failed"]
         manifest["audit"] = audit
         return {name: [] for name in fractions}, manifest
+    definitions, all_labels = _question_labels(records)
+    partition_labels = {name: _question_labels(rows)[1] for name, rows in partitions.items()}
     manifest.update(
         status="ready", blocked_reasons=[], train_only_groups=len(forced), gold_only_groups=len(free),
         partition_records={name: len(rows) for name, rows in partitions.items()},
         partition_groups={name: len(groups_) for name, groups_ in assignment.items()},
         achieved_fractions={name: len(rows)/len(records) for name, rows in partitions.items()},
-        partition_labels={name: dict(Counter(q["label"] for row in rows for q in row["questions"].values()))
-                          for name, rows in partitions.items()},
+        label_statistics_version="question-native-label/v1", question_definitions=definitions,
+        partition_labels=partition_labels,
         group_partition={g["id"]: name for name, gs in assignment.items() for g in gs},
         audit=audit,
     )
-    all_labels = {q["label"] for row in records for q in row["questions"].values()}
-    missing = {name: sorted(all_labels - set(manifest["partition_labels"][name])) for name in active
-               if all_labels - set(manifest["partition_labels"][name])}
+    missing = {}
+    for name in active:
+        absent = {key: sorted(set(labels) - set(partition_labels[name].get(key, {})))
+                  for key, labels in all_labels.items()
+                  if set(labels) - set(partition_labels[name].get(key, {}))}
+        if absent:
+            missing[name] = absent
     if missing:
         manifest["missing_label_coverage"] = missing
         manifest["warnings"].append("Some partitions do not contain every label; do not interpret their metrics as complete class coverage.")

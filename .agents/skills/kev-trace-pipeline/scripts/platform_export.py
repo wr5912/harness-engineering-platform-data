@@ -14,8 +14,9 @@ train 对应 mode=training，其他三个用途与 mode 同名。export.blocked 
 失败只写报告并以 1 退出；已存在的非空输出目录不覆盖。输入保持原样。
 只核对留存回执和摘要；不访问平台、不重建来源 bundle、不认证回执真实性，
 也不声称当前服务器仍认可该导出。结构检查不能发现所有自然语言标签泄漏。
-原始 reviewed/model_suggestion/uncalibrated 等状态保存在 _meta.platform.targets；
-不将人工复核改称人工标注或 gold。所有来源关联组保持原用途，不重新切分。
+原始 reviewed/model_suggestion/uncalibrated 及 AI 委托复核记录保存在
+_meta.platform.targets；功能验证的 AI 复核不改称人工或 gold。
+所有来源关联组保持原用途，不重新切分。
 原生 _meta.group_id 使用关联闭包组供 KEV 校准分折；平台原组保存在
 _meta.platform.original_group_id，原始 ID、source_group_id 和 group_history 保留。
 """
@@ -57,7 +58,7 @@ HARNESS_PATHS = ["AGENTS.md", ".agents/skills/decision-sample-extraction/SKILL.m
 LIMITS = [
     "offline_receipts_only: 来源批次 read_sha256 是提供并固定的回读身份，未重新访问服务器或原始 bundle。",
     "review_is_not_gold: 保留实际复核和标签来源；不证明行业真值、教师校准或任务效果。",
-    "structural_leakage_only: 不通过文本词语巧合推断泄漏；仍需人工核对输入可答性。",
+    "structural_leakage_only: 不通过文本词语巧合推断泄漏；输入可答性依赖实际复核，AI 委托复核仅用于功能验证。",
     "not_checked: 目标 tokenizer、长度、训练、部署及业务收益均未验证。",
 ]
 
@@ -192,12 +193,63 @@ def validate_provenance(provenance, row, origin=False):
         require((origin or semantics == "observed_action") and provenance.get("run_id") == meta["run_id"]
                 and provenance.get("decision_id") == meta["decision_id"] and provenance.get("trace_sha256") == meta["trace_sha256"]
                 and provenance.get("ref") == meta["cutoff"], "provenance_mismatch", "观察动作来源与决策锚点不一致")
-    elif kind == "human_annotation":
-        require(timestamp(provenance.get("annotated_at")), "invalid_provenance", "人工标注时间无效")
+    elif kind in {"human_annotation", "ai_annotation"}:
+        require(timestamp(provenance.get("annotated_at")), "invalid_provenance", "标注时间无效")
+        if kind == "ai_annotation":
+            validate_ai_actor(provenance)
         if "origin" in provenance:
             validate_provenance(provenance["origin"], row, True)
     else:
         raise BridgeError("unsupported_provenance", "平台当前不支持此标签来源；不得自动升级教师或旧标签")
+
+
+def validate_ai_actor(value):
+    model = value.get("model")
+    require(text(value.get("session_id")) and isinstance(model, dict) and text(model.get("provider"))
+            and text(model.get("model")) and value.get("purpose") == "functional_validation",
+            "invalid_ai_review", "AI 委托身份必须包含真实 Session、模型和功能验证用途")
+
+
+def validate_review_input(evidence, review, row):
+    bindings = {"session_id": review["session_id"], "dataset_id": row["_meta"].get("dataset_id"),
+                "record_id": row["_meta"]["id"], "run_id": row["_meta"]["run_id"],
+                "path": row["_meta"]["trace_path"], "trace_sha256": row["_meta"]["trace_sha256"],
+                "source_bundle_sha256": row["_meta"].get("source_bundle_sha256"),
+                "state_sha256": sha(js_json(row["state"]))}
+    required = {"schema_version", *bindings, "read_method", "receipt_refs"}
+    require(isinstance(evidence, dict) and required <= set(evidence)
+            and set(evidence) <= required | {"content_sha256", "source_identity_sha256"}
+            and type(evidence.get("schema_version")) is int and evidence["schema_version"] == 1
+            and evidence.get("read_method") in {"datasets/read", "datasets/source", "datasets/source-fragments"},
+            "invalid_review_input", "AI 复核缺少完整决策输入阅读证据")
+    require(all(text(value) and value == value.strip() and evidence[key] == value for key, value in bindings.items()),
+            "review_input_mismatch", "AI 阅读证据与复核会话、批次或固定决策输入不一致")
+    for key in ["trace_sha256", "source_bundle_sha256", "state_sha256", "content_sha256", "source_identity_sha256"]:
+        if key in bindings or key in evidence or evidence["read_method"] == "datasets/source-fragments":
+            require(SHA.fullmatch(str(evidence.get(key, ""))), "invalid_review_input", "AI 阅读证据摘要无效")
+    refs = evidence.get("receipt_refs")
+    require(isinstance(refs, list) and refs, "invalid_review_input", "AI 阅读证据缺少实际工具定位")
+    calls, results = set(), set()
+    for ref in refs:
+        require(isinstance(ref, dict) and set(ref) == {"call_id", "call_seq", "result_seq"}
+                and text(ref["call_id"]) and type(ref["call_seq"]) is int and type(ref["result_seq"]) is int
+                and 0 <= ref["call_seq"] < ref["result_seq"] <= 9007199254740991
+                and ref["call_id"] not in calls and ref["result_seq"] not in results,
+                "invalid_review_input", "AI 阅读工具回执定位无效或重复")
+        calls.add(ref["call_id"]); results.add(ref["result_seq"])
+
+
+def validate_review(target, row=None):
+    review = target.get("review")
+    if review is None:
+        return  # 旧版人工复核没有 review 字段，不改写历史来源。
+    require(isinstance(review, dict) and {"kind", "session_id", "model", "reviewed_at", "purpose"} <= set(review)
+            and set(review) <= {"kind", "session_id", "model", "reviewed_at", "purpose", "input_evidence"}
+            and review.get("kind") == "ai_delegated" and timestamp(review.get("reviewed_at"))
+            and review["reviewed_at"] == target.get("reviewed_at"), "invalid_ai_review", "AI 委托复核记录无效或时间不一致")
+    validate_ai_actor(review)
+    require(row is not None, "invalid_review_input", "AI 阅读证据需要当前完整导出行")
+    validate_review_input(review.get("input_evidence"), review, row)
 
 
 def validate_question(name, question, target, row):
@@ -222,10 +274,11 @@ def validate_question(name, question, target, row):
         keys = [str(index) for index in range(len(criteria))]
     else:
         raise BridgeError("unsupported_question_type", "仅支持平台及 Kev 共同支持的 choice、noul、score")
-    require(isinstance(target, dict) and set(target) <= {"label", "probabilities", "provenance", "basis", "status", "decision_time_reviewed", "reviewed_at"},
+    require(isinstance(target, dict) and set(target) <= {"label", "probabilities", "provenance", "basis", "status", "decision_time_reviewed", "reviewed_at", "review"},
             "invalid_target", "监督字段无效")
     require(target.get("status") == "reviewed" and target.get("decision_time_reviewed") is True and timestamp(target.get("reviewed_at")),
-            "unreviewed_target", "每题必须已由人员复核并完成决策时点核对")
+            "unreviewed_target", "每题必须已复核并完成决策时点核对")
+    validate_review(target, row)
     require(text(target.get("basis")), "invalid_target", "缺少标签依据")
     label = target.get("label")
     valid = isinstance(label, str) and label in keys if kind == "choice" else type(label) is bool if kind == "noul" else type(label) is int and 0 <= label < len(keys)
@@ -252,8 +305,13 @@ def validate_row(row, partition):
             and bool(state["messages"]), "input_target_leakage", "state 只允许平台的决策前 messages 和 available_tools")
     for message in state["messages"]:
         require(isinstance(message, dict) and {"role", "content"} <= set(message)
-                and set(message) <= {"role", "content", "name", "tool_call_id", "tool_calls"} and text(message["role"]),
-                "input_target_leakage", "消息外壳含标签、来源、结果或不支持的字段")
+                and set(message) <= {"role", "content", "name", "tool_call_id", "tool_calls", "source"} and text(message["role"]),
+                "input_target_leakage", "消息外壳含监督、后果或不支持的字段")
+        if "source" in message:
+            source = message["source"]
+            require(isinstance(source, dict) and text(source.get("kind"))
+                    and not set(source) & {"replayState", "label", "targets", "basis", "probabilities", "provenance", "review", "outcome_refs"},
+                    "input_target_leakage", "消息来源必须保留实际 kind，不包含模型内部状态或监督字段")
     require(text(row["workflow"]) and isinstance(row["task"], dict) and set(row["task"]) == {"id", "semantics"}
             and text(row["task"]["id"]) and row["task"]["semantics"] in {"recommended_decision", "observed_action"},
             "invalid_task", "业务流程、任务身份或监督语义无效")
@@ -319,6 +377,8 @@ def receipt_rows(wrapper, entry, partition):
         eligible[item["record_id"]] = item
     for row in rows:
         validate_row(row, partition)
+        require(row["_meta"].get("dataset_id", wrapper["dataset_id"]) == wrapper["dataset_id"],
+                "receipt_identity_mismatch", "导出行批次身份与回执不一致")
         item = eligible.get(row["_meta"]["id"], {})
         require(item.get("legacy") is False and item.get("reasons") == [] and mode in item.get("export_modes", [])
                 and isinstance(item.get("eligible_questions"), list) and len(item["eligible_questions"]) == len(row["questions"])
@@ -528,7 +588,7 @@ def human_result(report):
         "reason_codes": reasons, "next_step": next_step, "artifacts": artifacts,
         "limitations": [
             '只核对本地留存回执与摘要；未回读平台或原始来源，当前服务器是否仍认可导出尚未确认。',
-            '人员复核不等同于独立真值；模型建议及未校准等原始状态保持原样。',
+            '保留实际复核方式；AI 委托复核仅用于功能验证，不等同人工或独立真值；模型建议及未校准等原始状态保持原样。',
             '自然语言中的泄漏、业务覆盖、编码长度、训练、部署及业务收益均未验证。',
         ],
         "diagnostics": [f'{error["code"]}: {error["message"]}' for error in report["errors"]],

@@ -4,7 +4,7 @@
 
 ## 取得真实输入
 
-人员在平台逐题复核 decision_time 并分配 train/development/calibration/test 后，保存 datasets/read 返回的 dataset_id/sha256，以及 datasets/export 实际回执。training 模式对应 train；其余三种同名。候选下载不能替代合格导出。
+在平台逐题复核 decision_time 并按授权分配 train/development/calibration/test 后，保存 datasets/read 返回的 dataset_id/sha256，以及 datasets/export 实际回执。复核保留实际方式；AI 委托复核记录真实 Session、模型和 functional_validation 用途，不等同人工或独立真值。training 模式对应 train；其余三种同名。候选下载不能替代合格导出。
 
 每个回执文件保存以下外壳：
 
@@ -45,6 +45,11 @@ python3 <core_dir>/scripts/platform_export.py MANIFEST.json --out NEW_DIR
 - 原 state/questions 是输入；targets、basis、observed_action、outcome_refs 和来源审计留在元数据侧。
 - choice/noul/score 标签保持原类型；软概率保持真实分布，不补 one-hot。
 - 原 ID、source_group_id、group_history、split 保留；模型建议经复核仍是 model_suggestion/uncalibrated，不伪装人工原始标注或 gold。
+- AI 改写的 ai_annotation、原始 origin 和 ai_delegated 复核身份保留在 _meta.platform.targets，不改变监督标签的证据等级。
 - 派生原生 _meta.group_id 与 bridge_group_id 写入来源/Run/Session/历史组的关联闭包，供 KEV 实际分折读取。原平台组保留在 _meta.platform.original_group_id 和报告 mappings。
-- 不重新随机切分。转换结果直接交 kev-training，dataset.kind=platform-v2；不要拿 choice-only IR 的审计字段要求判定这些多题 v2 导出不兼容。
+- 不重新随机切分。转换结果直接交 kev-training，dataset.kind=platform-v2；平台多题 v2 导出与 trace IR 使用各自的审计字段合同。
 - 结构检查不能发现所有自然语言泄漏或证明语义正确，训练前仍需复核切片与真实编码。
+
+## 回放输入的实际平台取证
+
+需要将已保存记录及其完整决策来源交给变体回放程序时，普通管理会话使用程序仓库的只读 `platform-replay-input.mts`，按[平台回放取证](../../kev-training/references/native-execution.md#平台回放取证)保存真实HTTP回执、来源分片和原生前缀；不以本地handler调用或手工复制的JSON代替实际平台回执。该入口不导出训练标签，也不改变本页既有训练导出合同。
