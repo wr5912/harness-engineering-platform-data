@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { generateKeyPairSync, verify } from 'node:crypto'
 import { createServer } from 'node:http'
+import { readFileSync } from 'node:fs'
 import test from 'node:test'
 import * as selection from '../dsh/managed/policy-selection-runtime.mjs'
 import * as delivery from '../dsh/managed/operation-result-delivery.mjs'
@@ -331,4 +332,20 @@ test('策略结果HTTP错误保留业务原因，真正连接失败不产生业�
   const failed = await transport.hooks.get('agent/request')({ agent: transport.agent, turn: 1, signal: new AbortController().signal }, async () => ({ provider: 'fixture-provider', model: 'basic-model' }))
   const failure = await takeStream(transport.adapters.get(failed.provider).stream({ sessionId: transport.agent.id }))
   assert.match(failure.find(item => item.type === 'text-delta')?.text ?? '', /未取得策略服务的有效回执/)
+})
+
+
+test('真实原生MCP Error包装保留业务原因，不接收拼接日志或伪成功', () => {
+  const fixture = JSON.parse(readFileSync(new URL('./fixtures/emergency-missing-target-native.json', import.meta.url), 'utf8'))
+  const native = structuredClone(fixture.events)
+  assert.equal(native[1].data.message.content[0].text, 'Error: {"code": 404, "message": "未找到对应模拟资产"}')
+  assert.equal(delivery.deliveryMarkdown(native, 1), '处理结果：未完成\n原因：未找到对应模拟资产')
+  for (const value of ['Error: {"code":404,"message":"未找到对应模拟资产"} trailing log', 'unrelated Error: {"code":404,"message":"未找到对应模拟资产"}', 'Error: {"code":200,"data":{"execution_status":"SUCCEEDED"}}', 'Error: {"jsonrpc":"2.0","error":{"code":-32000,"message":"protocol error"}}']) {
+    const events = structuredClone(native)
+    events[1].data.message.content[0].text = value
+    assert.match(delivery.deliveryMarkdown(events, 1), /未取得应急服务的有效回执/)
+  }
+  const notError = structuredClone(native)
+  notError[1].data.message.isError = false
+  assert.match(delivery.deliveryMarkdown(notError, 1), /未取得应急服务的有效回执/)
 })

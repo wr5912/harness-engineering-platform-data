@@ -1,0 +1,54 @@
+{
+  "source": {
+    "run_id": "run-336d94c7-a463-423e-80d2-891fb03ba574",
+    "case_id": "U-EMG-MISSING-TARGET",
+    "trace_sha256": "367f09789924814824011f3ae2c6ea865419a1c638497f8f660af8a5aaaeca39",
+    "event_seqs": [
+      24,
+      25
+    ]
+  },
+  "events": [
+    {
+      "type": "tool/call",
+      "seq": 24,
+      "time": 1793381354410,
+      "data": {
+        "turn": 1,
+        "step": 2,
+        "callId": "call_8f52c4a69cad4f54a9e650d6",
+        "name": "mcp__emergency-action__prepare_emergency_action",
+        "arguments": "{\"body\":{\"request_id\":\"req-20261030-blk-198.51.100.78-443-001\",\"intent\":\"在设备 172.16.2.103 上封禁源 IP 198.51.100.78 的 443 端口\",\"target_hint\":\"172.16.2.103\",\"params\":{\"src_ip\":\"198.51.100.78\",\"port\":443}}}"
+      }
+    },
+    {
+      "type": "tool/result",
+      "seq": 25,
+      "time": 1793381354567,
+      "data": {
+        "turn": 1,
+        "step": 2,
+        "message": {
+          "role": "tool",
+          "source": {
+            "kind": "tool",
+            "callId": "call_8f52c4a69cad4f54a9e650d6"
+          },
+          "toolCallId": "call_8f52c4a69cad4f54a9e650d6",
+          "content": [
+            {
+              "type": "text",
+              "text": "Error: {\"code\": 404, \"message\": \"未找到对应模拟资产\"}"
+            }
+          ],
+          "isError": true,
+          "id": "bb41c490-d990-4daf-b9ba-79072fa3af5d"
+        }
+      },
+      "sourceEventSeqs": [
+        24
+      ],
+      "surfaceOp": "append"
+    }
+  ]
+}

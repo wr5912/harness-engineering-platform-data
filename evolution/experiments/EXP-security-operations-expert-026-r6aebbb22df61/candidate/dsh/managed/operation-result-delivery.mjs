@@ -84,12 +84,15 @@ function toolResult(events, event) {
   let args = {}
   try { args = JSON.parse(call.data.arguments ?? '{}') } catch { /* Invalid args are represented as no trusted operation id. */ }
   const rawText = toolText(message)
+  const isError = message?.isError === true || message?.content?.some(item => item?.isError === true)
+  // 原生 MCP 错误将完整业务 JSON 包装为 Error: 文本；只在错误回执上解包这一固定前缀。
+  const payload = isError && rawText?.startsWith('Error: ') ? rawText.slice('Error: '.length) : rawText
   let value = null
-  try { value = JSON.parse(rawText) } catch { /* Transport and tool errors are often plain text. */ }
+  try { value = JSON.parse(payload) } catch { /* Transport and tool errors are often plain text. */ }
   return {
     name: call.data.name,
     args: record(args) ?? {},
-    isError: message?.isError === true || message?.content?.some(item => item?.isError === true),
+    isError,
     rawText,
     value: record(value),
   }
