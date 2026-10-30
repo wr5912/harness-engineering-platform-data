@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答明确追问缺少的数量（件），未猜测或代填数量，也未给出任何合计结果，三项要求均满足，证据为索引0的追问内容。",
+    "requirements": [
+      {
+        "requirement": "追问缺少的数量，不猜测或代填数量，不给出任何合计结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "请问数量是多少件？缺少数量我无法计算合计，请提供数量（件），我会按“单价 × 数量”为你计算。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-5c30a08c-2f12-45bb-a62b-ed185476dafc",
+    "workspace_id": "bd2447d2-8801-44eb-b4a7-b4820bf33471",
+    "session_title": "评审 U-RECEIPT-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

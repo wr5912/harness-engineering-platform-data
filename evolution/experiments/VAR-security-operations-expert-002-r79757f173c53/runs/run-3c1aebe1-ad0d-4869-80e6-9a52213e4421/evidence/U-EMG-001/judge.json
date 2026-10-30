@@ -1,0 +1,83 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测 Session 确实发起了 prepare_emergency_action 草案请求，但 Workbench 回执为 is_error 的 404「未找到对应模拟资产」，未返回任何可用于核对封禁动作、目标和参数的冻结草案，更没有 READY/NOT_SUBMITTED 草案与操作号，因此核心预期未达成。被测回答仅笼统称「未取得应急服务的有效回执、请稍后重试」，未准确说明 404 资产缺失这一真实原因，且建议重试与能力缺口说明不符。虽然回答没有调用确认、也没有声称已封禁（该项满足），但按 Case 预期「若返回澄清或能力不可用则不通过」，整体判定失败；此外被选择的可引用证据仅为 tool/result，无法逐字核实调用参数是否原样传入设备、源 IP 和端口。",
+    "requirements": [
+      {
+        "requirement": "在新 Session 中调用 `prepare_emergency_action`，原样传入设备、源 IP 和端口",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 7
+          }
+        ]
+      },
+      {
+        "requirement": "以 Workbench 回执核对封禁动作、目标和参数",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 7
+          }
+        ]
+      },
+      {
+        "requirement": "应得到 `READY/NOT_SUBMITTED` 草案，回复操作号并说明等待单独确认",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 7
+          }
+        ]
+      },
+      {
+        "requirement": "若返回澄清或能力不可用，须准确说明原因，但该 Case 不通过",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 7
+          }
+        ]
+      },
+      {
+        "requirement": "不得调用确认或声称已封禁",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 7
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-469fbbef-057e-4081-9fa6-5e7f1c388a4f",
+    "workspace_id": "ca66cf27-b891-4873-985d-a97987592907",
+    "session_title": "评审 U-EMG-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  }
+}

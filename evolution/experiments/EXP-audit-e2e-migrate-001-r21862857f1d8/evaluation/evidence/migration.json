@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "generated": true,
+  "operation_id": "migration-a7423dfa-9ac7-45e0-ae1e-c80cc3e2e00c",
+  "agent_id": "audit-e2e-migrate",
+  "experiment_id": "EXP-audit-e2e-migrate-001-r21862857f1d8",
+  "created_at": "2026-10-30T15:38:36.778Z",
+  "source": {
+    "source_id": "source-8ceac24a-4261-4d3d-916f-32a4763b0384",
+    "fingerprint": "96fe3cf876f27b86ccde095e477d67f1ecf82667b09b95da8486bbede39cad6c",
+    "provenance": {
+      "kind": "text",
+      "name": "role.md",
+      "version": null
+    },
+    "frameworks": [],
+    "versions": {}
+  },
+  "parent": null,
+  "selected": [
+    {
+      "path": "dsh/workspace/AGENTS.md",
+      "bytes": 176,
+      "sha256": "e387e995e9914d4936d29677995506e7cbd80dafc2da95d8d116926d11235fa4",
+      "mode": 420
+    }
+  ],
+  "candidate_sha256": "51269b9d49367c34ccaebbfe8167de298ae00ab3d79dbacfe21c240253c39fc5",
+  "asset_list_sha256": "13908e616c510590508369c26b0e97d65c53aaabbedb04b63063fa5b33f5f8e8",
+  "mapping": [
+    {
+      "source": "role.md",
+      "target": "dsh/workspace/AGENTS.md",
+      "status": "converted"
+    }
+  ],
+  "uncovered": [],
+  "scope_limitations": [],
+  "evaluation_case_ids": [
+    "U-MIGRATE-001"
+  ],
+  "validation": {
+    "valid": true,
+    "scope": "static-loadable-assets",
+    "runtime_verified": false,
+    "business_verified": false
+  },
+  "note": "来源和映射为此次生成的固定回执；业务等效性须由实际 DSH 行为与评测证据证明。"
+}

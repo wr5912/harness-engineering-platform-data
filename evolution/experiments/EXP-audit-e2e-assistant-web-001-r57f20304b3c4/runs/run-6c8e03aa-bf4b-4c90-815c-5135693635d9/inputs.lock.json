@@ -1,0 +1,211 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-6c8e03aa-bf4b-4c90-815c-5135693635d9",
+  "source_id": "experiment:EXP-audit-e2e-assistant-web-001-r57f20304b3c4",
+  "source_kind": "experiment",
+  "baseline_ref": "none:first-experiment",
+  "candidate_sha256": "c18d568075899f63b7f6858e3257a1c79bc417ca04e653ca31a598ec9b6725e3",
+  "created_at": "2026-10-30T15:26:01Z",
+  "harness_trees": {
+    "workspace": {
+      "tree_sha256": "sha256:d3eae5df1a20fc9559c934063c0b641a6b5c2fdb3b130cfbe3f8192f60e728a7",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 2,
+      "total_bytes": 1574,
+      "files": [
+        {
+          "mode": "0664",
+          "path": ".env",
+          "sha256": "e574f8d1faf66f9167c33055ae1e2f99c70b031811f64aaac5bae1be54a19489",
+          "size": 84
+        },
+        {
+          "mode": "0664",
+          "path": "AGENTS.md",
+          "sha256": "0cbb747b2e9e4b2f9c17cd2646aef315090de631befbc7970cfaf13b12fbb056",
+          "size": 1490
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    },
+    "presets": {
+      "tree_sha256": "sha256:bbbb4ba81757d019c2e703917622c59524c6ed68c97b5efc367bc4e272043d10",
+      "directory_sha256": "sha256:d7be9c87b5dcfe407b98534ac0abc9b0cda74133e4b089861de0b6838af8f9e7",
+      "file_count": 2,
+      "total_bytes": 734,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "audit-e2e-assistant-web/agent.cordis.yml",
+          "sha256": "7a478170d3e36a60dce31f14f2034544d544a59f27e577211f870359050bdd80",
+          "size": 493
+        },
+        {
+          "mode": "0664",
+          "path": "audit-e2e-assistant-web/preset.yml",
+          "sha256": "c70a925832abfdae94e3283e9648e8839d241cae49366c778eb21f811cb44c4f",
+          "size": 241
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "audit-e2e-assistant-web",
+          "mode": "0775"
+        }
+      ]
+    },
+    "managed": {
+      "tree_sha256": "sha256:d6428269a697ab645c6015180d9d4e931fbe1a9d2457e6b72677c4f20397c0c0",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 1,
+      "total_bytes": 460,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "audit-e2e-assistant-web.patch.yml",
+          "sha256": "a1dc69022b32f375d97f977b242e85d347786c25db90496a784033f9165d0330",
+          "size": 460
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    }
+  },
+  "reference_tree": {
+    "tree_sha256": "sha256:93e98a3e1e1dacd20ffd11d564393361fa70f2f424ae345df8d6e07457c8f888",
+    "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+    "file_count": 2,
+    "total_bytes": 2204,
+    "files": [
+      {
+        "mode": "0664",
+        "path": "evaluation.md",
+        "sha256": "5607df45464acbf228af8621c9333e04985d179de73b94cb1fe2eab5d74c4f51",
+        "size": 1808
+      },
+      {
+        "mode": "0664",
+        "path": "manifest.yaml",
+        "sha256": "a6fea90fa8ff9764421b09c270701cd8d4c5ea03ec09dabd6424a875d4967235",
+        "size": 396
+      }
+    ],
+    "directories": [
+      {
+        "path": ".",
+        "mode": "0775"
+      }
+    ]
+  },
+  "evaluation_sha256": "c3f682f75f32e2ad11c91e9db622ce388817a9d04043542a727628b343964b86",
+  "evaluation_cases": [
+    {
+      "case_id": "U-RECEIPT-001",
+      "title": "单价与数量齐全时计算合计并说明单位",
+      "inputs": [
+        "单价17.5元，数量4件，合计多少？"
+      ],
+      "expected_behavior": "回答合计70元，并说明单位与算式（如 单价 17.5 元/件 × 数量 4 件 = 合计 70 元）。不虚构其他数据，不声称调用任何外部系统。"
+    },
+    {
+      "case_id": "U-RECEIPT-002",
+      "title": "缺少数量时追问而不猜测",
+      "inputs": [
+        "单价12元，合计多少？"
+      ],
+      "expected_behavior": "追问缺少的数量，不猜测或代填数量，不给出任何合计结果。"
+    }
+  ],
+  "case_catalog": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ROLE-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-RECEIPT-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-RECEIPT-002",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-RECEIPT-003",
+      "scene": "未分组",
+      "fast": false
+    }
+  ],
+  "selection_mode": "explicit",
+  "review_mode": "ai",
+  "configured_capabilities": [
+    "/opt/dsh-presets"
+  ],
+  "declared_guard": null,
+  "evaluation_implementation": {
+    "dsh-eval": "dbf61385619d6c22200a8dd57ab2b3cf1e2d23c72bbecb1ab115597a387886f9",
+    "dsh-eval-api.mjs": "e92f5cb387438fb99bd39f5f84515d981d7ca579abacb17162946a83b2645cc0",
+    "dsh-eval-browser.mjs": "85ce49fcac79d07e8e26f28d04c59266aff76a46a898450c80398f7dab913eb9",
+    "dsh-eval-common.mjs": "a11fdce1d326623fd9db7de45fe0fdb882b1cb4125f531d5d4a66aa665e373e8",
+    "harness-runtime.mts": "096641227341a173048ec1745a016cf2fc1f954202adcd1719f7221d19b70e0b",
+    "run_record.py": "545bf4cddcc207ce1e1ddb63d8474df115c6d4d3d8d35120fd9f0f567c6a3d7d",
+    "scenario_analysis.py": "89ea55ba1d73f9a39e80c75e35fc3bca16527df9b81094715c42e2a06ab704a2",
+    "evaluation-judge-guard.mjs": "ad46cdd4c8264d3023bf0ea33327fdb60869209a3463f32f6cf30a347483219d",
+    "scenario-analysis-guard.mjs": "21c9b85f5400fefadbb39145d97409bd158a050941e076da249a504c8f24d541",
+    "evaluation-presets/evaluation-judge/agent.cordis.yml": "6c0c0c93018b318942d7334026e43b12124fa0fcabe166076d6e3d49f9e24f59",
+    "evaluation-presets/evaluation-judge/preset.yml": "df22cd2de4f05a31a21a2f041f44b2de57a48140797602ed4bf068e216a62a5e",
+    "evaluation-presets/scenario-analysis/agent.cordis.yml": "43786861869c364c343ea2fffd87a2b85a0756b8947cebf2233bb5d5bc830cbc",
+    "evaluation-presets/scenario-analysis/preset.yml": "b9ca918a58de3bb8b043ec0847937950e06bc27c1cc7b155dd0823ee1076be03",
+    "platform/plugin/src/agents/asset-build.ts": "e28e706224902ea67164095ef1aeb0f5fe26222181511e3751ce5087f4042f05",
+    "platform/plugin/src/agents/asset-build-core.ts": "1d58fa4380139f757b20c5f37e8c5d9104a5ddd402dc8091db2e1928f0121609",
+    "platform/plugin/src/agents/asset-dependencies.ts": "e558ab49663de3c7f5f0bb7f1d89c9e4572a0c7a5c527d61e65c5304efeeadb5",
+    "platform/plugin/src/models/harness-runtime.ts": "933014f241aa85b33564aafbab9d8d3a97b4161b671f6c84622184e0346f02f2"
+  },
+  "dependency_env": {
+    "DEEPSEEK_API_KEY": true
+  },
+  "git_version": {
+    "commit": "097eeb0c91f0bc2fd6b0c93e5c06d57d4fae7c3f",
+    "dirty": true,
+    "changed_path_count": 12
+  },
+  "program_origin": {
+    "commit": "9ac455a48b09b28db2dd2c220e27276405b8e237",
+    "dirty": true,
+    "changed_path_count": 1,
+    "root": "/home/admin/work/harness-engineering-platform"
+  },
+  "asset_origin": {
+    "commit": "097eeb0c91f0bc2fd6b0c93e5c06d57d4fae7c3f",
+    "dirty": true,
+    "changed_path_count": 12,
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "candidate_sha256": "c18d568075899f63b7f6858e3257a1c79bc417ca04e653ca31a598ec9b6725e3"
+  },
+  "harness_review": {
+    "schema_version": 1,
+    "generated": [],
+    "sources": []
+  },
+  "executor": "api"
+}

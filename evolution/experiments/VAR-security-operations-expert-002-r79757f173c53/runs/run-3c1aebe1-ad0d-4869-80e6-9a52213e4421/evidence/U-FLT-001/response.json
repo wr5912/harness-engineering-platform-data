@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "排查 172.16.1.165 到 172.16.2.100（版本服务业务服务器）无法访问，并给出修复建议；后续基于正式故障结果发起处置。"
+  ],
+  "assistant_texts": [
+    "故障排查子智能体（`be4d5db4`）已启动，正在通过 SOC 只读工具对 172.16.1.165 与 172.16.2.100 开展资产解析、拓扑路径与覆盖/事件取证。取证完成后我会汇总正式故障结论、修复建议，并说明后续处置如何发起。"
+  ],
+  "session_id": "session-47fb20f7-69fb-46fb-8086-9b3a6056226d",
+  "turns": [
+    {
+      "assistant_text": "故障排查子智能体（`be4d5db4`）已启动，正在通过 SOC 只读工具对 172.16.1.165 与 172.16.2.100 开展资产解析、拓扑路径与覆盖/事件取证。取证完成后我会汇总正式故障结论、修复建议，并说明后续处置如何发起。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ff206fc7-05b9-4c1b-88b4-a2ead6d24bbb"
+    }
+  ]
+}

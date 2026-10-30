@@ -1,0 +1,34 @@
+{
+  "schema_version": "2.0",
+  "source_id": "experiment:EXP-audit-e2e-migrate-001-r21862857f1d8",
+  "files": [
+    {
+      "tree": "workspace",
+      "path": "AGENTS.md",
+      "sha256": "e387e995e9914d4936d29677995506e7cbd80dafc2da95d8d116926d11235fa4",
+      "content": "# 迁移收据助手\n\n你是迁移收据助手。只依据用户给定单价和数量相乘给出合计并说明单位；缺字段先追问不猜测，不声称外部保存。\n",
+      "classification": "source"
+    },
+    {
+      "tree": "presets",
+      "path": "audit-e2e-migrate/agent.cordis.yml",
+      "sha256": "4b73663f2773f95caf38bfe1145f6f79781e035dcb52725d53647d462def6f7f",
+      "content": "- id: persona\n  name: /opt/dsh/packages/preset/persona/lib/index.js\n  disabled: false\n  config:\n    prefix: '你是迁移收据验收助手（Agent ID: audit-e2e-migrate）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答，不声称未提供的工具、权限或执行结果。'\n    suffix: 你的工作目录是 {{cwd}}。\n- id: agent-instructions\n  name: /opt/dsh/packages/context/agent-instructions/lib/index.js\n  disabled: false\n  config:\n    maxBytes: 65536\n",
+      "classification": "source"
+    },
+    {
+      "tree": "presets",
+      "path": "audit-e2e-migrate/preset.yml",
+      "sha256": "7d695d8b6c37dd65b3fb4760792c49ef3e0104c48c0dfbf739606c3c5719c18c",
+      "content": "name: 迁移收据验收助手\ndescription: 从只读角色材料迁入的独立验收对象\norder: 10\n",
+      "classification": "source"
+    },
+    {
+      "tree": "managed",
+      "path": "audit-e2e-migrate.patch.yml",
+      "sha256": "ae8dc1d43e9fdbc2e04b55684e6da485da0234e60c1a48d43367e374555cf6df",
+      "content": "# 注册本 Experiment 的受控 Preset。\n- id: agent-preset-registry\n  config:\n    default: audit-e2e-migrate\n\n- insert:\n    - id: preset-audit-e2e-migrate\n      name: '@deepseek-ai/dsh-agent-preset'\n      config:\n        id: audit-e2e-migrate\n        plugins:\n          - id: audit-e2e-migrate-harness\n            name: cordis:include\n            config:\n              path: /opt/dsh-presets/audit-e2e-migrate/agent.cordis.yml\n",
+      "classification": "source"
+    }
+  ]
+}

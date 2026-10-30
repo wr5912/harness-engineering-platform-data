@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "对资产标识 A-001 执行匹配的巡检。"
+  ],
+  "assistant_texts": [
+    "本次巡检未能发起。实际情况如下：\n\n**结论**：巡检服务中不存在资产标识 `A-001`，无法对它发起巡检。\n\n**过程与依据（事实）**：\n1. 查询当前可执行巡检目录，只有一个已发布模板：\n   - 名称：基础资产健康巡检（`taskId: mock-health-inspection`，`definitionVersion: 1`）\n   - 巡检项：资产在线状态、采集连接状态\n   - 适用范围：当前全部测试资产\n2. 以该模板、范围限定 `assetIds: [\"A-001\"]` 发起巡检，服务返回：`404 未找到对应模拟资产`。\n3. 随后查询巡检服务器的 MCP 资源清单，返回为空，没有可用于核对资产标识的资产清单资源。\n\n**证据缺口**：当前巡检目录只说明覆盖“当前全部测试资产”，但未列出具体资产标识；本次没有可用手段查询服务侧的资产 ID 列表，因此无法判断是标识写法有误还是该资产未纳管。\n\n**建议（尚未执行）**：\n- 请确认资产标识的正确写法（例如是否包含前缀、大小写差异），或提供服务侧登记的准确 ID，我可沿用同一模板重新发起。\n- 如需改为对“当前全部测试资产”做一次全量巡检，也可以明确授权，我会省略 `scope` 发起并沿用 `runId` 查询结果。"
+  ],
+  "session_id": "session-c26b207e-1a68-4b74-8a06-042c51ed90e8",
+  "turns": [
+    {
+      "assistant_text": "本次巡检未能发起。实际情况如下：\n\n**结论**：巡检服务中不存在资产标识 `A-001`，无法对它发起巡检。\n\n**过程与依据（事实）**：\n1. 查询当前可执行巡检目录，只有一个已发布模板：\n   - 名称：基础资产健康巡检（`taskId: mock-health-inspection`，`definitionVersion: 1`）\n   - 巡检项：资产在线状态、采集连接状态\n   - 适用范围：当前全部测试资产\n2. 以该模板、范围限定 `assetIds: [\"A-001\"]` 发起巡检，服务返回：`404 未找到对应模拟资产`。\n3. 随后查询巡检服务器的 MCP 资源清单，返回为空，没有可用于核对资产标识的资产清单资源。\n\n**证据缺口**：当前巡检目录只说明覆盖“当前全部测试资产”，但未列出具体资产标识；本次没有可用手段查询服务侧的资产 ID 列表，因此无法判断是标识写法有误还是该资产未纳管。\n\n**建议（尚未执行）**：\n- 请确认资产标识的正确写法（例如是否包含前缀、大小写差异），或提供服务侧登记的准确 ID，我可沿用同一模板重新发起。\n- 如需改为对“当前全部测试资产”做一次全量巡检，也可以明确授权，我会省略 `scope` 发起并沿用 `runId` 查询结果。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "de019d63-0be1-4eb7-be41-bcf4ee8b7974"
+    }
+  ]
+}

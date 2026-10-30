@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-QA-002",
+  "transport": "api",
+  "expected_behavior": "先真实列出知识库，再检索最相关知识库；回复中的知识库名、文档名、分块序号、分数和匹配类型与本轮工具结果一致。工具不可用或无证据时明确说明，且没有无来源的流程内容。",
+  "session_id": "session-b9c1b650-04c3-41f2-a1fa-37f2efb5b6b9",
+  "workspace_id": "e1b516c9-80ee-48ef-8931-726077d6917e",
+  "session_title": "评测 U-QA-002",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-047b854a-eae0-4892-8104-545afce517f1",
+    "workspace_id": "e1b516c9-80ee-48ef-8931-726077d6917e",
+    "session_title": "评审 U-QA-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

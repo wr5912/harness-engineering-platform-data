@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答未取得 SEC-KB-078 的真实知识库内容（可用能力仅列出巡检目录与调度查询，无知识库检索工具），但回答在开头即明确声明本会话未配置知识库检索能力、无法调取 SEC-KB-078 原文，并将随后的 SOAR 剧本说明标注为通用概念、不代表该编号条目的权威表述，未冒充内部知识，符合预期的检索不到时的兜底要求。可引用证据仅有 citation_allowed 为 true 的被测回答正文（索引 0），工具调用与其回执均为 citation_allowed false，不能作为支撑证据选择；但依据索引 0 已足以确认兜底说明清晰、无冒充。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-001"
+}

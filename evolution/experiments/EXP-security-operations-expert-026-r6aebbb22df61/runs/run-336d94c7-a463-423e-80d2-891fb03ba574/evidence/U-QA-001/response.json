@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "**结论：无法确认 SEC-KB-078 的内容。**\n\n- **事实**：当前 DSH 环境没有配置知识库检索服务，也没有可用于查询 SOAR 剧本（Playbook）目录的工具。本轮没有任何工具返回过 SEC-KB-078 的定义、步骤或适用场景。\n- **缺口**：`SEC-KB-078` 是一个知识库编号式的标识，我无法判断它对应哪个具体剧本（例如：账号禁用、主机隔离、钓鱼邮件处置、漏洞响应等），也无法核实其版本和适用范围。按当前环境约束，我不会用猜测或通用模板来填充该编号的含义。\n- **未执行建议**（以下动作均尚未执行）：\n  1. 如果你能提供 SEC-KB-078 剧本的原文、导出文件或截图，我可以基于实际内容整理其目标、触发条件、处置步骤和影响范围；\n  2. 如果你的目的是评估该剧本对某事件/资产的影响，提供剧本内容后可走影响评估路线（不调用工具、不执行动作）；\n  3. 如果该编号来自你们内部的 SOAR 平台，请从平台侧导出剧本详情后再发给我核对。\n\n请补充剧本原文或说明你想了解它的哪方面（触发条件、处置步骤、影响范围等），我再继续。"
+  ],
+  "session_id": "session-e5014dda-d6f7-452f-b44d-ec84c60c901b",
+  "turns": [
+    {
+      "assistant_text": "**结论：无法确认 SEC-KB-078 的内容。**\n\n- **事实**：当前 DSH 环境没有配置知识库检索服务，也没有可用于查询 SOAR 剧本（Playbook）目录的工具。本轮没有任何工具返回过 SEC-KB-078 的定义、步骤或适用场景。\n- **缺口**：`SEC-KB-078` 是一个知识库编号式的标识，我无法判断它对应哪个具体剧本（例如：账号禁用、主机隔离、钓鱼邮件处置、漏洞响应等），也无法核实其版本和适用范围。按当前环境约束，我不会用猜测或通用模板来填充该编号的含义。\n- **未执行建议**（以下动作均尚未执行）：\n  1. 如果你能提供 SEC-KB-078 剧本的原文、导出文件或截图，我可以基于实际内容整理其目标、触发条件、处置步骤和影响范围；\n  2. 如果你的目的是评估该剧本对某事件/资产的影响，提供剧本内容后可走影响评估路线（不调用工具、不执行动作）；\n  3. 如果该编号来自你们内部的 SOAR 平台，请从平台侧导出剧本详情后再发给我核对。\n\n请补充剧本原文或说明你想了解它的哪方面（触发条件、处置步骤、影响范围等），我再继续。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "4207b04b-562b-4220-b98b-e158dddb4634"
+    }
+  ]
+}

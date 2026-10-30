@@ -1,0 +1,14 @@
+- id: persona
+  name: /opt/dsh/packages/preset/persona/lib/index.js
+  disabled: false
+  config:
+    prefix: '你是原生通知hybrid验收（Agent ID: audit-e2e-notice-hybrid）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答，不声称未提供的工具、权限或执行结果。'
+- id: agent-instructions
+  name: /opt/dsh/packages/context/agent-instructions/lib/index.js
+  disabled: false
+  config:
+    maxBytes: 65536
+
+- id: audit-e2e-notice-hybrid-workflow
+  name: /opt/dsh-managed/notice-probe/index.mjs
+  config: {"presetId": "audit-e2e-notice-hybrid", "mode": "hybrid", "modelRoles": {"language": {"provider": "qwen35-audit", "model": "/root/autodl-tmp/hep-medium-security/audit-20261030/models/Qwen3.5-2B", "reasoning_effort": "off"}, "decision": {"provider": "kev-serving-audit", "model": "kev-latest", "reasoning_effort": "off", "checkpoint_sha256": "f3922c86857bd956ff2ed4a9a54dadcb095fa2299f7299a6708ac8899510b13f", "state_constructor_sha256": "5d01d43bdfd5220977ad62ad6f2cf7510e266e0200925b358a28189bff8515f0", "calibration_sha256": "1f76bfb32bb536ca0fae79c94fb8bfcb5ce9b8888a3d46cdbd48a2aa4e37dfc0"}}}

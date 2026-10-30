@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "对资产标识 A-001 执行匹配的巡检。"
+  ],
+  "assistant_texts": [
+    "巡检未能发起。\n\n- **已核对**：当前仅有一个可执行模板——“基础资产健康巡检”（`mock-health-inspection`，版本 1），巡检项为“资产在线状态”和“采集连接状态”，适用范围为“当前全部测试资产”。\n- **实际结果**：按该模板对资产标识 `A-001` 发起巡检时，巡检服务返回 404：“未找到对应模拟资产”。因此没有生成 `runId`，也没有巡检结论或报告。\n- **说明与缺口**：这只能说明 `A-001` 未被巡检服务的当前测试资产范围识别，不能排除它是其他系统中的资产或标识大小写/格式有出入。\n\n建议您核对并提供巡检服务中的准确资产标识后重试；该重试尚未执行。"
+  ],
+  "session_id": "session-bc58d0dc-6f6e-43b0-abf3-dc13f9b32367",
+  "turns": [
+    {
+      "assistant_text": "巡检未能发起。\n\n- **已核对**：当前仅有一个可执行模板——“基础资产健康巡检”（`mock-health-inspection`，版本 1），巡检项为“资产在线状态”和“采集连接状态”，适用范围为“当前全部测试资产”。\n- **实际结果**：按该模板对资产标识 `A-001` 发起巡检时，巡检服务返回 404：“未找到对应模拟资产”。因此没有生成 `runId`，也没有巡检结论或报告。\n- **说明与缺口**：这只能说明 `A-001` 未被巡检服务的当前测试资产范围识别，不能排除它是其他系统中的资产或标识大小写/格式有出入。\n\n建议您核对并提供巡检服务中的准确资产标识后重试；该重试尚未执行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "fc624840-2d01-4d62-916d-8dfa2e5aad34"
+    }
+  ]
+}

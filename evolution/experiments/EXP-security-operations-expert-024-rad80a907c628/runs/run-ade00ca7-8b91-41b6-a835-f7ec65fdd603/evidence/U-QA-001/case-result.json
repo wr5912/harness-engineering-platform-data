@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答未凭常识冒充内部知识，明确声明无法获取 SEC-KB-078 的真实知识库内容，并将通用 SOAR 剧本说明显式标注为“非 SEC-KB-078 原文”，同时给出获取原文的可行途径。同一 Session 的工具回执（is_error=false 的 skill 结果）确认 security-investigation Skill 中明载“当前没有知识库检索服务”，与回答中的失败说明相互印证，满足‘检索不到时明确说明，不冒充’的要求；由于确实无检索通道，无法提供文档分块来源的分支不构成不满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-001"
+}

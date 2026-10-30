@@ -171,6 +171,17 @@
         "mode": "all",
         "names": []
       }
+    },
+    {
+      "id": "audit-e2e-source",
+      "serverName": "audit-e2e-source",
+      "description": "端到端独立只读接口验收",
+      "enabled": true,
+      "specUrl": "http://127.0.0.1:35479/openapi.json",
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
     }
   ],
   "groups": [
@@ -284,6 +295,20 @@
             "http://127.0.0.1:58431/api/v1/policy-configurations/{operationId}/result",
             "http://127.0.0.1:58431/api/v1/policy-configurations/{operationId}"
           ]
+        }
+      ]
+    },
+    {
+      "id": "audit-e2e-readonly",
+      "members": [
+        {
+          "serverId": "audit-e2e-source",
+          "names": [
+            "get_asset",
+            "list_alerts"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
         }
       ]
     }

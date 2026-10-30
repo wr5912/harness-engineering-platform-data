@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "回答仅包含单价、数量与合计的算式及单位，合计为70元，完全满足算式与单位说明要求；内容中未出现任何虚构数据，也未声称调用外部系统，第二项要求同样满足。",
+    "requirements": [
+      {
+        "requirement": "回答合计70元，并说明单位与算式（如 单价 17.5 元/件 × 数量 4 件 = 合计 70 元）",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "单价 17.5 元/件 × 数量 4 件 = **合计 70 元**。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "不虚构其他数据，不声称调用任何外部系统",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "单价 17.5 元/件 × 数量 4 件 = **合计 70 元**。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-fb07b2c2-7d1d-4258-9888-69f806611e7a",
+    "workspace_id": "6adaaff5-1b50-4277-9280-551fceda0bac",
+    "session_title": "评审 U-RECEIPT-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

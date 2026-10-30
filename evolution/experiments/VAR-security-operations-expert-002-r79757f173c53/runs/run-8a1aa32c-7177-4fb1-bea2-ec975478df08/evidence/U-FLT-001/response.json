@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "排查 172.16.1.165 到 172.16.2.100（版本服务业务服务器）无法访问，并给出修复建议；后续基于正式故障结果发起处置。"
+  ],
+  "assistant_texts": [
+    "工作流执行结果未知，已停止；请核对本轮工具回执后继续。"
+  ],
+  "session_id": "session-19476b87-9cbb-4bfe-b058-05ebbb3b6c8f",
+  "turns": [
+    {
+      "assistant_text": "工作流执行结果未知，已停止；请核对本轮工具回执后继续。",
+      "route": {
+        "provider": "harness-workflow",
+        "model": "hybrid-v1",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "f5f634b2-54d0-46a4-a5e8-5f8d40111588"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "请用验收工具计算：单价17.5元，数量4件，合计多少？"
+  ],
+  "assistant_texts": [
+    "已调用验收工具 `receipt_total` 计算，回执结果如下：\n\n- 单价：17.5 元/件\n- 数量：4 件\n- 算式：17.5 × 4 = 70\n- **合计：70 元**（金额单位随单价单位，数量单位随输入数量单位）\n\n工具为只读本地乘法计算，未访问外部系统，也未保存任何业务数据。"
+  ],
+  "session_id": "session-9b4d32a9-46b7-4de2-b88d-84721a44f7b6",
+  "turns": [
+    {
+      "assistant_text": "已调用验收工具 `receipt_total` 计算，回执结果如下：\n\n- 单价：17.5 元/件\n- 数量：4 件\n- 算式：17.5 × 4 = 70\n- **合计：70 元**（金额单位随单价单位，数量单位随输入数量单位）\n\n工具为只读本地乘法计算，未访问外部系统，也未保存任何业务数据。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "receipt_total",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "0e01fab6-b154-4035-855f-cf72d33f6dad"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# 本地原生委派技术验收，主子会话继承同一固定Preset；没有外部业务连接。
+- id: session-title-llm
+  disabled: true
+- id: compaction-basic
+  disabled: true
+- id: command-compact
+  disabled: true
+- id: agent-preset-registry
+  config:
+    default: audit-e2e-notice-code
+- insert:
+    - id: preset-audit-e2e-notice-code
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: audit-e2e-notice-code
+        plugins:
+          - id: audit-e2e-notice-code-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/audit-e2e-notice-code/agent.cordis.yml
+          - id: audit-e2e-notice-code-delegate
+            name: '@deepseek-ai/dsh-tool-subagent'
+            config:
+              provider: spawn
+              toolName: delegate_audit_notice
+              maxDepth: 1

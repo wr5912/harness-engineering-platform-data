@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答未编造 SEC-KB-078 的内容，明确说明当前会话无知识库检索能力、无法按编号查询，并给出可核对的后续路径（提供原文或转用事件/资产线索取证）。这符合预期中“检索不到时明确说明，不凭常识冒充内部知识”的兜底分支；证据索引 0 的正文即为该明确声明，无任何冒充真实知识库来源的表述。",
+    "requirements": [
+      {
+        "requirement": "检索并依据 SEC-KB-078 的真实知识库内容回答，给出可核对的文档或分块来源",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "我无法确认 SEC-KB-078 的具体内容。当前会话没有配置知识库检索能力，无法按编号查询 SOAR 剧本文档；按工作区规则，我也不能猜测或编造该编号对应的剧本内容。\n\n可行的下一步（均尚未执行）：\n\n- 请提供 SEC-KB-078 的原文内容、截图或导出文件，我可以帮你梳理该 SOAR 剧本的触发条件、处置步骤、涉及的自动化动作和审批环节。\n- 如果这个编号实际对应某个 SOC 事件（`INC-YYYYMMDD-NNNNNN`）或某台资产，请给出对应的事件 ID 或资产信息，我可以转入威胁研判或故障排查路线用真实工具取证。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "检索不到时明确说明，不凭常识冒充内部知识",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "我无法确认 SEC-KB-078 的具体内容。当前会话没有配置知识库检索能力，无法按编号查询 SOAR 剧本文档；按工作区规则，我也不能猜测或编造该编号对应的剧本内容。\n\n可行的下一步（均尚未执行）：\n\n- 请提供 SEC-KB-078 的原文内容、截图或导出文件，我可以帮你梳理该 SOAR 剧本的触发条件、处置步骤、涉及的自动化动作和审批环节。\n- 如果这个编号实际对应某个 SOC 事件（`INC-YYYYMMDD-NNNNNN`）或某台资产，请给出对应的事件 ID 或资产信息，我可以转入威胁研判或故障排查路线用真实工具取证。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-9751c9da-c4fe-4f66-ace9-a38b8fa1b7d3",
+    "workspace_id": "e1b516c9-80ee-48ef-8931-726077d6917e",
+    "session_title": "评审 U-QA-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

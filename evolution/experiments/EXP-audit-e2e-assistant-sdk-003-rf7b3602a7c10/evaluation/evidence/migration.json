@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "generated": true,
+  "operation_id": "migration-0ae772b8-c999-483c-8e96-5b7cd3a5b9fa",
+  "agent_id": "audit-e2e-assistant-sdk",
+  "experiment_id": "EXP-audit-e2e-assistant-sdk-003-rf7b3602a7c10",
+  "created_at": "2026-10-30T15:38:37.732Z",
+  "source": {
+    "source_id": "source-376ca568-7bd8-4aea-8ff3-92d064c1e717",
+    "fingerprint": "773b2beab9f127b7036f9fde587d509188a440cc8aefdfb40a8d7606a57e09e6",
+    "provenance": {
+      "kind": "text",
+      "name": "sdk-role.md",
+      "version": null
+    },
+    "frameworks": [],
+    "versions": {}
+  },
+  "parent": {
+    "experiment_id": "EXP-audit-e2e-assistant-sdk-001-rf5fad789b04e",
+    "ref": "git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1"
+  },
+  "selected": [
+    {
+      "path": "dsh/workspace/migration-note.md",
+      "bytes": 85,
+      "sha256": "4fac0ba03e7adde16a423bd01f221236f7f4dd86f7a8c22885f873441a73bf16",
+      "mode": 420
+    }
+  ],
+  "candidate_sha256": "9b5c857e9187e11114df6c16207e4eff787893f17c6fcb542657dca4ce0c2609",
+  "asset_list_sha256": "70cfa2526d4684c202dfcc61b0780c88d09a15be5e8e1622694da2292506ad97",
+  "mapping": [
+    {
+      "source": "sdk-role.md",
+      "target": "dsh/workspace/migration-note.md",
+      "status": "native"
+    }
+  ],
+  "uncovered": [],
+  "scope_limitations": [],
+  "evaluation_case_ids": [
+    "U-RECEIPT-SDK-001"
+  ],
+  "validation": {
+    "valid": true,
+    "scope": "static-loadable-assets",
+    "runtime_verified": false,
+    "business_verified": false
+  },
+  "note": "来源和映射为此次生成的固定回执；业务等效性须由实际 DSH 行为与评测证据证明。"
+}

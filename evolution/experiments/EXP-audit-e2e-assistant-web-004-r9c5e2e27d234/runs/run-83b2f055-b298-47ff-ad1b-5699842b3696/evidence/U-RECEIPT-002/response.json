@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "单价12元，合计多少？"
+  ],
+  "assistant_texts": [
+    "请问数量是多少件？缺少数量我无法计算合计，请提供数量（件），我会按“单价 × 数量”为你计算。"
+  ],
+  "session_id": "session-77c67803-b1d1-40a1-bbc4-cbed35a620e9",
+  "turns": [
+    {
+      "assistant_text": "请问数量是多少件？缺少数量我无法计算合计，请提供数量（件），我会按“单价 × 数量”为你计算。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "receipt_total",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f87414cb-f2ba-4ae0-bae1-59928fbb5a6e"
+    }
+  ]
+}

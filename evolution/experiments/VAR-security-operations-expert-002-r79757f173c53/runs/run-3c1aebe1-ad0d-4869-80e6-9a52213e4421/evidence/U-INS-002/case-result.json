@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：逐项核对：工具回执显示本轮对巡检目录仅调用了 mcp__inspection__list_executable_inspections（无参数），is_error 为 false，返回 code 200、total 1，目录非空且未调用 start_inspection；被测回答如实列出返回的唯一模板“基础资产健康巡检”（mock-health-inspection，版本 1，已发布/启用）及其两个巡检项（资产在线状态 availability、采集连接状态 collection），与工具返回内容一致，未编造目录内容，也未执行任何巡检。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

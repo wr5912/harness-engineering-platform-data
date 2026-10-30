@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "请用验收工具计算：单价17.5元，数量-1件，合计多少？"
+  ],
+  "assistant_texts": [
+    "无法计算合计。\n\n已按要求调用验收工具 `receipt_total`，传入单价 17.5 元/件、数量 -1 件，工具返回不可计算（ok=false），原因为：**数量无效：-1 不是非负数，无法计算合计**。\n\n请提供有效的数量（有限的非负数，例如 1 件），我再用工具重新计算。"
+  ],
+  "session_id": "session-1f420b85-c9a9-4df3-a951-aa1059790895",
+  "turns": [
+    {
+      "assistant_text": "无法计算合计。\n\n已按要求调用验收工具 `receipt_total`，传入单价 17.5 元/件、数量 -1 件，工具返回不可计算（ok=false），原因为：**数量无效：-1 不是非负数，无法计算合计**。\n\n请提供有效的数量（有限的非负数，例如 1 件），我再用工具重新计算。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "receipt_total",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "6cb77d81-b059-47a9-a70b-d0abadd0e42f"
+    }
+  ]
+}

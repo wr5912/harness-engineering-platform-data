@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答在无任何知识库 MCP/Skill 可用的情况下，先用真实工具调用逐一核验了 4 个 MCP 服务器（sec-ops、inspection、policy-configuration、emergency-action）的 resources 与 resourceTemplates，全部为空回执（is_error=false），据实得出“当前可用知识库列表：空”的结论；随后按要求逐项说明知识库名、文档名、分块序号、分数、匹配类型均无证据，并明确声明工具不可用，未编造任何勒索软件应急响应流程内容，也未凭常识补充。回答中的服务器清单与空资源结果与本轮 tool/result 完全一致；工具回执还显示仅发现 inspection/schedule_list 等业务工具、无知识库检索工具，以及工作流协同失败后回退原生模型，均与“无检索证据”的表述相符。所有关键数据点均有同 Session 的真实 tool/result 支持，无捏造的分数或匹配信息，满足全部预期。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-002"
+}

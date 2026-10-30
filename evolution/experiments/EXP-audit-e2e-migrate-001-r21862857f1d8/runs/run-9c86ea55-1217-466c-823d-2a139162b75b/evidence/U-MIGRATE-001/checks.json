@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-MIGRATE-001",
+  "transport": "api",
+  "expected_behavior": "回答合计70元并说明单位，不虚构外部系统或保存。",
+  "session_id": "session-fd1a3f33-0912-4641-b7e7-523b1309fe96",
+  "workspace_id": "4d83be9a-4c5f-4fdb-802d-cb44565a8afa",
+  "session_title": "评测 U-MIGRATE-001",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "audit-e2e-migrate",
+    "status": "ready"
+  },
+  "session_preset": "audit-e2e-migrate",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-75cab0e6-40ae-424d-8dc8-053dc58aba08",
+    "workspace_id": "4d83be9a-4c5f-4fdb-802d-cb44565a8afa",
+    "session_title": "评审 U-MIGRATE-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

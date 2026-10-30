@@ -1,0 +1,63 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "inputs.lock.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6880,
+          "sha256": "95ac34f2dadb1e013863d9af2201d07cf2d6ed168c40773dbf46ea814c094b86"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 1,
+          "bytes": 510,
+          "sha256": "1eb7dc39939af052015614b7e1862c00c4cf5edad5c9b598787e487abc477019"
+        },
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2226,
+          "sha256": "ef79dc57a02c53c6c6297ae0a2aecc18cd7ad0d7ec7e11100364ae416767599f"
+        },
+        {
+          "source": "evidence/U-MIGRATE-001/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 861,
+          "sha256": "589ecec60d49d93d4dea0d872a13d53196f127fe9756d7567b71483bd8fcec0d"
+        },
+        {
+          "source": "evidence/U-MIGRATE-001/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1477,
+          "sha256": "fbee4bf5a43d0093b0fd45fcbe73a9663ebcb923770b76a2925017edcd1f2093"
+        },
+        {
+          "source": "evidence/U-MIGRATE-001/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 15,
+          "sha256": "2861b7bcf2cedae3490f29a53f73e88f7365b23cd716d7d042fe77fd7d77c3d9"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "inputs.lock.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6987,
+          "sha256": "b033683d8e9ee00a243382be2a4bc88423b7c6ba78764a18d79011d835610cfb"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 1,
+          "bytes": 369,
+          "sha256": "24897480eb760a70ed2b1b64af54529999427d87706525aac1f3e67fd5b4c419"
+        },
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3810,
+          "sha256": "8f8009673f6ac70b9aba82249692ede7a826419f913a35a189059285ee010397"
+        },
+        {
+          "source": "evidence/U-MEMORY-001/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1971,
+          "sha256": "5c7af6adb2919dd834d464c78bd1afc38ad4ee95a575679ba4adf1eaa2eaf3f0"
+        },
+        {
+          "source": "evidence/U-MEMORY-001/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1505,
+          "sha256": "efba9d30f9248f41cd138ac7261b21cb5113d465c6e3a7c1ed21b1c0ddd28579"
+        },
+        {
+          "source": "evidence/U-MEMORY-001/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 15,
+          "sha256": "1e8ac438c07a167ff230ea66cb0b191c6dc2571b4e9678fb107ea4665aab988e"
+        }
+      ]
+    }
+  ]
+}

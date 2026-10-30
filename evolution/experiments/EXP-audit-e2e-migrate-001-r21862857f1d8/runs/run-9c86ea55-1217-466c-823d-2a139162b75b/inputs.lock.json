@@ -1,0 +1,193 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-9c86ea55-1217-466c-823d-2a139162b75b",
+  "source_id": "experiment:EXP-audit-e2e-migrate-001-r21862857f1d8",
+  "source_kind": "experiment",
+  "baseline_ref": "none:first-experiment",
+  "candidate_sha256": "51269b9d49367c34ccaebbfe8167de298ae00ab3d79dbacfe21c240253c39fc5",
+  "created_at": "2026-10-30T15:38:41Z",
+  "harness_trees": {
+    "workspace": {
+      "tree_sha256": "sha256:d28d0b68b97ffc8dcad8216ade313fbf782a9aba06b9a65846e25e745113638c",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 2,
+      "total_bytes": 260,
+      "files": [
+        {
+          "mode": "0664",
+          "path": ".env",
+          "sha256": "e574f8d1faf66f9167c33055ae1e2f99c70b031811f64aaac5bae1be54a19489",
+          "size": 84
+        },
+        {
+          "mode": "0644",
+          "path": "AGENTS.md",
+          "sha256": "e387e995e9914d4936d29677995506e7cbd80dafc2da95d8d116926d11235fa4",
+          "size": 176
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    },
+    "presets": {
+      "tree_sha256": "sha256:f74e02e6cabfed68bfada759cb4be56b9e085fd9723b447285980633d85a58ef",
+      "directory_sha256": "sha256:818815d1d0fbadb259d8f546be02796b094c8eaab0db6dc739255b331b8bae27",
+      "file_count": 2,
+      "total_bytes": 596,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "audit-e2e-migrate/agent.cordis.yml",
+          "sha256": "4b73663f2773f95caf38bfe1145f6f79781e035dcb52725d53647d462def6f7f",
+          "size": 493
+        },
+        {
+          "mode": "0664",
+          "path": "audit-e2e-migrate/preset.yml",
+          "sha256": "7d695d8b6c37dd65b3fb4760792c49ef3e0104c48c0dfbf739606c3c5719c18c",
+          "size": 103
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "audit-e2e-migrate",
+          "mode": "0775"
+        }
+      ]
+    },
+    "managed": {
+      "tree_sha256": "sha256:4cc550204f3ebc5880602a11d566e8f7a150b9d32217589328105663c6f840d8",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 1,
+      "total_bytes": 430,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "audit-e2e-migrate.patch.yml",
+          "sha256": "ae8dc1d43e9fdbc2e04b55684e6da485da0234e60c1a48d43367e374555cf6df",
+          "size": 430
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    }
+  },
+  "reference_tree": {
+    "tree_sha256": "sha256:4ef542f63806c6bda867e49b7b46d60fd6e6038437e468d1d43ba998b0637a69",
+    "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+    "file_count": 2,
+    "total_bytes": 1234,
+    "files": [
+      {
+        "mode": "0664",
+        "path": "evaluation.md",
+        "sha256": "2a03ee873d7b7d6eaa3f2ba06117a646d0f8b384caa95a2698fb3f550355803b",
+        "size": 988
+      },
+      {
+        "mode": "0664",
+        "path": "manifest.yaml",
+        "sha256": "bdd8b3963635187831468c3b0512c2c826832f5fc22b3bef3d040367eba6bc31",
+        "size": 246
+      }
+    ],
+    "directories": [
+      {
+        "path": ".",
+        "mode": "0775"
+      }
+    ]
+  },
+  "evaluation_sha256": "4e64f63dc02844b331955f0a03407366822fa9f28a5cbccc349a4dcbe7c4e82e",
+  "evaluation_cases": [
+    {
+      "case_id": "U-MIGRATE-001",
+      "title": "迁入后保持精确合计",
+      "inputs": [
+        "单价17.5元，数量4件，合计多少？"
+      ],
+      "expected_behavior": "回答合计70元并说明单位，不虚构外部系统或保存。"
+    }
+  ],
+  "case_catalog": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ROLE-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-MIGRATE-001",
+      "scene": "未分组",
+      "fast": true
+    }
+  ],
+  "selection_mode": "explicit",
+  "review_mode": "ai",
+  "configured_capabilities": [
+    "/opt/dsh-presets"
+  ],
+  "declared_guard": null,
+  "evaluation_implementation": {
+    "dsh-eval": "dbf61385619d6c22200a8dd57ab2b3cf1e2d23c72bbecb1ab115597a387886f9",
+    "dsh-eval-api.mjs": "e92f5cb387438fb99bd39f5f84515d981d7ca579abacb17162946a83b2645cc0",
+    "dsh-eval-browser.mjs": "85ce49fcac79d07e8e26f28d04c59266aff76a46a898450c80398f7dab913eb9",
+    "dsh-eval-common.mjs": "a11fdce1d326623fd9db7de45fe0fdb882b1cb4125f531d5d4a66aa665e373e8",
+    "harness-runtime.mts": "096641227341a173048ec1745a016cf2fc1f954202adcd1719f7221d19b70e0b",
+    "run_record.py": "545bf4cddcc207ce1e1ddb63d8474df115c6d4d3d8d35120fd9f0f567c6a3d7d",
+    "scenario_analysis.py": "89ea55ba1d73f9a39e80c75e35fc3bca16527df9b81094715c42e2a06ab704a2",
+    "evaluation-judge-guard.mjs": "ad46cdd4c8264d3023bf0ea33327fdb60869209a3463f32f6cf30a347483219d",
+    "scenario-analysis-guard.mjs": "21c9b85f5400fefadbb39145d97409bd158a050941e076da249a504c8f24d541",
+    "evaluation-presets/evaluation-judge/agent.cordis.yml": "6c0c0c93018b318942d7334026e43b12124fa0fcabe166076d6e3d49f9e24f59",
+    "evaluation-presets/evaluation-judge/preset.yml": "df22cd2de4f05a31a21a2f041f44b2de57a48140797602ed4bf068e216a62a5e",
+    "evaluation-presets/scenario-analysis/agent.cordis.yml": "43786861869c364c343ea2fffd87a2b85a0756b8947cebf2233bb5d5bc830cbc",
+    "evaluation-presets/scenario-analysis/preset.yml": "b9ca918a58de3bb8b043ec0847937950e06bc27c1cc7b155dd0823ee1076be03",
+    "platform/plugin/src/agents/asset-build.ts": "e28e706224902ea67164095ef1aeb0f5fe26222181511e3751ce5087f4042f05",
+    "platform/plugin/src/agents/asset-build-core.ts": "1d58fa4380139f757b20c5f37e8c5d9104a5ddd402dc8091db2e1928f0121609",
+    "platform/plugin/src/agents/asset-dependencies.ts": "e558ab49663de3c7f5f0bb7f1d89c9e4572a0c7a5c527d61e65c5304efeeadb5",
+    "platform/plugin/src/models/harness-runtime.ts": "933014f241aa85b33564aafbab9d8d3a97b4161b671f6c84622184e0346f02f2"
+  },
+  "dependency_env": {
+    "DEEPSEEK_API_KEY": true
+  },
+  "git_version": {
+    "commit": "bc3851dc5af2cfa76e249e22391088265615b87f",
+    "dirty": true,
+    "changed_path_count": 14
+  },
+  "program_origin": {
+    "commit": "9ac455a48b09b28db2dd2c220e27276405b8e237",
+    "dirty": true,
+    "changed_path_count": 20,
+    "root": "/home/admin/work/harness-engineering-platform"
+  },
+  "asset_origin": {
+    "commit": "bc3851dc5af2cfa76e249e22391088265615b87f",
+    "dirty": true,
+    "changed_path_count": 14,
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "candidate_sha256": "51269b9d49367c34ccaebbfe8167de298ae00ab3d79dbacfe21c240253c39fc5"
+  },
+  "harness_review": {
+    "schema_version": 1,
+    "generated": [],
+    "sources": []
+  },
+  "executor": "api"
+}

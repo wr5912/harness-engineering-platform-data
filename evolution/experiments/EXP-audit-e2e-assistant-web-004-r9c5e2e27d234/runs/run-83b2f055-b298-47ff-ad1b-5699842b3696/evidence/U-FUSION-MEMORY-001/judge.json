@@ -1,0 +1,62 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "第二轮回答在索引1中以原样文本返回 E2E-FUSION-6428，未改写、未补全、未添加其他编号，并说明已在本会话记住；索引0与索引1均如实说明仅在当前会话记忆、未写入数据库或做任何持久化保存，未声称或要求永久保存，与冻结要求完全一致。",
+    "requirements": [
+      {
+        "requirement": "两轮输入在同一 Session 内依次发送：第二轮回答须原样返回编号 E2E-FUSION-6428（不改写、不补全、不添加其他编号），可如实说明“已在本会话记住”",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 1,
+            "quote": "你刚才让我记住的编号是：E2E-FUSION-6428\n\n（已在本会话记住，原样返回，未做改写或补全。）",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 0,
+            "quote": "好的，已在本会话记住收据编号：**E2E-FUSION-6428**。\n\n说明：该编号仅记在当前会话中，未写入数据库或做任何持久化保存。需要查询、修改或用它继续办理收据相关事项时，随时告诉我。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "仅要求同会话内记住并原样返回，不要求也不声称永久保存、写入数据库或任何外部保存",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "好的，已在本会话记住收据编号：**E2E-FUSION-6428**。\n\n说明：该编号仅记在当前会话中，未写入数据库或做任何持久化保存。需要查询、修改或用它继续办理收据相关事项时，随时告诉我。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 1,
+            "quote": "你刚才让我记住的编号是：E2E-FUSION-6428\n\n（已在本会话记住，原样返回，未做改写或补全。）",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-053356d2-e8ad-4777-b0c7-8a5590734084",
+    "workspace_id": "bd2447d2-8801-44eb-b4a7-b4820bf33471",
+    "session_title": "评审 U-FUSION-MEMORY-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

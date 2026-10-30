@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答以英语准确说明 CVE ID 是对公开披露的单一漏洞的唯一标识，并明确区分了编号与严重度、利用情况：严重度来自单独的 CVSS 元数据字段而非编号本身，漏洞是否被利用、是否存在实际攻击则由 Exploit-DB、威胁活动名称等另行跟踪，编号本身不证明严重度或已被利用，也不直接说明某系统是否受影响。要求的两个方面（准确说明标识公开记录的漏洞；不把编号当作严重度/被利用的证明）均被明确覆盖，证据索引 0 的 citation_allowed 为 true。",
+    "requirements": [
+      {
+        "requirement": "用英语准确说明 CVE ID 标识公开记录的漏洞，不把编号本身当成严重度或是否已被利用的证明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "## What a CVE ID Identifies\n\nA **CVE ID** (e.g., `CVE-2021-44228`) is a unique, standardized identifier assigned to a **specific publicly disclosed cybersecurity vulnerability** in a specific piece of software or firmware. It identifies one vulnerability — not an exploit, an attack, or a threat event.\n\n### Structure of the ID\n\n| Part | Example | Meaning |\n|------|---------|---------|\n| Prefix | `CVE` | Common Vulnerabilities and Exposures program namespace |\n| Year | `2021` | The year the identifier was reserved/publicly assigned (not necessarily the year the flaw was introduced or discovered) |\n| Sequence number | `44228` | A digits-assigned serial number, unique within that year |\n\n### What it points to\n\nEach CVE ID maps to exactly one vulnerability and records metadata such as:\n\n- **Affected product(s) and version(s)** — e.g., Apache Log4j 2.0–2.14.1\n- **Vulnerability type** — using CWE classification (e.g., improper input validation, SQL injection)\n- **Impact description** — what the flaw allows (e.g., remote code execution)\n- **Severity score** — typically a CVSS base score (e.g., 10.0)\n- **References** — vendor advisories, patches, exploit analyses\n\n### What it does *not* identify\n\n- **An exploit or malware sample** — exploits are tracked separately (e.g., by Exploit-DB or malware family names)\n- **A specific attack campaign or incident** — those get their own IDs (e.g., threat-actor campaign names, or SOC incident IDs like `INC-20261030-000123` in this environment)\n- **Whether a system is vulnerable** — that requires matching the CVE's affected-product/version criteria against the actual deployed asset\n\n### Governance\n\nCVE IDs are issued by **CVE Numbering Authorities (CNAs)** under the CVE Program, which is coordinated by MITRE (with partner organizations). Maintaining one CVE per vulnerability ensures that vendors, patch management tools, threat intelligence platforms, and SOC teams worldwide can refer to the *same flaw* unambiguously across languages and databases (NVD, vendor advisories, scanner signatures, etc.).\n\n**In short:** a CVE ID is a universal reference label for one specific disclosed software/firmware vulnerability, letting everyone in the security community talk about it consistently.",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-bec9b185-61db-4869-866b-4803c4ac5787",
+    "workspace_id": "e1b516c9-80ee-48ef-8931-726077d6917e",
+    "session_title": "评审 U-QA-014",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

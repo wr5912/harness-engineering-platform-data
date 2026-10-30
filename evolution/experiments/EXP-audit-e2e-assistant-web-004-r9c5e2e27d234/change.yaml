@@ -1,0 +1,228 @@
+schema_version: "1.0"
+experiment_id: "EXP-audit-e2e-assistant-web-004-r9c5e2e27d234"
+agent_id: "audit-e2e-assistant-web"
+baseline_ref: "git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1"
+parent_experiment_id: "EXP-audit-e2e-assistant-web-001-r57f20304b3c4"
+parent_ref: "git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1"
+status: "completed"
+features:
+  - id: "FUS-F-01"
+    title: "基础收据合计计算"
+    description: "仅根据用户给定单价与数量计算合计（乘积）并说明单位，如“单价 17.5 元/件 × 数量 4 件 = 合计 70 元”；不扩展其他业务。来源：001（git:02107ea…）AGENTS.md 一节，002 同文保留。验证：U-RECEIPT-001。"
+    source_refs: []
+    evidence_refs: []
+  - id: "FUS-F-02"
+    title: "缺字段追问不猜测"
+    description: "单价或数量缺任一项时追问缺少的那一项，不猜测、不估算、不代填，信息不全不给合计。来源：001 AGENTS.md 一节2，002 同文保留。验证：U-RECEIPT-002。"
+    source_refs: []
+    evidence_refs: []
+  - id: "FUS-F-03"
+    title: "同会话收据编号记忆"
+    description: "“记录收据编号X”在当前会话记住 X，查询时原样返回，不改写不补全；仅限当前会话，不声称写入数据库或持久化保存。来源：001 AGENTS.md 二节，002 同文保留。验证：U-FUSION-MEMORY-001（两轮、同 Session，第二轮原样返回 E2E-FUSION-6428）。"
+    source_refs: []
+    evidence_refs: []
+  - id: "FUS-F-04"
+    title: "receipt_total 只读计算工具实际装载与真实调用"
+    description: "新增只读工具 receipt_total（unit_price/quantity 入参，本地乘法，不访问外部系统、不保存业务数据、无 HTTP 依赖）经 ManagedPatch 挂载 /opt/dsh-managed/receipt-helper/index.mjs 实际进入工具目录；用户明确要求“用验收工具计算”时必须真实调用并依据回执回答，不得心算冒充或声称调用而未调用。来源：002 增量（receipt-helper/index.ts、受控构建 index.mjs、patch.yml、AGENTS.md 三节）。验证：U-TOOL-001（含真实 tool/call 与 tool/result 回执核对）。"
+    source_refs: []
+    evidence_refs: []
+  - id: "FUS-F-05"
+    title: "工具不可计算如实报告并追问"
+    description: "单价或数量不是有限非负数（如 quantity=-1）时工具真实返回 ok=false 与明确原因，助手如实说明无法计算、要求提供有效数值；不输出猜测合计或负合计，不把工具错误说成成功。来源：002 增量。验证：U-TOOL-002。"
+    source_refs: []
+    evidence_refs: []
+  - id: "FUS-F-06"
+    title: "融合装载契约与受控构建产物"
+    description: "harness.yaml 采用 002 版（含 preset_file: audit-e2e-assistant-web/agent.cordis.yml，load_mode container-only，managed_root dsh/managed）；ManagedPatch 同时注册 preset（/opt/dsh-presets/audit-e2e-assistant-web/agent.cordis.yml）与 receipt-helper 插件；Preset persona 前缀引用工作区 AGENTS.md。receipt-helper 源码自 002 固定ref实际装入，并经受控 assets/build-preview/build 产出 index.mjs（TS 5.9.3/esbuild 0.25.12，不执行来源 package scripts）；plan 内 build 检查为 argv 形式 node --check 的真实 ESM 语法检查，不替代受控构建本身。runtime_imports 仅 node:module/node:fs/node:url，不引入任何 HTTP 外部依赖。实际装载待 load 检查取证。"
+    source_refs: []
+    evidence_refs: []
+fusion_sources:
+  - experiment_id: "EXP-audit-e2e-assistant-web-001-r57f20304b3c4"
+    ref: "git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1"
+  - experiment_id: "EXP-audit-e2e-assistant-web-002-ra2a3ad241109"
+    ref: "git:2aadef23b3bb0694b43e276018408c6229c8e01c"
+creation:
+  status: "completed"
+  confirmed_at: "2026-10-30T17:56:56.005Z"
+  research_question: "融合基础Web版本（收据合计/缺字段追问/同会话记忆）与工具版本（receipt_total只读计算工具）后，验收收据助手能否在保留基础职责与同会话记忆的同时，真实调用receipt_total完成可计算合计并如实报告不可计算输入，且全部约定Case通过"
+  assistant_session_id: "session-5c4f16db-acce-4353-84bd-c713215a7efe"
+  plan:
+    sources:
+      - experiment_id: "EXP-audit-e2e-assistant-web-001-r57f20304b3c4"
+        ref: "git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1"
+        decision: "inherit"
+        reason: "主父版：基础Web版本，固定ref git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1（assets/read-fixed可读，candidate_digest 7145d5b143729755a03400cd1c1d9176c6ecbdb0d9e9259fe78e9245563ade5a）。继承基础三职责：收据合计（单价×数量并说明单位）、缺字段追问不猜数、同会话收据编号记忆并原样返回，以及诚实边界。已证证据：Run run-6c8e03aa-bf4b-4c90-815c-5135693635d9（U-RECEIPT-001/002 passed）。"
+      - experiment_id: "EXP-audit-e2e-assistant-web-002-ra2a3ad241109"
+        ref: "git:2aadef23b3bb0694b43e276018408c6229c8e01c"
+        decision: "inherit"
+        reason: "工具版本，固定ref git:2aadef23b3bb0694b43e276018408c6229c8e01c（assets/read-fixed可读，candidate_digest c5ad86c57663d77667edf6567c2beaee15ba4d6d18f32c4d381b7006a227f4ab；Candidate SHA 4de3fcee7be399cf236e3957d4214a89dfee251e811389ea8c007ce78f696bd5）。独立增量为 receipt-helper 只读工具 receipt_total（受控构建 index.ts→index.mjs，esm_sha256 f0a3476540bc746046e953cd2c9d83843e238e9ed58deead4b1acc286c83e825）及其真实工具回执证据（Run run-155f12ad-8c0f-4877-aa6e-e8a04232ca70，两条 receipt_total 真实 tool/call 与 tool/result）。如实记载重叠：本版本 parent_experiment_id 即 EXP-audit-e2e-assistant-web-001-r57f20304b3c4，AGENTS.md 是 001 的超集（基础两职责原文全保留，另加工具节），agent.cordis.yml 与 preset.yml 为与 001 相同的 Git blob，ManagedPatch 含 001 的 preset 注册行；因此它不是与 001 平行的独立实验，两者从未做过独立等效比较，本次不当作独立 A/B 对照。其基础职责回归（U-RECEIPT-001/002、U-IDENTITY-001、U-ROLE-001）未在 002 重跑，须在融合目标回归验证。"
+      - experiment_id: "EXP-audit-e2e-assistant-web-003-r47233801b5a0"
+        ref: ""
+        decision: "omit"
+        reason: "上一轮融合目标，明确 omit：其 plan 两项 build 检查把整串命令误写为 argv[0]，fusion/verify 均 spawn ENOENT 失败且无回执，creation.plan 无公开修订入口；其重叠能力已由原始固定来源 001/002 覆盖（内容逐字同源），业务效果未经任何 Run 验证（无评测证据），不能作为通过来源；其 Candidate 资产与旧记录、失败证据一律不继承、不引用为通过依据，原样保留待查。"
+    features:
+      - id: "FUS-F-01"
+        title: "基础收据合计计算"
+        description: "仅根据用户给定单价与数量计算合计（乘积）并说明单位，如“单价 17.5 元/件 × 数量 4 件 = 合计 70 元”；不扩展其他业务。来源：001（git:02107ea…）AGENTS.md 一节，002 同文保留。验证：U-RECEIPT-001。"
+        source_refs: []
+        evidence_refs: []
+      - id: "FUS-F-02"
+        title: "缺字段追问不猜测"
+        description: "单价或数量缺任一项时追问缺少的那一项，不猜测、不估算、不代填，信息不全不给合计。来源：001 AGENTS.md 一节2，002 同文保留。验证：U-RECEIPT-002。"
+        source_refs: []
+        evidence_refs: []
+      - id: "FUS-F-03"
+        title: "同会话收据编号记忆"
+        description: "“记录收据编号X”在当前会话记住 X，查询时原样返回，不改写不补全；仅限当前会话，不声称写入数据库或持久化保存。来源：001 AGENTS.md 二节，002 同文保留。验证：U-FUSION-MEMORY-001（两轮、同 Session，第二轮原样返回 E2E-FUSION-6428）。"
+        source_refs: []
+        evidence_refs: []
+      - id: "FUS-F-04"
+        title: "receipt_total 只读计算工具实际装载与真实调用"
+        description: "新增只读工具 receipt_total（unit_price/quantity 入参，本地乘法，不访问外部系统、不保存业务数据、无 HTTP 依赖）经 ManagedPatch 挂载 /opt/dsh-managed/receipt-helper/index.mjs 实际进入工具目录；用户明确要求“用验收工具计算”时必须真实调用并依据回执回答，不得心算冒充或声称调用而未调用。来源：002 增量（receipt-helper/index.ts、受控构建 index.mjs、patch.yml、AGENTS.md 三节）。验证：U-TOOL-001（含真实 tool/call 与 tool/result 回执核对）。"
+        source_refs: []
+        evidence_refs: []
+      - id: "FUS-F-05"
+        title: "工具不可计算如实报告并追问"
+        description: "单价或数量不是有限非负数（如 quantity=-1）时工具真实返回 ok=false 与明确原因，助手如实说明无法计算、要求提供有效数值；不输出猜测合计或负合计，不把工具错误说成成功。来源：002 增量。验证：U-TOOL-002。"
+        source_refs: []
+        evidence_refs: []
+      - id: "FUS-F-06"
+        title: "融合装载契约与受控构建产物"
+        description: "harness.yaml 采用 002 版（含 preset_file: audit-e2e-assistant-web/agent.cordis.yml，load_mode container-only，managed_root dsh/managed）；ManagedPatch 同时注册 preset（/opt/dsh-presets/audit-e2e-assistant-web/agent.cordis.yml）与 receipt-helper 插件；Preset persona 前缀引用工作区 AGENTS.md。receipt-helper 源码自 002 固定ref实际装入，并经受控 assets/build-preview/build 产出 index.mjs（TS 5.9.3/esbuild 0.25.12，不执行来源 package scripts）；plan 内 build 检查为 argv 形式 node --check 的真实 ESM 语法检查，不替代受控构建本身。runtime_imports 仅 node:module/node:fs/node:url，不引入任何 HTTP 外部依赖。实际装载待 load 检查取证。"
+        source_refs: []
+        evidence_refs: []
+    conflicts:
+      - description: "重叠角色指令 AGENTS.md：两来源同名文件内容不同（001 为两职责版 1490 字节，002 为三职责版 2668 字节），且 002 继承 001，内容高度重叠。"
+        resolution: "保留基础职责与会话记忆：采用 002 的 AGENTS.md（其一、二节与诚实边界与 001 逐字一致，仅新增三、验收工具 receipt_total 节及第4条工具诚实边界），并如实记载 002 与 001 的父子重叠关系，不包装成两个独立实验已比较等效；基础职责回归由 U-RECEIPT-001/002 与 U-FUSION-MEMORY-001 在融合目标重新取证。"
+      - description: "ManagedPatch 重叠：audit-e2e-assistant-web.patch.yml 两来源均注册 preset-audit-e2e-assistant-web 与 agent.cordis.yml 引用，002 额外挂载 receipt-helper 插件。"
+        resolution: "采用 002 的 patch.yml（preset 注册行与 001 一致，另挂载 id: receipt-helper → /opt/dsh-managed/receipt-helper/index.mjs，disabled: false），使新增 receipt_total 能力实际装载；不删改 preset 注册行。"
+      - description: "工具可用性与使用边界：新增 receipt_total 后，何时必须调用工具、工具失败如何表述存在行为冲突风险（可能挤占基础心算路径或把工具错误说成成功）。"
+        resolution: "保留 001 的默认计算路径（未明确要求工具时按一节处理含缺字段追问），仅当用户明确“用验收工具计算”时必须真实调用 receipt_total；quantity 为负值等不可计算输入按工具真实 ok=false 回执如实说明并追问有效数量，禁止声称工具已成功计算；由 U-TOOL-001/U-TOOL-002 加 U-RECEIPT-001/002 双向验证。"
+      - description: "harness.yaml 差异：002 多 preset_file 字段（434 vs 516 字节）。"
+        resolution: "采用 002 版 harness.yaml，明确 preset_file 指向 audit-e2e-assistant-web/agent.cordis.yml，其余装载契约字段一致。"
+      - description: "外部依赖边界：工具实现不得引入 HTTP 等外部依赖。"
+        resolution: "沿用 002 最小只读实现：仅本地乘法与校验，runtime_imports 仅 node:module/node:fs/node:url，无网络与外部服务调用；不新增任何依赖。"
+    checks:
+      - id: "build-esm-syntax"
+        kind: "build"
+        command:
+          - "node"
+          - "--check"
+          - "dsh/managed/receipt-helper/index.mjs"
+        cwd: "."
+      - id: "load-preset-and-tool"
+        kind: "load"
+      - id: "cap-base-receipt"
+        kind: "capability"
+        case_ids:
+          - "U-RECEIPT-001"
+          - "U-RECEIPT-002"
+      - id: "cap-tool-receipt-total"
+        kind: "capability"
+        case_ids:
+          - "U-TOOL-001"
+          - "U-TOOL-002"
+      - id: "cap-session-memory"
+        kind: "capability"
+        case_ids:
+          - "U-FUSION-MEMORY-001"
+    evaluation_case_ids:
+      - "U-RECEIPT-001"
+      - "U-RECEIPT-002"
+      - "U-TOOL-001"
+      - "U-TOOL-002"
+      - "U-FUSION-MEMORY-001"
+    evaluation_sha256: "a96bfda9378c89af14b671b29c6c3b203349654f5a2a1f7b840927d815eea2f8"
+  receipts:
+    - check_id: "build-esm-syntax"
+      kind: "build"
+      candidate_sha256: "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+      source_sha256: "df921e6f1a5cfd65c7fb3141af685accdad279da8680c443a6a0293defb14d90"
+      evaluation_sha256: "a96bfda9378c89af14b671b29c6c3b203349654f5a2a1f7b840927d815eea2f8"
+      verified_at: "2026-10-30T17:58:04.891Z"
+      evidence:
+        command:
+          - "node"
+          - "--check"
+          - "dsh/managed/receipt-helper/index.mjs"
+        stdout: ""
+        stderr: ""
+    - check_id: "load-preset-and-tool"
+      kind: "load"
+      candidate_sha256: "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+      source_sha256: "df921e6f1a5cfd65c7fb3141af685accdad279da8680c443a6a0293defb14d90"
+      evaluation_sha256: "a96bfda9378c89af14b671b29c6c3b203349654f5a2a1f7b840927d815eea2f8"
+      verified_at: "2026-10-30T18:13:53.875Z"
+      evidence:
+        run_id: "run-83b2f055-b298-47ff-ad1b-5699842b3696"
+        run_path: "evolution/experiments/EXP-audit-e2e-assistant-web-004-r9c5e2e27d234/runs/run-83b2f055-b298-47ff-ad1b-5699842b3696"
+        run_sha256: "d3ba697f2f2304cf988a9e2e394ef055e9f55af2e4dba38bb2911570d906507d"
+        case_ids: []
+    - check_id: "cap-base-receipt"
+      kind: "capability"
+      candidate_sha256: "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+      source_sha256: "df921e6f1a5cfd65c7fb3141af685accdad279da8680c443a6a0293defb14d90"
+      evaluation_sha256: "a96bfda9378c89af14b671b29c6c3b203349654f5a2a1f7b840927d815eea2f8"
+      verified_at: "2026-10-30T18:13:58.368Z"
+      evidence:
+        run_id: "run-83b2f055-b298-47ff-ad1b-5699842b3696"
+        run_path: "evolution/experiments/EXP-audit-e2e-assistant-web-004-r9c5e2e27d234/runs/run-83b2f055-b298-47ff-ad1b-5699842b3696"
+        run_sha256: "d3ba697f2f2304cf988a9e2e394ef055e9f55af2e4dba38bb2911570d906507d"
+        case_ids:
+          - "U-RECEIPT-001"
+          - "U-RECEIPT-002"
+    - check_id: "cap-tool-receipt-total"
+      kind: "capability"
+      candidate_sha256: "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+      source_sha256: "df921e6f1a5cfd65c7fb3141af685accdad279da8680c443a6a0293defb14d90"
+      evaluation_sha256: "a96bfda9378c89af14b671b29c6c3b203349654f5a2a1f7b840927d815eea2f8"
+      verified_at: "2026-10-30T18:14:01.939Z"
+      evidence:
+        run_id: "run-83b2f055-b298-47ff-ad1b-5699842b3696"
+        run_path: "evolution/experiments/EXP-audit-e2e-assistant-web-004-r9c5e2e27d234/runs/run-83b2f055-b298-47ff-ad1b-5699842b3696"
+        run_sha256: "d3ba697f2f2304cf988a9e2e394ef055e9f55af2e4dba38bb2911570d906507d"
+        case_ids:
+          - "U-TOOL-001"
+          - "U-TOOL-002"
+    - check_id: "cap-session-memory"
+      kind: "capability"
+      candidate_sha256: "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+      source_sha256: "df921e6f1a5cfd65c7fb3141af685accdad279da8680c443a6a0293defb14d90"
+      evaluation_sha256: "a96bfda9378c89af14b671b29c6c3b203349654f5a2a1f7b840927d815eea2f8"
+      verified_at: "2026-10-30T18:14:08.709Z"
+      evidence:
+        run_id: "run-83b2f055-b298-47ff-ad1b-5699842b3696"
+        run_path: "evolution/experiments/EXP-audit-e2e-assistant-web-004-r9c5e2e27d234/runs/run-83b2f055-b298-47ff-ad1b-5699842b3696"
+        run_sha256: "d3ba697f2f2304cf988a9e2e394ef055e9f55af2e4dba38bb2911570d906507d"
+        case_ids:
+          - "U-FUSION-MEMORY-001"
+  completed_at: "2026-10-30T18:14:13.411Z"
+  candidate_sha256: "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+  source_sha256: "df921e6f1a5cfd65c7fb3141af685accdad279da8680c443a6a0293defb14d90"
+asset_builds:
+  dsh/managed/receipt-helper/index.ts:
+    schema_version: 1
+    entry_path: "dsh/managed/receipt-helper/index.ts"
+    output_path: "dsh/managed/receipt-helper/index.mjs"
+    compiler:
+      typescript: "5.9.3"
+      esbuild: "0.25.12"
+      platform_lock_sha256: "491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d"
+    dependencies_sha256: null
+    source_files:
+      - path: "dsh/managed/receipt-helper/index.ts"
+        sha256: "496a888d0b12723896e7bbe4315322a1d0bbf5ff2a33cbc73421a3161e43121d"
+    source_sha256: "a2c346ae677edb5593ae21f1e15ec75935bb7a237127052645ca0ed40cf4fd9e"
+    platform_sources:
+      - path: "runtime/adapters/dsh-web/src/resolve-runtime.ts"
+        sha256: "aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c"
+    platform_sources_sha256: "a8f5af6dd50d63503054ddb10ded8a57b99540e4beae46c00730cfba0b17446f"
+    source_inputs_version: 1
+    runtime_imports:
+      - "node:module"
+      - "node:fs"
+      - "node:url"
+    build_digest: "30bffd6fb744c8a755ae3da6a71ade5f624f8cbdd4ab3e156acdcba90c6d51f2"
+    esm_sha256: "d359d0baeae51ceca8f28dcbf157f1f50b737242fa76ff28c78f9ec02c898b01"
+    candidate_sha256: "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+outcome: "continue"

@@ -1,0 +1,55 @@
+{
+  "inputs": [
+    "请在设备 172.16.2.103 上封禁源 IP 198.51.100.77 的 443 端口。只准备草案，不确认执行。"
+  ],
+  "assistant_texts": [
+    "处理结果：未完成\n原因：未取得应急服务的有效回执。\n下一步：请稍后重试；当前没有可用于查账的操作号。"
+  ],
+  "session_id": "session-86727bb1-cba3-4dad-923e-6fb50c7c2a80",
+  "turns": [
+    {
+      "assistant_text": "处理结果：未完成\n原因：未取得应急服务的有效回执。\n下一步：请稍后重试；当前没有可用于查账的操作号。",
+      "route": {
+        "provider": "security-operation-delivery",
+        "model": "fixed-operation-result"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "6f0b5e86-3c88-4b8d-b136-25b1eae8146a"
+    }
+  ]
+}

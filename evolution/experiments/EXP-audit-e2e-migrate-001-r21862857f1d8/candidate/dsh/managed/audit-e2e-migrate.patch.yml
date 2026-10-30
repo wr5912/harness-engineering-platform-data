@@ -1,0 +1,15 @@
+# 注册本 Experiment 的受控 Preset。
+- id: agent-preset-registry
+  config:
+    default: audit-e2e-migrate
+
+- insert:
+    - id: preset-audit-e2e-migrate
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: audit-e2e-migrate
+        plugins:
+          - id: audit-e2e-migrate-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/audit-e2e-migrate/agent.cordis.yml

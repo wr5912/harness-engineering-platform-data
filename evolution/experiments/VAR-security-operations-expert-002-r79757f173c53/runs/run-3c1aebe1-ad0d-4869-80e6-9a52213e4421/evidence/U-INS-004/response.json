@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "帮我创建巡检任务。"
+  ],
+  "assistant_texts": [
+    "已查询当前可执行巡检目录，结果如下：\n\n**当前仅有 1 个已发布模板**\n\n| 项目 | 内容 |\n|---|---|\n| 任务 ID | `mock-health-inspection` |\n| 定义版本 | `1` |\n| 名称 | 基础资产健康巡检 |\n| 范围 | 当前全部测试资产 |\n| 巡检项 | 资产在线状态（availability）、采集连接状态（collection） |\n| 状态 | 已发布、已启用 |\n\n需要说明的是：巡检服务本身不提供\"创建任务\"接口，只有\"发起一次巡检运行\"的能力。请确认您想要哪一种：\n\n1. **立即执行一次**上述\"基础资产健康巡检\"（沿用任务定义的全部测试资产范围），我会返回 `runId` 并跟进报告；\n2. **周期性自动巡检**——需要您明确给出执行周期（例如每 10 分钟、每天几点），我再尝试使用本会话的 DSH 定时提醒能力创建；若运行时未开放该能力，我会如实告知缺口，不会声称任务已建立。\n\n请回复选项编号及（若选 2）具体周期。"
+  ],
+  "session_id": "session-eec8b06f-71d9-4568-b57a-ad22a8f63aac",
+  "turns": [
+    {
+      "assistant_text": "已查询当前可执行巡检目录，结果如下：\n\n**当前仅有 1 个已发布模板**\n\n| 项目 | 内容 |\n|---|---|\n| 任务 ID | `mock-health-inspection` |\n| 定义版本 | `1` |\n| 名称 | 基础资产健康巡检 |\n| 范围 | 当前全部测试资产 |\n| 巡检项 | 资产在线状态（availability）、采集连接状态（collection） |\n| 状态 | 已发布、已启用 |\n\n需要说明的是：巡检服务本身不提供\"创建任务\"接口，只有\"发起一次巡检运行\"的能力。请确认您想要哪一种：\n\n1. **立即执行一次**上述\"基础资产健康巡检\"（沿用任务定义的全部测试资产范围），我会返回 `runId` 并跟进报告；\n2. **周期性自动巡检**——需要您明确给出执行周期（例如每 10 分钟、每天几点），我再尝试使用本会话的 DSH 定时提醒能力创建；若运行时未开放该能力，我会如实告知缺口，不会声称任务已建立。\n\n请回复选项编号及（若选 2）具体周期。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "bd44c0ed-edb1-4829-bd0a-bb1cb4017457"
+    }
+  ]
+}

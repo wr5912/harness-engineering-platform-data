@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 确实发起了 prepare_emergency_action，但 Workbench 回执为 is_error=true 的 `404 未找到对应模拟资产`，未产生任何 `READY/NOT_SUBMITTED` 草案与操作号；回答也如实说明未完成、无操作号且未声称已封禁、未调用确认。然而本 Case 的通过条件要求得到冻结草案并回复操作号，回执为错误态即不满足，因此不通过；且回答中「未取得应急服务的有效回执」未准确说明真实原因（目标设备 172.16.2.103 在模拟资产中不存在）。",
+  "evidence_ref": "evidence/U-EMG-001"
+}

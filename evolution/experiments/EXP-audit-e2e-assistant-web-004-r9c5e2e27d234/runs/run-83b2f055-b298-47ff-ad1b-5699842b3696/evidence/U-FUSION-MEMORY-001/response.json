@@ -1,0 +1,55 @@
+{
+  "inputs": [
+    "请在本会话记住编号 E2E-FUSION-6428。",
+    "刚才我让你记住的编号是什么？请原样返回。"
+  ],
+  "assistant_texts": [
+    "好的，已在本会话记住收据编号：**E2E-FUSION-6428**。\n\n说明：该编号仅记在当前会话中，未写入数据库或做任何持久化保存。需要查询、修改或用它继续办理收据相关事项时，随时告诉我。",
+    "你刚才让我记住的编号是：E2E-FUSION-6428\n\n（已在本会话记住，原样返回，未做改写或补全。）"
+  ],
+  "session_id": "session-c20d37ab-417f-4726-8aeb-8a976bc838d9",
+  "turns": [
+    {
+      "assistant_text": "好的，已在本会话记住收据编号：**E2E-FUSION-6428**。\n\n说明：该编号仅记在当前会话中，未写入数据库或做任何持久化保存。需要查询、修改或用它继续办理收据相关事项时，随时告诉我。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "receipt_total",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "6e2d85c1-7302-41c0-940e-03e50928256c"
+    },
+    {
+      "assistant_text": "你刚才让我记住的编号是：E2E-FUSION-6428\n\n（已在本会话记住，原样返回，未做改写或补全。）",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "receipt_total",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "63ba2ceb-0a3d-4759-ae23-e5e94100462f"
+    }
+  ]
+}

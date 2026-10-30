@@ -1,0 +1,50 @@
+schema_version: '1.0'
+experiment_id: EXP-audit-e2e-notice-hybrid-001-r66b0743f3a2f
+agent_id: audit-e2e-notice-hybrid
+baseline_ref: none:first-experiment
+status: active
+research_question: 原生通知hybrid验收能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求
+asset_builds:
+  dsh/managed/notice-probe/index.ts:
+    schema_version: 1
+    entry_path: dsh/managed/notice-probe/index.ts
+    output_path: dsh/managed/notice-probe/index.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/notice-probe/index.ts
+        sha256: 7493013a485b472402edd4be1ac65cbcc1c3f4d07f207dc33db99b6af7661113
+    source_sha256: 6056d71c088cbeecf25f223504d3ecc88e9bbf777360097bf94788c2531655f3
+    platform_sources:
+      - path: platform/plugin/src/evaluation/model-attempts.ts
+        sha256: aa34dbaff73f600e1d864d300be28cc15ced57da7b37fad638d0c8e6b9c4436a
+      - path: platform/plugin/src/workflows/code-only-route.ts
+        sha256: 5b951fcf668430b1369c7acc29a43aa0bfd0df77064aef2d24232ec82c7441fb
+      - path: platform/plugin/src/workflows/fixed-composition.ts
+        sha256: eee545eab8254801f453ffee7437233d39a68fb7075e92bb2154319cb1521cc2
+      - path: platform/plugin/src/workflows/graph.ts
+        sha256: d8922a169e65a9ea5db488b45819375699867a0817512815a91c1f2cb71e4935
+      - path: platform/plugin/src/workflows/model-roles.ts
+        sha256: 8c62bc929e3b43b8a36cdd219d35b4d09c6acb10a07f42b27d2ccc47a2c4e34f
+      - path: platform/plugin/src/workflows/runtime.ts
+        sha256: f749cadfd64881284eb37d050b38a59879f952396f10658c82cd7fcb84ffcc92
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c
+    platform_sources_sha256: ad987e2ba307023774e7b97adfef657756f6aa9df376ed246939f33596979e58
+    source_inputs_version: 1
+    runtime_imports:
+      - node:timers/promises
+      - node:crypto
+      - node:fs
+      - node:url
+      - node:fs/promises
+      - node:path
+      - node:worker_threads
+      - node:async_hooks
+      - node:module
+    build_digest: 6011954f50a94290877c4ecf7afefa33d5cf880a60fb787376405e2c16caecfc
+    esm_sha256: 49f46a2466f53b2bda6c5ea85966182297a07e282adbbe322ee7281128a51bb3
+    candidate_sha256: a6c7784bb865712bc3641247776f0ad7403dac6e6e2fbd04edb02ad5686714b0

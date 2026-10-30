@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-MISSING-TARGET",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答未保留工具回执中的结构化404原因，而是将“未找到对应模拟资产”改写为“未取得应急服务的有效回执”并建议“请稍后重试”，直接违反预期中禁止改写为未取得有效回执或建议盲目重试的要求；prepare 调用虽已发起且工具返回404，但参数原样传入仅记录在 citation_allowed 为 false 的调用记录中无法作为合格证据引用，且回答层面对目标不存在的说明缺失，整体不满足要求。",
+  "evidence_ref": "evidence/U-EMG-MISSING-TARGET"
+}

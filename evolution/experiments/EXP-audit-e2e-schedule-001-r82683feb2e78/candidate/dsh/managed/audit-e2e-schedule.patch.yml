@@ -1,0 +1,17 @@
+# 注册本 Experiment 的受控 Preset。
+- id: agent-preset-registry
+  config:
+    default: audit-e2e-schedule
+
+- insert:
+    - id: preset-audit-e2e-schedule
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: audit-e2e-schedule
+        plugins:
+          - id: audit-e2e-schedule-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/audit-e2e-schedule/agent.cordis.yml
+          - id: audit-native-schedule
+            name: '@deepseek-ai/dsh-tool-schedule'

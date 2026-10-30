@@ -1,0 +1,31 @@
+{
+  "inputs": [
+    "单价17.5元，数量4件，合计多少？"
+  ],
+  "assistant_texts": [
+    "合计 **70 元**。\n\n计算：单价 17.5 元/件 × 数量 4 件 = 70 元（单位为人民币元）。"
+  ],
+  "session_id": "session-fd1a3f33-0912-4641-b7e7-523b1309fe96",
+  "turns": [
+    {
+      "assistant_text": "合计 **70 元**。\n\n计算：单价 17.5 元/件 × 数量 4 件 = 70 元（单位为人民币元）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e5895b44-0584-4eed-8c46-828cbf4fc316"
+    }
+  ]
+}

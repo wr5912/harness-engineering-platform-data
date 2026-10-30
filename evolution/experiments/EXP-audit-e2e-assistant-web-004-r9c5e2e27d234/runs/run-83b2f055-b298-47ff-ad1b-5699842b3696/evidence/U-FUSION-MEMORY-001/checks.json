@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-FUSION-MEMORY-001",
+  "transport": "api",
+  "expected_behavior": "两轮输入在同一 Session 内依次发送：第二轮回答须原样返回编号 E2E-FUSION-6428（不改写、不补全、不添加其他编号），可如实说明“已在本会话记住”。仅要求同会话内记住并原样返回，不要求也不声称永久保存、写入数据库或任何外部保存。",
+  "session_id": "session-c20d37ab-417f-4726-8aeb-8a976bc838d9",
+  "workspace_id": "bd2447d2-8801-44eb-b4a7-b4820bf33471",
+  "session_title": "评测 U-FUSION-MEMORY-001",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "audit-e2e-assistant-web",
+    "status": "ready"
+  },
+  "session_preset": "audit-e2e-assistant-web",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-053356d2-e8ad-4777-b0c7-8a5590734084",
+    "workspace_id": "bd2447d2-8801-44eb-b4a7-b4820bf33471",
+    "session_title": "评审 U-FUSION-MEMORY-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

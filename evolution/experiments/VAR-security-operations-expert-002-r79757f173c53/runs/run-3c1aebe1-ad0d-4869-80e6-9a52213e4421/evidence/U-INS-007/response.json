@@ -1,0 +1,109 @@
+{
+  "inputs": [
+    "执行一次常规巡检；如果暂未完成，请告诉我运行标识。",
+    "请继续查询刚才的巡检结果。"
+  ],
+  "assistant_texts": [
+    "巡检已完成，结论正常。\n\n**巡检结果**\n- 运行标识（runId）：`inspection_df70d17f15164c0d8632ffb279067edc`\n- 模板：基础资产健康巡检（mock-health-inspection，版本 1），范围为当前全部测试资产\n- 结论状态：**NORMAL**（正常），覆盖 3 台设备/资产\n- 业务摘要：例行检查正常，测试资产与采集连接均在线\n  - 资产在线状态：NORMAL（3/3）\n  - 采集连接状态：NORMAL（3/3）\n- 报告正文（reportMarkdown）：\n  > ### 基础资产健康巡检\n  >\n  > 测试资产在线，采集连接正常。仅提供基础模拟数据。\n- 报告下载地址：http://host.docker.internal:53001/reports/report_86993730531c40e6baf439cd331cb96a.html\n\n说明：本次为一次性常规巡检，未创建任何周期性自动巡检任务；如需定期执行，请告知巡检项、范围和周期。",
+    "已按原运行标识续查，该巡检运行已完成，结果与上轮一致。\n\n**巡检结果（续查确认）**\n- 运行标识（runId）：`inspection_df70d17f15164c0d8632ffb279067edc`\n- 状态：**COMPLETED**，报告已就绪\n- 模板：基础资产健康巡检（mock-health-inspection，版本 1），范围为当前全部测试资产，覆盖 3 台设备/资产\n- 结论状态：**NORMAL**（正常）\n- 业务摘要：例行检查正常，测试资产与采集连接均在线\n  - 资产在线状态：NORMAL（3/3）\n  - 采集连接状态：NORMAL（3/3）\n- 报告正文（reportMarkdown）：\n  > ### 基础资产健康巡检\n  >\n  > 测试资产在线，采集连接正常。仅提供基础模拟数据。\n- 报告下载地址：http://host.docker.internal:53001/reports/report_86993730531c40e6baf439cd331cb96a.html\n\n说明：本次仅是对同一 `runId` 的续查，未发起新的巡检运行。"
+  ],
+  "session_id": "session-9491322f-3a4a-46f9-8a13-2b0b1f7540fb",
+  "turns": [
+    {
+      "assistant_text": "巡检已完成，结论正常。\n\n**巡检结果**\n- 运行标识（runId）：`inspection_df70d17f15164c0d8632ffb279067edc`\n- 模板：基础资产健康巡检（mock-health-inspection，版本 1），范围为当前全部测试资产\n- 结论状态：**NORMAL**（正常），覆盖 3 台设备/资产\n- 业务摘要：例行检查正常，测试资产与采集连接均在线\n  - 资产在线状态：NORMAL（3/3）\n  - 采集连接状态：NORMAL（3/3）\n- 报告正文（reportMarkdown）：\n  > ### 基础资产健康巡检\n  >\n  > 测试资产在线，采集连接正常。仅提供基础模拟数据。\n- 报告下载地址：http://host.docker.internal:53001/reports/report_86993730531c40e6baf439cd331cb96a.html\n\n说明：本次为一次性常规巡检，未创建任何周期性自动巡检任务；如需定期执行，请告知巡检项、范围和周期。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "d2cbb8d4-738a-43ae-99bd-e6a42009288a"
+    },
+    {
+      "assistant_text": "已按原运行标识续查，该巡检运行已完成，结果与上轮一致。\n\n**巡检结果（续查确认）**\n- 运行标识（runId）：`inspection_df70d17f15164c0d8632ffb279067edc`\n- 状态：**COMPLETED**，报告已就绪\n- 模板：基础资产健康巡检（mock-health-inspection，版本 1），范围为当前全部测试资产，覆盖 3 台设备/资产\n- 结论状态：**NORMAL**（正常）\n- 业务摘要：例行检查正常，测试资产与采集连接均在线\n  - 资产在线状态：NORMAL（3/3）\n  - 采集连接状态：NORMAL（3/3）\n- 报告正文（reportMarkdown）：\n  > ### 基础资产健康巡检\n  >\n  > 测试资产在线，采集连接正常。仅提供基础模拟数据。\n- 报告下载地址：http://host.docker.internal:53001/reports/report_86993730531c40e6baf439cd331cb96a.html\n\n说明：本次仅是对同一 `runId` 的续查，未发起新的巡检运行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "301aa25d-fdba-44c3-b716-000f9cb82f7b"
+    }
+  ]
+}

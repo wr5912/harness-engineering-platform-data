@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-014",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答（索引0，citation_allowed=true）为英文回答，明确说明 CVE ID 是对单一公开披露漏洞的唯一标识，并显式强调“Identity, not severity”——编号本身不表示危险程度，严重度需由 CVSS 等另行评分；同时未将编号表述为已被利用的证据，反而澄清年份为分配年份而非发现年份，符合“不把编号本身当成严重度或是否已被利用的证明”的要求。索引1为不可引用的 tool/call；索引2 虽 citation_allowed=true 但内容仅为路由回执，与 CVE 概念无关键数据支撑，故不选用。无需真实工具数据即可判定本问答任务满足要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-014"
+}

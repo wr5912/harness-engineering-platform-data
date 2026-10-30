@@ -1,0 +1,24 @@
+schema_version: "1.0"
+agent:
+  id: "audit-e2e-assistant-sdk"
+  name: "SDK验收收据助手"
+  language: "zh-CN"
+  lifecycle_status: "experiment"
+  runtime_family: "dsh"
+  load_mode: "container-only"
+loadable_assets:
+  workspace: "dsh/workspace"
+  preset_root: "dsh/presets"
+  managed_root: "dsh/managed"
+  profile: "sdk"
+  preset_id: "audit-e2e-assistant-sdk"
+  preset_file: "audit-e2e-assistant-sdk/agent.cordis.yml"
+  profile_patch: "dsh/managed/audit-e2e-assistant-sdk.patch.yml"
+  profile_manifest: "dsh/managed/sdk-profile.package.json"
+credential_environment_keys:
+  - "DEEPSEEK_API_KEY"
+
+role_instructions:
+  audit-e2e-assistant-sdk: roles/main.md
+project_workspace:
+  path: project

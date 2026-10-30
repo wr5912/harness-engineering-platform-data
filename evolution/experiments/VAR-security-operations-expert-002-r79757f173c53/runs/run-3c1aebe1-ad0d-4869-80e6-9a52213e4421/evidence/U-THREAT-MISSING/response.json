@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "请研判威胁事件。"
+  ],
+  "assistant_texts": [
+    "可以研判。本轮请求已路由到威胁研判，但缺少研判对象，无法开始取证：\n\n- 请提供要研判的 SOC 事件 ID，格式为 `INC-YYYYMMDD-NNNNNN`（例如 `INC-20260401-000123`）。\n- 收到事件 ID 后，我会委派威胁研判子智能体执行固定取证流程，并原样返回研判摘要和真实报告下载链接。\n\n补充说明：如果您希望的是“持续自动研判”（定期从 SOC 拉取待研判事件），也可以告诉我周期和时间窗口，我再确认当前 Runtime 的定时任务能力并处理。\n\n另外确认一点：请指明本次是研判**单个指定事件**，还是希望**批量自动研判**——这会走不同的处理流程。"
+  ],
+  "session_id": "session-86ed1d0c-e9f2-4f1b-9656-8d208f6146e6",
+  "turns": [
+    {
+      "assistant_text": "可以研判。本轮请求已路由到威胁研判，但缺少研判对象，无法开始取证：\n\n- 请提供要研判的 SOC 事件 ID，格式为 `INC-YYYYMMDD-NNNNNN`（例如 `INC-20260401-000123`）。\n- 收到事件 ID 后，我会委派威胁研判子智能体执行固定取证流程，并原样返回研判摘要和真实报告下载链接。\n\n补充说明：如果您希望的是“持续自动研判”（定期从 SOC 拉取待研判事件），也可以告诉我周期和时间窗口，我再确认当前 Runtime 的定时任务能力并处理。\n\n另外确认一点：请指明本次是研判**单个指定事件**，还是希望**批量自动研判**——这会走不同的处理流程。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "305ba78f-bcab-4f51-96e4-68442ad691ef"
+    }
+  ]
+}

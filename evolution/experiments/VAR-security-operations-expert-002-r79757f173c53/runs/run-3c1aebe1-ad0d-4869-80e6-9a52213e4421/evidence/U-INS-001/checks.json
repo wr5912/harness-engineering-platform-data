@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-001",
+  "transport": "api",
+  "expected_behavior": "先调用 `list_executable_inspections`，从本轮目录选出唯一匹配的已发布常规巡检任务，使用返回的 `taskId`、`definitionVersion` 和本次请求稳定的 `requestId` 调用一次 `start_inspection`，全量巡检不传 `scope`。之后只以同一 `runId` 调用 `get_inspection_result` 直到报告就绪，不重复发起。回复依据服务的 `conclusionStatus`、`businessSummary` 和完整 `reportMarkdown`，准确给出设备数量，不改写结论；设备数量缺失时说明缺口，该项不得判通过。仅当 `reportDownloadUrl` 非空时原样提供下载地址。运行中、工具失败或报告未就绪时不得声称完成；结果为 `PARTIAL` 时须说明证据缺口。",
+  "session_id": "session-e0b1167a-6257-4d13-8d15-0350ef4f3ddd",
+  "workspace_id": "ca66cf27-b891-4873-985d-a97987592907",
+  "session_title": "评测 U-INS-001",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-b72d808f-756c-456c-b6cc-9dabc10321a5",
+    "workspace_id": "ca66cf27-b891-4873-985d-a97987592907",
+    "session_title": "评审 U-INS-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

@@ -1,0 +1,75 @@
+{
+  "inputs": [
+    "Please explain what a CVE ID identifies, in English."
+  ],
+  "assistant_texts": [
+    "## What a CVE ID Identifies\n\nA **CVE ID** (e.g., `CVE-2021-44228`) is a unique, standardized identifier assigned to a **specific publicly disclosed cybersecurity vulnerability** in a specific piece of software or firmware. It identifies one vulnerability — not an exploit, an attack, or a threat event.\n\n### Structure of the ID\n\n| Part | Example | Meaning |\n|------|---------|---------|\n| Prefix | `CVE` | Common Vulnerabilities and Exposures program namespace |\n| Year | `2021` | The year the identifier was reserved/publicly assigned (not necessarily the year the flaw was introduced or discovered) |\n| Sequence number | `44228` | A digits-assigned serial number, unique within that year |\n\n### What it points to\n\nEach CVE ID maps to exactly one vulnerability and records metadata such as:\n\n- **Affected product(s) and version(s)** — e.g., Apache Log4j 2.0–2.14.1\n- **Vulnerability type** — using CWE classification (e.g., improper input validation, SQL injection)\n- **Impact description** — what the flaw allows (e.g., remote code execution)\n- **Severity score** — typically a CVSS base score (e.g., 10.0)\n- **References** — vendor advisories, patches, exploit analyses\n\n### What it does *not* identify\n\n- **An exploit or malware sample** — exploits are tracked separately (e.g., by Exploit-DB or malware family names)\n- **A specific attack campaign or incident** — those get their own IDs (e.g., threat-actor campaign names, or SOC incident IDs like `INC-20261030-000123` in this environment)\n- **Whether a system is vulnerable** — that requires matching the CVE's affected-product/version criteria against the actual deployed asset\n\n### Governance\n\nCVE IDs are issued by **CVE Numbering Authorities (CNAs)** under the CVE Program, which is coordinated by MITRE (with partner organizations). Maintaining one CVE per vulnerability ensures that vendors, patch management tools, threat intelligence platforms, and SOC teams worldwide can refer to the *same flaw* unambiguously across languages and databases (NVD, vendor advisories, scanner signatures, etc.).\n\n**In short:** a CVE ID is a universal reference label for one specific disclosed software/firmware vulnerability, letting everyone in the security community talk about it consistently."
+  ],
+  "session_id": "session-3eb465e5-3bf2-47af-b331-8ddb954ae3f0",
+  "turns": [
+    {
+      "assistant_text": "## What a CVE ID Identifies\n\nA **CVE ID** (e.g., `CVE-2021-44228`) is a unique, standardized identifier assigned to a **specific publicly disclosed cybersecurity vulnerability** in a specific piece of software or firmware. It identifies one vulnerability — not an exploit, an attack, or a threat event.\n\n### Structure of the ID\n\n| Part | Example | Meaning |\n|------|---------|---------|\n| Prefix | `CVE` | Common Vulnerabilities and Exposures program namespace |\n| Year | `2021` | The year the identifier was reserved/publicly assigned (not necessarily the year the flaw was introduced or discovered) |\n| Sequence number | `44228` | A digits-assigned serial number, unique within that year |\n\n### What it points to\n\nEach CVE ID maps to exactly one vulnerability and records metadata such as:\n\n- **Affected product(s) and version(s)** — e.g., Apache Log4j 2.0–2.14.1\n- **Vulnerability type** — using CWE classification (e.g., improper input validation, SQL injection)\n- **Impact description** — what the flaw allows (e.g., remote code execution)\n- **Severity score** — typically a CVSS base score (e.g., 10.0)\n- **References** — vendor advisories, patches, exploit analyses\n\n### What it does *not* identify\n\n- **An exploit or malware sample** — exploits are tracked separately (e.g., by Exploit-DB or malware family names)\n- **A specific attack campaign or incident** — those get their own IDs (e.g., threat-actor campaign names, or SOC incident IDs like `INC-20261030-000123` in this environment)\n- **Whether a system is vulnerable** — that requires matching the CVE's affected-product/version criteria against the actual deployed asset\n\n### Governance\n\nCVE IDs are issued by **CVE Numbering Authorities (CNAs)** under the CVE Program, which is coordinated by MITRE (with partner organizations). Maintaining one CVE per vulnerability ensures that vendors, patch management tools, threat intelligence platforms, and SOC teams worldwide can refer to the *same flaw* unambiguously across languages and databases (NVD, vendor advisories, scanner signatures, etc.).\n\n**In short:** a CVE ID is a universal reference label for one specific disclosed software/firmware vulnerability, letting everyone in the security community talk about it consistently.",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__confirm_policy_configuration",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "3d66589d-2b4f-4331-a780-c3f6f7c57193"
+    }
+  ]
+}

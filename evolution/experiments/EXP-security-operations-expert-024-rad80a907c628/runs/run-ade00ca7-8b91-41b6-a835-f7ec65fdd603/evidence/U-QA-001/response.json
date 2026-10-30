@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "**结论：我无法确认 SEC-KB-078 的具体内容。**\n\n- **事实**：当前环境未配置知识库检索服务，我无法读取编号为 `SEC-KB-078` 的知识库条目；本轮也没有任何工具结果提供该文档的内容。\n- **缺口**：该编号对应的文章标题、正文、适用范围和版本都无法获取，因此我不能声称下面的通用说明就是 SEC-KB-078 所描述的内容。\n\n**通用概念说明（非 SEC-KB-078 原文）**：SOAR（Security Orchestration, Automation and Response，安全编排、自动化与响应）剧本（Playbook）是把事件响应流程固化成的标准化自动化脚本。典型要素包括：\n\n1. **触发条件**：如某类告警产生、事件达到特定等级、或人工发起。\n2. **编排步骤**：按顺序调用多个安全工具，例如富化告警（查询 IP/域名信誉、资产信息）、取证收集、通知协同。\n3. **处置动作**：如隔离主机、封禁 IP、吊销会话等（在本工作区中，这类单目标处置对应应急指令路线，且需要人工确认后才能执行）。\n4. **分支与升级**：根据研判结果走不同分支，无法自动判定时升级人工处理。\n5. **审计留痕**：记录每一步的输入、输出和执行者，便于复盘。\n\n**建议（尚未执行）**：如需 SEC-KB-078 的准确内容，请提供该文档的原文、导出文件或截图；或者告知该编号在你们知识库系统中的位置，由具备知识库检索能力的渠道获取后再与我对照分析。另外，如果该编号实际对应的是某个 SOC 事件 ID（格式通常为 `INC-YYYYMMDD-NNNNNN`），请提供完整事件 ID，我可以走威胁研判路线处理。"
+  ],
+  "session_id": "session-5c36876f-ad31-46f2-b3e6-cd49e9941036",
+  "turns": [
+    {
+      "assistant_text": "**结论：我无法确认 SEC-KB-078 的具体内容。**\n\n- **事实**：当前环境未配置知识库检索服务，我无法读取编号为 `SEC-KB-078` 的知识库条目；本轮也没有任何工具结果提供该文档的内容。\n- **缺口**：该编号对应的文章标题、正文、适用范围和版本都无法获取，因此我不能声称下面的通用说明就是 SEC-KB-078 所描述的内容。\n\n**通用概念说明（非 SEC-KB-078 原文）**：SOAR（Security Orchestration, Automation and Response，安全编排、自动化与响应）剧本（Playbook）是把事件响应流程固化成的标准化自动化脚本。典型要素包括：\n\n1. **触发条件**：如某类告警产生、事件达到特定等级、或人工发起。\n2. **编排步骤**：按顺序调用多个安全工具，例如富化告警（查询 IP/域名信誉、资产信息）、取证收集、通知协同。\n3. **处置动作**：如隔离主机、封禁 IP、吊销会话等（在本工作区中，这类单目标处置对应应急指令路线，且需要人工确认后才能执行）。\n4. **分支与升级**：根据研判结果走不同分支，无法自动判定时升级人工处理。\n5. **审计留痕**：记录每一步的输入、输出和执行者，便于复盘。\n\n**建议（尚未执行）**：如需 SEC-KB-078 的准确内容，请提供该文档的原文、导出文件或截图；或者告知该编号在你们知识库系统中的位置，由具备知识库检索能力的渠道获取后再与我对照分析。另外，如果该编号实际对应的是某个 SOC 事件 ID（格式通常为 `INC-YYYYMMDD-NNNNNN`），请提供完整事件 ID，我可以走威胁研判路线处理。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "3d387bd1-3059-4e9a-9468-7b5ed2d29f42"
+    }
+  ]
+}

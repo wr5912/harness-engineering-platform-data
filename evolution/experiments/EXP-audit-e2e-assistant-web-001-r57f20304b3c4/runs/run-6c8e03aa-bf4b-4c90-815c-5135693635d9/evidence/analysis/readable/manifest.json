@@ -1,0 +1,84 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "inputs.lock.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 7504,
+          "sha256": "48670da94370492a79490ce014dd06db47c45b22e8f1bab536d3c90426a54022"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 960,
+          "sha256": "86dc5e1046ae3673ddf22ef9093d4925df3854f574e0fd86785cfd573dd4a642"
+        },
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3750,
+          "sha256": "2b7cd350a815c2fac373162666c67a722aeb806a2b659e023ac01aa4abb135a7"
+        },
+        {
+          "source": "evidence/U-RECEIPT-001/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 763,
+          "sha256": "ead2de540202366f713a661ccba2cedae4b40ae8d643a4f2d55dbaddbdbaa6c7"
+        },
+        {
+          "source": "evidence/U-RECEIPT-001/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1589,
+          "sha256": "bdb642f7bc98448aaa3b0dd95f21ed275903fb81e57b655bd47bde24a165e0d6"
+        },
+        {
+          "source": "evidence/U-RECEIPT-001/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-RECEIPT-002/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1008,
+          "sha256": "f1376a83a7dcf2869e2fc67615163911502bda28015377dbdb369203ef046e99"
+        },
+        {
+          "source": "evidence/U-RECEIPT-002/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1502,
+          "sha256": "6355ff2a98537b881041fb8b805c5a6eaff0a648a7f0c8ad7708c3bab1a748aa"
+        },
+        {
+          "source": "evidence/U-RECEIPT-002/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 21,
+          "sha256": "135ecd95bb5301d7a3c450e6ce03653b042f9fc0007d87d96b937e9e9a537b48"
+        }
+      ]
+    }
+  ]
+}

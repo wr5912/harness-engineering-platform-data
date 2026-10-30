@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "执行一次常规巡检。"
+  ],
+  "assistant_texts": [
+    "巡检已完成，结论为正常。\n\n## 巡检结果\n\n- **巡检模板**：基础资产健康巡检（`mock-health-inspection`，版本 1）\n- **巡检范围**：当前全部测试资产（共 3 台设备/资产）\n- **总体结论**：`NORMAL`（正常）\n- **业务摘要**：例行检查正常，测试资产与采集连接均在线。\n\n| 巡检项 | 状态 | 覆盖数量 |\n|---|---|---|\n| 资产在线状态 | NORMAL | 3 |\n| 采集连接状态 | NORMAL | 3 |\n\n**报告正文**：\n> ### 基础资产健康巡检\n>\n> 测试资产在线，采集连接正常。仅提供基础模拟数据。\n\n**HTML 报告下载**：http://host.docker.internal:53001/reports/report_21a45e6e12494e5090f0cdd9f61a3a55.html\n\n## 说明\n\n- `runId`：`inspection_d925646fcac940beb628afeba7477050`，如需续查可凭此 ID 查询。\n- 本次为常规全量巡检，未指定资产，沿用任务默认范围，覆盖 3 台测试资产。\n- 工具返回标记为模拟数据（`simulated: true`），结论基于该模拟巡检服务的回执。"
+  ],
+  "session_id": "session-84f7b144-5b43-4f3c-8ae6-2e1106870ac6",
+  "turns": [
+    {
+      "assistant_text": "巡检已完成，结论为正常。\n\n## 巡检结果\n\n- **巡检模板**：基础资产健康巡检（`mock-health-inspection`，版本 1）\n- **巡检范围**：当前全部测试资产（共 3 台设备/资产）\n- **总体结论**：`NORMAL`（正常）\n- **业务摘要**：例行检查正常，测试资产与采集连接均在线。\n\n| 巡检项 | 状态 | 覆盖数量 |\n|---|---|---|\n| 资产在线状态 | NORMAL | 3 |\n| 采集连接状态 | NORMAL | 3 |\n\n**报告正文**：\n> ### 基础资产健康巡检\n>\n> 测试资产在线，采集连接正常。仅提供基础模拟数据。\n\n**HTML 报告下载**：http://host.docker.internal:53001/reports/report_21a45e6e12494e5090f0cdd9f61a3a55.html\n\n## 说明\n\n- `runId`：`inspection_d925646fcac940beb628afeba7477050`，如需续查可凭此 ID 查询。\n- 本次为常规全量巡检，未指定资产，沿用任务默认范围，覆盖 3 台测试资产。\n- 工具返回标记为模拟数据（`simulated: true`），结论基于该模拟巡检服务的回执。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "59824982-1fbf-4f4f-a355-8b5905122f93"
+    }
+  ]
+}

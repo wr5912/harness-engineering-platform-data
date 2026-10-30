@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "请在防火墙虚拟机上开通 172.16.1.155 到 172.16.2.103 的 TCP 19921 访问策略。"
+  ],
+  "assistant_texts": [
+    "**未完成**：端点解析未通过，无法准备策略草案。\n\n- 事实：Platform 端点解析服务对本轮请求（源 `172.16.1.155` → 目的 `172.16.2.103`，TCP 19921，设备线索“防火墙虚拟机”）返回 404「未找到对应模拟端点」，即固定测试资产目录中未能匹配到相应端点或该设备线索。\n- 本轮未生成操作号，未创建 DRAFT，未下发任何策略。\n\n下一步：请确认两侧 IP 及“防火墙虚拟机”是否为已纳管的资产名称/设备名，或提供准确的资产名称后我再重新发起解析。"
+  ],
+  "session_id": "session-815d96b3-cb34-4260-9860-978db7886679",
+  "turns": [
+    {
+      "assistant_text": "**未完成**：端点解析未通过，无法准备策略草案。\n\n- 事实：Platform 端点解析服务对本轮请求（源 `172.16.1.155` → 目的 `172.16.2.103`，TCP 19921，设备线索“防火墙虚拟机”）返回 404「未找到对应模拟端点」，即固定测试资产目录中未能匹配到相应端点或该设备线索。\n- 本轮未生成操作号，未创建 DRAFT，未下发任何策略。\n\n下一步：请确认两侧 IP 及“防火墙虚拟机”是否为已纳管的资产名称/设备名，或提供准确的资产名称后我再重新发起解析。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "7536e77b-cd93-4a76-adf8-2a08b766d207"
+    }
+  ]
+}

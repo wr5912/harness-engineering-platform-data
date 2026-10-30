@@ -1,0 +1,90 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "inputs.lock.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 18984,
+          "sha256": "93f8942a54a4c36417f0d95513bbf0162764b9c481e1645a0d93585b7ba2129f"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 1023,
+          "sha256": "3260b452dde9d1829a9936953672371cc0eb46225f90c30eaa19d6282bbb833e"
+        },
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 14455,
+          "sha256": "867aeb6cf66387e25c8ce2306fd6420c25f2ba6f705a06cbc5553459301dc0d7"
+        },
+        {
+          "source": "evidence/U-TOOL-001/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1239,
+          "sha256": "c3f185b1ac3f9c0f13cdd97f3f2f038f4d606134ccf2fddb0106d65ac46521c7"
+        },
+        {
+          "source": "evidence/U-TOOL-001/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1921,
+          "sha256": "9da37296c6112205ffe5d175fb037fe9afd31663265144976d88d6edfd0ddd4e"
+        },
+        {
+          "source": "evidence/U-TOOL-001/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 783,
+          "sha256": "d66cc1de5a9a283e7158c163b32109dd2749492bfcad7314083fa46ea5844532"
+        },
+        {
+          "source": "evidence/U-TOOL-002/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1364,
+          "sha256": "2a50a817f3d8459954efbe5ba4e22a77bf8b75bec93bc00a7d0a23a1cfe676a9"
+        },
+        {
+          "source": "evidence/U-TOOL-002/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1893,
+          "sha256": "cf2f14b5a7133e37f703e99e0cde573641ef284be4c2cba3b53df20fb5189556"
+        },
+        {
+          "source": "evidence/U-TOOL-002/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 802,
+          "sha256": "b6eb9f6a7746989bcbdcc9091455b203804f644b8acb7fc973c446e7d7bdfd6a"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 29,
+          "sha256": "7bf9bc4f12efcb3e64c220aafd4609bfc3a74448c3ec237af63a6ce0e0eb663f"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-002.txt",
+          "total_lines": 7,
+          "sha256": "900377f966635a2ef9078b900ba732605f9c6f79f91b82cc83384543f6771c68"
+        }
+      ]
+    }
+  ]
+}

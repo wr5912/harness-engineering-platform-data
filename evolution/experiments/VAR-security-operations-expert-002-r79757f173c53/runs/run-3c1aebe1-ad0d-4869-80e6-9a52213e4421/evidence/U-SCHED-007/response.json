@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "帮我创建每天中午 12 点自动威胁研判的任务。"
+  ],
+  "assistant_texts": [
+    "自动威胁研判定时任务已创建成功，信息如下：\n\n- **任务 ID**：`schedule-96ea3246-888a-45e1-851c-5073aa7404ae`\n- **标题**：自动威胁研判-每天12:00\n- **规则**：每天 `12:00:00`（时区 `Asia/Shanghai`），状态 `scheduled`\n- **下次到期时间**：2026-10-31 12:00:00（Asia/Shanghai，对应 UTC 2026-10-31T04:00:00Z）\n\n几点说明：\n\n- 该任务绑定当前会话，到期投递后由本地受信 Schedule 桥解析固定提示并调用待研判事件处理，每次心跳只研判一条事件；上一条仍在运行时会跳过本次心跳、不排队。\n- **当前尚未执行任何研判**，任务创建成功仅代表调度已生效；实际研判结果以到期后带事件 ID 和 Run ID 的工具结果为准。\n- 如需修改周期或删除任务，随时告诉我。"
+  ],
+  "session_id": "session-d0b34045-d4df-467c-8bbc-e2d58b765ce7",
+  "turns": [
+    {
+      "assistant_text": "自动威胁研判定时任务已创建成功，信息如下：\n\n- **任务 ID**：`schedule-96ea3246-888a-45e1-851c-5073aa7404ae`\n- **标题**：自动威胁研判-每天12:00\n- **规则**：每天 `12:00:00`（时区 `Asia/Shanghai`），状态 `scheduled`\n- **下次到期时间**：2026-10-31 12:00:00（Asia/Shanghai，对应 UTC 2026-10-31T04:00:00Z）\n\n几点说明：\n\n- 该任务绑定当前会话，到期投递后由本地受信 Schedule 桥解析固定提示并调用待研判事件处理，每次心跳只研判一条事件；上一条仍在运行时会跳过本次心跳、不排队。\n- **当前尚未执行任何研判**，任务创建成功仅代表调度已生效；实际研判结果以到期后带事件 ID 和 Run ID 的工具结果为准。\n- 如需修改周期或删除任务，随时告诉我。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "8971f772-cc88-4ec2-9715-e9f399a73afa"
+    }
+  ]
+}

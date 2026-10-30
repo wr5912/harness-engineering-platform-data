@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-TOOL-001",
+  "transport": "browser",
+  "expected_behavior": "必须真实调用只读工具 receipt_total（参数 unit_price=17.5、quantity=4）并依据工具回执回答：工具回执 ok=true，可核对算式 17.5 × 4 = 70，合计 70，并附单位说明（金额单位随单价，如元；数量单位随输入，如件）。最终回复给出合计 70 元并说明单位与算式。工具调用与工具结果不得伪造，不虚构外部系统或保存结果。若未真实调用工具、以心算冒充工具结果、或合计/单位错误，则不通过。",
+  "session_id": "session-665fec81-f96b-4e12-94cd-3473dbb6665b",
+  "session_preset": "audit-e2e-assistant-web",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "ui_startup": {
+    "testing_notice_dismissed": false,
+    "workspace_action": "selected"
+  },
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "completed": true,
+  "ui_smoke_passed": true,
+  "trace_available": true
+}

@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答（索引0，citation_allowed=true）为英文回答，明确说明 CVE ID 是对单一公开披露漏洞的唯一标识，并显式强调“Identity, not severity”——编号本身不表示危险程度，严重度需由 CVSS 等另行评分；同时未将编号表述为已被利用的证据，反而澄清年份为分配年份而非发现年份，符合“不把编号本身当成严重度或是否已被利用的证明”的要求。索引1为不可引用的 tool/call；索引2 虽 citation_allowed=true 但内容仅为路由回执，与 CVE 概念无关键数据支撑，故不选用。无需真实工具数据即可判定本问答任务满足要求。",
+    "requirements": [
+      {
+        "requirement": "用英语准确说明 CVE ID 标识公开记录的漏洞，不把编号本身当成严重度或是否已被利用的证明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "## What a CVE ID Identifies\n\nA **CVE ID** (e.g., `CVE-2021-44228`) is a unique, standardized identifier for **one publicly disclosed cybersecurity vulnerability** in a specific product or service. It is managed under the CVE Program, which ensures that vendors, researchers, and defenders worldwide all refer to the same flaw with the same name.\n\n### Structure of a CVE ID\n\n| Part | Example | Meaning |\n|---|---|---|\n| Prefix | `CVE` | Stands for Common Vulnerabilities and Exposures |\n| Year | `2021` | The year the ID was *assigned* (not always the year the flaw was discovered) |\n| Sequence number | `44228` | A unique number assigned to that vulnerability within the registry |\n\n### Key points\n\n- **Scope:** One CVE ID = one specific vulnerability in one product. If the same flaw appears in multiple products, each gets its own CVE ID.\n- **Identity, not severity:** A CVE ID only *names* the vulnerability. It does not describe how dangerous it is — severity is scored separately (e.g., CVSS scores like `9.8 Critical`).\n- **Lifecycle:** The ID persists even after a patch is released. Related identifiers exist for other things:\n  - **CWE** — the *type* of weakness (e.g., buffer overflow)\n  - **CPE** — the *affected product* naming scheme\n  - **CVE ID** — the individual vulnerability instance itself\n\n### Practical use\n\nSecurity teams use CVE IDs to track patching status, correlate alerts and scan results, reference advisories, and communicate unambiguously about a specific flaw — for example, \"we still need to remediate CVE-2021-44228 on servers A, B, and C.\"\n\nIf you'd like, I can also explain how CVE IDs relate to CVSS scoring or vendor advisories.",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-eb7ef582-ee1a-46c2-97f1-410bf46d9c19",
+    "workspace_id": "ca66cf27-b891-4873-985d-a97987592907",
+    "session_title": "评审 U-QA-014",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

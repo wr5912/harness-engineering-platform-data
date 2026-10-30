@@ -1,0 +1,33 @@
+- id: agent-preset-registry
+  config:
+    default: audit-e2e-assistant-sdk
+- insert:
+    - id: preset-audit-e2e-assistant-sdk
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: audit-e2e-assistant-sdk
+        plugins:
+          - id: audit-e2e-assistant-sdk-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/audit-e2e-assistant-sdk/agent.cordis.yml
+          - id: audit-delegate
+            name: '@deepseek-ai/dsh-tool-subagent'
+            config:
+              provider: spawn
+              toolName: delegate_audit_wait
+              maxDepth: 1
+              agentPreset: audit-wait-child
+              agentOptions:
+                provider: xiaomi-token-plan-cn
+                model: mimo-v2.6-flash
+                reasoningEffort: 'off'
+    - id: preset-audit-wait-child
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: audit-wait-child
+        plugins:
+          - id: audit-child-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/audit-wait-child/agent.cordis.yml

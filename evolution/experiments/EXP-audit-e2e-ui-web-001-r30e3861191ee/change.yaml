@@ -1,6 +1,51 @@
-schema_version: '1.0'
-experiment_id: EXP-audit-e2e-ui-web-001-r30e3861191ee
-agent_id: audit-e2e-ui-web
-baseline_ref: none:first-experiment
-status: active
-research_question: 页面验收WEB助手能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求
+schema_version: "1.0"
+experiment_id: "EXP-audit-e2e-ui-web-001-r30e3861191ee"
+agent_id: "audit-e2e-ui-web"
+baseline_ref: "none:first-experiment"
+status: "active"
+research_question: "页面验收WEB助手能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求"
+features:
+  - id: "F-001"
+    title: "身份声明与中文应答"
+    description: "角色正文声明身份为页面验收WEB助手（Agent ID: audit-e2e-ui-web），使用中文回答，仅声明实际提供的工具、权限与执行结果，不声称未提供的能力。Preset persona 前缀同步声明该身份并引用工作区指令。当前无匹配来源的业务 Run，尚未验证业务效果。"
+    source_refs:
+      - "evolution/experiments/EXP-audit-e2e-ui-web-001-r30e3861191ee/candidate/dsh/workspace/AGENTS.md"
+      - "evolution/experiments/EXP-audit-e2e-ui-web-001-r30e3861191ee/candidate/dsh/presets/audit-e2e-ui-web/agent.cordis.yml"
+    evidence_refs: []
+    change: "首个版本（baseline: none:first-experiment）新增身份与语言声明资产。"
+  - id: "F-002"
+    title: "材料核对与简洁中文结论"
+    description: "帮助用户核对提供的材料并输出简洁中文结论；缺少材料时说明缺少什么，不虚构完成；用户要求复述时准确复述输入。当前无匹配来源的业务 Run，尚未验证业务效果。"
+    source_refs:
+      - "evolution/experiments/EXP-audit-e2e-ui-web-001-r30e3861191ee/candidate/dsh/workspace/AGENTS.md"
+    evidence_refs: []
+    change: "首个版本新增材料核对与结论输出职责。"
+  - id: "F-003"
+    title: "信息不足时明确说明并补充询问"
+    description: "缺少必要信息时明确说明缺少什么并补充询问，不虚构完成。当前无匹配来源的业务 Run，尚未验证业务效果。"
+    source_refs:
+      - "evolution/experiments/EXP-audit-e2e-ui-web-001-r30e3861191ee/candidate/dsh/workspace/AGENTS.md"
+    evidence_refs: []
+    change: "首个版本新增信息不足处理约定。"
+  - id: "F-004"
+    title: "角色正文单处维护与 Preset 引用"
+    description: "角色正文只在 Candidate 工作区 AGENTS.md 单处维护；Preset 通过 persona 前缀声明身份并引用该职责与工作指令，agent-instructions 配置上限 65536 字节。属资产结构说明：实际装载与响应效果缺少 Run 证据，尚未验证业务效果。"
+    source_refs:
+      - "evolution/experiments/EXP-audit-e2e-ui-web-001-r30e3861191ee/candidate/dsh/presets/audit-e2e-ui-web/agent.cordis.yml"
+      - "evolution/experiments/EXP-audit-e2e-ui-web-001-r30e3861191ee/hypothesis.md"
+    evidence_refs: []
+    change: "首个版本建立 Preset 引用工作区角色正文的资产结构。"
+  - id: "F-005"
+    title: "可装载资产契约与容器装载声明"
+    description: "harness.yaml 声明 load_mode: container-only，可装载资产为 workspace（dsh/workspace）、preset_root（dsh/presets）、managed_root（dsh/managed），preset_id: audit-e2e-ui-web，profile patch 为 dsh/managed/audit-e2e-ui-web.patch.yml，可选凭据环境 DEEPSEEK_API_KEY。此为配置声明，不代表已装载或业务通过；当前无实例观察与 Run 证据，尚未验证业务效果。"
+    source_refs:
+      - "evolution/experiments/EXP-audit-e2e-ui-web-001-r30e3861191ee/candidate/harness.yaml"
+    evidence_refs: []
+    change: "首个版本新增可装载资产与容器装载契约声明。"
+  - id: "F-006"
+    title: "评测 Case 定义（身份与职责、业务范围与信息不足）"
+    description: "evaluation.md 维护需求、Case 与预期行为：U-IDENTITY-001（fast）核对身份与职责表述含 Agent ID audit-e2e-ui-web；U-ROLE-001（full）核对业务范围说明与信息不足补问，且不声称已执行未提供的工具或产生业务结果。此为 Case 定义而非业务通过；尚无匹配来源的 Run，尚未验证业务效果。"
+    source_refs:
+      - "agents/audit-e2e-ui-web/evaluation.md"
+    evidence_refs: []
+    change: "首个版本新增两条评测 Case 定义。"

@@ -1,0 +1,75 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "我无法确认 SEC-KB-078 的具体内容。当前会话没有配置知识库检索能力，无法按编号查询 SOAR 剧本文档；按工作区规则，我也不能猜测或编造该编号对应的剧本内容。\n\n可行的下一步（均尚未执行）：\n\n- 请提供 SEC-KB-078 的原文内容、截图或导出文件，我可以帮你梳理该 SOAR 剧本的触发条件、处置步骤、涉及的自动化动作和审批环节。\n- 如果这个编号实际对应某个 SOC 事件（`INC-YYYYMMDD-NNNNNN`）或某台资产，请给出对应的事件 ID 或资产信息，我可以转入威胁研判或故障排查路线用真实工具取证。"
+  ],
+  "session_id": "session-9655ea65-2b10-40d2-9c7b-dccb60755975",
+  "turns": [
+    {
+      "assistant_text": "我无法确认 SEC-KB-078 的具体内容。当前会话没有配置知识库检索能力，无法按编号查询 SOAR 剧本文档；按工作区规则，我也不能猜测或编造该编号对应的剧本内容。\n\n可行的下一步（均尚未执行）：\n\n- 请提供 SEC-KB-078 的原文内容、截图或导出文件，我可以帮你梳理该 SOAR 剧本的触发条件、处置步骤、涉及的自动化动作和审批环节。\n- 如果这个编号实际对应某个 SOC 事件（`INC-YYYYMMDD-NNNNNN`）或某台资产，请给出对应的事件 ID 或资产信息，我可以转入威胁研判或故障排查路线用真实工具取证。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__confirm_policy_configuration",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f1eddcf0-d610-42c8-a269-8fd2beec9849"
+    }
+  ]
+}

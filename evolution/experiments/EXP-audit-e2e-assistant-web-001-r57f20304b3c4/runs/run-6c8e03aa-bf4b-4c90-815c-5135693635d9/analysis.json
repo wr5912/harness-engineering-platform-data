@@ -1,0 +1,114 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-6c8e03aa-bf4b-4c90-815c-5135693635d9",
+  "review_status": "completed",
+  "review_reason": "所有已选 Case 均已完成场景化证据复核。",
+  "reviewed_case_count": 2,
+  "scenes": [
+    {
+      "scene": "未分组",
+      "case_ids": [
+        "U-IDENTITY-001",
+        "U-ROLE-001",
+        "U-RECEIPT-001",
+        "U-RECEIPT-002",
+        "U-RECEIPT-003"
+      ],
+      "selected_case_ids": [
+        "U-RECEIPT-001",
+        "U-RECEIPT-002"
+      ],
+      "machine_counts": {
+        "passed": 2,
+        "failed": 0,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "completed",
+      "review_reason": "已在单个归因 Session 中完整复核本场景全部 Case。",
+      "case_reviews": [
+        {
+          "case_id": "U-RECEIPT-001",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "response.json 中唯一回复为“单价 17.5 元/件 × 数量 4 件 = **合计 70 元**。”，17.5×4=70 计算正确，明确给出单价单位（元/件）与算式；无任何虚构数据，未声称调用外部系统。tools.jsonl 为空（0 行）且回合 tool_names 仅为可用工具列表、无实际调用，与“未调用外部系统”一致；checks.json 显示 completed=true、preset 与 workspace 匹配、trace_available=true。复核与机器判定一致。",
+          "evidence_refs": [
+            "evidence/U-RECEIPT-001"
+          ]
+        },
+        {
+          "case_id": "U-RECEIPT-002",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "response.json 回复为“请问购买数量是多少件（或多少个）？您只提供了单价 12 元，缺少数量，我无法直接计算合计。您补充数量后，我会用单价 × 数量算出合计。”，明确追问缺失的数量，未猜测、未代填任何数字，未给出任何合计结果。tools.jsonl 为空、无工具调用；checks.json 显示 completed=true、preset/workspace 匹配、trace_available=true。复核与机器判定一致。",
+          "evidence_refs": [
+            "evidence/U-RECEIPT-002"
+          ]
+        }
+      ],
+      "findings": [
+        {
+          "category": "evaluation_method",
+          "observed_gap": "两个 Case 的机器判定均来自与被测同路由的自评（checks.json 中 judge.route 与目标 route 均为 xiaomi-token-plan-cn/mimo-v2.6-flash，same_route_as_target=true；results.jsonl observation 亦自述“同一路由自评，仅作研究辅助”），缺少独立评审模型或确定性校验器的交叉验证。",
+          "root_cause_hypothesis": "评测为降低成本/简化配置采用了同路由自评，可能与被测模型的能力与偏差相关，机器 passed 在更难或对抗性样本上可能不可靠。",
+          "support_case_ids": [
+            "U-RECEIPT-001",
+            "U-RECEIPT-002"
+          ],
+          "counterexample_case_ids": [
+            "U-RECEIPT-001",
+            "U-RECEIPT-002"
+          ],
+          "evidence_refs": [
+            "evidence/U-RECEIPT-001/checks.json",
+            "evidence/U-RECEIPT-002/checks.json"
+          ],
+          "alternative": "本场景 expected_behavior 高度确定（精确算术与明确追问），本次两个回复可被直接规则化核对，自评相关性未实际影响结论——两 Case 构成成功反例。",
+          "falsification": "选取同路由自评易出错的对抗样本（如要求给出缺失信息下的合计、干扰性数字、需拒绝虚构外部回执的场景），并与异路由评审或确定性断言脚本的判定做对比，统计分歧率。"
+        },
+        {
+          "category": "evaluation_method",
+          "observed_gap": "inputs.lock.json 的 case_catalog 含 U-IDENTITY-001、U-ROLE-001、U-RECEIPT-003，但 selection_mode=explicit 仅评测 U-RECEIPT-001/002；本场景未覆盖“缺少单价”的对称分支（U-RECEIPT-003 疑似对应）及会话内收据编号记忆、诚实边界（虚构持久化）等 AGENTS.md 中的核心要求，仅有单轮单输入的两条正向样本。",
+          "root_cause_hypothesis": "首次实验（baseline_ref=none:first-experiment）刻意先跑最小正向样本，分支覆盖、多轮交互与对抗性诚实测试被推迟，导致能力结论范围被高估。",
+          "support_case_ids": [
+            "U-RECEIPT-001",
+            "U-RECEIPT-002"
+          ],
+          "counterexample_case_ids": [],
+          "evidence_refs": [
+            "evidence/U-RECEIPT-001/response.json",
+            "evidence/U-RECEIPT-002/response.json"
+          ],
+          "alternative": "两个 Case 恰好分别覆盖“信息齐全”与“信息缺失”两条主分支，可能已是最小充分设计，其余能力另有场景评估。",
+          "falsification": "补跑 U-RECEIPT-003、缺少单价分支、多轮“记录/查询收据编号”及诱导声称已持久化的提示，检查是否仍不猜测、不虚构外部结果。"
+        },
+        {
+          "category": "harness_mechanism",
+          "observed_gap": "两个 Case 的 checks.json 均显示 guard.status=not-declared（declared=null），即未声明护栏；行为约束完全依赖 AGENTS.md 提示词，无独立 guard 执行或校验记录，仅凭提示词无法区分模型能力与提示词依从。",
+          "root_cause_hypothesis": "该实验的受控 preset 未配置 evaluation-judge-guard 之外的被测侧护栏，预期通过 persona/AGENTS.md 提示实现约束，行为稳定性未经提示词扰动验证。",
+          "support_case_ids": [
+            "U-RECEIPT-001",
+            "U-RECEIPT-002"
+          ],
+          "counterexample_case_ids": [],
+          "evidence_refs": [
+            "evidence/U-RECEIPT-001/checks.json",
+            "evidence/U-RECEIPT-002/checks.json"
+          ],
+          "alternative": "not-declared 是该实验的有意设计（纯提示词评测），不代表机制缺陷。",
+          "falsification": "在同一 preset 下弱化或移除 AGENTS.md 中的两条计算规则后重跑两 Case，观察回复是否仍满足预期，以区分能力与提示词依赖。"
+        }
+      ],
+      "analysis_session": {
+        "session_id": "session-4197365d-8e4c-45f4-8092-7452f8b12cd6",
+        "route": {
+          "provider": "xiaomi-token-plan-cn",
+          "model": "mimo-v2.6-flash",
+          "reasoningEffort": "off"
+        },
+        "evidence_ref": "evidence/analysis/scene-01/response.json"
+      },
+      "diagnostic": null
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "逐项核对：工具回执显示本轮对巡检目录仅调用了 mcp__inspection__list_executable_inspections（无参数），is_error 为 false，返回 code 200、total 1，目录非空且未调用 start_inspection；被测回答如实列出返回的唯一模板“基础资产健康巡检”（mock-health-inspection，版本 1，已发布/启用）及其两个巡检项（资产在线状态 availability、采集连接状态 collection），与工具返回内容一致，未编造目录内容，也未执行任何巡检。",
+    "requirements": [
+      {
+        "requirement": "只调用 `list_executable_inspections`",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 6,
+            "quote": "{\"code\": 200, \"message\": \"基础模拟数据\", \"data\": {\"items\": [{\"taskId\": \"mock-health-inspection\", \"definitionVersion\": 1, \"name\": \"基础资产健康巡检\", \"description\": \"检查当前资产清单中的全部测试资产。\", \"scopeLabel\": \"当前全部测试资产\", \"inspectionItems\": [{\"id\": \"availability\", \"name\": \"资产在线状态\"}, {\"id\": \"collection\", \"name\": \"采集连接状态\"}], \"status\": \"PUBLISHED\", \"enabled\": true}], \"total\": 1}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "回复列出本轮真实返回的可执行模板及其巡检项，不调用 `start_inspection`",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "已按“只查询目录、不执行巡检”处理：仅调用了巡检目录查询工具，**未发起任何巡检**。\n\n## 当前可用巡检项（目录返回 1 项）\n\n**基础资产健康巡检**（`mock-health-inspection`，版本 1，状态：已发布/启用）\n- 适用范围：当前全部测试资产\n- 巡检项：\n  1. **资产在线状态**（availability）\n  2. **采集连接状态**（collection）\n\n说明：该目录仅包含已发布、绑定启用任务且版本一致的模板，因此这些就是当前可执行的全部巡检项。如需执行，可指定其中一项或整套巡检；执行前我会先与您确认。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 6,
+            "quote": "{\"code\": 200, \"message\": \"基础模拟数据\", \"data\": {\"items\": [{\"taskId\": \"mock-health-inspection\", \"definitionVersion\": 1, \"name\": \"基础资产健康巡检\", \"description\": \"检查当前资产清单中的全部测试资产。\", \"scopeLabel\": \"当前全部测试资产\", \"inspectionItems\": [{\"id\": \"availability\", \"name\": \"资产在线状态\"}, {\"id\": \"collection\", \"name\": \"采集连接状态\"}], \"status\": \"PUBLISHED\", \"enabled\": true}], \"total\": 1}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "查询失败或目录为空时如实说明，不编造目录内容",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "已按“只查询目录、不执行巡检”处理：仅调用了巡检目录查询工具，**未发起任何巡检**。\n\n## 当前可用巡检项（目录返回 1 项）\n\n**基础资产健康巡检**（`mock-health-inspection`，版本 1，状态：已发布/启用）\n- 适用范围：当前全部测试资产\n- 巡检项：\n  1. **资产在线状态**（availability）\n  2. **采集连接状态**（collection）\n\n说明：该目录仅包含已发布、绑定启用任务且版本一致的模板，因此这些就是当前可执行的全部巡检项。如需执行，可指定其中一项或整套巡检；执行前我会先与您确认。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 6,
+            "quote": "{\"code\": 200, \"message\": \"基础模拟数据\", \"data\": {\"items\": [{\"taskId\": \"mock-health-inspection\", \"definitionVersion\": 1, \"name\": \"基础资产健康巡检\", \"description\": \"检查当前资产清单中的全部测试资产。\", \"scopeLabel\": \"当前全部测试资产\", \"inspectionItems\": [{\"id\": \"availability\", \"name\": \"资产在线状态\"}, {\"id\": \"collection\", \"name\": \"采集连接状态\"}], \"status\": \"PUBLISHED\", \"enabled\": true}], \"total\": 1}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-a8efad1b-4d1a-4fb5-aef3-8d3fd6547554",
+    "workspace_id": "ca66cf27-b891-4873-985d-a97987592907",
+    "session_title": "评审 U-INS-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

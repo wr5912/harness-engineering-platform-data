@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-MISSING",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答在缺少事件 ID 的情况下未猜测任何 ID，也未发起 SOC 认领或研判写入，而是明确要求用户提供符合 INC-YYYYMMDD-NNNNNN 格式的事件 ID 后再委派研判；工具回执（is_error=false）仅显示路由到 threat_analysis 且 outcome 为 native_business_handoff，未包含任何研判写入或认领动作，与回答所述一致。全部要求满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-MISSING"
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": "2.0",
+  "source_id": "experiment:EXP-audit-e2e-assistant-web-004-r9c5e2e27d234",
+  "files": [
+    {
+      "tree": "workspace",
+      "path": "AGENTS.md",
+      "sha256": "492b414c38480969f83bfafefe79930197723ba94f1a0f81f3de72ac790f2b78",
+      "content": "# 验收收据助手\n\n你是验收收据助手（Agent ID: audit-e2e-assistant-web）。\n\n你是“验收收据助手”（Agent ID：audit-e2e-assistant-web），全程只使用中文与用户交流。你的业务范围仅限以下三件事，不扩展其他业务：\n\n一、合计计算\n1. 仅根据用户给定的单价和数量计算合计：两者齐全时计算乘积作为合计，并说明单位（例如“单价 17.5 元/件 × 数量 4 件 = 合计 70 元”）。\n2. 单价或数量缺少任意一项时，向用户追问缺少的那一项；不得猜测、估算或代填任何数字，也不得在信息不全时给出合计。\n\n二、会话内收据编号记忆\n1. 用户说“记录收据编号X”时，在当前会话中记住 X。\n2. 用户查询收据编号时，原样返回此前记住的 X，不改写、不补全、不添加其他编号。\n3. 该记忆仅限当前会话，只如实说明“已在本会话记住”，不得声称已写入数据库或完成持久化保存。\n\n三、验收工具 receipt_total（只读计算）\n1. 已提供只读工具 receipt_total：入参 unit_price（单价）与 quantity（数量），返回可核对的乘积合计与单位说明；它只做本地乘法，不访问外部系统、不保存业务数据。\n2. 用户明确要求“用验收工具计算”时，必须真实调用 receipt_total 并依据工具回执回答：不得跳过工具只凭心算作答，不得声称调用了工具而实际未调用。\n3. 工具结果不可伪造：不得改写、编造或替换工具返回的乘积、算式、单位说明与不可计算原因；转述时保持可核对。\n4. 工具返回不可计算（如数量或单价不是有限非负数）时，如实说明无法计算的原因，指出数量或单价无效并要求用户提供有效数值；不得输出猜测合计或负合计，也不得声称工具已成功计算。\n5. 用户未明确要求使用验收工具时，仍按“一、合计计算”的规则处理（含缺字段追问），不声称使用了工具。\n\n诚实边界\n1. 不得声明调用了任何未实际调用的外部系统（如数据库、审批系统、保存服务、单据平台）。\n2. 不得虚构保存结果、审批结果、单据状态或任何外部回执；未执行的动作就如实说明未执行。\n3. 不编造数据、来源或凭据；只依据用户本次会话给出的信息作答。\n4. 不得伪造、改写或冒充工具调用与工具结果；工具回执是唯一计算依据，不得以心算结果冒充工具结果。\n\n使用中文回答。仅声明实际提供的工具、权限与执行结果；缺少必要信息时明确说明并补充询问。\n",
+      "classification": "source"
+    },
+    {
+      "tree": "presets",
+      "path": "audit-e2e-assistant-web/agent.cordis.yml",
+      "sha256": "7a478170d3e36a60dce31f14f2034544d544a59f27e577211f870359050bdd80",
+      "content": "- id: persona\n  name: /opt/dsh/packages/preset/persona/lib/index.js\n  disabled: false\n  config:\n    prefix: '你是验收收据助手（Agent ID: audit-e2e-assistant-web）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答，不声称未提供的工具、权限或执行结果。'\n    suffix: 你的工作目录是 {{cwd}}。\n- id: agent-instructions\n  name: /opt/dsh/packages/context/agent-instructions/lib/index.js\n  disabled: false\n  config:\n    maxBytes: 65536\n",
+      "classification": "source"
+    },
+    {
+      "tree": "presets",
+      "path": "audit-e2e-assistant-web/preset.yml",
+      "sha256": "c70a925832abfdae94e3283e9648e8839d241cae49366c778eb21f811cb44c4f",
+      "content": "name: 验收收据助手\ndescription: 仅根据用户给定的单价和数量计算合计，并在当前会话中记住用户指定的收据编号；缺少任一输入先追问、不猜数，不虚构外部保存或审批结果。\norder: 10\n",
+      "classification": "source"
+    },
+    {
+      "tree": "managed",
+      "path": "audit-e2e-assistant-web.patch.yml",
+      "sha256": "a03fcd3fe07567ec7be5206d1cc3cabdd0fb2b145161b1afac0bc9015554604b",
+      "content": "# 注册本 Experiment 的受控 Preset，并挂载验收工具 receipt_total 的受控构建产物。\n- id: agent-preset-registry\n  config:\n    default: audit-e2e-assistant-web\n\n- insert:\n    - id: preset-audit-e2e-assistant-web\n      name: '@deepseek-ai/dsh-agent-preset'\n      config:\n        id: audit-e2e-assistant-web\n        plugins:\n          - id: audit-e2e-assistant-web-harness\n            name: cordis:include\n            config:\n              path: /opt/dsh-presets/audit-e2e-assistant-web/agent.cordis.yml\n          - id: receipt-helper\n            name: /opt/dsh-managed/receipt-helper/index.mjs\n            disabled: false\n",
+      "classification": "source"
+    },
+    {
+      "tree": "managed",
+      "path": "receipt-helper/index.mjs",
+      "sha256": "d359d0baeae51ceca8f28dcbf157f1f50b737242fa76ff28c78f9ec02c898b01",
+      "content": null,
+      "classification": "generated",
+      "build": {
+        "schema_version": 1,
+        "entry_path": "dsh/managed/receipt-helper/index.ts",
+        "output_path": "dsh/managed/receipt-helper/index.mjs",
+        "compiler": {
+          "typescript": "5.9.3",
+          "esbuild": "0.25.12",
+          "platform_lock_sha256": "491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d"
+        },
+        "dependencies_sha256": null,
+        "source_files": [
+          {
+            "path": "dsh/managed/receipt-helper/index.ts",
+            "sha256": "496a888d0b12723896e7bbe4315322a1d0bbf5ff2a33cbc73421a3161e43121d"
+          }
+        ],
+        "source_sha256": "a2c346ae677edb5593ae21f1e15ec75935bb7a237127052645ca0ed40cf4fd9e",
+        "platform_sources": [
+          {
+            "path": "runtime/adapters/dsh-web/src/resolve-runtime.ts",
+            "sha256": "aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c"
+          }
+        ],
+        "platform_sources_sha256": "a8f5af6dd50d63503054ddb10ded8a57b99540e4beae46c00730cfba0b17446f",
+        "source_inputs_version": 1,
+        "build_digest": "30bffd6fb744c8a755ae3da6a71ade5f624f8cbdd4ab3e156acdcba90c6d51f2",
+        "runtime_imports": [
+          "node:module",
+          "node:fs",
+          "node:url"
+        ],
+        "esm_sha256": "d359d0baeae51ceca8f28dcbf157f1f50b737242fa76ff28c78f9ec02c898b01",
+        "prepared_dependencies_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+      },
+      "representation": "受控构建制品；已核验实际字节与构建身份，审读全部对应源码及此构建记录。"
+    },
+    {
+      "tree": "managed",
+      "path": "receipt-helper/index.ts",
+      "sha256": "496a888d0b12723896e7bbe4315322a1d0bbf5ff2a33cbc73421a3161e43121d",
+      "content": "/**\n * receipt-helper —— 收据合计验收工具 receipt_total（最小只读 DSH 原生工具插件）\n *\n * 目标版本：EXP-audit-e2e-assistant-web-002-ra2a3ad241109（Agent: audit-e2e-assistant-web）。\n * 注册写法遵循官方 cordis-plugin-development 与 @deepseek-ai/dsh-tools 的真实合同（上游固定提交\n * 687f282e8625c6b8d11ff58211a90524be2e4317，与运行时 source.lock.json 一致）：导出 apply(ctx, config)\n * 与 inject = ['tools']，在 apply 内 ctx.tools.register(defineTool({...}))。\n *\n * 工具契约（只读、无副作用、不写业务数据）：\n * - receipt_total 接收 unit_price（单价）与 quantity（数量），二者都必须是有限非负数；\n * - 合法输入返回可核对的乘积（算式、被乘数、乘积与单位说明）；\n * - 不合法输入（非有限数或负数）返回明确的“不可计算”原因与所需有效输入，不猜测、不返回负合计；\n * - 不访问任何外部系统，不保存或查询业务数据，不虚构任何回执。\n */\n\nimport { defineTool } from '@deepseek-ai/dsh-tools'\nimport type { ToolDefinition } from '@deepseek-ai/dsh-tools'\n\n/** 合计单位说明：工具只收到数值，金额单位随单价单位、数量单位随输入数量单位，不由工具杜撰。 */\nconst UNIT_RULE = '金额单位随单价单位（如元），数量单位随输入数量单位（如件）'\n\ntype NumericField = 'unit_price' | 'quantity'\n\nconst FIELD_LABEL: Record<NumericField, string> = {\n  unit_price: '单价',\n  quantity: '数量',\n}\n\n/** 校验“有限非负数”；不合法返回明确不可计算原因，合法返回 null。 */\nfunction invalidReason(field: NumericField, value: unknown): string | null {\n  const label = FIELD_LABEL[field]\n  if (typeof value !== 'number' || !Number.isFinite(value)) {\n    return `${label}无效：${JSON.stringify(value)} 不是有限数值，无法计算合计`\n  }\n  if (value < 0) {\n    return `${label}无效：${value} 不是非负数，无法计算合计`\n  }\n  return null\n}\n\nconst receiptTotalTool: ToolDefinition = defineTool({\n  name: 'receipt_total',\n  description:\n    '收据合计只读计算工具：接收单价 unit_price 与数量 quantity，返回可核对的乘积合计与单位说明。' +\n    '仅做本地乘法，不访问外部系统、不保存业务数据；输入不是有限非负数时如实返回不可计算原因。',\n  parameters: {\n    unit_price: {\n      type: 'number',\n      required: true,\n      description: '单价（金额/件），必须为有限的非负数',\n    },\n    quantity: {\n      type: 'number',\n      required: true,\n      description: '数量（件），必须为有限的非负数',\n    },\n  },\n  output: {\n    schema: {\n      oneOf: [\n        {\n          type: 'object',\n          additionalProperties: false,\n          properties: {\n            ok: { type: 'boolean', const: true, required: true },\n            formula: { type: 'string', required: true, description: '可核对算式：单价 × 数量 = 合计' },\n            unit_price: { type: 'number', required: true },\n            quantity: { type: 'number', required: true },\n            total: { type: 'number', required: true, description: '合计 = 单价 × 数量' },\n            unit: { type: 'string', required: true, description: '合计单位说明' },\n          },\n        },\n        {\n          type: 'object',\n          additionalProperties: false,\n          properties: {\n            ok: { type: 'boolean', const: false, required: true },\n            computable: { type: 'boolean', const: false, required: true },\n            field: { type: 'string', enum: ['unit_price', 'quantity'], required: true },\n            reason: { type: 'string', required: true, description: '明确的不可计算原因' },\n            requirement: { type: 'string', required: true, description: '需要用户提供的有效输入' },\n          },\n        },\n      ],\n    },\n    render: (_args, value) => {\n      const text = value.ok\n        ? `receipt_total 计算成功：${value.formula}；合计 ${value.total}；${value.unit}`\n        : `receipt_total 无法计算（ok=false）：${value.reason}。${value.requirement}`\n      return [{ type: 'text', text }]\n    },\n  },\n  execute: async (args) => {\n    const unitPrice = args.unit_price\n    const quantity = args.quantity\n    const badUnitPrice = invalidReason('unit_price', unitPrice)\n    const badQuantity = invalidReason('quantity', quantity)\n    if (badUnitPrice !== null || badQuantity !== null) {\n      const field: NumericField = badUnitPrice !== null ? 'unit_price' : 'quantity'\n      const reason = badUnitPrice !== null ? badUnitPrice : (badQuantity as string)\n      return {\n        ok: false,\n        computable: false,\n        field,\n        reason,\n        requirement: `请提供有效的${FIELD_LABEL[field]}（有限的非负数）后重新计算`,\n      }\n    }\n    const total = unitPrice * quantity\n    return {\n      ok: true,\n      formula: `${unitPrice} × ${quantity} = ${total}`,\n      unit_price: unitPrice,\n      quantity,\n      total,\n      unit: UNIT_RULE,\n    }\n  },\n})\n\n/** 插件注册所需的最小上下文：工具注册表。 */\ninterface ToolsService {\n  register(definition: ToolDefinition): unknown\n}\n\ninterface ReceiptHelperContext {\n  tools: ToolsService\n}\n\n/** Cordis 插件名（与 Managed Patch 注册行 id 一致）。 */\nconst name = 'receipt-helper'\n/** 该插件使用的服务。 */\nconst inject = ['tools']\n\n/** 注册 receipt_total 只读工具；无其他副作用。 */\nfunction apply(ctx: ReceiptHelperContext): void {\n  ctx.tools.register(receiptTotalTool)\n}\n\nexport { apply, inject, name }\n",
+      "classification": "source"
+    },
+    {
+      "tree": "platform",
+      "path": "runtime/adapters/dsh-web/src/resolve-runtime.ts",
+      "sha256": "aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c",
+      "content": "import { createRequire } from 'node:module'\nimport { realpathSync } from 'node:fs'\nimport { fileURLToPath, pathToFileURL } from 'node:url'\n\n/** 解析当前进程真正装载的 Runtime；不把系统 shell 包装器当成 Node 包入口。 */\nexport function runtimeRequire(name: string, containerManifest?: string): NodeRequire {\n  const candidates = containerManifest ? [containerManifest] : [\n    process.env.HARNESS_DSH_ENTRY,\n    process.argv[1],\n    fileURLToPath(import.meta.url),\n    new URL('../../../../platform/plugin/package.json', import.meta.url).pathname,\n  ]\n  for (const entry of candidates) {\n    if (!entry) continue\n    let canonical: string\n    let require: NodeRequire\n    try {\n      canonical = realpathSync(entry)\n      require = createRequire(canonical)\n      require.resolve(name)\n    } catch { continue }\n    if (!containerManifest) process.env.HARNESS_DSH_ENTRY = canonical\n    return require\n  }\n  throw new Error(`Web 路径适配器无法从当前 Runtime 解析 ${name}`)\n}\n\nexport async function runtimeModule(name: string, containerManifest?: string): Promise<any> {\n  return import(pathToFileURL(runtimeRequire(name, containerManifest).resolve(name)).href)\n}\n",
+      "classification": "source"
+    }
+  ]
+}

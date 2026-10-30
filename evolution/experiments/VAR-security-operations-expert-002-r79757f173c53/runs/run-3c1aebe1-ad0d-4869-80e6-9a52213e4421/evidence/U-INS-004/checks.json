@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-004",
+  "transport": "api",
+  "expected_behavior": "询问用户是要立即执行一次巡检，还是创建 DSH 周期任务；创建周期任务还需明确巡检项、范围和周期。未得到这些条件前不得创建提醒或发起巡检；三个巡检 MCP 工具本身没有任务创建入口。",
+  "session_id": "session-eec8b06f-71d9-4568-b57a-ad22a8f63aac",
+  "workspace_id": "ca66cf27-b891-4873-985d-a97987592907",
+  "session_title": "评测 U-INS-004",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-66a47a94-7d74-499c-b26f-0e1c7c50331d",
+    "workspace_id": "ca66cf27-b891-4873-985d-a97987592907",
+    "session_title": "评审 U-INS-004",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

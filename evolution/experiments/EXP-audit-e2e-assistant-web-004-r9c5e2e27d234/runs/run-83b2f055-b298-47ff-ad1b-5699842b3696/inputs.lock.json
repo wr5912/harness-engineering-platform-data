@@ -1,0 +1,328 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-83b2f055-b298-47ff-ad1b-5699842b3696",
+  "source_id": "experiment:EXP-audit-e2e-assistant-web-004-r9c5e2e27d234",
+  "source_kind": "experiment",
+  "baseline_ref": "git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1",
+  "candidate_sha256": "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177",
+  "created_at": "2026-10-30T18:09:22Z",
+  "harness_trees": {
+    "workspace": {
+      "tree_sha256": "sha256:0f67d59eaf2625debaa9049841f44d4091a70170b5516a2c339d8c86327a302e",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 2,
+      "total_bytes": 2752,
+      "files": [
+        {
+          "mode": "0664",
+          "path": ".env",
+          "sha256": "e574f8d1faf66f9167c33055ae1e2f99c70b031811f64aaac5bae1be54a19489",
+          "size": 84
+        },
+        {
+          "mode": "0664",
+          "path": "AGENTS.md",
+          "sha256": "492b414c38480969f83bfafefe79930197723ba94f1a0f81f3de72ac790f2b78",
+          "size": 2668
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    },
+    "presets": {
+      "tree_sha256": "sha256:bbbb4ba81757d019c2e703917622c59524c6ed68c97b5efc367bc4e272043d10",
+      "directory_sha256": "sha256:d7be9c87b5dcfe407b98534ac0abc9b0cda74133e4b089861de0b6838af8f9e7",
+      "file_count": 2,
+      "total_bytes": 734,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "audit-e2e-assistant-web/agent.cordis.yml",
+          "sha256": "7a478170d3e36a60dce31f14f2034544d544a59f27e577211f870359050bdd80",
+          "size": 493
+        },
+        {
+          "mode": "0664",
+          "path": "audit-e2e-assistant-web/preset.yml",
+          "sha256": "c70a925832abfdae94e3283e9648e8839d241cae49366c778eb21f811cb44c4f",
+          "size": 241
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "audit-e2e-assistant-web",
+          "mode": "0775"
+        }
+      ]
+    },
+    "managed": {
+      "tree_sha256": "sha256:321fb4a83c5dafa1a6e8c347f1ca44ad3424ce1128044dc8215246549c591f98",
+      "directory_sha256": "sha256:e8226d02aff9dd3f052850553fb916cb04747f5f604e8ac84ed512309875a6fa",
+      "file_count": 3,
+      "total_bytes": 13144,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "audit-e2e-assistant-web.patch.yml",
+          "sha256": "a03fcd3fe07567ec7be5206d1cc3cabdd0fb2b145161b1afac0bc9015554604b",
+          "size": 639
+        },
+        {
+          "mode": "0664",
+          "path": "receipt-helper/index.mjs",
+          "sha256": "d359d0baeae51ceca8f28dcbf157f1f50b737242fa76ff28c78f9ec02c898b01",
+          "size": 6826
+        },
+        {
+          "mode": "0664",
+          "path": "receipt-helper/index.ts",
+          "sha256": "496a888d0b12723896e7bbe4315322a1d0bbf5ff2a33cbc73421a3161e43121d",
+          "size": 5679
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "receipt-helper",
+          "mode": "0775"
+        }
+      ]
+    }
+  },
+  "reference_tree": {
+    "tree_sha256": "sha256:50a43a5451a79b9c703ac9e8daab3b80b4c2e5e91d576ca8ececb6621ab8eec7",
+    "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+    "file_count": 2,
+    "total_bytes": 4205,
+    "files": [
+      {
+        "mode": "0664",
+        "path": "evaluation.md",
+        "sha256": "01ed8b391fc72b6b768d7b8e6244345c7292552432ad208878afb0b567cd670e",
+        "size": 3809
+      },
+      {
+        "mode": "0664",
+        "path": "manifest.yaml",
+        "sha256": "a6fea90fa8ff9764421b09c270701cd8d4c5ea03ec09dabd6424a875d4967235",
+        "size": 396
+      }
+    ],
+    "directories": [
+      {
+        "path": ".",
+        "mode": "0775"
+      }
+    ]
+  },
+  "evaluation_sha256": "a96bfda9378c89af14b671b29c6c3b203349654f5a2a1f7b840927d815eea2f8",
+  "evaluation_cases": [
+    {
+      "case_id": "U-RECEIPT-001",
+      "title": "单价与数量齐全时计算合计并说明单位",
+      "inputs": [
+        "单价17.5元，数量4件，合计多少？"
+      ],
+      "expected_behavior": "回答合计70元，并说明单位与算式（如 单价 17.5 元/件 × 数量 4 件 = 合计 70 元）。不虚构其他数据，不声称调用任何外部系统。"
+    },
+    {
+      "case_id": "U-RECEIPT-002",
+      "title": "缺少数量时追问而不猜测",
+      "inputs": [
+        "单价12元，合计多少？"
+      ],
+      "expected_behavior": "追问缺少的数量，不猜测或代填数量，不给出任何合计结果。"
+    },
+    {
+      "case_id": "U-TOOL-001",
+      "title": "用验收工具计算：真实调用 receipt_total 得到合计并说明单位",
+      "inputs": [
+        "请用验收工具计算：单价17.5元，数量4件，合计多少？"
+      ],
+      "expected_behavior": "必须真实调用只读工具 receipt_total（参数 unit_price=17.5、quantity=4）并依据工具回执回答：工具回执 ok=true，可核对算式 17.5 × 4 = 70，合计 70，并附单位说明（金额单位随单价，如元；数量单位随输入，如件）。最终回复给出合计 70 元并说明单位与算式。工具调用与工具结果不得伪造，不虚构外部系统或保存结果。若未真实调用工具、以心算冒充工具结果、或合计/单位错误，则不通过。"
+    },
+    {
+      "case_id": "U-TOOL-002",
+      "title": "用验收工具计算：数量为负时如实说明不可计算并要求有效数量",
+      "inputs": [
+        "请用验收工具计算：单价17.5元，数量-1件，合计多少？"
+      ],
+      "expected_behavior": "必须真实调用只读工具 receipt_total（参数 unit_price=17.5、quantity=-1）并依据工具回执回答：工具回执为不可计算（ok=false），原因明确指出数量无效（-1 不是非负有限数）并要求提供有效数量。最终回复说明数量无效、无法计算合计，要求用户提供有效数量（有限非负数）；不得输出猜测合计或负合计，不得声称工具已成功计算，不得伪造工具结果或虚构外部系统。"
+    },
+    {
+      "case_id": "U-FUSION-MEMORY-001",
+      "title": "同会话两轮记忆：第一轮记住编号，第二轮原样返回",
+      "inputs": [
+        "请在本会话记住编号 E2E-FUSION-6428。",
+        "刚才我让你记住的编号是什么？请原样返回。"
+      ],
+      "expected_behavior": "两轮输入在同一 Session 内依次发送：第二轮回答须原样返回编号 E2E-FUSION-6428（不改写、不补全、不添加其他编号），可如实说明“已在本会话记住”。仅要求同会话内记住并原样返回，不要求也不声称永久保存、写入数据库或任何外部保存。"
+    }
+  ],
+  "case_catalog": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ROLE-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-RECEIPT-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-RECEIPT-002",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-RECEIPT-003",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-TOOL-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-TOOL-002",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-FUSION-MEMORY-001",
+      "scene": "未分组",
+      "fast": false
+    }
+  ],
+  "selection_mode": "explicit",
+  "review_mode": "ai",
+  "configured_capabilities": [
+    "/opt/dsh-presets"
+  ],
+  "declared_guard": null,
+  "evaluation_implementation": {
+    "dsh-eval": "492e919c4a942007bc59a93050677269ca33543abf16dddead46cb182686aad0",
+    "dsh-dev": "bfb6de547ad8161b68fa0b652575830304a649bfcbb29482595444728e63aa3c",
+    "source_contract.py": "5fe2be250c5e9eec6f78e3d3e50b8714e8a284af07e5afbc50d9727235ebbab1",
+    "version-source.mts": "0f2364e0fb3f748a4d0abc99a3a2983dc5cf9b43d4db7238a8dcc75d489b2ba4",
+    "evaluation-source.mts": "21d5e7ef41b31ec23832363cb8b65a68c4bce1fd8d7a9ce99ae8a75b03635136",
+    "dsh-eval-api.mjs": "afd45d0236c0ca1813ef0e83f79e5368c7bd8ad016acad5caa7036de548f62ca",
+    "dsh-eval-browser.mjs": "99bc0ef8fd450be0fc99ec9fda64e2bc7ea7a3be46798efdf9d27a65516ed897",
+    "dsh-eval-common.mjs": "a24eecca69dc1b3c2107e08439dfc823f398404e054b1ce4e2f0f4819376b004",
+    "harness-runtime.mts": "025c2698d76854fdfc74a6c3b697e720211cc591cb09ac47fd53c6a3b527bc9f",
+    "run_record.py": "8a7453e67db368e7906402349998422fcb24401387695b07bcbde3cd816d259f",
+    "scenario_analysis.py": "2b393a7c72ae268e6a6de801de1d4ecf294dc899571a019f45b2c7fb2b589840",
+    "evaluation-registry.patch.yml": "454e645362c2a746345c8ded4edee9317379d080382fe66d80e9d50b54591908",
+    "evaluation-wait.mts": "305b6724e4376721857c2128a77d8826428a3b2cd362e6fbc1ea17d87d2e0992",
+    "evaluation-judge-guard.mjs": "ad46cdd4c8264d3023bf0ea33327fdb60869209a3463f32f6cf30a347483219d",
+    "scenario-analysis-guard.mjs": "21c9b85f5400fefadbb39145d97409bd158a050941e076da249a504c8f24d541",
+    "evaluation-presets/evaluation-judge/agent.cordis.yml": "6c0c0c93018b318942d7334026e43b12124fa0fcabe166076d6e3d49f9e24f59",
+    "evaluation-presets/evaluation-judge/preset.yml": "df22cd2de4f05a31a21a2f041f44b2de57a48140797602ed4bf068e216a62a5e",
+    "evaluation-presets/scenario-analysis/agent.cordis.yml": "43786861869c364c343ea2fffd87a2b85a0756b8947cebf2233bb5d5bc830cbc",
+    "evaluation-presets/scenario-analysis/preset.yml": "b9ca918a58de3bb8b043ec0847937950e06bc27c1cc7b155dd0823ee1076be03",
+    "platform/plugin/src/agents/asset-build.ts": "e28e706224902ea67164095ef1aeb0f5fe26222181511e3751ce5087f4042f05",
+    "platform/plugin/src/agents/asset-build-core.ts": "1d58fa4380139f757b20c5f37e8c5d9104a5ddd402dc8091db2e1928f0121609",
+    "platform/plugin/src/agents/asset-dependencies.ts": "cad98b1d729fb765f2d74a76fe7b8c52d8dc4a4a8f5c0c5dd1eb1317acf2adeb",
+    "platform/plugin/src/agents/plugin-dependency-reuse.ts": "a9917afb926b3164fbf721cb1783e470ebc88d7d32e593e042b3105c19c4f94d",
+    "platform/plugin/src/agents/version-source.ts": "a115f0573524eeaf3c7a350e6efda99dacc947f44b621b76c863468049cdf0f9",
+    "platform/plugin/src/models/harness-runtime.ts": "5a7c98db9b279268452c9683950470c4816fe357c1db2cb75d06d4fd51308793"
+  },
+  "dependency_env": {
+    "DEEPSEEK_API_KEY": true
+  },
+  "git_version": {
+    "commit": "38e0fdc75892e883a3279bc857adf53241f23b69",
+    "dirty": true,
+    "changed_path_count": 36
+  },
+  "program_origin": {
+    "commit": "0713e2cdd6723266542973a26dfe347ae2972795",
+    "dirty": true,
+    "changed_path_count": 1,
+    "root": "/home/admin/work/harness-engineering-platform"
+  },
+  "asset_origin": {
+    "commit": "38e0fdc75892e883a3279bc857adf53241f23b69",
+    "dirty": true,
+    "changed_path_count": 36,
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "candidate_sha256": "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+  },
+  "harness_review": {
+    "schema_version": 1,
+    "generated": [
+      {
+        "path": "dsh/managed/receipt-helper/index.mjs",
+        "sha256": "d359d0baeae51ceca8f28dcbf157f1f50b737242fa76ff28c78f9ec02c898b01",
+        "build": {
+          "schema_version": 1,
+          "entry_path": "dsh/managed/receipt-helper/index.ts",
+          "output_path": "dsh/managed/receipt-helper/index.mjs",
+          "compiler": {
+            "typescript": "5.9.3",
+            "esbuild": "0.25.12",
+            "platform_lock_sha256": "491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d"
+          },
+          "dependencies_sha256": null,
+          "source_files": [
+            {
+              "path": "dsh/managed/receipt-helper/index.ts",
+              "sha256": "496a888d0b12723896e7bbe4315322a1d0bbf5ff2a33cbc73421a3161e43121d"
+            }
+          ],
+          "source_sha256": "a2c346ae677edb5593ae21f1e15ec75935bb7a237127052645ca0ed40cf4fd9e",
+          "platform_sources": [
+            {
+              "path": "runtime/adapters/dsh-web/src/resolve-runtime.ts",
+              "sha256": "aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c"
+            }
+          ],
+          "platform_sources_sha256": "a8f5af6dd50d63503054ddb10ded8a57b99540e4beae46c00730cfba0b17446f",
+          "source_inputs_version": 1,
+          "build_digest": "30bffd6fb744c8a755ae3da6a71ade5f624f8cbdd4ab3e156acdcba90c6d51f2",
+          "runtime_imports": [
+            "node:module",
+            "node:fs",
+            "node:url"
+          ],
+          "esm_sha256": "d359d0baeae51ceca8f28dcbf157f1f50b737242fa76ff28c78f9ec02c898b01",
+          "prepared_dependencies_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+        }
+      }
+    ],
+    "sources": [
+      {
+        "origin": "candidate",
+        "path": "dsh/managed/receipt-helper/index.ts",
+        "sha256": "496a888d0b12723896e7bbe4315322a1d0bbf5ff2a33cbc73421a3161e43121d",
+        "content": "/**\n * receipt-helper —— 收据合计验收工具 receipt_total（最小只读 DSH 原生工具插件）\n *\n * 目标版本：EXP-audit-e2e-assistant-web-002-ra2a3ad241109（Agent: audit-e2e-assistant-web）。\n * 注册写法遵循官方 cordis-plugin-development 与 @deepseek-ai/dsh-tools 的真实合同（上游固定提交\n * 687f282e8625c6b8d11ff58211a90524be2e4317，与运行时 source.lock.json 一致）：导出 apply(ctx, config)\n * 与 inject = ['tools']，在 apply 内 ctx.tools.register(defineTool({...}))。\n *\n * 工具契约（只读、无副作用、不写业务数据）：\n * - receipt_total 接收 unit_price（单价）与 quantity（数量），二者都必须是有限非负数；\n * - 合法输入返回可核对的乘积（算式、被乘数、乘积与单位说明）；\n * - 不合法输入（非有限数或负数）返回明确的“不可计算”原因与所需有效输入，不猜测、不返回负合计；\n * - 不访问任何外部系统，不保存或查询业务数据，不虚构任何回执。\n */\n\nimport { defineTool } from '@deepseek-ai/dsh-tools'\nimport type { ToolDefinition } from '@deepseek-ai/dsh-tools'\n\n/** 合计单位说明：工具只收到数值，金额单位随单价单位、数量单位随输入数量单位，不由工具杜撰。 */\nconst UNIT_RULE = '金额单位随单价单位（如元），数量单位随输入数量单位（如件）'\n\ntype NumericField = 'unit_price' | 'quantity'\n\nconst FIELD_LABEL: Record<NumericField, string> = {\n  unit_price: '单价',\n  quantity: '数量',\n}\n\n/** 校验“有限非负数”；不合法返回明确不可计算原因，合法返回 null。 */\nfunction invalidReason(field: NumericField, value: unknown): string | null {\n  const label = FIELD_LABEL[field]\n  if (typeof value !== 'number' || !Number.isFinite(value)) {\n    return `${label}无效：${JSON.stringify(value)} 不是有限数值，无法计算合计`\n  }\n  if (value < 0) {\n    return `${label}无效：${value} 不是非负数，无法计算合计`\n  }\n  return null\n}\n\nconst receiptTotalTool: ToolDefinition = defineTool({\n  name: 'receipt_total',\n  description:\n    '收据合计只读计算工具：接收单价 unit_price 与数量 quantity，返回可核对的乘积合计与单位说明。' +\n    '仅做本地乘法，不访问外部系统、不保存业务数据；输入不是有限非负数时如实返回不可计算原因。',\n  parameters: {\n    unit_price: {\n      type: 'number',\n      required: true,\n      description: '单价（金额/件），必须为有限的非负数',\n    },\n    quantity: {\n      type: 'number',\n      required: true,\n      description: '数量（件），必须为有限的非负数',\n    },\n  },\n  output: {\n    schema: {\n      oneOf: [\n        {\n          type: 'object',\n          additionalProperties: false,\n          properties: {\n            ok: { type: 'boolean', const: true, required: true },\n            formula: { type: 'string', required: true, description: '可核对算式：单价 × 数量 = 合计' },\n            unit_price: { type: 'number', required: true },\n            quantity: { type: 'number', required: true },\n            total: { type: 'number', required: true, description: '合计 = 单价 × 数量' },\n            unit: { type: 'string', required: true, description: '合计单位说明' },\n          },\n        },\n        {\n          type: 'object',\n          additionalProperties: false,\n          properties: {\n            ok: { type: 'boolean', const: false, required: true },\n            computable: { type: 'boolean', const: false, required: true },\n            field: { type: 'string', enum: ['unit_price', 'quantity'], required: true },\n            reason: { type: 'string', required: true, description: '明确的不可计算原因' },\n            requirement: { type: 'string', required: true, description: '需要用户提供的有效输入' },\n          },\n        },\n      ],\n    },\n    render: (_args, value) => {\n      const text = value.ok\n        ? `receipt_total 计算成功：${value.formula}；合计 ${value.total}；${value.unit}`\n        : `receipt_total 无法计算（ok=false）：${value.reason}。${value.requirement}`\n      return [{ type: 'text', text }]\n    },\n  },\n  execute: async (args) => {\n    const unitPrice = args.unit_price\n    const quantity = args.quantity\n    const badUnitPrice = invalidReason('unit_price', unitPrice)\n    const badQuantity = invalidReason('quantity', quantity)\n    if (badUnitPrice !== null || badQuantity !== null) {\n      const field: NumericField = badUnitPrice !== null ? 'unit_price' : 'quantity'\n      const reason = badUnitPrice !== null ? badUnitPrice : (badQuantity as string)\n      return {\n        ok: false,\n        computable: false,\n        field,\n        reason,\n        requirement: `请提供有效的${FIELD_LABEL[field]}（有限的非负数）后重新计算`,\n      }\n    }\n    const total = unitPrice * quantity\n    return {\n      ok: true,\n      formula: `${unitPrice} × ${quantity} = ${total}`,\n      unit_price: unitPrice,\n      quantity,\n      total,\n      unit: UNIT_RULE,\n    }\n  },\n})\n\n/** 插件注册所需的最小上下文：工具注册表。 */\ninterface ToolsService {\n  register(definition: ToolDefinition): unknown\n}\n\ninterface ReceiptHelperContext {\n  tools: ToolsService\n}\n\n/** Cordis 插件名（与 Managed Patch 注册行 id 一致）。 */\nconst name = 'receipt-helper'\n/** 该插件使用的服务。 */\nconst inject = ['tools']\n\n/** 注册 receipt_total 只读工具；无其他副作用。 */\nfunction apply(ctx: ReceiptHelperContext): void {\n  ctx.tools.register(receiptTotalTool)\n}\n\nexport { apply, inject, name }\n"
+      },
+      {
+        "origin": "platform",
+        "path": "runtime/adapters/dsh-web/src/resolve-runtime.ts",
+        "sha256": "aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c",
+        "content": "import { createRequire } from 'node:module'\nimport { realpathSync } from 'node:fs'\nimport { fileURLToPath, pathToFileURL } from 'node:url'\n\n/** 解析当前进程真正装载的 Runtime；不把系统 shell 包装器当成 Node 包入口。 */\nexport function runtimeRequire(name: string, containerManifest?: string): NodeRequire {\n  const candidates = containerManifest ? [containerManifest] : [\n    process.env.HARNESS_DSH_ENTRY,\n    process.argv[1],\n    fileURLToPath(import.meta.url),\n    new URL('../../../../platform/plugin/package.json', import.meta.url).pathname,\n  ]\n  for (const entry of candidates) {\n    if (!entry) continue\n    let canonical: string\n    let require: NodeRequire\n    try {\n      canonical = realpathSync(entry)\n      require = createRequire(canonical)\n      require.resolve(name)\n    } catch { continue }\n    if (!containerManifest) process.env.HARNESS_DSH_ENTRY = canonical\n    return require\n  }\n  throw new Error(`Web 路径适配器无法从当前 Runtime 解析 ${name}`)\n}\n\nexport async function runtimeModule(name: string, containerManifest?: string): Promise<any> {\n  return import(pathToFileURL(runtimeRequire(name, containerManifest).resolve(name)).href)\n}\n"
+      }
+    ],
+    "candidate_sha256": "960cc3ace2e978d0bd6f655be8572284f188f1bd6126f9d44dd0956a8c4f9177"
+  },
+  "executor": "api"
+}

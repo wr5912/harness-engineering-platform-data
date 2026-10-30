@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "请列出当前可用的巡检项，只查询目录，不要执行巡检。"
+  ],
+  "assistant_texts": [
+    "**当前可用巡检项（仅目录查询，未执行巡检）**\n\n目录共返回 1 个已发布且启用的可执行巡检模板：\n\n| 巡检项 | 任务 ID | 版本 | 巡检内容 | 适用范围 | 状态 |\n| --- | --- | --- | --- | --- | --- |\n| 基础资产健康巡检 | `mock-health-inspection` | 1 | ① 资产在线状态（availability）；② 采集连接状态（collection） | 当前全部测试资产 | 已发布、已启用 |\n\n**说明：**\n- 以上为实际目录返回的全部可执行巡检项（共 1 项），描述为“检查当前资产清单中的全部测试资产”。\n- 本轮仅查询目录，**未发起任何巡检运行**。如需执行，请告知。"
+  ],
+  "session_id": "session-4001c6e9-55b3-4b60-b059-22acf09acefe",
+  "turns": [
+    {
+      "assistant_text": "**当前可用巡检项（仅目录查询，未执行巡检）**\n\n目录共返回 1 个已发布且启用的可执行巡检模板：\n\n| 巡检项 | 任务 ID | 版本 | 巡检内容 | 适用范围 | 状态 |\n| --- | --- | --- | --- | --- | --- |\n| 基础资产健康巡检 | `mock-health-inspection` | 1 | ① 资产在线状态（availability）；② 采集连接状态（collection） | 当前全部测试资产 | 已发布、已启用 |\n\n**说明：**\n- 以上为实际目录返回的全部可执行巡检项（共 1 项），描述为“检查当前资产清单中的全部测试资产”。\n- 本轮仅查询目录，**未发起任何巡检运行**。如需执行，请告知。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "2fd25b49-b0f3-441b-903e-fb9ef5b03beb"
+    }
+  ]
+}
