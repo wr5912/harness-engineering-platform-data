@@ -1,0 +1,15 @@
+# 注册本 Experiment 的受控 Preset。
+- id: agent-preset-registry
+  config:
+    default: audit-e2e-ui-sdk
+
+- insert:
+    - id: preset-audit-e2e-ui-sdk
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: audit-e2e-ui-sdk
+        plugins:
+          - id: audit-e2e-ui-sdk-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/audit-e2e-ui-sdk/agent.cordis.yml

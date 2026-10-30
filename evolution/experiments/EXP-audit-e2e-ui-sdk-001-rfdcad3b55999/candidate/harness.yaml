@@ -1,0 +1,18 @@
+schema_version: '1.0'
+agent:
+  id: audit-e2e-ui-sdk
+  name: 页面验收SDK助手
+  language: zh-CN
+  lifecycle_status: experiment
+  runtime_family: dsh
+  load_mode: container-only
+loadable_assets:
+  profile: sdk
+  profile_manifest: dsh/managed/sdk-profile.package.json
+  workspace: dsh/workspace
+  preset_root: dsh/presets
+  managed_root: dsh/managed
+  preset_id: audit-e2e-ui-sdk
+  profile_patch: dsh/managed/audit-e2e-ui-sdk.patch.yml
+credential_environment_keys:
+  - DEEPSEEK_API_KEY
