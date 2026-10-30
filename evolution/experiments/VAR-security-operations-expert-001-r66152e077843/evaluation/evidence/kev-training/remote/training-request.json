@@ -1,0 +1,50 @@
+{
+  "schema_version": "kev-training-request/v1",
+  "intent": "prepare_training",
+  "source": {
+    "agent_id": "security-operations-expert",
+    "parent_experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+    "parent_ref": "git:d499a1a3e3484bf97f6b5646a8d80e20313a7120",
+    "source_run_ids": [
+      "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408"
+    ]
+  },
+  "dataset": {
+    "kind": "trace-ir",
+    "directory": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset"
+  },
+  "checkpoint": {
+    "init_from": "jaredpalmer/kev-0.8b@bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+    "local_snapshot": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot",
+      "repository_metadata_path": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-repository.json",
+      "repository_metadata_sha256": "69052875a2d705c09973ddff353539ad2e6793cb2e2f3a4fa674ad7432e72c2c"
+    },
+    "training_config_path": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot/training_config.json",
+    "training_config_sha256": "3ec3d92146248265652d4387f8eb65ee8defaed4dd9173b049e7b5193045ece6"
+  },
+  "environment": {
+    "kev_root": "/root/autodl-tmp/hep-medium-security/kev",
+    "run_root": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1",
+    "server_id": "train-a39ea74a-4e6f-4455-83c8-5735f34d2d9d",
+    "credential_ref": "ref:training-server/seetacloud-medium",
+    "env": {
+      "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/hub",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1",
+      "USE_HUB_KERNELS": "NO",
+      "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/venv",
+      "UV_NO_SYNC": "1"
+    }
+  },
+  "training": {
+    "recipe": "cuda-fp32-lora",
+    "epochs": 1,
+    "lr": 2e-05,
+    "batch": 1,
+    "accum": 8,
+    "seed": 0,
+    "calibration_folds": 2,
+    "calibration_policy": "workload_heldout"
+  }
+}

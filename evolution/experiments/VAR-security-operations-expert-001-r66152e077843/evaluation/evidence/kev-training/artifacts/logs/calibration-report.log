@@ -1,0 +1,12 @@
+warning: Using incompatible environment (`/root/autodl-tmp/hep-medium-security/venv`) due to `--no-sync` (The project environment's Python version does not satisfy the request: `Python 3.13`)
+n=7  shipped T=1.00  workload T=0.25  folds T=[0.25, 0.25]
+arm              acc    ece  brier    nll   conf  c-err  cov@5%   aurc
+raw            1.000  0.441  0.285  0.635  0.559  0.000    1.00  0.000
+shipped        1.000  0.441  0.285  0.635  0.559  0.000    1.00  0.000
+workload       1.000  0.041  0.008  0.043  0.959  0.000    1.00  0.000
+workload_oof   1.000  0.041  0.008  0.043  0.959  0.000    1.00  0.000
+workload_oof - shipped  ece                     -0.401  95% CI [-0.511, -0.248]
+workload_oof - shipped  brier                   -0.277  95% CI [-0.386, -0.141]
+workload_oof - shipped  coverage_at_5pct_error  +0.000  95% CI [+0.000, +0.000]
+workload_oof - shipped  aurc                    +0.000  95% CI [+0.000, +0.000]
+wrote /root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/calibration-report.json

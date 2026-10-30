@@ -34,7 +34,7 @@
   },
   "runtime_state": {
     "deployment_v3_handoff_present": true,
-    "note": "部署 v3 恢复 handoff 尚未生成；runtime 状态尚未重新验证"
+    "note": "恢复handoff已存在；新VAR业务实例运行状态尚未验证"
   },
   "boundaries": [
     "checkpoint_sha256 binds only the four core files (adapter_model.safetensors, head.pt, adapter_config.json, training_config.json); tokenizer and other small files are in the artifact list but are not covered by it.",

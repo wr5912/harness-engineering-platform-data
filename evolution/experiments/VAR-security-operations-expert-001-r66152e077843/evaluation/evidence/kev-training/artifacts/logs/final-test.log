@@ -1,0 +1,60 @@
+warning: Using incompatible environment (`/root/autodl-tmp/hep-medium-security/venv`) due to `--no-sync` (The project environment's Python version does not satisfy the request: `Python 3.13`)
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:  21%|██        | 67/320 [00:00<00:00, 662.28it/s]Loading weights:  42%|████▏     | 134/320 [00:00<00:00, 642.03it/s]Loading weights:  62%|██████▏   | 199/320 [00:00<00:00, 463.82it/s]Loading weights:  78%|███████▊  | 250/320 [00:00<00:00, 474.84it/s]Loading weights:  96%|█████████▌| 307/320 [00:00<00:00, 500.27it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 528.39it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+{
+  "objective": -2.1875391931387655,
+  "clean": {
+    "n": 4,
+    "nll": 2.1875391931387655,
+    "acc": 0.5,
+    "ece": 0.5252499568062563,
+    "brier": 0.8312676753772767,
+    "mean_conf": 0.8283327845958679,
+    "confident_error_rate": 0.25,
+    "coverage_at_0_9": 0.5,
+    "accuracy_at_0_9": 0.5,
+    "coverage_at_5pct_error": 0.25,
+    "coverage_at_1pct_error": 0.25,
+    "aurc": 0.41666666666666663,
+    "error_rate_at_0_9": 0.5,
+    "confidence_bias": 0.3283327845958679,
+    "top_bins": {
+      "0.9": {
+        "n": 2,
+        "errors": 1,
+        "error_rate": 0.5
+      },
+      "0.95": {
+        "n": 2,
+        "errors": 1,
+        "error_rate": 0.5
+      },
+      "0.99": {
+        "n": 1,
+        "errors": 0,
+        "error_rate": 0.0
+      }
+    },
+    "selective": {
+      "0.5": {
+        "coverage": 0.5,
+        "accuracy": 0.5,
+        "confidence_cutoff": 0.9790053804917387
+      },
+      "0.8": {
+        "coverage": 1.0,
+        "accuracy": 0.5,
+        "confidence_cutoff": 0.6061656555792232
+      }
+    }
+  },
+  "coverage": {
+    "requested_records": 4,
+    "requested_questions": 4,
+    "evaluated_records": 4,
+    "evaluated_questions": 4,
+    "rejected_records": 0,
+    "truncated_records": 0
+  }
+}

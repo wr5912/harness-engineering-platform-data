@@ -1,0 +1,412 @@
+{
+  "schema_version": "medium-variant-formal-training-data-summary/v1",
+  "created_at": "2026-10-29T19:13:15.500025Z",
+  "status": "data_stage_complete_training_not_started",
+  "management_actor": {
+    "session_id": "session-a553f0cc-82cd-4f67-b6cb-bbd382ef7f33",
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "provider": "deepseek-official",
+    "model": "deepseek-flash",
+    "reasoning_effort": "max",
+    "context": {
+      "domain": "agents",
+      "agent_id": "security-operations-expert",
+      "experiment_id": "EXP-security-operations-expert-024-rad80a907c628"
+    }
+  },
+  "target": {
+    "agent": "security-operations-expert",
+    "parent_experiment": "EXP-security-operations-expert-024-rad80a907c628",
+    "parent_ref": "git:d499a1a3e3484bf97f6b5646a8d80e20313a7120",
+    "seed_run": "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408"
+  },
+  "owned_dir": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1",
+  "tooling": {
+    "python": "3.10.12 at /usr/bin/python3.10 (data tools; local default python3 is 3.8.18 and was not used)",
+    "kev_trace_py": {
+      "path": "/home/admin/harness-engineering-platform-data/.agents/skills/kev-trace-pipeline/scripts/kev_trace.py",
+      "sha256": "5a22304075728af7f154ab966a87642eb15b6c4a4d668da727fa5ede537bd126"
+    },
+    "dataset_py": {
+      "path": "/home/admin/harness-engineering-platform-data/.agents/skills/kev-trace-pipeline/scripts/dataset.py",
+      "sha256": "6b55752c78a0a55848d1caa6ab9e82812478ca3b59de0c472812350b9f21cf53"
+    },
+    "kev_source_commit": "2074cc44256200bb37540103fa4572901faa10f3",
+    "one_off_converter": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/one-off-derive-eligible.py",
+      "sha256": "dfc75d577c1d993072bb8af983c4c30ce5e9aae0623538785621a8eb171a142f",
+      "scope": "single use for this eligible derivation; embedded in grouping-manifest too"
+    }
+  },
+  "inputs": {
+    "source_family_plan": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/source-family-plan.json",
+      "sha256": "2b177ed740fa966ec9a4bd0889104265153685aef2c460d953bed049caa5384e",
+      "mapping_sha256": "b4a70112057bb170f1f2daf46f6a0bffce5ddc884ab1712eb88e6e39def694e4",
+      "eligible_sample_ids": 37,
+      "eligible_sample_ids_sha256": "b597d69be7038355514591f58ae20f5f63b4fd5e450c55d3c5c41a54431ef34a",
+      "eligible_families": 32,
+      "families_total": 35,
+      "probe_excluded_families": 2
+    },
+    "raw_ir": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/replay-batch-v1/unlabeled-ir.jsonl",
+      "sha256": "f8709c7e30530011a8df67ad0e5e2ef6d6bd05b98c35949e4a5c4f9e7c861b9a",
+      "records": 40,
+      "unique_sample_ids": 40
+    },
+    "confirmed_annotations": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/ir-review-v1/finalized-v2/bundle-39/annotations.all.jsonl",
+      "sha256": "9c24fa50523b021cb858451a3bafb642f2923809d3568fcfe8034f5a68e5cdd4",
+      "manifest_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/ir-review-v1/finalized-v2/bundle-39/manifest.json",
+      "manifest_sha256": "527620e2f0528c9721368ec3b77be9a78cea2abf20e473a05743b6bc4b242bb1",
+      "schema_version": "ir-ai-review-bundle/v1",
+      "status": "complete",
+      "review_purpose": "functional_validation",
+      "records": 39,
+      "label_statuses": {
+        "verified": 39
+      },
+      "review_sessions": 9,
+      "review_session_ids": [
+        "session-c2e5e715-28db-4462-b48e-d86c821f946e",
+        "session-62345757-e9e2-4861-a9c5-ee7d26281bc9",
+        "session-fc0fee13-2d3e-4844-b2c4-e88d8203f387",
+        "session-c911e087-3cb0-44de-86a9-0365316355f0",
+        "session-7a219559-8e85-4a0e-9edb-6334af461cb9",
+        "session-5d11e522-6574-4eb9-9aab-08c4e0deddb2",
+        "session-184aeeaa-3872-4287-b564-38f9b987ca7b",
+        "session-f5520094-7128-4287-a4d6-52e87177b501",
+        "session-fd7a5350-b345-4ec7-ae24-3a131ddf8ad7"
+      ],
+      "source_batch_files_sha_verified": true,
+      "aggregate_sha_matches_manifest": true
+    },
+    "annotated_samples": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/annotated/samples.labeled.jsonl",
+      "sha256": "8774ee2b064db8dea81bbeda232490971d93b432aad1aeeef73eb818f4e0af59",
+      "records": 40,
+      "labels": {
+        "verified": 39,
+        "unlabeled": 1
+      }
+    }
+  },
+  "stages": [
+    {
+      "stage": "annotate",
+      "status": "requires_review",
+      "reason_codes": [
+        "label_semantics_not_verified"
+      ],
+      "next_allowed_stage": "compile",
+      "meaning": "script-level notice that label semantics are not certified by the script; the native AI functional review + finalize evidence is the label source claim"
+    },
+    {
+      "stage": "eligible-derivation",
+      "status": "completed",
+      "rows": 37,
+      "families": 32,
+      "meaning": "one-off minimal conversion; selection by plan.eligible_sample_ids only; provenance.source_group_id replaced by family_id"
+    },
+    {
+      "stage": "compile",
+      "status": "completed",
+      "reason_codes": [],
+      "next_allowed_stage": "split",
+      "records": 37,
+      "quarantined": 0
+    },
+    {
+      "stage": "split",
+      "status": "requires_review",
+      "reason_codes": [
+        "missing_label_coverage"
+      ],
+      "next_allowed_stage": "audit-dataset",
+      "meaning": "ready split with per-partition label-coverage gaps; not a blocking failure"
+    },
+    {
+      "stage": "audit-dataset",
+      "status": "requires_review",
+      "reason_codes": [
+        "runtime_equivalence_not_evaluated",
+        "token_budget_not_checked"
+      ],
+      "next_allowed_stage": "encoding-review",
+      "ok": true
+    }
+  ],
+  "outputs": {
+    "eligible_jsonl": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/eligible.jsonl",
+      "sha256": "f46b5e09fe9ec7046c3495c4d9aa4f1c4352cf38ce74f892b66d05dcc2b57599",
+      "records": 37
+    },
+    "grouping_manifest": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/grouping-manifest.json",
+      "sha256": "61daa96d762e844fe719334d7d42f8ae11a8f67465d9252c500ab0762918a1a0"
+    },
+    "compiled_jsonl": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/compiled/compiled.jsonl",
+      "sha256": "4a293cf871944c62914da2c69aa296498de95ce71642a064a9e0603b028244d4",
+      "records": 37
+    },
+    "quarantine_jsonl": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/compiled/quarantine.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "records": 0
+    },
+    "compile_report": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/compiled/compile-report.json",
+      "sha256": "f408fd0c4f6bf93a3b7106fb5ee90da99b246484d2c5194ae39c9158a333b16f"
+    },
+    "partitions": {
+      "train": {
+        "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/train.jsonl",
+        "sha256": "d0369d0f7e4bd7dcb621a739262b8aca0d73cd93f9dd5f591108573dd11f4154",
+        "records": 22,
+        "groups": 17,
+        "labels": {
+          "direct_answer": 3,
+          "fault_analysis": 3,
+          "inspection": 1,
+          "investigation": 3,
+          "policy_configuration": 3,
+          "schedule": 6,
+          "threat_analysis": 3
+        }
+      },
+      "development": {
+        "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/development.jsonl",
+        "sha256": "c4e7fb06cfb4959fe4373894691d3ea8952409cd93953646a9e212bbb602a269",
+        "records": 4,
+        "groups": 4,
+        "labels": {
+          "direct_answer": 2,
+          "policy_configuration": 2
+        }
+      },
+      "calibration": {
+        "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/calibration.jsonl",
+        "sha256": "ee4b054e6b5b8363171034a6ddf321bd6456af3231d462e5d4339473b92fe251",
+        "records": 7,
+        "groups": 7,
+        "labels": {
+          "direct_answer": 2,
+          "fault_analysis": 3,
+          "policy_configuration": 1,
+          "schedule": 1
+        }
+      },
+      "test": {
+        "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/test.jsonl",
+        "sha256": "d8b8e1ad716265779fa4287aea2dbd3e29fc8ecf4e8e1ee72e816675c1a07249",
+        "records": 4,
+        "groups": 4,
+        "labels": {
+          "direct_answer": 3,
+          "policy_configuration": 1
+        }
+      }
+    },
+    "split_manifest": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/split-manifest.json",
+      "sha256": "62c0d654f8547055c81fbdbc3550075b2767f3a1cdadab3279293fda7a0d5f3e"
+    },
+    "partition_audit": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/partition-audit.json",
+      "sha256": "ee25a40e81701a947c3caddea05c431f9c1cee8859acaec32ed8486fbcdb95e0"
+    },
+    "dataset_audit": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/audit/dataset-audit.json",
+      "sha256": "61c7a67ac9f5e242813c184dabbe338ec60cf2826eb7e43ccfd992329801878e"
+    },
+    "stage_status_files": [
+      "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/annotated/stage-status.json",
+      "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/compiled/stage-status.json",
+      "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/stage-status.json",
+      "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/audit/stage-status.json"
+    ]
+  },
+  "counts": {
+    "raw_ir_records": 40,
+    "annotated_verified": 39,
+    "annotated_unlabeled": 1,
+    "eligible_records": 37,
+    "excluded_records": 3,
+    "accepted_for_compile": 37,
+    "quarantined_records": 0,
+    "weak_or_training_only_records": 0,
+    "independent_groups": 32,
+    "compiled_records": 37,
+    "partitions": {
+      "train": {
+        "records": 22,
+        "groups": 17
+      },
+      "development": {
+        "records": 4,
+        "groups": 4
+      },
+      "calibration": {
+        "records": 7,
+        "groups": 7
+      },
+      "test": {
+        "records": 4,
+        "groups": 4
+      }
+    },
+    "achieved_fractions": {
+      "train": 0.5945945945945946,
+      "development": 0.10810810810810811,
+      "calibration": 0.1891891891891892,
+      "test": 0.10810810810810811
+    },
+    "calibration_groups_for_folds2": 7,
+    "family_size_histogram": {
+      "1": 28,
+      "2": 3,
+      "3": 1
+    }
+  },
+  "excluded_records": [
+    {
+      "sample_id": "initial-main-route/decision-3b2a7e6f51717ecf586b3536c6eace96/111eec57a097873f695df62350cc7c30434dd508118acd9281d2d66ddb89c990/route",
+      "source_case_id": "U-POL-010",
+      "encoding_admitted": false,
+      "excluded_reasons": [
+        "encoding_not_admitted"
+      ]
+    },
+    {
+      "sample_id": "initial-main-route/decision-3f1febe42847e6d7287606a93478ce2c/bef03b54e6c0188cced2fdfb5eeff453f00c3825b22bda0d330254ae67dd2a54/route",
+      "source_case_id": "U-POL-001",
+      "encoding_admitted": true,
+      "excluded_reasons": [
+        "development_probe_family"
+      ]
+    },
+    {
+      "sample_id": "initial-main-route/decision-6b9cb42c142f00d6adf67911e3c34f20/f64444648e6195ec8fc5e634f0cd5ad3d9409eb05700308f073151087f50618d/route",
+      "source_case_id": "U-EMG-001",
+      "encoding_admitted": true,
+      "excluded_reasons": [
+        "development_probe_family"
+      ]
+    }
+  ],
+  "checks": {
+    "eligible_rows_all_verified": true,
+    "eligible_only_intended_paths_changed": true,
+    "state_question_label_observed_action_digests_identical": true,
+    "original_source_group_matches_plan": true,
+    "derived_group_is_family_id": true,
+    "family_to_source_group_ratio": "32 families vs 32 original source_group_ids among the 37 records (1:1); the rewrite makes the closed-family identity explicit and changes no partition composition in this corpus",
+    "partitions_non_empty": true,
+    "sample_ids_disjoint_across_partitions": true,
+    "groups_disjoint_across_partitions": true,
+    "all_partition_labels_verified": true,
+    "no_weak_or_training_only": true,
+    "component_family_one_to_one": true,
+    "post_split_audit_ok": true,
+    "post_split_audit_errors": [],
+    "missing_label_coverage": {
+      "development": {
+        "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+          "fault_analysis",
+          "inspection",
+          "investigation",
+          "schedule",
+          "threat_analysis"
+        ]
+      },
+      "calibration": {
+        "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+          "inspection",
+          "investigation",
+          "threat_analysis"
+        ]
+      },
+      "test": {
+        "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+          "fault_analysis",
+          "inspection",
+          "investigation",
+          "schedule",
+          "threat_analysis"
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Labels are AI functional validation on the fixed source (review_purpose=functional_validation); they are not human approval, independent business truth or a production-quality statement.",
+    "The annotate stage-status reason label_semantics_not_verified is a script-level notice; no additional manual confirmation was requested for this task.",
+    "Token budget/encoding is not checked (token_budget=not_checked); runtime equivalence to the training environment is not evaluated.",
+    "Per-partition label coverage is incomplete: development and test each lack 5 of the 7 observed route labels, calibration lacks 3; metrics must not be read as full class coverage.",
+    "Three contract categories have zero support in this corpus (emergency_action, response_planning, clarify_multiple_requests); no partition, calibration fit or test can cover them.",
+    "The 1 encoding-not-admitted IR stays unlabeled and the 2 development-probe families stay excluded; they are retained in the raw corpus, not deleted.",
+    "No weak-label or code-implementation inclusion was enabled; no augmentation was added.",
+    "Data stage only: encoding checks, training, calibration fitting and business acceptance have not started."
+  ],
+  "next_stage": {
+    "stage": "encoding-review",
+    "skill": "kev-training",
+    "started": false,
+    "note": "Split parameters (seed 20261029, fractions 0.6/0.1/0.2/0.1) were fixed before any metric was seen and were not re-chosen."
+  },
+  "training_started": false,
+  "candidate_or_skill_source_modified": false,
+  "label_coverage": {
+    "contract_categories": 10,
+    "observed_categories": 7,
+    "observed_label_counts": {
+      "direct_answer": 10,
+      "fault_analysis": 6,
+      "inspection": 1,
+      "investigation": 3,
+      "policy_configuration": 7,
+      "schedule": 7,
+      "threat_analysis": 3
+    },
+    "categories_never_observed": [
+      "clarify_multiple_requests",
+      "emergency_action",
+      "response_planning"
+    ],
+    "per_partition_observed_categories": {
+      "train": 7,
+      "development": 2,
+      "calibration": 4,
+      "test": 2
+    },
+    "per_partition_missing_relative_to_observed": {
+      "development": {
+        "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+          "fault_analysis",
+          "inspection",
+          "investigation",
+          "schedule",
+          "threat_analysis"
+        ]
+      },
+      "calibration": {
+        "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+          "inspection",
+          "investigation",
+          "threat_analysis"
+        ]
+      },
+      "test": {
+        "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+          "fault_analysis",
+          "inspection",
+          "investigation",
+          "schedule",
+          "threat_analysis"
+        ]
+      }
+    }
+  }
+}

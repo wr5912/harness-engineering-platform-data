@@ -1,0 +1,7 @@
+warning: Using incompatible environment (`/root/autodl-tmp/hep-medium-security/venv`) due to `--no-sync` (The project environment's Python version does not satisfy the request: `Python 3.13`)
+!!! IN DISTRIBUTION (--allow-in-distribution): /root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/calibration-raw/rows.json: cannot tell which suite these rows were scored on (no kev.benchmark report.json with a suite of this checkout beside them, not a trial's read)
+!!! IN DISTRIBUTION (--allow-in-distribution): /root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint: cannot tell what this checkpoint was trained on (head.pt records no suite of this checkout and there is no provenance.json beside it)
+!!! This temperature is not held out: round 19's failure mode: a temperature fitted on held-out items of a checkpoint's own training corpus is in distribution (round 19 served its SFT arms at T 0.955 fitted on sft-v1 development rows: breadth-v1 ECE 0.059); fit on a pool of held-out datasets instead (round 20: breadth-v1 ECE 0.0085).
+fit rows     T=0.25  acc 1.000 -> 1.000 | brier 0.285 -> 0.008 | ece 0.441 -> 0.041 | conf-err 0.000 -> 0.000 | cov@5% 1.00 -> 1.00
+fit rows     OOF T=[0.25, 0.25] ece raw 0.441 [0.289, 0.567] -> oof 0.041 [0.011, 0.084]  delta [-0.516, -0.266] separated=True
+wrote temperature 0.25 to /root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint/head.pt

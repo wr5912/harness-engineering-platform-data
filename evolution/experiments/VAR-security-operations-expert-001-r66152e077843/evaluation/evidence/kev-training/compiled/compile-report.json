@@ -1,0 +1,40 @@
+{
+  "status": "ready",
+  "schema_version": "kev-decision-ir/v1",
+  "kev_source_commit": "2074cc44256200bb37540103fa4572901faa10f3",
+  "input_records": 37,
+  "compiled_records": 37,
+  "quarantined_records": 0,
+  "input_label_statuses": {
+    "verified": 37
+  },
+  "quarantine_by_reason": {},
+  "verified_records": 37,
+  "weak_train_only_records": 0,
+  "soft_target_records": 0,
+  "verified_label_conflicts": [],
+  "allow_weak_train": false,
+  "include_code": false,
+  "warnings": [],
+  "token_budget": {
+    "status": "not_checked",
+    "default_context": {
+      "max_state": 384,
+      "max_state_plus_question_branch": 1024,
+      "max_packed_record": 2048
+    },
+    "required_action": "Run the chosen tokenizer through Kev strict encode/fits before training; character counts are not token counts"
+  },
+  "recommended_closed_set_augmentation": {
+    "p_none": 0.0,
+    "p_none_distract": 0.0,
+    "p_distract": 0.0,
+    "p_none_pair": 0.0,
+    "choice_option_permutation": "retained by Kev"
+  },
+  "limitations": [
+    "A verified status is an external review claim; this module does not establish semantic truth from the trace.",
+    "Evidence seq checks verify supplied references, not whether the rendered state actually derives only from those references.",
+    "No model quality, calibration quality, candidate recall, or token length has been measured."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "medium-variant-checkpoint-core-binding/v1",
+  "algorithm_id": "js-json-stringify-sha256/v1",
+  "algorithm": "checkpoint_sha256 = sha256(UTF8(JSON.stringify(sorted_by_path([{path,bytes,sha256}]))))",
+  "scope": "the four core trained files only (adapter_model.safetensors, head.pt, adapter_config.json, training_config.json); tokenizer/chat_template/README are not part of this binding",
+  "base_directory": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint",
+  "bytes_source": "training-run outputs after training and after calibration-write (head.pt is the final calibrated head, not the initial checkpoint or pre-calibration adapter)",
+  "sorted_files": [
+    {
+      "path": "adapter_config.json",
+      "bytes": 1273,
+      "sha256": "726c1cf3f9ee4ebf45059b9bbbade267571469edcf373d203a7a95abe2cae9d6"
+    },
+    {
+      "path": "adapter_model.safetensors",
+      "bytes": 43338624,
+      "sha256": "b94af89ab408e18958a76d0a5ec325b247faf9eaf3ba14b50e008750b3ddd1a4"
+    },
+    {
+      "path": "head.pt",
+      "bytes": 2104831,
+      "sha256": "75acaaadc161e3e7bb218c40a85d64e98b3410059252c2c76ebba30c90cd2931"
+    },
+    {
+      "path": "training_config.json",
+      "bytes": 2178,
+      "sha256": "7a36917e4d137ed2e2ee297d0b07b0da0095a0a2a06e1c4cde227d0c05a75db0"
+    }
+  ],
+  "checkpoint_sha256": "2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd",
+  "exact_bytes_file": {
+    "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/checkpoint-core-binding.json",
+    "bytes": 483,
+    "sha256": "2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd"
+  },
+  "temperature": 0.25,
+  "note": "The exact-bytes file contains the canonical JSON.stringify array with no trailing newline; its SHA-256 equals checkpoint_sha256."
+}

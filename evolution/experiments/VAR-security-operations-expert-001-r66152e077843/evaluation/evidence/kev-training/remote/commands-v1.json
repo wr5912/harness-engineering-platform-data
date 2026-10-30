@@ -1,0 +1,91 @@
+{
+  "status": "encoding_ready_execution_not_started",
+  "training_recipe": "cuda-fp32-lora",
+  "checkpoint_source": {
+    "init_from": "jaredpalmer/kev-0.8b@bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+    "execution_init_from": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot",
+    "local_snapshot": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot",
+      "repository_metadata_path": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-repository.json",
+      "repository_metadata_sha256": "69052875a2d705c09973ddff353539ad2e6793cb2e2f3a4fa674ad7432e72c2c"
+    },
+    "verified_files": 12
+  },
+  "command": {
+    "cwd": "/root/autodl-tmp/hep-medium-security/kev",
+    "argv": [
+      "/root/autodl-tmp/hep-medium-security/venv/bin/uv",
+      "run",
+      "python",
+      "-m",
+      "kev.train",
+      "--data",
+      "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/train.jsonl",
+      "--init_from",
+      "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot",
+      "--base",
+      "Qwen/Qwen3.5-0.8B-Base",
+      "--base_revision",
+      "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+      "--lora",
+      "16",
+      "--head_dim",
+      "256",
+      "--lora_targets",
+      "all",
+      "--option_isolation",
+      "0",
+      "--special_embeddings",
+      "0",
+      "--weights_dtype",
+      "fp32",
+      "--epochs",
+      "1",
+      "--lr",
+      "2e-05",
+      "--batch",
+      "1",
+      "--accum",
+      "8",
+      "--seed",
+      "0",
+      "--checkpointing",
+      "1",
+      "--dtype",
+      "fp32",
+      "--device",
+      "cuda",
+      "--max_state",
+      "384",
+      "--p_none",
+      "0",
+      "--p_none_distract",
+      "0",
+      "--p_distract",
+      "0",
+      "--p_none_pair",
+      "0",
+      "--out",
+      "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint"
+    ],
+    "env": {
+      "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/hub",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1",
+      "USE_HUB_KERNELS": "NO",
+      "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/venv",
+      "UV_NO_SYNC": "1"
+    },
+    "unset_env": [],
+    "requires": [
+      "encoding-ready",
+      "actual-executor-authorized",
+      "CUDA/fp32/VRAM-checked"
+    ]
+  },
+  "shell_display": "cd /root/autodl-tmp/hep-medium-security/kev && /root/autodl-tmp/hep-medium-security/venv/bin/uv run python -m kev.train --data /root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/train.jsonl --init_from /root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot --base Qwen/Qwen3.5-0.8B-Base --base_revision dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68 --lora 16 --head_dim 256 --lora_targets all --option_isolation 0 --special_embeddings 0 --weights_dtype fp32 --epochs 1 --lr 2e-05 --batch 1 --accum 8 --seed 0 --checkpointing 1 --dtype fp32 --device cuda --max_state 384 --p_none 0 --p_none_distract 0 --p_distract 0 --p_none_pair 0 --out /root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint",
+  "remaining": [
+    "Verify executor authorization and actual CUDA/fp32/VRAM/budget",
+    "Capture actual job id, logs and checkpoint receipt"
+  ]
+}

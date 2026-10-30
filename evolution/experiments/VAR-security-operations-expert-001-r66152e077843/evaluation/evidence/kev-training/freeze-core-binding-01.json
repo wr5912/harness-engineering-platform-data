@@ -1,0 +1,70 @@
+{
+  "schema_version": "medium-variant-freeze-core-binding/v1",
+  "created_at": "2026-10-29T19:27:58.135243Z",
+  "freeze_reference": {
+    "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/freeze.json",
+    "sha256": "578a86e8e8c0fd61702482e34c1911f23e3dd9be9894dc325c549d096a74c087"
+  },
+  "checkpoint_binding": {
+    "algorithm_id": "js-json-stringify-sha256/v1",
+    "algorithm": "checkpoint_sha256 = sha256(UTF8(JSON.stringify(sorted_by_path([{path,bytes,sha256}]))))",
+    "checkpoint_sha256": "2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd",
+    "files": [
+      {
+        "path": "adapter_config.json",
+        "bytes": 1273,
+        "sha256": "726c1cf3f9ee4ebf45059b9bbbade267571469edcf373d203a7a95abe2cae9d6"
+      },
+      {
+        "path": "adapter_model.safetensors",
+        "bytes": 43338624,
+        "sha256": "b94af89ab408e18958a76d0a5ec325b247faf9eaf3ba14b50e008750b3ddd1a4"
+      },
+      {
+        "path": "head.pt",
+        "bytes": 2104831,
+        "sha256": "75acaaadc161e3e7bb218c40a85d64e98b3410059252c2c76ebba30c90cd2931"
+      },
+      {
+        "path": "training_config.json",
+        "bytes": 2178,
+        "sha256": "7a36917e4d137ed2e2ee297d0b07b0da0095a0a2a06e1c4cde227d0c05a75db0"
+      }
+    ],
+    "exact_bytes_file": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/checkpoint-core-binding.json",
+      "bytes": 483,
+      "sha256": "2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd"
+    },
+    "manifest": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/checkpoint-core-manifest.json",
+      "sha256": "6ab533ac8d46e1483962f9d9456541f6a817237c4a2d9a6f91423df130b18ff2"
+    }
+  },
+  "temperature": 0.25,
+  "pre_test_evidence": {
+    "receipt": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/receipts/exec-freeze-precheck-final-test-01.json",
+    "receipt_sha256": "87050ca3a92ead78034f0fee41aec9537702eab2efe8432e97df6f3fd0019d25",
+    "verified_before_final_test": "9/9 checkpoint file SHA matched the freeze, temperature 0.25, this includes all four core binding files"
+  },
+  "post_test_evidence": {
+    "receipt": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/receipts/exec-freeze-postcheck-final-test-01.json",
+    "receipt_sha256": "b34dac4cfe839b3f0fe9aaae7f5c3d64e327a747cc18408fcd416caca556c535",
+    "verified_after_final_test": "9/9 checkpoint file SHA and temperature 0.25 unchanged"
+  },
+  "post_test_recompute": {
+    "card": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/cards/checkpoint-binding-verify-01.json",
+    "card_sha256": "67eb094a929d3ebeb53c87cb1c63b3281b34b16a0566b91eab4427c18f8f5b42",
+    "receipt": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/receipts/exec-checkpoint-binding-verify-01.json",
+    "receipt_sha256": "d11bd3d9af37be29c7185c634b5c6aed144b3f78e2d463d1abb7a15d24f1a7f8",
+    "result": "canonical bytes matched, checkpoint_sha256 matched, temperature 0.25 matched, exit 0"
+  },
+  "derivation_note": "freeze.json froze the four per-file SHAs and temperature before final-test but did not store the aggregate. The aggregate is a pure function of those exact file bytes; the four core files were byte-identical in the pre-test check, the post-test check and this recomputation, so checkpoint_sha256=2c9d86707f6f4bb6283d0201aaf5c66359b7734fd5c906d73a1c02ed5f22fbbd is the same binding before and after the test. No freeze file was rewritten.",
+  "order": [
+    "freeze.json saved and uploaded",
+    "pre-test freeze check passed",
+    "single final-test executed",
+    "post-test freeze check passed",
+    "aggregate binding recomputed and matched"
+  ]
+}

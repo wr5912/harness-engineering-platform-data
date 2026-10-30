@@ -1,0 +1,197 @@
+{
+  "schema_version": "kev-encoding-report/v1",
+  "status": "ready",
+  "plan_sha256": "ef5096a653722779b29c4aec003075a1d725a5c675312607b53de22075e8327e",
+  "kev_commit": "2074cc44256200bb37540103fa4572901faa10f3",
+  "training_recipe": "cuda-fp32-lora",
+  "checkpoint_source": {
+    "init_from": "jaredpalmer/kev-0.8b@bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+    "execution_init_from": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot",
+    "local_snapshot": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot",
+      "repository_metadata_path": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-repository.json",
+      "repository_metadata_sha256": "69052875a2d705c09973ddff353539ad2e6793cb2e2f3a4fa674ad7432e72c2c"
+    },
+    "verified_files": 12
+  },
+  "base": "Qwen/Qwen3.5-0.8B-Base",
+  "base_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+  "files": {
+    "train": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/train.jsonl",
+      "sha256": "d0369d0f7e4bd7dcb621a739262b8aca0d73cd93f9dd5f591108573dd11f4154",
+      "records": 22
+    },
+    "development": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/development.jsonl",
+      "sha256": "c4e7fb06cfb4959fe4373894691d3ea8952409cd93953646a9e212bbb602a269",
+      "records": 4
+    },
+    "calibration": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/calibration.jsonl",
+      "sha256": "ee4b054e6b5b8363171034a6ddf321bd6456af3231d462e5d4339473b92fe251",
+      "records": 7
+    },
+    "test": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/test.jsonl",
+      "sha256": "d8b8e1ad716265779fa4287aea2dbd3e29fc8ecf4e8e1ee72e816675c1a07249",
+      "records": 4
+    }
+  },
+  "checked_records": 37,
+  "failures": [],
+  "tokenstats": {
+    "limits": {
+      "max_state": 384,
+      "max_branch": 1024,
+      "max_packed": 2048
+    },
+    "shuffle_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "partitions": {
+      "train": {
+        "checked_records": 22,
+        "encoded_variants": 198,
+        "state_tokens": {
+          "count": 198,
+          "min": 153,
+          "p50": 187,
+          "p95": 282,
+          "max": 356
+        },
+        "branch_tokens_including_state": {
+          "count": 198,
+          "min": 473,
+          "p50": 507,
+          "p95": 602,
+          "max": 676
+        },
+        "packed_tokens": {
+          "count": 198,
+          "min": 473,
+          "p50": 507,
+          "p95": 602,
+          "max": 676
+        }
+      },
+      "development": {
+        "checked_records": 4,
+        "encoded_variants": 36,
+        "state_tokens": {
+          "count": 36,
+          "min": 194,
+          "p50": 293,
+          "p95": 339,
+          "max": 339
+        },
+        "branch_tokens_including_state": {
+          "count": 36,
+          "min": 514,
+          "p50": 613,
+          "p95": 659,
+          "max": 659
+        },
+        "packed_tokens": {
+          "count": 36,
+          "min": 514,
+          "p50": 613,
+          "p95": 659,
+          "max": 659
+        }
+      },
+      "calibration": {
+        "checked_records": 7,
+        "encoded_variants": 63,
+        "state_tokens": {
+          "count": 63,
+          "min": 168,
+          "p50": 199,
+          "p95": 327,
+          "max": 327
+        },
+        "branch_tokens_including_state": {
+          "count": 63,
+          "min": 488,
+          "p50": 519,
+          "p95": 647,
+          "max": 647
+        },
+        "packed_tokens": {
+          "count": 63,
+          "min": 488,
+          "p50": 519,
+          "p95": 647,
+          "max": 647
+        }
+      },
+      "test": {
+        "checked_records": 4,
+        "encoded_variants": 36,
+        "state_tokens": {
+          "count": 36,
+          "min": 196,
+          "p50": 208,
+          "p95": 302,
+          "max": 302
+        },
+        "branch_tokens_including_state": {
+          "count": 36,
+          "min": 516,
+          "p50": 528,
+          "p95": 622,
+          "max": 622
+        },
+        "packed_tokens": {
+          "count": 36,
+          "min": 516,
+          "p50": 528,
+          "p95": 622,
+          "max": 622
+        }
+      }
+    }
+  },
+  "checks": {
+    "metadata": "passed",
+    "native_imports": "passed",
+    "tokenizer": "passed",
+    "native_loader": "passed",
+    "native_materialize": "passed",
+    "strict_encoding": "passed",
+    "native_fits": "passed",
+    "target_mapping": "passed",
+    "choice_shuffle": "passed",
+    "final_identity_recheck": "passed"
+  },
+  "not_verified": [
+    "model_weights",
+    "checkpoint_publisher_authenticity",
+    "GPU_hardware",
+    "training_loss",
+    "label_semantic_correctness",
+    "calibration",
+    "full_Harness_equivalence"
+  ],
+  "training": "not_run",
+  "tokenizer_download_allowed": false,
+  "option_isolation": false,
+  "checkpoint_metadata": {
+    "path": "/root/autodl-tmp/hep-medium-security/artifacts/training-preflight-v1/checkpoint-snapshot/training_config.json",
+    "sha256": "3ec3d92146248265652d4387f8eb65ee8defaed4dd9173b049e7b5193045ece6"
+  },
+  "tokenizer_special_tokens": {
+    "<|fim_prefix|>": 248060,
+    "<|fim_middle|>": 248061,
+    "<|box_start|>": 248049,
+    "<|box_end|>": 248050,
+    "<|fim_suffix|>": 248062
+  }
+}

@@ -1,0 +1,263 @@
+{
+  "schema_version": "medium-variant-training-freeze/v1",
+  "created_at": "2026-10-29T19:22:13.515968Z",
+  "status": "frozen_before_final_test",
+  "management_actor": {
+    "session_id": "session-a553f0cc-82cd-4f67-b6cb-bbd382ef7f33",
+    "provider": "deepseek-official",
+    "model": "deepseek-flash",
+    "context": {
+      "domain": "agents",
+      "agent_id": "security-operations-expert",
+      "experiment_id": "EXP-security-operations-expert-024-rad80a907c628"
+    }
+  },
+  "target": {
+    "agent_id": "security-operations-expert",
+    "parent_experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+    "parent_ref": "git:d499a1a3e3484bf97f6b5646a8d80e20313a7120",
+    "source_run_ids": [
+      "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408"
+    ],
+    "server_id": "train-a39ea74a-4e6f-4455-83c8-5735f34d2d9d"
+  },
+  "checkpoint": {
+    "remote_path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/checkpoint",
+    "files": {
+      "README.md": {
+        "sha256": "6e5499dcafd9a541503164c3a9f0ab5e8c181046139e8344801030342d12d132",
+        "bytes": 5168
+      },
+      "adapter_config.json": {
+        "sha256": "726c1cf3f9ee4ebf45059b9bbbade267571469edcf373d203a7a95abe2cae9d6",
+        "bytes": 1273
+      },
+      "adapter_model.safetensors": {
+        "sha256": "b94af89ab408e18958a76d0a5ec325b247faf9eaf3ba14b50e008750b3ddd1a4",
+        "bytes": 43338624
+      },
+      "chat_template.jinja": {
+        "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+        "bytes": 7755
+      },
+      "head.pt": {
+        "sha256": "75acaaadc161e3e7bb218c40a85d64e98b3410059252c2c76ebba30c90cd2931",
+        "bytes": 2103295
+      },
+      "tokenizer.json": {
+        "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+        "bytes": 19989325
+      },
+      "tokenizer_config.json": {
+        "sha256": "e0792bce4d2d44981188cea9b75ceaa12ab0ae24a55473f032905fc6a782a771",
+        "bytes": 1127
+      },
+      "training_config.json": {
+        "sha256": "7a36917e4d137ed2e2ee297d0b07b0da0095a0a2a06e1c4cde227d0c05a75db0",
+        "bytes": 2178
+      },
+      "training_metrics.json": {
+        "sha256": "fba26749c7ef3de346cae1a6cd300b9ae4e00632fa860df675aaab30f5a8a216",
+        "bytes": 710
+      }
+    },
+    "total_bytes": 65449455,
+    "note": "SHA-256 measured on the training host after calibration-write; only head.pt changed (7b76bd73 -> 75acaaad), all other files unchanged vs post-train receipt"
+  },
+  "head": {
+    "temperature": 0.25,
+    "temperature_key": "head.pt:temperature",
+    "weights": "lora",
+    "weights_dtype": "fp32",
+    "temperature_fit": {
+      "rows": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/run-v1/calibration-raw/rows.json",
+      "n": 7,
+      "folds": 2,
+      "seed": 0,
+      "groups": 7,
+      "method": "min micro mean NLL over a 121-point log grid 0.25..4",
+      "temperatures_oof": [
+        0.25,
+        0.25
+      ],
+      "raw": {
+        "ece": 0.44108970479398607,
+        "brier": 0.28461050201043686,
+        "nll": 0.6351315266368273
+      },
+      "out_of_fold": {
+        "ece": 0.040559564127319994,
+        "brier": 0.007997231354274301,
+        "nll": 0.04303156886292525
+      },
+      "ece_ci95_delta": [
+        -0.5156012509460871,
+        -0.2657987360410855
+      ],
+      "separated": true,
+      "in_distribution": {
+        "allowed": true,
+        "problems": [
+          "calibration rows carry no kev.benchmark suite of this checkout beside them",
+          "head.pt records no suite of this checkout and there is no provenance.json beside it"
+        ]
+      },
+      "policy_note": "workload_heldout: fit only on the same business distribution's calibration split, held out by source group (7 groups, 2 folds); this is explicitly in-distribution and is not a suite-level OOD calibration claim"
+    }
+  },
+  "decision_rule": {
+    "scoring": "native choice argmax over the closed candidate set",
+    "extra_confidence_threshold": null,
+    "note": "selective coverage/confidence cutoffs appearing in benchmark reports are observation only, not deployed thresholds",
+    "unset_env_final_test": [
+      "KEV_TEMPERATURE",
+      "KEV_MERGE",
+      "KEV_ATTN",
+      "KEV_CUDA_GRAPHS",
+      "KEV_FUSED"
+    ]
+  },
+  "data": {
+    "partitions": {
+      "train.jsonl": {
+        "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/train.jsonl",
+        "sha256": "d0369d0f7e4bd7dcb621a739262b8aca0d73cd93f9dd5f591108573dd11f4154",
+        "bytes": 629745
+      },
+      "development.jsonl": {
+        "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/development.jsonl",
+        "sha256": "c4e7fb06cfb4959fe4373894691d3ea8952409cd93953646a9e212bbb602a269",
+        "bytes": 118849
+      },
+      "calibration.jsonl": {
+        "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/calibration.jsonl",
+        "sha256": "ee4b054e6b5b8363171034a6ddf321bd6456af3231d462e5d4339473b92fe251",
+        "bytes": 195142
+      },
+      "test.jsonl": {
+        "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/test.jsonl",
+        "sha256": "d8b8e1ad716265779fa4287aea2dbd3e29fc8ecf4e8e1ee72e816675c1a07249",
+        "bytes": 116056
+      }
+    },
+    "split_manifest": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/split-manifest.json",
+      "sha256": "62c0d654f8547055c81fbdbc3550075b2767f3a1cdadab3279293fda7a0d5f3e"
+    },
+    "partition_audit": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/partition-audit.json",
+      "sha256": "ee25a40e81701a947c3caddea05c431f9c1cee8859acaec32ed8486fbcdb95e0"
+    },
+    "dataset_audit": {
+      "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/dataset-audit.json",
+      "sha256": "61c7a67ac9f5e242813c184dabbe338ec60cf2826eb7e43ccfd992329801878e"
+    },
+    "data_stage_summary": {
+      "sha256": "68510184e7d205af56457fa3c15829a6a1e0a1ffdfda19ec743cc114011c4666"
+    },
+    "counts": {
+      "train": 22,
+      "development": 4,
+      "calibration": 7,
+      "test": 4,
+      "records": 37,
+      "independent_groups": 32
+    }
+  },
+  "training": {
+    "recipe": "cuda-fp32-lora",
+    "epochs": 1,
+    "lr": 2e-05,
+    "batch": 1,
+    "accum": 8,
+    "seed": 0,
+    "calibration_folds": 2,
+    "calibration_policy": "workload_heldout",
+    "augmentation": {
+      "p_none": 0,
+      "p_none_distract": 0,
+      "p_distract": 0,
+      "p_none_pair": 0,
+      "choice_shuffle": true
+    },
+    "context_limits": {
+      "max_state": 384,
+      "max_branch": 1024,
+      "max_packed": 2048
+    },
+    "metrics": {
+      "records_seen": 22,
+      "truncated_records": 0,
+      "rejected_records": 0,
+      "optimizer_steps": 3,
+      "forward_tokens": 11648,
+      "wall_seconds": 16.750714778900146,
+      "peak_device_bytes": 3522364416,
+      "peak_rss_bytes": 5733994496,
+      "grad_norm_mean": 27.06534533333333,
+      "clipped_steps": 3
+    }
+  },
+  "plan": {
+    "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/plan-v1/training-plan.json",
+    "sha256": "ef5096a653722779b29c4aec003075a1d725a5c675312607b53de22075e8327e",
+    "remote_sha256": "ef5096a653722779b29c4aec003075a1d725a5c675312607b53de22075e8327e",
+    "status": "prepared"
+  },
+  "encoding_report": {
+    "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/encoding-report-v1.json",
+    "sha256": "bfdf42632159aa0479ceeda46e6f633ab82397c2d510bb15bfd5bf7e350386c8",
+    "remote_sha256": "bfdf42632159aa0479ceeda46e6f633ab82397c2d510bb15bfd5bf7e350386c8",
+    "status": "ready",
+    "checked_records": 37
+  },
+  "request": {
+    "path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/training-request.json",
+    "sha256": "d4854d86ac941208def348ada5c45314fcc11752bc40079e9d943855dca9b17d",
+    "remote_sha256": "d4854d86ac941208def348ada5c45314fcc11752bc40079e9d943855dca9b17d"
+  },
+  "business_source": {
+    "generated_source_manifest": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/generated-source-v1/manifest.json",
+      "sha256": "b3386871c924017210c607750e924c4ba3fabec90de337f673a3886bcabee813",
+      "schema_version": "medium-variant-generated-source/v1",
+      "immutable": true,
+      "parent_ref": "git:d499a1a3e3484bf97f6b5646a8d80e20313a7120"
+    },
+    "semantic_sources": {
+      "state_constructor": {
+        "file": "decision-state.ts",
+        "sha256": "5d01d43bdfd5220977ad62ad6f2cf7510e266e0200925b358a28189bff8515f0"
+      },
+      "questions_source": {
+        "file": "decision-questions.ts",
+        "sha256": "26c147cc0af061cc78932403dd638674e2af4b9b1d2e767558e3f33d10154145"
+      },
+      "language_understanding": {
+        "file": "language-understanding.ts",
+        "sha256": "195b1f3a26de313b9ecc7c72cae42bf7ca48a1fb22418cf5d9f7e23e3ea19ea3"
+      },
+      "replay_source": {
+        "file": "decision-replay.ts",
+        "sha256": "7d4177ed2a9174bef5ec4c11df5d01dab8259ad44f299cd56d2238df7b6127ea"
+      }
+    },
+    "verification": "current file SHA-256 values equal the manifest constructor/replay digests; the four semantic files were not modified",
+    "contract_version_in_data": "security-ops-questions/sha256:26c147cc0af061cc78932403dd638674e2af4b9b1d2e767558e3f33d10154145"
+  },
+  "labels": {
+    "purpose": "functional_validation",
+    "reviewed_records": 39,
+    "eligible": 37,
+    "statement": "Labels are AI functional validation on the fixed source, not human approval or independent business truth.",
+    "review_manifest_sha256": "527620e2f0528c9721368ec3b77be9a78cea2abf20e473a05743b6bc4b242bb1",
+    "annotations_sha256": "9c24fa50523b021cb858451a3bafb642f2923809d3568fcfe8034f5a68e5cdd4"
+  },
+  "already_observed": {
+    "development_raw": "development-raw on T=1.0 (4/4, 0 rejected)",
+    "calibration_raw": "calibration-raw on T=1.0 (7/7, 0 rejected)",
+    "development_calibrated": "development-calibrated reading saved T=0.25 (4/4, 0 rejected)",
+    "final_test": "not run before this freeze"
+  },
+  "freeze_statement": "Checkpoint files, temperature, decision rule, business source digests, data partitions and recipe are fixed here; final-test runs once after this file is saved and must not change any of them."
+}

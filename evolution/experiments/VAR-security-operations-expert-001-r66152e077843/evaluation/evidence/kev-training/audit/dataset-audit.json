@@ -1,0 +1,33 @@
+{
+  "status": "ok",
+  "ok": true,
+  "records": 37,
+  "partition_counts": {
+    "train": 22,
+    "development": 4,
+    "calibration": 7,
+    "test": 4
+  },
+  "errors": [],
+  "warnings": [],
+  "overlaps": [],
+  "leakage_scope": "Eight explicit state-root reserved-field categories; no text-value matches and no blanket rejection of nested business labels/outcomes/results",
+  "token_budget": "not_checked",
+  "training_handoff": {
+    "token_budget": "not_checked",
+    "runtime_equivalence": "not_evaluated",
+    "required_next": [
+      "Prepare a pinned plan with kev-training, then run the selected Kev renderer/tokenizer and length checks",
+      "Check source diversity and business slice coverage",
+      "Compare cheap baseline, original Harness and Kev Variant on independent tasks"
+    ],
+    "augmentation_first_run": {
+      "keep_choice_shuffle": true,
+      "p_none": 0,
+      "p_none_distract": 0,
+      "p_distract": 0,
+      "p_none_pair": 0
+    },
+    "augmentation_scope": "Fixed closed-set baseline recommendation; ablate for dynamic candidates, not a universal Kev default."
+  }
+}

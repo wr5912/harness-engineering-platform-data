@@ -1,0 +1,164 @@
+{
+  "schema_version": "medium-variant-dataset-transfer-manifest/v1",
+  "created_at": "2026-10-29T19:15:48.774613Z",
+  "management_actor": {
+    "session_id": "session-a553f0cc-82cd-4f67-b6cb-bbd382ef7f33",
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "provider": "deepseek-official",
+    "model": "deepseek-flash",
+    "context": {
+      "domain": "agents",
+      "agent_id": "security-operations-expert",
+      "experiment_id": "EXP-security-operations-expert-024-rad80a907c628"
+    }
+  },
+  "target": {
+    "agent": "security-operations-expert",
+    "parent_experiment": "EXP-security-operations-expert-024-rad80a907c628",
+    "parent_ref": "git:d499a1a3e3484bf97f6b5646a8d80e20313a7120",
+    "source_run_ids": [
+      "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408"
+    ]
+  },
+  "remote": {
+    "server_id": "train-a39ea74a-4e6f-4455-83c8-5735f34d2d9d",
+    "work_dir": "/root/autodl-tmp/hep-medium-security",
+    "dataset_dir": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset",
+    "new_directory": true,
+    "upload_mode": "stable per-file transfer (training-ssh transfer)"
+  },
+  "counts": {
+    "train": 22,
+    "development": 4,
+    "calibration": 7,
+    "test": 4,
+    "records": 37,
+    "groups": {
+      "train": 17,
+      "development": 4,
+      "calibration": 7,
+      "test": 4
+    },
+    "independent_groups": 32,
+    "compiled": 37,
+    "quarantined": 0,
+    "audit_ok": true
+  },
+  "files": [
+    {
+      "name": "train.jsonl",
+      "local_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/train.jsonl",
+      "sha256": "d0369d0f7e4bd7dcb621a739262b8aca0d73cd93f9dd5f591108573dd11f4154",
+      "bytes": 629745,
+      "remote_path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/train.jsonl"
+    },
+    {
+      "name": "development.jsonl",
+      "local_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/development.jsonl",
+      "sha256": "c4e7fb06cfb4959fe4373894691d3ea8952409cd93953646a9e212bbb602a269",
+      "bytes": 118849,
+      "remote_path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/development.jsonl"
+    },
+    {
+      "name": "calibration.jsonl",
+      "local_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/calibration.jsonl",
+      "sha256": "ee4b054e6b5b8363171034a6ddf321bd6456af3231d462e5d4339473b92fe251",
+      "bytes": 195142,
+      "remote_path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/calibration.jsonl"
+    },
+    {
+      "name": "test.jsonl",
+      "local_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/test.jsonl",
+      "sha256": "d8b8e1ad716265779fa4287aea2dbd3e29fc8ecf4e8e1ee72e816675c1a07249",
+      "bytes": 116056,
+      "remote_path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/test.jsonl"
+    },
+    {
+      "name": "split-manifest.json",
+      "local_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/split-manifest.json",
+      "sha256": "62c0d654f8547055c81fbdbc3550075b2767f3a1cdadab3279293fda7a0d5f3e",
+      "bytes": 16995,
+      "remote_path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/split-manifest.json"
+    },
+    {
+      "name": "partition-audit.json",
+      "local_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/dataset/partition-audit.json",
+      "sha256": "ee25a40e81701a947c3caddea05c431f9c1cee8859acaec32ed8486fbcdb95e0",
+      "bytes": 406,
+      "remote_path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/partition-audit.json"
+    },
+    {
+      "name": "dataset-audit.json",
+      "local_path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/audit/dataset-audit.json",
+      "sha256": "61c7a67ac9f5e242813c184dabbe338ec60cf2826eb7e43ccfd992329801878e",
+      "bytes": 1100,
+      "remote_path": "/root/autodl-tmp/hep-medium-security/artifacts/formal-training-v1/dataset/dataset-audit.json"
+    }
+  ],
+  "source_mapping": {
+    "source_family_plan": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/source-family-plan.json",
+      "sha256": "2b177ed740fa966ec9a4bd0889104265153685aef2c460d953bed049caa5384e",
+      "mapping_sha256": "b4a70112057bb170f1f2daf46f6a0bffce5ddc884ab1712eb88e6e39def694e4",
+      "eligible_sample_ids": 37,
+      "eligible_sample_ids_sha256": "b597d69be7038355514591f58ae20f5f63b4fd5e450c55d3c5c41a54431ef34a",
+      "eligible_families": 32,
+      "families_total": 35
+    },
+    "eligible_ir": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/eligible.jsonl",
+      "sha256": "f46b5e09fe9ec7046c3495c4d9aa4f1c4352cf38ce74f892b66d05dcc2b57599",
+      "records": 37
+    },
+    "grouping_manifest": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/grouping-manifest.json",
+      "sha256": "61daa96d762e844fe719334d7d42f8ae11a8f67465d9252c500ab0762918a1a0"
+    },
+    "annotated_samples": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/annotated/samples.labeled.jsonl",
+      "sha256": "8774ee2b064db8dea81bbeda232490971d93b432aad1aeeef73eb818f4e0af59",
+      "records": 40,
+      "labels": {
+        "verified": 39,
+        "unlabeled": 1
+      }
+    },
+    "compiled_jsonl": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/compiled/compiled.jsonl",
+      "sha256": "4a293cf871944c62914da2c69aa296498de95ce71642a064a9e0603b028244d4",
+      "records": 37
+    },
+    "compile_report": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/compiled/compile-report.json",
+      "sha256": "f408fd0c4f6bf93a3b7106fb5ee90da99b246484d2c5194ae39c9158a333b16f"
+    },
+    "native_ai_review": {
+      "annotations": {
+        "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/ir-review-v1/finalized-v2/bundle-39/annotations.all.jsonl",
+        "sha256": "9c24fa50523b021cb858451a3bafb642f2923809d3568fcfe8034f5a68e5cdd4",
+        "records": 39
+      },
+      "manifest": {
+        "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/ir-review-v1/finalized-v2/bundle-39/manifest.json",
+        "sha256": "527620e2f0528c9721368ec3b77be9a78cea2abf20e473a05743b6bc4b242bb1",
+        "schema_version": "ir-ai-review-bundle/v1",
+        "status": "complete",
+        "review_purpose": "functional_validation",
+        "review_sessions": 9
+      }
+    },
+    "data_stage_summary": {
+      "path": "/home/admin/harness-engineering-platform-data/.local/medium-security-executor/formal-training-v1/data-stage-summary.json",
+      "sha256": "68510184e7d205af56457fa3c15829a6a1e0a1ffdfda19ec743cc114011c4666"
+    }
+  },
+  "exclusions": [
+    "no base model, Qwen or original KEV checkpoint weights",
+    "no Runtime HOME or user home",
+    "no credentials or SSH material",
+    "no hf cache/tokenizer cache directories",
+    "no training run outputs from other tasks"
+  ],
+  "note": "Only the seven known dataset/audit files are uploaded. Source plan, annotated/eligible/compiled originals and the native AI review receipts stay local for later Candidate return.",
+  "bucket": "data"
+}

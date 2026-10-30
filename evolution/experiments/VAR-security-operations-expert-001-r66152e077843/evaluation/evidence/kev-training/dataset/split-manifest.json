@@ -1,0 +1,281 @@
+{
+  "status": "ready",
+  "seed": 20261029,
+  "requested_fractions": {
+    "train": 0.6,
+    "development": 0.1,
+    "calibration": 0.2,
+    "test": 0.1
+  },
+  "input_records": 37,
+  "minimum_independent_groups": 4,
+  "grouping": [
+    "same source_group_id",
+    "same session_id",
+    "same canonical model input (ignoring label, metadata, qid and candidate key order)",
+    "same native-rendered state or task (choice order is not an independent sample)",
+    "same canonical task/state/question",
+    "transitive closure of all preceding relations"
+  ],
+  "warnings": [
+    "Group-preserving approximate allocation is not a guarantee of class coverage, statistical power, or production representativeness.",
+    "No token budgets, model accuracy, calibration quality, or end-to-end behavior are verified by splitting.",
+    "Some partitions do not contain every label; do not interpret their metrics as complete class coverage."
+  ],
+  "independent_groups": 32,
+  "group_members": {
+    "dsh-component/027756bc415c744953e91e2719e20ebb074baee4d3196f1d0044b13da10c3bed": [
+      "initial-main-route/decision-9d4290ae06042f086e1a0b99937ecac2/64b3f2a12952a823d24e1e9c3911ee24ce49515d6f194eae4384edf7237beecc/route"
+    ],
+    "dsh-component/02b09b8f80e77d95f9fa961575d5ba268ca5038d3ba818f6311f39379e867ec5": [
+      "initial-main-route/decision-419870bc72b0cfb8117a92ba053c5027/c4b0ccbc7d068857d2fd39d2df816bc8ff441e7c3d3982152abfbba7329acb75/route"
+    ],
+    "dsh-component/0a3ef5bc857e1ddad575c2393f426ebb68e62536d6390d705376b3c45f3aecff": [
+      "initial-main-route/decision-272995f6ec7daf352466c8c5a35befaa/0e51f6beb0d761ae69edfd1d171b93d00d5aa1f26afc657c5c1be9762206b15f/route",
+      "initial-main-route/decision-d23846ab2812c014e52363a4d5961b88/0e51f6beb0d761ae69edfd1d171b93d00d5aa1f26afc657c5c1be9762206b15f/route"
+    ],
+    "dsh-component/0f7e558375dfab88cf9b3f52fa317f637d6bd0ddc54a3258b73fa1d0876f6714": [
+      "initial-main-route/decision-bbc47ebce94c276563fac7de63fa40a9/632e3e6a4b8446291cd6ae1289b411295ab156cfcd0b6cdc08bb13cd652fa43e/route"
+    ],
+    "dsh-component/13e7c74c9603e5d30fae38649adf19aeeb975b80307c4bfd4515b86a2f157b2b": [
+      "initial-main-route/decision-4748e820e37365899cf9ec1cb852f775/1deef050f066291fee2e06007a72ed2c9a332f1d61113f49d671fff1960485ec/route"
+    ],
+    "dsh-component/14972fc1f7342af9feef9f869ff93ccc14a3711c1eb691c26021cbfb8f6bc20f": [
+      "initial-main-route/decision-4321fb094261233d1c93e66d9e356463/0dcea215d866962aa7d8ba140349c628cf80e95480d158c7cf55784295ac792f/route"
+    ],
+    "dsh-component/1b5ca60d32feb663f3456618afb265bf3af397183197f28ba41e78f7f4bb1373": [
+      "initial-main-route/decision-365447d6457d6e9d23f540ec1d69f955/34c02e16902374e03da29df41c9b6d9d2ad925aacc71319a6773ae53beb8e594/route"
+    ],
+    "dsh-component/1bd3588d5ad02fb5a8b6e45e04b6f2bb6dd131895d5f8f0a023028b0a81a2630": [
+      "initial-main-route/decision-933e0e23d60a8f000d025ac5666077f2/e778cf75c808830a41aa0874d6b3f8e790aecb2e9e9c136dd4ef5dcf98b26954/route"
+    ],
+    "dsh-component/2cbb2ead46db9cc430d6c9b0e92bd1f62b62e4a991081d7dbc0b62633ce877c5": [
+      "initial-main-route/decision-0742db6dc576af730ed2421a56944bf6/7d3b0efdd12bc65dc2b6e47e168c55673a06ca833fb4efe435f5cc9c48a44043/route"
+    ],
+    "dsh-component/33368b2746f4eaf813928921b0b81492759b27e862a1e872d55153ead25e044d": [
+      "initial-main-route/decision-783c45c0d28561d363ba23afcf68f3e9/414e67b5baff15b16e3d84a7c2994290e8c2cf8182d09737d10f651d171bd93b/route"
+    ],
+    "dsh-component/3fe6786031369b9d566ff5f12ef4ce15838adb344c34be5e0c754e64c786b36b": [
+      "initial-main-route/decision-2060ab3f8693bc3167d573b4854f8930/907563ab6d04549c9673f6738455c74fd83b0bf6e2b8a7e9742721c300305208/route"
+    ],
+    "dsh-component/40daafba49bfd814368966506cc5858c89766f0846419b71b3275a5b49e8c9eb": [
+      "initial-main-route/decision-32e2d2ea5ad336b085a98eae2c64c2b3/d4d37bc25897d1eba3e48f3a5147e99caaa0fb1a5daaba780e06f6b6875c664a/route",
+      "initial-main-route/decision-402594b1feb7491bb22eb692a0f71591/d4d37bc25897d1eba3e48f3a5147e99caaa0fb1a5daaba780e06f6b6875c664a/route"
+    ],
+    "dsh-component/4ad01f97978d03c85c36cb703b206d24deed783925b55e5627caebd5dae89ed0": [
+      "initial-main-route/decision-d5e89ceaabe06cf2004ed9344841f73f/3cea09df16b1ffb3aff72407f4ce73a6fec0fb09adfe928f399d27096d08079e/route"
+    ],
+    "dsh-component/588890ddedd7b91e2fc8850951061be311432c8d9407ca62d34d5bdc2e30d383": [
+      "initial-main-route/decision-1a937d2c64ebe01ae025ac0a532e8a63/e495bfcf1e9fbf8664d1424e64d2e3a03096268223de02c8e886bfd61d4c4581/route"
+    ],
+    "dsh-component/5af1482d9513f5c38e542b4ee7aebbdc3b4c4d826ef8d6d4fffef506c17fb8aa": [
+      "initial-main-route/decision-433000441bf41b2fe6d7959f189656a1/d7ac382ddd9c9e57c254e9c14b3ef1210b2b3200e1dad5630c11a0cfdf3e8172/route"
+    ],
+    "dsh-component/6bfc927d22edcfbc6962b808f1ea1f466fbaa34ee4308994ca2dad6144111013": [
+      "initial-main-route/decision-2647f0921c7cb324e6a6c169ed3beab6/9c22218eefedf878eb1452081d8dc0b3a00c926d689f8b69d4a1fa73efd70e40/route"
+    ],
+    "dsh-component/6dcfb077beecfcce37ea7dc195aeb0edb7259401ccdb1beaae55f0db941d44db": [
+      "initial-main-route/decision-a4b4a3e77353f27cb6a030217ef21113/a3fe1a1729bf0231a50759ce3ca013efd898e776aceb3e3bf7b17a02ac24aa22/route"
+    ],
+    "dsh-component/7358b2716e8cc52cc609e3f86967aaf27a9301183581a54bea91ffa172a42320": [
+      "initial-main-route/decision-19d19d26034e77e2a5229c248f2767f3/8732bfcc5b79ee87ab237250def1881247f0e51657dc167a970fc73c2fe3dc17/route",
+      "initial-main-route/decision-c44906b2131f39789efa69770b322557/8732bfcc5b79ee87ab237250def1881247f0e51657dc167a970fc73c2fe3dc17/route",
+      "initial-main-route/decision-eda0f964332e248a0ceda7f87878f7cb/8732bfcc5b79ee87ab237250def1881247f0e51657dc167a970fc73c2fe3dc17/route"
+    ],
+    "dsh-component/8d56a65ee95bcf79bade8b022b9cea59e541aa0926b4c7247d6dd0c53e89d40b": [
+      "initial-main-route/decision-3dd00f318c6cfabc8ddfe6e238228e2e/eca927ec21f99d7de733bb5c95a646937213313d6e586d52eab460bcd22dbb6c/route"
+    ],
+    "dsh-component/9b318971ef43535bc131fa0f3f954e9720cf1f25961c2afccea3b65dff370e44": [
+      "initial-main-route/decision-98fea336aca22dcdcf9c18abc5ac2b3e/1ca219c0565abdc781914539a6ba27f731f8f438b44a221accb30110866ccf10/route"
+    ],
+    "dsh-component/a7bed2269bf3677e65c7ff4bcd7d3cc0054bcf5999de8f07a0b105ca4f4e6bad": [
+      "initial-main-route/decision-44e3523b7ad2968fe90c87c7c8882e45/151ba6ed3e711eea4f2fecff380f66b261e1fb7efecdd2fa7d487086669e4f25/route"
+    ],
+    "dsh-component/ab36fe1098eb5c266db763f6eaf3ecc72cbdc904c913e2f83b041ea4020b6a32": [
+      "initial-main-route/decision-3eda5ac302ecd5edd25a0d4ad224c85e/dfb551d22cc721c7967a17e36057977fe29d431ef21945d38cc41cba390fa4f7/route"
+    ],
+    "dsh-component/b14d54d6bd58d5dc4124ec36c040669b4352d9466d92a53e9f4d4ea2aa2e4989": [
+      "initial-main-route/decision-20abe7bf499782b0bd5d632363d73e65/81a3e39846bc83e90f6e552ed37e5818c26bf9b1f2cce7362a9ca105770f438e/route"
+    ],
+    "dsh-component/b3d420f417543957446695f8fd9556575aa4c0ac43990dd9b2e50947aa97d342": [
+      "initial-main-route/decision-52d6f29900857fa1d8a246bf0e3f7605/1cf217039e049e7530b7b4ec112868c53417dfa2984b842a54285bee01d81f69/route"
+    ],
+    "dsh-component/b6a1f35f16ced70d298daf0980bae074202569a51f3eb6ecc4292b845b53b893": [
+      "initial-main-route/decision-1a31de79790889a2e1420ef2be9f3c9a/bd569d07d476b215c3c330a00e3b1d9c273c9aac6aa3170435e487c0dab5b713/route"
+    ],
+    "dsh-component/bf1f342d099b7bd14ba56f881702979af974f9fb5884fd695e2fde5b048bb3e8": [
+      "initial-main-route/decision-b9d2356178225219d8a5a701bb577f76/4664a2df536747143650f6283822036cb7055b6d8a9235e76054e502306e4128/route"
+    ],
+    "dsh-component/c5ffb9e2ca0debc8dd4d4a6ed93a3112c7c782f8eb2a7e7d40dbe288186aaaa9": [
+      "initial-main-route/decision-c5fb6bf0ac252816b0615061cab86275/ca05bf9a4bf32a3e9f659e4c4f3ad91d75fc79737c75552eb78cec8a38eee91b/route"
+    ],
+    "dsh-component/d4207c242b50fed6795b558f5e94986cba348e67f63d306765a68754f522a409": [
+      "initial-main-route/decision-bff4b0a7ad77eab8b1c228201a4e298a/049296e5f665a6d4a9b3e3b25b0ecedbd65248083d4d5346bbf400dccce92ab0/route"
+    ],
+    "dsh-component/d730219d877023fb11c0835b27c54a1ca310cd6436987e7ed172462f781b53da": [
+      "initial-main-route/decision-52a77e21cd52657ae19faf652a98fc6b/feb810cc52097a23d7be57a29f3ed06caf3185bbdb0de02b60de6b2d4b4bcb3d/route"
+    ],
+    "dsh-component/f68b88dd033906deb55688aa7a90e2aebcbdf2d3dcf02e9c044eab31922b7639": [
+      "initial-main-route/decision-025e8ca363a79267185df06f4cc99195/b967c4e9e15f798054a7990dcf30ae4157ef0e9f4d5bbf868e8f414a50c1fb34/route",
+      "initial-main-route/decision-245cca13b611028d85c7d017817116b5/b967c4e9e15f798054a7990dcf30ae4157ef0e9f4d5bbf868e8f414a50c1fb34/route"
+    ],
+    "dsh-component/f9f831f279ab14fe31333b766596193f453b609063a54c842fef0d87660a221d": [
+      "initial-main-route/decision-b87e79785d4718e71ea8b84a029cea7a/34b43ff204dac449a024eda8069c27172bf6cb3bb143d9851f6cb670ca524ef8/route"
+    ],
+    "dsh-component/fe808b38404f298b916e0ea40cf94960f036266766d67c5605b496f5c1cf562a": [
+      "initial-main-route/decision-40318424d187ace1e676300e4b7bb06c/f4bff89cffd6bc87ff645978cdefce685c4470ae18e299470e276593a3222c99/route"
+    ]
+  },
+  "blocked_reasons": [],
+  "train_only_groups": 0,
+  "gold_only_groups": 32,
+  "partition_records": {
+    "train": 22,
+    "development": 4,
+    "calibration": 7,
+    "test": 4
+  },
+  "partition_groups": {
+    "train": 17,
+    "development": 4,
+    "calibration": 7,
+    "test": 4
+  },
+  "achieved_fractions": {
+    "train": 0.5945945945945946,
+    "development": 0.10810810810810811,
+    "calibration": 0.1891891891891892,
+    "test": 0.10810810810810811
+  },
+  "label_statistics_version": "question-native-label/v1",
+  "question_definitions": {
+    "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": {
+      "decision_site_id": "main_route.route",
+      "contract_version": "security-ops-questions/sha256:26c147cc0af061cc78932403dd638674e2af4b9b1d2e767558e3f33d10154145",
+      "type": "choice",
+      "instructions": "依据真实用户原文、已核验的语言理解、明确否定与当前任务绑定，选择本轮主要业务语义。提及一个动作不等于请求执行；仅整理材料不得变成操作。多个需要分别办理的策略或应急请求先澄清，不生成工具或对象标识。",
+      "criteria": {
+        "emergency_action": "用户请求对明确目标办理应急动作，或继续核对同一应急任务。",
+        "policy_configuration": "用户请求办理网络访问策略，或继续核对同一策略任务。",
+        "threat_analysis": "用户请求研判威胁或告警，或继续核对同一威胁研判任务。",
+        "fault_analysis": "用户请求调查故障原因，需要围绕对象和时段开展只读取证。",
+        "inspection": "用户请求巡检、查找巡检目录或继续查看同一巡检运行。",
+        "schedule": "用户明确请求创建、查询、修改或删除调度规则；单纯提及时间不代表需要调度。",
+        "response_planning": "用户请求基于已给事实编写响应计划或评估影响，不表示取得执行授权。",
+        "investigation": "用户要求进一步检索、调查或核对材料、对象及状态，需要取得新证据，且不属于其他已列明的业务流程。",
+        "direct_answer": "用户需要概念说明、普通问答或对已给材料作忠实摘要；现有输入足以回答，不要求新增检索、对象状态核对或其他业务办理。",
+        "clarify_multiple_requests": "本轮包含多个不同业务办理请求，或业务目标相互冲突，需要先澄清办理对象与顺序；同一普通问答中的多个概念不属于此项。"
+      }
+    }
+  },
+  "partition_labels": {
+    "train": {
+      "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": {
+        "fault_analysis": 3,
+        "schedule": 6,
+        "policy_configuration": 3,
+        "investigation": 3,
+        "direct_answer": 3,
+        "threat_analysis": 3,
+        "inspection": 1
+      }
+    },
+    "development": {
+      "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": {
+        "direct_answer": 2,
+        "policy_configuration": 2
+      }
+    },
+    "calibration": {
+      "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": {
+        "direct_answer": 2,
+        "schedule": 1,
+        "policy_configuration": 1,
+        "fault_analysis": 3
+      }
+    },
+    "test": {
+      "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": {
+        "direct_answer": 3,
+        "policy_configuration": 1
+      }
+    }
+  },
+  "group_partition": {
+    "dsh-component/7358b2716e8cc52cc609e3f86967aaf27a9301183581a54bea91ffa172a42320": "train",
+    "dsh-component/f68b88dd033906deb55688aa7a90e2aebcbdf2d3dcf02e9c044eab31922b7639": "train",
+    "dsh-component/0a3ef5bc857e1ddad575c2393f426ebb68e62536d6390d705376b3c45f3aecff": "train",
+    "dsh-component/40daafba49bfd814368966506cc5858c89766f0846419b71b3275a5b49e8c9eb": "train",
+    "dsh-component/1b5ca60d32feb663f3456618afb265bf3af397183197f28ba41e78f7f4bb1373": "train",
+    "dsh-component/fe808b38404f298b916e0ea40cf94960f036266766d67c5605b496f5c1cf562a": "train",
+    "dsh-component/6bfc927d22edcfbc6962b808f1ea1f466fbaa34ee4308994ca2dad6144111013": "train",
+    "dsh-component/6dcfb077beecfcce37ea7dc195aeb0edb7259401ccdb1beaae55f0db941d44db": "train",
+    "dsh-component/3fe6786031369b9d566ff5f12ef4ce15838adb344c34be5e0c754e64c786b36b": "train",
+    "dsh-component/4ad01f97978d03c85c36cb703b206d24deed783925b55e5627caebd5dae89ed0": "train",
+    "dsh-component/0f7e558375dfab88cf9b3f52fa317f637d6bd0ddc54a3258b73fa1d0876f6714": "train",
+    "dsh-component/c5ffb9e2ca0debc8dd4d4a6ed93a3112c7c782f8eb2a7e7d40dbe288186aaaa9": "train",
+    "dsh-component/8d56a65ee95bcf79bade8b022b9cea59e541aa0926b4c7247d6dd0c53e89d40b": "train",
+    "dsh-component/f9f831f279ab14fe31333b766596193f453b609063a54c842fef0d87660a221d": "train",
+    "dsh-component/2cbb2ead46db9cc430d6c9b0e92bd1f62b62e4a991081d7dbc0b62633ce877c5": "train",
+    "dsh-component/b3d420f417543957446695f8fd9556575aa4c0ac43990dd9b2e50947aa97d342": "train",
+    "dsh-component/a7bed2269bf3677e65c7ff4bcd7d3cc0054bcf5999de8f07a0b105ca4f4e6bad": "train",
+    "dsh-component/13e7c74c9603e5d30fae38649adf19aeeb975b80307c4bfd4515b86a2f157b2b": "development",
+    "dsh-component/d4207c242b50fed6795b558f5e94986cba348e67f63d306765a68754f522a409": "development",
+    "dsh-component/33368b2746f4eaf813928921b0b81492759b27e862a1e872d55153ead25e044d": "development",
+    "dsh-component/d730219d877023fb11c0835b27c54a1ca310cd6436987e7ed172462f781b53da": "development",
+    "dsh-component/027756bc415c744953e91e2719e20ebb074baee4d3196f1d0044b13da10c3bed": "calibration",
+    "dsh-component/02b09b8f80e77d95f9fa961575d5ba268ca5038d3ba818f6311f39379e867ec5": "calibration",
+    "dsh-component/bf1f342d099b7bd14ba56f881702979af974f9fb5884fd695e2fde5b048bb3e8": "calibration",
+    "dsh-component/b14d54d6bd58d5dc4124ec36c040669b4352d9466d92a53e9f4d4ea2aa2e4989": "calibration",
+    "dsh-component/9b318971ef43535bc131fa0f3f954e9720cf1f25961c2afccea3b65dff370e44": "calibration",
+    "dsh-component/ab36fe1098eb5c266db763f6eaf3ecc72cbdc904c913e2f83b041ea4020b6a32": "calibration",
+    "dsh-component/5af1482d9513f5c38e542b4ee7aebbdc3b4c4d826ef8d6d4fffef506c17fb8aa": "calibration",
+    "dsh-component/b6a1f35f16ced70d298daf0980bae074202569a51f3eb6ecc4292b845b53b893": "test",
+    "dsh-component/588890ddedd7b91e2fc8850951061be311432c8d9407ca62d34d5bdc2e30d383": "test",
+    "dsh-component/14972fc1f7342af9feef9f869ff93ccc14a3711c1eb691c26021cbfb8f6bc20f": "test",
+    "dsh-component/1bd3588d5ad02fb5a8b6e45e04b6f2bb6dd131895d5f8f0a023028b0a81a2630": "test"
+  },
+  "audit": {
+    "status": "ok",
+    "ok": true,
+    "records": 37,
+    "partition_counts": {
+      "train": 22,
+      "development": 4,
+      "calibration": 7,
+      "test": 4
+    },
+    "errors": [],
+    "warnings": [],
+    "overlaps": [],
+    "leakage_scope": "Eight explicit state-root reserved-field categories; no text-value matches and no blanket rejection of nested business labels/outcomes/results",
+    "token_budget": "not_checked"
+  },
+  "missing_label_coverage": {
+    "development": {
+      "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+        "fault_analysis",
+        "inspection",
+        "investigation",
+        "schedule",
+        "threat_analysis"
+      ]
+    },
+    "calibration": {
+      "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+        "inspection",
+        "investigation",
+        "threat_analysis"
+      ]
+    },
+    "test": {
+      "question/a5661e382d578b47f6d8b438ed95e5bdbdce99622dea46e8b33a15874c87414a": [
+        "fault_analysis",
+        "inspection",
+        "investigation",
+        "schedule",
+        "threat_analysis"
+      ]
+    }
+  }
+}
