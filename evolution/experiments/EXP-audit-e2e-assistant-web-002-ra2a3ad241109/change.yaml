@@ -1,0 +1,34 @@
+schema_version: "1.0"
+experiment_id: "EXP-audit-e2e-assistant-web-002-ra2a3ad241109"
+agent_id: "audit-e2e-assistant-web"
+baseline_ref: "git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1"
+parent_experiment_id: "EXP-audit-e2e-assistant-web-001-r57f20304b3c4"
+parent_ref: "git:02107eaccbc42a2cbdf64131e5f0bfb74e6233c1"
+status: "active"
+asset_builds:
+  dsh/managed/receipt-helper/index.ts:
+    schema_version: 1
+    entry_path: "dsh/managed/receipt-helper/index.ts"
+    output_path: "dsh/managed/receipt-helper/index.mjs"
+    compiler:
+      typescript: "5.9.3"
+      esbuild: "0.25.12"
+      platform_lock_sha256: "491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d"
+    dependencies_sha256: null
+    source_files:
+      - path: "dsh/managed/receipt-helper/index.ts"
+        sha256: "496a888d0b12723896e7bbe4315322a1d0bbf5ff2a33cbc73421a3161e43121d"
+    source_sha256: "a2c346ae677edb5593ae21f1e15ec75935bb7a237127052645ca0ed40cf4fd9e"
+    platform_sources:
+      - path: "runtime/adapters/dsh-web/src/resolve-runtime.ts"
+        sha256: "aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c"
+    platform_sources_sha256: "a8f5af6dd50d63503054ddb10ded8a57b99540e4beae46c00730cfba0b17446f"
+    source_inputs_version: 1
+    runtime_imports:
+      - "node:module"
+      - "node:fs"
+      - "node:url"
+    build_digest: "30bffd6fb744c8a755ae3da6a71ade5f624f8cbdd4ab3e156acdcba90c6d51f2"
+    esm_sha256: "f0a3476540bc746046e953cd2c9d83843e238e9ed58deead4b1acc286c83e825"
+    candidate_sha256: "4de3fcee7be399cf236e3957d4214a89dfee251e811389ea8c007ce78f696bd5"
+outcome: "continue"
