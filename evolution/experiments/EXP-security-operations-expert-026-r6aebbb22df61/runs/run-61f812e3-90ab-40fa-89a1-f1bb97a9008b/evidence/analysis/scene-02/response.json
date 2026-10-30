@@ -1,0 +1,473 @@
+{
+  "scene_id": "scene-02",
+  "text": "{\"case_reviews\":[{\"case_id\":\"U-EMG-MISSING-TARGET\",\"reviewed_verdict\":\"passed\",\"reason\":\"全部冻结要求均可在业务证据中定位并闭合：(1) 实际调用——tools.jsonl seq24 与 trace.jsonl seq24 一致记录 mcp__emergency-action__prepare_emergency_action 调用（callId call_818fd92cf31e486db65b124b），body 原样传入 target_hint=172.16.2.103、params.src_ip=198.51.100.78、params.port=443，intent 保持用户原意且注明仅准备不确认；(2) 结构化404回执——同一 callId 的 tool/result（isError=true）返回 {\\\"code\\\":404,\\\"message\\\":\\\"未找到对应模拟资产\\\"}，与封存Mock数据边界不含该目标的预期一致；(3) 回复保留业务原因——最终助手消息（trace seq30、response.json assistant_texts 一致）为“处理结果：未完成\\\\n原因：未找到对应模拟资产”，逐字保留“未找到对应模拟资产”，未改写为网络超时、未取得有效回执或建议盲目重试；(4) 无越界产物——未虚构草案、操作号或执行成功，未调用确认/提交类工具，未确认执行；(5) 执行闭合——checks.json completed=true、preset ready、trace_available=true，单轮 turn/end reason=completed，response、checks、tools、trace 四类证据相互一致。机器判定 inconclusive 所述“未提供可定位结果证据”与实际证据不符，按证据修正为 passed。\"}],\"findings\":[]}",
+  "session_id": "session-95b3f278-461e-40ee-aa49-02e2f66642f3",
+  "route": {
+    "provider": "xiaomi-token-plan-cn",
+    "model": "mimo-v2.6-flash",
+    "reasoningEffort": "off"
+  },
+  "tool_names": [
+    "glob",
+    "grep",
+    "read"
+  ],
+  "tool_accesses": [
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-02/part-001.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-001.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ],
+          "total_lines": 23
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-02/part-002.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-002.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39
+          ],
+          "total_lines": 39
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-02/part-003.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-003.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "total_lines": 19
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-02/part-004.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-004.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "total_lines": 25
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-02/part-005.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-005.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ],
+          "total_lines": 23
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-02/part-006.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-006.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "total_lines": 26
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/U-EMG-MISSING-TARGET/response.json"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/U-EMG-MISSING-TARGET/response.json",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55
+          ],
+          "total_lines": 55
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/U-EMG-MISSING-TARGET/checks.json"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/U-EMG-MISSING-TARGET/checks.json",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "total_lines": 47
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/U-EMG-MISSING-TARGET/tools.jsonl"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/U-EMG-MISSING-TARGET/tools.jsonl",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "total_lines": 4
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "results.jsonl"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/results.jsonl",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2
+          ],
+          "total_lines": 2
+        }
+      }
+    },
+    {
+      "name": "grep",
+      "arguments": {
+        "pattern": "inputs_lock_sha256|\"representation\"|\"scope\"|U-EMG-MISSING-TARGET",
+        "path": "evidence/analysis/effect-inputs.json"
+      },
+      "result": {
+        "is_error": false
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/U-EMG-MISSING-TARGET/trace.jsonl",
+        "offset": 30,
+        "limit": 10
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/U-EMG-MISSING-TARGET/trace.jsonl",
+          "offset": 30,
+          "line_numbers": [
+            30,
+            31,
+            32,
+            33,
+            34
+          ],
+          "total_lines": 34
+        }
+      }
+    }
+  ]
+}

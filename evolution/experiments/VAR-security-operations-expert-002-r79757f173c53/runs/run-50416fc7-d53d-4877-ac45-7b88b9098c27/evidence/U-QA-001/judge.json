@@ -1,0 +1,47 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答未检索到 SEC-KB-078 的真实知识库内容，也未提供任何可核对的文档或分块来源；其给出的 SOAR 剧本说明已自行标注为行业通用概念而非该条目原文，因此第一项要求明确未满足。第二项要求（检索不到时明确说明、不冒充内部知识）确已满足，但两项要求为并列关系，任一未满足即判 failed。",
+    "requirements": [
+      {
+        "requirement": "检索并依据 SEC-KB-078 的真实知识库内容回答，给出可核对的文档或分块来源",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "检索不到时明确说明，不凭常识冒充内部知识",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-046d6994-8c34-41c2-afa3-d0be2eac7db6",
+    "workspace_id": "bbd4bcb4-50be-4d45-9bbf-977181e3a4f2",
+    "session_title": "评审 U-QA-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

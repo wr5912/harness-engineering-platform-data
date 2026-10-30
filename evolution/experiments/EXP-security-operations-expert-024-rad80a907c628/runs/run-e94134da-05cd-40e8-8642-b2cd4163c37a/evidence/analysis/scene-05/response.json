@@ -1,0 +1,225 @@
+{
+  "scene_id": "scene-05",
+  "text": "{\"case_reviews\":[{\"case_id\":\"U-QA-001\",\"reviewed_verdict\":\"passed\",\"reason\":\"证据链在业务效果层面闭合：输入与预期一致（effect-inputs.json 中 evaluation_cases 与 cases 的 inputs/expected_behavior 完全匹配）；trace.jsonl 与 tools.jsonl 证实单轮会话实际执行了两次真实检索尝试——先调用 skill 加载 security-investigation（回执 is_error=false，内容明确写明“当前没有知识库检索服务”），再调用 list_mcp_resources 查询 sec-ops 服务器（回执 is_error=false，resources 为空数组）；response.json 的最终回答明确声明无法确认 SEC-KB-078 的具体内容，区分事实/推断/证据缺口，未编造 SOAR 剧本内容、处置步骤或引用不存在的文档分块，并提供未执行的替代取证建议。这完整满足预期中“检索不到时明确说明，不凭常识冒充内部知识”的分支；主分支“给出可核对的文档来源”因数据边界内确无 SEC-KB-078 条目而客观不可达，预期文本本身允许以明确说明检索不到替代，不构成失败。执行证据显示 turn/end reason=completed、无委派、无未闭合的多轮或产物链路，机器判定 passed 与业务证据一致，无需修正。评审 judge 与被测同路由（mimo-v2.6-flash），故本裁决独立基于原始工具回执与回答原文，不依赖自评结论。\"}],\"findings\":[]}",
+  "session_id": "session-668a82a1-cf53-4fda-8a3b-ea24ee550d8e",
+  "route": {
+    "provider": "xiaomi-token-plan-cn",
+    "model": "mimo-v2.6-flash",
+    "reasoningEffort": "off"
+  },
+  "tool_names": [
+    "glob",
+    "grep",
+    "read"
+  ],
+  "tool_accesses": [
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-05/part-001.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-05/part-001.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ],
+          "total_lines": 23
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-05/part-002.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-05/part-002.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38
+          ],
+          "total_lines": 38
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-05/part-003.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-05/part-003.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "total_lines": 20
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-05/part-004.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-05/part-004.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "total_lines": 26
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-05/part-005.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-05/part-005.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21
+          ],
+          "total_lines": 21
+        }
+      }
+    }
+  ]
+}

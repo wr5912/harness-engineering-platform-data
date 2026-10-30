@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-MISSING-TARGET",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：工具调用本身合规：实际调用了 prepare_emergency_action 并原样传入目标 172.16.2.103、源 IP 198.51.100.78 与端口 443，回执为结构化 404“未找到对应模拟资产”，且回答未虚构草案、操作号或执行成功。但被测回答将该 404 目标不存在原因改写为“未取得应急服务的有效回执”并建议“请稍后重试”，未保留“未找到对应模拟资产”或明确等义的目标不存在说明，且包含禁止的盲目重试建议，违反第 4 项要求，故整体不通过。",
+  "evidence_ref": "evidence/U-EMG-MISSING-TARGET"
+}

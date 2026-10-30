@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-MISSING-TARGET",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回复将工具报错改写为“未取得应急服务的有效回执”并建议“请稍后重试”，未保留“未找到对应模拟资产”或明确等义的目标不存在说明，直接违反第4项要求；同一 prepare 调用的回执为 is_error 的“准备请求字段无效”，并非结构化404目标不存在回执，前置条件也未成立。实际传参的工具调用仅存在于 citation_allowed=false 的索引，无法证明第3项要求被原样满足；第1、2项环境边界也无可用证据支持。仅第5项未虚构草案、操作号、执行成功且未确认执行得到满足。",
+  "evidence_ref": "evidence/U-EMG-MISSING-TARGET"
+}

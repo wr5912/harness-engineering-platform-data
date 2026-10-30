@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "当前无法确认 SEC-KB-078 的具体内容，说明如下：\n\n**结论**\n- 本会话未配置知识库检索服务，`SEC-KB-078` 这类知识库条目无法查询，因此我无法给出该 SOAR 剧本的定义、触发条件、处置步骤或适用范围。\n- 我不会猜测或凭印象编造该条目的内容，也不会用文件、网络、策略或巡检工具代替知识库检索。\n\n**已知事实**\n- 本轮可用能力为：威胁研判、故障排查取证、巡检、策略配置草案、应急动作草案、响应规划；均不是知识库查询接口。\n- 你提供的标识 `SEC-KB-078` 目前只是一个待核验的引用，没有可回溯的内容来源。\n\n**建议（尚未执行）**\n- 若你能提供该条目的原文、导出文件或截图，我可以基于材料整理其事实要点、适用范围和缺口。\n- 若该条目对应的是某个具体处置流程，也可以直接描述你的目标（如隔离某主机、封禁某 IP、新增某策略），我按对应路由处理。\n- 如需在平台侧补充知识库检索能力，需要回到宿主侧配置后再在新 Session 中复核，本次无法代为完成。"
+  ],
+  "session_id": "session-60abe50d-6b1a-4906-84a6-84a2039856b6",
+  "turns": [
+    {
+      "assistant_text": "当前无法确认 SEC-KB-078 的具体内容，说明如下：\n\n**结论**\n- 本会话未配置知识库检索服务，`SEC-KB-078` 这类知识库条目无法查询，因此我无法给出该 SOAR 剧本的定义、触发条件、处置步骤或适用范围。\n- 我不会猜测或凭印象编造该条目的内容，也不会用文件、网络、策略或巡检工具代替知识库检索。\n\n**已知事实**\n- 本轮可用能力为：威胁研判、故障排查取证、巡检、策略配置草案、应急动作草案、响应规划；均不是知识库查询接口。\n- 你提供的标识 `SEC-KB-078` 目前只是一个待核验的引用，没有可回溯的内容来源。\n\n**建议（尚未执行）**\n- 若你能提供该条目的原文、导出文件或截图，我可以基于材料整理其事实要点、适用范围和缺口。\n- 若该条目对应的是某个具体处置流程，也可以直接描述你的目标（如隔离某主机、封禁某 IP、新增某策略），我按对应路由处理。\n- 如需在平台侧补充知识库检索能力，需要回到宿主侧配置后再在新 Session 中复核，本次无法代为完成。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ffcd54d9-f634-4bf8-ae79-24367c1e70e9"
+    }
+  ]
+}

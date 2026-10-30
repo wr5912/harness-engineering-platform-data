@@ -1,0 +1,148 @@
+{
+  "agent_id": "security-operations-expert",
+  "manifest_sha256": "a71411a007f7825f69b1ae587351d4c0132b48531a51c8a0579fc7011c279ae5",
+  "business_model_revision": "bb336f1a83476af76c5755eddf94ebd3d8cd3064041a963f9cf00c5834675562",
+  "allowed": [
+    {
+      "provider": "deepseek-official",
+      "model": "deepseek-flash"
+    },
+    {
+      "provider": "deepseek-official",
+      "model": "deepseek-v4-pro"
+    },
+    {
+      "provider": "local-qwen",
+      "model": "Qwen3.8-27B"
+    },
+    {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.5"
+    },
+    {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.5-pro"
+    },
+    {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-pro"
+    }
+  ],
+  "default": {
+    "provider": "xiaomi-token-plan-cn",
+    "model": "mimo-v2.6-flash",
+    "reasoningEffort": "off"
+  },
+  "patch": [
+    {
+      "id": "agent-default-model",
+      "config": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      }
+    },
+    {
+      "id": "llm-deepseek",
+      "config": {
+        "apiKeyEnv": "DEEPSEEK_API_KEY",
+        "thinking": "enabled",
+        "reasoningEffort": "max",
+        "maxTokens": 256000,
+        "defaultContextWindow": 1000000,
+        "models": [
+          {
+            "id": "deepseek-flash",
+            "name": "DeepSeek-V4.1-Flash",
+            "contextWindow": 1000000,
+            "systemPromptUpdate": "in-history",
+            "toolUpdate": "addition-only",
+            "inputModalities": [
+              "text",
+              "image"
+            ]
+          },
+          {
+            "id": "deepseek-v4-pro",
+            "name": "DeepSeek-V4-Pro",
+            "description": "Stronger agentic coding, knowledge, and difficult reasoning; suited to complex or quality-critical tasks at higher cost.",
+            "contextWindow": 1000000,
+            "inputModalities": [
+              "text"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "llm-deepseek-account",
+      "disabled": true
+    },
+    {
+      "id": "llm-pi-ai",
+      "config": {
+        "providers": {
+          "local-qwen": {
+            "apiKeyEnv": "LOCAL_LLM_API_KEY",
+            "displayName": "Local Qwen",
+            "api": "openai-completions",
+            "baseURL": "http://172.16.138.233:8000",
+            "compat": {
+              "chatTemplateKwargs": {},
+              "chatTemplateArgs": {}
+            },
+            "reasoning": "off",
+            "defaultContextWindow": 262144,
+            "defaultMaxTokens": 32768,
+            "models": [
+              {
+                "id": "Qwen3.8-27B",
+                "name": "Qwen3.8-27B",
+                "contextWindow": 262144,
+                "input": [
+                  "text"
+                ],
+                "compat": {
+                  "chatTemplateKwargs": {},
+                  "chatTemplateArgs": {}
+                }
+              }
+            ]
+          },
+          "xiaomi-token-plan-cn": {
+            "apiKeyEnv": "XIAOMI_TOKEN_PLAN_CN_API_KEY",
+            "compat": {
+              "chatTemplateKwargs": {},
+              "chatTemplateArgs": {}
+            },
+            "defaultContextWindow": 262144,
+            "defaultMaxTokens": 32768,
+            "models": [
+              {
+                "id": "mimo-v2.5"
+              },
+              {
+                "id": "mimo-v2.5-pro"
+              },
+              {
+                "id": "mimo-v2.6-flash"
+              },
+              {
+                "id": "mimo-v2.6-pro"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "credential_refs": [
+    "DEEPSEEK_API_KEY",
+    "LOCAL_LLM_API_KEY",
+    "XIAOMI_TOKEN_PLAN_CN_API_KEY"
+  ]
+}

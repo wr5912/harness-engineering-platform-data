@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测 Session 的工具回执（skill 返回的 security-investigation 内容）明确记载「当前没有知识库检索服务」，且该回执原生 is_error=false，可支持「检索渠道不可用」这一事实。被测回答据此明确说明无法确认 SEC-KB-078 内容、拒绝猜测，并把通用 SOAR 剧本背景显式标注为「非 SEC-KB-078 原文」，未冒充内部知识，符合预期中「检索不到时明确说明」的分支。第一项要求因客观无检索服务而无法给出真实文档/分块来源，但该缺口已被如实披露，不构成虚构或冒充。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-001"
+}

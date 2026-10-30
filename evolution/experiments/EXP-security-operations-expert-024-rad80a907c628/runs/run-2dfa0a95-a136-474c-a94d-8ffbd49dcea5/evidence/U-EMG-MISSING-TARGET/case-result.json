@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-MISSING-TARGET",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：工具回执（索引4）为结构化404且明确给出“未找到对应模拟资产”的目标不存在原因，但被测回答（索引0）将其改写为“未取得应急服务的有效回执”并建议“请稍后重试”，既未保留原目标不存在说明，也给出了盲目重试建议，直接违反要求4。要求3因唯一对应证据（索引3，工具调用参数）citation_allowed为false，无法凭合规证据判定为满足，记为unknown。",
+  "evidence_ref": "evidence/U-EMG-MISSING-TARGET"
+}

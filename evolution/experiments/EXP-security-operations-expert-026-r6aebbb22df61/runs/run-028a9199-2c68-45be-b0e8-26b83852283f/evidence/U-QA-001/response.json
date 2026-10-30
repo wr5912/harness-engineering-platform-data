@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "**结论：无法确认 SEC-KB-078 的具体内容。** 本会话未配置知识库检索能力，已配置的 MCP 服务器（sec-ops 等）也未暴露任何知识库资源，因此我无法调取该编号对应文章的正文、版本或发布日期，也无法判断其是否为最新版本。\n\n**一般性说明（通用行业知识，非 SEC-KB-078 原文，仅供理解该术语）：**\n\nSOAR（Security Orchestration, Automation and Response，安全编排、自动化与响应）剧本（Playbook）通常指：\n\n- 一套针对特定安全场景（如恶意 IP 封禁、终端隔离、钓鱼邮件处置、告警 enrichment）的**结构化响应流程定义**，把处置步骤、判断条件、所需工具和人工审批点固化下来。\n- 核心要素一般包括：触发条件（告警/事件/定时）、输入参数（IP、端口、账号、事件 ID 等）、步骤编排（查询取证 → 判断分支 → 执行动作 → 结果回报）、审批与回滚机制。\n- 价值在于标准化处置动作、缩短响应时间，并把高风险动作（如封禁、隔离）留在人工确认环节。\n\n以上是对\"SOAR 剧本\"这一概念的通用解释；**SEC-KB-078 这一编号具体指哪份文档、其定义的场景和动作，我无法从现有材料确认**。\n\n**缺口与未执行建议（均尚未执行）：**\n\n- 若你能提供 SEC-KB-078 的原文、导出文件或粘贴关键段落，我可以基于实际内容整理其适用范围、触发条件与动作清单。\n- 建议在贵方知识库平台中核对该文章的发布日期/版本号、适用产品范围与权威性后再作为执行依据。\n- 若该编号对应的是某个具体应急处置或策略变更需求，可直接说明目标与参数，我按对应的应急指令或策略配置流程处理。"
+  ],
+  "session_id": "session-c48f33eb-085e-40a1-86c6-d87e6cd506da",
+  "turns": [
+    {
+      "assistant_text": "**结论：无法确认 SEC-KB-078 的具体内容。** 本会话未配置知识库检索能力，已配置的 MCP 服务器（sec-ops 等）也未暴露任何知识库资源，因此我无法调取该编号对应文章的正文、版本或发布日期，也无法判断其是否为最新版本。\n\n**一般性说明（通用行业知识，非 SEC-KB-078 原文，仅供理解该术语）：**\n\nSOAR（Security Orchestration, Automation and Response，安全编排、自动化与响应）剧本（Playbook）通常指：\n\n- 一套针对特定安全场景（如恶意 IP 封禁、终端隔离、钓鱼邮件处置、告警 enrichment）的**结构化响应流程定义**，把处置步骤、判断条件、所需工具和人工审批点固化下来。\n- 核心要素一般包括：触发条件（告警/事件/定时）、输入参数（IP、端口、账号、事件 ID 等）、步骤编排（查询取证 → 判断分支 → 执行动作 → 结果回报）、审批与回滚机制。\n- 价值在于标准化处置动作、缩短响应时间，并把高风险动作（如封禁、隔离）留在人工确认环节。\n\n以上是对\"SOAR 剧本\"这一概念的通用解释；**SEC-KB-078 这一编号具体指哪份文档、其定义的场景和动作，我无法从现有材料确认**。\n\n**缺口与未执行建议（均尚未执行）：**\n\n- 若你能提供 SEC-KB-078 的原文、导出文件或粘贴关键段落，我可以基于实际内容整理其适用范围、触发条件与动作清单。\n- 建议在贵方知识库平台中核对该文章的发布日期/版本号、适用产品范围与权威性后再作为执行依据。\n- 若该编号对应的是某个具体应急处置或策略变更需求，可直接说明目标与参数，我按对应的应急指令或策略配置流程处理。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e8d2ca52-9232-4ff1-8970-6274d67eb911"
+    }
+  ]
+}

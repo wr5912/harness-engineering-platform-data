@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "mode": "mock",
+  "connections": [
+    {
+      "server_id": "sec-ops",
+      "original_url": "http://172.16.138.232:50500/mcp/security-operations-expert",
+      "url": "http://host.docker.internal:53001/mcp/sec-ops/",
+      "enabled": true
+    },
+    {
+      "server_id": "inspection",
+      "original_url": "http://172.16.138.232:18150/mcp/inspection",
+      "url": "http://host.docker.internal:53001/mcp/inspection/",
+      "enabled": true
+    },
+    {
+      "server_id": "policy-configuration",
+      "original_url": "http://172.16.138.232:50500/mcp/group",
+      "url": "http://host.docker.internal:53001/mcp/policy-configuration/",
+      "enabled": true
+    },
+    {
+      "server_id": "emergency-action",
+      "original_url": "http://172.16.138.232:50500/mcp/group-3",
+      "url": "http://host.docker.internal:53001/mcp/emergency-action/",
+      "enabled": true
+    }
+  ]
+}

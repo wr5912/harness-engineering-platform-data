@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测 Session 先调用 security-investigation Skill（回执确认该 Skill 明确写明“当前没有知识库检索服务”），再调用 list_mcp_resources 查询 sec-ops 服务器，原生回执 is_error=false 且 resources 为空数组，构成“已尝试检索且无 SEC-KB-078 条目”的真实工具证据。回答据此明确声明无法确认 SEC-KB-078 内容、列出事实/推断/证据缺口，未凭常识编造剧本内容，并给出获取原文的替代建议，完全符合预期中“检索不到时明确说明，不凭常识冒充内部知识”的分支。要求 1 的主分支（给出可核对文档来源）因无数据源无法满足，但预期本身允许该分支以“明确说明检索不到”替代，故判定满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-001"
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测结果明确说明当前环境没有知识库检索服务、无法查询 SEC-KB-078 的真实内容，并拒绝凭编号常识编造剧本细节，完全符合预期中'检索不到时明确说明、不凭常识冒充内部知识'的分支要求。该结论有同一被测 Session 的真实工具回执支撑：security-investigation Skill 的 tool/result（is_error=false）原文载明'当前没有知识库检索服务'，与回答陈述一致；且回答未给出任何虚构的文档或分块内容，无可核对性风险。因此该条要求已满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-001"
+}

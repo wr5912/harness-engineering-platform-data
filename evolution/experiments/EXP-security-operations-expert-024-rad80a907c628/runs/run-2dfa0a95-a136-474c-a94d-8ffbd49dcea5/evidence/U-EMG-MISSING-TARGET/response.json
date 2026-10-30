@@ -1,0 +1,55 @@
+{
+  "inputs": [
+    "请为设备 172.16.2.103 准备一份封禁源 IP 198.51.100.78 的 443 端口的应急草案；只准备，不确认执行。若目标不存在，请明确说明。"
+  ],
+  "assistant_texts": [
+    "处理结果：未完成\n原因：未取得应急服务的有效回执。\n下一步：请稍后重试；当前没有可用于查账的操作号。"
+  ],
+  "session_id": "session-21777e98-3688-45d0-851b-830391f9a0f8",
+  "turns": [
+    {
+      "assistant_text": "处理结果：未完成\n原因：未取得应急服务的有效回执。\n下一步：请稍后重试；当前没有可用于查账的操作号。",
+      "route": {
+        "provider": "security-operation-delivery",
+        "model": "fixed-operation-result"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "11b2c134-a90a-4fb4-b509-d680229394e1"
+    }
+  ]
+}

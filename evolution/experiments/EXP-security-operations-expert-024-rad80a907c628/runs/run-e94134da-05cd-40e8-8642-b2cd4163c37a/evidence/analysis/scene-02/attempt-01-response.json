@@ -1,0 +1,265 @@
+{
+  "scene_id": "scene-02",
+  "text": "{\"case_reviews\":[{\"case_id\":\"U-EMG-MISSING-TARGET\",\"reviewed_verdict\":\"failed\",\"reason\":\"执行证据完整闭合（单轮、无委派、无待完成产物），可直接复核。trace.jsonl 显示：step1 加载 emergency-action Skill；step2 实际调用了 mcp__emergency-action__prepare_emergency_action，target_hint='172.16.2.103'、params.src_ip='198.51.100.78'、params.port=443 均按原话出现，但 body 中 request_id 字段被写成未求值的 JS 表达式（\\\"req-erg-17216 2103-...\\\".replace(\\\" \\\",\\\"\\\")），导致整个 body 非法，工具回执为 is_error=true 的『准备请求字段无效』，而非预期的结构化404及目标不存在原因——第2项要求的原样传参未形成有效请求，第3项的前置条件因该畸形调用从未成立。step3 经 fixed-operation-result 适配器输出的最终业务回复为『处理结果：未完成/原因：未取得应急服务的有效回执/下一步：请稍后重试』，恰好落入预期明确禁止的改写（未取得有效回执）与盲目重试建议，且未保留『未找到对应模拟资产』或任何目标不存在说明。仅第5项（未虚构草案、操作号、执行成功，未确认执行）得到满足。核心分支要求被违反，机器判定 failed 成立，予以确认。\",\"reviewed_verdict_note\":\"\"}],\"findings\":[]}",
+  "session_id": "session-0c0cb12a-713b-4fd7-a2cd-48f7ceb834c8",
+  "route": {
+    "provider": "xiaomi-token-plan-cn",
+    "model": "mimo-v2.6-flash",
+    "reasoningEffort": "off"
+  },
+  "tool_names": [
+    "glob",
+    "grep",
+    "read"
+  ],
+  "tool_accesses": [
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-001.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-001.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23
+          ],
+          "total_lines": 23
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-002.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-002.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39
+          ],
+          "total_lines": 39
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-003.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-003.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "total_lines": 19
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-004.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-004.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "total_lines": 25
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-005.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-005.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27
+          ],
+          "total_lines": 27
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-006.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-02/part-006.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19
+          ],
+          "total_lines": 19
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "**结论：无法确认 SEC-KB-078 的具体内容。** 当前会话没有配置知识库检索服务，我无法读取编号为 `SEC-KB-078` 的条目，也不会猜测其内容或假设它与其他编号的知识库文章一致。\n\n**一般性说明（非 SEC-KB-078 内容）：**\n- SOAR 剧本（Playbook）是编排与自动化响应流程的定义，通常把告警分诊、证据富化、研判判断、处置动作（隔离/封禁等）和升级通知按条件分支串联起来执行。\n- 这里的回答只是行业通用概念，不代表 `SEC-KB-078` 的权威定义、适用范围或版本。\n\n**缺口与建议（均未执行）：**\n- 请提供该知识库条目的原文、导出文件或截图，我可以基于实际材料整理其事实要点、适用范围和待核验项。\n- 如果该条目涉及具体的响应流程设计，也可以在提供原文后按需评估影响范围（`playbook-impact-assessment` 路线，仅评估、不执行动作）。"
+  ],
+  "session_id": "session-ba43bd4b-3e01-466e-b65e-fc114f076e0f",
+  "turns": [
+    {
+      "assistant_text": "**结论：无法确认 SEC-KB-078 的具体内容。** 当前会话没有配置知识库检索服务，我无法读取编号为 `SEC-KB-078` 的条目，也不会猜测其内容或假设它与其他编号的知识库文章一致。\n\n**一般性说明（非 SEC-KB-078 内容）：**\n- SOAR 剧本（Playbook）是编排与自动化响应流程的定义，通常把告警分诊、证据富化、研判判断、处置动作（隔离/封禁等）和升级通知按条件分支串联起来执行。\n- 这里的回答只是行业通用概念，不代表 `SEC-KB-078` 的权威定义、适用范围或版本。\n\n**缺口与建议（均未执行）：**\n- 请提供该知识库条目的原文、导出文件或截图，我可以基于实际材料整理其事实要点、适用范围和待核验项。\n- 如果该条目涉及具体的响应流程设计，也可以在提供原文后按需评估影响范围（`playbook-impact-assessment` 路线，仅评估、不执行动作）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "06d91a0c-79ef-4ff7-b002-c1ce5054bc2a"
+    }
+  ]
+}
