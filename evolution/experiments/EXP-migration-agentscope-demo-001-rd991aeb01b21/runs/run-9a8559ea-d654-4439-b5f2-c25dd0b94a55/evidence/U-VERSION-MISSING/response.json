@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "帮我看看 2.0 是不是比较新的版本？"
+  ],
+  "assistant_texts": [
+    "你只提供了一个版本号 **2.0**，无法单独判断它是否\"更新\"——版本新旧必须与另一个版本比较。\n\n请补充要和它比较的另一个版本号（例如 `1.9`、`2.1` 等），我会调用 `select_newer_version` 工具进行实际比较后告诉你哪个更新。"
+  ],
+  "session_id": "session-14c0440d-bd2f-429d-8f48-a5601a569494",
+  "turns": [
+    {
+      "assistant_text": "你只提供了一个版本号 **2.0**，无法单独判断它是否\"更新\"——版本新旧必须与另一个版本比较。\n\n请补充要和它比较的另一个版本号（例如 `1.9`、`2.1` 等），我会调用 `select_newer_version` 工具进行实际比较后告诉你哪个更新。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "select_newer_version",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "6e929b36-a92e-4832-8bac-1bbb0e7e57b0"
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "generated": true,
+  "operation_id": "migration-3122ba44-9292-4cc8-a913-05373f60093b",
+  "agent_id": "migration-agentscope-demo",
+  "experiment_id": "EXP-migration-agentscope-demo-001-rd991aeb01b21",
+  "created_at": "2026-10-30T06:57:55.529Z",
+  "source": {
+    "source_id": "source-6230e0df-d7df-452f-8e39-08de81748365",
+    "fingerprint": "6e5cadfa06ec063c896495cdb7ce1a8f63ff01054ab79671b33400ba318d8096",
+    "provenance": {
+      "kind": "local",
+      "path": "/home/admin/work/harness-engineering-platform/platform/plugin/test/fixtures/agent-migration/agentscope",
+      "commit": "adee516f355712d7ed0b45d3aa74d9469786f16d",
+      "commit_scope": "enclosing-repository-reference",
+      "content_identity": "working-tree-snapshot-fingerprint"
+    },
+    "frameworks": [
+      "AgentScope"
+    ],
+    "versions": {
+      "pyproject.toml": {
+        "sha256": "9fa8bf69cea904fffa74eabba0b819d0c2767564e99c39691d6f24c5d3329c8a",
+        "note": "按原文固定；准备依赖前须确定目标环境与精确锁定结果"
+      }
+    }
+  },
+  "parent": null,
+  "selected": [
+    {
+      "path": "harness.yaml",
+      "bytes": 642,
+      "sha256": "deed0d9c34f244ca8dbc4a3bd7ac8c031c2c9a5b3b6f4be1ddcbfe1a67080ff1",
+      "mode": 420
+    },
+    {
+      "path": "dsh/workspace/AGENTS.md",
+      "bytes": 1181,
+      "sha256": "331f4a642d5b8001bb226698715e846abc8048f7c4c24dcd28158f822f570d47",
+      "mode": 420
+    },
+    {
+      "path": "dsh/managed/python/version_tool.py",
+      "bytes": 216,
+      "sha256": "07f00a986b4146b0b162cab95ebbbf925d9ccc9adb87c8eae30a54929bde4e81",
+      "mode": 420,
+      "source_path": "version_tool.py",
+      "source_sha256": "07f00a986b4146b0b162cab95ebbbf925d9ccc9adb87c8eae30a54929bde4e81"
+    },
+    {
+      "path": "dsh/managed/python/version_tool_cli.py",
+      "bytes": 1363,
+      "sha256": "3cdd0bd972625b80bfe8dee98301131c42c45582718aa20a2945e4e062307e71",
+      "mode": 420
+    },
+    {
+      "path": "dsh/managed/python/requirements.txt",
+      "bytes": 16,
+      "sha256": "badbb87d9903b420ae418f569f4801966b227c2c720500d200ad309f1820f652",
+      "mode": 420
+    },
+    {
+      "path": "dsh/managed/tools.ts",
+      "bytes": 4144,
+      "sha256": "88450d49fd71510c2c5c21bc60c8f234cd92df4c446bde9e29ae683f4dbf72d7",
+      "mode": 420
+    },
+    {
+      "path": "dsh/managed/migration-agentscope-demo.patch.yml",
+      "bytes": 699,
+      "sha256": "25a152c6f5b8b29e8907044517e31f728a993f5519d1b501fa43d39383fa31cf",
+      "mode": 420
+    },
+    {
+      "path": "dsh/presets/migration-agentscope-demo/preset.yml",
+      "bytes": 457,
+      "sha256": "8c41800b37e1703ee6cd759495b4b0e27cf7be715f6fc02aa6f0609ff15f8c36",
+      "mode": 420
+    },
+    {
+      "path": "dsh/presets/migration-agentscope-demo/agent.cordis.yml",
+      "bytes": 512,
+      "sha256": "cdde2386b6b72620aa61bc300249e0d57110cd13eab80661eb995dad018f8a91",
+      "mode": 420
+    }
+  ],
+  "candidate_sha256": "0464cd31acb37faf2ef2a6455b432ec3d889c2a09cec0d85f288ec73dbbe3a5d",
+  "asset_list_sha256": "6f0d7a7bd27243fdef6b4881ff1aa58570ce43ca46349ea046745863989e5ed5",
+  "mapping": [
+    {
+      "source": "agent.py: Agent(name=\"version-advisor\", system_prompt=必须调用 select_newer_version 比较两个版本/缺少版本先补问/输入无效说明工具错误不猜测, toolkit=Toolkit(tools=[select_newer_version]))",
+      "target": "dsh/workspace/AGENTS.md + dsh/presets/migration-agentscope-demo（DSH 原生 Agent 工具循环 + ctx.tools 注册的 select_newer_version）",
+      "status": "converted",
+      "note": "AgentScope 的 Agent+Toolkit 工具循环转换为原生 DSH Agent（Preset persona/agent-instructions + 原生工具）；系统提示词行为约束完整保留在 AGENTS.md 单一可编辑来源"
+    },
+    {
+      "source": "model.json: provider=xiaomi-token-plan-cn, model=mimo-v2.6-flash, reasoningEffort=off",
+      "target": "harness.yaml model_bindings.main",
+      "status": "native",
+      "note": "主模型绑定与来源一致，使用平台原生模型目录连接，不改管理助手模型或全局业务默认"
+    },
+    {
+      "source": "version_tool.py: select_newer_version(left, right) -> {left, right, newer}",
+      "target": "dsh/managed/python/version_tool.py（原样保留）+ dsh/managed/tools.ts 的 select_newer_version JSON 子进程桥接（编译 dsh/managed/tools.mjs）",
+      "status": "converted",
+      "note": "保留原独立 Python 函数及结果/失败语义；TS 原生工具含 output.schema/render 与 async execute，实际调用 python3 子进程（JSON stdin/stdout），处理非零退出、错误与 AbortSignal 取消，不复制宿主 venv"
+    },
+    {
+      "source": "pyproject.toml: dependencies 包含 packaging==25.0",
+      "target": "dsh/managed/python/requirements.txt（锁定 packaging==25.0），经 assets/dependencies/prepare 按当前标准镜像准备",
+      "status": "converted",
+      "note": "version_tool.py 的真实依赖，锁定精确版本，由平台依赖准备入口安装，不执行来源安装 Hook"
+    },
+    {
+      "source": "pyproject.toml: dependencies 包含 agentscope==2.0.11",
+      "target": "无（AgentScope 运行时由 DSH 原生 Agent/工具循环/模型绑定替代）",
+      "status": "omitted",
+      "note": "不装入 agentscope 框架整体运行时，由 DSH 替代；样例实际使用的 Agent、Toolkit 单工具行为已由 DSH 原生实现替代，其余框架能力列入 uncovered"
+    },
+    {
+      "source": "pyproject.toml: 项目打包元数据 name/version/requires-python",
+      "target": "无（不参与目标运行）",
+      "status": "omitted",
+      "note": "仅项目打包元数据，无业务行为；目标依赖声明只保留锁定的 packaging==25.0"
+    }
+  ],
+  "uncovered": [
+    "AgentScope 框架运行时能力（消息内存、流式输出、Hook/中间件、多角色编排）未迁移：固定样例仅使用单 Agent + Toolkit 单工具行为，已由 DSH 原生 Agent 工具循环替代，其余框架能力保留待补齐",
+    "与原 AgentScope 框架运行结果的完整等效对比未覆盖：本次不执行原 AgentScope 运行时（不装入 agentscope==2.0.11、不执行来源安装 Hook），不声称完整等效"
+  ],
+  "evaluation_case_ids": [
+    "U-VERSION-COMPARE",
+    "U-VERSION-INVALID",
+    "U-VERSION-MISSING"
+  ],
+  "validation": {
+    "valid": true,
+    "scope": "static-loadable-assets",
+    "runtime_verified": false,
+    "business_verified": false
+  },
+  "note": "来源和映射为此次生成的固定回执；业务等效性须由实际 DSH 行为与评测证据证明。"
+}

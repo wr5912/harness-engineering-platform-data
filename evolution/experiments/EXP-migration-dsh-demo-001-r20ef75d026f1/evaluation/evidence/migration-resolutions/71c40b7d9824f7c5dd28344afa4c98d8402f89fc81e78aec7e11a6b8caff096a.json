@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "operation_id": "migration-0002e47d-06cb-4f4a-8695-9cde6227642b",
+  "experiment_id": "EXP-migration-dsh-demo-001-r20ef75d026f1",
+  "migration_sha256": "a5cef8f5e58af8cb67e0b55603de02731a2ca7a9cd368367af80dfc516295890",
+  "candidate_sha256": "52f43301ca5780aee0d3e4f58957639aec7b4bc8a251c875c8618fc5c787d3d9",
+  "resolutions": [
+    {
+      "mapping_index": 6,
+      "target": "dsh/managed/migration-dsh-demo.patch.yml 主 Preset plugins 引用 /opt/dsh-managed/tools.mjs（构建产物 dsh/managed/tools.mjs）",
+      "notes": "已用通用 assets/build-preview/build 从入口 dsh/managed/tools.ts 生成入口同名产物 dsh/managed/tools.mjs（esm_sha256 61c0ba04518dedf6d5b786e2989e25873890f1c9ccd671bd5c37e93f708c7c6a），并经 edit/preview/apply 在主 Preset plugins 补齐 /opt/dsh-managed/tools.mjs 引用；未引用源机器绝对源码，quote 参数校验与结果语义保持来源 tools.ts。",
+      "case_ids": [
+        "U-QUOTE-MISSING",
+        "U-QUOTE-NORMAL"
+      ]
+    }
+  ],
+  "created_at": "2026-10-30T06:36:13.146Z"
+}

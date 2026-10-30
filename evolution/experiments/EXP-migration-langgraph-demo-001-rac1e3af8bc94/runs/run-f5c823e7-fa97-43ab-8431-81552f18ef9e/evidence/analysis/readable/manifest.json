@@ -1,0 +1,555 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "inputs.lock.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 8671,
+          "sha256": "092f4bbdd6dfdc9153012fbe3d93491837b874bdfc5dfc55ccee2c6fccb62f0c"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 3,
+          "bytes": 2517,
+          "sha256": "04cd31e9aa0d62809bd3c3afea346b0924dd530a3dec31d551fc3b51c69ccc43"
+        },
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2590774,
+          "sha256": "4bb17bad8128b458206643b01c1979fef43d8de24228d8e979f3b5614477099a"
+        },
+        {
+          "source": "evidence/U-GRAPH-BULK/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2534,
+          "sha256": "82f196c9d40dda8b2194aaa731f4bdc5bed1db8369c3c7ee6d9279b272b6b289"
+        },
+        {
+          "source": "evidence/U-GRAPH-BULK/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2081,
+          "sha256": "0c146641da4fc6a05fe00220d6b6b70f0d8a087f4c51345c7cf7628b567a45b3"
+        },
+        {
+          "source": "evidence/U-GRAPH-BULK/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 1850,
+          "sha256": "7b2f1f88deaf920f118dee5a085d443b4e88cd985b49284a481bbff757809450"
+        },
+        {
+          "source": "evidence/U-GRAPH-REGULAR/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2781,
+          "sha256": "d133f0259a415058dca0d845490f867fc109a614921c0d4789fcbae410aa9224"
+        },
+        {
+          "source": "evidence/U-GRAPH-REGULAR/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2050,
+          "sha256": "35c66b01768dabd76cb0ab91bb34bd25fe79f021a66d742b37154572f10a0272"
+        },
+        {
+          "source": "evidence/U-GRAPH-REGULAR/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 1849,
+          "sha256": "33381766dc71e84d877cadac26e200ce37850299c5f6a00bc4600a22c663d633"
+        },
+        {
+          "source": "evidence/U-GRAPH-MISSING/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1528,
+          "sha256": "3f70f5d0d17bd0a810dda715d871410768b7e7546e18616b2f5f34ee63a1c9fb"
+        },
+        {
+          "source": "evidence/U-GRAPH-MISSING/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1619,
+          "sha256": "889fc547eb85542b73477ae41bf1242ad9d7d1fc97323686eb5aa4108ac3ed38"
+        },
+        {
+          "source": "evidence/U-GRAPH-MISSING/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 27,
+          "sha256": "bf7c3ffd66cdb77c8a64156fde8f9987f2a166564d1b3beb9594c917a8ba21ff"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-002.txt",
+          "total_lines": 23,
+          "sha256": "2a7f5edac61b4f032d8726b833e4a0d3f824f1235d330b3409bedab5d485237a"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-003.txt",
+          "total_lines": 23,
+          "sha256": "790d4e46b0b876d28203db47c1d97310c50d5c75b1e42216ec339857e256667e"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-004.txt",
+          "total_lines": 23,
+          "sha256": "735c93fb8063f4275d36645ec3ab81b5557aadc9cb6efca281863452fc420a42"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-005.txt",
+          "total_lines": 23,
+          "sha256": "fda1822e0487481eba886d7f0c4e0ff8286c3b0a561ec45ea5a5ee9a42985e5f"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-006.txt",
+          "total_lines": 23,
+          "sha256": "3da8056d16c9a0464a2c91e897c47e8fc92e72c185ca5b1ac0b457db91779472"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-007.txt",
+          "total_lines": 23,
+          "sha256": "ab56e77f4c299552a80bbfd592c5d2cfa2dbe0d952e77afcd4599cfe4e4462db"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-008.txt",
+          "total_lines": 23,
+          "sha256": "c7769597fdc5ec3afacb238cb401d43dc98c8ae57babcecd66f168ec9239db3b"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-009.txt",
+          "total_lines": 23,
+          "sha256": "20073b86a4482695b60f9436c1fe6ef9f1acf65e772ac5b01444b83a0dcbe771"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-010.txt",
+          "total_lines": 23,
+          "sha256": "231f1099f7c86a28243caeb0df8caa63f556fb1bd40367a12c37016e4aabdbb7"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-011.txt",
+          "total_lines": 23,
+          "sha256": "7eef7ad1e414308a00d21d73f395ef359af30302bf227b191438321b8bdee4ed"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-012.txt",
+          "total_lines": 23,
+          "sha256": "acb2f19f783b1677454c0e2fe480ce1a8c20a359d8b7731563063860750ce148"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-013.txt",
+          "total_lines": 23,
+          "sha256": "06be9daeef1dcd2ae9719e965783b99982f54b17e922d25d4a8f75aa4ebb8bba"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-014.txt",
+          "total_lines": 23,
+          "sha256": "e96e750bace5da2d43af37e480c13a39073b9771ccad76cf229840ccec0f132c"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-015.txt",
+          "total_lines": 23,
+          "sha256": "9772f5a58fc60e3cac46f933cf03c353605e899e6046e2adc3e7931da5a5b3a8"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-016.txt",
+          "total_lines": 23,
+          "sha256": "9fcd5bacb3a47e145a4b9791b44506f036949c27d4a8ee725ae75d939f4dfeec"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-017.txt",
+          "total_lines": 23,
+          "sha256": "8191d218ed541b9da0a867ab3637917671b37f7a7f59946098312e91b9fbc17e"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-018.txt",
+          "total_lines": 23,
+          "sha256": "9e6cb2ef2985816a25fe50d6684a84fab87da51a38a36a07a657b74ebd16470f"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-019.txt",
+          "total_lines": 23,
+          "sha256": "6f6bd33cb3e9fb6fb61dce7702bf2ebe1f54c54c412ae690b7b9e9505f716a74"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-020.txt",
+          "total_lines": 23,
+          "sha256": "ff509ad4b27fcdc11e5e3e0c29da1698e1217a8d8d1020f1483f42821994c8a2"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-021.txt",
+          "total_lines": 23,
+          "sha256": "b406c789c1d052fd542b80c36cffb6f7632f7dd2bbddc52279a770e0c498aaf8"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-022.txt",
+          "total_lines": 23,
+          "sha256": "5f871225d543972f27c42884e2dafb77f001e70c47416b3da1a4b859ccd4ac6b"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-023.txt",
+          "total_lines": 23,
+          "sha256": "f268476fa080f8a66f440b844c53c4f0e2bf9af3dfb8235ca811e44196b2b10e"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-024.txt",
+          "total_lines": 23,
+          "sha256": "f3282f416e4bb0ae7c16f3d5839d6573023da25ebb88616a34039f89189e0007"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-025.txt",
+          "total_lines": 23,
+          "sha256": "fde7192180507783e937aed38f7b697a668406b1a852a210a9b1cc64cb6f93dd"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-026.txt",
+          "total_lines": 23,
+          "sha256": "ccd13da12b0b6987f0c25eda746176787990902dd114035364d66859723654fa"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-027.txt",
+          "total_lines": 23,
+          "sha256": "bbf41f8b406264c9fea95748dc22e915ff6b1641c9d9e007e2f4e298474c1037"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-028.txt",
+          "total_lines": 23,
+          "sha256": "f2797d465438583cd03b8511068316be3d17f56fcf912cab2ca7d27d87251867"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-029.txt",
+          "total_lines": 23,
+          "sha256": "02be7aafd25d584b3e86bb6b68327dc627218737a82a52506c156cf13c2688db"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-030.txt",
+          "total_lines": 23,
+          "sha256": "6a245b5147f69e7b26de6b479927e17c412c17420bcf2f6373fb3e8fa7130883"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-031.txt",
+          "total_lines": 23,
+          "sha256": "0bd23dc604df3830c417806b88cc265d81a033b6e50e7e84c3d501256eb8109a"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-032.txt",
+          "total_lines": 23,
+          "sha256": "07f2aa8526efe75d61516a3650af9fc592b875a9c58dd8de7d7a7c25c78481c4"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-033.txt",
+          "total_lines": 23,
+          "sha256": "20267bde9b9f6a6def85f351114df37864306b1700b0a81fc3d7a951350d6aff"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-034.txt",
+          "total_lines": 23,
+          "sha256": "82bca2c26dc7514212da8f800ddd36fc472d70673ceff177581fdcf8dfb31dcb"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-035.txt",
+          "total_lines": 23,
+          "sha256": "14c0f1103544d8e3d7d6c507451c3f654753aa5594fd0c892443c5f3f33d1701"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-036.txt",
+          "total_lines": 23,
+          "sha256": "0a0f8c11432c4714619bd3705bde3414a62489ea9991197665eb45c5ac4e4865"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-037.txt",
+          "total_lines": 23,
+          "sha256": "b219a7f12d93a6fe4fc0b260711fbf356b52030659e404c6ceade7848b397bc8"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-038.txt",
+          "total_lines": 23,
+          "sha256": "753019a8bbce29f5433567a13605b4c07af7a1e748741ce6b1a5b0bea3dd3cf5"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-039.txt",
+          "total_lines": 23,
+          "sha256": "bd294b11bafdbcb100c89a1f98621eb5e23f05d0995c36e06208a3a6169534e3"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-040.txt",
+          "total_lines": 23,
+          "sha256": "e91c2677634e08a73abc91c0ee10a835aad24ab8f382c834cce4d2c69abac650"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-041.txt",
+          "total_lines": 23,
+          "sha256": "5c814eb7989236e70793b4b9ef4e37edfe7363fe6081909e0ea7d12c8335c08e"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-042.txt",
+          "total_lines": 23,
+          "sha256": "4ea6ca0c25355f4e739ab493399a17a28a641f3f7b61a55c630c9f13bb988c5b"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-043.txt",
+          "total_lines": 23,
+          "sha256": "9cccb56e50778277640ff693e75e97a961bfc9ec8cbee85ae756c98a1431479b"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-044.txt",
+          "total_lines": 23,
+          "sha256": "54f24eb1f7b77d7de6495bf63e3fcda5e6c51e45b6240980a9ea2886e466ace5"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-045.txt",
+          "total_lines": 23,
+          "sha256": "704fadc3a56f0e964de8b5a35c76479c60cf58eb3d62d6d69cb1421d75bfe0e9"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-046.txt",
+          "total_lines": 23,
+          "sha256": "4fa715d85e35c1364ada5c72ac676896fbce147ad482b154fee95d01fafaa738"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-047.txt",
+          "total_lines": 23,
+          "sha256": "259d6d2f82c97d0ed7efbee8422e34fb3de7c7df0e4b5a0d6c6873bec8f2c8df"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-048.txt",
+          "total_lines": 23,
+          "sha256": "e812efb4c7ec11f00a4198a960ffb933ce414d1aa68526f4b10e9b2e6e7bca8f"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-049.txt",
+          "total_lines": 23,
+          "sha256": "87b2f6b82d9ca683adc090b09c54db414a2aa473008ac385280187cfc319bd37"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-050.txt",
+          "total_lines": 23,
+          "sha256": "88787481d36bb5b51af1a4efa50d49df92b5b5a7c80d4953c288c934c16f6804"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-051.txt",
+          "total_lines": 23,
+          "sha256": "0b2e8ca946952ae0a4283d52a7d14f29cb6a61bf6e3321895958e17c662cbe99"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-052.txt",
+          "total_lines": 23,
+          "sha256": "af4af44bf6509d017bbfd44942c7f0755f00d59d205c9356f56b6f7a30cd9f31"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-053.txt",
+          "total_lines": 23,
+          "sha256": "d1b09767bc4f2779c86d4641294f90c5cb61cadcd7208dbb40aba505743ac0e7"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-054.txt",
+          "total_lines": 23,
+          "sha256": "30ad97c93a25eff82ffa0ab2154606d162aa8e8d3ffe650cebe9b9019a5eaf0b"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-055.txt",
+          "total_lines": 23,
+          "sha256": "7863104c03f338a969740af545d89eb930c7590765575df928a3d6b2c2f60223"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-056.txt",
+          "total_lines": 23,
+          "sha256": "590c4c6d3712402120df3a4e167194536d6b6c1596a26f7dcfdca0f6986fe31d"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-057.txt",
+          "total_lines": 23,
+          "sha256": "3034d874c9dfa66bc2e38923fcc528bdd2f1146a78b360b611efdea7a0cb3896"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-058.txt",
+          "total_lines": 23,
+          "sha256": "af924e40e845d893b1678780552b76310483c12d7234d3f0311ae4a472479b9a"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-059.txt",
+          "total_lines": 23,
+          "sha256": "003b004189e1c687bda1f177ea5aea30f8a53bfe62195e057848a8e839924d23"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-060.txt",
+          "total_lines": 23,
+          "sha256": "2d9061e3df88aef2f85b7fc2d2ab37f710d14fd0c4d0f08b956f3ad52d8795ca"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-061.txt",
+          "total_lines": 23,
+          "sha256": "51374700d41e2c5c8e26cb5979de78727831c7a20da38ab2d8c6fd1f6eb060c1"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-062.txt",
+          "total_lines": 23,
+          "sha256": "30ceffb7495211386f919d875471408db335ab354cbdfd66d67a223a2f01fdf1"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-063.txt",
+          "total_lines": 23,
+          "sha256": "ce587ef65f2f43378deae9b41a33d82dce5df0f70e37ae332dc0d622826edf00"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-064.txt",
+          "total_lines": 23,
+          "sha256": "399e1af6c745610f329593d2f48feecf16d6e363c03f524fe06227497ad4e8a2"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-065.txt",
+          "total_lines": 23,
+          "sha256": "d756f1f0a05949e5f9a7c7d82850020234a2c818dcca9dfc04de3174defaff70"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-066.txt",
+          "total_lines": 23,
+          "sha256": "91a9da262c857d348590d542b28d33893bb7b5aa7667987fdc79f3dc225a585d"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-067.txt",
+          "total_lines": 23,
+          "sha256": "572097373da801f247dcb9e0ec4415c85ff33b28a28c953a0f46c7aae006aeb7"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-068.txt",
+          "total_lines": 23,
+          "sha256": "e5918e9b0f51d14c4e4ca25639bc657f5b73ef8f50c1c23ced736b34e6c1d961"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-069.txt",
+          "total_lines": 23,
+          "sha256": "0b1d238ecee581ba8a86f286af1a77e0ff3ee0da725915d0805129e5cf446dc0"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-070.txt",
+          "total_lines": 23,
+          "sha256": "5d9436655228ee2d50a5f165686358cf3ff345f779fc3aa3354fba27d3f7d4ec"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-071.txt",
+          "total_lines": 23,
+          "sha256": "7bf24bce1c684cb5baf16d23034c682e37b45d3422dafb6b49888b778e63e44e"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-072.txt",
+          "total_lines": 23,
+          "sha256": "3b6339296f82d887eb930da7152bc78dac041881af07ca2a22c80e79839bf3a5"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-073.txt",
+          "total_lines": 23,
+          "sha256": "b0b6a57905007487e489ffcda5759ad68525af7004fe49cae373dd99f47db86c"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-074.txt",
+          "total_lines": 23,
+          "sha256": "711130e5908febd1dea2820630b13009a1723b913773efc5b2095b4f7f7027ce"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-075.txt",
+          "total_lines": 23,
+          "sha256": "5c9db78d9cec4acfbc81510eadfce088b1de196c9e387cee4db02d4965b7079f"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-076.txt",
+          "total_lines": 31,
+          "sha256": "3410f310fa1fdeb6b397d0940b72d8913a689d9e1b8731150f137f0b2c6349b0"
+        }
+      ]
+    }
+  ]
+}

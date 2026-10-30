@@ -1,0 +1,69 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "inputs.lock.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 8590,
+          "sha256": "dc33ab61bc9a7b8a1226e5d6f102fb8c56de96d6461d26bba8a139d53e3a6a91"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 1,
+          "bytes": 292,
+          "sha256": "71b15aad6227ceb1c52f250bbe7214e7b2617b669d62320cbf9a3d2382a3a514"
+        },
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 15805,
+          "sha256": "1e79866e6730d491ebd98f5396e289b056f39c91bd992e5ae502dbfb1d3067b6"
+        },
+        {
+          "source": "evidence/U-CODE-FIX/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4165,
+          "sha256": "d412e51e48f953b7c6a9ceff7c7963d60f058489390dce4d5f1ce70a9928160b"
+        },
+        {
+          "source": "evidence/U-CODE-FIX/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1525,
+          "sha256": "ededf9a2a58c73354dc6ff9a859ac1a56d79e0999ed7fa4d63c067f555eddf36"
+        },
+        {
+          "source": "evidence/U-CODE-FIX/tools.jsonl",
+          "format": "jsonl",
+          "records": 14,
+          "bytes": 9159,
+          "sha256": "f17e190673a635782e816190686d89015d9df2a9f6448f0b09ecacd7d131e228"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 35,
+          "sha256": "abf53eee06d8bb5b19c2d629783ee53c6d9237899707b5fe241ffceea7d37f4f"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-002.txt",
+          "total_lines": 4,
+          "sha256": "50d524124d309b6b5ff8c634d284460dd69a87cb70a680bc4dfcbf69479cb2cd"
+        }
+      ]
+    }
+  ]
+}

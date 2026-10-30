@@ -1,0 +1,34 @@
+schema_version: '1.0'
+experiment_id: EXP-migration-agentscope-demo-001-rd991aeb01b21
+agent_id: migration-agentscope-demo
+baseline_ref: none:first-experiment
+status: active
+research_question: AgentScope Python工具迁移样例能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求
+migration:
+  operation_id: migration-3122ba44-9292-4cc8-a913-05373f60093b
+  receipt: evaluation/evidence/migration.json
+  resolution_receipt: evaluation/evidence/migration-resolutions/787005dc2637b92e15f39dc1b8ee3fafe8cc4dc4c60e9a17ed891de0d87c1d9a.json
+asset_builds:
+  dsh/managed/tools.ts:
+    schema_version: 1
+    entry_path: dsh/managed/tools.ts
+    output_path: dsh/managed/tools.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d
+    dependencies_sha256: 88f43e24f5d02f6f3f2b2d8b5edbb177ff749501568ca90d03ba3950df8859bc
+    source_files:
+      - path: dsh/managed/tools.ts
+        sha256: 88450d49fd71510c2c5c21bc60c8f234cd92df4c446bde9e29ae683f4dbf72d7
+    source_sha256: fa1408ac811f8708958d6b34f39c74c7a09b8d95f9cd11edd930bf97bea848b3
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c
+    platform_sources_sha256: a8f5af6dd50d63503054ddb10ded8a57b99540e4beae46c00730cfba0b17446f
+    runtime_imports:
+      - node:child_process
+      - node:url
+    build_digest: 3362d888807763afd605d71968c53db95abeee4edd8621f818281ec02fc7cdb8
+    esm_sha256: 623f138a5818ef9e25e245dc76c51d1f7c0c5f8d14fcafb87d0e4b784cf08eeb
+    candidate_sha256: fe7991cd64875b7e4a424cba477335b4080e620d319da980e6b6543b9f41c1d2

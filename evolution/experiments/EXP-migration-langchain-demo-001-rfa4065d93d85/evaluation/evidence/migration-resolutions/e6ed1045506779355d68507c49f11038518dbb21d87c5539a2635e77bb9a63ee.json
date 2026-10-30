@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation_id": "migration-da6cb370-d53a-4af8-9249-3c1cc85cbfe6",
+  "experiment_id": "EXP-migration-langchain-demo-001-rfa4065d93d85",
+  "migration_sha256": "0ab2f174cc3c250bebe1c046eb9a638981c037eeb76aa7a82376b68b962a84b6",
+  "candidate_sha256": "8ba512580996434923067fc1750d4e7077e757a9e74216f7ad93ffa930361502",
+  "resolutions": [
+    {
+      "mapping_index": 5,
+      "target": "无独立依赖（不安装 langchain/zod）；dsh/managed/convert-length.ts → convert-length.mjs",
+      "notes": "package.json 依赖 langchain@1.6.0、zod@4.4.3 不迁入目标：工具以 DSH 原生 JSON Schema 契约实现（无 zod），来源 langchain 框架不安装、不运行。当前回执：assets/dependencies/prepare status=ready、mounts=[]（无独立依赖、未安装任何包）；assets/build dependencies_sha256=null，最新制品 convert-length.mjs（esm_sha256=abfcbdfe621a768634b92a295e2f9ab6183d941f4a749a88d3e1fd2ec13efd2d）；共享模块导入仅 @deepseek-ai/dsh-tools 与 @deepseek-ai/dsh-llm（程序 dev 依赖锁定同版 0.2.1-rc.2），无业务 npm 依赖。",
+      "case_ids": [
+        "U-LENGTH-CM-TO-M",
+        "U-LENGTH-M-TO-CM",
+        "U-LENGTH-MISSING"
+      ]
+    },
+    {
+      "uncovered_index": 0,
+      "target": "dsh/managed/convert-length.ts 最终输出 guard（agent/turn-stopping + dsh-tools.validateJsonSchemaValue + agent.steer(createUserMessage，来源 kind migration-output-validation)），构建产物 dsh/managed/convert-length.mjs",
+      "notes": "关键输出校验已真实实现，不再以角色指令代替 responseFormat 强制结构：agent/turn-stopping serial 钩子在 turn 关闭前取本 turn 最后 assistant 文本，仅在本 turn 成功调用 convert_length 的成功分支做 JSON.parse + dsh-tools.validateJsonSchemaValue 校验 {value:number, unit:m|cm, explanation:string} 并另判 explanation 非空；不合格时 agent.steer(createUserMessage(...)) 在同 turn 纠正输出，最多 2 次，耗尽抛明确错误；纠正回合 tools.guard 同步拒绝重放 convert_length；计数按 Session+turn 隔离并在 turn/end、session/disposed 清理；已有合法 JSON 不重试；缺单位澄清、工具失败、不支持单位分支不校验。补正消息来源已修正为专用 kind migration-output-validation（MessageSourceMap 公开扩展，form:'notice'、summary:'最终输出需要格式补正'），不冒充人工用户输入。当前真实 Run run-a6623acc-e17a-4ecd-a771-80e817de2a62（candidate 8ba51258…，review=ai，机器 3/3 passed + 复核 3/3，effective_verdict=passed，source_verification=matched）：两成功 Case 均单条纯 JSON 一次通过 guard 校验（未触发补正 steer），U-LENGTH-MISSING 走澄清分支未校验。验证范围限于运行时最终结果文本的结构校验；不声称供应商约束解码，也不声称中间流式字节均合法。补正/耗尽/重放拒绝路径的组件测试由 root 独立重验（前一构建 9 组组件测试通过；本构建该路径未被业务 Case 触发）。本项其余框架机制（工具调用重试、流式输出）未迁移、不声称实现。",
+      "case_ids": [
+        "U-LENGTH-CM-TO-M",
+        "U-LENGTH-M-TO-CM",
+        "U-LENGTH-MISSING"
+      ]
+    },
+    {
+      "uncovered_index": 1,
+      "disposition": "outside-scope",
+      "notes": "按本次授权目标不执行、不安装来源 LangChain 框架，未做来源运行对比；框架级工具调用重试、流式输出等运行时机制亦未逐机制迁移。以上均属当前明确范围之外的限制，保留原状态、不声称实现或与原 Agent 全量等效。本迁移定义的代表行为已由 run-a6623acc-e17a-4ecd-a771-80e817de2a62（review=ai，机器与复核均 3/3，effective_verdict=passed）验证。",
+      "case_ids": [
+        "U-LENGTH-CM-TO-M",
+        "U-LENGTH-M-TO-CM",
+        "U-LENGTH-MISSING"
+      ]
+    }
+  ],
+  "created_at": "2026-10-30T08:10:50.966Z"
+}

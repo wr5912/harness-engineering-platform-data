@@ -1,0 +1,33 @@
+# 注册本 Experiment 的受控 Preset。
+- id: agent-preset-registry
+  config:
+    default: migration-opencode-demo
+
+- insert:
+    - id: preset-migration-opencode-demo
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: migration-opencode-demo
+        plugins:
+          - id: migration-opencode-demo-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/migration-opencode-demo/agent.cordis.yml
+    - id: preset-reviewer
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: reviewer
+        name: reviewer
+        description: 复核金额项目实际改动（只读）
+        plugins:
+          - id: reviewer-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/reviewer/agent.cordis.yml
+
+# 权限映射：来源 OpenCode fixer 拥有完整命令执行权限；本任务已明确授权项目编辑与 node --test。
+# 仅对装载本 Candidate 的新 Session 以 Base 原生 permission 入口预置 danger-full-access（sandbox+never）；
+# 不改全局默认、不加审批代理、不影响其他实例或 Agent。
+- id: permission
+  config:
+    defaultPreset: danger-full-access

@@ -21,6 +21,7 @@ description: 定位平台管理任务的工作区、目标和当前状态，澄�
 
 | 用户要得到什么 | 使用的 Skill |
 |---|---|
+| 将其他框架的智能体工程或资产包迁移为 DSH Harness，并继续构建、装载和验证 | `agent-migration` |
 | 构建或改进任务型智能体，并交付实例与产物 | `task-builder` |
 | 创建角色与业务 Case，或在已有授权目标内整理特性、维护用例和实例 | `agent-maintenance` |
 | 从既有版本改变 Harness 业务行为，并形成研究结论 | `harness-evolution` |

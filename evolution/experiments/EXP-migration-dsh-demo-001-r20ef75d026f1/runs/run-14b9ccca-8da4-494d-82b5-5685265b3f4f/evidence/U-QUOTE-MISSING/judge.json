@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答仅补问了 quantity、unit_price、discount_pct 三个必要参数，未调用报价工具，也未出现任何计算过程或金额结果，完全符合预期。",
+    "requirements": [
+      {
+        "requirement": "缺少数量、单价和折扣信息，先补问必要参数（quantity、unit_price、discount_pct），不调用 quote 工具、不伪造计算过程或金额结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "好的，我可以帮您生成报价。不过目前还缺少必要信息，请补充以下内容：\n\n- **数量**（必填）\n- **单价**（必填）\n- **折扣百分比**（如需要；不提供则按无折扣处理）\n\n收到后我会通过报价工具精确计算，并给出含两位小数的最终金额。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-f23d2177-a7c6-4f5c-a8fb-fb9884b73ee9",
+    "workspace_id": "317fdcd6-559b-43c2-8c0e-2630aca3217f",
+    "session_title": "评审 U-QUOTE-MISSING",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

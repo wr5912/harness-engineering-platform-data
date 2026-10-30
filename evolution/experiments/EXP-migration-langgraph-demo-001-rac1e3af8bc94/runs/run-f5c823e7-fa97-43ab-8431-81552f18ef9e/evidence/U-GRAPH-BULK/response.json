@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 10，单价 12，请给我报价。"
+  ],
+  "assistant_texts": [
+    "已收到您的参数：数量 10、单价 12（均为非负数，符合计算条件），我已调用真实报价图 `quote_graph` 进行计算，但**图执行失败**，无法给出最终报价。以下是图回执的实际情况：\n\n- 工具回执 `ok`：`false`，错误信息为“工作流执行失败，请查看节点回执”\n- 图执行状态 `graph_execution.status`：`failed`\n- 执行 ID：`workflow-d3ebb02b-99bd-4ea3-9273-e2b583e5a786`\n- 图执行 trace 为空，未返回 `result`（无 `subtotal`/`tax`/`shipping`/`total` 数据）\n\n按照规则，我不能在图执行失败时编造或心算任何报价数字，因此本次无法提供小计、税费、运费与总额。\n\n建议：请您稍后让我重试一次（重新调用 `quote_graph`）；如果重试仍然失败，说明报价业务图当前存在执行异常，需要排查图节点回执后再重新报价。您现在要我再试一次吗？"
+  ],
+  "session_id": "session-4723944f-bc83-492a-8265-5d030e72c2bf",
+  "turns": [
+    {
+      "assistant_text": "已收到您的参数：数量 10、单价 12（均为非负数，符合计算条件），我已调用真实报价图 `quote_graph` 进行计算，但**图执行失败**，无法给出最终报价。以下是图回执的实际情况：\n\n- 工具回执 `ok`：`false`，错误信息为“工作流执行失败，请查看节点回执”\n- 图执行状态 `graph_execution.status`：`failed`\n- 执行 ID：`workflow-d3ebb02b-99bd-4ea3-9273-e2b583e5a786`\n- 图执行 trace 为空，未返回 `result`（无 `subtotal`/`tax`/`shipping`/`total` 数据）\n\n按照规则，我不能在图执行失败时编造或心算任何报价数字，因此本次无法提供小计、税费、运费与总额。\n\n建议：请您稍后让我重试一次（重新调用 `quote_graph`）；如果重试仍然失败，说明报价业务图当前存在执行异常，需要排查图节点回执后再重新报价。您现在要我再试一次吗？",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "8a2c2920-9e79-44eb-b85e-984b56cbec5e"
+    }
+  ]
+}

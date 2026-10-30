@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QUOTE-NORMAL",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：同一被测 Session 的 quote 工具回执（call_id 一致，is_error=false）显示按 quantity=3、unit_price=12.5、discount_pct=20 计算出 total=30，证明金额来自真实工具调用而非心算或伪造；被测正文完整说明了数量、单价、20% 折扣及含两位小数的 30.00，且未另加任何税费，逐项满足全部预期要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QUOTE-NORMAL"
+}

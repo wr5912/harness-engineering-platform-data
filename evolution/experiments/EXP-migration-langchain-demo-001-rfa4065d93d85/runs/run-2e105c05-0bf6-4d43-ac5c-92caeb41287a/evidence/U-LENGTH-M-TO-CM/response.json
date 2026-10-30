@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "把 2.5 米换算成厘米。"
+  ],
+  "assistant_texts": [
+    "{\"value\": 250, \"unit\": \"cm\", \"explanation\": \"已调用 convert_length 工具将 2.5 米换算为厘米，1 米等于 100 厘米，换算结果为 250 厘米。\"}"
+  ],
+  "session_id": "session-a9a59891-9a4c-43d3-b1b7-a09960797bf5",
+  "turns": [
+    {
+      "assistant_text": "{\"value\": 250, \"unit\": \"cm\", \"explanation\": \"已调用 convert_length 工具将 2.5 米换算为厘米，1 米等于 100 厘米，换算结果为 250 厘米。\"}",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "convert_length",
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b346b37a-2589-4deb-a4c5-b31280e32f0c"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+name: LangGraph 报价流程迁移样例
+description: 迁移自固定 LangGraph 样例（LangGraph 1.5.0）的订单报价助手：LLM 收集 quantity 与 unit_price 后调用 TypeScript 图 SDK 实现的真实报价图（quantity>=10 命中 bulk 九折分支，否则 regular；tax 与 shipping 并行计算，join 汇合求总额），缺参数先补问、负数拒绝计算。来源为单次无状态流程，无 checkpoint/interrupt 要求；未运行原系统，不代表全量等效。
+order: 10

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "operation_id": "migration-3122ba44-9292-4cc8-a913-05373f60093b",
+  "experiment_id": "EXP-migration-agentscope-demo-001-rd991aeb01b21",
+  "migration_sha256": "25a1fdafc490561cf86d12d00ca749fabcaef0697901ba55152658db7e3ea5d5",
+  "candidate_sha256": "fe7991cd64875b7e4a424cba477335b4080e620d319da980e6b6543b9f41c1d2",
+  "resolutions": [
+    {
+      "mapping_index": 4,
+      "disposition": "outside-scope",
+      "notes": "范围外（outside-scope）：本任务明确不装入 agentscope==2.0.11 框架包，原 AgentScope 运行时未实现、未执行，不声称实现。样例已使用的单 Agent+Toolkit 单工具行为由 DSH 原生实现承接（见 mapping 0/3），已经真实 Run run-9a8559ea-d654-4439-b5f2-c25dd0b94a55 的 3 个关键 Case 验证；框架包本身保持未安装状态。",
+      "case_ids": [
+        "U-VERSION-COMPARE",
+        "U-VERSION-INVALID",
+        "U-VERSION-MISSING"
+      ]
+    },
+    {
+      "mapping_index": 5,
+      "disposition": "outside-scope",
+      "notes": "范围外（outside-scope）：pyproject 项目打包元数据（name/version/requires-python）不参与目标运行，未实现也无需实现，不声称已转换；目标依赖声明只保留锁定的 packaging==25.0 并已就绪，关键 Case 验证不依赖该元数据。",
+      "case_ids": [
+        "U-VERSION-COMPARE",
+        "U-VERSION-INVALID",
+        "U-VERSION-MISSING"
+      ]
+    },
+    {
+      "uncovered_index": 0,
+      "disposition": "outside-scope",
+      "notes": "范围外（outside-scope）：固定样例未使用 AgentScope 的消息内存、流式输出、Hook/中间件、多角色编排等框架能力，本次未迁移、未实现，不声称实现。样例已用行为由 DSH 原生 Agent 工具循环承接，并由真实 Run run-9a8559ea-d654-4439-b5f2-c25dd0b94a55 的 3 个关键 Case 验证通过。",
+      "case_ids": [
+        "U-VERSION-COMPARE",
+        "U-VERSION-INVALID",
+        "U-VERSION-MISSING"
+      ]
+    },
+    {
+      "uncovered_index": 1,
+      "disposition": "outside-scope",
+      "notes": "范围外（outside-scope）：本次未执行原 AgentScope 框架（未装入 agentscope==2.0.11、未执行来源安装 Hook），未做原框架 A/B 对比，未实现、不声称完整等效。验证仅覆盖样例声明行为，依据为真实 Run run-9a8559ea-d654-4439-b5f2-c25dd0b94a55 的 3 个关键 Case（机器+AI 复核均通过）。",
+      "case_ids": [
+        "U-VERSION-COMPARE",
+        "U-VERSION-INVALID",
+        "U-VERSION-MISSING"
+      ]
+    }
+  ],
+  "created_at": "2026-10-30T07:19:25.671Z"
+}

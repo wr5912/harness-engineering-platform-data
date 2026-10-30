@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "请帮我报价。"
+  ],
+  "assistant_texts": [
+    "好的，我可以帮您报价。不过目前我还缺少必要信息，无法调用报价图：\n\n1. **订单数量（quantity）**：您这次要订多少件？\n2. **单价（unit_price）**：每件的价格是多少？\n\n请您把这两项告诉我（例如：“买 20 件，单价 50 元”），我会立即通过报价业务图为您计算，并说明命中的分支（数量 ≥10 走批量九折，否则走常规价格）、小计、税费、运费和最终总额。\n\n另外提醒：数量或单价如果是负数，我将无法为您计算。"
+  ],
+  "session_id": "session-b9c90f19-f628-4d9d-a07b-2e900ce4125c",
+  "turns": [
+    {
+      "assistant_text": "好的，我可以帮您报价。不过目前我还缺少必要信息，无法调用报价图：\n\n1. **订单数量（quantity）**：您这次要订多少件？\n2. **单价（unit_price）**：每件的价格是多少？\n\n请您把这两项告诉我（例如：“买 20 件，单价 50 元”），我会立即通过报价业务图为您计算，并说明命中的分支（数量 ≥10 走批量九折，否则走常规价格）、小计、税费、运费和最终总额。\n\n另外提醒：数量或单价如果是负数，我将无法为您计算。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b611aa70-f953-4e91-9b26-46a69da31182"
+    }
+  ]
+}

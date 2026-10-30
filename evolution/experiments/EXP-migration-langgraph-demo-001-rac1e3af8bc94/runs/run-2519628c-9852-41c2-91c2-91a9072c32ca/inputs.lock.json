@@ -1,0 +1,221 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-2519628c-9852-41c2-91c2-91a9072c32ca",
+  "source_id": "experiment:EXP-migration-langgraph-demo-001-rac1e3af8bc94",
+  "source_kind": "experiment",
+  "baseline_ref": "none:first-experiment",
+  "candidate_sha256": "1e6e165fefff1af4ec3c135e93f67d8cbcb0ee6cbac556cdfc592d2302a762d9",
+  "created_at": "2026-10-30T08:07:14Z",
+  "harness_trees": {
+    "workspace": {
+      "tree_sha256": "sha256:c1689303d38d7f23781cf7e259f3b460331f4ab6d093bcf46c4057846915199a",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 2,
+      "total_bytes": 1700,
+      "files": [
+        {
+          "mode": "0664",
+          "path": ".env",
+          "sha256": "e574f8d1faf66f9167c33055ae1e2f99c70b031811f64aaac5bae1be54a19489",
+          "size": 84
+        },
+        {
+          "mode": "0664",
+          "path": "AGENTS.md",
+          "sha256": "7c95e47187e653851746e7108e1cd802040f5c4a67f69d753e7c6587e89839e9",
+          "size": 1616
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    },
+    "presets": {
+      "tree_sha256": "sha256:efde9f27b85723bb7da7981facfcd970824cc03085d2dee8c45e7b31718f51a5",
+      "directory_sha256": "sha256:db1c1cd7b65abd07ae903f4e2f75677b373b43f9288957bc1c2806860fcce6c9",
+      "file_count": 2,
+      "total_bytes": 1101,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "migration-langgraph-demo/agent.cordis.yml",
+          "sha256": "320924f4286d5577af07e28081ae8e00a4d1f7a0a2fc237cc83e9729328cfc5f",
+          "size": 599
+        },
+        {
+          "mode": "0664",
+          "path": "migration-langgraph-demo/preset.yml",
+          "sha256": "3df029fe4d5ae2ae92242934b098c180e6a5ab46b01c32e86d9be3ba8a9d0fbc",
+          "size": 502
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "migration-langgraph-demo",
+          "mode": "0775"
+        }
+      ]
+    },
+    "managed": {
+      "tree_sha256": "sha256:fceb0d2b4cf6c3012d901b746e5ee38eeb4b7dc1d0c502151eac23c50df9cd64",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 3,
+      "total_bytes": 2481718,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "migration-langgraph-demo.patch.yml",
+          "sha256": "a6b4dce36acec292f7030159e843e1691623f5d14977135e7c4a48f127bef792",
+          "size": 465
+        },
+        {
+          "mode": "0664",
+          "path": "tools.mjs",
+          "sha256": "67f307b6083e11e017538190acd4c06c11e7becdbc3ec4c59810cb39f0352b2d",
+          "size": 2474593
+        },
+        {
+          "mode": "0755",
+          "path": "tools.ts",
+          "sha256": "ef8256972dd9f15f1e07d3f530de98f90f38e95fe39f7908508fc3405e06eaa9",
+          "size": 6660
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    }
+  },
+  "reference_tree": {
+    "tree_sha256": "sha256:0d8871065410a6f2e39c5af7206112e80ccf37cb3ce14d198b2d135c5da13425",
+    "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+    "file_count": 2,
+    "total_bytes": 3814,
+    "files": [
+      {
+        "mode": "0664",
+        "path": "evaluation.md",
+        "sha256": "df593b9087f29313a8fb8a8a85d728a8bc174c3963fb59a697e9f55c13ed94df",
+        "size": 3155
+      },
+      {
+        "mode": "0664",
+        "path": "manifest.yaml",
+        "sha256": "c60d785fc1053a8a21cdeb1edf16a7b1a6b3f76acdfd24de679f421d65455895",
+        "size": 659
+      }
+    ],
+    "directories": [
+      {
+        "path": ".",
+        "mode": "0775"
+      }
+    ]
+  },
+  "evaluation_sha256": "5534242a6c9293abe6eabba2e18e51c97b59c66a4ee996fe3fdffbb1f03f12d6",
+  "evaluation_cases": [
+    {
+      "case_id": "U-GRAPH-BULK",
+      "title": "bulk 分支并行报价（quantity=10, unit_price=12）",
+      "inputs": [
+        "数量 10，单价 12，请给我报价。"
+      ],
+      "expected_behavior": "必须真实调用报价图工具 quote_graph（quantity=10, unit_price=12），不得心算或用原子计算工具替代图计算。图回执要求执行完成（status=completed 且 complete=true），条件路由命中 bulk（route=bulk，quantity>=10 命中九折分支），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行。金额与来源一致：subtotal=108（10×12×0.9）、tax=10.8（108×10% 两位舍入）、shipping=0（subtotal>=100 免运费）、total=118.8（join 汇合后两位舍入）。回复需解释命中 bulk 分支及小计、税费、运费、总额，且与图回执一致。"
+    },
+    {
+      "case_id": "U-GRAPH-REGULAR",
+      "title": "regular 分支并行报价（quantity=2, unit_price=20）",
+      "inputs": [
+        "数量 2，单价 20，请给我报价。"
+      ],
+      "expected_behavior": "必须真实调用报价图工具 quote_graph（quantity=2, unit_price=20），不得心算或用原子计算工具替代图计算。图回执要求执行完成（status=completed 且 complete=true），条件路由命中 regular（route=regular，quantity<10 不打折），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行。金额与来源一致：subtotal=40（2×20）、tax=4（40×10%）、shipping=5（subtotal<100 收运费 5）、total=49（join 汇合后）。回复需解释命中 regular 分支及小计、税费、运费、总额，且与图回执一致。"
+    },
+    {
+      "case_id": "U-GRAPH-MISSING",
+      "title": "缺数量先补问不猜输入",
+      "inputs": [
+        "请帮我报价。"
+      ],
+      "expected_behavior": "缺少数量与单价时必须先向用户补问 quantity 与 unit_price，不得猜测或虚构输入，不得在参数不全时调用 quote_graph 图；本轮不给出任何报价数字。"
+    }
+  ],
+  "case_catalog": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ROLE-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-GRAPH-BULK",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-GRAPH-REGULAR",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-GRAPH-MISSING",
+      "scene": "未分组",
+      "fast": true
+    }
+  ],
+  "selection_mode": "explicit",
+  "review_mode": "ai",
+  "configured_capabilities": [
+    "/opt/dsh-presets"
+  ],
+  "declared_guard": null,
+  "evaluation_implementation": {
+    "dsh-eval": "dbf61385619d6c22200a8dd57ab2b3cf1e2d23c72bbecb1ab115597a387886f9",
+    "dsh-eval-api.mjs": "e92f5cb387438fb99bd39f5f84515d981d7ca579abacb17162946a83b2645cc0",
+    "dsh-eval-browser.mjs": "85ce49fcac79d07e8e26f28d04c59266aff76a46a898450c80398f7dab913eb9",
+    "dsh-eval-common.mjs": "a11fdce1d326623fd9db7de45fe0fdb882b1cb4125f531d5d4a66aa665e373e8",
+    "run_record.py": "b2a99b01a33b77afd3b8210ac5f9667a01a7b673b4225e9f42dac590696da206",
+    "scenario_analysis.py": "6ec78071b0327d8e96d5f91d543d48738023bd8bcc1bb7c444755b71981bf6cc",
+    "evaluation-judge-guard.mjs": "ad46cdd4c8264d3023bf0ea33327fdb60869209a3463f32f6cf30a347483219d",
+    "scenario-analysis-guard.mjs": "21c9b85f5400fefadbb39145d97409bd158a050941e076da249a504c8f24d541",
+    "evaluation-presets/evaluation-judge/agent.cordis.yml": "6c0c0c93018b318942d7334026e43b12124fa0fcabe166076d6e3d49f9e24f59",
+    "evaluation-presets/evaluation-judge/preset.yml": "df22cd2de4f05a31a21a2f041f44b2de57a48140797602ed4bf068e216a62a5e",
+    "evaluation-presets/scenario-analysis/agent.cordis.yml": "43786861869c364c343ea2fffd87a2b85a0756b8947cebf2233bb5d5bc830cbc",
+    "evaluation-presets/scenario-analysis/preset.yml": "b9ca918a58de3bb8b043ec0847937950e06bc27c1cc7b155dd0823ee1076be03"
+  },
+  "dependency_env": {
+    "DEEPSEEK_API_KEY": true
+  },
+  "git_version": {
+    "commit": "e1e361487caf0a060d00895ff3c2085cc9a48215",
+    "dirty": true,
+    "changed_path_count": 16
+  },
+  "program_origin": {
+    "commit": "adee516f355712d7ed0b45d3aa74d9469786f16d",
+    "dirty": true,
+    "changed_path_count": 57,
+    "root": "/home/admin/work/harness-engineering-platform"
+  },
+  "asset_origin": {
+    "commit": "e1e361487caf0a060d00895ff3c2085cc9a48215",
+    "dirty": true,
+    "changed_path_count": 16,
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "candidate_sha256": "1e6e165fefff1af4ec3c135e93f67d8cbcb0ee6cbac556cdfc592d2302a762d9"
+  },
+  "executor": "api"
+}

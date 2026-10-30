@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source_id": "experiment:EXP-migration-dsh-demo-001-r20ef75d026f1",
+  "files": [
+    {
+      "tree": "workspace",
+      "path": ".agents/skills/quote/SKILL.md",
+      "sha256": "f59e599a2ee5943919f9e729afd46bfd432d113d61ebfc0ed13a933bbf9e1e7b",
+      "content": "---\nname: quote\ndescription: 根据数量、单价和折扣计算报价。\n---\n\n先收集 quantity、unit_price 和 discount_pct。调用 quote 工具取得金额；数量和单价非负，折扣在 0 到 100 之间。以两位小数展示，不另加税费。规则说明见 [计价约定](references/pricing.md)。\n"
+    },
+    {
+      "tree": "workspace",
+      "path": ".agents/skills/quote/references/pricing.md",
+      "sha256": "5bef181a3d090a5f49309c65a554bcc550d44508f4412595724028c85e5f5fae",
+      "content": "折扣百分比表示减免比例；20 表示减免 20%。货币金额在最终求和后保留两位小数。\n"
+    },
+    {
+      "tree": "workspace",
+      "path": "AGENTS.md",
+      "sha256": "ac299bd96990426f535d4751c9bc1f1f5cc25a1a1679c0e2d560c945dfd59926",
+      "content": "# DSH 报价迁移样例\n\n你是DSH 报价迁移样例（Agent ID: migration-dsh-demo）。\n\n根据数量、单价和折扣生成报价。必须通过 quote 工具计算；不猜测工具结果。缺少数量或单价时先补问。遵循 quote 技能中的规则，最终说明输入、折扣和含两位小数的金额。\n\n使用中文回答。仅声明实际提供的工具、权限与执行结果；缺少必要信息时明确说明并补充询问。\n"
+    },
+    {
+      "tree": "presets",
+      "path": "migration-dsh-demo/agent.cordis.yml",
+      "sha256": "c0ec4549c3238b0c2090c871f8a5d1e72bf342b75925af4c92edf677aa777f68",
+      "content": "- id: persona\n  name: /opt/dsh/packages/preset/persona/lib/index.js\n  disabled: false\n  config:\n    prefix: '你是DSH 报价迁移样例（Agent ID: migration-dsh-demo）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答，不声称未提供的工具、权限或执行结果。'\n    suffix: 你的工作目录是 {{cwd}}。\n- id: agent-instructions\n  name: /opt/dsh/packages/context/agent-instructions/lib/index.js\n  disabled: false\n  config:\n    maxBytes: 65536\n"
+    },
+    {
+      "tree": "presets",
+      "path": "migration-dsh-demo/preset.yml",
+      "sha256": "b8073dc8d5a02d4dca4b3321c6affc06c8f727f401d8b66bc9b1bdc373e8606a",
+      "content": "name: DSH 报价迁移样例\ndescription: 迁移自本项目自建 DSH 固定样例 migration-source-dsh 的报价助手：根据数量、单价和折扣经 quote 工具生成含两位小数的报价，缺少数量或单价时先补问，不猜测工具结果。来源未执行原框架，不代表全量等效。\norder: 10\n"
+    },
+    {
+      "tree": "managed",
+      "path": "migration-dsh-demo.patch.yml",
+      "sha256": "24f2f195463edced1bbd5607038fbe8eac781bee8dacdd52c17d0aa505ea0cfd",
+      "content": "# 注册本 Experiment 的受控 Preset，并挂载迁移自来源 tools.ts 的报价工具构建产物。\n- id: agent-preset-registry\n  config:\n    default: migration-dsh-demo\n\n- insert:\n    - id: preset-migration-dsh-demo\n      name: '@deepseek-ai/dsh-agent-preset'\n      config:\n        id: migration-dsh-demo\n        plugins:\n          - id: migration-dsh-demo-harness\n            name: cordis:include\n            config:\n              path: /opt/dsh-presets/migration-dsh-demo/agent.cordis.yml\n          - id: quote-tools\n            name: /opt/dsh-managed/tools.mjs\n"
+    },
+    {
+      "tree": "managed",
+      "path": "tools.mjs",
+      "sha256": "61c0ba04518dedf6d5b786e2989e25873890f1c9ccd671bd5c37e93f708c7c6a",
+      "content": "// evolution/experiments/EXP-migration-dsh-demo-001-r20ef75d026f1/candidate/dsh/managed/tools.ts\nvar name = \"migration-quote-tools\";\nvar inject = [\"tools\"];\nfunction apply(ctx) {\n  ctx.tools.register({\n    name: \"quote\",\n    description: \"\\u8BA1\\u7B97\\u6298\\u6263\\u540E\\u62A5\\u4EF7\",\n    parameters: { type: \"object\", properties: { quantity: { type: \"number\" }, unit_price: { type: \"number\" }, discount_pct: { type: \"number\" } }, required: [\"quantity\", \"unit_price\", \"discount_pct\"] },\n    output: { schema: { type: \"object\", properties: { quantity: { type: \"number\" }, unit_price: { type: \"number\" }, discount_pct: { type: \"number\" }, total: { type: \"number\" } }, required: [\"quantity\", \"unit_price\", \"discount_pct\", \"total\"] }, render: (_args, value) => [{ type: \"text\", text: JSON.stringify(value) }] },\n    async execute(input) {\n      if (input.quantity < 0 || input.unit_price < 0 || input.discount_pct < 0 || input.discount_pct > 100) throw new Error(\"\\u62A5\\u4EF7\\u53C2\\u6570\\u8D85\\u51FA\\u8303\\u56F4\");\n      return { ...input, total: Math.round(input.quantity * input.unit_price * (1 - input.discount_pct / 100) * 100) / 100 };\n    }\n  });\n}\nexport {\n  apply,\n  inject,\n  name\n};\n"
+    },
+    {
+      "tree": "managed",
+      "path": "tools.ts",
+      "sha256": "7394f4266afb1f34c06c59a032d4186b87fec85f6e06af559bf958af9a77928b",
+      "content": "export const name = 'migration-quote-tools'\nexport const inject = ['tools']\nexport function apply(ctx: any) {\n  ctx.tools.register({ name: 'quote', description: '计算折扣后报价', parameters: { type: 'object', properties: { quantity: { type: 'number' }, unit_price: { type: 'number' }, discount_pct: { type: 'number' } }, required: ['quantity', 'unit_price', 'discount_pct'] },\n    output: { schema: { type: 'object', properties: { quantity: { type: 'number' }, unit_price: { type: 'number' }, discount_pct: { type: 'number' }, total: { type: 'number' } }, required: ['quantity', 'unit_price', 'discount_pct', 'total'] }, render: (_args: unknown, value: unknown) => [{ type: 'text', text: JSON.stringify(value) }] },\n    async execute(input: { quantity: number; unit_price: number; discount_pct: number }) {\n      if (input.quantity < 0 || input.unit_price < 0 || input.discount_pct < 0 || input.discount_pct > 100) throw new Error('报价参数超出范围')\n      return { ...input, total: Math.round(input.quantity * input.unit_price * (1 - input.discount_pct / 100) * 100) / 100 }\n    } })\n}\n"
+    }
+  ]
+}

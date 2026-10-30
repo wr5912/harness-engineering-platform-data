@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答明确指出用户只给了单个版本号 2.0、无法判断新旧，并主动补问要比较的另一个版本，说明将补问后再调用工具比较；其表述为将来时（补充后才会调用 select_newer_version），表明未调用工具、也未猜测比较结果，逐项满足全部预期要求。",
+    "requirements": [
+      {
+        "requirement": "用户只提供了一个版本，缺少可比较的第二个版本",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "你只提供了一个版本号 **2.0**，无法单独判断它是否\"更新\"——版本新旧必须与另一个版本比较。\n\n请补充要和它比较的另一个版本号（例如 `1.9`、`2.1` 等），我会调用 `select_newer_version` 工具进行实际比较后告诉你哪个更新。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "应先补问另一个版本再比较，不调用 select_newer_version，不猜测比较结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "你只提供了一个版本号 **2.0**，无法单独判断它是否\"更新\"——版本新旧必须与另一个版本比较。\n\n请补充要和它比较的另一个版本号（例如 `1.9`、`2.1` 等），我会调用 `select_newer_version` 工具进行实际比较后告诉你哪个更新。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-5115dc20-5b59-4422-a0e8-b542bbe18d50",
+    "workspace_id": "ba30c987-1169-4783-a911-bb1273ad9715",
+    "session_title": "评审 U-VERSION-MISSING",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

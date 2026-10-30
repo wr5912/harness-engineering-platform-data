@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 10，单价 12，请给我报价。"
+  ],
+  "assistant_texts": [
+    "我已收到您的参数（数量 10、单价 12），并按规则调用了真实报价图工具 `quote_graph`，但**图执行失败**，因此无法给出报价结果。\n\n工具回执情况（如实转述）：\n- 回执 `ok`：`false`，错误信息为「工作流执行失败，请查看节点回执」\n- 图执行状态 `graph_execution.status`：`failed`（执行 ID：`workflow-85488e9e-25ab-491d-bce5-d366a479b1a8`）\n- 由于执行未成功，工具没有返回可用的 `result`（无 `status=completed`、`complete=true` 的结果体）\n\n按照规则，在图未成功完成的情况下我不会编造 subtotal、tax、shipping 或 total，也不会用心算替代图计算。\n\n建议下一步：\n1. 请稍后重试（可能是报价服务端临时故障）；\n2. 如果重试仍失败，需要排查报价工作流 `quote_graph` 的节点执行日志（执行 ID 见上）。\n\n您希望我现在用同样的参数（数量 10、单价 12）再试一次吗？"
+  ],
+  "session_id": "session-9c2b5dc7-93b0-4289-a76e-702d25c159ba",
+  "turns": [
+    {
+      "assistant_text": "我已收到您的参数（数量 10、单价 12），并按规则调用了真实报价图工具 `quote_graph`，但**图执行失败**，因此无法给出报价结果。\n\n工具回执情况（如实转述）：\n- 回执 `ok`：`false`，错误信息为「工作流执行失败，请查看节点回执」\n- 图执行状态 `graph_execution.status`：`failed`（执行 ID：`workflow-85488e9e-25ab-491d-bce5-d366a479b1a8`）\n- 由于执行未成功，工具没有返回可用的 `result`（无 `status=completed`、`complete=true` 的结果体）\n\n按照规则，在图未成功完成的情况下我不会编造 subtotal、tax、shipping 或 total，也不会用心算替代图计算。\n\n建议下一步：\n1. 请稍后重试（可能是报价服务端临时故障）；\n2. 如果重试仍失败，需要排查报价工作流 `quote_graph` 的节点执行日志（执行 ID 见上）。\n\n您希望我现在用同样的参数（数量 10、单价 12）再试一次吗？",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "69905002-7361-4ed2-95c3-d94f12e5c2c5"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "operation_id": "migration-caee9a02-576e-41ea-98aa-d7acf674acdf",
+  "experiment_id": "EXP-migration-langgraph-demo-001-rac1e3af8bc94",
+  "migration_sha256": "fc181703f35ecfcffad22649fc3ebdd5e59b13ec43ce30420eac9e90148ebbee",
+  "candidate_sha256": "4ab676268f31ed798705da3c9d40858edbfaf5ef0e2aebe441b938d29f9995ae",
+  "resolutions": [
+    {
+      "mapping_index": 6,
+      "disposition": "outside-scope",
+      "notes": "范围边界（implemented=false）：来源 AGENTS.md 声明单次无状态流程，未使用 checkpoint/中断恢复；本次明确范围不含 checkpoint/thread/interrupt-resume 兼容实现，不声称已实现。当前真实 Run（run-7e794337-04a5-4170-a0f1-4d34b0008fb2）以单次无状态调用验证图行为 3/3 通过。如实记录：来源 graph.ts 存在节点名与状态通道同名的构图装配错误（tax/shipping），迁移在目标侧修正节点 ID 为 calc_tax/calc_shipping（状态字段 tax/shipping 与来源一致），不声称原来源图已运行有效。",
+      "case_ids": [
+        "U-GRAPH-BULK",
+        "U-GRAPH-MISSING",
+        "U-GRAPH-REGULAR"
+      ]
+    },
+    {
+      "uncovered_index": 0,
+      "disposition": "outside-scope",
+      "notes": "范围边界（implemented=false）：checkpoint/thread/interrupt-resume 兼容不在本次明确范围（来源未使用该能力），保留待补齐状态，不声称已实现。单次无状态流程行为已由当前真实 Run 的 3 个 Case 全部通过验证。",
+      "case_ids": [
+        "U-GRAPH-BULK",
+        "U-GRAPH-MISSING",
+        "U-GRAPH-REGULAR"
+      ]
+    },
+    {
+      "uncovered_index": 1,
+      "disposition": "outside-scope",
+      "notes": "范围边界（implemented=false）：未运行原 LangGraph 框架（@langchain/langgraph 1.5.0）做 A/B 对比，完整运行时等效性不在本次明确范围，不声称完整等效。行为映射按固定来源规格执行，由当前真实 Run 的图回执验证：bulk/regular 分支路由、tax/shipping 并行节点、join 等待两节点汇合，金额 108/10.8/0/118.8 与 40/4/5/49 与来源公式一致。",
+      "case_ids": [
+        "U-GRAPH-BULK",
+        "U-GRAPH-MISSING",
+        "U-GRAPH-REGULAR"
+      ]
+    }
+  ],
+  "created_at": "2026-10-30T08:25:46.930Z"
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-LENGTH-CM-TO-M",
+  "transport": "api",
+  "expected_behavior": "必须实际调用 convert_length 工具（value=125, from='cm', to='m'）并采用工具返回结果；最终答复只有合法 JSON、无任何其它文字：value=1.25，unit=\"m\"，explanation 为非空说明。",
+  "session_id": "session-2212d3f5-1c7c-42d5-8e76-9b7472a198d0",
+  "workspace_id": "7f08bc77-3d3b-402a-8e68-fd53d6c6af3d",
+  "session_title": "评测 U-LENGTH-CM-TO-M",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-langchain-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-langchain-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-ca1a2c0e-e26e-44fa-939c-ba99b39583fc",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

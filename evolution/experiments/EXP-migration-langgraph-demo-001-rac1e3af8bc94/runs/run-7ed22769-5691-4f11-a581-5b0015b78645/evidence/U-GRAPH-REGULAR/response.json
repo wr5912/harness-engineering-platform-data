@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 2，单价 20，请给我报价。"
+  ],
+  "assistant_texts": [
+    "## 报价请求未能完成（工具执行失败）\n\n已从您的输入中提取到参数：\n\n- **数量 quantity**：2\n- **单价 unit_price**：20（均为非负数，符合调用条件）\n\n我按规则调用了真实报价图工具 `quote_graph`（共尝试 2 次），但两次调用均返回同一工具侧错误：\n\n```\nError: cannot get property \"llm\" without inject\n```\n\n也就是说，报价图**没有返回可读的执行回执**（既没有 `ok` 与 `graph_execution` 状态，也没有 `result.status=completed` 的结果体）。按照规则，我不能用自行心算或其他方式替代图计算，也不能编造报价，因此**目前无法给出正式报价**。\n\n### 建议\n这看起来是报价图工具运行环境的配置问题（依赖注入缺失），需要由维护方修复 `quote_graph` 的执行环境后才能正常出单。待工具恢复后，您可以用同样参数（数量 2、单价 20）重新发起，我会立即调用报价图并按回执解释命中分支（quantity < 10 应命中 regular 常规分支）、小计、税费、运费与总额。\n\n如果您希望我在工具恢复后自动重试，请告诉我。"
+  ],
+  "session_id": "session-fcaff070-7cbb-4bff-9a2e-295f6f2ab29d",
+  "turns": [
+    {
+      "assistant_text": "## 报价请求未能完成（工具执行失败）\n\n已从您的输入中提取到参数：\n\n- **数量 quantity**：2\n- **单价 unit_price**：20（均为非负数，符合调用条件）\n\n我按规则调用了真实报价图工具 `quote_graph`（共尝试 2 次），但两次调用均返回同一工具侧错误：\n\n```\nError: cannot get property \"llm\" without inject\n```\n\n也就是说，报价图**没有返回可读的执行回执**（既没有 `ok` 与 `graph_execution` 状态，也没有 `result.status=completed` 的结果体）。按照规则，我不能用自行心算或其他方式替代图计算，也不能编造报价，因此**目前无法给出正式报价**。\n\n### 建议\n这看起来是报价图工具运行环境的配置问题（依赖注入缺失），需要由维护方修复 `quote_graph` 的执行环境后才能正常出单。待工具恢复后，您可以用同样参数（数量 2、单价 20）重新发起，我会立即调用报价图并按回执解释命中分支（quantity < 10 应命中 regular 常规分支）、小计、税费、运费与总额。\n\n如果您希望我在工具恢复后自动重试，请告诉我。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "3f67226f-d5e4-4b52-93a2-10c1353f598e"
+    }
+  ]
+}

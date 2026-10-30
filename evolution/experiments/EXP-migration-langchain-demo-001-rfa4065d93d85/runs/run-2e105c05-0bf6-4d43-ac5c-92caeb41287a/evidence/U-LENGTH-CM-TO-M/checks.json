@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-LENGTH-CM-TO-M",
+  "transport": "api",
+  "expected_behavior": "必须实际调用 convert_length 工具（value=125, from='cm', to='m'）并采用工具返回结果；最终答复只有合法 JSON、无任何其它文字：value=1.25，unit=\"m\"，explanation 为非空说明。",
+  "session_id": "session-5ee9acb6-2c56-41f9-8054-4600f451b953",
+  "workspace_id": "67422956-62e1-459f-80d8-74dbed8ef9ca",
+  "session_title": "评测 U-LENGTH-CM-TO-M",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-langchain-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-langchain-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-8180d625-8a40-439d-8e60-4f6694927a84",
+    "workspace_id": "67422956-62e1-459f-80d8-74dbed8ef9ca",
+    "session_title": "评审 U-LENGTH-CM-TO-M",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

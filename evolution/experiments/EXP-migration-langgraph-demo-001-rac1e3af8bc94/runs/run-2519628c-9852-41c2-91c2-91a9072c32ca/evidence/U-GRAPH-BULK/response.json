@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 10，单价 12，请给我报价。"
+  ],
+  "assistant_texts": [
+    "报价已完成，以下是基于业务图 `quote_graph` 真实执行结果的报价单：\n\n## 报价结果\n\n| 项目 | 金额 |\n|------|------|\n| 数量 × 单价 | 10 × ¥12 |\n| 命中分支 | **bulk（批量九折）** |\n| 小计 subtotal | ¥108.00 |\n| 税费 tax | ¥10.80 |\n| 运费 shipping | ¥0.00 |\n| **总额 total** | **¥118.80** |\n\n## 说明\n\n- **分支命中**：因数量 10 ≥ 10，图中条件分支走 `bulk` 批量路径，享受九折优惠（原价 ¥120 → 小计 ¥108）。\n- **并行计算**：图中 `calc_tax`（税费）与 `calc_shipping`（运费）两个节点并行执行，均已完成（status: completed）。\n- **汇合求总额**：并行分支在 `join` 节点汇合，得到总额 ¥108.00 + ¥10.80 + ¥0.00 = **¥118.80**。\n\n工具回执检查：`ok=true`，图执行状态 `graph_execution.status=completed`、`result.status=completed`、`result.complete=true`，4 个节点（bulk → calc_shipping / calc_tax → join）全部执行成功（执行 ID：`workflow-f95476d1-bc45-4b02-8531-8b04c969b2e3`）。以上数字均直接取自图回执，非人工估算。"
+  ],
+  "session_id": "session-5aa8d952-d9ba-4d49-b464-96d8ff5f8801",
+  "turns": [
+    {
+      "assistant_text": "报价已完成，以下是基于业务图 `quote_graph` 真实执行结果的报价单：\n\n## 报价结果\n\n| 项目 | 金额 |\n|------|------|\n| 数量 × 单价 | 10 × ¥12 |\n| 命中分支 | **bulk（批量九折）** |\n| 小计 subtotal | ¥108.00 |\n| 税费 tax | ¥10.80 |\n| 运费 shipping | ¥0.00 |\n| **总额 total** | **¥118.80** |\n\n## 说明\n\n- **分支命中**：因数量 10 ≥ 10，图中条件分支走 `bulk` 批量路径，享受九折优惠（原价 ¥120 → 小计 ¥108）。\n- **并行计算**：图中 `calc_tax`（税费）与 `calc_shipping`（运费）两个节点并行执行，均已完成（status: completed）。\n- **汇合求总额**：并行分支在 `join` 节点汇合，得到总额 ¥108.00 + ¥10.80 + ¥0.00 = **¥118.80**。\n\n工具回执检查：`ok=true`，图执行状态 `graph_execution.status=completed`、`result.status=completed`、`result.complete=true`，4 个节点（bulk → calc_shipping / calc_tax → join）全部执行成功（执行 ID：`workflow-f95476d1-bc45-4b02-8531-8b04c969b2e3`）。以上数字均直接取自图回执，非人工估算。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "7ddebb23-1a07-45a1-b59d-ddb0bce4eacd"
+    }
+  ]
+}

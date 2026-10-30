@@ -1,0 +1,63 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "工具回执 call_5c18d3f0e0db47c68b824cbd 为非错误（is_error=false）且返回 {\"value\":250,\"unit\":\"cm\"}，其对应调用事件显示参数为 value=2.5、from='m'、to='cm'，满足必须实际调用 convert_length 并采用返回结果的要求；被测最终答复为纯合法 JSON，value=250、unit=\"cm\"、explanation 非空，未夹杂其它文字，也未出现心算替代工具的迹象。",
+    "requirements": [
+      {
+        "requirement": "必须实际调用 convert_length 工具（value=2.5, from='m', to='cm'）并采用工具返回结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"value\":250,\"unit\":\"cm\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "最终答复只有合法 JSON、无任何其它文字：value=250，unit=\"cm\"，explanation 为非空说明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "{\"value\": 250, \"unit\": \"cm\", \"explanation\": \"已调用 convert_length 工具，将 2.5 米按 1 米 = 100 厘米换算为 250 厘米。\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "不接受心算或未调用工具的回答",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"value\":250,\"unit\":\"cm\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-ceebba39-9a4f-4491-a7e2-661fce3c295e",
+    "workspace_id": "04ee6f29-e4d7-42de-8fbf-e5d01a5f00b6",
+    "session_title": "评审 U-LENGTH-M-TO-CM",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

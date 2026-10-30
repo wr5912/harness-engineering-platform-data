@@ -1,0 +1,79 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测 Session 中存在真实 quote_graph 工具调用，回执 is_error=false 且 result.status=completed、complete=true；trace 显示 bulk 判定后 calc_shipping 与 calc_tax 均执行完成、join 在其后汇合；回执金额 subtotal=108、tax=10.8、shipping=0、total=118.8 与 quantity=10、unit_price=12 的九折、10% 税费、免运费规则一致，且回复解释与回执完全对应，四项要求均满足。",
+    "requirements": [
+      {
+        "requirement": "必须真实调用报价图工具 quote_graph（quantity=10, unit_price=12），不得心算或用原子计算工具替代图计算",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"ok\":true,\"result\":{\"status\":\"completed\",\"complete\":true,\"route\":\"bulk\",\"nodes\":[{\"node\":\"bulk\",\"output\":{\"subtotal\":108,\"route\":\"bulk\"}},{\"node\":\"calc_shipping\",\"output\":{\"shipping\":0}},{\"node\":\"calc_tax\",\"output\":{\"tax\":10.8}},{\"node\":\"join\",\"output\":{\"total\":118.8}}],\"subtotal\":108,\"tax\":10.8,\"shipping\":0,\"total\":118.8},\"graph_execution\":{\"execution_id\":\"workflow-e4ad7dc0-c03d-4785-8754-02acd16c58d4\",\"role\":\"target\",\"session_id\":\"session-1e7e4aac-ebfa-4abe-854a-4ce8ec8cbf5c\",\"tool_call_id\":\"call_3fcd4adfeeaf409787898cfd\",\"workflow_id\":\"quote_graph\",\"complete\":true,\"build_digest\":\"5df06ad6235c95c480625250c4d9766d8762d700fe8ef391bb6968e292769294\",\"source_digest\":\"d67ca75057c244f852ffefe45a04c6aba2a2d3aaf49f092415b9b4978e0b6345\",\"esm_sha256\":\"e973efb7b268015fe7a94e4703eb0b9dd94dc0ae879ae8352ddc467696d42589\",\"status\":\"completed\",\"trace\":[{\"node\":\"bulk\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"calc_shipping\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"calc_tax\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"join\",\"status\":\"completed\",\"elapsed_ms\":1}],\"model_attempts\":[]}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "图回执要求执行完成（status=completed 且 complete=true），条件路由命中 bulk（route=bulk，quantity>=10 命中九折分支），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"ok\":true,\"result\":{\"status\":\"completed\",\"complete\":true,\"route\":\"bulk\",\"nodes\":[{\"node\":\"bulk\",\"output\":{\"subtotal\":108,\"route\":\"bulk\"}},{\"node\":\"calc_shipping\",\"output\":{\"shipping\":0}},{\"node\":\"calc_tax\",\"output\":{\"tax\":10.8}},{\"node\":\"join\",\"output\":{\"total\":118.8}}],\"subtotal\":108,\"tax\":10.8,\"shipping\":0,\"total\":118.8},\"graph_execution\":{\"execution_id\":\"workflow-e4ad7dc0-c03d-4785-8754-02acd16c58d4\",\"role\":\"target\",\"session_id\":\"session-1e7e4aac-ebfa-4abe-854a-4ce8ec8cbf5c\",\"tool_call_id\":\"call_3fcd4adfeeaf409787898cfd\",\"workflow_id\":\"quote_graph\",\"complete\":true,\"build_digest\":\"5df06ad6235c95c480625250c4d9766d8762d700fe8ef391bb6968e292769294\",\"source_digest\":\"d67ca75057c244f852ffefe45a04c6aba2a2d3aaf49f092415b9b4978e0b6345\",\"esm_sha256\":\"e973efb7b268015fe7a94e4703eb0b9dd94dc0ae879ae8352ddc467696d42589\",\"status\":\"completed\",\"trace\":[{\"node\":\"bulk\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"calc_shipping\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"calc_tax\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"join\",\"status\":\"completed\",\"elapsed_ms\":1}],\"model_attempts\":[]}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "金额与来源一致：subtotal=108（10×12×0.9）、tax=10.8（108×10% 两位舍入）、shipping=0（subtotal>=100 免运费）、total=118.8（join 汇合后两位舍入）",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"ok\":true,\"result\":{\"status\":\"completed\",\"complete\":true,\"route\":\"bulk\",\"nodes\":[{\"node\":\"bulk\",\"output\":{\"subtotal\":108,\"route\":\"bulk\"}},{\"node\":\"calc_shipping\",\"output\":{\"shipping\":0}},{\"node\":\"calc_tax\",\"output\":{\"tax\":10.8}},{\"node\":\"join\",\"output\":{\"total\":118.8}}],\"subtotal\":108,\"tax\":10.8,\"shipping\":0,\"total\":118.8},\"graph_execution\":{\"execution_id\":\"workflow-e4ad7dc0-c03d-4785-8754-02acd16c58d4\",\"role\":\"target\",\"session_id\":\"session-1e7e4aac-ebfa-4abe-854a-4ce8ec8cbf5c\",\"tool_call_id\":\"call_3fcd4adfeeaf409787898cfd\",\"workflow_id\":\"quote_graph\",\"complete\":true,\"build_digest\":\"5df06ad6235c95c480625250c4d9766d8762d700fe8ef391bb6968e292769294\",\"source_digest\":\"d67ca75057c244f852ffefe45a04c6aba2a2d3aaf49f092415b9b4978e0b6345\",\"esm_sha256\":\"e973efb7b268015fe7a94e4703eb0b9dd94dc0ae879ae8352ddc467696d42589\",\"status\":\"completed\",\"trace\":[{\"node\":\"bulk\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"calc_shipping\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"calc_tax\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"join\",\"status\":\"completed\",\"elapsed_ms\":1}],\"model_attempts\":[]}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "回复需解释命中 bulk 分支及小计、税费、运费、总额，且与图回执一致",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "已调用报价图 quote_graph 完成计算，工具回执 ok=true，图执行状态 graph_execution.status=completed，结果 result.status=completed 且 complete=true，报价结果如下：\n\n**报价明细（数量 10，单价 12）**\n\n- **命中分支**：bulk（批量分支）——因为 quantity=10 已达到 ≥10 的批量门槛，享受九折优惠。\n- **小计 subtotal**：108（原价 10×12=120，九折后为 108）\n- **税费 tax**：10.8\n- **运费 shipping**：0\n- **总额 total**：118.8\n\n**图执行过程说明**：条件分支节点 bulk 判定命中批量优惠并算出小计后，**税费 calc_tax 与运费 calc_shipping 两个节点并行计算**，随后在 join 节点汇合，相加得到最终总额 118.8。以上数值均直接取自图的执行回执，非估算。\n\n如需调整数量或单价，我可以重新跑一次报价图。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 2,
+            "quote": "{\"ok\":true,\"result\":{\"status\":\"completed\",\"complete\":true,\"route\":\"bulk\",\"nodes\":[{\"node\":\"bulk\",\"output\":{\"subtotal\":108,\"route\":\"bulk\"}},{\"node\":\"calc_shipping\",\"output\":{\"shipping\":0}},{\"node\":\"calc_tax\",\"output\":{\"tax\":10.8}},{\"node\":\"join\",\"output\":{\"total\":118.8}}],\"subtotal\":108,\"tax\":10.8,\"shipping\":0,\"total\":118.8},\"graph_execution\":{\"execution_id\":\"workflow-e4ad7dc0-c03d-4785-8754-02acd16c58d4\",\"role\":\"target\",\"session_id\":\"session-1e7e4aac-ebfa-4abe-854a-4ce8ec8cbf5c\",\"tool_call_id\":\"call_3fcd4adfeeaf409787898cfd\",\"workflow_id\":\"quote_graph\",\"complete\":true,\"build_digest\":\"5df06ad6235c95c480625250c4d9766d8762d700fe8ef391bb6968e292769294\",\"source_digest\":\"d67ca75057c244f852ffefe45a04c6aba2a2d3aaf49f092415b9b4978e0b6345\",\"esm_sha256\":\"e973efb7b268015fe7a94e4703eb0b9dd94dc0ae879ae8352ddc467696d42589\",\"status\":\"completed\",\"trace\":[{\"node\":\"bulk\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"calc_shipping\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"calc_tax\",\"status\":\"completed\",\"elapsed_ms\":0},{\"node\":\"join\",\"status\":\"completed\",\"elapsed_ms\":1}],\"model_attempts\":[]}}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-039fea08-d699-40a1-908b-88f81151cf5d",
+    "workspace_id": "50ad5695-9209-4025-a40c-4b25436c9b82",
+    "session_title": "评审 U-GRAPH-BULK",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

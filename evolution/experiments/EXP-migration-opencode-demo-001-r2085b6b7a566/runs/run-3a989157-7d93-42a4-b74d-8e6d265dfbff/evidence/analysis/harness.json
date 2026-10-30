@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source_id": "experiment:EXP-migration-opencode-demo-001-r2085b6b7a566",
+  "files": [
+    {
+      "tree": "workspace",
+      "path": "AGENTS.md",
+      "sha256": "868d022b718c701b8fbba5117bd990d05a8ac08853254b86629a63c162e225df",
+      "content": "# 金额项目修复助手\n\n在独立业务项目中工作，业务项目位于 /work/project（项目种子的独立可写副本）。用户要求修复时，先读代码和测试，再做最小修改，运行 `node --test total.test.ts`，委派 reviewer 子角色复核实际修改，最后报告实际修改和测试结果。不得修改迁移来源或 Harness 角色指令。\n"
+    },
+    {
+      "tree": "workspace",
+      "path": "project/total.test.ts",
+      "sha256": "16edd2473e476ed05ff55bd5cb1a467f704261971aba89f4bb368076dabe7577",
+      "content": "import assert from 'node:assert/strict'\nimport test from 'node:test'\nimport { total } from './total.ts'\ntest('金额在乘法后保留两位小数', () => {\n  assert.equal(total(3, 0.333), 1)\n  assert.equal(total(2, 12.5), 25)\n})\n"
+    },
+    {
+      "tree": "workspace",
+      "path": "project/total.ts",
+      "sha256": "69cbae81f38c671ce70155a9e5f8cc74c1a7e326324f9a63504336cc0e10b5e6",
+      "content": "export function total(quantity: number, price: number) {\n  return quantity * price\n}\n"
+    },
+    {
+      "tree": "presets",
+      "path": "migration-opencode-demo/agent.cordis.yml",
+      "sha256": "e5252e07bab69e19eb8c312ea20a4b71687b659102889516fa0d46f9ef74e88c",
+      "content": "- id: persona\n  name: /opt/dsh/packages/preset/persona/lib/index.js\n  disabled: false\n  config:\n    prefix: '你是OpenCode 编码迁移样例（Agent ID: migration-opencode-demo）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答，不声称未提供的工具、权限或执行结果。'\n    suffix: 你的工作目录是 {{cwd}}。\n- id: agent-instructions\n  name: /opt/dsh/packages/context/agent-instructions/lib/index.js\n  disabled: false\n  config:\n    maxBytes: 65536\n- id: tool-fs\n  name: /opt/dsh/packages/fs/tool-fs/lib/index.js\n  config:\n    read: true\n    readImage: true\n    write: true\n    edit: true\n- id: tool-fs-search\n  name: /opt/dsh/packages/fs/tool-fs-search/lib/index.js\n  config:\n    sampleOverCapGlobResults: false\n- id: tool-bash\n  name: /opt/dsh/packages/shell/tool-bash/lib/index.js\n- id: tool-subagent-reviewer\n  name: /opt/dsh/packages/subagent/tool-subagent/lib/index.js\n  config:\n    provider: spawn\n    toolName: reviewer\n    agentPreset: reviewer\n"
+    },
+    {
+      "tree": "presets",
+      "path": "migration-opencode-demo/preset.yml",
+      "sha256": "4b54b42ea5d5270fb6cace86f1a61d53d096a487314f5a38729bb8871f23d109",
+      "content": "name: OpenCode 编码迁移样例\ndescription: 迁移自本项目 OpenCode 固定样例（opencode-ai 1.19.5）的金额项目修复助手：在独立项目 /work/project 中先读代码与测试再做最小修改，运行 node --test total.test.ts，完成前委派 reviewer 子角色复核实际改动，最后报告实际修改与真实测试结果。未运行原 OpenCode 运行时，不代表全量等效。\norder: 10\n"
+    },
+    {
+      "tree": "presets",
+      "path": "reviewer/agent.cordis.yml",
+      "sha256": "b58091e1e3b031ec732b26d1d417d989ae18c6e57e27122fd64c15e68dd0fd28",
+      "content": "- id: persona\n  name: /opt/dsh/packages/preset/persona/lib/index.js\n  config:\n    prefix: '你是 reviewer 复核子角色（Agent ID: migration-opencode-demo 的子角色）。使用中文回答，不声称未提供的工具、权限或执行结果。'\n    suffix: 你的工作目录是 {{cwd}}。\n- id: tool-fs\n  name: /opt/dsh/packages/fs/tool-fs/lib/index.js\n  config:\n    read: true\n    readImage: false\n    write: false\n    edit: false\n- id: tool-fs-search\n  name: /opt/dsh/packages/fs/tool-fs-search/lib/index.js\n  config:\n    sampleOverCapGlobResults: false\n"
+    },
+    {
+      "tree": "presets",
+      "path": "reviewer/role.md",
+      "sha256": "236643165ceb88b74268197a160239f7df351c8e7e06be7a48591fbe6e86c5fa",
+      "content": "# reviewer 复核子角色\n\n读取项目和测试，指出错误或确认计算、舍入和用例均符合要求。不要修改文件。\n"
+    },
+    {
+      "tree": "managed",
+      "path": "migration-opencode-demo.patch.yml",
+      "sha256": "8407c8d83c377d0f55597a2157e8a374783ac47ad95b67380a90adcfafb34ca6",
+      "content": "# 注册本 Experiment 的受控 Preset。\n- id: agent-preset-registry\n  config:\n    default: migration-opencode-demo\n\n- insert:\n    - id: preset-migration-opencode-demo\n      name: '@deepseek-ai/dsh-agent-preset'\n      config:\n        id: migration-opencode-demo\n        plugins:\n          - id: migration-opencode-demo-harness\n            name: cordis:include\n            config:\n              path: /opt/dsh-presets/migration-opencode-demo/agent.cordis.yml\n    - id: preset-reviewer\n      name: '@deepseek-ai/dsh-agent-preset'\n      config:\n        id: reviewer\n        name: reviewer\n        description: 复核金额项目实际改动（只读）\n        plugins:\n          - id: reviewer-harness\n            name: cordis:include\n            config:\n              path: /opt/dsh-presets/reviewer/agent.cordis.yml\n"
+    }
+  ]
+}

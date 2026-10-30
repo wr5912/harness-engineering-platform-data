@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "比较 1.9 和 1.10，哪个版本更新？"
+  ],
+  "assistant_texts": [
+    "工具比较结果如下（由 Python3 实际执行 packaging 版本比较）：\n\n| 字段 | 值 |\n|------|-----|\n| left | 1.9 |\n| right | 1.10 |\n| **newer** | **1.10** |\n| runtime | Python 3.11.2 / packaging 25.0 / python3-json-subprocess |\n\n结论：**1.10 比 1.9 更新**。"
+  ],
+  "session_id": "session-75a32db3-7d2b-4efe-b86c-9d1894e2148c",
+  "turns": [
+    {
+      "assistant_text": "工具比较结果如下（由 Python3 实际执行 packaging 版本比较）：\n\n| 字段 | 值 |\n|------|-----|\n| left | 1.9 |\n| right | 1.10 |\n| **newer** | **1.10** |\n| runtime | Python 3.11.2 / packaging 25.0 / python3-json-subprocess |\n\n结论：**1.10 比 1.9 更新**。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "select_newer_version",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "fe3e7ff2-700b-4ebb-92e0-a2ad6fc361e9"
+    }
+  ]
+}

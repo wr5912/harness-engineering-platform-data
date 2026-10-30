@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答在缺少 quantity 与 unit_price 时明确向用户补问这两项必要信息，未猜测或虚构任何输入，也未在参数不全时调用 quote_graph 图；同时本轮未给出任何报价数字，仅说明了未来的分支逻辑与计费构成（无具体数值），全部要求均满足。",
+    "requirements": [
+      {
+        "requirement": "缺少数量与单价时必须先向用户补问 quantity 与 unit_price，不得猜测或虚构输入，不得在参数不全时调用 quote_graph 图",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "好的，我来帮您报价。不过目前还缺少两个必要信息，请补充：\n\n1. **订单数量**（quantity）：您要订购多少件？\n2. **单价**（unit_price）：每件的价格是多少（请注明货币单位）？\n\n收到这两个数字后，我会调用真实报价图为您计算，并说明命中的分支（数量 ≥10 走 bulk 批量九折，否则走 regular 常规价）、小计、税费、运费和总额。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "本轮不给出任何报价数字",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "好的，我来帮您报价。不过目前还缺少两个必要信息，请补充：\n\n1. **订单数量**（quantity）：您要订购多少件？\n2. **单价**（unit_price）：每件的价格是多少（请注明货币单位）？\n\n收到这两个数字后，我会调用真实报价图为您计算，并说明命中的分支（数量 ≥10 走 bulk 批量九折，否则走 regular 常规价）、小计、税费、运费和总额。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-d50e54d6-fc17-4837-a260-12fe81ceb08b",
+    "workspace_id": "7413036b-9e6e-473f-a6b2-325aae305547",
+    "session_title": "评审 U-GRAPH-MISSING",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

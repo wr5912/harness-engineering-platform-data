@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 10，单价 12，请给我报价。"
+  ],
+  "assistant_texts": [
+    "抱歉，本次报价未能生成。\n\n我已从您的输入中提取到参数：数量 quantity = 10，单价 unit_price = 12（均为非负数，符合调用条件）。但调用真实报价图工具 `quote_graph` 时执行出错，工具返回错误信息：\n\n> `Error: cannot get property \"llm\" without inject`\n\n由于报价必须完全由该业务图计算完成，且工具未返回可用的执行回执（无法检查 `ok`、`graph_execution` 以及 `result.status=completed` / `result.complete=true`），我不能编造或心算任何金额，因此暂时无法给出 subtotal、tax、shipping 和 total。\n\n从参数本身看，数量 10 满足 `quantity >= 10`，一旦工具恢复应会命中 bulk 批量九折分支，但这只是预期路径说明，不是最终报价。\n\n建议：请稍后重试，或检查报价图服务/工具注入配置后再次发起，我会立即重新调用 `quote_graph` 并为您完整解释结果。"
+  ],
+  "session_id": "session-3b9ce39f-0a63-49be-8e29-59c9c571bda9",
+  "turns": [
+    {
+      "assistant_text": "抱歉，本次报价未能生成。\n\n我已从您的输入中提取到参数：数量 quantity = 10，单价 unit_price = 12（均为非负数，符合调用条件）。但调用真实报价图工具 `quote_graph` 时执行出错，工具返回错误信息：\n\n> `Error: cannot get property \"llm\" without inject`\n\n由于报价必须完全由该业务图计算完成，且工具未返回可用的执行回执（无法检查 `ok`、`graph_execution` 以及 `result.status=completed` / `result.complete=true`），我不能编造或心算任何金额，因此暂时无法给出 subtotal、tax、shipping 和 total。\n\n从参数本身看，数量 10 满足 `quantity >= 10`，一旦工具恢复应会命中 bulk 批量九折分支，但这只是预期路径说明，不是最终报价。\n\n建议：请稍后重试，或检查报价图服务/工具注入配置后再次发起，我会立即重新调用 `quote_graph` 并为您完整解释结果。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "609c2731-a38e-4a86-a480-0e204a5c5e5b"
+    }
+  ]
+}

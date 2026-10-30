@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-GRAPH-REGULAR",
+  "transport": "api",
+  "expected_behavior": "必须真实调用报价图工具 quote_graph（quantity=2, unit_price=20），不得心算或用原子计算工具替代图计算。图回执要求执行完成（status=completed 且 complete=true），条件路由命中 regular（route=regular，quantity<10 不打折），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行。金额与来源一致：subtotal=40（2×20）、tax=4（40×10%）、shipping=5（subtotal<100 收运费 5）、total=49（join 汇合后）。回复需解释命中 regular 分支及小计、税费、运费、总额，且与图回执一致。",
+  "session_id": "session-fcaff070-7cbb-4bff-9a2e-295f6f2ab29d",
+  "workspace_id": "dfd0168e-4da9-4bcd-b182-e92de7d2621a",
+  "session_title": "评测 U-GRAPH-REGULAR",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-langgraph-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-langgraph-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-6cd654c8-c2eb-4aa0-96a0-35ad436f3df2",
+    "workspace_id": "dfd0168e-4da9-4bcd-b182-e92de7d2621a",
+    "session_title": "评审 U-GRAPH-REGULAR",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

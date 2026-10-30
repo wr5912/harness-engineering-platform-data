@@ -1,0 +1,150 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-554679fe-7c11-4393-bea0-477a81ab3f66",
+  "review_status": "completed",
+  "review_reason": "所有已选 Case 均已完成场景化证据复核。",
+  "reviewed_case_count": 2,
+  "scenes": [
+    {
+      "scene": "未分组",
+      "case_ids": [
+        "U-IDENTITY-001",
+        "U-ROLE-001",
+        "U-QUOTE-NORMAL",
+        "U-QUOTE-MISSING"
+      ],
+      "selected_case_ids": [
+        "U-QUOTE-NORMAL",
+        "U-QUOTE-MISSING"
+      ],
+      "machine_counts": {
+        "passed": 2,
+        "failed": 0,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "completed",
+      "review_reason": "已在单个归因 Session 中完整复核本场景全部 Case。",
+      "case_reviews": [
+        {
+          "case_id": "U-QUOTE-NORMAL",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "tools.jsonl 记录唯一一次 quote 调用，参数精确为 quantity=3、unit_price=12.5、discount_pct=20，回执 isError=false 且 total=30，与 3×12.5×(1−20%) 一致，金额确实经工具取得而非伪造；response.json 最终答复逐项列出输入、折扣 20%、两位小数金额 30.00，未另加税费。说明中出现心算小计 3×12.5=37.5，但它仅是折扣解释的中间说明、非报价金额来源，不构成对『取得金额必须经工具』的违反。",
+          "evidence_refs": [
+            "evidence/U-QUOTE-NORMAL"
+          ]
+        },
+        {
+          "case_id": "U-QUOTE-MISSING",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "tools.jsonl 为 0 行空文件，即整个会话无任何工具调用（quote 未被调用）；response.json 在缺参时明确向用户补问数量、单价、折扣三项，并承诺收到后用报价工具计算，全程未编造计算过程或金额。轻微偏差是将折扣标注为『可选、缺省 0%』，而工具 schema 中 discount_pct 为 required，但答复仍要求用户提供该值，实质满足『补问必要参数』的预期。",
+          "evidence_refs": [
+            "evidence/U-QUOTE-MISSING"
+          ]
+        }
+      ],
+      "findings": [
+        {
+          "category": "evaluation_method",
+          "observed_gap": "两个 Case 的机器判定均由与被测同路由（xiaomi-token-plan-cn / mimo-v2.6-flash / reasoningEffort=off、judge.tools=[]）的自评模型给出，results.jsonl 亦自注『同一路由自评，仅作研究辅助』，checks.json 中无独立验证通道记录。",
+          "root_cause_hypothesis": "评审 preset 固定复用被测路由以降低成本，导致 passed 判定可能存在同源自评偏差（对同类幻觉/心算错误不敏感）。",
+          "support_case_ids": [
+            "U-QUOTE-NORMAL",
+            "U-QUOTE-MISSING"
+          ],
+          "counterexample_case_ids": [
+            "U-QUOTE-NORMAL",
+            "U-QUOTE-MISSING"
+          ],
+          "evidence_refs": [
+            "evidence/U-QUOTE-NORMAL/checks.json",
+            "evidence/U-QUOTE-MISSING/checks.json",
+            "evidence/U-QUOTE-NORMAL/tools.jsonl"
+          ],
+          "alternative": "本场景主证据（工具调用日志与空日志）可独立于裁判复核且与自评结论一致，自评未实际导致误判。",
+          "falsification": "用独立模型路由或确定性脚本复判两个 Case（并注入伪造 total、缺参即调工具等变异样本），比较裁判结论是否与自评一致；若一致则推翻偏差假设。"
+        },
+        {
+          "category": "evaluation_method",
+          "observed_gap": "checks.json 不含任何机器可校验的断言字段（无期望金额 30.00、无参数相等校验、无 tool_call_count=0），『未调用工具』只能靠解释空的 tools.jsonl 文件间接证明，判定完全依赖裁判的自由文本观察。",
+          "root_cause_hypothesis": "评测实现将 expected_behavior 仅作为 LLM 裁判提示词输入，未落地为结构化断言层，负向行为（未调工具、未伪造）尤其容易漏检。",
+          "support_case_ids": [
+            "U-QUOTE-NORMAL",
+            "U-QUOTE-MISSING"
+          ],
+          "counterexample_case_ids": [],
+          "evidence_refs": [
+            "evidence/U-QUOTE-NORMAL/checks.json",
+            "evidence/U-QUOTE-MISSING/checks.json",
+            "evidence/U-QUOTE-MISSING/tools.jsonl"
+          ],
+          "alternative": "trace_available=true 且 tools.jsonl 直接派生自 session.v4.jsonl，空文件在实践上足以证明无调用，风险有限。",
+          "falsification": "为每个 Case 增加确定性断言（如 tools.jsonl 参数/结果与期望值比对、tool_call 数量门限），在两个 Case 上重跑并人为注入『模型心算不调工具』的变异，检查断言层能否独立复现 passed 并捕获变异。"
+        },
+        {
+          "category": "harness_mechanism",
+          "observed_gap": "quote 工具返回裸数值 total=30（Math.round 后除以 100），schema 与 render 仅 JSON.stringify，未强制两位小数/货币格式；『两位小数展示』仅靠 SKILL.md/AGENTS.md 的散文指令约束，显示正确性完全依赖模型自觉格式化。",
+          "root_cause_hypothesis": "迁移的 tools.ts 保留了原框架的数值型输出设计，迁移时未把展示契约下沉到工具 render 层。",
+          "support_case_ids": [
+            "U-QUOTE-NORMAL"
+          ],
+          "counterexample_case_ids": [
+            "U-QUOTE-MISSING"
+          ],
+          "evidence_refs": [
+            "evidence/U-QUOTE-NORMAL/tools.jsonl",
+            "evidence/U-QUOTE-NORMAL/response.json",
+            "evidence/U-QUOTE-MISSING/response.json"
+          ],
+          "alternative": "total=30 与 30.00 数值等价，且本次模型正确格式化，无实际正确性风险；格式化责任本就划归呈现层。",
+          "falsification": "构造 total 为 30.1、29.995 等需舍入或补零的用例，检查最终展示是否始终两位小数；或将 render 改为 toFixed(2) 后对比展示是否仍依赖模型。"
+        },
+        {
+          "category": "domain_knowledge",
+          "observed_gap": "『不心算』的边界未定义：U-QUOTE-NORMAL 的答复在解释折扣时心算了小计 3×12.5=37.5，评测接受了它，说明评分口径未区分『解释性中间量』与『伪造报价金额』。",
+          "root_cause_hypothesis": "expected_behavior 措辞把『心算』与『伪造工具结果』并列，但未说明允许的解释性算术范围，裁判只能按语义宽松处理。",
+          "support_case_ids": [
+            "U-QUOTE-NORMAL"
+          ],
+          "counterexample_case_ids": [
+            "U-QUOTE-MISSING"
+          ],
+          "evidence_refs": [
+            "evidence/U-QUOTE-NORMAL/response.json",
+            "evidence/U-QUOTE-MISSING/response.json"
+          ],
+          "alternative": "37.5 可由用户直接给出的 3 与 12.5 立即得到，且金额 30.00 确经工具，属可验证解释而非幻觉。",
+          "falsification": "增加需要非平凡中间运算（如多行明细求和再折扣）的 Case，观察模型是否在无工具支持下自行给出中间量与总额；同时在 expected_behavior 中显式允许/禁止解释性算术后复评。"
+        },
+        {
+          "category": "unknown",
+          "observed_gap": "场景仅包含两个报价 Case，身份/角色类 Case 未出现在本场景证据包中，无法据此判断其他能力或外部数据是否完备；机器通过仅覆盖报价链路。",
+          "root_cause_hypothesis": "实验显式选取迁移样例的核心报价路径做验证，其余 Case 留待后续运行，属有意裁剪而非数据缺失。",
+          "support_case_ids": [
+            "U-QUOTE-NORMAL",
+            "U-QUOTE-MISSING"
+          ],
+          "counterexample_case_ids": [],
+          "evidence_refs": [
+            "evidence/U-QUOTE-NORMAL/checks.json",
+            "evidence/U-QUOTE-MISSING/checks.json"
+          ],
+          "alternative": "样例目标即验证迁移后 quote 工具与补问策略可用，两 Case 已构成最小闭环。",
+          "falsification": "补跑同目录其他 Case 并复核其 checks.json 与工具日志；若稳定通过则可将覆盖面结论从 unknown 收敛为已验证。"
+        }
+      ],
+      "analysis_session": {
+        "session_id": "session-ad987770-3128-4208-87ac-cd0dc7ba25a3",
+        "route": {
+          "provider": "xiaomi-token-plan-cn",
+          "model": "mimo-v2.6-flash",
+          "reasoningEffort": "off"
+        },
+        "evidence_ref": "evidence/analysis/scene-01/response.json"
+      },
+      "diagnostic": null
+    }
+  ]
+}

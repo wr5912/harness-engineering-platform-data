@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-REGULAR",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具回执显示真实调用了 quote_graph（tool_call_id 与 graph_execution 一致），status=completed、complete=true，route=regular，regular/calc_shipping/calc_tax/join 四节点均 status=completed 且 trace 中 join 位于两并行节点之后；回执数值 subtotal=40、tax=4、shipping=5、total=49 与预期完全一致；被测回复解释了命中 regular 分支的原因及各项金额，与回执相符。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-REGULAR"
+}

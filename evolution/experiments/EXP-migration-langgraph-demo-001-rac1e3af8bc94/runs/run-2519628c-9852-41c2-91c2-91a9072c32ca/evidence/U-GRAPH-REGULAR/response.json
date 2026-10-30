@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 2，单价 20，请给我报价。"
+  ],
+  "assistant_texts": [
+    "报价已完成，图执行状态为 `completed`，以下是报价结果：\n\n## 订单报价结果\n\n| 项目 | 数值 |\n|---|---|\n| 数量 quantity | 2 |\n| 单价 unit_price | 20 |\n| 命中分支 | **regular（常规）** —— 因为数量 2 < 10，未达到批量门槛，不享受九折 |\n| 小计 subtotal | 40 |\n| 税费 tax | 4 |\n| 运费 shipping | 5 |\n| **总额 total** | **49** |\n\n## 图执行过程说明\n\n报价图（`quote_graph`）的实际执行路径如下：\n\n1. **条件分支**：`quantity >= 10` 判断为否，走 `regular` 常规分支，得到小计 40（2 × 20）。\n2. **并行计算**：小计确定后，`calc_tax`（税费 = 4）与 `calc_shipping`（运费 = 5）两个节点**并行执行**。\n3. **汇合（join）**：两个并行节点的结果在 `join` 节点汇合，求和得到总额 40 + 4 + 5 = **49**。\n\n所有数值均来自业务图的真实执行回执，非人工估算。如果您采购数量达到 10 件及以上，将命中 `bulk` 批量九折分支，报价会有所不同，欢迎再试。"
+  ],
+  "session_id": "session-e2d1eb70-56c9-4437-9bd6-df7a294d0643",
+  "turns": [
+    {
+      "assistant_text": "报价已完成，图执行状态为 `completed`，以下是报价结果：\n\n## 订单报价结果\n\n| 项目 | 数值 |\n|---|---|\n| 数量 quantity | 2 |\n| 单价 unit_price | 20 |\n| 命中分支 | **regular（常规）** —— 因为数量 2 < 10，未达到批量门槛，不享受九折 |\n| 小计 subtotal | 40 |\n| 税费 tax | 4 |\n| 运费 shipping | 5 |\n| **总额 total** | **49** |\n\n## 图执行过程说明\n\n报价图（`quote_graph`）的实际执行路径如下：\n\n1. **条件分支**：`quantity >= 10` 判断为否，走 `regular` 常规分支，得到小计 40（2 × 20）。\n2. **并行计算**：小计确定后，`calc_tax`（税费 = 4）与 `calc_shipping`（运费 = 5）两个节点**并行执行**。\n3. **汇合（join）**：两个并行节点的结果在 `join` 节点汇合，求和得到总额 40 + 4 + 5 = **49**。\n\n所有数值均来自业务图的真实执行回执，非人工估算。如果您采购数量达到 10 件及以上，将命中 `bulk` 批量九折分支，报价会有所不同，欢迎再试。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "45399a81-b87c-4ecc-9bed-d910f8001c21"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-9a8559ea-d654-4439-b5f2-c25dd0b94a55",
+  "review_status": "completed",
+  "review_reason": "所有已选 Case 均已完成场景化证据复核。",
+  "reviewed_case_count": 3,
+  "scenes": [
+    {
+      "scene": "未分组",
+      "case_ids": [
+        "U-IDENTITY-001",
+        "U-ROLE-001",
+        "U-VERSION-COMPARE",
+        "U-VERSION-INVALID",
+        "U-VERSION-MISSING"
+      ],
+      "selected_case_ids": [
+        "U-VERSION-COMPARE",
+        "U-VERSION-INVALID",
+        "U-VERSION-MISSING"
+      ],
+      "machine_counts": {
+        "passed": 3,
+        "failed": 0,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "completed",
+      "review_reason": "已在单个归因 Session 中完整复核本场景全部 Case。",
+      "case_reviews": [
+        {
+          "case_id": "U-VERSION-COMPARE",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "tools.jsonl 记录 tool/call select_newer_version 参数 {\"left\":\"1.9\",\"right\":\"1.10\"}，对应 tool/result isError=false，返回 newer=1.10 及 runtime{python:3.11.2, packaging:25.0, bridge:python3-json-subprocess}，callId 一致，属真实工具执行回执；response.json 依回执表格明确结论“1.10 比 1.9 更新”，为语义比较而非字符串比较，且未自行猜测。全部预期要求满足，维持机器判定。",
+          "evidence_refs": [
+            "evidence/U-VERSION-COMPARE"
+          ]
+        },
+        {
+          "case_id": "U-VERSION-INVALID",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "tools.jsonl 记录工具确被调用（left=not-a-version、right=1.0），tool/result isError=true，错误文本“Python 工具错误（退出码 2，InvalidVersion）：Invalid version: 'not-a-version'”与 version_tool_cli.py 的错误封装一致；response.json 如实说明输入非法与工具报错，未给出或捏造任何较新版本，并请用户提供合法版本后重试。全部预期要求满足，维持机器判定。",
+          "evidence_refs": [
+            "evidence/U-VERSION-INVALID"
+          ]
+        },
+        {
+          "case_id": "U-VERSION-MISSING",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "tools.jsonl 为 0 字节空文件，证实本轮未发生任何工具调用；response.json 明确指出只给一个版本号 2.0 无法单独判断新旧、主动补问另一版本，并以将来时说明将调用 select_newer_version，未猜测比较结果。全部预期要求满足，维持机器判定。",
+          "evidence_refs": [
+            "evidence/U-VERSION-MISSING"
+          ]
+        }
+      ],
+      "findings": [
+        {
+          "category": "evaluation_method",
+          "observed_gap": "评审器与被测使用完全相同的模型路由（checks.json 中 judge.same_route_as_target=true，均为 mimo-v2.6-flash/xiaomi-token-plan-cn、reasoningEffort=off），results.jsonl 的评审意见自述“同一路由自评，仅作研究辅助”，评审缺乏独立性。",
+          "root_cause_hypothesis": "为降低成本采用同路由自评，可能对细微失败（如未调用工具却给出结论、错误归因不准）系统性漏判，使机器 passed 偏松。",
+          "support_case_ids": [
+            "U-VERSION-COMPARE",
+            "U-VERSION-INVALID",
+            "U-VERSION-MISSING"
+          ],
+          "counterexample_case_ids": [
+            "U-VERSION-COMPARE",
+            "U-VERSION-INVALID",
+            "U-VERSION-MISSING"
+          ],
+          "evidence_refs": [
+            "evidence/U-VERSION-COMPARE/checks.json",
+            "evidence/U-VERSION-COMPARE/tools.jsonl",
+            "evidence/U-VERSION-INVALID/checks.json",
+            "evidence/U-VERSION-INVALID/tools.jsonl",
+            "evidence/U-VERSION-MISSING/checks.json",
+            "evidence/U-VERSION-MISSING/tools.jsonl"
+          ],
+          "alternative": "三个 Case 的原始 tool/call、tool/result 与 response 原文可独立于评审器复核，且与自评结论逐项一致——自评偏松的风险在本场景未实际表现为判定偏差，属于方法风险而非已观察到的结果缺口。",
+          "falsification": "用不同模型（或更强 reasoningEffort、盲评、人工复核）重判同一 trace 集；若判定出现分歧，则证实自评影响结果；若全部一致则推翻该假设。"
+        },
+        {
+          "category": "environment",
+          "observed_gap": "每个 Case 仅有 1 个 session/trial（各 checks.json 只含单一 session_id，results.jsonl 每 Case 一条判定），n=1 无法区分稳定能力与单次偶然通过。",
+          "root_cause_hypothesis": "评测按快速单次运行配置降低成本，模型行为波动可能使 passed 不可复现。",
+          "support_case_ids": [
+            "U-VERSION-COMPARE",
+            "U-VERSION-INVALID",
+            "U-VERSION-MISSING"
+          ],
+          "counterexample_case_ids": [
+            "U-VERSION-COMPARE",
+            "U-VERSION-INVALID"
+          ],
+          "evidence_refs": [
+            "evidence/U-VERSION-COMPARE/checks.json",
+            "evidence/U-VERSION-INVALID/checks.json",
+            "evidence/U-VERSION-MISSING/checks.json"
+          ],
+          "alternative": "三个 Case 分别覆盖成功路径、工具错误路径与缺参路径三种不同行为模式且均按预期执行（含真实 Python InvalidVersion 报错路径），跨模式一致性降低了“偶然通过”的可能性，但不能替代同条件重复试验。",
+          "falsification": "对每个 Case 重跑 ≥5 个独立试验并统计方差；若出现不调用工具、捏造结果或错误猜测的失败样本，则证实不稳定假设。"
+        },
+        {
+          "category": "harness_mechanism",
+          "observed_gap": "三个 Case 均只在迁移预设（session_preset=migration-agentscope-demo，DSH 原生工具经 JSON 子进程桥接 Python3）下运行，未与原始 AgentScope 固定样例对拍；证据中无任何原框架基线运行记录，迁移等效性未被验证。",
+          "root_cause_hypothesis": "迁移演示以 DSH 原生能力替代 AgentScope 运行时，行为等效属未经对拍的假设；在本场景样本外（如 AgentScope 原生调度/重试语义）可能出现行为差异。",
+          "support_case_ids": [
+            "U-VERSION-COMPARE",
+            "U-VERSION-INVALID",
+            "U-VERSION-MISSING"
+          ],
+          "counterexample_case_ids": [
+            "U-VERSION-COMPARE",
+            "U-VERSION-INVALID"
+          ],
+          "evidence_refs": [
+            "evidence/U-VERSION-COMPARE/tools.jsonl",
+            "evidence/U-VERSION-INVALID/tools.jsonl",
+            "evidence/U-VERSION-MISSING/tools.jsonl"
+          ],
+          "alternative": "对本场景的两条工具路径，回执（newer=1.10、packaging 语义比较与 InvalidVersion/退出码 2）与预期的 Python packaging 行为完全一致，说明桥接在已覆盖路径上功能等效；缺口限于未覆盖路径而非已测路径。",
+          "falsification": "对同一批输入运行原始 AgentScope 样例（原框架代码），diff 工具结果与回答行为；一致则把等效性结论收窄到已测路径之外的推断即被推翻。"
+        },
+        {
+          "category": "evaluation_method",
+          "observed_gap": "用例集仅覆盖成功比较、单侧无效输入、缺参补问三条路径；未覆盖边界语义：相等版本（version_tool.py 实现 newer=left if a>=b else right，平局时固定返回 left，语义未定义且未测）、预发布版本（如 1.0rc1 vs 1.0）、双侧均无效、空字符串等。机器三例全通过不代表这些边界行为正确。",
+          "root_cause_hypothesis": "用例按迁移演示最小路径设计，边界 tie-break 与 pre-release 语义可能与用户预期不一致而长期未被发现。",
+          "support_case_ids": [
+            "U-VERSION-COMPARE",
+            "U-VERSION-INVALID",
+            "U-VERSION-MISSING"
+          ],
+          "counterexample_case_ids": [],
+          "evidence_refs": [
+            "evidence/U-VERSION-COMPARE/response.json",
+            "evidence/U-VERSION-INVALID/response.json",
+            "evidence/U-VERSION-MISSING/response.json"
+          ],
+          "alternative": "边界行为可能事实上正确（packaging 的预发布比较语义清晰；平局返回 left 也可能是可接受约定），只是未被评测覆盖，而非一定存在缺陷。",
+          "falsification": "新增 tie（1.0 vs 1.0）、pre-release（1.0rc1 vs 1.0）、双无效、空字符串用例重跑；若回答按预期如实报告或暴露歧义，则收窄或证实该缺口。"
+        }
+      ],
+      "analysis_session": {
+        "session_id": "session-6ea503b2-fe33-44af-ba1d-8e384f59b0a9",
+        "route": {
+          "provider": "xiaomi-token-plan-cn",
+          "model": "mimo-v2.6-flash",
+          "reasoningEffort": "off"
+        },
+        "evidence_ref": "evidence/analysis/scene-01/response.json"
+      },
+      "diagnostic": null
+    }
+  ]
+}

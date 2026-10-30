@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "请帮我报价。"
+  ],
+  "assistant_texts": [
+    "我来帮您报价。目前还缺少必要信息，需要先补问：\n\n1. **订单数量**（quantity）是多少？\n2. **单价**（unit_price）是多少？\n\n例如：“12 件，单价 50 元”。\n\n说明：\n- 我会用您提供的数量和单价调用真实报价图 `quote_graph` 完成计算，不做心算或估算。\n- 数量 ≥ 10 会命中 **bulk 批量九折** 分支，否则走 **regular 常规** 分支；税费与运费在图中并行计算、汇合后得出总额。\n- 若数量为负数，我会拒绝计算并说明原因。\n\n请提供数量和单价，我再为您出报价。"
+  ],
+  "session_id": "session-6e0343cc-8d7e-4a2e-a7d9-033fdc6bf3ac",
+  "turns": [
+    {
+      "assistant_text": "我来帮您报价。目前还缺少必要信息，需要先补问：\n\n1. **订单数量**（quantity）是多少？\n2. **单价**（unit_price）是多少？\n\n例如：“12 件，单价 50 元”。\n\n说明：\n- 我会用您提供的数量和单价调用真实报价图 `quote_graph` 完成计算，不做心算或估算。\n- 数量 ≥ 10 会命中 **bulk 批量九折** 分支，否则走 **regular 常规** 分支；税费与运费在图中并行计算、汇合后得出总额。\n- 若数量为负数，我会拒绝计算并说明原因。\n\n请提供数量和单价，我再为您出报价。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "787a76ed-76af-41fc-b5b2-3b1e61f52636"
+    }
+  ]
+}

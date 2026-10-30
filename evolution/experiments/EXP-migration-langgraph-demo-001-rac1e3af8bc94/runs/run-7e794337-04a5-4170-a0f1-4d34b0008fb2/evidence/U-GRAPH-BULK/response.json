@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 10，单价 12，请给我报价。"
+  ],
+  "assistant_texts": [
+    "已调用报价图 quote_graph 完成计算，工具回执 ok=true，图执行状态 graph_execution.status=completed，结果 result.status=completed 且 complete=true，报价结果如下：\n\n**报价明细（数量 10，单价 12）**\n\n- **命中分支**：bulk（批量分支）——因为 quantity=10 已达到 ≥10 的批量门槛，享受九折优惠。\n- **小计 subtotal**：108（原价 10×12=120，九折后为 108）\n- **税费 tax**：10.8\n- **运费 shipping**：0\n- **总额 total**：118.8\n\n**图执行过程说明**：条件分支节点 bulk 判定命中批量优惠并算出小计后，**税费 calc_tax 与运费 calc_shipping 两个节点并行计算**，随后在 join 节点汇合，相加得到最终总额 118.8。以上数值均直接取自图的执行回执，非估算。\n\n如需调整数量或单价，我可以重新跑一次报价图。"
+  ],
+  "session_id": "session-1e7e4aac-ebfa-4abe-854a-4ce8ec8cbf5c",
+  "turns": [
+    {
+      "assistant_text": "已调用报价图 quote_graph 完成计算，工具回执 ok=true，图执行状态 graph_execution.status=completed，结果 result.status=completed 且 complete=true，报价结果如下：\n\n**报价明细（数量 10，单价 12）**\n\n- **命中分支**：bulk（批量分支）——因为 quantity=10 已达到 ≥10 的批量门槛，享受九折优惠。\n- **小计 subtotal**：108（原价 10×12=120，九折后为 108）\n- **税费 tax**：10.8\n- **运费 shipping**：0\n- **总额 total**：118.8\n\n**图执行过程说明**：条件分支节点 bulk 判定命中批量优惠并算出小计后，**税费 calc_tax 与运费 calc_shipping 两个节点并行计算**，随后在 join 节点汇合，相加得到最终总额 118.8。以上数值均直接取自图的执行回执，非估算。\n\n如需调整数量或单价，我可以重新跑一次报价图。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5861c223-65a3-4c26-92cd-70cb12fd8cd8"
+    }
+  ]
+}

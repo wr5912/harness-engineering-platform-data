@@ -1,0 +1,7 @@
+{
+  "case_id": "U-VERSION-MISSING",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答明确指出用户只给了单个版本号 2.0、无法判断新旧，并主动补问要比较的另一个版本，说明将补问后再调用工具比较；其表述为将来时（补充后才会调用 select_newer_version），表明未调用工具、也未猜测比较结果，逐项满足全部预期要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-VERSION-MISSING"
+}

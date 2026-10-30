@@ -1,0 +1,221 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-a6623acc-e17a-4ecd-a771-80e817de2a62",
+  "source_id": "experiment:EXP-migration-langchain-demo-001-rfa4065d93d85",
+  "source_kind": "experiment",
+  "baseline_ref": "none:first-experiment",
+  "candidate_sha256": "8ba512580996434923067fc1750d4e7077e757a9e74216f7ad93ffa930361502",
+  "created_at": "2026-10-30T08:04:00Z",
+  "harness_trees": {
+    "workspace": {
+      "tree_sha256": "sha256:06fd7e2d26b577a645d334454495a0c32124344418976dd893693852dc268058",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 2,
+      "total_bytes": 1498,
+      "files": [
+        {
+          "mode": "0664",
+          "path": ".env",
+          "sha256": "e574f8d1faf66f9167c33055ae1e2f99c70b031811f64aaac5bae1be54a19489",
+          "size": 84
+        },
+        {
+          "mode": "0664",
+          "path": "AGENTS.md",
+          "sha256": "fdd673ff2c9af35daca5d6a9fc8c36dc983c7672da33cf4e728ade7fa2e89117",
+          "size": 1414
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    },
+    "presets": {
+      "tree_sha256": "sha256:fea2d1da432c8b5e27fe40ba08e02f29e443b09300af0819e5dae89eaad52f24",
+      "directory_sha256": "sha256:121ef11fcd39cee3a7171fc5d287f431fc7976143b7b61452ba182459b93c0ef",
+      "file_count": 2,
+      "total_bytes": 986,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "migration-langchain-demo/agent.cordis.yml",
+          "sha256": "26ef7c070281ff1b0fb36feaf15af7da33818fca68e1ea0e7b1cd0d1b8228ac6",
+          "size": 601
+        },
+        {
+          "mode": "0664",
+          "path": "migration-langchain-demo/preset.yml",
+          "sha256": "4d9ddaac40529f5c294c0f3e79ad6209efb36bfce61bdf7117ddf163f68165b4",
+          "size": 385
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "migration-langchain-demo",
+          "mode": "0775"
+        }
+      ]
+    },
+    "managed": {
+      "tree_sha256": "sha256:4837ef0dfff656c74c0babc5dbea5dbba3f6588398ce407f06743fca425897cb",
+      "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+      "file_count": 3,
+      "total_bytes": 26017,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "convert-length.mjs",
+          "sha256": "abfcbdfe621a768634b92a295e2f9ab6183d941f4a749a88d3e1fd2ec13efd2d",
+          "size": 12917
+        },
+        {
+          "mode": "0644",
+          "path": "convert-length.ts",
+          "sha256": "a5cb24a959255c611ca4be63280c813c637bf05104f05ad1f9d0782a30d7bd6d",
+          "size": 12635
+        },
+        {
+          "mode": "0664",
+          "path": "migration-langchain-demo.patch.yml",
+          "sha256": "d658e595a99a55604b82fd2b8d73168dc708f67864bee47e3edf7c4d1ff59303",
+          "size": 465
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        }
+      ]
+    }
+  },
+  "reference_tree": {
+    "tree_sha256": "sha256:cbeb503b1dcba7de3346d161886bc685ca46ee5f256e823bec02a75cfcac5087",
+    "directory_sha256": "sha256:c01d820dff4afde7654d513ed9f6b0f072fdd159b4ea8ae399bf0429b77227cb",
+    "file_count": 2,
+    "total_bytes": 2809,
+    "files": [
+      {
+        "mode": "0664",
+        "path": "evaluation.md",
+        "sha256": "9fd3603f4c5ab57abc0e49c0c089304d1a701598e216702d5593758020d02094",
+        "size": 2267
+      },
+      {
+        "mode": "0664",
+        "path": "manifest.yaml",
+        "sha256": "fddbe7e9538588bc5570dc5794daa16b88ef43c3fbe9732731fea9e29ee1239f",
+        "size": 542
+      }
+    ],
+    "directories": [
+      {
+        "path": ".",
+        "mode": "0775"
+      }
+    ]
+  },
+  "evaluation_sha256": "6e74d87bed535789badcc4d0101eec140c556a75b1bedd95626f2ac9396057b9",
+  "evaluation_cases": [
+    {
+      "case_id": "U-LENGTH-M-TO-CM",
+      "title": "2.5 米换算为厘米",
+      "inputs": [
+        "把 2.5 米换算成厘米。"
+      ],
+      "expected_behavior": "必须实际调用 convert_length 工具（value=2.5, from='m', to='cm'）并采用工具返回结果；最终答复只有合法 JSON、无任何其它文字：value=250，unit=\"cm\"，explanation 为非空说明。不接受心算或未调用工具的回答。"
+    },
+    {
+      "case_id": "U-LENGTH-CM-TO-M",
+      "title": "125 厘米换算为米",
+      "inputs": [
+        "把 125 厘米换算成米。"
+      ],
+      "expected_behavior": "必须实际调用 convert_length 工具（value=125, from='cm', to='m'）并采用工具返回结果；最终答复只有合法 JSON、无任何其它文字：value=1.25，unit=\"m\"，explanation 为非空说明。"
+    },
+    {
+      "case_id": "U-LENGTH-MISSING",
+      "title": "只有数值缺单位先补问",
+      "inputs": [
+        "把 2.5 换算一下。"
+      ],
+      "expected_behavior": "输入只有数值 2.5、未给出任何单位：先给出原生澄清答复，用中文问句补问缺失单位（2.5 是米还是厘米，以及换算目标单位），待用户补充后再换算；本回合不调用 convert_length 凭空换算，不输出成功 JSON，不编造 value/unit/explanation。"
+    }
+  ],
+  "case_catalog": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ROLE-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-LENGTH-M-TO-CM",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-LENGTH-CM-TO-M",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-LENGTH-MISSING",
+      "scene": "未分组",
+      "fast": true
+    }
+  ],
+  "selection_mode": "explicit",
+  "review_mode": "ai",
+  "configured_capabilities": [
+    "/opt/dsh-presets"
+  ],
+  "declared_guard": null,
+  "evaluation_implementation": {
+    "dsh-eval": "dbf61385619d6c22200a8dd57ab2b3cf1e2d23c72bbecb1ab115597a387886f9",
+    "dsh-eval-api.mjs": "e92f5cb387438fb99bd39f5f84515d981d7ca579abacb17162946a83b2645cc0",
+    "dsh-eval-browser.mjs": "85ce49fcac79d07e8e26f28d04c59266aff76a46a898450c80398f7dab913eb9",
+    "dsh-eval-common.mjs": "a11fdce1d326623fd9db7de45fe0fdb882b1cb4125f531d5d4a66aa665e373e8",
+    "run_record.py": "b2a99b01a33b77afd3b8210ac5f9667a01a7b673b4225e9f42dac590696da206",
+    "scenario_analysis.py": "6ec78071b0327d8e96d5f91d543d48738023bd8bcc1bb7c444755b71981bf6cc",
+    "evaluation-judge-guard.mjs": "ad46cdd4c8264d3023bf0ea33327fdb60869209a3463f32f6cf30a347483219d",
+    "scenario-analysis-guard.mjs": "21c9b85f5400fefadbb39145d97409bd158a050941e076da249a504c8f24d541",
+    "evaluation-presets/evaluation-judge/agent.cordis.yml": "6c0c0c93018b318942d7334026e43b12124fa0fcabe166076d6e3d49f9e24f59",
+    "evaluation-presets/evaluation-judge/preset.yml": "df22cd2de4f05a31a21a2f041f44b2de57a48140797602ed4bf068e216a62a5e",
+    "evaluation-presets/scenario-analysis/agent.cordis.yml": "43786861869c364c343ea2fffd87a2b85a0756b8947cebf2233bb5d5bc830cbc",
+    "evaluation-presets/scenario-analysis/preset.yml": "b9ca918a58de3bb8b043ec0847937950e06bc27c1cc7b155dd0823ee1076be03"
+  },
+  "dependency_env": {
+    "DEEPSEEK_API_KEY": true
+  },
+  "git_version": {
+    "commit": "e1e361487caf0a060d00895ff3c2085cc9a48215",
+    "dirty": true,
+    "changed_path_count": 16
+  },
+  "program_origin": {
+    "commit": "adee516f355712d7ed0b45d3aa74d9469786f16d",
+    "dirty": true,
+    "changed_path_count": 57,
+    "root": "/home/admin/work/harness-engineering-platform"
+  },
+  "asset_origin": {
+    "commit": "e1e361487caf0a060d00895ff3c2085cc9a48215",
+    "dirty": true,
+    "changed_path_count": 16,
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "candidate_sha256": "8ba512580996434923067fc1750d4e7077e757a9e74216f7ad93ffa930361502"
+  },
+  "executor": "api"
+}

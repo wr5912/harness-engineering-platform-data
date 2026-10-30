@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "generated": true,
+  "operation_id": "migration-a341878a-11fd-4340-bb2f-4ab6055aaf28",
+  "agent_id": "migration-opencode-demo",
+  "experiment_id": "EXP-migration-opencode-demo-001-r2085b6b7a566",
+  "created_at": "2026-10-30T06:55:58.247Z",
+  "source": {
+    "source_id": "source-f98eeb6f-dcbd-44f8-8810-d2e6b1d068aa",
+    "fingerprint": "b39edea550c0aba8f0cf221616939afa7da29515ef2266595790cb82912aa068",
+    "provenance": {
+      "kind": "local",
+      "path": "/home/admin/work/harness-engineering-platform/platform/plugin/test/fixtures/agent-migration/opencode",
+      "commit": "adee516f355712d7ed0b45d3aa74d9469786f16d",
+      "commit_scope": "enclosing-repository-reference",
+      "content_identity": "working-tree-snapshot-fingerprint"
+    },
+    "frameworks": [
+      "OpenCode"
+    ],
+    "versions": {
+      "package.json": {
+        "name": "migration-source-opencode",
+        "version": "1.0.0",
+        "devDependencies": {
+          "opencode-ai": "1.19.5"
+        }
+      }
+    }
+  },
+  "parent": null,
+  "selected": [
+    {
+      "path": "dsh/workspace/AGENTS.md",
+      "bytes": 381,
+      "sha256": "868d022b718c701b8fbba5117bd990d05a8ac08853254b86629a63c162e225df",
+      "mode": 420
+    },
+    {
+      "path": "dsh/presets/reviewer/role.md",
+      "bytes": 137,
+      "sha256": "236643165ceb88b74268197a160239f7df351c8e7e06be7a48591fbe6e86c5fa",
+      "mode": 420
+    },
+    {
+      "path": "dsh/workspace/project/total.ts",
+      "bytes": 85,
+      "sha256": "69cbae81f38c671ce70155a9e5f8cc74c1a7e326324f9a63504336cc0e10b5e6",
+      "mode": 420,
+      "source_path": "project/total.ts",
+      "source_sha256": "69cbae81f38c671ce70155a9e5f8cc74c1a7e326324f9a63504336cc0e10b5e6"
+    },
+    {
+      "path": "dsh/workspace/project/total.test.ts",
+      "bytes": 230,
+      "sha256": "16edd2473e476ed05ff55bd5cb1a467f704261971aba89f4bb368076dabe7577",
+      "mode": 420,
+      "source_path": "project/total.test.ts",
+      "source_sha256": "16edd2473e476ed05ff55bd5cb1a467f704261971aba89f4bb368076dabe7577"
+    }
+  ],
+  "candidate_sha256": "f6093d61a3b23bdaa546c77a7e92bf3e78bf13ac1c0a91a4dd3d981866626b9f",
+  "asset_list_sha256": "7d08ec7a466f90a01f5668ecfefb49e905d430da3e469f727b2c8c4f8cf9b20e",
+  "mapping": [
+    {
+      "source": "opencode.json model=xiaomi-token-plan-cn/mimo-v2.6-flash",
+      "target": "harness.yaml model_bindings.main (xiaomi-token-plan-cn/mimo-v2.6-flash/off)",
+      "status": "converted",
+      "required": true,
+      "notes": "来源模型原样绑定主角色；原生目录档位 off/high 中取 off，不改管理助手或全局模型。"
+    },
+    {
+      "source": "AGENTS.md（金额项目修复助手角色正文）",
+      "target": "dsh/workspace/AGENTS.md",
+      "status": "converted",
+      "required": true,
+      "notes": "主角色正文单处维护；项目路径按目标实例语义改为 /work/project，其余语义保留。"
+    },
+    {
+      "source": "opencode.json agent.fixer（mode=primary，prompt 按 AGENTS.md 修复并委派 reviewer）",
+      "target": "主 Preset migration-opencode-demo（agent.cordis.yml/preset.yml 装载 dsh/workspace/AGENTS.md）",
+      "status": "pending",
+      "required": true,
+      "notes": "最小草案后经 edit/read/apply 在同一 EXP 补齐主 Preset 文件，正文仍只指向 AGENTS.md 一处。"
+    },
+    {
+      "source": "opencode.json agent.reviewer（mode=subagent，prompt 读取项目和测试复核，不修改文件）",
+      "target": "dsh/presets/reviewer/role.md + reviewer Subagent Preset",
+      "status": "pending",
+      "required": true,
+      "notes": "reviewer 子角色正文单处维护于 role.md；Subagent Preset 注册经 edit/read/apply 在同一 EXP 完成。"
+    },
+    {
+      "source": "opencode.json agent.reviewer model=deepseek-official/deepseek-flash",
+      "target": "harness.yaml model_bindings.presets.reviewer (deepseek-official/deepseek-flash/max)",
+      "status": "converted",
+      "required": true,
+      "notes": "来源未指定 effort；按已核对原生目录 DeepSeek flash 的 defaultEffort=max 固定。"
+    },
+    {
+      "source": "project/total.ts、project/total.test.ts",
+      "target": "dsh/workspace/project/（项目种子；实例持有 /work/project 独立可写副本）",
+      "status": "converted",
+      "required": true,
+      "notes": "独立项目种子按清点摘要原样复制；Candidate 不直接改动，实例项目目录为可写副本。"
+    },
+    {
+      "source": "package.json devDependencies.opencode-ai=1.19.5",
+      "target": "无（不安装、不迁移 OpenCode 运行时）",
+      "status": "omitted",
+      "required": false,
+      "notes": "仅记录来源框架版本 1.19.5；不执行来源安装脚本，不把 OpenCode 运行时包装为工具。"
+    }
+  ],
+  "uncovered": [
+    "未运行原 OpenCode 1.19.5 运行时，未做与原运行时的逐项等效验证；Agent 循环与委派由原生 DSH Agent/Subagent 承接，来源 package.json 依赖不安装、来源脚本不执行。"
+  ],
+  "evaluation_case_ids": [
+    "U-CODE-FIX"
+  ],
+  "validation": {
+    "valid": true,
+    "scope": "static-loadable-assets",
+    "runtime_verified": false,
+    "business_verified": false
+  },
+  "note": "来源和映射为此次生成的固定回执；业务等效性须由实际 DSH 行为与评测证据证明。"
+}

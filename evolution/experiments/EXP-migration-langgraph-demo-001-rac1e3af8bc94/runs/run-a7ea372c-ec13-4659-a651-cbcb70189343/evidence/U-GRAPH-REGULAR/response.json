@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 2，单价 20，请给我报价。"
+  ],
+  "assistant_texts": [
+    "已收到您的订单参数：数量 2、单价 20（均为非负数，符合计算前提）。\n\n我已调用报价业务图 `quote_graph` 进行计算，但**两次调用均返回失败**，无法给出最终报价：\n\n- 工具回执：`ok = false`，错误信息为“工作流执行失败，请查看节点回执”\n- 图执行状态：`graph_execution.status = failed`、`complete = true`（图已跑完但执行失败），`result` 中没有可读取的报价结果\n\n按照规则，我不能在图未成功返回的情况下估算或编造 subtotal、tax、shipping、total，因此本次无法提供报价数字。\n\n补充说明：从参数本身看，数量 2 小于 10，若图正常执行应命中 **regular 常规分支**，税费与运费并行计算后汇合得到总额——但这只是分支规则说明，**不是**本次的计算结果。\n\n建议：请稍后重试，或联系维护方检查报价工作流节点（执行ID：`workflow-425c8836-16ea-4d6b-9be7-c2e2d95055f2`、`workflow-a46e00b6-b5fa-4285-8d56-5c70f5e21a34`）。图恢复后我可以立即用同样的数量 2、单价 20 重新为您报价。"
+  ],
+  "session_id": "session-6b9fbf84-2136-441b-a86b-f785850f7eed",
+  "turns": [
+    {
+      "assistant_text": "已收到您的订单参数：数量 2、单价 20（均为非负数，符合计算前提）。\n\n我已调用报价业务图 `quote_graph` 进行计算，但**两次调用均返回失败**，无法给出最终报价：\n\n- 工具回执：`ok = false`，错误信息为“工作流执行失败，请查看节点回执”\n- 图执行状态：`graph_execution.status = failed`、`complete = true`（图已跑完但执行失败），`result` 中没有可读取的报价结果\n\n按照规则，我不能在图未成功返回的情况下估算或编造 subtotal、tax、shipping、total，因此本次无法提供报价数字。\n\n补充说明：从参数本身看，数量 2 小于 10，若图正常执行应命中 **regular 常规分支**，税费与运费并行计算后汇合得到总额——但这只是分支规则说明，**不是**本次的计算结果。\n\n建议：请稍后重试，或联系维护方检查报价工作流节点（执行ID：`workflow-425c8836-16ea-4d6b-9be7-c2e2d95055f2`、`workflow-a46e00b6-b5fa-4285-8d56-5c70f5e21a34`）。图恢复后我可以立即用同样的数量 2、单价 20 重新为您报价。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5d5945a2-81f9-4230-b2d3-27c37b97ea11"
+    }
+  ]
+}

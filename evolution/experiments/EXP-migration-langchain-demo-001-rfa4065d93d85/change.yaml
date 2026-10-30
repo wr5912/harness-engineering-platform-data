@@ -1,0 +1,35 @@
+schema_version: '1.0'
+experiment_id: EXP-migration-langchain-demo-001-rfa4065d93d85
+agent_id: migration-langchain-demo
+baseline_ref: none:first-experiment
+status: active
+research_question: LangChain 结构化换算迁移样例能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求
+migration:
+  operation_id: migration-da6cb370-d53a-4af8-9249-3c1cc85cbfe6
+  receipt: evaluation/evidence/migration.json
+  resolution_receipt: evaluation/evidence/migration-resolutions/e6ed1045506779355d68507c49f11038518dbb21d87c5539a2635e77bb9a63ee.json
+asset_builds:
+  dsh/managed/convert-length.ts:
+    schema_version: 1
+    entry_path: dsh/managed/convert-length.ts
+    output_path: dsh/managed/convert-length.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/convert-length.ts
+        sha256: a5cb24a959255c611ca4be63280c813c637bf05104f05ad1f9d0782a30d7bd6d
+    source_sha256: f1a4ff056bd514799cb83686aa17bbba50cc953163b70e62d2091be3130420d2
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c
+    platform_sources_sha256: a8f5af6dd50d63503054ddb10ded8a57b99540e4beae46c00730cfba0b17446f
+    runtime_imports:
+      - node:module
+      - node:fs
+      - node:url
+    build_digest: 9c12ea8f9d1c26dcd99ac1c9168324c32384b39154b2f35241de8ff7fed6621d
+    esm_sha256: abfcbdfe621a768634b92a295e2f9ab6183d941f4a749a88d3e1fd2ec13efd2d
+    candidate_sha256: 8ba512580996434923067fc1750d4e7077e757a9e74216f7ad93ffa930361502

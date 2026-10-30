@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "工具回执显示 quote 调用参数为 quantity=3、unit_price=12.5、discount_pct=20，is_error=false，返回 total=30，未见伪造或心算痕迹；最终回答明确列出输入、折扣 20% 及两位小数金额 30.00，且未另加任何税费，满足全部预期要求。",
+    "requirements": [
+      {
+        "requirement": "必须调用 quote 工具（quantity=3、unit_price=12.5、discount_pct=20）取得金额，不心算、不伪造工具结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"quantity\":3,\"unit_price\":12.5,\"discount_pct\":20,\"total\":30}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "最终说明输入、折扣和含两位小数的金额 30.00，不另加税费",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "报价已生成，计算结果如下：\n\n| 项目 | 数值 |\n| --- | --- |\n| 数量 | 3 |\n| 单价 | 12.5 |\n| 折扣 | 20% |\n| 折后金额 | **30.00** |\n\n说明：原价小计为 3 × 12.5 = 37.5，享受 20% 折扣后，通过报价工具计算得到的最终金额为 **30.00**（含两位小数）。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-35627fdb-e377-497e-942c-5f20c9708274",
+    "workspace_id": "a6423459-a33a-4cc2-bcd8-eb09209f8015",
+    "session_title": "评审 U-QUOTE-NORMAL",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

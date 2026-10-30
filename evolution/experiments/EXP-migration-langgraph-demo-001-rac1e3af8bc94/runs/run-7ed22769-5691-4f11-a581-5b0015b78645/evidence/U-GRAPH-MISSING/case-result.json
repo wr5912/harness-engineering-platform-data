@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-MISSING",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答在缺少 quantity 与 unit_price 的情况下，仅向用户明确补问这两个必需参数，未猜测或虚构任何输入，也未在参数不全时调用 quote_graph 图（索引证据中无任何工具调用或回执）。回答中仅说明了批量分支与折扣规则，未基于任何输入计算或给出针对本次订单的报价金额，符合本轮不出报价数字的约束。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-MISSING"
+}

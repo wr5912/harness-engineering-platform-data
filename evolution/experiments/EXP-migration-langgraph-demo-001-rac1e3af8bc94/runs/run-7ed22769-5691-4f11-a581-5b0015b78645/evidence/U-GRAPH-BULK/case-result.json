@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-BULK",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回复确实发起了对 quote_graph 的真实调用（quantity=10, unit_price=12），但工具回执为错误（is_error=true，内容为 Error: cannot get property \"llm\" without inject），不存在 status=completed 且 complete=true 的执行回执，也无 route=bulk 路由、tax/shipping 并行节点执行、join 汇合等图执行事实。被测回复明确表示无法给出 subtotal/tax/shipping/total，仅凭参数预期说明会命中 bulk 分支，未提供任何与图回执一致的金额与解释。因此四项要求均未满足，整体判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-BULK"
+}

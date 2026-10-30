@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-BULK",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：同一被测 Session 中确有对 quote_graph 的真实调用，但工具回执显示工作流执行失败（ok=false、graph_execution.status=failed），未返回任何 completed 结果体，也就没有 bulk 路由命中、tax/shipping 并行执行、join 汇合以及 subtotal=108、tax=10.8、shipping=0、total=118.8 等数据；被测回答也如实说明失败、未给出报价解释。预期要求的执行完成状态与金额解释均未实现，故判定为不通过。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-BULK"
+}

@@ -1,0 +1,28 @@
+- id: persona
+  name: /opt/dsh/packages/preset/persona/lib/index.js
+  disabled: false
+  config:
+    prefix: '你是OpenCode 编码迁移样例（Agent ID: migration-opencode-demo）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答，不声称未提供的工具、权限或执行结果。'
+    suffix: 你的工作目录是 {{cwd}}。
+- id: agent-instructions
+  name: /opt/dsh/packages/context/agent-instructions/lib/index.js
+  disabled: false
+  config:
+    maxBytes: 65536
+- id: tool-fs
+  name: /opt/dsh/packages/fs/tool-fs/lib/index.js
+  config:
+    read: true
+    readImage: true
+    write: true
+    edit: true
+- id: tool-fs-search
+  name: /opt/dsh/packages/fs/tool-fs-search/lib/index.js
+  config:
+    sampleOverCapGlobResults: false
+- id: tool-bash
+  name: /opt/dsh/packages/shell/tool-bash/lib/index.js
+- id: tool-reviewer
+  name: /opt/dsh-managed/reviewer.mjs
+  config:
+    harnessModelRole: reviewer

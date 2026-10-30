@@ -1,0 +1,52 @@
+schema_version: '1.0'
+experiment_id: EXP-migration-langgraph-demo-001-rac1e3af8bc94
+agent_id: migration-langgraph-demo
+baseline_ref: none:first-experiment
+status: active
+research_question: LangGraph 报价流程迁移样例能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求
+migration:
+  operation_id: migration-caee9a02-576e-41ea-98aa-d7acf674acdf
+  receipt: evaluation/evidence/migration.json
+  resolution_receipt: evaluation/evidence/migration-resolutions/2309911f137cc7cfad2f3b716458be06288964b53828a4a948382bf64417c03c.json
+asset_builds:
+  dsh/managed/tools.ts:
+    schema_version: 1
+    entry_path: dsh/managed/tools.ts
+    output_path: dsh/managed/tools.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/tools.ts
+        sha256: 5f9b6adf0d402f9c9941ed2884179085be46eb0988672de757a2b4f623862a87
+    source_sha256: d67ca75057c244f852ffefe45a04c6aba2a2d3aaf49f092415b9b4978e0b6345
+    platform_sources:
+      - path: platform/plugin/src/evaluation/model-attempts.ts
+        sha256: aa34dbaff73f600e1d864d300be28cc15ced57da7b37fad638d0c8e6b9c4436a
+      - path: platform/plugin/src/workflows/code-only-route.ts
+        sha256: 5b951fcf668430b1369c7acc29a43aa0bfd0df77064aef2d24232ec82c7441fb
+      - path: platform/plugin/src/workflows/fixed-composition.ts
+        sha256: eee545eab8254801f453ffee7437233d39a68fb7075e92bb2154319cb1521cc2
+      - path: platform/plugin/src/workflows/graph.ts
+        sha256: d8922a169e65a9ea5db488b45819375699867a0817512815a91c1f2cb71e4935
+      - path: platform/plugin/src/workflows/model-roles.ts
+        sha256: 8c62bc929e3b43b8a36cdd219d35b4d09c6acb10a07f42b27d2ccc47a2c4e34f
+      - path: platform/plugin/src/workflows/runtime.ts
+        sha256: c34ffdf9c6a04b2383b1ea2eee2f59cd6c76d98336ee08da1cab3d316e91846c
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c
+    platform_sources_sha256: 9c9dafbdc3b5b21f963d3d1a700e182f52111169c98107d54b3a828d7e99c6da
+    runtime_imports:
+      - node:crypto
+      - node:fs
+      - node:url
+      - node:fs/promises
+      - node:path
+      - node:worker_threads
+      - node:async_hooks
+      - node:module
+    build_digest: 5df06ad6235c95c480625250c4d9766d8762d700fe8ef391bb6968e292769294
+    esm_sha256: e973efb7b268015fe7a94e4703eb0b9dd94dc0ae879ae8352ddc467696d42589
+    candidate_sha256: 4ab676268f31ed798705da3c9d40858edbfaf5ef0e2aebe441b938d29f9995ae

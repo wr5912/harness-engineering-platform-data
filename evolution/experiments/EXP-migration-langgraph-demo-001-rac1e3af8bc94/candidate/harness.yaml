@@ -1,0 +1,23 @@
+schema_version: '1.0'
+agent:
+  id: migration-langgraph-demo
+  name: LangGraph 报价流程迁移样例
+  language: zh-CN
+  lifecycle_status: experiment
+  runtime_family: dsh
+  load_mode: container-only
+loadable_assets:
+  workspace: dsh/workspace
+  preset_root: dsh/presets
+  managed_root: dsh/managed
+  preset_id: migration-langgraph-demo
+  profile_patch: dsh/managed/migration-langgraph-demo.patch.yml
+credential_environment_keys:
+  - DEEPSEEK_API_KEY
+model_bindings:
+  main:
+    provider: xiaomi-token-plan-cn
+    model: mimo-v2.6-flash
+    reasoningEffort: 'off'
+role_instructions:
+  migration-langgraph-demo: dsh/workspace/AGENTS.md

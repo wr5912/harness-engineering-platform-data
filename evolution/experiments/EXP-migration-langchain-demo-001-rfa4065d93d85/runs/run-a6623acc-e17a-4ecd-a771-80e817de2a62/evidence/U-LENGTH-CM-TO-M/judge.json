@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "要求1：indexed_evidence 中同一 Session 的工具回执（index 2，call_id=call_19a98d9a50d44c23877d0da4，is_error=false）显示 convert_length 返回 {\"value\":1.25,\"unit\":\"m\"}，且被测答复采用的数值与之一致；对应调用请求（index 1）的参数为 value=125, from='cm', to='m'，与回执 call_id 一致（调用请求本身 citation_allowed=false，故仅以回执作为可引用证据）。要求2：被测答复正文（index 0）为仅含 JSON 的单一对象，value=1.25、unit=\"m\"、explanation 为非空说明，无其它文字。两项要求均满足，故判定 passed。",
+    "requirements": [
+      {
+        "requirement": "必须实际调用 convert_length 工具（value=125, from='cm', to='m'）并采用工具返回结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"value\":1.25,\"unit\":\"m\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "最终答复只有合法 JSON、无任何其它文字：value=1.25，unit=\"m\"，explanation 为非空说明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "{\"value\": 1.25, \"unit\": \"m\", \"explanation\": \"通过 convert_length 工具将 125 厘米换算为米，1 米 = 100 厘米，结果为 1.25 米。\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-d45ba3a3-1f16-4aca-804d-9a43c672b216",
+    "workspace_id": "04ee6f29-e4d7-42de-8fbf-e5d01a5f00b6",
+    "session_title": "评审 U-LENGTH-CM-TO-M",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

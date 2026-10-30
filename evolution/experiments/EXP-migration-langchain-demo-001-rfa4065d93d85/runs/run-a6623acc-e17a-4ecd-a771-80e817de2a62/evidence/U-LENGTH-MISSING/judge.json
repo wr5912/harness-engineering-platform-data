@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答为纯中文澄清问句，明确补问了 2.5 的单位（米或厘米）以及换算目标单位，与预期行为一致；回合内未出现 convert_length 调用回执，也未输出任何 value/unit/explanation 成功 JSON，无凭空换算或编造数据的迹象。",
+    "requirements": [
+      {
+        "requirement": "输入只有数值 2.5、未给出任何单位：先给出原生澄清答复，用中文问句补问缺失单位（2.5 是米还是厘米，以及换算目标单位），待用户补充后再换算",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "请补充一下单位信息：2.5 是米还是厘米？另外你想换算成哪种单位（米或厘米）？",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "本回合不调用 convert_length 凭空换算，不输出成功 JSON，不编造 value/unit/explanation",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "请补充一下单位信息：2.5 是米还是厘米？另外你想换算成哪种单位（米或厘米）？",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-8fffae71-def8-424b-905a-30cc161fdf74",
+    "workspace_id": "04ee6f29-e4d7-42de-8fbf-e5d01a5f00b6",
+    "session_title": "评审 U-LENGTH-MISSING",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

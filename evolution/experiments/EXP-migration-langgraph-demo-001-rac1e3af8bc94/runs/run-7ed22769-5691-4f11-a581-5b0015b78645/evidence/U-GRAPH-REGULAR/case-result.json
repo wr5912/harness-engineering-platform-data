@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-REGULAR",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答确实真实调用了 quote_graph 工具（quantity=2、unit_price=20，两次调用），但两次工具回执均为原生 is_error=true，内容为 `Error: cannot get property \"llm\" without inject`，不存在 status=completed、complete=true、route=regular、tax/shipping/join 节点执行的任何图回执数据，也不存在 subtotal=40、tax=4、shipping=5、total=49 的来源数据。被测回答自身也明确承认未获得回执、无法给出报价，因此「图执行完成、路由命中 regular、金额一致、回复解释命中分支与各项金额」等要求均未满足。工具环境故障只能解释失败，不能改变冻结的预期要求，故判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-REGULAR"
+}

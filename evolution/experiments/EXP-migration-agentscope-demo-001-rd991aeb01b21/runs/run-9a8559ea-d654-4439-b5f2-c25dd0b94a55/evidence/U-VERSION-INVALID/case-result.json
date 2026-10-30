@@ -1,0 +1,7 @@
+{
+  "case_id": "U-VERSION-INVALID",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答确实调用了 select_newer_version（由同一被测 Session 的 tool/result 错误回执佐证，call_id 一致且 is_error 为 true）；工具实际报错 InvalidVersion、退出码 2 后，回答如实说明左侧输入 not-a-version 非法、工具报错，未给出或捏造任何较新版本，并建议提供合法版本号重新比较。两项要求均明确满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-VERSION-INVALID"
+}

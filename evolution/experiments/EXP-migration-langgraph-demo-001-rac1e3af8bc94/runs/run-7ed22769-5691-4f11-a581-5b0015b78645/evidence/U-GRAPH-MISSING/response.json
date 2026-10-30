@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "请帮我报价。"
+  ],
+  "assistant_texts": [
+    "好的，我可以帮你报价。不过还需要两个信息才能计算：\n\n1. **订单数量**（quantity）是多少？\n2. **单价**（unit_price）是多少？\n\n补充说明：当数量 ≥ 10 时会命中批量（bulk）分支，享受九折；否则按常规（regular）报价。税费和运费会在业务图中并行计算，汇合后得出总额。\n\n请把数量和单价告诉我，我就调用报价图为你生成结果。"
+  ],
+  "session_id": "session-a530a021-b51a-4964-8bd7-6ea6d30b03ec",
+  "turns": [
+    {
+      "assistant_text": "好的，我可以帮你报价。不过还需要两个信息才能计算：\n\n1. **订单数量**（quantity）是多少？\n2. **单价**（unit_price）是多少？\n\n补充说明：当数量 ≥ 10 时会命中批量（bulk）分支，享受九折；否则按常规（regular）报价。税费和运费会在业务图中并行计算，汇合后得出总额。\n\n请把数量和单价告诉我，我就调用报价图为你生成结果。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a9bd95c1-0fda-4611-82ba-68fdc047698b"
+    }
+  ]
+}

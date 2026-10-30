@@ -1,0 +1,17 @@
+# 注册本 Experiment 的受控 Preset，并挂载迁移自来源 tools.ts 的报价工具构建产物。
+- id: agent-preset-registry
+  config:
+    default: migration-dsh-demo
+
+- insert:
+    - id: preset-migration-dsh-demo
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: migration-dsh-demo
+        plugins:
+          - id: migration-dsh-demo-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/migration-dsh-demo/agent.cordis.yml
+          - id: quote-tools
+            name: /opt/dsh-managed/tools.mjs

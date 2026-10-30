@@ -1,0 +1,18 @@
+# 注册本 Experiment 的受控 Preset，并挂载迁移自 AgentScope 样例的版本比较工具构建产物
+# （TS 原生工具经 JSON 子进程桥接调用 Python3 的 version_tool.py）。
+- id: agent-preset-registry
+  config:
+    default: migration-agentscope-demo
+
+- insert:
+    - id: preset-migration-agentscope-demo
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: migration-agentscope-demo
+        plugins:
+          - id: migration-agentscope-demo-harness
+            name: cordis:include
+            config:
+              path: /opt/dsh-presets/migration-agentscope-demo/agent.cordis.yml
+          - id: version-tools
+            name: /opt/dsh-managed/tools.mjs

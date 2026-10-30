@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-BULK",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回复基于真实 quote_graph 图工具回执：同 Session 的 tool/call 以 quantity=10、unit_price=12 调用 quote_graph，对应 tool/result 显示 ok=true、status=completed、complete=true、route=bulk，trace 中 bulk→calc_shipping/calc_tax→join 四节点全部 completed，subtotal=108、tax=10.8、shipping=0、total=118.8 与预期完全一致；回复正文解释了 bulk 九折分支、并行税费与运费节点、join 汇合及各金额，与图回执数据一致，未发现替代性心算或原子工具调用。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-BULK"
+}

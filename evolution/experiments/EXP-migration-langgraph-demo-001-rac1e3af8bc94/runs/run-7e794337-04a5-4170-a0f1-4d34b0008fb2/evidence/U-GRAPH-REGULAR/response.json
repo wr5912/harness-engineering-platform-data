@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 2，单价 20，请给我报价。"
+  ],
+  "assistant_texts": [
+    "已收到您的订单信息（数量 2，单价 20），并通过真实报价图 `quote_graph` 完成了计算。工具回执 `ok=true`，图执行状态 `graph_execution.status=completed`，`result.status=completed` 且 `complete=true`，以下为图给出的最终报价结果：\n\n## 报价结果\n\n| 项目 | 金额 |\n|---|---|\n| 数量 × 单价 | 2 × 20 |\n| 小计 subtotal | **40** |\n| 税费 tax | **4** |\n| 运费 shipping | **5** |\n| **总额 total** | **49** |\n\n## 图执行过程说明\n\n1. **条件分支**：判断 `quantity >= 10` 是否成立。您的数量为 2，不满足批量条件，因此命中 **regular（常规）分支**（未享受批量九折优惠）。\n2. **并行计算**：在常规分支确定小计（subtotal = 40）后，图中 **税费计算与运费计算是两个并行节点**，同时执行：\n   - `calc_tax` → 税费 4\n   - `calc_shipping` → 运费 5\n3. **join 汇合**：两条并行支路在 join 节点汇合，把小计、税费、运费合并，得出 **总额 49**。\n\n图执行轨迹（trace）依次为：`regular` → `calc_shipping` / `calc_tax`（并行）→ `join`，全部节点状态均为 completed。\n\n以上数值均来自报价图的实际执行回执，非我的估算。如果您想对比批量优惠，可以把数量提高到 10 及以上再询价。"
+  ],
+  "session_id": "session-79f50497-3761-4589-bf47-5c31b58e569f",
+  "turns": [
+    {
+      "assistant_text": "已收到您的订单信息（数量 2，单价 20），并通过真实报价图 `quote_graph` 完成了计算。工具回执 `ok=true`，图执行状态 `graph_execution.status=completed`，`result.status=completed` 且 `complete=true`，以下为图给出的最终报价结果：\n\n## 报价结果\n\n| 项目 | 金额 |\n|---|---|\n| 数量 × 单价 | 2 × 20 |\n| 小计 subtotal | **40** |\n| 税费 tax | **4** |\n| 运费 shipping | **5** |\n| **总额 total** | **49** |\n\n## 图执行过程说明\n\n1. **条件分支**：判断 `quantity >= 10` 是否成立。您的数量为 2，不满足批量条件，因此命中 **regular（常规）分支**（未享受批量九折优惠）。\n2. **并行计算**：在常规分支确定小计（subtotal = 40）后，图中 **税费计算与运费计算是两个并行节点**，同时执行：\n   - `calc_tax` → 税费 4\n   - `calc_shipping` → 运费 5\n3. **join 汇合**：两条并行支路在 join 节点汇合，把小计、税费、运费合并，得出 **总额 49**。\n\n图执行轨迹（trace）依次为：`regular` → `calc_shipping` / `calc_tax`（并行）→ `join`，全部节点状态均为 completed。\n\n以上数值均来自报价图的实际执行回执，非我的估算。如果您想对比批量优惠，可以把数量提高到 10 及以上再询价。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote_graph",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a9a29bab-9548-4037-8435-b94ccb78eb14"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-REGULAR",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测确已真实调用 quote_graph（quantity=2, unit_price=20），且未用原子工具替代；但两次图回执均为 ok=false、status=failed、trace 为空、无任何节点结果，未出现 status=completed、route=regular、tax/shipping 并行执行与 join 汇合的证据，也没有 subtotal=40、tax=4、shipping=5、total=49 的图来源数据。被测回复如实说明失败、未编造金额，但也因此完全未能给出与图回执一致的报价解释，第二、三、四项要求明确不满足，故整体 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-REGULAR"
+}

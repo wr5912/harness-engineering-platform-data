@@ -1,0 +1,71 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回复确实发起了对 quote_graph 的真实调用（quantity=10, unit_price=12），但工具回执为错误（is_error=true，内容为 Error: cannot get property \"llm\" without inject），不存在 status=completed 且 complete=true 的执行回执，也无 route=bulk 路由、tax/shipping 并行节点执行、join 汇合等图执行事实。被测回复明确表示无法给出 subtotal/tax/shipping/total，仅凭参数预期说明会命中 bulk 分支，未提供任何与图回执一致的金额与解释。因此四项要求均未满足，整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "必须真实调用报价图工具 quote_graph（quantity=10, unit_price=12），不得心算或用原子计算工具替代图计算",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "图回执要求执行完成（status=completed 且 complete=true），条件路由命中 bulk（route=bulk，quantity>=10 命中九折分支），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "金额与来源一致：subtotal=108（10×12×0.9）、tax=10.8（108×10% 两位舍入）、shipping=0（subtotal>=100 免运费）、total=118.8（join 汇合后两位舍入）",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "回复需解释命中 bulk 分支及小计、税费、运费、总额，且与图回执一致",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-03d1fa2d-6270-42cd-993a-ba0e20635e1c",
+    "workspace_id": "dfd0168e-4da9-4bcd-b182-e92de7d2621a",
+    "session_title": "评审 U-GRAPH-BULK",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

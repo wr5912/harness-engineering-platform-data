@@ -1,0 +1,68 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "indexed_evidence 显示同一被测 Session 内存在 convert_length 工具回执（call_id=call_cd5f6c2a07944dd2b7ba9614），is_error=false 且返回 {\"value\":250,\"unit\":\"cm\"}，与传入参数 value=2.5、from=m、to=cm 一致，关键数据可由真实工具结果支撑；最终答复为单个合法 JSON 对象，value=250、unit=\"cm\"、explanation 为非空中文说明，无任何多余文字。三项要求均明确满足。",
+    "requirements": [
+      {
+        "requirement": "必须实际调用 convert_length 工具（value=2.5, from='m', to='cm'）并采用工具返回结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"value\":250,\"unit\":\"cm\"}",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 0,
+            "quote": "{\"value\": 250, \"unit\": \"cm\", \"explanation\": \"已调用 convert_length 工具将 2.5 米换算为厘米，1 米等于 100 厘米，换算结果为 250 厘米。\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "最终答复只有合法 JSON、无任何其它文字：value=250，unit=\"cm\"，explanation 为非空说明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "{\"value\": 250, \"unit\": \"cm\", \"explanation\": \"已调用 convert_length 工具将 2.5 米换算为厘米，1 米等于 100 厘米，换算结果为 250 厘米。\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "不接受心算或未调用工具的回答",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"value\":250,\"unit\":\"cm\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-4e28919d-2073-4a57-99ab-be8b333aa2c6",
+    "workspace_id": "67422956-62e1-459f-80d8-74dbed8ef9ca",
+    "session_title": "评审 U-LENGTH-M-TO-CM",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

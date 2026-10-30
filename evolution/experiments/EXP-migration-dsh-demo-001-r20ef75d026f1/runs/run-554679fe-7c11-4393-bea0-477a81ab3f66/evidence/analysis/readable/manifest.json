@@ -1,0 +1,84 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "inputs.lock.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 7952,
+          "sha256": "b4e3c117ccb38212150f4a307361580dc0af6b7627df230cc4675f2a74333281"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 1158,
+          "sha256": "90a443add7d592137cbacc41491e2e6ea8245be889dee05f6b84dce4743df53b"
+        },
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6287,
+          "sha256": "6c9688a72507ede683e36798ed717e6360df95e7a0cc1c0c7140266d7f0810af"
+        },
+        {
+          "source": "evidence/U-QUOTE-NORMAL/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1302,
+          "sha256": "6b8a0a28fa2efbb0aba44a411326d035cae9cd0a243e0f11433ccf6204156993"
+        },
+        {
+          "source": "evidence/U-QUOTE-NORMAL/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1623,
+          "sha256": "3d89c88e2a8a752cb027c217a15d5e1260065bc81a5b489267532c2da42f530a"
+        },
+        {
+          "source": "evidence/U-QUOTE-NORMAL/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 719,
+          "sha256": "cdf88adec6ac270c20ac52b5130141a065bb796a77d89ff966266551557821f3"
+        },
+        {
+          "source": "evidence/U-QUOTE-MISSING/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1512,
+          "sha256": "df5858916b90d97cadf0b1cc1c111b638ccf964b2250f1a8d294ef8ee9a391a6"
+        },
+        {
+          "source": "evidence/U-QUOTE-MISSING/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1586,
+          "sha256": "938d7ec06b5501e0021784a2afe9bc31fdb5f69b573a676565e0f021913de6a8"
+        },
+        {
+          "source": "evidence/U-QUOTE-MISSING/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 25,
+          "sha256": "29b7af935dbfe24b64ba780a18c11a08f8fc378a53e717c53059100ea39094e1"
+        }
+      ]
+    }
+  ]
+}

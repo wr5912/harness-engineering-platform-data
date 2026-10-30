@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-GRAPH-BULK",
+  "transport": "api",
+  "expected_behavior": "必须真实调用报价图工具 quote_graph（quantity=10, unit_price=12），不得心算或用原子计算工具替代图计算。图回执要求执行完成（status=completed 且 complete=true），条件路由命中 bulk（route=bulk，quantity>=10 命中九折分支），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行。金额与来源一致：subtotal=108（10×12×0.9）、tax=10.8（108×10% 两位舍入）、shipping=0（subtotal>=100 免运费）、total=118.8（join 汇合后两位舍入）。回复需解释命中 bulk 分支及小计、税费、运费、总额，且与图回执一致。",
+  "session_id": "session-5aa8d952-d9ba-4d49-b464-96d8ff5f8801",
+  "workspace_id": "8e94d957-7f7f-43df-b197-7167c117b28f",
+  "session_title": "评测 U-GRAPH-BULK",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-langgraph-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-langgraph-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-b897de11-936f-47ca-8991-fb7b114df07c",
+    "workspace_id": "8e94d957-7f7f-43df-b197-7167c117b28f",
+    "session_title": "评审 U-GRAPH-BULK",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "indexed_evidence[2] 为同一 Session 的 quote 工具成功回执（is_error=false），其内容显示 quantity=3、unit_price=12.5、discount_pct=20 且 total=30，关键金额来自真实工具数据而非心算或伪造；indexed_evidence[0] 为最终回答，明确说明了输入数量 3、单价 12.5、折扣 20% 及两位小数金额 30.00，且未另加税费。两项要求均满足。",
+    "requirements": [
+      {
+        "requirement": "必须调用 quote 工具（quantity=3、unit_price=12.5、discount_pct=20）取得金额，不心算、不伪造工具结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"quantity\":3,\"unit_price\":12.5,\"discount_pct\":20,\"total\":30}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "最终说明输入、折扣和含两位小数的金额 30.00，不另加税费",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "报价已完成。\n\n- 输入：数量 3，单价 12.5\n- 折扣：20%\n- 折后金额：**30.00**（3 × 12.5 × (1 − 20%) = 30.00，由 quote 工具计算）",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-60287509-d9d5-40f7-a2f3-c9b8d6c4db7e",
+    "workspace_id": "317fdcd6-559b-43c2-8c0e-2630aca3217f",
+    "session_title": "评审 U-QUOTE-NORMAL",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

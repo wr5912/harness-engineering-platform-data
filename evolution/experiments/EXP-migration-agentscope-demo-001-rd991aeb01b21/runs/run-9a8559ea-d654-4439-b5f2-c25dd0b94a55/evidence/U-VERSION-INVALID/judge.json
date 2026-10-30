@@ -1,0 +1,57 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答确实调用了 select_newer_version（由同一被测 Session 的 tool/result 错误回执佐证，call_id 一致且 is_error 为 true）；工具实际报错 InvalidVersion、退出码 2 后，回答如实说明左侧输入 not-a-version 非法、工具报错，未给出或捏造任何较新版本，并建议提供合法版本号重新比较。两项要求均明确满足。",
+    "requirements": [
+      {
+        "requirement": "必须调用 select_newer_version 工具",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "Error: Python 工具错误（退出码 2，InvalidVersion）：Invalid version: 'not-a-version'",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "Python 工具实际执行报错（InvalidVersion，非零退出）后，回答如实说明输入无效/工具报错，绝不给出或捏造较新版本",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "无法得出哪个版本更新，因为工具执行失败。\n\n**调用详情：**\n- left：`not-a-version`\n- right：`1.0`\n- newer：无法确定\n\n**工具错误：** Python 工具返回退出码 2（`InvalidVersion`），报错信息为 `Invalid version: 'not-a-version'`。左侧输入 `not-a-version` 不是合法的版本号，packaging 无法解析，因此没有返回比较结果。\n\n按照规则，我不会编造或推断较新版本。请提供一个合法的版本号（例如 `1.1`、`2.0.1`），我可以重新调用 `select_newer_version` 与 `1.0` 比较。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 2,
+            "quote": "Error: Python 工具错误（退出码 2，InvalidVersion）：Invalid version: 'not-a-version'",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-cef30b39-7525-4995-84ce-ca2290a9e375",
+    "workspace_id": "ba30c987-1169-4783-a911-bb1273ad9715",
+    "session_title": "评审 U-VERSION-INVALID",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

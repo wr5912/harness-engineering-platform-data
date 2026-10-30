@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-LENGTH-MISSING",
+  "transport": "api",
+  "expected_behavior": "输入只有数值 2.5、未给出任何单位：先给出原生澄清答复，用中文问句补问缺失单位（2.5 是米还是厘米，以及换算目标单位），待用户补充后再换算；本回合不调用 convert_length 凭空换算，不输出成功 JSON，不编造 value/unit/explanation。",
+  "session_id": "session-de5a7ebb-f7c8-43a7-9c4d-24583bb165fb",
+  "workspace_id": "7f08bc77-3d3b-402a-8e68-fd53d6c6af3d",
+  "session_title": "评测 U-LENGTH-MISSING",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-langchain-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-langchain-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-52805061-5be7-4e85-8a19-d8f005bceb6c",
+    "workspace_id": "7f08bc77-3d3b-402a-8e68-fd53d6c6af3d",
+    "session_title": "评审 U-LENGTH-MISSING",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

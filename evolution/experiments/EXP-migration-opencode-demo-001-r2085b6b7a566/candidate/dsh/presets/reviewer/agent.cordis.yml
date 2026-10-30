@@ -1,0 +1,16 @@
+- id: persona
+  name: /opt/dsh/packages/preset/persona/lib/index.js
+  config:
+    prefix: '你是 reviewer 复核子角色（Agent ID: migration-opencode-demo 的子角色）。使用中文回答，不声称未提供的工具、权限或执行结果。'
+    suffix: 你的工作目录是 {{cwd}}。
+- id: tool-fs
+  name: /opt/dsh/packages/fs/tool-fs/lib/index.js
+  config:
+    read: true
+    readImage: false
+    write: false
+    edit: false
+- id: tool-fs-search
+  name: /opt/dsh/packages/fs/tool-fs-search/lib/index.js
+  config:
+    sampleOverCapGlobResults: false

@@ -1,0 +1,111 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "inputs.lock.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 7921,
+          "sha256": "73bb9c5354cf001072d325eb2002a5e6630eaec3b838513a5c5d3ded73be8191"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 3,
+          "bytes": 1520,
+          "sha256": "5ccc1fcf8d811b9542f7432d596d5a9bada0f7ef86339db22ceef2622193fac6"
+        },
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 29853,
+          "sha256": "bc7b24c3676d37df0040620557b198c0a3b8c989129501c771c4744c04b0bda8"
+        },
+        {
+          "source": "evidence/U-LENGTH-M-TO-CM/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1006,
+          "sha256": "bba4e8d4e3ba1cf6e30f9a483cbc0a3ac58f339710e34e49da186c0088f47e3d"
+        },
+        {
+          "source": "evidence/U-LENGTH-M-TO-CM/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1693,
+          "sha256": "ce9ecdbdb22a6498bdc39325304b1a7f7504c9068434617c3c66b9e64def80a9"
+        },
+        {
+          "source": "evidence/U-LENGTH-M-TO-CM/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 678,
+          "sha256": "67e4696d6a468009a9b6be1f28c52d23f8bed08ce5a03e57373b825f1e17319a"
+        },
+        {
+          "source": "evidence/U-LENGTH-CM-TO-M/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 934,
+          "sha256": "69e2b5bdb82a90c1550976ecac74e65ac22e5953b477e5b2636d1577fef2490f"
+        },
+        {
+          "source": "evidence/U-LENGTH-CM-TO-M/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1125,
+          "sha256": "f88f628d55b70a95cc7af409c9e42992f100b8890a47f42fa1fb1635bde4b444"
+        },
+        {
+          "source": "evidence/U-LENGTH-CM-TO-M/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 678,
+          "sha256": "0d8dbe760044464d4926261ee1b6ccff3f02a8e8f0f84fa8578bc5669238a0ec"
+        },
+        {
+          "source": "evidence/U-LENGTH-MISSING/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 924,
+          "sha256": "80ac087d266305998d5e753847ddea7423b30895c86774c939ee97aea50d6119"
+        },
+        {
+          "source": "evidence/U-LENGTH-MISSING/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1739,
+          "sha256": "65aa080ae0b196deb9d95527a757946d00844ecf41a66f05aeb31c459d5959fc"
+        },
+        {
+          "source": "evidence/U-LENGTH-MISSING/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 26,
+          "sha256": "f9910efbd9b574d22b1db49209cde1d50d50be2cea374d9005cd51a5b8944720"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-002.txt",
+          "total_lines": 21,
+          "sha256": "18b7cc8a2a9da4c6f7aa67494914e3732fa9e8de2969b68628e1e5f8b0e1c1ae"
+        }
+      ]
+    }
+  ]
+}

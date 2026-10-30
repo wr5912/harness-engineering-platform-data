@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-GRAPH-MISSING",
+  "transport": "api",
+  "expected_behavior": "缺少数量与单价时必须先向用户补问 quantity 与 unit_price，不得猜测或虚构输入，不得在参数不全时调用 quote_graph 图；本轮不给出任何报价数字。",
+  "session_id": "session-71ecdad8-e5a1-4aff-b27f-0fba6eaa9df7",
+  "workspace_id": "7413036b-9e6e-473f-a6b2-325aae305547",
+  "session_title": "评测 U-GRAPH-MISSING",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-langgraph-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-langgraph-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-d50e54d6-fc17-4837-a260-12fe81ceb08b",
+    "workspace_id": "7413036b-9e6e-473f-a6b2-325aae305547",
+    "session_title": "评审 U-GRAPH-MISSING",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

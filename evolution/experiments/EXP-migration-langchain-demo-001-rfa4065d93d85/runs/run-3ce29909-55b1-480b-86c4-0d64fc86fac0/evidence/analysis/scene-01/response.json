@@ -1,0 +1,96 @@
+{
+  "scene_id": "scene-01",
+  "text": "{\"case_reviews\":[{\"case_id\":\"U-LENGTH-M-TO-CM\",\"reviewed_verdict\":\"passed\",\"reason\":\"tools.jsonl 记录了唯一一次 tool/call（name=convert_length，arguments={\\\"value\\\":2.5,\\\"from\\\":\\\"m\\\",\\\"to\\\":\\\"cm\\\"}）及配对 tool/result（isError=false，content 为 {\\\"value\\\":250,\\\"unit\\\":\\\"cm\\\"}）；response.json 的 assistant_texts 为单条合法 JSON {\\\"value\\\":250,\\\"unit\\\":\\\"cm\\\",\\\"explanation\\\":非空中文}，与工具返回完全一致，无其它文字、无心算替代痕迹。机器判定 passed 与证据一致。\"},{\"case_id\":\"U-LENGTH-CM-TO-M\",\"reviewed_verdict\":\"passed\",\"reason\":\"机器 inconclusive 仅因 checks.json 中 judge.unavailable_reason=judge-output-not-json（评审未产出合法 JSON），并非被测行为不达标。原始证据完整可判：tools.jsonl 记录 tool/call（value=125, from=cm, to=m）与成功 tool/result（isError=false，{\\\"value\\\":1.25,\\\"unit\\\":\\\"m\\\"}）；response.json 为单条合法 JSON {\\\"value\\\":1.25,\\\"unit\\\":\\\"m\\\",\\\"explanation\\\":非空中文}，与工具返回一致且无其它文字。全部 expected_behavior 条款满足，故修正为 passed。\"},{\"case_id\":\"U-LENGTH-MISSING\",\"reviewed_verdict\":\"passed\",\"reason\":\"tools.jsonl 为空文件（0 字节，哈希为 e3b0c44… 空内容哈希），证明本回合未调用 convert_length；response.json 为一句中文澄清问句，同时补问来源单位（2.5 是米还是厘米）与目标单位，未输出成功 JSON、未编造 value/unit/explanation。与 expected_behavior 完全一致，机器 passed 成立。\"}],\"findings\":[{\"category\":\"evaluation_method\",\"observed_gap\":\"U-LENGTH-CM-TO-M 的评审会话未产出合法 JSON（judge.unavailable_reason=judge-output-not-json，results.jsonl 记录 verdict=inconclusive「评审未产生有效结论」），导致工具调用与最终答复证据完全充分的 Case 被判为 inconclusive 而需人工复核。\",\"root_cause_hypothesis\":\"evaluation-judge preset 对评审输出没有 JSON 结构强制（checks.json 中该 Case 的 judge 无 same_route_as_target/preset 等字段、评审 session 无输出 schema 约束），同路由模型偶发输出非 JSON 文本即丢失结论。\",\"support_case_ids\":[\"U-LENGTH-CM-TO-M\"],\"counterexample_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-MISSING\"],\"evidence_refs\":[\"evidence/U-LENGTH-CM-TO-M/checks.json\",\"evidence/U-LENGTH-M-TO-CM/checks.json\",\"evidence/U-LENGTH-MISSING/checks.json\"],\"alternative\":\"评审失败可能是一次性基础设施/网络抖动而非结构性缺陷；同路由同 preset 的另两次评审均产出有效结论（checks.json 中 judge 完整、results.jsonl verdict 为 passed），说明评审链路本身可用。\",\"falsification\":\"对同一 Case 重跑评审会话多次，统计 judge-output-not-json 出现频率；或为评审输出加 JSON schema 强制校验后重评，若仍稳定产生合法结论则推翻结构性假设。\"},{\"category\":\"evaluation_method\",\"observed_gap\":\"评审与被测走同一模型路由（checks.json 中 judge.same_route_as_target=true，均为 mimo-v2.6-flash / xiaomi-token-plan-cn），评审结论属于同路由自评（results.jsonl 亦自注「同一路由自评，仅作研究辅助」），存在自评偏置与共同盲区风险。\",\"root_cause_hypothesis\":\"评测配置未隔离评审模型，evaluation-judge 与被测 Agent 复用同一 route 配置，评审可能与被测犯同样的错误而无法发现。\",\"support_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[],\"evidence_refs\":[\"evidence/U-LENGTH-M-TO-CM/checks.json\",\"evidence/U-LENGTH-MISSING/checks.json\"],\"alternative\":\"本场景任务为确定性单位换算且评审结论可被工具回执独立复核（本复核即通过原始 tools.jsonl/response.json 得出相同结论），自评偏置在本场景未实际造成误判。\",\"falsification\":\"用独立模型（不同 route）重评三个 Case，若结论与原始工具证据的独立复核完全一致，则本场景的自评偏置风险可降级。\"},{\"category\":\"evaluation_method\",\"observed_gap\":\"场景用例仅覆盖 m→cm、cm→m 成功分支与缺单位澄清分支，未覆盖 AGENTS.md 规则 3（不支持单位如英寸/毫米的拒绝分支）与 convert_length 工具失败分支；机器通过不能证明这些分支能力完备。\",\"root_cause_hypothesis\":\"用例集（inputs.lock.json evaluation_cases 仅 3 条）刻意或疏漏地只选了核心路径，分支覆盖未纳入本轮实验设计。\",\"support_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\",\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[],\"evidence_refs\":[\"evidence/U-LENGTH-M-TO-CM/response.json\",\"evidence/U-LENGTH-CM-TO-M/response.json\",\"evidence/U-LENGTH-MISSING/response.json\"],\"alternative\":\"本实验目标可能只是验证迁移后工具调用与输出结构的最小闭环，分支覆盖属于后续迭代范围。\",\"falsification\":\"新增用例「把 2.5 英寸换算成厘米」及工具注入失败用例，检查是否按规则 3/失败分支不输出成功 JSON、不编造数值；若通过则补齐该缺口。\"},{\"category\":\"harness_mechanism\",\"observed_gap\":\"三个 Case 的 checks.json 均显示 guard.declared=null、guard.status=not-declared，而实际的最终 JSON 结构强制由 managed 插件 convert-length.mjs 的 agent/turn-stopping 钩子（最多 2 次 steer 纠正）实现；评测登记层无法区分「模型自发合规输出 JSON」与「guard 纠偏后合规」。\",\"root_cause_hypothesis\":\"checks.json 的 guard 字段只登记 Harness 声明式 guard，不感知插件内嵌的 turn-stopping 输出校验，导致合规来源不可归因。\",\"support_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\",\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[\"U-LENGTH-M-TO-CM\"],\"evidence_refs\":[\"evidence/U-LENGTH-M-TO-CM/checks.json\",\"evidence/U-LENGTH-M-TO-CM/tools.jsonl\",\"evidence/U-LENGTH-CM-TO-M/checks.json\",\"evidence/U-LENGTH-MISSING/checks.json\"],\"alternative\":\"本场景并未触发纠偏：三个 Case 的 response.json 均只有单条 assistant 文本且 JSON 一次合规，说明合规来自模型自发行为而非 guard 纠正，登记缺失未影响本轮结论。\",\"falsification\":\"导出完整 session trace 检查是否存在 guard 注入的「最终答复结构纠正」steer 消息；若全部 Case 均无纠正消息，则确认本轮合规为自发、登记缺失仅为可观测性问题。\"}]}",
+  "session_id": "session-0b15aa6e-16fb-4824-96cf-1820786655f8",
+  "route": {
+    "provider": "xiaomi-token-plan-cn",
+    "model": "mimo-v2.6-flash",
+    "reasoningEffort": "off"
+  },
+  "tool_names": [
+    "glob",
+    "grep",
+    "read"
+  ],
+  "tool_accesses": [
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-01/part-001.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-01/part-001.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "total_lines": 26
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-01/part-002.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-01/part-002.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21
+          ],
+          "total_lines": 21
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-VERSION-COMPARE",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：第1项要求有工具回执支持：索引2为同一 Session 的 select_newer_version tool/result，is_error=false，参数 left=1.9、right=1.10，回执返回 newer=1.10，runtime 显示 Python 3.11.2 / packaging 25.0 / python3-json-subprocess 桥接，符合“经 Python3 实际执行”的预期。第2项要求有回答证据支持：索引0的回答明确结论“1.10 比 1.9 更新”，并以工具比较回执表格为依据，而非自行猜测。两项要求均被 citation_allowed 为 true 的证据覆盖，真实工具数据选择了 tool/result 索引，故判定 passed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-VERSION-COMPARE"
+}

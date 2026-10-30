@@ -1,0 +1,7 @@
+{
+  "case_id": "U-LENGTH-M-TO-CM",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答为纯 JSON，value=250、unit=cm 与同一 Session 中 convert_length 工具回执（is_error=false，content 返回 {\"value\":250,\"unit\":\"cm\"}）一致；回执正文非空且成功，证明工具确被调用（value=2.5, from=m, to=cm）并被采纳，满足全部预期要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-LENGTH-M-TO-CM"
+}

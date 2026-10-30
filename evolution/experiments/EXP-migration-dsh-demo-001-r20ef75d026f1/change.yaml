@@ -1,0 +1,32 @@
+schema_version: '1.0'
+experiment_id: EXP-migration-dsh-demo-001-r20ef75d026f1
+agent_id: migration-dsh-demo
+baseline_ref: none:first-experiment
+status: active
+research_question: DSH 报价迁移样例能否由标准 DSH Runtime 装载，并按提供的职责响应用户请求
+migration:
+  operation_id: migration-0002e47d-06cb-4f4a-8695-9cde6227642b
+  receipt: evaluation/evidence/migration.json
+  resolution_receipt: evaluation/evidence/migration-resolutions/71c40b7d9824f7c5dd28344afa4c98d8402f89fc81e78aec7e11a6b8caff096a.json
+asset_builds:
+  dsh/managed/tools.ts:
+    schema_version: 1
+    entry_path: dsh/managed/tools.ts
+    output_path: dsh/managed/tools.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 491d993c23951ee362ed5310b5192b37bb4fb1f147f5bc5c4e7ed872b3acf32d
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/tools.ts
+        sha256: 7394f4266afb1f34c06c59a032d4186b87fec85f6e06af559bf958af9a77928b
+    source_sha256: f15128325466e993dac84302ecc99db0438cd67cfb0bc425814de0e303934a2c
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: aea9e9694ab3aeff852748d1baac8074e12dae60fb46da8522c078c220d3a28c
+    platform_sources_sha256: a8f5af6dd50d63503054ddb10ded8a57b99540e4beae46c00730cfba0b17446f
+    runtime_imports: []
+    build_digest: 85b1d8569eb61466d6d0fdf1fbd7e3ae9f01c15680edfd5191fb1cb2ced8adde
+    esm_sha256: 61c0ba04518dedf6d5b786e2989e25873890f1c9ccd671bd5c37e93f708c7c6a
+    candidate_sha256: 52f43301ca5780aee0d3e4f58957639aec7b4bc8a251c875c8618fc5c787d3d9

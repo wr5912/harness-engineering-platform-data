@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "把 125 厘米换算成米。"
+  ],
+  "assistant_texts": [
+    "{\"value\": 1.25, \"unit\": \"m\", \"explanation\": \"已调用 convert_length 工具，将 125 厘米换算为米，125 cm = 1.25 m。\"}"
+  ],
+  "session_id": "session-2212d3f5-1c7c-42d5-8e76-9b7472a198d0",
+  "turns": [
+    {
+      "assistant_text": "{\"value\": 1.25, \"unit\": \"m\", \"explanation\": \"已调用 convert_length 工具，将 125 厘米换算为米，125 cm = 1.25 m。\"}",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "convert_length",
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b8face95-311e-473d-ba13-b9bc53256485"
+    }
+  ]
+}

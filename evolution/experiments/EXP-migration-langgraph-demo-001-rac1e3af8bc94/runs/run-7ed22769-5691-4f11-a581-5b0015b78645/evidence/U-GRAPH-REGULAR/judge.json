@@ -1,0 +1,77 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答确实真实调用了 quote_graph 工具（quantity=2、unit_price=20，两次调用），但两次工具回执均为原生 is_error=true，内容为 `Error: cannot get property \"llm\" without inject`，不存在 status=completed、complete=true、route=regular、tax/shipping/join 节点执行的任何图回执数据，也不存在 subtotal=40、tax=4、shipping=5、total=49 的来源数据。被测回答自身也明确承认未获得回执、无法给出报价，因此「图执行完成、路由命中 regular、金额一致、回复解释命中分支与各项金额」等要求均未满足。工具环境故障只能解释失败，不能改变冻结的预期要求，故判定 failed。",
+    "requirements": [
+      {
+        "requirement": "必须真实调用报价图工具 quote_graph（quantity=2, unit_price=20），不得心算或用原子计算工具替代图计算",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "图回执要求执行完成（status=completed 且 complete=true），条件路由命中 regular（route=regular，quantity<10 不打折），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "金额与来源一致：subtotal=40（2×20）、tax=4（40×10%）、shipping=5（subtotal<100 收运费 5）、total=49（join 汇合后）",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "回复需解释命中 regular 分支及小计、税费、运费、总额，且与图回执一致",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-6cd654c8-c2eb-4aa0-96a0-35ad436f3df2",
+    "workspace_id": "dfd0168e-4da9-4bcd-b182-e92de7d2621a",
+    "session_title": "评审 U-GRAPH-REGULAR",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

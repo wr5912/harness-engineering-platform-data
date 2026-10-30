@@ -1,0 +1,23 @@
+schema_version: '1.0'
+agent:
+  id: migration-langchain-demo
+  name: LangChain 结构化换算迁移样例
+  language: zh-CN
+  lifecycle_status: experiment
+  runtime_family: dsh
+  load_mode: container-only
+loadable_assets:
+  workspace: dsh/workspace
+  preset_root: dsh/presets
+  managed_root: dsh/managed
+  preset_id: migration-langchain-demo
+  profile_patch: dsh/managed/migration-langchain-demo.patch.yml
+credential_environment_keys:
+  - DEEPSEEK_API_KEY
+model_bindings:
+  main:
+    model: mimo-v2.6-flash
+    provider: xiaomi-token-plan-cn
+    reasoningEffort: 'off'
+role_instructions:
+  migration-langchain-demo: dsh/workspace/AGENTS.md

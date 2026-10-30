@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "generated": true,
+  "operation_id": "migration-0002e47d-06cb-4f4a-8695-9cde6227642b",
+  "agent_id": "migration-dsh-demo",
+  "experiment_id": "EXP-migration-dsh-demo-001-r20ef75d026f1",
+  "created_at": "2026-10-30T06:33:43.805Z",
+  "source": {
+    "source_id": "source-860acf34-f3f6-4260-8848-39104ee94550",
+    "fingerprint": "22d660d8ca530f80fa1e803d78f3562b6a5da122e4a981c8b69c7fafa22a794f",
+    "provenance": {
+      "kind": "local",
+      "path": "/home/admin/work/harness-engineering-platform/platform/plugin/test/fixtures/agent-migration/dsh",
+      "commit": "adee516f355712d7ed0b45d3aa74d9469786f16d"
+    },
+    "frameworks": [
+      "DSH"
+    ],
+    "versions": {
+      "package.json": {
+        "name": "migration-source-dsh",
+        "version": "1.0.0"
+      }
+    }
+  },
+  "parent": null,
+  "selected": [
+    {
+      "path": "dsh/managed/tools.ts",
+      "bytes": 1102,
+      "sha256": "7394f4266afb1f34c06c59a032d4186b87fec85f6e06af559bf958af9a77928b",
+      "mode": 420
+    },
+    {
+      "path": "dsh/workspace/.agents/skills/quote/SKILL.md",
+      "bytes": 317,
+      "sha256": "f59e599a2ee5943919f9e729afd46bfd432d113d61ebfc0ed13a933bbf9e1e7b",
+      "mode": 420,
+      "source_path": ".agents/skills/quote/SKILL.md",
+      "source_sha256": "f59e599a2ee5943919f9e729afd46bfd432d113d61ebfc0ed13a933bbf9e1e7b"
+    },
+    {
+      "path": "dsh/workspace/.agents/skills/quote/references/pricing.md",
+      "bytes": 110,
+      "sha256": "5bef181a3d090a5f49309c65a554bcc550d44508f4412595724028c85e5f5fae",
+      "mode": 420,
+      "source_path": ".agents/skills/quote/references/pricing.md",
+      "source_sha256": "5bef181a3d090a5f49309c65a554bcc550d44508f4412595724028c85e5f5fae"
+    }
+  ],
+  "candidate_sha256": "b415b3939eddbaa2ab1bfd70b74901b2419255f6bc4004875eb30dcf3aea0508",
+  "asset_list_sha256": "29681eee087a053b91269bbcfa77a6a4e79c82d39d37d3277d7594a44ad20b4a",
+  "mapping": [
+    {
+      "source": "package.json（dsh.bundle.patch=./cordis.patch.yml，engines.dsh=0.2.1-rc.2）",
+      "target": "candidate/harness.yaml（loadable_assets.profile_patch=dsh/managed/migration-dsh-demo.patch.yml）",
+      "status": "converted",
+      "note": "来源 Bundle 入口转换为平台 Managed 装载声明；未执行来源安装 Hook 或 package scripts。"
+    },
+    {
+      "source": "cordis.patch.yml agent-default-model（xiaomi-token-plan-cn/mimo-v2.6-flash/off）",
+      "target": "candidate/harness.yaml model_bindings.main",
+      "status": "converted",
+      "note": "来源模型原样绑定为 main，不改管理助手模型或全局业务默认。"
+    },
+    {
+      "source": "cordis.patch.yml preset-quote（id=quote，name=报价助手）",
+      "target": "dsh/managed/migration-dsh-demo.patch.yml preset-migration-dsh-demo + dsh/presets/migration-dsh-demo/preset.yml",
+      "status": "converted",
+      "note": "原 Agent/Preset 身份转换为目标来源 migration-dsh-demo（DSH 报价迁移样例），不把原工程作为黑盒工具。"
+    },
+    {
+      "source": "cordis.patch.yml persona（prefix 按照工作区 AGENTS.md 和 quote 技能办理报价。）",
+      "target": "dsh/presets/migration-dsh-demo/agent.cordis.yml persona.prefix + dsh/workspace/AGENTS.md",
+      "status": "converted",
+      "note": "角色正文单处维护于工作区 AGENTS.md，Preset 仅声明身份并装载工作区指令。"
+    },
+    {
+      "source": "AGENTS.md（报价助手角色正文）",
+      "target": "dsh/workspace/AGENTS.md",
+      "status": "converted",
+      "note": "保留必须调用 quote 工具、不猜测工具结果、缺少数量或单价先补问、最终说明输入/折扣/两位小数金额的语义。"
+    },
+    {
+      "source": "tools.ts quote 工具（参数校验与结果语义）",
+      "target": "dsh/managed/tools.ts（Managed TypeScript 入口，构建产物 dsh/managed/tools.mjs）",
+      "status": "converted",
+      "note": "保留 name=quote、参数 schema（quantity/unit_price/discount_pct 必填 number）、越界报错“报价参数超出范围”、结果 {...input, total 两位小数舍入}；按当前原生 API 补 output.schema/render 声明，不改变结果语义。"
+    },
+    {
+      "source": "cordis.patch.yml quote-tools 插件入口（./tools.ts）",
+      "target": "dsh/managed/migration-dsh-demo.patch.yml 主 Preset 引用 /opt/dsh-managed/tools.mjs",
+      "status": "pending",
+      "note": "待 assets/build 生成 tools.mjs 产物后，经 edit/apply 补齐主 Preset 的工具 .mjs 引用，并用 migrations/resolve 记录解决依据。"
+    },
+    {
+      "source": ".agents/skills/quote/SKILL.md",
+      "target": "dsh/workspace/.agents/skills/quote/SKILL.md",
+      "status": "native",
+      "note": "原文逐字复制为 DSH 工作区原生技能，frontmatter 与正文不变。"
+    },
+    {
+      "source": ".agents/skills/quote/references/pricing.md",
+      "target": "dsh/workspace/.agents/skills/quote/references/pricing.md",
+      "status": "native",
+      "note": "技能相对引用 references/pricing.md 随附，引用链完整。"
+    }
+  ],
+  "uncovered": [],
+  "evaluation_case_ids": [
+    "U-QUOTE-NORMAL",
+    "U-QUOTE-MISSING"
+  ],
+  "validation": {
+    "valid": true,
+    "scope": "static-loadable-assets",
+    "runtime_verified": false,
+    "business_verified": false
+  },
+  "note": "来源和映射为此次生成的固定回执；业务等效性须由实际 DSH 行为与评测证据证明。"
+}

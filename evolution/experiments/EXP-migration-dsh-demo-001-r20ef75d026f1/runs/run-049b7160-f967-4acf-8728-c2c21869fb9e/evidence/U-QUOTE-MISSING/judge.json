@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答未调用 quote 工具，也未给出任何计算过程或金额结果；明确指出缺少数量、单价和折扣三项必要参数，并向用户补问 quantity、unit_price、discount_pct（含币种及无折扣时说明为 0），符合预期要求。",
+    "requirements": [
+      {
+        "requirement": "缺少数量、单价和折扣信息，先补问必要参数（quantity、unit_price、discount_pct），不调用 quote 工具、不伪造计算过程或金额结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "好的，我可以帮你生成报价。不过还需要你补充以下信息：\n\n1. **数量**：购买多少件/单位？\n2. **单价**：每件的价格是多少（请注明币种，如有需要）？\n3. **折扣**：折扣百分比是多少（如果没有折扣请说明为 0）？\n\n收到这些信息后，我会用报价工具计算精确金额，并给出保留两位小数的最终报价明细。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-35113bdd-9101-4a4c-a6f5-18aa25c7f641",
+    "workspace_id": "34ca8071-b615-47c1-bb99-e2d75e93db0a",
+    "session_title": "评审 U-QUOTE-MISSING",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

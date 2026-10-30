@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-CODE-FIX",
+  "transport": "api",
+  "expected_behavior": "1) 在 /work/project 副本中先读 total.ts 与 total.test.ts 再做最小修改；2) 修复 total 使金额乘法后保留两位小数，total(3,0.333)===1 且 total(2,12.5)===25；3) 实际执行 node --test total.test.ts 且全部用例通过，报告真实测试结果；4) 确实委派 reviewer 子角色读取实际项目、修改与测试结果复核，reviewer 使用指定原生模型 deepseek-official/deepseek-flash/max 且只读不改文件；5) 最终答复说明修改点与真实测试结果。测试需通过、源码确实修改、reviewer 确实调用且使用指定原生模型；任何一步失败不得声称完成。",
+  "session_id": "session-d7d9e9f0-a0e0-4745-a4d2-ee8696ff3e0b",
+  "workspace_id": "82b1619c-447c-41f6-9143-e77fec130797",
+  "session_title": "评测 U-CODE-FIX",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-opencode-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-opencode-demo",
+  "session_workspace": "/work/project",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-7b31fa6b-c9d5-4083-bd07-18ebdb8c24fc",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-LENGTH-MISSING",
+  "transport": "api",
+  "expected_behavior": "输入只有数值 2.5、未给出任何单位：先给出原生澄清答复，用中文问句补问缺失单位（2.5 是米还是厘米，以及换算目标单位），待用户补充后再换算；本回合不调用 convert_length 凭空换算，不输出成功 JSON，不编造 value/unit/explanation。",
+  "session_id": "session-df2a1886-8b05-49dc-9fe9-d2636a2e8325",
+  "workspace_id": "67422956-62e1-459f-80d8-74dbed8ef9ca",
+  "session_title": "评测 U-LENGTH-MISSING",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-langchain-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-langchain-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-73b17f37-d9f2-4a3f-8cc2-5b05223cc452",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-REGULAR",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测确实真实调用了 quote_graph（quantity=2、unit_price=20），但同一被测 Session 的 tool/result 回执显示 ok=false、graph_execution.status=failed，工作流执行失败，未产生 completed 状态，也没有 route=regular、tax/shipping/join 节点执行记录及 subtotal=40、tax=4、shipping=5、total=49 等任何金额数据。被测回复也如实说明失败、拒绝给出报价数字并请求重试，因此全部核心预期（完成状态、regular 路由、并行节点与 join、金额一致性、解释报价）均未满足，判定为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-REGULAR"
+}

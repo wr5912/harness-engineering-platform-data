@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "比较 not-a-version 和 1.0，哪个版本更新？"
+  ],
+  "assistant_texts": [
+    "无法得出哪个版本更新，因为工具执行失败。\n\n**调用详情：**\n- left：`not-a-version`\n- right：`1.0`\n- newer：无法确定\n\n**工具错误：** Python 工具返回退出码 2（`InvalidVersion`），报错信息为 `Invalid version: 'not-a-version'`。左侧输入 `not-a-version` 不是合法的版本号，packaging 无法解析，因此没有返回比较结果。\n\n按照规则，我不会编造或推断较新版本。请提供一个合法的版本号（例如 `1.1`、`2.0.1`），我可以重新调用 `select_newer_version` 与 `1.0` 比较。"
+  ],
+  "session_id": "session-dc4d5fd0-87ad-4afe-ba97-36b20ed17d9d",
+  "turns": [
+    {
+      "assistant_text": "无法得出哪个版本更新，因为工具执行失败。\n\n**调用详情：**\n- left：`not-a-version`\n- right：`1.0`\n- newer：无法确定\n\n**工具错误：** Python 工具返回退出码 2（`InvalidVersion`），报错信息为 `Invalid version: 'not-a-version'`。左侧输入 `not-a-version` 不是合法的版本号，packaging 无法解析，因此没有返回比较结果。\n\n按照规则，我不会编造或推断较新版本。请提供一个合法的版本号（例如 `1.1`、`2.0.1`），我可以重新调用 `select_newer_version` 与 `1.0` 比较。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "read_image",
+        "select_newer_version",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "0f581c6e-0495-4aee-85b8-10465b896adf"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答在缺少 quantity 与 unit_price 的情况下，仅向用户明确补问这两个必需参数，未猜测或虚构任何输入，也未在参数不全时调用 quote_graph 图（索引证据中无任何工具调用或回执）。回答中仅说明了批量分支与折扣规则，未基于任何输入计算或给出针对本次订单的报价金额，符合本轮不出报价数字的约束。",
+    "requirements": [
+      {
+        "requirement": "缺少数量与单价时必须先向用户补问 quantity 与 unit_price，不得猜测或虚构输入，不得在参数不全时调用 quote_graph 图",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "好的，我可以帮你报价。不过还需要两个信息才能计算：\n\n1. **订单数量**（quantity）是多少？\n2. **单价**（unit_price）是多少？\n\n补充说明：当数量 ≥ 10 时会命中批量（bulk）分支，享受九折；否则按常规（regular）报价。税费和运费会在业务图中并行计算，汇合后得出总额。\n\n请把数量和单价告诉我，我就调用报价图为你生成结果。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "本轮不给出任何报价数字",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "好的，我可以帮你报价。不过还需要两个信息才能计算：\n\n1. **订单数量**（quantity）是多少？\n2. **单价**（unit_price）是多少？\n\n补充说明：当数量 ≥ 10 时会命中批量（bulk）分支，享受九折；否则按常规（regular）报价。税费和运费会在业务图中并行计算，汇合后得出总额。\n\n请把数量和单价告诉我，我就调用报价图为你生成结果。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-878543b9-150d-4d3f-8926-cd4bf0e42217",
+    "workspace_id": "dfd0168e-4da9-4bcd-b182-e92de7d2621a",
+    "session_title": "评审 U-GRAPH-MISSING",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

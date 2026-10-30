@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-BULK",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测确实在同一 Session 中真实调用了 quote_graph（quantity=10、unit_price=12，call_id=call_d55b41fed8d041a995b64f49），满足“不得心算或用原子工具替代”的要求；但工具回执原生状态为 ok=false、graph_execution.status=failed、trace 为空、无 result，明确与“status=completed 且 complete=true”（虽 complete=true 但 status=failed）、路由命中 bulk、tax/shipping 并行执行与 join 汇合、subtotal=108/tax=10.8/shipping=0/total=118.8 等金额要求不符；回复也未给出任何报价解释，而是如实说明失败，未满足第四项“解释命中 bulk 分支及各金额”的要求。多条明确要求不满足，判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-BULK"
+}

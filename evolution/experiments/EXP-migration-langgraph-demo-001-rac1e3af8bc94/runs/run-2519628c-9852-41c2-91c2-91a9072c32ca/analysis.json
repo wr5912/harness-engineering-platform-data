@@ -1,0 +1,40 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-2519628c-9852-41c2-91c2-91a9072c32ca",
+  "review_status": "failed",
+  "review_reason": "证据复核失败（evidence-access）：analysis-required-evidence-not-read",
+  "reviewed_case_count": 0,
+  "scenes": [
+    {
+      "scene": "未分组",
+      "case_ids": [
+        "U-IDENTITY-001",
+        "U-ROLE-001",
+        "U-GRAPH-BULK",
+        "U-GRAPH-REGULAR",
+        "U-GRAPH-MISSING"
+      ],
+      "selected_case_ids": [
+        "U-GRAPH-BULK",
+        "U-GRAPH-REGULAR",
+        "U-GRAPH-MISSING"
+      ],
+      "machine_counts": {
+        "passed": 2,
+        "failed": 0,
+        "inconclusive": 1,
+        "not_executed": 0
+      },
+      "review_status": "failed",
+      "review_reason": "证据复核失败（evidence-access）：analysis-required-evidence-not-read",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": {
+        "stage": "evidence-access",
+        "reason": "analysis-required-evidence-not-read",
+        "evidence_ref": "evidence/analysis/scene-01/diagnostic.json"
+      }
+    }
+  ]
+}

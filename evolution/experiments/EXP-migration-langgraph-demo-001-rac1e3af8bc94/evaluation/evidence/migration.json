@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "generated": true,
+  "operation_id": "migration-caee9a02-576e-41ea-98aa-d7acf674acdf",
+  "agent_id": "migration-langgraph-demo",
+  "experiment_id": "EXP-migration-langgraph-demo-001-rac1e3af8bc94",
+  "created_at": "2026-10-30T07:06:12.505Z",
+  "source": {
+    "source_id": "source-0d679f43-b034-4b42-bfac-0b690cefbf15",
+    "fingerprint": "fffd1dc6aadf614e58ad4a7e60567a4783cc5cc53edc0130fd4071ea17e96edf",
+    "provenance": {
+      "kind": "local",
+      "path": "/home/admin/work/harness-engineering-platform/platform/plugin/test/fixtures/agent-migration/langgraph",
+      "commit": "adee516f355712d7ed0b45d3aa74d9469786f16d",
+      "commit_scope": "enclosing-repository-reference",
+      "content_identity": "working-tree-snapshot-fingerprint"
+    },
+    "frameworks": [
+      "LangChain",
+      "LangGraph"
+    ],
+    "versions": {
+      "package.json": {
+        "name": "migration-source-langgraph",
+        "version": "1.0.0",
+        "dependencies": {
+          "@langchain/langgraph": "1.5.0",
+          "@langchain/core": "1.1.48"
+        }
+      }
+    }
+  },
+  "parent": null,
+  "selected": [
+    {
+      "path": "dsh/managed/tools.ts",
+      "bytes": 4443,
+      "sha256": "67da670529643e7f14194f9b3844cc2ce58f7648a4b50d99c590e840e603ae49",
+      "mode": 493
+    }
+  ],
+  "candidate_sha256": "7b743e7753ae49708a2c0cd9788cf2ef8fe85f0be3f424ba0375150238960212",
+  "asset_list_sha256": "3911b5b7da5911e98a7996e981abaa2d32bbe7992181dd6ebd67c1afc27a5c3e",
+  "mapping": [
+    {
+      "source": "AGENTS.md：订单报价助手主角色（收集 quantity/unit_price、解释 regular/bulk 分支与小计/税费/运费/总额、缺参补问、负数拒绝）",
+      "target": "new-agent target.role → 主 Preset 角色正文（默认 dsh/workspace/AGENTS.md），LLM 负责自然语言输入解析与结果解释",
+      "status": "converted",
+      "required": true,
+      "notes": "角色正文只保留这一处可编辑来源；不把整图黑盒化为提示词。"
+    },
+    {
+      "source": "graph.ts quoteGraph 显式有向图：START 条件分支 quantity>=10→bulk/regular；tax 与 shipping 并行；addEdge(['tax','shipping'],'join') join 等待两节点；join→END",
+      "target": "dsh/managed/tools.ts 用 @harness-platform/workflow-runtime 的 Annotation/StateGraph/START/END 重建同一图结构，经 defineWorkflow/registerWorkflowTool 注册为原生 DSH 工具 quote_graph",
+      "status": "converted",
+      "required": true,
+      "notes": "保留 bulk/regular 分支、tax/shipping 并行与 join 等待两节点，不退化为提示词或单一顺序 if 算式；图回执含 status=completed/complete、route、tax/shipping/join 节点执行记录与最终结果。"
+    },
+    {
+      "source": "graph.ts 节点确定性计算：bulk=quantity*unit_price*0.9、regular=quantity*unit_price、tax=round(subtotal*0.1,2)、shipping=subtotal>=100?0:5、join total=round(subtotal+tax+shipping,2)",
+      "target": "dsh/managed/tools.ts 图节点纯函数逐行保留同一公式，运行期无 LLM 调用",
+      "status": "converted",
+      "required": true,
+      "notes": "图业务函数保持确定性；回执金额按两位小数呈现，样例取值与来源一致。"
+    },
+    {
+      "source": "package.json：@langchain/langgraph@1.5.0、@langchain/core@1.1.48",
+      "target": "复用平台 TypeScript 图 SDK @harness-platform/workflow-runtime（preview build_contract.sdk 既有合同），编译走 assets/build-preview/build",
+      "status": "native",
+      "required": true,
+      "notes": "不执行来源 npm install 或来源 package scripts。"
+    },
+    {
+      "source": "graph.ts sourceModel：xiaomi-token-plan-cn/mimo-v2.6-flash/off",
+      "target": "model_bindings.main = xiaomi-token-plan-cn / mimo-v2.6-flash / reasoningEffort=off（原生模型目录已核对 readiness=ready）",
+      "status": "native",
+      "required": true,
+      "notes": "按目录原样保留档位 ID；不修改全局业务默认。"
+    },
+    {
+      "source": "AGENTS.md：缺参数先补问、负数拒绝计算",
+      "target": "角色规则 + quote_graph 工具参数校验（缺参/负数返回 rejected 回执，不由 LLM 猜测输入）",
+      "status": "converted",
+      "required": true,
+      "notes": "由 U-GRAPH-MISSING 验证缺数量先问、不猜输入。"
+    },
+    {
+      "source": "checkpoint/interrupt/thread 恢复（来源声明单次无状态流程，未使用）",
+      "target": "无兼容实现",
+      "status": "omitted",
+      "required": false,
+      "notes": "来源不使用 checkpoint/interrupt，本次不做其兼容承诺。"
+    }
+  ],
+  "uncovered": [
+    "checkpoint/thread/interrupt-resume 兼容：来源为单次无状态流程，未使用 checkpoint 或中断恢复；迁移未实现其兼容语义，不做等效承诺。",
+    "原 LangGraph 运行时整体等效性：未运行原系统（@langchain/langgraph 1.5.0），仅按固定来源源码映射行为，不声称完整等效。"
+  ],
+  "evaluation_case_ids": [
+    "U-GRAPH-BULK",
+    "U-GRAPH-REGULAR",
+    "U-GRAPH-MISSING"
+  ],
+  "validation": {
+    "valid": true,
+    "scope": "static-loadable-assets",
+    "runtime_verified": false,
+    "business_verified": false
+  },
+  "note": "来源和映射为此次生成的固定回执；业务等效性须由实际 DSH 行为与评测证据证明。"
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-LENGTH-CM-TO-M",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：要求1：indexed_evidence 中同一 Session 的工具回执（index 2，call_id=call_19a98d9a50d44c23877d0da4，is_error=false）显示 convert_length 返回 {\"value\":1.25,\"unit\":\"m\"}，且被测答复采用的数值与之一致；对应调用请求（index 1）的参数为 value=125, from='cm', to='m'，与回执 call_id 一致（调用请求本身 citation_allowed=false，故仅以回执作为可引用证据）。要求2：被测答复正文（index 0）为仅含 JSON 的单一对象，value=1.25、unit=\"m\"、explanation 为非空说明，无其它文字。两项要求均满足，故判定 passed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-LENGTH-CM-TO-M"
+}

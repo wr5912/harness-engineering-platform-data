@@ -1,0 +1,31 @@
+schema_version: '1.0'
+agent:
+  id: migration-opencode-demo
+  name: OpenCode 编码迁移样例
+  language: zh-CN
+  lifecycle_status: experiment
+  runtime_family: dsh
+  load_mode: container-only
+loadable_assets:
+  workspace: dsh/workspace
+  preset_root: dsh/presets
+  managed_root: dsh/managed
+  preset_id: migration-opencode-demo
+  profile_patch: dsh/managed/migration-opencode-demo.patch.yml
+credential_environment_keys:
+  - DEEPSEEK_API_KEY
+model_bindings:
+  main:
+    provider: xiaomi-token-plan-cn
+    model: mimo-v2.6-flash
+    reasoningEffort: 'off'
+  presets:
+    reviewer:
+      provider: xiaomi-token-plan-cn
+      model: mimo-v2.6-pro
+      reasoningEffort: high
+project_workspace:
+  path: dsh/workspace/project
+role_instructions:
+  migration-opencode-demo: dsh/workspace/AGENTS.md
+  reviewer: dsh/presets/reviewer/role.md

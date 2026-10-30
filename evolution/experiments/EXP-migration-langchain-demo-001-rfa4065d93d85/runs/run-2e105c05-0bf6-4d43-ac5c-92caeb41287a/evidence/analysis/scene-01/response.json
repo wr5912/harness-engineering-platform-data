@@ -1,0 +1,77 @@
+{
+  "scene_id": "scene-01",
+  "text": "{\"case_reviews\":[{\"case_id\":\"U-LENGTH-M-TO-CM\",\"reviewed_verdict\":\"passed\",\"reason\":\"独立复核原始证据：tools.jsonl 记录 tool/call 事件 name=convert_length、arguments={\\\"value\\\":2.5,\\\"from\\\":\\\"m\\\",\\\"to\\\":\\\"cm\\\"}（call_cd5f6c2a07944dd2b7ba9614），对应 tool/result 的 isError=false 且返回 {\\\"value\\\":250,\\\"unit\\\":\\\"cm\\\"}，与最终答复采用的数值完全一致；response.json 的 assistant_texts 为单个合法 JSON 对象 {\\\"value\\\":250,\\\"unit\\\":\\\"cm\\\",\\\"explanation\\\":\\\"已调用 convert_length 工具将 2.5 米换算为厘米…\\\"}，explanation 非空且无任何多余文字。expected_behavior 三项（实际调用、采用工具结果、纯 JSON 输出）均被确定性证据证实，机器 passed 正确。\"},{\"case_id\":\"U-LENGTH-CM-TO-M\",\"reviewed_verdict\":\"passed\",\"reason\":\"独立复核原始证据：tools.jsonl 记录 tool/call 事件 name=convert_length、arguments={\\\"value\\\":125,\\\"from\\\":\\\"cm\\\",\\\"to\\\":\\\"m\\\"}（call_1f0cf377fe7a40228f3c35f5），tool/result 的 isError=false 且返回 {\\\"value\\\":1.25,\\\"unit\\\":\\\"m\\\"}；response.json 的 assistant_texts 为单个合法 JSON {\\\"value\\\":1.25,\\\"unit\\\":\\\"m\\\",\\\"explanation\\\":\\\"已通过 convert_length 工具将 125 厘米换算为米…\\\"}，无多余文字。三项要求均被确定性证据证实，机器 passed 正确。\"},{\"case_id\":\"U-LENGTH-MISSING\",\"reviewed_verdict\":\"passed\",\"reason\":\"修正机器 inconclusive。确定性证据显示被测行为完全满足 expected_behavior：tools.jsonl 为 0 字节空文件（sha256 为 E3B0C442… 空摘要），即本回合无任何工具调用；response.json 的 assistant_texts 为中文澄清问句“2.5 缺少单位信息，请问 2.5 是米还是厘米？您想换算成哪种单位？”，同时补问了来源单位与目标单位，非 JSON、未编造 value/unit/explanation。机器 inconclusive 源自评审器失败（checks.json 中 judge.unavailable_reason=\\\"judge-output-not-json\\\"，results.jsonl 观察为“评审未产生有效结论，需人工判定”），属评估侧缺口而非被测能力缺口，故依据原始证据改判 passed。\"}],\"findings\":[{\"category\":\"harness_mechanism\",\"observed_gap\":\"U-LENGTH-MSSING 类澄清分支 Case 的机器判定停在 inconclusive：checks.json 记录 judge.unavailable_reason=\\\"judge-output-not-json\\\"（评审会话 session-73b17f37… 未产出合法 JSON 判定），results.jsonl 记为“评审未产生有效结论”；而该 Case 的行为证据本可完全确定性地机械判定（tools.jsonl 为空且回复为澄清问句即通过），Harness 却缺少此类兜底规则，导致可定级 Case 未自动定级。\",\"root_cause_hypothesis\":\"evaluation-judge（mimo-v2.6-flash，reasoningEffort=off）偶发输出非 JSON 判定文本；同时场景判定管线对“澄清/不换算”分支没有确定性规则（tools.jsonl 无 tool/call 且最终答复非成功 JSON → passed），过度依赖 LLM judge。\",\"support_case_ids\":[\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\"],\"evidence_refs\":[\"evidence/U-LENGTH-MISSING/checks.json\",\"evidence/U-LENGTH-MISSING/response.json\",\"evidence/U-LENGTH-M-TO-CM/checks.json\",\"evidence/U-LENGTH-CM-TO-M/checks.json\"],\"alternative\":\"可能只是该 judge 会话单次偶发失败（超时、截断或采样随机性），而非 judge 系统性不输出 JSON——同路由同 preset 的另两个 Case 均产出了合法 JSON verdict。\",\"falsification\":\"对同一 checks/response 证据重复运行 judge N 次统计非 JSON 率；同时加入确定性兜底规则（空 tools.jsonl + 非 JSON 回复 → passed）与 LLM judge 结果对比，若兜底规则与人工复核一致则推翻“必须依赖 judge”的假设。\"},{\"category\":\"harness_mechanism\",\"observed_gap\":\"评审与被测使用同一路由自评：results.jsonl 的 observation 明示“同一路由自评，仅作研究辅助”，checks.json 中 judge.route 与被测 session 路由同为 mimo-v2.6-flash/xiaomi-token-plan-cn。语义判定缺乏独立评审器，存在自评偏好或同盲区风险。\",\"root_cause_hypothesis\":\"评测管线为省资源复用被测路由做 judge，可能对风格相近的回答更宽松，或与被测共享同一理解盲区（如对澄清分支格式的误判）。\",\"support_case_ids\":[\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\"],\"evidence_refs\":[\"evidence/U-LENGTH-MISSING/checks.json\",\"evidence/U-LENGTH-M-TO-CM/tools.jsonl\",\"evidence/U-LENGTH-CM-TO-M/tools.jsonl\"],\"alternative\":\"本场景两个 passed Case 有完整确定性工具日志（tool/call 参数与 tool/result 返回值逐字可验），自评结论已被原始证据独立背书，自评偏好在本场景未实际造成误判。\",\"falsification\":\"用不同家族模型或纯规则引擎复判全部 Case，比较 verdict 一致率；若一致率高且确定性证据吻合，则推翻自评偏好风险在本场景的实质影响。\"},{\"category\":\"evaluation_method\",\"observed_gap\":\"场景覆盖不完整且无重复采样：每个 Case 仅 1 trial；AGENTS.md 规则 3（出现米/厘米以外单位时明确说明不支持且不换算）、同单位换算（from==to）等错误/边界分支在本场景没有任何 Case 覆盖；inputs.lock.json 的 case_catalog 中 U-IDENTITY-001、U-ROLE-001 亦未纳入本场景复核。机器通过不等于全分支能力完备。\",\"root_cause_hypothesis\":\"场景只抽取了两个正例换算与一个缺单位澄清分支，错误分支（不支持单位）与重复试验缺失是场景设计的覆盖缺口，而非被测已证明能在这些分支正确行为。\",\"support_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\",\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[],\"evidence_refs\":[\"evidence/U-LENGTH-M-TO-CM/response.json\",\"evidence/U-LENGTH-CM-TO-M/response.json\",\"evidence/U-LENGTH-MISSING/response.json\"],\"alternative\":\"其余分支可能在同 Run 的其它场景或后续 trial 中被覆盖；本场景命名“未分组”也提示它只是样例集的一部分。\",\"falsification\":\"新增 Case（如“把 2.5 英尺换算成米”“把 2.5 米换算成 2.5 米”）并对每个 Case 重复 ≥5 trial，若全部稳定满足 AGENTS.md 规则 3 与同单位语义，则推翻覆盖缺口对能力结论的限制。\"}]}",
+  "session_id": "session-743486ee-374f-4792-9ab2-86113674492a",
+  "route": {
+    "provider": "xiaomi-token-plan-cn",
+    "model": "mimo-v2.6-flash",
+    "reasoningEffort": "off"
+  },
+  "tool_names": [
+    "glob",
+    "grep",
+    "read"
+  ],
+  "tool_accesses": [
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-01/part-001.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-01/part-001.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "total_lines": 35
+        }
+      }
+    },
+    {
+      "name": "glob",
+      "arguments": {
+        "pattern": "evidence/**/*"
+      },
+      "result": {
+        "is_error": false
+      }
+    }
+  ]
+}

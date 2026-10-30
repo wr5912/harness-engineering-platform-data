@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "generated": true,
+  "operation_id": "migration-da6cb370-d53a-4af8-9249-3c1cc85cbfe6",
+  "agent_id": "migration-langchain-demo",
+  "experiment_id": "EXP-migration-langchain-demo-001-rfa4065d93d85",
+  "created_at": "2026-10-30T07:00:32.604Z",
+  "source": {
+    "source_id": "source-4d12592a-9148-4ad0-b554-3d450a3b4ed1",
+    "fingerprint": "29cc09cb6f1baa68d74df2629e63b413ed5cbdfbeb3637c4687a6bdd06d13657",
+    "provenance": {
+      "kind": "local",
+      "path": "/home/admin/work/harness-engineering-platform/platform/plugin/test/fixtures/agent-migration/langchain",
+      "commit": "adee516f355712d7ed0b45d3aa74d9469786f16d",
+      "commit_scope": "enclosing-repository-reference",
+      "content_identity": "working-tree-snapshot-fingerprint"
+    },
+    "frameworks": [
+      "LangChain"
+    ],
+    "versions": {
+      "package.json": {
+        "name": "migration-source-langchain",
+        "version": "1.0.0",
+        "dependencies": {
+          "langchain": "1.6.0",
+          "zod": "4.4.3"
+        }
+      }
+    }
+  },
+  "parent": null,
+  "selected": [
+    {
+      "path": "dsh/managed/convert-length.ts",
+      "bytes": 2701,
+      "sha256": "bc5fb4669fd4a99d4225e45d094a458c5bbd9e9e0909125540e101a04c4575e1",
+      "mode": 420
+    }
+  ],
+  "candidate_sha256": "b02f3014ccedac1a260b658d26ee3a1225bd6fc15688e49acdeee30a0088e64f",
+  "asset_list_sha256": "d0080022ba555e7ab9ba231d33fb25c7403a8824cafc950c8ebfed39eda80614",
+  "mapping": [
+    {
+      "notes": "四条约束全部保留。来源 responseFormat 与“缺少单位先询问”存在矛盾，见 responseFormat 映射项的显式分支适配。",
+      "required": true,
+      "source": "agent.ts systemPrompt：必须用工具换算米和厘米；缺少单位先询问；不支持的单位明确说明；最终只输出符合约定的 JSON",
+      "status": "converted",
+      "target": "dsh/workspace/AGENTS.md 主角色指令（行为规则 1-5）"
+    },
+    {
+      "notes": "保留：value 非负约束（受强制 JSON Schema 子集无 minimum 关键字限制，改为 execute 内校验并以工具失败保留错误语义）、from/to 枚举 m|cm、同单位原样返回 {value, unit: to}、m→cm ×100、cm→m ÷100、结构化成功输出 {value, unit}（render 以 JSON 文本投影给模型）。不将 LangChain 运行时包装为一个工具。",
+      "required": true,
+      "source": "agent.ts convert 工具（langchain tool，name=convert_length，schema=z.object({value: z.number().nonnegative(), from: z.enum(['m','cm']), to: z.enum(['m','cm'])})）",
+      "status": "converted",
+      "target": "dsh/managed/convert-length.ts 原生工具（ToolDefinition：parameters + output.schema/render + async execute），经 assets/build 编译为同名 convert-length.mjs"
+    },
+    {
+      "notes": "明确的错误/澄清分支适配：来源 systemPrompt“缺少单位先询问”与 responseFormat 必填成功字段相互矛盾（澄清答复无法满足成功结构）。本迁移不静默掩盖该冲突：缺信息时采用原生澄清答复（中文问句补问缺失单位，不输出成功 JSON、不编造数值），成功分支保持既定 JSON 结构 {value, unit, explanation} 不变。如需结构化澄清，可统一用辨别联合 oneOf（澄清分支 | 成功分支）并声明新增语义；本版采用原生澄清答复，不引入合同外字段。",
+      "required": true,
+      "source": "agent.ts responseFormat：z.object({value: z.number(), unit: z.enum(['m','cm']), explanation: z.string()})",
+      "status": "converted",
+      "target": "主角色最终答复约定（AGENTS.md 规则 4）：成功分支只输出合法 JSON {value, unit, explanation}，explanation 非空"
+    },
+    {
+      "notes": "沿用来源模型与 reasoningEffort=off，不改全局模型。",
+      "required": true,
+      "source": "sourceModel = { provider: 'xiaomi-token-plan-cn', model: 'mimo-v2.6-flash', reasoningEffort: 'off' }",
+      "status": "converted",
+      "target": "harness.yaml model_bindings.main"
+    },
+    {
+      "notes": "映射为原生 Agent/工具行为，不把 LangChain 运行时包装为单个工具；目标无需运行或安装来源 langchain 框架。",
+      "required": true,
+      "source": "langchain createAgent 工具循环（agent loop：模型调用工具→工具结果→最终结构化输出）",
+      "status": "native",
+      "target": "DSH 原生 Agent 会话工具循环（原生 Preset + convert_length 原生工具）"
+    },
+    {
+      "notes": "zod 仅用于来源 schema 校验，由原生 parameters/output.schema + execute 校验替代；来源 langchain 框架不进入目标，因此无需 assets/dependencies/prepare 独立依赖。",
+      "required": false,
+      "source": "package.json 依赖 langchain@1.6.0、zod@4.4.3",
+      "status": "omitted",
+      "target": "无独立依赖：工具用原生 JSON Schema 契约，无 zod；langchain 不安装、不运行"
+    },
+    {
+      "notes": "受 DSH 强制 JSON Schema 子集不支持 minimum 关键字所限，校验从 schema 级移到 execute 级，拒绝语义保留（工具失败，不当作成功换算）。",
+      "required": true,
+      "source": "z.number().nonnegative() 非负数值校验（schema 级拒绝）",
+      "status": "converted",
+      "target": "convert-length.ts execute 内校验：value<0 抛出工具失败“value 必须为非负数值”"
+    }
+  ],
+  "uncovered": [
+    "LangChain createAgent 运行时内部机制（框架级 responseFormat 强制结构化生成、工具调用重试、流式输出）未逐机制迁移：最终 JSON 结构改由角色指令约束，错误/澄清分支为显式适配（缺信息原生澄清答复，成功分支保持既定 JSON）",
+    "未执行来源 LangChain 运行对比（按授权目标不运行、不安装来源框架），不声称与原 LangChain Agent 全量等效，仅验证本迁移定义的代表行为"
+  ],
+  "evaluation_case_ids": [
+    "U-LENGTH-M-TO-CM",
+    "U-LENGTH-CM-TO-M",
+    "U-LENGTH-MISSING"
+  ],
+  "validation": {
+    "valid": true,
+    "scope": "static-loadable-assets",
+    "runtime_verified": false,
+    "business_verified": false
+  },
+  "note": "来源和映射为此次生成的固定回执；业务等效性须由实际 DSH 行为与评测证据证明。"
+}

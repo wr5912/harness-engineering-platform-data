@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "工具回执（索引 2）显示 convert_length 调用成功且返回 {\"value\":1.25,\"unit\":\"m\"}，被测回答采用的数值与回执一致；最终答复（索引 0）为纯 JSON，value=1.25、unit=\"m\"、explanation 非空，满足全部要求。",
+    "requirements": [
+      {
+        "requirement": "必须实际调用 convert_length 工具（value=125, from='cm', to='m'）并采用工具返回结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"value\":1.25,\"unit\":\"m\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "最终答复只有合法 JSON、无任何其它文字：value=1.25，unit=\"m\"，explanation 为非空说明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "{\"value\": 1.25, \"unit\": \"m\", \"explanation\": \"已通过 convert_length 工具将 125 厘米换算为米，结果为 1.25 米。\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-8180d625-8a40-439d-8e60-4f6694927a84",
+    "workspace_id": "67422956-62e1-459f-80d8-74dbed8ef9ca",
+    "session_title": "评审 U-LENGTH-CM-TO-M",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

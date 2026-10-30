@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-CODE-FIX",
+  "transport": "api",
+  "completed": false,
+  "failure_reason": "api-target-session-create-failed",
+  "failure_stage": "target-session-create",
+  "last_successful_step": null,
+  "request_id": null,
+  "input_index": null,
+  "rpc_method": "session/create",
+  "http_status": 200,
+  "error_code": "agent-preset/invalid",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-opencode-demo",
+    "status": "broken",
+    "diagnostics": [
+      {
+        "plugin": "tool-fs",
+        "entrypoint": "@deepseek-ai/dsh-tool-fs",
+        "reason": "never started"
+      },
+      {
+        "plugin": "tool-fs-search",
+        "entrypoint": "@deepseek-ai/dsh-tool-fs-search",
+        "reason": "never started"
+      },
+      {
+        "plugin": "tool-bash",
+        "entrypoint": "@deepseek-ai/dsh-tool-bash",
+        "reason": "never started"
+      },
+      {
+        "plugin": "tool-subagent-reviewer",
+        "entrypoint": "@deepseek-ai/dsh-tool-subagent",
+        "reason": "never started"
+      }
+    ]
+  },
+  "trace_available": false
+}

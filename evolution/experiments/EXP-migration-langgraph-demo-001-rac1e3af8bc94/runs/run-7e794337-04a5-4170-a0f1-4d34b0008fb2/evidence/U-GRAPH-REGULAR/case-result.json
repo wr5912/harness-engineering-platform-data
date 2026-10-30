@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-REGULAR",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具回执显示 quote_graph 真实执行：graph_execution.status=completed 且 complete=true，route=regular，trace 依次为 regular → calc_shipping/calc_tax（并行）→ join，各节点均 completed；回执金额 subtotal=40、tax=4、shipping=5、total=49 与预期公式完全一致；被测回复解释了 regular 命中原因及各项金额，且与回执数据一致。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-REGULAR"
+}

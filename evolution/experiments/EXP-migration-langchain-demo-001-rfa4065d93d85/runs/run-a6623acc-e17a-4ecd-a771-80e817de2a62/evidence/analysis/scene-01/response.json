@@ -1,0 +1,97 @@
+{
+  "scene_id": "scene-01",
+  "text": "{\"case_reviews\":[{\"case_id\":\"U-LENGTH-M-TO-CM\",\"reviewed_verdict\":\"passed\",\"reason\":\"tools.jsonl 显示确实发生了 convert_length 调用（call_5c18d3f0e0db47c68b824cbd，arguments 为 {\\\"value\\\":2.5,\\\"from\\\":\\\"m\\\",\\\"to\\\":\\\"cm\\\"}），回执 isError=false 且返回 {\\\"value\\\":250,\\\"unit\\\":\\\"cm\\\"}；response.json 的最终答复是仅含合法 JSON 的单条消息，value=250、unit=\\\"cm\\\"、explanation 非空，且与工具回执一致，未见心算替代痕迹，满足 expected_behavior 全部要求。\"},{\"case_id\":\"U-LENGTH-CM-TO-M\",\"reviewed_verdict\":\"passed\",\"reason\":\"tools.jsonl 显示调用参数为 {\\\"value\\\":125,\\\"from\\\":\\\"cm\\\",\\\"to\\\":\\\"m\\\"}（call_19a98d9a50d44c23877d0da4），回执 isError=false 返回 {\\\"value\\\":1.25,\\\"unit\\\":\\\"m\\\"}；response.json 最终答复为纯合法 JSON，value=1.25、unit=\\\"m\\\"、explanation 非空，与回执一致，满足 expected_behavior。\"},{\"case_id\":\"U-LENGTH-MISSING\",\"reviewed_verdict\":\"passed\",\"reason\":\"tools.jsonl 为 0 字节空文件（共 0 条事件），本回合确无任何工具调用；response.json 显示答复为纯中文澄清问句，同时补问了源单位（米或厘米）与目标单位，未输出任何 value/unit/explanation 成功 JSON、无编造数据，符合澄清分支预期。\"}],\"findings\":[{\"category\":\"evaluation_method\",\"observed_gap\":\"三个 Case 的机器判定均由同路由评审完成：checks.json 中 judge.same_route_as_target=true、route 与被测相同（mimo-v2.6-flash/xiaomi-token-plan-cn），且 judge.tools 为空，results.jsonl 的观察也自述“同一路由自评，仅作研究辅助”。passed 结论依赖同一模型路线的自评，而非独立评审。\",\"root_cause_hypothesis\":\"评审 preset（evaluation-judge）复用被测路由且不带工具，属于评测设计选择，可能在边界 Case 上引入自评偏置（例如模型倾向认可自己的输出格式）。\",\"support_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\",\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[],\"evidence_refs\":[\"evidence/U-LENGTH-M-TO-CM/checks.json\",\"evidence/U-LENGTH-CM-TO-M/checks.json\",\"evidence/U-LENGTH-MISSING/checks.json\"],\"alternative\":\"本次三个 Case 的判定可被原始 tools.jsonl 独立复核（工具参数、回执、isError 均可直接查验），因此当前结论正确性不依赖自评，仅评审独立性受限；response.json 中的 tool_names 实为工具清单而非调用记录，易被误读为调用证据，但判定实际引用的是 tools.jsonl。\",\"falsification\":\"用不同模型路由、带 tools.jsonl 读取能力的独立评审重跑三个 Case，比较 verdict 与观察是否一致；若一致则自评偏置假设被推翻。\"},{\"category\":\"evaluation_method\",\"observed_gap\":\"分支覆盖不完整：场景仅覆盖两个 happy-path 换算与一个缺单位澄清分支；AGENTS.md 行为规则第 3 条（出现米/厘米以外单位时明确说明不支持、不换算）以及工具对负值/非法枚举的拒绝语义在本场景没有任何 Case 触达，该能力为观察空白而非已验证通过。\",\"root_cause_hypothesis\":\"Case 目录只挑选了确定性可通过的路径（数值换算 ×2、澄清 ×1），未设计对抗性/边界输入，导致场景级评估无法证明 agent 在不支持单位输入下的行为符合声明。\",\"support_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\",\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[\"U-LENGTH-MISSING\"],\"evidence_refs\":[\"evidence/U-LENGTH-M-TO-CM/response.json\",\"evidence/U-LENGTH-CM-TO-M/response.json\",\"evidence/U-LENGTH-MISSING/response.json\"],\"alternative\":\"也可能外部仅关心核心换算与澄清两条路径，未覆盖分支不构成缺陷，只是能力未知。\",\"falsification\":\"新增输入如“把 3 英尺换算成米”或“把 -2 米换算成厘米”的 Case，检查是否既不调用工具凭空换算、又给出中文不支持/错误说明且不输出成功 JSON；若行为正确则覆盖缺口补齐，若输出编造 JSON 则确认能力缺口。\"},{\"category\":\"harness_mechanism\",\"observed_gap\":\"convert-length 插件内置的最终输出强制校验 guard（agent/turn-stopping 纠正 steer、最多 2 次、纠正回合 tools.guard 禁止重放 convert_length）在本场景全部观测证据中从未触发：两个换算 Case 都是单 turn 首次即输出合法 JSON，澄清 Case 不进入成功分支校验路径。guard 的纠正与耗尽报错路径未被任何证据证实有效。\",\"root_cause_hypothesis\":\"被测模型在 happy path 上首过合规，guard 恒为无操作；guard 机制本身是否可用（事件订阅、steer 注入、重放拦截）在本场景属于未验证假设。\",\"support_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\",\"U-LENGTH-MISSING\"],\"counterexample_case_ids\":[\"U-LENGTH-M-TO-CM\",\"U-LENGTH-CM-TO-M\"],\"evidence_refs\":[\"evidence/U-LENGTH-M-TO-CM/tools.jsonl\",\"evidence/U-LENGTH-M-TO-CM/response.json\",\"evidence/U-LENGTH-CM-TO-M/tools.jsonl\",\"evidence/U-LENGTH-MISSING/tools.jsonl\"],\"alternative\":\"可能 guard 确实工作，只是无需介入；也可能 guard 存在 bug 但因首过合规而从未暴露——两种解释在现有证据下不可区分。\",\"falsification\":\"构造模型在工具成功后输出非 JSON 或缺 explanation 的 Case（或注入模拟 session/event），检查 tools.jsonl/会话日志中是否出现 migration-output-validation 纠正消息、重放拦截与最终报错；出现则 guard 有效，无则 guard 机制失效。\"}]}",
+  "session_id": "session-051e406d-af9c-49fd-938c-8124cc82c627",
+  "route": {
+    "provider": "xiaomi-token-plan-cn",
+    "model": "mimo-v2.6-flash",
+    "reasoningEffort": "off"
+  },
+  "tool_names": [
+    "glob",
+    "grep",
+    "read"
+  ],
+  "tool_accesses": [
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-01/part-001.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-01/part-001.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "total_lines": 26
+        }
+      }
+    },
+    {
+      "name": "read",
+      "arguments": {
+        "file_path": "evidence/analysis/readable/scene-01/part-002.txt"
+      },
+      "result": {
+        "is_error": false,
+        "read": {
+          "path": "/work/evaluation-run/evidence/analysis/readable/scene-01/part-002.txt",
+          "offset": 1,
+          "line_numbers": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22
+          ],
+          "total_lines": 22
+        }
+      }
+    }
+  ]
+}

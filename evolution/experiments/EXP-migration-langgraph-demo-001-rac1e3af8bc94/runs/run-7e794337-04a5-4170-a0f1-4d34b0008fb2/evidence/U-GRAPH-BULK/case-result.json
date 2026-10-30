@@ -1,0 +1,7 @@
+{
+  "case_id": "U-GRAPH-BULK",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测 Session 中存在真实 quote_graph 工具调用，回执 is_error=false 且 result.status=completed、complete=true；trace 显示 bulk 判定后 calc_shipping 与 calc_tax 均执行完成、join 在其后汇合；回执金额 subtotal=108、tax=10.8、shipping=0、total=118.8 与 quantity=10、unit_price=12 的九折、10% 税费、免运费规则一致，且回复解释与回执完全对应，四项要求均满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-GRAPH-BULK"
+}

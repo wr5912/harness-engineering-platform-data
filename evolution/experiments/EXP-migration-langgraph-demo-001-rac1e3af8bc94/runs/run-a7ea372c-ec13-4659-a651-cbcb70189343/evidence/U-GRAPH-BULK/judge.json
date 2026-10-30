@@ -1,0 +1,71 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "同一被测 Session 中确有对 quote_graph 的真实调用，但工具回执显示工作流执行失败（ok=false、graph_execution.status=failed），未返回任何 completed 结果体，也就没有 bulk 路由命中、tax/shipping 并行执行、join 汇合以及 subtotal=108、tax=10.8、shipping=0、total=118.8 等数据；被测回答也如实说明失败、未给出报价解释。预期要求的执行完成状态与金额解释均未实现，故判定为不通过。",
+    "requirements": [
+      {
+        "requirement": "必须真实调用报价图工具 quote_graph（quantity=10, unit_price=12），不得心算或用原子计算工具替代图计算",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "图回执要求执行完成（status=completed 且 complete=true），条件路由命中 bulk（route=bulk，quantity>=10 命中九折分支），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "金额与来源一致：subtotal=108（10×12×0.9）、tax=10.8（108×10% 两位舍入）、shipping=0（subtotal>=100 免运费）、total=118.8（join 汇合后两位舍入）",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "回复需解释命中 bulk 分支及小计、税费、运费、总额，且与图回执一致",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-445a04aa-8eb0-406b-b01b-948996e63c5a",
+    "workspace_id": "c5c592e1-d14e-4f83-94df-0201049146f7",
+    "session_title": "评审 U-GRAPH-BULK",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

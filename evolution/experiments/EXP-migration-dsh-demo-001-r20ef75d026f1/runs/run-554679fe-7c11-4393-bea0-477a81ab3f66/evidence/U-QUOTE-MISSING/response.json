@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "请帮我报价。"
+  ],
+  "assistant_texts": [
+    "我可以帮你生成报价，但目前缺少必要信息，暂时无法调用报价计算。\n\n请提供以下内容：\n\n1. **数量**：购买多少件/单位？\n2. **单价**：每个单位的价格是多少？\n3. **折扣**（可选）：折扣百分比是多少？如无折扣请说明为 0%。\n\n收到这些信息后，我会用报价工具计算，并给出含两位小数的最终金额，同时说明输入值和折扣。"
+  ],
+  "session_id": "session-dbf458d2-7a2b-46d3-a409-63d37c6e8e07",
+  "turns": [
+    {
+      "assistant_text": "我可以帮你生成报价，但目前缺少必要信息，暂时无法调用报价计算。\n\n请提供以下内容：\n\n1. **数量**：购买多少件/单位？\n2. **单价**：每个单位的价格是多少？\n3. **折扣**（可选）：折扣百分比是多少？如无折扣请说明为 0%。\n\n收到这些信息后，我会用报价工具计算，并给出含两位小数的最终金额，同时说明输入值和折扣。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "434530f1-d1cc-46c5-a45f-7fa5f8189547"
+    }
+  ]
+}

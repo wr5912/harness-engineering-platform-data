@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-GRAPH-MISSING",
+  "transport": "api",
+  "expected_behavior": "缺少数量与单价时必须先向用户补问 quantity 与 unit_price，不得猜测或虚构输入，不得在参数不全时调用 quote_graph 图；本轮不给出任何报价数字。",
+  "session_id": "session-b9c90f19-f628-4d9d-a07b-2e900ce4125c",
+  "workspace_id": "8e94d957-7f7f-43df-b197-7167c117b28f",
+  "session_title": "评测 U-GRAPH-MISSING",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "migration-langgraph-demo",
+    "status": "ready"
+  },
+  "session_preset": "migration-langgraph-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-b6c59966-1d58-44cb-a6a0-99641eb2e8de",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "operation_id": "migration-a341878a-11fd-4340-bb2f-4ab6055aaf28",
+  "experiment_id": "EXP-migration-opencode-demo-001-r2085b6b7a566",
+  "migration_sha256": "946980cabeddc82941aaaa1a4bf47efa8361bccb31c4c3026ad1358a52002345",
+  "candidate_sha256": "9f4ea578dfd48a10d5eba478d3006f1149991ee76c5293b54cd470edf7684c3c",
+  "resolutions": [
+    {
+      "mapping_index": 2,
+      "target": "dsh/presets/migration-opencode-demo/agent.cordis.yml + dsh/managed/migration-opencode-demo.patch.yml",
+      "notes": "主 Preset 已在本 EXP 补齐并经两次真实装载修复：persona/agent-instructions 保留（角色正文仍只在 dsh/workspace/AGENTS.md 一处）；tool-fs（读写改）、tool-fs-search、固定 agentPreset=reviewer、toolName=reviewer 的原生委派工具（/opt/dsh/packages/subagent/tool-subagent/lib/index.js）。Run run-b770117b 暴露包名写法 never-started 后改为绝对包路径；Run run-3a989157 暴露业务容器沙箱后端（dsh-sandbox-local 的 bwrap/Landlock runner 链）探测全部不可用、bash 拒绝 workspace-write 且升级需人工审批无人应答，按官方错误指引将 bash 执行器换为无沙箱的 bash-local（与 tool-bash 同 realm 隔离 cordis:group，isolate: shell），使 node --test 可真实执行；容器本身保留为隔离边界。Managed Patch 以 @deepseek-ai/dsh-agent-preset 注册 preset-migration-opencode-demo。",
+      "case_ids": [
+        "U-CODE-FIX"
+      ]
+    },
+    {
+      "mapping_index": 3,
+      "disposition": "native",
+      "target": "原生 DSH Subagent（tool-subagent，agentPreset=reviewer）+ preset-reviewer 声明",
+      "notes": "OpenCode reviewer 子角色由原生 DSH Subagent 承接：Managed Patch 注册 preset-reviewer（id=reviewer，cordis:include 装载 dsh/presets/reviewer/agent.cordis.yml），reviewer 只含身份 persona 与只读 tool-fs/tool-fs-search（无写、无 bash、无委派），插件行为容器包绝对路径；角色正文单处维护于 role.md，由平台 Prompt 作用域按 role_instructions 注入；委派工具投影前固定 agentOptions=deepseek-official/deepseek-flash/max（model_bindings.presets.reviewer）。",
+      "case_ids": [
+        "U-CODE-FIX"
+      ]
+    },
+    {
+      "mapping_index": 6,
+      "disposition": "outside-scope",
+      "notes": "当前明确范围之外的限制，保持 omitted required=false 原状态：用户明确不执行来源安装脚本、不把 OpenCode 运行时包装为工具；opencode-ai 1.19.5 仅作为来源框架版本记录，不安装、不迁移、不声称已实现。",
+      "case_ids": [
+        "U-CODE-FIX"
+      ]
+    },
+    {
+      "uncovered_index": 0,
+      "disposition": "outside-scope",
+      "notes": "当前明确范围之外的限制：用户明确本次未运行原 OpenCode、不声称完整等效；OpenCode 运行时内部行为（权限、命令、插件机制及逐项等效）保持未验证状态。Agent 循环与委派已由原生 DSH Agent/Subagent 承接；迁移后行为由关键 Case U-CODE-FIX 的真实 Run 验证。",
+      "case_ids": [
+        "U-CODE-FIX"
+      ]
+    }
+  ],
+  "created_at": "2026-10-30T07:46:38.203Z"
+}

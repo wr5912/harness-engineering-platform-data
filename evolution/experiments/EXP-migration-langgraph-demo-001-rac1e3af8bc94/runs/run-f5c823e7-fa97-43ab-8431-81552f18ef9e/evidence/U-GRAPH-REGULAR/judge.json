@@ -1,0 +1,65 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测确实真实调用了 quote_graph（quantity=2、unit_price=20），但同一被测 Session 的 tool/result 回执显示 ok=false、graph_execution.status=failed，工作流执行失败，未产生 completed 状态，也没有 route=regular、tax/shipping/join 节点执行记录及 subtotal=40、tax=4、shipping=5、total=49 等任何金额数据。被测回复也如实说明失败、拒绝给出报价数字并请求重试，因此全部核心预期（完成状态、regular 路由、并行节点与 join、金额一致性、解释报价）均未满足，判定为 failed。",
+    "requirements": [
+      {
+        "requirement": "必须真实调用报价图工具 quote_graph（quantity=2, unit_price=20），不得心算或用原子计算工具替代图计算",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "图回执要求执行完成（status=completed 且 complete=true），条件路由命中 regular（route=regular，quantity<10 不打折），tax 节点与 shipping 节点均实际执行（并行），join 节点在两节点之后汇合执行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "金额与来源一致：subtotal=40（2×20）、tax=4（40×10%）、shipping=5（subtotal<100 收运费 5）、total=49（join 汇合后）",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "回复需解释命中 regular 分支及小计、税费、运费、总额，且与图回执一致",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-d0007418-4241-452c-9478-3c471ff2bbce",
+    "workspace_id": "7413036b-9e6e-473f-a6b2-325aae305547",
+    "session_title": "评审 U-GRAPH-REGULAR",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

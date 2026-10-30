@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "operation_id": "migration-3122ba44-9292-4cc8-a913-05373f60093b",
+  "experiment_id": "EXP-migration-agentscope-demo-001-rd991aeb01b21",
+  "migration_sha256": "25a1fdafc490561cf86d12d00ca749fabcaef0697901ba55152658db7e3ea5d5",
+  "candidate_sha256": "fe7991cd64875b7e4a424cba477335b4080e620d319da980e6b6543b9f41c1d2",
+  "resolutions": [
+    {
+      "mapping_index": 4,
+      "notes": "agentscope==2.0.11 明确映射为由 DSH 原生 Agent 工具循环替代，而非装入框架：样例实际使用的 Agent+Toolkit 单工具行为已由原生 Preset（persona/agent-instructions）与 ctx.tools 注册的 select_newer_version 承接，version_tool.py 保留为独立 Python 函数经 JSON 子进程桥接实际调用 Python3。真实 Run run-9a8559ea-d654-4439-b5f2-c25dd0b94a55 的 3 个关键 Case 全部通过（机器+AI 复核），工具回执证明 Python 3.11.2/packaging 25.0 实际执行、InvalidVersion 非零退出错误语义保留。AgentScope 框架未使用能力（消息内存、Hook、多角色等）不在本次范围，保留于 uncovered 待后续 disposition 处置，不声称已实现。",
+      "case_ids": [
+        "U-VERSION-COMPARE",
+        "U-VERSION-INVALID",
+        "U-VERSION-MISSING"
+      ]
+    },
+    {
+      "mapping_index": 5,
+      "notes": "pyproject 项目打包元数据（name/version/requires-python）仅属打包声明，无业务行为，不参与目标运行；目标依赖声明只保留锁定的 packaging==25.0，并已经 assets/dependencies/prepare 在当前标准镜像就绪（Python 3.11.2/cp311）。关键 Case 验证不依赖该元数据。",
+      "case_ids": [
+        "U-VERSION-COMPARE",
+        "U-VERSION-INVALID",
+        "U-VERSION-MISSING"
+      ]
+    }
+  ],
+  "created_at": "2026-10-30T07:15:03.535Z"
+}

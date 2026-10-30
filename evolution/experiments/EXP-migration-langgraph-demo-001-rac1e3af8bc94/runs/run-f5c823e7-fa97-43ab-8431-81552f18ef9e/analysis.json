@@ -1,0 +1,40 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-f5c823e7-fa97-43ab-8431-81552f18ef9e",
+  "review_status": "failed",
+  "review_reason": "证据复核失败（session）：case-hard-timeout",
+  "reviewed_case_count": 0,
+  "scenes": [
+    {
+      "scene": "未分组",
+      "case_ids": [
+        "U-IDENTITY-001",
+        "U-ROLE-001",
+        "U-GRAPH-BULK",
+        "U-GRAPH-REGULAR",
+        "U-GRAPH-MISSING"
+      ],
+      "selected_case_ids": [
+        "U-GRAPH-BULK",
+        "U-GRAPH-REGULAR",
+        "U-GRAPH-MISSING"
+      ],
+      "machine_counts": {
+        "passed": 1,
+        "failed": 2,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "failed",
+      "review_reason": "证据复核失败（session）：case-hard-timeout",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": {
+        "stage": "session",
+        "reason": "case-hard-timeout",
+        "evidence_ref": "evidence/analysis/scene-01/diagnostic.json"
+      }
+    }
+  ]
+}

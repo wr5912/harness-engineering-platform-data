@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    "数量 3，单价 12.5，折扣 20%，请给我报价。"
+  ],
+  "assistant_texts": [
+    "报价已完成。\n\n- 输入：数量 3，单价 12.5\n- 折扣：20%\n- 折后金额：**30.00**（3 × 12.5 × (1 − 20%) = 30.00，由 quote 工具计算）"
+  ],
+  "session_id": "session-face0ce6-bc4c-48a7-a051-ec970ed3614b",
+  "turns": [
+    {
+      "assistant_text": "报价已完成。\n\n- 输入：数量 3，单价 12.5\n- 折扣：20%\n- 折后金额：**30.00**（3 × 12.5 × (1 − 20%) = 30.00，由 quote 工具计算）",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "edit",
+        "glob",
+        "grep",
+        "quote",
+        "read",
+        "read_image",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "50be98d0-9a40-4fdb-9ccf-c617f5c77ff5"
+    }
+  ]
+}
