@@ -1,0 +1,83 @@
+[
+  {
+    "endpoint": "/v1/harness/encoding",
+    "http_status": 200,
+    "elapsed_ms": 182.14988708496094,
+    "response": {
+      "harness_encoding": {
+        "schema_version": "kev-encoding-proof/v1",
+        "hash_contract": "json-wire-sha256/v1",
+        "encoder_repository": "jaredpalmer/kev",
+        "encoder_revision": "2074cc44256200bb37540103fa4572901faa10f3",
+        "encoder_source_sha256": "2ff3b2e67c048e3bc5a0d1a32aafe50804ed315a5564fce06bb4b95697c5271c",
+        "admission_source_sha256": "73cba319c6213c0b605c07fa83f2ac3ed88b70d751b7fa0e5009e8357e06ba66",
+        "limits": {
+          "max_state": 384,
+          "max_branch": 1024,
+          "max_packed": 2048
+        },
+        "state_sha256": "3ee3018678b95b48f26b90047a719480442a9d1e2815149bddcea5f5940c70f7",
+        "questions_sha256": "96f085ff4b5971bc8b31d3b13d3e259a339454f1620b7db4a03bc480d61bfe48",
+        "model": "kev-latest",
+        "admitted": true,
+        "state_tokens": 282,
+        "max_branch_tokens": 602,
+        "packed_tokens": 602,
+        "model_invocation": false
+      },
+      "model_invocation": false
+    }
+  },
+  {
+    "endpoint": "/v1/systemone",
+    "http_status": 200,
+    "elapsed_ms": 607.7511310577393,
+    "response": {
+      "model": "kev-latest",
+      "answers": {
+        "main_route.route": {
+          "type": "choice",
+          "choice": "fault_analysis",
+          "confidence": 1.0,
+          "probabilities": {
+            "emergency_action": 0.0,
+            "policy_configuration": 0.0,
+            "threat_analysis": 0.0,
+            "fault_analysis": 1.0,
+            "inspection": 0.0,
+            "schedule": 0.0,
+            "response_planning": 0.0,
+            "investigation": 0.0,
+            "direct_answer": 0.0,
+            "clarify_multiple_requests": 0.0
+          }
+        }
+      },
+      "usage": {
+        "input_tokens": 602,
+        "output_tokens": 121
+      },
+      "latency_ms": 434.1,
+      "harness_encoding": {
+        "schema_version": "kev-encoding-proof/v1",
+        "hash_contract": "json-wire-sha256/v1",
+        "encoder_repository": "jaredpalmer/kev",
+        "encoder_revision": "2074cc44256200bb37540103fa4572901faa10f3",
+        "encoder_source_sha256": "2ff3b2e67c048e3bc5a0d1a32aafe50804ed315a5564fce06bb4b95697c5271c",
+        "admission_source_sha256": "73cba319c6213c0b605c07fa83f2ac3ed88b70d751b7fa0e5009e8357e06ba66",
+        "limits": {
+          "max_state": 384,
+          "max_branch": 1024,
+          "max_packed": 2048
+        },
+        "state_sha256": "3ee3018678b95b48f26b90047a719480442a9d1e2815149bddcea5f5940c70f7",
+        "questions_sha256": "96f085ff4b5971bc8b31d3b13d3e259a339454f1620b7db4a03bc480d61bfe48",
+        "model": "kev-latest",
+        "admitted": true,
+        "state_tokens": 282,
+        "max_branch_tokens": 602,
+        "packed_tokens": 602
+      }
+    }
+  }
+]

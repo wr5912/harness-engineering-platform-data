@@ -1,0 +1,41 @@
+{
+  "request_sha256": "66003bce59c17e98091053e0cf02431ff42e431e89f97a58ed2058d4d0451d0a",
+  "request": {
+    "model": "/root/autodl-tmp/hep-medium-security/audit-20261030/models/Qwen3.5-2B",
+    "messages": [
+      {
+        "role": "user",
+        "content": "\u53ea\u56de\u590d OK"
+      }
+    ],
+    "temperature": 0,
+    "max_tokens": 32,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "http_status": 200,
+  "elapsed_seconds": 0.8278298377990723,
+  "response": {
+    "id": "85631cbc-2ffd-4bbc-924d-ddbd4f5f5f43",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "OK",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1793374288,
+    "model": "/root/autodl-tmp/hep-medium-security/audit-20261030/models/Qwen3.5-2B@main",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 4,
+      "prompt_tokens": 15,
+      "total_tokens": 19
+    }
+  }
+}

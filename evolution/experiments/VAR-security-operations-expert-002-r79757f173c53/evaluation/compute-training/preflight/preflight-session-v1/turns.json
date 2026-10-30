@@ -1,0 +1,32 @@
+[
+  {
+    "assistant_text": "SOAR 剧本用于将安全事件响应流程（如告警 enrichment、研判、隔离、封禁、通报）固化为可重复、可审计的自动化工作流，使团队能对告警和事件做出一致、快速的响应。它还能跨防火墙、EDR、SOC 等系统编排处置动作，减少人工重复操作和人为差错，并保留执行记录以供复盘和合规审计。",
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tool_names": [
+      "analyze_pending_threat_incidents",
+      "delegate_fault_analysis",
+      "delegate_response_planning",
+      "delegate_threat_analysis",
+      "edit",
+      "glob",
+      "grep",
+      "read",
+      "read_security_ops_context",
+      "schedule_create",
+      "schedule_delete",
+      "schedule_list",
+      "schedule_update",
+      "security_ops_decide_main_route",
+      "security_ops_medium_workflow",
+      "skill",
+      "write"
+    ],
+    "turn_reason": "completed",
+    "turn": 1,
+    "input_message_id": "ca266f59-93b0-4a49-9c2d-27231ed4635d"
+  }
+]

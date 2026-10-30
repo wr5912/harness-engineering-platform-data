@@ -1,0 +1,180 @@
+{
+  "schema_version": "medium-variant-training-freeze/v1",
+  "created_at": "2026-10-30T15:31:14.867557+00:00",
+  "status": "frozen_before_final_test",
+  "target": {
+    "agent_id": "security-operations-expert",
+    "parent_experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+    "parent_ref": "git:1f162a1ce12025ffeb9d2e36c7a3ae283b41e421",
+    "source_run_ids": [
+      "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408"
+    ]
+  },
+  "checkpoint": {
+    "remote_path": "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint",
+    "files": {
+      "README.md": {
+        "sha256": "279291cca3b1cada9ecf72a29c5d2566c48eaec4675f36221aaeb2ce6f844088",
+        "bytes": 5168
+      },
+      "adapter_config.json": {
+        "sha256": "4ccb8931a8f8598b03cef1edb04ae16b44649824565e25b95fee6b6d9468640d",
+        "bytes": 1273
+      },
+      "adapter_model.safetensors": {
+        "sha256": "e01590d64f30139144f295cd7a19b7dea03efc5086ae7e6212f5e1cb15aabd72",
+        "bytes": 43338624
+      },
+      "chat_template.jinja": {
+        "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+        "bytes": 7755
+      },
+      "head.pt": {
+        "sha256": "7001396b294c0d1d3dcddce685a82adf2ea18dc6f7e04fb2d8730b9bdeae8147",
+        "bytes": 2104767
+      },
+      "tokenizer.json": {
+        "sha256": "a5cd9732badce41de57e6efce8302930ded1c1188c5f81feb2bd6c24c4a1941f",
+        "bytes": 19989339
+      },
+      "tokenizer_config.json": {
+        "sha256": "feff6d976ea146cbf7a8570d636478dea2708a64375a35ad6ee470a8b593b656",
+        "bytes": 1468
+      },
+      "training_config.json": {
+        "sha256": "a739bedfb6da88f3098cdf26bf67f9e8521609a33f6fda3452f7f2bfd05a1023",
+        "bytes": 2099
+      },
+      "training_metrics.json": {
+        "sha256": "a16642a567cac2c57f3702642f945a9f137a90646671cf88c37a4d136e21ee93",
+        "bytes": 2110
+      }
+    },
+    "checkpoint_sha256": "f3922c86857bd956ff2ed4a9a54dadcb095fa2299f7299a6708ac8899510b13f",
+    "hash_contract": "sha256-of-utf8-canonical-json-sorted-keys/v1"
+  },
+  "calibration": {
+    "temperature": 0.25,
+    "temperature_fit": {
+      "rows": "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw/rows.json",
+      "n": 7,
+      "method": "min micro mean NLL over a 121-point log grid 0.25..4",
+      "cross_validation": {
+        "raw": {
+          "n": 7,
+          "ece": 0.041204063375103614,
+          "brier": 0.012734015772352869,
+          "nll": 0.046803428132170075,
+          "confident_error_rate": 0.0,
+          "coverage_at_5pct_error": 1.0
+        },
+        "out_of_fold": {
+          "n": 7,
+          "ece": 0.00010869051787487649,
+          "brier": 1.253317591720714e-07,
+          "nll": 0.00010873180254078716,
+          "confident_error_rate": 0.0,
+          "coverage_at_5pct_error": 1.0
+        },
+        "ece_ci95": {
+          "raw": [
+            0.0009920343394481835,
+            0.11273857018933928
+          ],
+          "out_of_fold": [
+            8.902045767200661e-11,
+            0.0003258505483382246
+          ],
+          "delta": [
+            -0.11241271964098948,
+            -0.0009920342504281595
+          ]
+        },
+        "separated": true,
+        "temperatures": [
+          0.25,
+          0.25
+        ],
+        "folds": 2,
+        "seed": 0,
+        "samples": 1000,
+        "groups": 7,
+        "unit": "source-stratified (source, group); sibling questions and variants stay together"
+      },
+      "fit_rows": [
+        {
+          "rows": "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw/rows.json",
+          "suite": null,
+          "split": "custom",
+          "questions": 7
+        }
+      ],
+      "training_suites": null,
+      "in_distribution": {
+        "allowed": true,
+        "problems": [
+          "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw/rows.json: cannot tell which suite these rows were scored on (no kev.benchmark report.json with a suite of this checkout beside them, not a trial's read)",
+          "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint: cannot tell what this checkpoint was trained on (head.pt records no suite of this checkout and there is no provenance.json beside it)"
+        ]
+      }
+    },
+    "calibration_sha256": "1f76bfb32bb536ca0fae79c94fb8bfcb5ce9b8888a3d46cdbd48a2aa4e37dfc0",
+    "hash_contract": "sha256-of-utf8-canonical-json-sorted-keys/v1"
+  },
+  "plan_sha256": "31a398e1825e39b1f230df02540589d4c03dc676de60f54f7c6b1b957f7367f9",
+  "encoding_sha256": "bcdbc3ec0521b536910154cb14fa0d53a56849bc27475e96667a190a12c96144",
+  "dataset": {
+    "kind": "trace-ir",
+    "directory": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset",
+    "files": {
+      "train": {
+        "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/train.jsonl",
+        "sha256": "d0369d0f7e4bd7dcb621a739262b8aca0d73cd93f9dd5f591108573dd11f4154",
+        "records": 22,
+        "questions": 22,
+        "groups": 17
+      },
+      "development": {
+        "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/development.jsonl",
+        "sha256": "c4e7fb06cfb4959fe4373894691d3ea8952409cd93953646a9e212bbb602a269",
+        "records": 4,
+        "questions": 4,
+        "groups": 4
+      },
+      "calibration": {
+        "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/calibration.jsonl",
+        "sha256": "ee4b054e6b5b8363171034a6ddf321bd6456af3231d462e5d4339473b92fe251",
+        "records": 7,
+        "questions": 7,
+        "groups": 7
+      },
+      "test": {
+        "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/test.jsonl",
+        "sha256": "d8b8e1ad716265779fa4287aea2dbd3e29fc8ecf4e8e1ee72e816675c1a07249",
+        "records": 4,
+        "questions": 4,
+        "groups": 4
+      }
+    },
+    "manifest": {
+      "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/split-manifest.json",
+      "sha256": "62c0d654f8547055c81fbdbc3550075b2767f3a1cdadab3279293fda7a0d5f3e"
+    },
+    "audit": {
+      "kind": "recomputed_trace_ir_audit",
+      "ok": true
+    },
+    "review_scope": "trace IR verified means traceable reviewer/rule evidence; it is not platform human approval"
+  },
+  "acceptance": {
+    "threshold": null,
+    "classification": "existing held-out test, no recipe changes after final test",
+    "required_test_records": 4,
+    "quality_target": "no rejected or truncated rows; accuracy compared with prior 0.5 without equivalence claim"
+  },
+  "limitations": [
+    "37 existing AI functional-review examples from source Run; independent groups within one business distribution",
+    "Final test reused from historical research, not newly independent truth",
+    "Only main_route is finetuned; other decision sites are not claimed trained"
+  ]
+}

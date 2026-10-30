@@ -1,0 +1,433 @@
+{
+  "schema_version": "kev-training-plan/v1",
+  "status": "prepared",
+  "request_sha256": "b19e6e37db131aa1b4d0e40c922ace698911ceb1fc8ae6667edf1af1a7920032",
+  "kev_commit": "2074cc44256200bb37540103fa4572901faa10f3",
+  "vendor": {
+    "kev-finetune": {
+      "commit": "2074cc44256200bb37540103fa4572901faa10f3",
+      "manifest_sha256": "adfc2632f3d58988cdc12849d910f0ae71de8a07c8aaa8f506d223cc79fc93cf"
+    },
+    "kev-deploy": {
+      "commit": "2074cc44256200bb37540103fa4572901faa10f3",
+      "manifest_sha256": "f58d430faabd89813281474d425b70429b33014ab1a7433353f263cd6652e44a"
+    }
+  },
+  "source": {
+    "agent_id": "security-operations-expert",
+    "parent_experiment_id": "EXP-security-operations-expert-024-rad80a907c628",
+    "parent_ref": "git:1f162a1ce12025ffeb9d2e36c7a3ae283b41e421",
+    "source_run_ids": [
+      "run-e6ffe4c8-932b-4b6a-b9fb-1f802f536408"
+    ]
+  },
+  "dataset": {
+    "kind": "trace-ir",
+    "directory": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset",
+    "files": {
+      "train": {
+        "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/train.jsonl",
+        "sha256": "d0369d0f7e4bd7dcb621a739262b8aca0d73cd93f9dd5f591108573dd11f4154",
+        "records": 22,
+        "questions": 22,
+        "groups": 17
+      },
+      "development": {
+        "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/development.jsonl",
+        "sha256": "c4e7fb06cfb4959fe4373894691d3ea8952409cd93953646a9e212bbb602a269",
+        "records": 4,
+        "questions": 4,
+        "groups": 4
+      },
+      "calibration": {
+        "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/calibration.jsonl",
+        "sha256": "ee4b054e6b5b8363171034a6ddf321bd6456af3231d462e5d4339473b92fe251",
+        "records": 7,
+        "questions": 7,
+        "groups": 7
+      },
+      "test": {
+        "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/test.jsonl",
+        "sha256": "d8b8e1ad716265779fa4287aea2dbd3e29fc8ecf4e8e1ee72e816675c1a07249",
+        "records": 4,
+        "questions": 4,
+        "groups": 4
+      }
+    },
+    "manifest": {
+      "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/split-manifest.json",
+      "sha256": "62c0d654f8547055c81fbdbc3550075b2767f3a1cdadab3279293fda7a0d5f3e"
+    },
+    "audit": {
+      "kind": "recomputed_trace_ir_audit",
+      "ok": true
+    },
+    "review_scope": "trace IR verified means traceable reviewer/rule evidence; it is not platform human approval"
+  },
+  "checkpoint": {
+    "init_from": "jaredpalmer/kev-0.8b@bf75a6a8848ea6960ff2ed108d9ed44c2941174f",
+    "base": "Qwen/Qwen3.5-0.8B-Base",
+    "base_revision": "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+    "metadata_path": "/root/autodl-tmp/hep-medium-security/audit-20261030/models/kev-0.8b/training_config.json",
+    "metadata_sha256": "3ec3d92146248265652d4387f8eb65ee8defaed4dd9173b049e7b5193045ece6",
+    "lora": 16,
+    "head_dim": 256,
+    "option_isolation": 0,
+    "special_embeddings": 0,
+    "lora_targets": "all",
+    "weights_dtype": "fp32",
+    "local_snapshot": {
+      "path": "/root/autodl-tmp/hep-medium-security/audit-20261030/models/kev-0.8b",
+      "repository_metadata_path": "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/metadata/kev-model.json",
+      "repository_metadata_sha256": "9158da3a3c902766f4654ef6ff4547ce38a7faf01f50bf4c31fd9a51f84686b1"
+    },
+    "metadata_identity": "caller must obtain this file from the pinned init checkpoint; hash checks integrity, not publisher authenticity"
+  },
+  "environment": {
+    "kev_root": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+    "run_root": "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1",
+    "server_id": "train-fcb5781e-2c0b-4565-b87b-1bdbf08dc4af",
+    "credential_ref": "ref:training-server/seetacloud-audit-20261030",
+    "env": {
+      "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/audit-20261030/hf-cache",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1",
+      "USE_HUB_KERNELS": "NO",
+      "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/audit-20261030/venv",
+      "UV_NO_SYNC": "1"
+    }
+  },
+  "training": {
+    "recipe": "cuda-bf16-lora",
+    "epochs": 8,
+    "lr": 2e-05,
+    "batch": 1,
+    "accum": 4,
+    "seed": 0,
+    "calibration_folds": 2,
+    "calibration_policy": "workload_heldout"
+  },
+  "context_limits": {
+    "max_state": 384,
+    "max_branch": 1024,
+    "max_packed": 2048
+  },
+  "augmentation": {
+    "p_none": 0,
+    "p_none_distract": 0,
+    "p_distract": 0,
+    "p_none_pair": 0,
+    "choice_shuffle": true
+  },
+  "commands": {
+    "train": {
+      "cwd": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+      "argv": [
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/venv/bin/uv",
+        "run",
+        "python",
+        "-m",
+        "kev.train",
+        "--data",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/train.jsonl",
+        "--init_from",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/models/kev-0.8b",
+        "--base",
+        "Qwen/Qwen3.5-0.8B-Base",
+        "--base_revision",
+        "dc7cdfe2ee4154fa7e30f5b51ca41bfa40174e68",
+        "--lora",
+        "16",
+        "--head_dim",
+        "256",
+        "--lora_targets",
+        "all",
+        "--option_isolation",
+        "0",
+        "--special_embeddings",
+        "0",
+        "--weights_dtype",
+        "fp32",
+        "--epochs",
+        "8",
+        "--lr",
+        "2e-05",
+        "--batch",
+        "1",
+        "--accum",
+        "4",
+        "--seed",
+        "0",
+        "--checkpointing",
+        "1",
+        "--dtype",
+        "bf16",
+        "--device",
+        "cuda",
+        "--max_state",
+        "384",
+        "--p_none",
+        "0",
+        "--p_none_distract",
+        "0",
+        "--p_distract",
+        "0",
+        "--p_none_pair",
+        "0",
+        "--out",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint"
+      ],
+      "env": {
+        "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/audit-20261030/hf-cache",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "USE_HUB_KERNELS": "NO",
+        "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/audit-20261030/venv",
+        "UV_NO_SYNC": "1"
+      },
+      "unset_env": [],
+      "requires": [
+        "encoding-ready",
+        "actual-executor-authorized",
+        "CUDA/bf16/VRAM-checked"
+      ]
+    },
+    "calibration-raw": {
+      "cwd": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+      "argv": [
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/venv/bin/uv",
+        "run",
+        "python",
+        "-m",
+        "kev.benchmark",
+        "--run",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint",
+        "--data",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/calibration.jsonl",
+        "--device",
+        "cuda",
+        "--out",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw"
+      ],
+      "env": {
+        "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/audit-20261030/hf-cache",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "USE_HUB_KERNELS": "NO",
+        "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/audit-20261030/venv",
+        "UV_NO_SYNC": "1",
+        "KEV_TEMPERATURE": "1.0",
+        "KEV_DTYPE": "fp32",
+        "KEV_LORA_SCALE": "1",
+        "KEV_BACKEND": "torch"
+      },
+      "unset_env": [
+        "KEV_MERGE",
+        "KEV_ATTN",
+        "KEV_CUDA_GRAPHS",
+        "KEV_FUSED"
+      ],
+      "requires": [
+        "checkpoint-complete",
+        "zero-unexpected-rejected-records"
+      ]
+    },
+    "development-raw": {
+      "cwd": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+      "argv": [
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/venv/bin/uv",
+        "run",
+        "python",
+        "-m",
+        "kev.benchmark",
+        "--run",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint",
+        "--data",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/development.jsonl",
+        "--device",
+        "cuda",
+        "--out",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/development-raw"
+      ],
+      "env": {
+        "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/audit-20261030/hf-cache",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "USE_HUB_KERNELS": "NO",
+        "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/audit-20261030/venv",
+        "UV_NO_SYNC": "1",
+        "KEV_TEMPERATURE": "1.0",
+        "KEV_DTYPE": "fp32",
+        "KEV_LORA_SCALE": "1",
+        "KEV_BACKEND": "torch"
+      },
+      "unset_env": [
+        "KEV_MERGE",
+        "KEV_ATTN",
+        "KEV_CUDA_GRAPHS",
+        "KEV_FUSED"
+      ],
+      "requires": [
+        "checkpoint-complete",
+        "zero-unexpected-rejected-records"
+      ]
+    },
+    "calibration-report": {
+      "cwd": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+      "argv": [
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/venv/bin/uv",
+        "run",
+        "python",
+        "-m",
+        "kev.calibrate",
+        "--rows",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw/rows.json",
+        "--out",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-report.json",
+        "--folds",
+        "2",
+        "--seed",
+        "0"
+      ],
+      "env": {
+        "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/audit-20261030/hf-cache",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "USE_HUB_KERNELS": "NO",
+        "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/audit-20261030/venv",
+        "UV_NO_SYNC": "1"
+      },
+      "unset_env": [],
+      "requires": [
+        "calibration-raw-complete",
+        "report-only-does-not-write-checkpoint-temperature"
+      ]
+    },
+    "calibration-write": {
+      "cwd": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+      "argv": [
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/venv/bin/uv",
+        "run",
+        "python",
+        "scripts/calibrate_checkpoint.py",
+        "--run",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint",
+        "--rows",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw/rows.json",
+        "--folds",
+        "2",
+        "--seed",
+        "0",
+        "--allow-in-distribution"
+      ],
+      "env": {
+        "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/audit-20261030/hf-cache",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "USE_HUB_KERNELS": "NO",
+        "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/audit-20261030/venv",
+        "UV_NO_SYNC": "1"
+      },
+      "unset_env": [],
+      "requires": [
+        "reviewed-workload-calibration-policy",
+        "calibration-only-raw-rows",
+        "all-split-hashes-still-match",
+        "record-native-in_distribution-reasons"
+      ]
+    },
+    "development-calibrated": {
+      "cwd": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+      "argv": [
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/venv/bin/uv",
+        "run",
+        "python",
+        "-m",
+        "kev.benchmark",
+        "--run",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint",
+        "--data",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/development.jsonl",
+        "--device",
+        "cuda",
+        "--out",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/development-calibrated"
+      ],
+      "env": {
+        "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/audit-20261030/hf-cache",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "USE_HUB_KERNELS": "NO",
+        "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/audit-20261030/venv",
+        "UV_NO_SYNC": "1",
+        "KEV_DTYPE": "fp32",
+        "KEV_LORA_SCALE": "1",
+        "KEV_BACKEND": "torch"
+      },
+      "unset_env": [
+        "KEV_TEMPERATURE",
+        "KEV_MERGE",
+        "KEV_ATTN",
+        "KEV_CUDA_GRAPHS",
+        "KEV_FUSED"
+      ],
+      "requires": [
+        "calibration-write-complete"
+      ]
+    },
+    "final-test": {
+      "cwd": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+      "argv": [
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/venv/bin/uv",
+        "run",
+        "python",
+        "-m",
+        "kev.benchmark",
+        "--run",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint",
+        "--data",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/inputs/dataset/test.jsonl",
+        "--device",
+        "cuda",
+        "--out",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/final-test"
+      ],
+      "env": {
+        "HF_HUB_CACHE": "/root/autodl-tmp/hep-medium-security/audit-20261030/hf-cache",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1",
+        "USE_HUB_KERNELS": "NO",
+        "UV_PROJECT_ENVIRONMENT": "/root/autodl-tmp/hep-medium-security/audit-20261030/venv",
+        "UV_NO_SYNC": "1",
+        "KEV_DTYPE": "fp32",
+        "KEV_LORA_SCALE": "1",
+        "KEV_BACKEND": "torch"
+      },
+      "unset_env": [
+        "KEV_TEMPERATURE",
+        "KEV_MERGE",
+        "KEV_ATTN",
+        "KEV_CUDA_GRAPHS",
+        "KEV_FUSED"
+      ],
+      "requires": [
+        "independent-final-acceptance-authorized",
+        "checkpoint-temperature-threshold-builders-frozen"
+      ]
+    }
+  },
+  "execution": {
+    "tokenization": "not_run",
+    "training": "not_run",
+    "calibration": "not_run",
+    "deployment": "not_run",
+    "equivalence": "not_evaluated"
+  },
+  "warnings": [
+    "Command cards are not jobs or proof of execution; platform medium-button sessions remain plan-only.",
+    "The cuda-bf16-lora recipe requires LoRA and CUDA/bf16; hardware support and budget need actual executor checks.",
+    "Calibration report does not persist temperature. See references/calibration.md before any checkpoint change.",
+    "Final-test card is reserved for independent acceptance; the external executor must enforce the frozen-checkpoint gate. Raw benchmarks use T=1.",
+    "Model input length, label quality, class coverage and full-Harness equivalence are separate checks."
+  ]
+}

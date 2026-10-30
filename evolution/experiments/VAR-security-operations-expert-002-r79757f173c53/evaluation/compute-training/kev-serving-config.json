@@ -1,0 +1,28 @@
+{
+  "schema_version": "kev-serving-admission/v1",
+  "kev_root": "/root/autodl-tmp/hep-medium-security/audit-20261030/kev",
+  "encoder_revision": "2074cc44256200bb37540103fa4572901faa10f3",
+  "upstream_files": {
+    "kev/api.py": "a6f53af5354f8ea17915abc78360fdf291a5108ce39a53a2d9135d48c603ae58",
+    "kev/model.py": "2ff3b2e67c048e3bc5a0d1a32aafe50804ed315a5564fce06bb4b95697c5271c",
+    "kev/serve.py": "dd996a996215cae4c2d1780d3fb4f0fda35bc127004b782731103d05ffb2d2e9"
+  },
+  "encoder_source_sha256": "2ff3b2e67c048e3bc5a0d1a32aafe50804ed315a5564fce06bb4b95697c5271c",
+  "admission_source_sha256": "73cba319c6213c0b605c07fa83f2ac3ed88b70d751b7fa0e5009e8357e06ba66",
+  "emitter_source_sha256": "6e9f295f3957b230768c9bb7eb598aedde6ee948371bdfb0df06842d63b26b70",
+  "bootstrap_sha256": "73cba319c6213c0b605c07fa83f2ac3ed88b70d751b7fa0e5009e8357e06ba66",
+  "hash_contract": "json-wire-sha256/v1",
+  "limits": {
+    "max_state": 384,
+    "max_branch": 1024,
+    "max_packed": 2048
+  },
+  "serving": {
+    "run": "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint",
+    "base": "Qwen/Qwen3.5-0.8B-Base",
+    "temperature": 0.25,
+    "dtype": "float32",
+    "backend": "torch",
+    "device": "cuda"
+  }
+}

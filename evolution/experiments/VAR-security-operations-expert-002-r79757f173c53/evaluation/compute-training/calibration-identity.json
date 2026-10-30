@@ -1,0 +1,66 @@
+{
+  "temperature": 0.25,
+  "temperature_fit": {
+    "rows": "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw/rows.json",
+    "n": 7,
+    "method": "min micro mean NLL over a 121-point log grid 0.25..4",
+    "cross_validation": {
+      "raw": {
+        "n": 7,
+        "ece": 0.041204063375103614,
+        "brier": 0.012734015772352869,
+        "nll": 0.046803428132170075,
+        "confident_error_rate": 0.0,
+        "coverage_at_5pct_error": 1.0
+      },
+      "out_of_fold": {
+        "n": 7,
+        "ece": 0.00010869051787487649,
+        "brier": 1.253317591720714e-07,
+        "nll": 0.00010873180254078716,
+        "confident_error_rate": 0.0,
+        "coverage_at_5pct_error": 1.0
+      },
+      "ece_ci95": {
+        "raw": [
+          0.0009920343394481835,
+          0.11273857018933928
+        ],
+        "out_of_fold": [
+          8.902045767200661e-11,
+          0.0003258505483382246
+        ],
+        "delta": [
+          -0.11241271964098948,
+          -0.0009920342504281595
+        ]
+      },
+      "separated": true,
+      "temperatures": [
+        0.25,
+        0.25
+      ],
+      "folds": 2,
+      "seed": 0,
+      "samples": 1000,
+      "groups": 7,
+      "unit": "source-stratified (source, group); sibling questions and variants stay together"
+    },
+    "fit_rows": [
+      {
+        "rows": "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw/rows.json",
+        "suite": null,
+        "split": "custom",
+        "questions": 7
+      }
+    ],
+    "training_suites": null,
+    "in_distribution": {
+      "allowed": true,
+      "problems": [
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/calibration-raw/rows.json: cannot tell which suite these rows were scored on (no kev.benchmark report.json with a suite of this checkout beside them, not a trial's read)",
+        "/root/autodl-tmp/hep-medium-security/audit-20261030/training-v1/checkpoint: cannot tell what this checkpoint was trained on (head.pt records no suite of this checkout and there is no provenance.json beside it)"
+      ]
+    }
+  }
+}
