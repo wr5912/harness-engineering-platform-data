@@ -1,0 +1,74 @@
+{
+  "schema_version": "4.0",
+  "run_id": "run-971516bf-fc6c-4f3b-b62a-c3cf400a3a5c",
+  "trial_count": 1,
+  "execution_status_counts": {
+    "completed": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "machine_trial_verdict_counts": {
+    "passed": 0,
+    "failed": 0,
+    "inconclusive": 1
+  },
+  "machine_overall_verdict": "inconclusive",
+  "review_status": "completed",
+  "reviewed_case_count": 1,
+  "reviewed_case_verdict_counts": {
+    "passed": 1,
+    "failed": 0,
+    "inconclusive": 0
+  },
+  "reviewed_overall_verdict": "passed",
+  "effective_verdict": "passed",
+  "source_verification": {
+    "status": "matched",
+    "reason": null,
+    "checks": [
+      {
+        "component": "candidate",
+        "status": "matched",
+        "expected_sha256": "6212138313f267dfb30b012099d9514ef0d2a7a4e36c394a9d05c21338b5e712",
+        "actual_sha256": "6212138313f267dfb30b012099d9514ef0d2a7a4e36c394a9d05c21338b5e712"
+      },
+      {
+        "component": "mcp_fixture",
+        "status": "matched",
+        "expected_sha256": "1005aaf302af4a729c29dde6f8ecf7cee491c160f9b12875ebb09fcea5c4eefd",
+        "actual_sha256": "1005aaf302af4a729c29dde6f8ecf7cee491c160f9b12875ebb09fcea5c4eefd"
+      },
+      {
+        "component": "workspace",
+        "status": "matched",
+        "expected_sha256": "be175a4086a185ea13539694a24a1d6fbab405242982dd95ee5c4dd2c072d5c9",
+        "actual_sha256": "be175a4086a185ea13539694a24a1d6fbab405242982dd95ee5c4dd2c072d5c9"
+      },
+      {
+        "component": "presets",
+        "status": "matched",
+        "expected_sha256": "c8b0522c93acba902e2aac8492290a900749e43dfa9c1661a2c92a50f599b4b7",
+        "actual_sha256": "c8b0522c93acba902e2aac8492290a900749e43dfa9c1661a2c92a50f599b4b7"
+      },
+      {
+        "component": "managed",
+        "status": "matched",
+        "expected_sha256": "a473be7d5347ca2206cfa4e45a98479bf97390cf6cb85517d1343eaa3d84a5d7",
+        "actual_sha256": "a473be7d5347ca2206cfa4e45a98479bf97390cf6cb85517d1343eaa3d84a5d7"
+      },
+      {
+        "component": "evaluation_implementation",
+        "status": "matched",
+        "expected_sha256": "f347a189ee8af012776f6ab7bd23dc10904850a3c14687d82fb4ba90b56a2cc0",
+        "actual_sha256": "f347a189ee8af012776f6ab7bd23dc10904850a3c14687d82fb4ba90b56a2cc0"
+      }
+    ]
+  },
+  "source_diagnosis": {
+    "status": "incomplete",
+    "conclusion": "inconclusive",
+    "reason": "源码诊断未完成（evidence-access）：analysis-required-evidence-not-read；未核实范围保持未知。",
+    "required_parts": 270,
+    "read_parts": 11
+  }
+}

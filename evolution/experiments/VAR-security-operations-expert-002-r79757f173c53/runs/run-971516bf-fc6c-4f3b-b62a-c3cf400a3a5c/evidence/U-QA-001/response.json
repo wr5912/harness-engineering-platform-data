@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "**结论：无法检索 `SEC-KB-078` 这篇知识库条目的具体内容**——当前会话未配置知识库（KB）检索工具，本轮可见能力中也没有可查询该编号的接口，因此我不能确认该条目的原文、发布版本或是否最新，也不会替它猜测结论。\n\n在此基础上，只能就你问的概念本身作一般性说明（属于通用知识，非该条目原文）：\n\n**SOAR 剧本（Playbook）是什么**\n\n- **定义**：SOAR（Security Orchestration, Automation and Response，安全编排、自动化与响应）剧本是一套预先定义的、结构化的事件处置流程，把调查步骤、判断条件和响应动作按顺序固化下来。\n- **典型组成**：\n  1. **触发条件**——什么事件/告警启动剧本（如钓鱼邮件告警、主机隔离请求）；\n  2. **取证 enrichment**——自动查询 IOC、资产信息、EDR/防火墙日志等；\n  3. **决策分支**——按条件判断（如命中白名单则关闭，否则升级）；\n  4. **响应动作**——如封禁 IP、隔离主机、下发策略、工单通知；\n  5. **收尾与记录**——结论归档、报告生成、人工复核点。\n- **价值**：缩短 MTTR、统一处置口径、把重复性工作自动化，并保留可审计的执行记录。\n- **与本工作区的关系**：在本环境中，与剧本相关的受控能力是策略配置（网络访问策略草案）、应急指令（隔离/封禁等单动作草案）和巡检等；这些动作在确认前只是草案，确认与执行由外部受信确认插件和审批/审计机制负责，剧本的\"编排\"不等于取得执行授权。\n\n**建议（尚未执行）**：如需 `SEC-KB-078` 的准确内容，请提供该条目的原文、导出文件或截图，我可以基于材料做忠实摘要与适用性分析；或在已接入 SOC/知识库检索能力的会话中查询该编号。"
+  ],
+  "session_id": "session-69c99710-982c-4349-86eb-a1efea01c1c2",
+  "turns": [
+    {
+      "assistant_text": "**结论：无法检索 `SEC-KB-078` 这篇知识库条目的具体内容**——当前会话未配置知识库（KB）检索工具，本轮可见能力中也没有可查询该编号的接口，因此我不能确认该条目的原文、发布版本或是否最新，也不会替它猜测结论。\n\n在此基础上，只能就你问的概念本身作一般性说明（属于通用知识，非该条目原文）：\n\n**SOAR 剧本（Playbook）是什么**\n\n- **定义**：SOAR（Security Orchestration, Automation and Response，安全编排、自动化与响应）剧本是一套预先定义的、结构化的事件处置流程，把调查步骤、判断条件和响应动作按顺序固化下来。\n- **典型组成**：\n  1. **触发条件**——什么事件/告警启动剧本（如钓鱼邮件告警、主机隔离请求）；\n  2. **取证 enrichment**——自动查询 IOC、资产信息、EDR/防火墙日志等；\n  3. **决策分支**——按条件判断（如命中白名单则关闭，否则升级）；\n  4. **响应动作**——如封禁 IP、隔离主机、下发策略、工单通知；\n  5. **收尾与记录**——结论归档、报告生成、人工复核点。\n- **价值**：缩短 MTTR、统一处置口径、把重复性工作自动化，并保留可审计的执行记录。\n- **与本工作区的关系**：在本环境中，与剧本相关的受控能力是策略配置（网络访问策略草案）、应急指令（隔离/封禁等单动作草案）和巡检等；这些动作在确认前只是草案，确认与执行由外部受信确认插件和审批/审计机制负责，剧本的\"编排\"不等于取得执行授权。\n\n**建议（尚未执行）**：如需 `SEC-KB-078` 的准确内容，请提供该条目的原文、导出文件或截图，我可以基于材料做忠实摘要与适用性分析；或在已接入 SOC/知识库检索能力的会话中查询该编号。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "read_security_ops_context",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "security_ops_decide_main_route",
+        "security_ops_medium_workflow",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ae0079bc-0ddd-4184-b91f-3542efc4fa02"
+    }
+  ]
+}

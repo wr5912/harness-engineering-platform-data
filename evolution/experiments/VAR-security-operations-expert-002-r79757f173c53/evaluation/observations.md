@@ -19,8 +19,12 @@
 
 任务树补采使用d31f053、原固定来源及相同Mock：[父版Run](../../EXP-security-operations-expert-024-rad80a907c628/runs/run-71851ee6-512c-420a-9b33-ede51556e3b2/) 与[变体Run](../runs/run-8a1aa32c-7177-4fb1-bea2-ec975478df08/) 均取得完整子任务终态和根第二回合。父版因两个172.16.*目标不在仅含3台192.0.2.*资产的Mock中而保持inconclusive；变体冻结包未支持原生subagent-settled接续，最终failed。后续共用运行时修复不覆盖该冻结包或旧Run。原补采observed 9+1与11+1也不作为完整实际调用证明。
 
-C1单QA的[变体Run](../runs/run-50416fc7-d53d-4877-ac45-7b88b9098c27/)真实执行Qwen、KEV及MiMo，业务判定failed、review:none。原162b144计量漏掉了登记为本地代理的真实Qwen调用；保留原记录，当前计量器只读核同一轨迹为4次（target3/judge1，language1/decision1），不是原记录回填。KEV的470/119分别是编码输入长度和答案JSON的billing-style Token数，后者不是生成Token；上游没有总量或缓存拆分，保持Token未知，不补总量或cache零。
+C1单QA的[变体Run](../runs/run-50416fc7-d53d-4877-ac45-7b88b9098c27/)真实执行Qwen、KEV及MiMo，业务判定failed、review:none。原162b144计量漏掉了登记为本地代理的真实Qwen调用；保留原记录，当前计量器只读核同一轨迹为4次（目标Qwen、KEV、MiMo各1次，另有MiMo Judge1次），不是原记录回填。KEV的470/119分别是编码输入长度和答案JSON的billing-style Token数，后者不是生成Token；上游没有总量或缓存拆分，保持Token未知，不补总量或cache零。
 
-C4历史父版[单QA Run](../../EXP-security-operations-expert-024-rad80a907c628/runs/run-403db09b-c724-4514-96f0-c95a59f1fdd1/)使用dd5f4b5、同1f162/Case/Mock/MiMo：业务效果passed，来源matched；源码真实超时，保留实际Session及12/186个阅读分包，结论incomplete。这是独立评估链验证，尚无同C4方法的变体Run，不能与C1的review:none记录拼接成新比较。
+C4历史父版[单QA Run](../../EXP-security-operations-expert-024-rad80a907c628/runs/run-403db09b-c724-4514-96f0-c95a59f1fdd1/)使用dd5f4b5、同1f162/Case/Mock/MiMo：业务效果passed，来源matched；源码真实超时，保留实际Session及12/186个阅读分包，结论incomplete。这是独立评估链验证，不能与C1的review:none记录拼接成新比较。
 
-追加变体对照时GPU连接拒绝，新VAR Run未执行；既往训练部署证据不代表当前服务在线。需恢复指定Qwen/KEV链路后才能进行同来源、同Case、同评审方法对照，不能用仅MiMo退化运行替代。当前覆盖及证据均不足以采纳，不声明成本收益或end。
+训练服务恢复到用户重新指定的region-42:20355后，按原SHA恢复本轮checkpoint、固定Qwen/KEV权重与源码，未重训。该机器为RTX2080Ti，Qwen采用FP16、KEV保留FP32，区别于原3090的Qwen BF16；真实技术探针和标准容器访问均通过，两个模型服务及SSH转发保留。
+
+[恢复后的变体单QA Run](../runs/run-971516bf-fc6c-4f3b-b62a-c3cf400a3a5c/)使用4693cca、固定b49/同Case/Mock/MiMo评审策略，来源matched；机器inconclusive经独立业务复核为passed。源码诊断仅完成11/270个分包，因analysis-required-evidence-not-read保持incomplete/inconclusive，未形成有效源码发现。全Run实际12次模型调用（target3、judge1、analysis8），Token总量未知。
+
+[与历史父版单QA的公开比较](compute-comparison-2aad65f8654f24464b1f3c86a156b4fd9aa51be78b3d74b38a059952cfd6ee37.json)为eligible_for_end=false：该QA两侧业务均通过，目标模型调用由2次增至3次，变体Token未知；另有13个冻结Case未覆盖、程序提交不同、旧构建与当前共享执行器不匹配及hybrid外层合同未满足。评测实现和评审策略相同不消除这些限制；该单例不替代原14Case与冻结测试1/4的结果。当前不采纳，不声明业务等效、成本收益或end。
