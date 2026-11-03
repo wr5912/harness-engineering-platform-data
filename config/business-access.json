@@ -178,5 +178,102 @@
       }
     ],
     "managementUrl": "http://172.16.138.228:18120/hep/"
+  },
+  "externalInstances": [
+    {
+      "instanceId": "remote-agentscope-sample",
+      "subjects": [
+        "platform-owner"
+      ],
+      "actions": [
+        "agent:access",
+        "session:create",
+        "session:prompt",
+        "session:read",
+        "session:events"
+      ],
+      "enabled": true
+    },
+    {
+      "instanceId": "remote-opencode-sample",
+      "subjects": [
+        "platform-owner"
+      ],
+      "actions": [
+        "agent:access",
+        "session:create",
+        "session:prompt",
+        "session:read",
+        "session:events"
+      ],
+      "enabled": true
+    }
+  ],
+  "externalAccess": {
+    "riskAssessment": {
+      "endpoint": "http://172.17.0.1:18650/risk",
+      "timeoutMs": 1500
+    }
+  },
+  "agentAccess": {
+    "schemaVersion": 1,
+    "issuer": "http://10.0.160.32:53105/agent-access",
+    "resources": [
+      {
+        "id": "sample-assets",
+        "audience": "urn:harness:sample-assets",
+        "endpoint": "http://172.17.0.1:18650",
+        "credentialFile": ".local/credentials/external-resources/sample-assets.key",
+        "tools": [
+          {
+            "name": "get_asset",
+            "description": "查询模拟资产，仅用于跨框架接入技术演示",
+            "scope": "assets:read",
+            "method": "GET",
+            "path": "/assets/{id}",
+            "objectField": "id",
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[AB]-[0-9]+$"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    ],
+    "grants": [
+      {
+        "instanceId": "remote-agentscope-sample",
+        "resourceId": "sample-assets",
+        "scopes": [
+          "assets:read"
+        ],
+        "objects": [
+          "A-1"
+        ],
+        "enabled": true,
+        "version": 1
+      },
+      {
+        "instanceId": "remote-opencode-sample",
+        "resourceId": "sample-assets",
+        "scopes": [
+          "assets:read"
+        ],
+        "objects": [
+          "A-1"
+        ],
+        "enabled": true,
+        "version": 1
+      }
+    ]
   }
 }
