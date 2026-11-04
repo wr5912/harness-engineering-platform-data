@@ -122,6 +122,7 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
       } else context = await load(id)
       if (bindings.socConnectionId !== context.bindings.socConnectionId || bindings.reportConnectionId !== context.bindings.reportConnectionId) throw new Error('threat_binding_conflict')
       if (stage === 'collect' && input.incident_id !== context.result.incident_id) throw new Error('threat_incident_conflict')
+      await execution?.onRun?.(id)
       const output = runDirectory(id), contextFile = join(output, 'context.json'), lock = join(output, '.phase-lock')
       try { await mkdir(lock) } catch (error: any) { if (error.code === 'EEXIST') throw new Error('threat_run_busy'); throw error }
       try {

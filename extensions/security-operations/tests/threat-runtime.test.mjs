@@ -438,3 +438,27 @@ test('固定算法升级只重放旧完成阶段，保留模型与绑定校验�
     assert.equal(fx.services.modelCalls, models)
   } finally { await fx.cleanup() }
 })
+
+test('首次取证先登记已落盘的Run，登记失败不调用上游', async () => {
+  const fx = await setup({ fast: true })
+  try {
+    let bound
+    await assert.rejects(fx.runtime.execute('collect', bindings, { incident_id: 'INC-20261015-000001' }, active(), {
+      execution_id: 'platform-binding-probe', role: 'target',
+      async onRun(id) {
+        bound = id
+        const saved = JSON.parse(await readFile(join(fx.stateRoot, 'runs', id, 'context.json'), 'utf8'))
+        assert.equal(saved.result.run_id, id)
+        assert.equal(fx.services.calls.length, 0)
+        throw new Error('回执关联未能持久保存')
+      },
+    }), /回执关联未能持久保存/)
+    assert.match(bound, /^run-/)
+    assert.equal(fx.services.calls.length, 0)
+    const result = await fx.runtime.execute('collect', bindings, { incident_id: 'INC-20261015-000001', run_id: bound }, active(), {
+      execution_id: 'platform-binding-probe', role: 'target', async onRun(id) { assert.equal(id, bound); assert.equal(fx.services.calls.length, 0) },
+    })
+    assert.equal(result.run_id, bound)
+    assert.ok(fx.services.calls.length > 0)
+  } finally { await fx.cleanup() }
+})
