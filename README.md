@@ -19,7 +19,7 @@ workspace.json            工作区身份和原生扩展声明
 .local/                   会话、设置、实例 HOME、制品和凭据，忽略 Git
 ```
 
-根目录保留 19 个管理 Skill 入口；需求澄清由 `workspace-management` 直接完成。KEV 数据、训练和部署使用 `kev-trace-pipeline`、`dsh-trace-audit`、`kev-dataset-audit`、`kev-training`、`kev-deploy` 五个入口，发现、抽取、标注和构建方法按需读取阶段参考；平台算力研究和固定 Run 抽样继续使用各自专项入口。官方微调、部署及 DSH 插件开发 Skill 完整保存在对应入口的参考目录，不重复注册。已声明的 `security-operations-composition` 扩展入口另计。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
+根目录维护当前管理 Skill 入口；需求澄清由 `workspace-management` 直接完成。KEV 数据、训练和部署使用 `kev-trace-pipeline`、`dsh-trace-audit`、`kev-dataset-audit`、`kev-training`、`kev-deploy` 五个入口，发现、抽取、标注和构建方法按需读取阶段参考；平台算力研究和固定 Run 抽样继续使用各自专项入口。官方微调、部署及 DSH 插件开发 Skill 完整保存在对应入口的参考目录，不重复注册。已声明的 `security-operations-composition` 扩展入口另计。方法入口见[研究方法索引](docs/harness-research/README.md)，套件用法与验证边界见[KEV 中算力变体技能](docs/harness-research/kev-medium-variant-skills.md)。表达规范只维护在 `user-facing-output` Skill，不另设提示词副本。
 
 [DSH 业务插件开发](.agents/skills/dsh-business-plugin-development/SKILL.md)通过现有工作区管理、任务构建或 Harness 演进入口按需使用。技能完整保留匹配固定提交的官方 `cordis-plugin-development` 及两个组合配置 Skill，原文、模板和许可证不改写；平台入口只补目标业务智能体、Candidate、执行环境和验证交接。上游引用及逐文件摘要见 [UPSTREAM.json](.agents/skills/dsh-business-plugin-development/references/upstream/UPSTREAM.json)。当前未新增独立任务类型或插件构建执行器，真实开发、安装及装载能力以目标环境工具为准。
 
@@ -48,7 +48,7 @@ export HARNESS_ASSET_ROOT="$HOME/harness-engineering-platform-data"
 
 本次入口合并需配套更新程序：旧 `harness-guided-workflow` 任务入口由程序映射为 `workspace-management`，历史 Session 事件保持原貌。先更新支持该映射的程序，再使用已撤销旧入口的数据版本；不只删除 Skill 文件而保留旧入口校验。新建和恢复管理会话均需核对目标及当前阶段。
 
-“请 AI 策划算力变体 → 中算力变体”沿用 `compute-variant-research`，本次只策划。原始 Run 抽样、人员复核与分用途导出沿用现有页面；普通管理入口可按需发现 KEV 技能，独立获授权训练环境可使用随附脚本。当前程序没有训练作业执行器或专门 KEV 工件绑定合同；增加技能不意味着按钮已经自动训练或变体已经等效。
+中算力变体的“仅策划”和“生成并验证”均沿用 `compute-variant-research`，按其意图表进入对应阶段。固定 Run 抽样、复核与分用途导出使用现有页面和真实回执；实施任务及获授权普通管理任务可按阶段读取 KEV 技能，通过原生工具和受控 SSH 办理。程序核对 `decision_training` 的训练材料与工件摘要，没有独立训练调度平台；材料通过、训练完成和业务等效分别判断。
 
 平台账号保存在 `.local/credentials/admin.json`，模型环境按需保存到 `.local/credentials/models.llm-api-key`。原生 MCP 设置和模型偏好由对应平台或实例 HOME 维护。业务扩展在 `workspace.json` 声明，通过平台 prepare 构建并由 DSH 原生 Plugin 装载。当前平台不提供自动提交推送或 Research Release 创建入口。
 

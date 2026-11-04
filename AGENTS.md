@@ -13,7 +13,7 @@
 - 表达遵从 [`user-facing-output`](.agents/skills/user-facing-output/SKILL.md)。训练与验证数据按机器合同输出，其他方案、清单、审查及结果默认面向人阅读；程序状态和配置保持其接口格式并附清楚说明。平台默认加载该技能正文；它是表达规范的唯一维护位置，无需每轮重复调用技能工具。
 - 五类研究方法见[研究方法索引](docs/harness-research/README.md)。通过 `platform_agents research/read-reference` 按主题取用，不要求每次通读全部历史。
 
-业务实例的无需认证、统一网关、未发布实例与 MCP 故障边界遵循程序仓库的[当前访问语义](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/20_业务访问与运行控制插件开发规范.md#当前访问语义)。管理助手创建未发布实例时默认选择经统一网关、无需认证的共享访问方式。
+业务实例的无需认证、统一网关、未发布实例与 MCP 故障边界遵循程序仓库的[当前访问语义](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/20_业务访问与运行控制插件开发规范.md#当前访问语义)。管理助手创建平台托管的未发布 DSH 实例时默认选择经统一网关、无需认证的共享访问方式。保留原 Runtime 的接入实例使用其独立受控入口与资源授予合同；停用平台入口不停止原服务，生命周期仍由原系统负责。
 
 ## 办理业务
 

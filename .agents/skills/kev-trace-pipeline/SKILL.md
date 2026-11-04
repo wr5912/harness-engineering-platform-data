@@ -9,7 +9,8 @@ description: "从本地 DSH 轨迹、平台已复核 v2 导出或既有 KEV JSON
 
 | 当前材料或任务 | 下一步 |
 |---|---|
-| 固定 `compute-variant-research` 任务，或 `planning_intent=plan_only` | 留在该技能，只读取证和策划；本技能脚本不在此作用域执行 |
+| 算力任务按 `compute-variant-research` 判断为只读策划 | 留在该技能，只读取证和策划；不执行本技能脚本 |
+| 算力任务按上述意图表判断为实施 | 沿用固定来源与已有产物，按当前材料进入下表对应阶段，不扩大原授权 |
 | 平台固定 Run 的“抽取决策样本” | 使用已有 `decision-sample-extraction` 的单题合同；不自造来源或人工复核 |
 | 原始本地 trace，且当前任务允许离线文件处理 | 从下表首个未完成阶段开始 |
 | 平台已复核、已分用途的四类 v2 导出回执 | 读取 `references/platform-export.md`，执行桥接；保持既有分组，不重新随机切分 |

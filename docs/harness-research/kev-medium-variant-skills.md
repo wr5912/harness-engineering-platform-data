@@ -99,9 +99,9 @@ KEV 套件保留 5 个顶层入口；与已有 compute-variant-research、decisi
 
 复现测试：在 kev-trace-pipeline/scripts 运行 `python3 -m unittest discover -s tests -v`，并将 KEV_UPSTREAM_ROOT 指向所固定的上游来源以运行原生兼容检查；在 kev-training/scripts 运行同一 unittest 命令。测试夹具均为人工合成，测试输出不作为训练证据。
 
-## 程序侧仍需接入的能力
+## 首次接入时的程序能力记录
 
-下表是 KEV 套件首次接入时记录的程序能力边界，依据固定为 [19a877e3](https://github.com/wr5912/harness-engineering-platform/tree/19a877e337a288cc4364d1fbe0f440e65030ff37)。本次入口整理另有程序侧旧会话兼容改动，未新增下表中的训练执行或工件绑定能力。
+下表是 KEV 套件首次接入时记录的程序能力边界，依据固定为 [19a877e3](https://github.com/wr5912/harness-engineering-platform/tree/19a877e337a288cc4364d1fbe0f440e65030ff37)。下表保留该固定版本的观察，当前入口与训练回执合同见[算力变体方法](compute-variants.md#kev-中算力变体当前平台的办理路径)，不能用历史表推断当前工具能力。
 
 | 当前边界 | 后续程序侧最小工作 |
 |---|---|

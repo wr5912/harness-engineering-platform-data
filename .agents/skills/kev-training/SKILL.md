@@ -9,7 +9,8 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 
 | 当前状态 | 唯一下一步 |
 |---|---|
-| 固定算力专项或 `planning_intent=plan_only` | 留在 `compute-variant-research`，交付只读计划；不执行本技能脚本 |
+| 算力任务按 `compute-variant-research` 判断为只读策划 | 留在该技能，交付计划；不执行本技能脚本 |
+| 算力任务按上述意图表判断为实施 | 沿用固定目标与已有状态，在真实工具和环境允许范围内继续本技能对应阶段 |
 | 固定 Run 抽样专项 | 完成 `decision-sample-extraction` 的保存与回读；按授权逐题复核后再交接 |
 | 已有 checkpoint，只需部署、验证服务、保温或停服 | 使用 `kev-deploy`；不要求重新准备训练数据或先训练 |
 | 已有 DSH trace，或待复核的本套 IR/原生 KEV 样本 | 当前作用域允许时交给 `kev-trace-pipeline`；不训练 |

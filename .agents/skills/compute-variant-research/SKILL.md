@@ -5,16 +5,18 @@ description: 从完整固定父版策划、生成、构建、冻结和评测算�
 
 # 算力变体研究
 
-固定算力专项使用本作用域的 `skill`、`platform_agents`，只加载本技能；普通管理会话在已授权端到端任务中按当前阶段补读 KEV 技能并使用原生工具。沿用已有固定目标，先调用 `compute-variants/context {experiment_id}`，读取 `plan`、`generation_contract` 与 `workflow_status`。已有研究从真实状态继续，不重建同一变体。需要方法时读取 `research/read-reference {topic:"compute-variants"}`。
+先按下表判断本次意图，在当前作用域内按阶段加载技能和使用工具。只读策划保留专项的 `skill`、`platform_agents` 范围；实施任务及已获授权的普通管理任务按当前阶段补读 KEV 技能和使用原生工具。沿用已有固定目标，先调用 `compute-variants/context {experiment_id}`，读取 `plan`、`generation_contract` 与 `workflow_status`。已有研究从真实状态继续，不重建同一变体。需要方法时读取 `research/read-reference {topic:"compute-variants"}`。
 
 ## 先判断本次阶段
 
 | 任务上下文 | 本次办理到哪里 |
 |---|---|
 | `planning_intent="plan_only"` | 只做第 1 节的必要只读取证，然后交付计划；本次结束，不进入创建、编辑、构建、冻结、评测或训练 |
-| 已有明确执行授权且有对应平台动作 | 按已有状态继续下文对应阶段；工具缺失时交付缺口，不猜接口 |
+| `generation_intent="implement"` 且不是 `plan_only` | 沿用固定目标和当前阶段，读取 KEV 方法并使用当前已注册的执行工具；缺条件时明确缺口，不推定已执行 |
+| 固定专项未声明实施意图 | 保持专项只读范围，不根据自然语言自行清空或扩大任务上下文 |
+| 普通管理任务已有明确执行授权且有对应动作 | 按已有状态继续下文对应阶段；工具缺失时交付缺口，不猜接口 |
 
-“请 AI 策划算力变体”的固定中算力请求当前是第一行。普通管理会话收到明确的端到端执行授权时，按实际状态连续衔接阶段；`plan_only` 仍只策划，不能假定后端会替你拦下所有写操作。
+“仅策划”对应只读入口，“生成并验证”对应实施入口。两个 intent 同时出现时以 `plan_only` 为准；实施不改变固定 Agent、父版和 Run，也不授权重放已完成阶段。
 
 ### 中算力 KEV 策划
 
@@ -22,10 +24,10 @@ description: 从完整固定父版策划、生成、构建、冻结和评测算�
 2. 从真实决策前材料列出候选点：语义选择交模型，固定步骤与 ID 绑定交代码，信息不足保留待补项。历史动作不是正确标签。
 3. 原样保留 `medium.model_suggestions` 中各模型的类型、来源、仓库或本地路径、Revision、用途，以及 `combination_preference` 与训练连接选择。小尺寸 LLM 和决策模型均引用 Hugging Face、ModelScope 或本地权重；`provider/model` 运行路由不等于可训练权重，缺模型或权重版本保持待选。连接只保留 `server_id`、工作目录和 `credential_ref` 等非敏感引用，不索取明文凭据。
 4. 给出短计划：固定来源 → 决策点 → 按 Run 抽取 → 逐题复核与用途分组 → KEV 格式转换及编码检查 → 训练/校准/开发评估 → 固定测试 → 服务绑定与两侧 Run 比较。每项写现有输入、缺口和完成依据。
-5. 用 `research/read-reference {topic:"compute-variants"}` 读取 KEV 交接方法。固定专项不能调用 `datasets/*`、加载 KEV 同级技能、执行 shell 或连接训练服务器。不要清空任务上下文、自调会话接口或用子智能体绕过。
-6. 训练连接探测只证明 TCP/SSH banner 可达。普通管理会话可按 `kev-training/references/native-execution.md` 使用已登记连接、原生 `bash`/Job 与受控SSH CLI执行授权阶段；专项只交接，不把连接选择或策划结果当作训练已执行。
+5. 用 `research/read-reference {topic:"compute-variants"}` 读取 KEV 交接方法。只读策划不能调用 `datasets/*`、加载 KEV 同级技能、执行 shell 或连接训练服务器；实施按上表及真实工具合同办理。不要清空任务上下文、自调会话接口或用子智能体绕过。
+6. 训练连接探测只证明 TCP/SSH banner 可达。实施任务和获授权的普通管理会话可按 `kev-training/references/native-execution.md` 使用已登记连接、原生 `bash`/Job 与受控SSH CLI执行相应阶段；只读策划只交接，不把连接选择或策划结果当作训练已执行。
 
-交付计划只用已知字段；额外训练超参放独立交接材料，不塞进严格的 `ComputePlan`。本次若为 `plan_only`，到此结束。固定抽取入口继续其专用范围；普通端到端任务使用平台 `datasets/source/preview/read/review/export` 的真实回执衔接数据与训练，不自行创建更宽的专项。明确委托AI复核时记录实际 Session、模型、依据及 functional_validation 用途，不伪装人工或独立真值。
+交付计划只用已知字段；额外训练超参放独立交接材料，不塞进严格的 `ComputePlan`。本次若为 `plan_only`，到此结束。固定抽取入口继续其专用范围；算力实施及普通端到端任务使用当前允许的平台 `datasets/source/preview/read/review/export` 的真实回执衔接数据与训练，不自行创建更宽的专项。明确委托AI复核时记录实际 Session、模型、依据及 functional_validation 用途，不伪装人工或独立真值。
 
 训练资产归档：模型增量与运行配置入 Candidate；真实四分区训练输入、校准/测试报告、来源与交接材料归本版本 evaluation（不把监督答案挂给 Runtime）。索引须写真实 repo path、SHA 与 `original_source_path`；freeze-preview 必须列出这些材料并回读 Git 固定内容，不能以 `.local` 索引替代实际归档。
 
