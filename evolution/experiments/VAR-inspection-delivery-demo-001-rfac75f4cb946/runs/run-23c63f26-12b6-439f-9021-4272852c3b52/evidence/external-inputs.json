@@ -1,0 +1,77 @@
+{
+  "mode": "mock-replay",
+  "source": {
+    "service": "mock_service",
+    "method": "GET",
+    "path": "/api/v1/assets?count=5&seed=42"
+  },
+  "response": [
+    {
+      "asset_id": "asset-0001",
+      "hostname": "jumpbox-01",
+      "ip": "10.29.7.190",
+      "owner": "应用平台组",
+      "business_unit": "办公网",
+      "asset_type": "workstation",
+      "risk_score": 18,
+      "tags": [
+        "vpn",
+        "linux"
+      ]
+    },
+    {
+      "asset_id": "asset-0002",
+      "hostname": "jumpbox-02",
+      "ip": "10.190.229.140",
+      "owner": "安全运营中心",
+      "business_unit": "DMZ",
+      "asset_type": "server",
+      "risk_score": 4,
+      "tags": [
+        "linux",
+        "windows"
+      ]
+    },
+    {
+      "asset_id": "asset-0003",
+      "hostname": "prod-web-03",
+      "ip": "10.130.155.7",
+      "owner": "基础架构组",
+      "business_unit": "DMZ",
+      "asset_type": "workstation",
+      "risk_score": 58,
+      "tags": [
+        "pci",
+        "internet-facing"
+      ]
+    },
+    {
+      "asset_id": "asset-0004",
+      "hostname": "vpn-04",
+      "ip": "10.223.2.195",
+      "owner": "基础架构组",
+      "business_unit": "DMZ",
+      "asset_type": "firewall",
+      "risk_score": 36,
+      "tags": [
+        "windows",
+        "vpn"
+      ]
+    },
+    {
+      "asset_id": "asset-0005",
+      "hostname": "vpn-05",
+      "ip": "10.87.27.24",
+      "owner": "数据平台组",
+      "business_unit": "生产网",
+      "asset_type": "firewall",
+      "risk_score": 45,
+      "tags": [
+        "pci",
+        "internet-facing"
+      ]
+    }
+  ],
+  "response_sha256": "658827582e2ca4e83a74841a2b493533ab79398727e54398463deda446915e66",
+  "projected_source_sha256": "a664f52cc5d0b4c35d4d261ee00f34c5bf302d031c4272a7d2035b4d99998685"
+}

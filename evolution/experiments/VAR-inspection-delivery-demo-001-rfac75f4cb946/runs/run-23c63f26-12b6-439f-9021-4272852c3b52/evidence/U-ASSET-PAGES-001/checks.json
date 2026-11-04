@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-ASSET-PAGES-001",
+  "transport": "browser",
+  "expected_behavior": "实际调用task_inspection的start、page和report；使用同一个run_id，分页从0按返回cursor到null，共读取asset-0001至asset-0005五台，报告数量为5，包含实际可下载Markdown和CSV。明确基础模拟台账、未检测真实设备。不能只给职责或用户提供数据摘要。",
+  "session_id": "session-b329110d-f923-4ece-8b5b-8263df6ccc03",
+  "session_preset": "inspection-delivery-demo",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "ui_startup": {
+    "testing_notice_dismissed": false,
+    "workspace_action": "already-registered"
+  },
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "completed": true,
+  "ui_smoke_passed": true,
+  "trace_available": true
+}
