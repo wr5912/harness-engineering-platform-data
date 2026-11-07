@@ -9,15 +9,6 @@
     "endpoint": "http://172.17.0.1:50500/api/v1/control/identity/trust",
     "timeoutMs": 1500
   },
-  "riskAssessment": {
-    "endpoint": "http://172.17.0.1:53101/api/v1/control/risk/evaluate",
-    "timeoutMs": 1500,
-    "testRunId": "gateway-3090-20261020",
-    "requiredKinds": [
-      "write",
-      "publish"
-    ]
-  },
   "agents": [
     {
       "agentId": "security-operations-expert",
@@ -33,9 +24,7 @@
         "session:prompt",
         "read"
       ],
-      "serverIds": [
-        "inspection"
-      ],
+      "serverIds": [],
       "sourceDigest": "sha256:9f32b205f30af44bf9b46e6a5c974caec56684fb1f1c66046ce6577c04c07998",
       "agentAuthentication": {
         "enabled": true,
@@ -46,32 +35,7 @@
       }
     }
   ],
-  "operations": [
-    {
-      "serverId": "inspection",
-      "operationId": "list_executable_inspections",
-      "kind": "read",
-      "target": "http://172.16.138.232:18150/mcp/inspection",
-      "method": "tools/call",
-      "schemaDigest": "ab7bd4d62ff6dceead46c152b2ebb362c3ff9bd30b5e7894f5d8835830218dcb"
-    },
-    {
-      "serverId": "inspection",
-      "operationId": "get_inspection_result",
-      "kind": "read",
-      "target": "http://172.16.138.232:18150/mcp/inspection",
-      "method": "tools/call",
-      "schemaDigest": "f18ad1bcadc1ab91db4bf7b5e73a0f3640bbf2f8ee7b10aa2112ebaa1d416695"
-    },
-    {
-      "serverId": "inspection",
-      "operationId": "start_inspection",
-      "kind": "read",
-      "target": "http://172.16.138.232:18150/mcp/inspection",
-      "method": "tools/call",
-      "schemaDigest": "8283fcee7657d222695f011dbbf0a85dda865841e2ba2b68803cbec956a90fef"
-    }
-  ],
+  "operations": [],
   "gateway": {
     "host": "172.16.138.228",
     "port": 53105,
@@ -137,65 +101,64 @@
         "identityMode": "development"
       },
       {
-        "agentId": "migration-dsh-demo",
-        "instanceId": "migration-dsh-demo",
-        "sourceId": "experiment:EXP-migration-dsh-demo-001-r20ef75d026f1",
-        "sourceDigest": "sha256:473666687e6a509a62ea5518837af786baad4b4921894b22d58834d40f293ab7",
+        "agentId": "security-operations-expert",
+        "instanceId": "threat-analysis-004",
+        "sourceId": "experiment:EXP-security-operations-expert-027-f-r92ea65e6316b",
+        "sourceDigest": "sha256:695160d294b1da215500c0cae30d2eb5b361bfaca4ef5bbdb063903376c3ea84",
         "accessMode": "anonymous",
         "identityMode": "development"
       },
       {
-        "agentId": "migration-agentscope-demo",
-        "instanceId": "migration-agentscope-demo",
-        "sourceId": "experiment:EXP-migration-agentscope-demo-001-rd991aeb01b21",
-        "sourceDigest": "sha256:cffd3473df78837638282d46a7ef3c78f84158c2d5b7f8ba370de1ce84f89af0",
+        "agentId": "security-operations-expert",
+        "instanceId": "policy-response-027-acceptance",
+        "sourceId": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
+        "sourceDigest": "sha256:297b1ec12277b6011a1bb3283a7fc1270649fb808773c33a4ef9fd3aaab01e39",
         "accessMode": "anonymous",
         "identityMode": "development"
       },
       {
-        "agentId": "migration-langchain-demo",
-        "instanceId": "migration-langchain-demo",
-        "sourceId": "experiment:EXP-migration-langchain-demo-001-rfa4065d93d85",
-        "sourceDigest": "sha256:6bc84519710933ae4db178c858189877d6242edaad00b71642242a29f183c522",
+        "agentId": "security-operations-expert",
+        "instanceId": "policy-response-raw-027",
+        "sourceId": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
+        "sourceDigest": "sha256:0f296a1b56ed0fbc79c4689305bafcdd84f639167b55dc6c5aa2b29ee32a4406",
         "accessMode": "anonymous",
         "identityMode": "development"
       },
       {
-        "agentId": "migration-opencode-demo",
-        "instanceId": "migration-opencode-demo",
-        "sourceId": "experiment:EXP-migration-opencode-demo-001-r2085b6b7a566",
-        "sourceDigest": "sha256:d01759b787903817529997697c1d96046ddfb245ff4ab1caa8d97e9e80e21dcc",
+        "agentId": "security-operations-expert",
+        "instanceId": "policy-response-acceptance-027-r5efdc136f237",
+        "sourceId": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
+        "sourceDigest": "sha256:560aaf8ba68ee5af4a495a921fb8834299cf4ddf4ac1b14ff338423809eaca12",
         "accessMode": "anonymous",
         "identityMode": "development"
       },
       {
-        "agentId": "migration-langgraph-demo",
-        "instanceId": "migration-langgraph-demo",
-        "sourceId": "experiment:EXP-migration-langgraph-demo-001-rac1e3af8bc94",
-        "sourceDigest": "sha256:b661fe0ab860877ea48a245ed3d0a4ac8cd19ffe9ab1cc165a3f1d80629fe9d0",
+        "agentId": "security-operations-expert",
+        "instanceId": "xx-device-mock-16b",
+        "sourceId": "experiment:EXP-security-operations-expert-027-f-r92ea65e6316b",
+        "sourceDigest": "sha256:28a82216de25396a1aa5adac27210463c437263d4cc2c293edf2382cb68f005d",
+        "accessMode": "anonymous",
+        "identityMode": "development"
+      },
+      {
+        "agentId": "security-operations-expert",
+        "instanceId": "inspection-027-schedule-acceptance",
+        "sourceId": "experiment:EXP-security-operations-expert-027-f-r3ba4799b0cb7",
+        "sourceDigest": "sha256:98aee8f95ab18884b382df1614ef142e92e17f4e1d4bc35dd175c80372e7fbc2",
         "accessMode": "anonymous",
         "identityMode": "development"
       }
     ],
     "managementUrl": "http://172.16.138.228:18120/hep/"
   },
+  "detection": {
+    "inputMarkers": [],
+    "operationMarkers": [],
+    "reportMarkers": []
+  },
   "externalInstances": [
     {
-      "instanceId": "remote-agentscope-sample",
-      "subjects": [
-        "platform-owner"
-      ],
-      "actions": [
-        "agent:access",
-        "session:create",
-        "session:prompt",
-        "session:read",
-        "session:events"
-      ],
-      "enabled": true
-    },
-    {
-      "instanceId": "remote-opencode-sample",
+      "instanceId": "external-c6f43edd-b8b5-4160-a07c-5a743bfdf0b2",
       "subjects": [
         "platform-owner"
       ],
@@ -208,72 +171,5 @@
       ],
       "enabled": true
     }
-  ],
-  "externalAccess": {
-    "riskAssessment": {
-      "endpoint": "http://172.17.0.1:18650/risk",
-      "timeoutMs": 1500
-    }
-  },
-  "agentAccess": {
-    "schemaVersion": 1,
-    "issuer": "http://10.0.160.32:53105/agent-access",
-    "resources": [
-      {
-        "id": "sample-assets",
-        "audience": "urn:harness:sample-assets",
-        "endpoint": "http://172.17.0.1:18650",
-        "credentialFile": ".local/credentials/external-resources/sample-assets.key",
-        "tools": [
-          {
-            "name": "get_asset",
-            "description": "查询模拟资产，仅用于跨框架接入技术演示",
-            "scope": "assets:read",
-            "method": "GET",
-            "path": "/assets/{id}",
-            "objectField": "id",
-            "inputSchema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "pattern": "^[AB]-[0-9]+$"
-                }
-              },
-              "required": [
-                "id"
-              ],
-              "additionalProperties": false
-            }
-          }
-        ]
-      }
-    ],
-    "grants": [
-      {
-        "instanceId": "remote-agentscope-sample",
-        "resourceId": "sample-assets",
-        "scopes": [
-          "assets:read"
-        ],
-        "objects": [
-          "A-1"
-        ],
-        "enabled": true,
-        "version": 1
-      },
-      {
-        "instanceId": "remote-opencode-sample",
-        "resourceId": "sample-assets",
-        "scopes": [
-          "assets:read"
-        ],
-        "objects": [
-          "A-1"
-        ],
-        "enabled": true,
-        "version": 1
-      }
-    ]
-  }
+  ]
 }

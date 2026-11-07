@@ -2,24 +2,14 @@
   "schemaVersion": 1,
   "servers": [
     {
-      "id": "train-a39ea74a-4e6f-4455-83c8-5735f34d2d9d",
-      "name": "中算力训练与模型部署",
+      "id": "train-4255a8f5-dc31-4519-9359-6122ab67b666",
+      "name": "当前 GPU 训练与部署",
       "host": "region-42.seetacloud.com",
-      "port": 20355,
+      "port": 57506,
       "user": "root",
-      "workDir": "/root/autodl-tmp/hep-medium-security",
+      "workDir": "/root/autodl-tmp/hep-compute-exp024-20261103",
       "auth": "password",
-      "credentialRef": "ref:training-server/seetacloud-medium"
-    },
-    {
-      "id": "train-fcb5781e-2c0b-4565-b87b-1bdbf08dc4af",
-      "name": "审查验收训练与模型部署",
-      "host": "connect.nmb2.seetacloud.com",
-      "port": 22678,
-      "user": "root",
-      "workDir": "/root/autodl-tmp/hep-medium-security",
-      "auth": "password",
-      "credentialRef": "ref:training-server/seetacloud-audit-20261030"
+      "credentialRef": "ref:training-server/region42-current"
     }
   ]
 }

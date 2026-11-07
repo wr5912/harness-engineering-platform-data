@@ -2,139 +2,85 @@
   "schemaVersion": 1,
   "agents": [
     {
-      "id": "external-agentscope-demo",
-      "name": "AgentScope 演示智能体",
-      "system": "跨框架源码模拟环境",
-      "owner": "平台管理者"
-    },
-    {
-      "id": "external-opencode-demo",
-      "name": "OpenCode 演示智能体",
-      "system": "跨框架源码模拟环境",
+      "id": "external-agent-0284d636-be83-4c04-a585-2a685532eac6",
+      "name": "local-mine-dsh",
+      "system": "172.16.138.228",
       "owner": "平台管理者"
     }
   ],
   "instances": [
     {
-      "id": "remote-agentscope-sample",
-      "agentId": "external-agentscope-demo",
-      "name": "AgentScope 远程接入（模拟）",
-      "framework": "agentscope",
-      "endpoint": "http://127.0.0.1:18652",
-      "selector": "6b8687e485144c60bc85c846479d56b1",
-      "declaredVersion": "2.0.8",
-      "description": "锁定源码 ff8697ec4d59ee01f3766176e70cb24ee894d6c6；使用确定性模型和模拟业务资源，供跨框架接入技术演示。",
-      "location": "本机 Docker 容器，模拟远程已有实例",
-      "instanceOwner": "当前开发环境",
+      "id": "external-c6f43edd-b8b5-4160-a07c-5a743bfdf0b2",
+      "agentId": "external-agent-0284d636-be83-4c04-a585-2a685532eac6",
+      "name": "local-mine-dsh",
+      "framework": "dsh",
+      "endpoint": "http://172.16.138.228:3080",
+      "selector": "{\"workspaceId\":\"/home/cmp/work/luopeng/dsh-lab/test-dsh-web\",\"agentPreset\":\"standard\"}",
+      "location": "",
+      "instanceOwner": "平台管理者",
       "managementMode": "externally-managed",
       "usageMode": "shared",
       "state": "registered",
-      "revision": 3,
-      "bindingDigest": "daf3962470f08faddbd495e6dfd8281c557556974a2616d132cdc6d9899fe987",
+      "revision": 6,
+      "bindingDigest": "6066907b744e3f2e2ef58c05690c2799089285dd6577a673a2a7899040fc9e87",
       "entryState": "enabled",
-      "createdAt": "2026-11-03T01:12:04.179Z",
-      "updatedAt": "2026-11-03T01:12:04.434Z",
+      "createdAt": "2026-11-03T00:53:18.384Z",
+      "updatedAt": "2026-11-03T00:55:44.568Z",
       "verification": {
         "ok": true,
-        "bindingDigest": "daf3962470f08faddbd495e6dfd8281c557556974a2616d132cdc6d9899fe987",
+        "bindingDigest": "6066907b744e3f2e2ef58c05690c2799089285dd6577a673a2a7899040fc9e87",
         "adapterVersion": "1.0.0",
-        "observedAt": "2026-11-03T01:12:04.196Z",
+        "observedAt": "2026-11-03T00:55:36.479Z",
         "checks": [
           {
             "name": "native-api",
             "ok": true,
-            "detail": "AgentScope Service 的目标、消息和 Session 事件接口已识别"
+            "detail": "DSH 原生 Session 接口可访问；业务结果仍需真实调用验证"
           },
           {
             "name": "scope",
             "ok": true,
             "detail": "共享使用；已适配 API 入口，不代表内部工具、任务取消或原生 Web 已受控"
           }
-        ],
-        "observedVersion": "2.0.8"
+        ]
       },
       "activation": {
-        "bindingDigest": "daf3962470f08faddbd495e6dfd8281c557556974a2616d132cdc6d9899fe987",
-        "policyDigest": "c11114eda4a60246fdeca5d4e011d4c2e36bbdca4225ced4ef64a4d82bf17fb3",
-        "activatedAt": "2026-11-03T01:12:04.434Z"
-      }
-    },
-    {
-      "id": "remote-opencode-sample",
-      "agentId": "external-opencode-demo",
-      "name": "OpenCode 远程接入（模拟）",
-      "framework": "opencode",
-      "endpoint": "http://127.0.0.1:18655",
-      "selector": "/workspace",
-      "credentialRef": "sample-opencode",
-      "declaredVersion": "2.2.5",
-      "description": "锁定源码 9bbb8ce18c80f099e0e448775f59d965ead40a21；使用确定性模型和模拟业务资源，供跨框架接入技术演示。",
-      "location": "本机 Docker 容器，模拟远程已有实例",
-      "instanceOwner": "当前开发环境",
-      "managementMode": "externally-managed",
-      "usageMode": "shared",
-      "state": "registered",
-      "revision": 3,
-      "bindingDigest": "24b200db10546abac6a288edfc39b0b3786066ceb1389e5473e1af021d35f695",
-      "entryState": "enabled",
-      "createdAt": "2026-11-03T01:12:04.605Z",
-      "updatedAt": "2026-11-03T01:12:04.741Z",
-      "verification": {
-        "ok": true,
-        "bindingDigest": "24b200db10546abac6a288edfc39b0b3786066ceb1389e5473e1af021d35f695",
-        "adapterVersion": "1.0.0",
-        "observedAt": "2026-11-03T01:12:04.655Z",
-        "checks": [
-          {
-            "name": "native-api",
-            "ok": true,
-            "detail": "OpenCode 原生健康和 Session 接口已识别"
-          },
-          {
-            "name": "scope",
-            "ok": true,
-            "detail": "共享使用；已适配 API 入口，不代表内部工具、任务取消或原生 Web 已受控"
-          }
-        ],
-        "observedVersion": "2.2.5"
-      },
-      "activation": {
-        "bindingDigest": "24b200db10546abac6a288edfc39b0b3786066ceb1389e5473e1af021d35f695",
-        "policyDigest": "aadd5e1208f6f1afc0c0233cdbccc5bcd5d84d23b45791ca6a901647ad2670f0",
-        "activatedAt": "2026-11-03T01:12:04.741Z"
+        "bindingDigest": "6066907b744e3f2e2ef58c05690c2799089285dd6577a673a2a7899040fc9e87",
+        "policyDigest": "033ac0500f83dc6c80dbbe25efc6e930ad1ba8ce75814935afb2606248884035",
+        "activatedAt": "2026-11-03T00:55:44.568Z"
       }
     }
   ],
   "requests": [
     {
-      "id": "94ae7578-ecc5-4492-9531-da8b2fd808a8",
-      "digest": "cdd33f51cdb3bc9adec83f97b60f0a813dc77febaaa8f1d3ec4c16d4bc810796",
-      "instanceId": "remote-agentscope-sample"
+      "id": "ui-1793667191071-3f6unzri86b",
+      "digest": "b371a21df1cb2f8ed350b697e0b5eb1b11c7effb1b8c67690891f8b89ef5c9f9",
+      "instanceId": "external-c6f43edd-b8b5-4160-a07c-5a743bfdf0b2"
     },
     {
-      "id": "85708c37-5e92-4196-aa6d-f11ee232d8fe",
-      "digest": "c0e78a320aa92382feef3aa282c4bfa9fe2a0c4092a2641e2fa398e9de23af82",
-      "instanceId": "remote-agentscope-sample"
+      "id": "ui-1793667195573-o5660kzt1r",
+      "digest": "6f9b1364f6419d793f8fdfbfc227cc9cd0e1a79186503ef9327b3d675b907044",
+      "instanceId": "external-c6f43edd-b8b5-4160-a07c-5a743bfdf0b2"
     },
     {
-      "id": "a5f9e52b-3292-4282-b4ad-823726f6bde4",
-      "digest": "caac307d63e8c8762e878fdff01b823efd997e6054c024be1b52130cd3f08aea",
-      "instanceId": "remote-agentscope-sample"
+      "id": "ui-1793667196108-m6mmgg5i",
+      "digest": "305beddd55be40732e6daf53ec8775d749e1e4d0acce6d5b0f9283d6d08e0200",
+      "instanceId": "external-c6f43edd-b8b5-4160-a07c-5a743bfdf0b2"
     },
     {
-      "id": "28af2436-614f-4562-8b85-65b3cafa33b2",
-      "digest": "3db1bb1f062bde71ab4feae2154bf2fad2355b27a9765b6b327e09898a9baac7",
-      "instanceId": "remote-opencode-sample"
+      "id": "ui-1793667305259-m8xzobzf77",
+      "digest": "1d75f36d5c35bd4d3f70238c74d27f8bb048f991ba1783e9e6aad3fbb0018ff3",
+      "instanceId": "external-c6f43edd-b8b5-4160-a07c-5a743bfdf0b2"
     },
     {
-      "id": "f9da41c7-0965-4ab4-9c17-5ccf267c8601",
-      "digest": "2abdc3284e3dfe10fa5db3b5c1c244ab4070cf0473f1a85e0f4d047a0129e341",
-      "instanceId": "remote-opencode-sample"
+      "id": "ui-1793667333593-soun06obh5",
+      "digest": "ef8480422efc1f4e6f120b46909c1331d0dfb0cb0e7af6abbbbad5db8bc78367",
+      "instanceId": "external-c6f43edd-b8b5-4160-a07c-5a743bfdf0b2"
     },
     {
-      "id": "5dad9d82-2187-4d0b-8ecf-f3d6813f65e1",
-      "digest": "e5c4a988c944ddadebdf6ce7d22d6f661dbd64cc9a664849293823e94292b3f1",
-      "instanceId": "remote-opencode-sample"
+      "id": "ui-1793667341688-43fz3yecg9h",
+      "digest": "47df03c7ab453d57c79643b8d1384c7974b8e4246225758e337f2f492f97c904",
+      "instanceId": "external-c6f43edd-b8b5-4160-a07c-5a743bfdf0b2"
     }
   ]
 }
