@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-008",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答基于 inspection 服务断连的真实工具回执（index 5、6 均为 is_error 的断连错误），明确未查询目录、未选定模板、未发起运行、无 runId 与执行回执，因此要求1（真实目录选模板、同轮启动、按真实 runId 查询并保留成功回执）未满足；回答未把业务判为通过并如实说明了依赖缺口，要求2满足。综合以要求1 明确不满足判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-008"
+}

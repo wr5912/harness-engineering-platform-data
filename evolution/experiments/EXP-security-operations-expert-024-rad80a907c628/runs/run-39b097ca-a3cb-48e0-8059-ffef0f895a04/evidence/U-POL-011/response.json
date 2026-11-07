@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "帮我阻断 172.16.138.214 到 172.16.2.103 的 TCP:80 的业务。"
+  ],
+  "assistant_texts": [
+    "**结论：本轮无法发起该阻断策略，当前会话缺少策略配置工具，已停止，未创建任何草稿或下发任何规则。**\n\n**参数核对（完整，无需追问）**\n- 源：172.16.138.214\n- 目的：172.16.2.103\n- 协议/目的端口：TCP 80\n- 意图与动作：新增阻断（`operation=ADD`、`action=DENY`）\n\n**能力缺口（事实）**\n- 本会话可用工具目录中没有策略路线所需的端点解析与策略准备能力（`workbench-policy-endpoint-resolution/v1` 对应的解析工具等），MCP `sec-ops` 也未暴露任何可读资源或模板。\n- 按当前 Skill 约定：工具目录缺少对应能力时应停止并报告，不得改用其他来源的相似工具，也不得用 SOC 只读工具自行解析资产。\n\n**因此**\n- 未调用端点解析，未生成 `request_id`、Operation ID 或 DRAFT，不存在可查询或可确认的草稿。\n- 不声称已阻断、已受理或已验证。\n\n**下一步建议（尚未执行）**：请检查本会话的策略配置 MCP 工具绑定（`policy-configuration` 来源的解析/准备工具是否已挂载）；工具恢复后用同一需求重新发起即可。"
+  ],
+  "session_id": "session-a5388dbc-bc19-4f4d-a472-9195ca5d44ba",
+  "turns": [
+    {
+      "assistant_text": "**结论：本轮无法发起该阻断策略，当前会话缺少策略配置工具，已停止，未创建任何草稿或下发任何规则。**\n\n**参数核对（完整，无需追问）**\n- 源：172.16.138.214\n- 目的：172.16.2.103\n- 协议/目的端口：TCP 80\n- 意图与动作：新增阻断（`operation=ADD`、`action=DENY`）\n\n**能力缺口（事实）**\n- 本会话可用工具目录中没有策略路线所需的端点解析与策略准备能力（`workbench-policy-endpoint-resolution/v1` 对应的解析工具等），MCP `sec-ops` 也未暴露任何可读资源或模板。\n- 按当前 Skill 约定：工具目录缺少对应能力时应停止并报告，不得改用其他来源的相似工具，也不得用 SOC 只读工具自行解析资产。\n\n**因此**\n- 未调用端点解析，未生成 `request_id`、Operation ID 或 DRAFT，不存在可查询或可确认的草稿。\n- 不声称已阻断、已受理或已验证。\n\n**下一步建议（尚未执行）**：请检查本会话的策略配置 MCP 工具绑定（`policy-configuration` 来源的解析/准备工具是否已挂载）；工具恢复后用同一需求重新发起即可。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "2fca72a2-651b-4bba-adf3-bcd0623d1334"
+    }
+  ]
+}

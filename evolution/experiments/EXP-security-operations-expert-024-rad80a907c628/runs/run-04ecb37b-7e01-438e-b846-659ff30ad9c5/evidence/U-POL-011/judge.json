@@ -1,0 +1,46 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "要求一未满足：预期要求核对真实路径与配置设备后生成阻断策略预览并说明影响与待确认项，但被测回答明确表示未调用应急准备接口、未生成任何草案，仅说明能力缺口并反问用户改用哪种单目标方案，始终没有产出策略预览、影响说明或待确认项清单（工具回执仅为 skill 说明文档，非 prepare 草案回执）。要求二满足：回答明确声明本轮未提交任何处置、未执行任何动作，未声称业务已阻断。因存在明确未满足的要求，总体判 failed。",
+    "requirements": [
+      {
+        "requirement": "核对真实路径和配置设备，生成阻断策略预览并说明影响与待确认项",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "没有成功执行回执时不得声称业务已阻断",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-0b724f49-75dc-4e6d-9807-74a8297494bb",
+    "workspace_id": "5b3c6e98-9e62-404a-bc62-f942f1f75907",
+    "session_title": "评审 U-POL-011",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

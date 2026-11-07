@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-FLT-005",
+  "transport": "api",
+  "expected_behavior": "若同一 Session 缺少此前故障上下文，先询问必要信息；有上下文时停止盲目替换参数，转向核对正式故障证据、链路状态和失败原因。",
+  "session_id": "session-b85e334f-c841-4a2f-a6ce-1d79a6b81f5e",
+  "workspace_id": "45814c64-d673-4c77-91df-34f358c06b5f",
+  "session_title": "评测 U-FLT-005",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-d7bc7263-c353-47b4-b606-d35d080d79ff",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

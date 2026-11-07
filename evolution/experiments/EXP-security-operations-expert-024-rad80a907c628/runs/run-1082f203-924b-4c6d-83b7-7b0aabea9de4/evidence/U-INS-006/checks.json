@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-006",
+  "completed": false,
+  "expected_behavior": "从真实目录选择唯一匹配模板，用 ASSET_IDS、values: [\"A-001\"] 准备并在 READY 后同轮执行。资产非法、未命中或模板不唯一时只澄清或说明服务错误，不用 ALL 代替。按实际运行标识核对范围和结果。",
+  "failure_reason": "api 评测失败（退出码 2）"
+}

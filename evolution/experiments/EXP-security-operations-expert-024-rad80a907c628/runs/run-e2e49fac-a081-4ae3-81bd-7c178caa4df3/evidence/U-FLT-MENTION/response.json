@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "@故障分析子智能体 业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "已启动故障分析子智能体（ID: b03ae0ba-84bf-466a-a466-ad134c8b0a0f），正在通过已授权的 SOC 只读工具进行取证。由于您尚未提供业务系统的具体资产名称/IP 和异常时间窗口，子智能体会先尝试解析对象；如果无法唯一确定目标，会返回需要您补充的最小信息清单。请稍候，我将汇总分析结果。"
+  ],
+  "session_id": "session-68978b77-597f-4a50-b5fc-406a82d50fbc",
+  "turns": [
+    {
+      "assistant_text": "已启动故障分析子智能体（ID: b03ae0ba-84bf-466a-a466-ad134c8b0a0f），正在通过已授权的 SOC 只读工具进行取证。由于您尚未提供业务系统的具体资产名称/IP 和异常时间窗口，子智能体会先尝试解析对象；如果无法唯一确定目标，会返回需要您补充的最小信息清单。请稍候，我将汇总分析结果。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "26179655-1d70-49f4-83f1-f5b81bb66822"
+    }
+  ]
+}

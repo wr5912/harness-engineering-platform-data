@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答明确声明本次巡检未能发起、无 runId、无报告；tool/result 也证实 inspection 服务器资源与模板查询均返回 is_error 的 disconnected 错误。因此核心预期（从真实目录选模板并以 ASSET_IDS values [\"A-001\"] 在 READY 后同轮执行、按实际 runId 核对范围与结果）未达成；仅“说明服务错误且不用 ALL 代替”一项得到满足，Variant/KEV 相关证据缺失。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-006"
+}

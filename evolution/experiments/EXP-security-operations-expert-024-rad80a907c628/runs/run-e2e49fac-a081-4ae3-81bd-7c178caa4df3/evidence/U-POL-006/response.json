@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "帮我开通 172.16.1.155 到 172.16.2.103 的 TCP 18550 端口业务。"
+  ],
+  "assistant_texts": [
+    "已进入策略配置流程，正在识别源、目的资产并核对五元组……\n\n（端点解析调用未成功：当前会话工具目录中没有可用的「端点解析工具」，我无法完成源/目的解析，因此本轮没有调用任何策略准备工具。）\n\n请补充以下任一信息后我继续：\n- 若该工具名称或入口有变化，请告知当前可用的策略端点解析工具；\n- 或确认是否改用资产名称/网段形式的源与目的端点重试。\n\n已确认参数（本轮用户输入）：源 `172.16.1.155`、目的 `172.16.2.103`、协议 TCP、目的端口 18550、动作 允许（ADD+ALLOW）。尚无任何草稿、taskId 或设备选择。"
+  ],
+  "session_id": "session-b5146e1f-ad1d-4cdf-a1ea-e728ba824416",
+  "turns": [
+    {
+      "assistant_text": "已进入策略配置流程，正在识别源、目的资产并核对五元组……\n\n（端点解析调用未成功：当前会话工具目录中没有可用的「端点解析工具」，我无法完成源/目的解析，因此本轮没有调用任何策略准备工具。）\n\n请补充以下任一信息后我继续：\n- 若该工具名称或入口有变化，请告知当前可用的策略端点解析工具；\n- 或确认是否改用资产名称/网段形式的源与目的端点重试。\n\n已确认参数（本轮用户输入）：源 `172.16.1.155`、目的 `172.16.2.103`、协议 TCP、目的端口 18550、动作 允许（ADD+ALLOW）。尚无任何草稿、taskId 或设备选择。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e41473de-0847-4d33-8e77-3f5cc3d0b3a7"
+    }
+  ]
+}

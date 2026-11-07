@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-005",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：第二轮工具证据中未出现 schedule_list 调用，被测直接以创建回执中的任务 ID 调用 schedule_update（event_seq 32），违反“第二轮先调用 schedule_list”以及“未先查询判为失败”的冻结要求；schedule_update 回执显示 everySeconds 为 1200 且 prompt 与创建时一致未被改动，且回复中给出了更新后的规则，第二项要求已满足。因未先查询这一失败条件在证据中成立，整体判为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-005"
+}

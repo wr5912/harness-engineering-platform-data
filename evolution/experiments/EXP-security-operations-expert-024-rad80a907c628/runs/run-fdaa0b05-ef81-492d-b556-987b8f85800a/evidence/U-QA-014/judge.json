@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答为英文，明确说明 CVE ID 唯一标识一个公开披露的软件/固件漏洞，并单列说明编号本身不携带严重度评分、是否已被利用或修复信息（严重度、利用状态来自 CVSS、厂商公告等引用该编号的来源），完全满足要求。",
+    "requirements": [
+      {
+        "requirement": "用英语准确说明 CVE ID 标识公开记录的漏洞，不把编号本身当成严重度或是否已被利用的证明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "A **CVE ID** (Common Vulnerabilities and Exposures identifier) uniquely identifies a single, publicly disclosed cybersecurity vulnerability or exposure in software or firmware.\n\nKey points:\n\n- **Format:** `CVE-YYYY-NNNNN` — e.g., `CVE-2024-12345`. The `YYYY` is the year the identifier was reserved (not necessarily the year the flaw was discovered), and `NNNNN` is a sequence number assigned by the issuing authority.\n- **Purpose:** It provides a common, standardized name so that different organizations — vendors, security tools, incident response teams — can refer to the *exact same* flaw without confusion, even if they use different local names for it.\n- **Scope:** One CVE ID covers one specific vulnerability in one product version range. A bug affecting multiple products may receive separate CVE IDs, and a single vendor advisory may cover several CVE IDs.\n- **Authority:** IDs are assigned by CVE Numbering Authorities (CNAs) under the CVE Program, coordinated by MITRE and the CVE Board.\n- **What it does *not* say:** The ID itself carries no severity score, exploit status, or fix information. Those come from other sources (such as CVSS scores, vendor advisories, and patch notices) that *reference* the CVE ID.\n\nIn short: a CVE ID is a standardized serial number for a documented security vulnerability, used as a universal reference across the security community.",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-6a259921-505c-4fd5-af68-249d0e1e8980",
+    "workspace_id": "e66bea4a-3927-49d2-b235-9ec19b50d5d5",
+    "session_title": "评审 U-QA-014",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

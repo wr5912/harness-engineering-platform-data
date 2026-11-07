@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 9106 近 30 天的关联告警，展示首页最多 5 个分组，说明总量和查询时段。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "## 查询结果：资产 9106 近 30 天关联告警（只读）\n\n**结论：近 30 天关联告警总量 19 条，severity 分组恰好 5 组，均来自固定 Mock/replay 样本，未执行任何处置。**\n\n### 总量与查询时段\n\n| 项目 | 值 |\n|---|---|\n| **告警总量** | **19 条**（severity 分布求和 0+1+2+16+0 = 19；`trend30d` 30 个日桶求和 2+17 = 19，两路一致） |\n| 计划查询窗口 | 2026-10-05T02:39:48Z ～ 2026-11-04T02:39:48Z（UTC，采样基准 2026-11-04T02:39:48+00:00） |\n| **实际生效时段** | 工具内置的 `trend30d`（近 30 个日桶）。`get_graph_node_detail` 的 inputSchema 仅有 `vid`，**不接受时间窗口参数**，无法由查询方精确裁剪；返回值也未标注桶起止边界 |\n\n### 首页分组明细（最多 5 个分组，severity 分组正好 5 组；工具无分页/limit 参数）\n\n| 分组 | 数量 |\n|---|---|\n| criticalSec（严重） | 0 |\n| high（高危） | 1 |\n| medium（中危） | 2 |\n| low（低危） | 16 |\n| info（提示） | 0 |\n| **合计** | **19** |\n\n补充：`trend30d` 中仅 2 个日桶非零（桶 3 = 2 条、桶 4 = 17 条）。资产 9106 基本信息：IP 172.16.138.241、主机名“联试硬件服务器241”、server/core、online、probeState=reachable。\n\n### 事实 / 推断 / 缺口\n\n**事实（来自工具返回）**\n1. `get_soc_asset_by_asset_id(9106)` 成功；资产 active、online、collectAnomaly=0；采集插件 generic-ssh `lastStatus=error`（SSH 建连失败，enabled=0）。\n2. `get_graph_node_detail(vid=\"asset:9106\")` 返回 `metricAvailable=false`，severity 分布与 30 桶趋势总和均为 19。\n3. `get_soc_asset_vulnerabilities(9106)` 返回空数组 `[]`（本次范围内未找到漏洞记录，不等于不存在）。\n4. sec-ops 的 MCP 资源为空；`inspection` 服务器连接断开，无法交叉核对。\n5. 共 7 次只读查询，未处置、未创建分析运行、未读写文件。\n\n**推断（非工具明示）**\n- 桶 3、4 约对应窗口内第 4、5 天（约 10-08 的 2 条、10-09 的 17 条），前提是桶 0 对齐窗口起点——工具未给桶标签，无法证实。\n- severity 分布与 `trend30d` 求和相等，推断两者覆盖同一 30 天窗口。\n- `lastProbeAt=2026-11-04T10:35:13` 晚于采样基准约 8 小时，推断库内时间戳按 UTC+8 存储且无时区后缀；若成立，日桶边界也按该时区计。\n\n**证据缺口 / 能力缺口**\n- 无“按资产 + 时间窗枚举告警明细”的接口（无 alert list、无分页/时间过滤），无法给出单条告警标题、ID、首次发生时间。\n- `get_graph_node_detail` 不接受时间窗口，无法强制执行 2026-10-05～2026-11-04 精确裁剪，只能采信内置 `trend30d`。\n- 日桶无日期标签、时间戳无时区声明 → 日桶到自然日的映射属推断。\n\n**未执行建议（尚未执行）**\n- 若存在带 assetId + timeFrom/timeTo 的告警明细接口，建议用精确窗口复核 19 条构成与桶日期映射。\n- 若能提供告警事件的 index 与文档 ID，可用 `get_event_by_id` 逐条取证。\n- generic-ssh 建连失败的修复属处置动作，按只读约束**未执行**，仅作事实记录。"
+  ],
+  "session_id": "session-6065d3f1-66a3-462f-9ab5-221e00c541de",
+  "turns": [
+    {
+      "assistant_text": "## 查询结果：资产 9106 近 30 天关联告警（只读）\n\n**结论：近 30 天关联告警总量 19 条，severity 分组恰好 5 组，均来自固定 Mock/replay 样本，未执行任何处置。**\n\n### 总量与查询时段\n\n| 项目 | 值 |\n|---|---|\n| **告警总量** | **19 条**（severity 分布求和 0+1+2+16+0 = 19；`trend30d` 30 个日桶求和 2+17 = 19，两路一致） |\n| 计划查询窗口 | 2026-10-05T02:39:48Z ～ 2026-11-04T02:39:48Z（UTC，采样基准 2026-11-04T02:39:48+00:00） |\n| **实际生效时段** | 工具内置的 `trend30d`（近 30 个日桶）。`get_graph_node_detail` 的 inputSchema 仅有 `vid`，**不接受时间窗口参数**，无法由查询方精确裁剪；返回值也未标注桶起止边界 |\n\n### 首页分组明细（最多 5 个分组，severity 分组正好 5 组；工具无分页/limit 参数）\n\n| 分组 | 数量 |\n|---|---|\n| criticalSec（严重） | 0 |\n| high（高危） | 1 |\n| medium（中危） | 2 |\n| low（低危） | 16 |\n| info（提示） | 0 |\n| **合计** | **19** |\n\n补充：`trend30d` 中仅 2 个日桶非零（桶 3 = 2 条、桶 4 = 17 条）。资产 9106 基本信息：IP 172.16.138.241、主机名“联试硬件服务器241”、server/core、online、probeState=reachable。\n\n### 事实 / 推断 / 缺口\n\n**事实（来自工具返回）**\n1. `get_soc_asset_by_asset_id(9106)` 成功；资产 active、online、collectAnomaly=0；采集插件 generic-ssh `lastStatus=error`（SSH 建连失败，enabled=0）。\n2. `get_graph_node_detail(vid=\"asset:9106\")` 返回 `metricAvailable=false`，severity 分布与 30 桶趋势总和均为 19。\n3. `get_soc_asset_vulnerabilities(9106)` 返回空数组 `[]`（本次范围内未找到漏洞记录，不等于不存在）。\n4. sec-ops 的 MCP 资源为空；`inspection` 服务器连接断开，无法交叉核对。\n5. 共 7 次只读查询，未处置、未创建分析运行、未读写文件。\n\n**推断（非工具明示）**\n- 桶 3、4 约对应窗口内第 4、5 天（约 10-08 的 2 条、10-09 的 17 条），前提是桶 0 对齐窗口起点——工具未给桶标签，无法证实。\n- severity 分布与 `trend30d` 求和相等，推断两者覆盖同一 30 天窗口。\n- `lastProbeAt=2026-11-04T10:35:13` 晚于采样基准约 8 小时，推断库内时间戳按 UTC+8 存储且无时区后缀；若成立，日桶边界也按该时区计。\n\n**证据缺口 / 能力缺口**\n- 无“按资产 + 时间窗枚举告警明细”的接口（无 alert list、无分页/时间过滤），无法给出单条告警标题、ID、首次发生时间。\n- `get_graph_node_detail` 不接受时间窗口，无法强制执行 2026-10-05～2026-11-04 精确裁剪，只能采信内置 `trend30d`。\n- 日桶无日期标签、时间戳无时区声明 → 日桶到自然日的映射属推断。\n\n**未执行建议（尚未执行）**\n- 若存在带 assetId + timeFrom/timeTo 的告警明细接口，建议用精确窗口复核 19 条构成与桶日期映射。\n- 若能提供告警事件的 index 与文档 ID，可用 `get_event_by_id` 逐条取证。\n- generic-ssh 建连失败的修复属处置动作，按只读约束**未执行**，仅作事实记录。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "cd6b8614-a456-4deb-96b2-35a22fdff899"
+    }
+  ]
+}

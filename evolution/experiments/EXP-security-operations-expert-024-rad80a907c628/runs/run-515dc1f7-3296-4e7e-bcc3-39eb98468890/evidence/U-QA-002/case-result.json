@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答先通过 list_mcp_resources/list_mcp_resource_templates 真实枚举了 sec-ops 与 inspection 两个 MCP 服务器，工具回执显示 sec-ops 的 resources 与 resourceTemplates 均为空列表、inspection 两次调用均为 is_error=true（server is disconnected），据此如实报告可列出知识库为 0 个，因此不存在可检索的知识库，未执行第二步检索并明确说明原因。回答中所有字段（知识库名、文档、分块序号、分数、匹配类型）均报告为“无”，与本轮工具回执结果一致，没有编造任何检索数据；同时明确声明未取得知识库证据、不以常识代替证据作答，全文未给出任何无来源的勒索软件应急响应流程内容。三项要求均满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-002"
+}

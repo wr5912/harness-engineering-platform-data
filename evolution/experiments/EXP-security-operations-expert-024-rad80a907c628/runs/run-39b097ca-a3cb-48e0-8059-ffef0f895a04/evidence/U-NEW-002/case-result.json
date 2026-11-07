@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测会话确实原生委派了专用研判并绑定事件ID，且未把启动回执当作研判完成，第1项可判满足；但两次 analyze_threat_incident 回执均为 is_error=true（MCP 连接不可用），本次研判从未产出 recommended_actions，因此不存在承接建议、分组映射、只读预览、prepare 草案、READY/NOT_SUBMITTED 确认等任何后续阶段，回答最终仅输出停止提示。按预期第6项明确规定仅输出停止提示不算研判到草案链路通过，第2至5项均无对应真实回执支撑，属明确不满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-002"
+}

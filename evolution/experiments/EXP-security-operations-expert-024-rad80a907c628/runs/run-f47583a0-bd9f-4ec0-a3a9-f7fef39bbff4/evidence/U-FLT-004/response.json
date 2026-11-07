@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "主备防火墙切换后，排查源 IP 172.16.2.103 到目的 IP 172.16.138.214 访问失败的原因。"
+  ],
+  "assistant_texts": [
+    "已启动故障分析子智能体，ID 为 `857b34ae-a39f-476d-bace-badfed1ac664`。子智能体将开始独立调查访问失败原因，包括防火墙资产状态、主机信息、网络拓扑、可达性及策略覆盖情况。\n\n预计子智能体需要时间完成多项工具查询，Runtime 会通知完成状态。"
+  ],
+  "session_id": "session-a8da6f34-168f-4d0c-82be-4afeec9ea9e9",
+  "turns": [
+    {
+      "assistant_text": "已启动故障分析子智能体，ID 为 `857b34ae-a39f-476d-bace-badfed1ac664`。子智能体将开始独立调查访问失败原因，包括防火墙资产状态、主机信息、网络拓扑、可达性及策略覆盖情况。\n\n预计子智能体需要时间完成多项工具查询，Runtime 会通知完成状态。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "907796b0-93f3-4bb8-9c92-73e623322be2"
+    }
+  ]
+}

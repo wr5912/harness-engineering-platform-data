@@ -1,0 +1,152 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测研判在 analyze_threat_incident 阶段即以 is_error=true 报错（trusted platform MCP group connection is unavailable），本轮五源证据 JSON、真实模型推理、机械校验、四阶段与同 run_id 的摘要/报告保存及下载链接均未产生，回答也自述无结果、无报告、无可下载链接，核心交付要求明确未满足，故判 failed。",
+    "requirements": [
+      {
+        "requirement": "独立基本 Mock 中该事件未认领且不会命中快速分类",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "使用本轮冻结的五源证据和真实模型形成 JSON，原机械校验全部通过",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "可读文字只使用证据中的 IP、主机名、用户或资产 ID，不出现内部 E 编号，verified_facts 不把事件或规则声明当作独立观察，证据路径和值可回到原始输入",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "保留真实原始响应、模型与推理设置、校验结果及输入摘要",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "四阶段和同一 run_id 的摘要/报告保存均完成，下载返回与本轮身份对应的基本模拟报告",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "若模型输出处置建议，每条 `target` 必须是只含已知 `host_name`、`ip`、`port`、`asset_id` 的对象，至少有 `ip` 或 `asset_id`",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "端口属于同一目标且范围为 1～65535",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "建议只描述有事实支持的动作与风险，不把建议当作已执行",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "Mock 仅验证技术路径，不证明真实防火墙或 SOC 处置效果",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "本 Case 专门比较输出合同质量",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "若校验 failed，即使原交付合同允许保留结果并要求人工复核，也不能判为本 Case 通过",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "快判、接口连通或固定报告 HTML 不代替内层模型校验",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-180f7c06-89e8-43e8-8ba6-6550638963d1",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-THREAT-CONTRACT",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

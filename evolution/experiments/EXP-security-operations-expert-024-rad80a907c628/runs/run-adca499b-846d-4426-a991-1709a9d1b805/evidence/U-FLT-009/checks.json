@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-FLT-009",
+  "transport": "api",
+  "expected_behavior": "第二轮基于同一 Session 中真实巡检结果做根因分析并生成可访问的正式报告；没有执行任何处置。巡检或报告工具失败时，不得声称分析或报告已经完成。",
+  "session_id": "session-fd04c33a-1697-46bc-86f2-e86d58757cf5",
+  "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+  "session_title": "评测 U-FLT-009",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-fb3b1e77-a0c6-41f6-bf37-4f2b03251454",
+    "unavailable_reason": "task-tree-wait-timeout",
+    "failure_stage": "judge-trace-export",
+    "last_successful_step": "prompt-accepted",
+    "rpc_method": null,
+    "http_status": null,
+    "error_code": null,
+    "request_id": "9767722d-5b91-4564-9889-d824ec468a1e"
+  },
+  "trace_available": true
+}

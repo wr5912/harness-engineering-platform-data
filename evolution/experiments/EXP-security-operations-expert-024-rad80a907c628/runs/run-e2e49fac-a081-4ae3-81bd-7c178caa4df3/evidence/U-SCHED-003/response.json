@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "创建一个每隔 10 分钟从 SOC 拉取威胁进行研判的任务。"
+  ],
+  "assistant_texts": [
+    "已创建自动威胁研判定时任务，回执核对与请求一致：\n\n- **任务 ID**：`schedule-ee1c99e6-b853-4617-a20d-84db30d9416d`\n- **规则**：每 10 分钟（`everySeconds: 600`）\n- **下次到期**：2026-10-28 02:19:30 UTC（约 10 分钟后）\n- **固定行为**：到期后仅由受信 Schedule 桥解析固定 prompt 并调用 `analyze_pending_threat_incidents` 从 SOC 拉取一条待研判事件；上一条仍在运行时本次心跳跳过、不排队\n\n当前任务尚未执行过任何研判。后续如需修改周期、停止或删除该任务，直接告诉我即可。"
+  ],
+  "session_id": "session-ac701f4e-c5a1-4e4e-85c1-659ab0a4d570",
+  "turns": [
+    {
+      "assistant_text": "已创建自动威胁研判定时任务，回执核对与请求一致：\n\n- **任务 ID**：`schedule-ee1c99e6-b853-4617-a20d-84db30d9416d`\n- **规则**：每 10 分钟（`everySeconds: 600`）\n- **下次到期**：2026-10-28 02:19:30 UTC（约 10 分钟后）\n- **固定行为**：到期后仅由受信 Schedule 桥解析固定 prompt 并调用 `analyze_pending_threat_incidents` 从 SOC 拉取一条待研判事件；上一条仍在运行时本次心跳跳过、不排队\n\n当前任务尚未执行过任何研判。后续如需修改周期、停止或删除该任务，直接告诉我即可。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c1c9b331-d442-4eb3-bca3-93f481021ee7"
+    }
+  ]
+}

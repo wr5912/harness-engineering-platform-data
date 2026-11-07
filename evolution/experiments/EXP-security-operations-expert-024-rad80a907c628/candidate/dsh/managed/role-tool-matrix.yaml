@@ -62,8 +62,10 @@ parent_direct_tools:
       - mcp__emergency-action__cancel_emergency_action
     inspection:
       - mcp__inspection__list_executable_inspections
+      - mcp__inspection__prepare_inspection
       - mcp__inspection__start_inspection
       - mcp__inspection__get_inspection_result
+      - mcp__inspection__get_inspection_report_details
   delegates:
     - delegate_threat_analysis
     - delegate_fault_analysis

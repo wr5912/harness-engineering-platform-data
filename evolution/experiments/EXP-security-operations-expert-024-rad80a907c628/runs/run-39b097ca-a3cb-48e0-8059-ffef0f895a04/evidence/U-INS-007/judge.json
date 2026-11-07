@@ -1,0 +1,83 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "第一轮要求按真实巡检目录准备并在同轮发起一次巡检，但 inspection 服务持续 disconnected，目录查询与发起均未发生，也未取得任何 runId，核心要求明确不满足；第二轮未重新准备或启动、且如实说明无 runId 可续查，但因第一轮失败，整体判 failed。",
+    "requirements": [
+      {
+        "requirement": "第一轮按真实目录准备并同轮启动一次",
+        "status": "failed",
+        "evidence": [
+          0,
+          5,
+          7,
+          13,
+          15
+        ]
+      },
+      {
+        "requirement": "第二轮只查询同一 Session 已取得的 runId，不能重新准备或启动",
+        "status": "satisfied",
+        "evidence": [
+          1,
+          13,
+          15
+        ]
+      },
+      {
+        "requirement": "默认读取 includeReport: false，依真实状态、业务结论、摘要、设备数量和证据缺口回答",
+        "status": "unknown",
+        "evidence": [
+          0
+        ]
+      },
+      {
+        "requirement": "下载地址与原运行一致",
+        "status": "unknown",
+        "evidence": [
+          0,
+          1
+        ]
+      },
+      {
+        "requirement": "Variant status 必须保留原 runId",
+        "status": "unknown",
+        "evidence": [
+          0,
+          1
+        ]
+      },
+      {
+        "requirement": "没有成功服务回执不能判通过",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          1,
+          5,
+          7,
+          13,
+          15
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-42ec199d-52ba-45c2-8aa9-f951d695a1de",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-INS-007",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

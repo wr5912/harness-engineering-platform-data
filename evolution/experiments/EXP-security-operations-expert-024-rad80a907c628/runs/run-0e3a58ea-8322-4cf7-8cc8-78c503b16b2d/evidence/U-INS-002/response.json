@@ -1,0 +1,46 @@
+{
+  "inputs": [
+    "请列出当前可用的巡检项，只查询目录，不要执行巡检。"
+  ],
+  "assistant_texts": [
+    "当前已发布且启用的巡检目录共 **6 个模板**（仅查询目录，未执行任何巡检）：\n\n| # | 模板名称 | 任务 ID | 版本 | 巡检项 | 设备范围 | 业务输入 |\n|---|---------|---------|------|--------|---------|---------|\n| 1 | 单项巡检·业务可达性 | `task-081b148c8d6c4ea4876859fe3f41f596` | V5 | 配置关系业务可达性巡检 | 无设备选择器 | 可选 `mode`：FULL（默认）/ MUST_PASS |\n| 2 | 深度巡检 | `task-124128b31eb84300b755cf59577d1511` | V9 | 设备在线状态、基线核查、业务可达性、设备漏洞 | 支持 ALL/资产类别/资产ID/CIDR/IP/拓扑分组/FILTER，默认任务默认（全部） | 无 |\n| 3 | 常规巡检 | `task-73aa54d940fb4b94bbb364a7ca7829d0` | V9 | 设备在线状态、基线核查、业务可达性 | 同上 | 无 |\n| 4 | 单项巡检·统一基线 | `task-5322b98fa8b04d0587ba49df07d3d21d` | V5 | 基线核查 | 同上 | 无 |\n| 5 | 单项巡检·设备在线状态 | `task-8a641f96cef54d19a25e75bdcf685644` | V4 | 设备在线状态 | 同上 | 无 |\n| 6 | 单项巡检·资产漏洞 | `task-79a6d23339234c7a9552a607f58ab195` | V4 | 设备漏洞 | 同上 | 无 |\n\n补充说明：\n\n- **事实**：以上均来自本轮 `list_executable_inspections` 目录查询结果；所有模板的 `defaultForChat` 均为 `false`，没有聊天默认模板。\n- **范围提醒**：模板默认“全部设备”只是模板默认值，不等于你已授权全部资产范围；执行时需明确指定范围（全部或具体资产/IP/网段等）。\n- **未执行**：本轮只读目录，未调用准备或启动，因此没有 `preparationId`、`runId` 或巡检结论。\n\n如需执行，请告知要使用的模板和设备范围，我再按原始选择器准备并启动。"
+  ],
+  "session_id": "session-3f1f8b65-001d-4b87-bd70-c854522daeed",
+  "turns": [
+    {
+      "assistant_text": "当前已发布且启用的巡检目录共 **6 个模板**（仅查询目录，未执行任何巡检）：\n\n| # | 模板名称 | 任务 ID | 版本 | 巡检项 | 设备范围 | 业务输入 |\n|---|---------|---------|------|--------|---------|---------|\n| 1 | 单项巡检·业务可达性 | `task-081b148c8d6c4ea4876859fe3f41f596` | V5 | 配置关系业务可达性巡检 | 无设备选择器 | 可选 `mode`：FULL（默认）/ MUST_PASS |\n| 2 | 深度巡检 | `task-124128b31eb84300b755cf59577d1511` | V9 | 设备在线状态、基线核查、业务可达性、设备漏洞 | 支持 ALL/资产类别/资产ID/CIDR/IP/拓扑分组/FILTER，默认任务默认（全部） | 无 |\n| 3 | 常规巡检 | `task-73aa54d940fb4b94bbb364a7ca7829d0` | V9 | 设备在线状态、基线核查、业务可达性 | 同上 | 无 |\n| 4 | 单项巡检·统一基线 | `task-5322b98fa8b04d0587ba49df07d3d21d` | V5 | 基线核查 | 同上 | 无 |\n| 5 | 单项巡检·设备在线状态 | `task-8a641f96cef54d19a25e75bdcf685644` | V4 | 设备在线状态 | 同上 | 无 |\n| 6 | 单项巡检·资产漏洞 | `task-79a6d23339234c7a9552a607f58ab195` | V4 | 设备漏洞 | 同上 | 无 |\n\n补充说明：\n\n- **事实**：以上均来自本轮 `list_executable_inspections` 目录查询结果；所有模板的 `defaultForChat` 均为 `false`，没有聊天默认模板。\n- **范围提醒**：模板默认“全部设备”只是模板默认值，不等于你已授权全部资产范围；执行时需明确指定范围（全部或具体资产/IP/网段等）。\n- **未执行**：本轮只读目录，未调用准备或启动，因此没有 `preparationId`、`runId` 或巡检结论。\n\n如需执行，请告知要使用的模板和设备范围，我再按原始选择器准备并启动。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_report_details",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__prepare_inspection",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e7e12228-bd1b-46a7-a487-2c82f775ad38"
+    }
+  ]
+}

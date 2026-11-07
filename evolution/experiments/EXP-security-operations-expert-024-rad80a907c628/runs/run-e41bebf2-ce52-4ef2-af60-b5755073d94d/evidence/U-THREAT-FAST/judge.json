@@ -1,0 +1,104 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "本轮研判在最前端即因受信平台 MCP 连接组不可达而失败，从未进入名单分类或融合研判阶段，没有任何本轮名单证据、实体、时间或报告产物，因此路由判断、快速分类条件、摘要与报告交付、转入完整研判等要求均无法证实；但回答如实反映了失败状态、未伪造下载链接、未宣称快速研判通过，其中一致性与如实说明等项可依工具回执确认。关键数据仅有失败回执支持，整体证据不足，判为 inconclusive。",
+    "requirements": [
+      {
+        "requirement": "从本轮名单证据判断路由",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "若单侧命中且名单完整，应走快速分类，`llm_invoked=false`，表示未调用内层研判模型",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "主会话展示程序摘要和可下载报告，不只是工具卡片",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "证据、实体、时间和报告内容应与本轮结果一致",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "报告存储失败时如实说明，不伪造下载链接",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "未满足快速分类条件时，按实际证据转入完整研判并记录原因，不强行快速分类",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "本轮快速路径未覆盖，不据此认定快速研判验证通过",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-fdf4b93c-a377-4573-8353-0cecfdf97883",
+    "workspace_id": "cac1915b-3b23-45cb-ac81-848ede7695a0",
+    "session_title": "评审 U-THREAT-FAST",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

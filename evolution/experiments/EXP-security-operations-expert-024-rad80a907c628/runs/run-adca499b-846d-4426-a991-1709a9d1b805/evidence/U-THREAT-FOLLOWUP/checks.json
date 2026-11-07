@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-THREAT-FOLLOWUP",
+  "transport": "api",
+  "expected_behavior": "第一轮交付与本轮结果一致的研判摘要；第二轮正常解释横向移动，不再次调用威胁研判工具、不发起新的 SOC 认领或研判写入，也不复用上一轮固定摘要替代回答。",
+  "session_id": "session-39c113e9-1470-4eb0-b3a2-084f3790402d",
+  "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+  "session_title": "评测 U-THREAT-FOLLOWUP",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-38a32b32-02c1-4ac5-a523-c92428c1dac6",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-THREAT-FOLLOWUP",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

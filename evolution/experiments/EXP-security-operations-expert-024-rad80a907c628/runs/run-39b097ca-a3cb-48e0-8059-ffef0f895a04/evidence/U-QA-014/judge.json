@@ -1,0 +1,40 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答用英语准确说明了 CVE ID 是对公开披露的单个漏洞的唯一标识，并通过对照表与要点明确指出编号本身不表示严重度（严重度由 CVSS 等单独评定）也不表示是否已被利用，与预期行为完全一致；所引证据索引 0 的 citation_allowed 为 true，满足全部要求。",
+    "requirements": [
+      {
+        "requirement": "用英语准确说明 CVE ID 标识公开记录的漏洞，不把编号本身当成严重度或是否已被利用的证明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "## What a CVE ID Identifies\n\nA **CVE (Common Vulnerabilities and Exposures) ID** is a unique identifier for **one specific, publicly disclosed cybersecurity vulnerability** — a single security flaw affecting a specific version (or range of versions) of a specific software product, firmware, or hardware component.\n\n### Format\n\n```\nCVE-YYYY-NNNN\n│    │     └── A unique, arbitrary number assigned to that vulnerability\n│    └──────── The year the ID was reserved (not always the year it was disclosed)\n└───────────── The program name (\"CVE\")\n```\n\nExample: `CVE-2021-44228` identifies the \"Log4Shell\" vulnerability in Apache Log4j (reserved in 2021, sequence number 44228).\n\n### What it does and does not mean\n\n| It **does** identify | It does **not** identify |\n|---|---|\n| The specific security flaw itself | Whether the flaw has been exploited |\n| The affected product and versions (via its CVE record) | The severity or risk (that is scored separately, e.g., CVSS) |\n| One vulnerability, regardless of how many vendors are affected | The fix or patch (that is the vendor's advisory/patch ID) |\n| A common reference so everyone (vendors, scanners, SOC tools) speaks the same language | The root cause beyond what the record describes |\n\n### Key points\n\n- **One ID = one vulnerability.** If the same flaw appears in multiple products, each affected product usually gets its own CVE ID; if a product has multiple distinct flaws, each gets a separate ID.\n- **Assigners:** IDs are assigned by CVE Numbering Authorities (CNAs) coordinated by the CVE Program (currently with MITRE as the CVE Program secretariat). The same number never changes, so references remain stable across advisories, vulnerability scanners, and patch management systems.\n- **CVE is an identifier, not a risk rating.** Severity comes from scores like CVSS, and remediation guidance comes from the affected vendor's security advisory.\n\nIn short: a CVE ID answers the question *\"which exact vulnerability are we talking about?\"* — it is the global standard name for a single security flaw, not an assessment of its impact or status.",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-17109478-d390-46f1-a1a2-2e997076a418",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-QA-014",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

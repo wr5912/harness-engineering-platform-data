@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "可以。开始故障分析前，我需要先明确排查对象和范围，请提供以下必要信息（一次给全即可，我不会反复追问）：\n\n1. **对象标识**：业务系统的资产名称、主机名或 IPv4（任一即可）\n2. **异常现象**：具体表现，例如无法访问、超时、报错码（4xx/5xx）、连接被拒、访问变慢等\n3. **时间范围**：异常开始时间（含时区）及是否持续至今；如是间歇性，请给出大致发生时段\n4. **可选补充**：已知的事件 ID（`INC-YYYYMMDD-NNNNNN`）、受影响的用户/网段、最近是否有变更（发布、配置、网络调整）\n\n拿到对象和时间后，我会通过故障子智能体调用 SOC 只读工具取证（资产解析 → 路径/拓扑 → 覆盖与事件关联），并按**事实 / 推断 / 证据缺口 / 未执行建议**四部分给出分析结论；本轮只取证分析，不会执行任何处置动作。"
+  ],
+  "session_id": "session-bdee9832-3421-49d4-894f-39eeb41695e1",
+  "turns": [
+    {
+      "assistant_text": "可以。开始故障分析前，我需要先明确排查对象和范围，请提供以下必要信息（一次给全即可，我不会反复追问）：\n\n1. **对象标识**：业务系统的资产名称、主机名或 IPv4（任一即可）\n2. **异常现象**：具体表现，例如无法访问、超时、报错码（4xx/5xx）、连接被拒、访问变慢等\n3. **时间范围**：异常开始时间（含时区）及是否持续至今；如是间歇性，请给出大致发生时段\n4. **可选补充**：已知的事件 ID（`INC-YYYYMMDD-NNNNNN`）、受影响的用户/网段、最近是否有变更（发布、配置、网络调整）\n\n拿到对象和时间后，我会通过故障子智能体调用 SOC 只读工具取证（资产解析 → 路径/拓扑 → 覆盖与事件关联），并按**事实 / 推断 / 证据缺口 / 未执行建议**四部分给出分析结论；本轮只取证分析，不会执行任何处置动作。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "1c81d4a7-5dbd-486f-9ce4-e495b95dccdd"
+    }
+  ]
+}

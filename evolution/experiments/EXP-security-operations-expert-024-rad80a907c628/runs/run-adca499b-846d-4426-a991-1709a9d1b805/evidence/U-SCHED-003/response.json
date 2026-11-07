@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "创建一个每隔 10 分钟从 SOC 拉取威胁进行研判的任务。"
+  ],
+  "assistant_texts": [
+    "## 任务已创建\n\n| 项目 | 值 |\n|---|---|\n| 任务 ID | `schedule-5092067c-cdae-46a0-aa58-18cb690bf1f7` |\n| 标题 | 自动威胁研判-每10分钟 |\n| 规则 | 每 600 秒（10 分钟）一次，绑定当前 Session |\n| 下次到期 | 2026-11-02 09:54:39 UTC（北京时间 17:54:39） |\n| 当前状态 | scheduled（尚未执行） |\n\n**执行方式说明：**\n\n- 每次到期后，由本地受信 Schedule 桥解析固定 prompt，从 SOC 拉取待研判威胁并调用 `analyze_pending_threat_incidents`（`batchSize: 1`），每次只研判一条事件。\n- 若上一条研判仍在运行，本次心跳会跳过、不排队，并显示当前研判的事件 ID。\n- Schedule 投递成功不等于研判完成，研判结果以带事件 ID 和 Run ID 的工具回执为准。\n\n**尚未执行**：任务创建后尚未触发任何研判；第一次拉取与研判将在上述到期时间自动进行。\n\n如需修改周期、删除任务或立即手动研判某个具体事件 ID，告诉我即可。"
+  ],
+  "session_id": "session-62c34299-4883-49db-b67e-67fdf21b8453",
+  "turns": [
+    {
+      "assistant_text": "## 任务已创建\n\n| 项目 | 值 |\n|---|---|\n| 任务 ID | `schedule-5092067c-cdae-46a0-aa58-18cb690bf1f7` |\n| 标题 | 自动威胁研判-每10分钟 |\n| 规则 | 每 600 秒（10 分钟）一次，绑定当前 Session |\n| 下次到期 | 2026-11-02 09:54:39 UTC（北京时间 17:54:39） |\n| 当前状态 | scheduled（尚未执行） |\n\n**执行方式说明：**\n\n- 每次到期后，由本地受信 Schedule 桥解析固定 prompt，从 SOC 拉取待研判威胁并调用 `analyze_pending_threat_incidents`（`batchSize: 1`），每次只研判一条事件。\n- 若上一条研判仍在运行，本次心跳会跳过、不排队，并显示当前研判的事件 ID。\n- Schedule 投递成功不等于研判完成，研判结果以带事件 ID 和 Run ID 的工具回执为准。\n\n**尚未执行**：任务创建后尚未触发任何研判；第一次拉取与研判将在上述到期时间自动进行。\n\n如需修改周期、删除任务或立即手动研判某个具体事件 ID，告诉我即可。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "45318fb3-887b-4223-ba3d-fd01d327be9a"
+    }
+  ]
+}

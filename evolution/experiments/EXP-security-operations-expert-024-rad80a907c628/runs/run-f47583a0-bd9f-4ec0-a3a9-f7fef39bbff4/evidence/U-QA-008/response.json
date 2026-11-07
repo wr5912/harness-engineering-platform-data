@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "CVSS、EPSS 和 CISA KEV 分别表示什么？为什么 CVSS 9.8 也不一定是我司最高优先级？"
+  ],
+  "assistant_texts": [
+    "## 网络安全术语解释\n\n### CVSS、EPSS 和 CISA KEV 的定义\n\n**CVSS (Common Vulnerability Scoring System) - 通用安全评分系统**\n- 衡量漏洞严重程度的标准化评分系统（范围 0-10）\n- 9.8 表示极高的理论风险\n- 基于多个向量指标（如完整性、机密性、可用性影响）\n\n**EPSS (Exploit Probability Scoring System) - 被利用概率评分系统**\n- 预测漏洞在未来被利用的概率（范围 0-1% 到 99.9%+）\n- 基于公开数据源的统计学习模型\n- **比 CVSS 更反映实际攻击者行为**\n\n**CISA KEV (Known Exploited Vulnerabilities) - 已知被利用漏洞**\n- 美国网络安全协调与分析中心（CISA）发布的漏洞黑名单\n-  listing 指这些漏洞已被证实用于攻击\n- 类似于\"防御红线\"，优先修复\n\n---\n\n### 为什么 CVSS 9.8 不一定是最优先级？\n\n我的调查发现以下关键因素（基于行业实践和 SOC 经验）：\n\n| 优先级维度 | 说明 |\n|-----------|------|\n| **EPSS 评分** | 一个 CVSS 9.8 但 EPSS<1% 的漏洞，比 CVSS 7.5 但 EPSS>80% 的漏洞更不紧迫 |\n| **CISA KEV 状态** | 若漏洞不在 CISA KEV 中，说明未被证实用于实际攻击 |\n| **资产影响** | 攻击面是\"NginxWeb 服务器\"若为内部测试环境，优先级远低于数据库 |\n| **利用时间窗** | EPSS 包含\"时间至被利用\"信息，CVSS 缺少此维度 |\n| **补丁成熟度** | 低 EPSS 漏洞可能暂无公开利用链或补丁 |\n\n**我的分析结论**：\n- CVSS 反映**理论风险**，EPSS 反映**现实威胁**\n- 现代 SOC 优先处理**高 EPSS + CISA KEV 中标记**的漏洞\n-  recommendations：交叉验证 EPSS、CISA KEV 和资产实际类型，再排序"
+  ],
+  "session_id": "session-b699e59f-3a8b-4d68-8fc6-801d5c311d92",
+  "turns": [
+    {
+      "assistant_text": "## 网络安全术语解释\n\n### CVSS、EPSS 和 CISA KEV 的定义\n\n**CVSS (Common Vulnerability Scoring System) - 通用安全评分系统**\n- 衡量漏洞严重程度的标准化评分系统（范围 0-10）\n- 9.8 表示极高的理论风险\n- 基于多个向量指标（如完整性、机密性、可用性影响）\n\n**EPSS (Exploit Probability Scoring System) - 被利用概率评分系统**\n- 预测漏洞在未来被利用的概率（范围 0-1% 到 99.9%+）\n- 基于公开数据源的统计学习模型\n- **比 CVSS 更反映实际攻击者行为**\n\n**CISA KEV (Known Exploited Vulnerabilities) - 已知被利用漏洞**\n- 美国网络安全协调与分析中心（CISA）发布的漏洞黑名单\n-  listing 指这些漏洞已被证实用于攻击\n- 类似于\"防御红线\"，优先修复\n\n---\n\n### 为什么 CVSS 9.8 不一定是最优先级？\n\n我的调查发现以下关键因素（基于行业实践和 SOC 经验）：\n\n| 优先级维度 | 说明 |\n|-----------|------|\n| **EPSS 评分** | 一个 CVSS 9.8 但 EPSS<1% 的漏洞，比 CVSS 7.5 但 EPSS>80% 的漏洞更不紧迫 |\n| **CISA KEV 状态** | 若漏洞不在 CISA KEV 中，说明未被证实用于实际攻击 |\n| **资产影响** | 攻击面是\"NginxWeb 服务器\"若为内部测试环境，优先级远低于数据库 |\n| **利用时间窗** | EPSS 包含\"时间至被利用\"信息，CVSS 缺少此维度 |\n| **补丁成熟度** | 低 EPSS 漏洞可能暂无公开利用链或补丁 |\n\n**我的分析结论**：\n- CVSS 反映**理论风险**，EPSS 反映**现实威胁**\n- 现代 SOC 优先处理**高 EPSS + CISA KEV 中标记**的漏洞\n-  recommendations：交叉验证 EPSS、CISA KEV 和资产实际类型，再排序",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b5c0f9c6-7263-4f7c-bce1-7d3efc76f282"
+    }
+  ]
+}

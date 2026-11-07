@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "IOC、TTP、MITRE ATT&CK Technique、告警和事件有什么区别？"
+  ],
+  "assistant_texts": [
+    "# IOC、TTP、MITRE ATT&CK Technique、告警和事件的区别\n\n这五个概念处在攻击链的不同抽象层次，简单说：**IOC 是\"痕迹\"，TTP 是\"手法\"，Technique 是手法的\"标准编号\"，告警是\"检测规则触发\"，事件是\"调查单元\"。**\n\n## 1. IOC（Indicator of Compromise，失陷指标）\n\n- **是什么**：可直接用于匹配的、客观的观察值——恶意 IP/域名、文件哈希、URL、邮箱地址、C2 特征等。\n- **特点**：粒度细、易于自动化消费（封锁、置信匹配），但**生命周期短**（攻击者换个域名就失效）、**只说明\"见过\"，不说明\"为什么恶意\"**。\n- **回答的问题**：*\"这个东西我以前见过是坏的吗？\"*\n\n## 2. TTP（Tactics, Techniques & Procedures，战术、技术与流程）\n\n- **是什么**：攻击者**行为模式**的统称——战术（目标，如持久化、凭据访问）、技术（达成目标的手段，如钓鱼、进程注入）、流程（该组织特有的具体操作习惯，如特定的命令顺序、工具配置）。\n- **特点**：抽象层次高、**很难被\"封禁\"，但很难被伪造**，是威胁情报中最有长期价值、用于狩猎（hunting）和行为检测的部分。\n- **回答的问题**：*\"攻击者是怎么做的？属于哪类手法？\"*\n\n## 3. MITRE ATT&CK Technique\n\n- **是什么**：TTP 中\"技术\"部分的**标准化、结构化编号体系**。ATT&CK 把敌方战术和技术编成带 ID 的知识库（如 `T1566 钓鱼`、`T1059 命令与脚本解释器`，子技术如 `T1059.001 PowerShell`）。\n- **关系**：它是 TTP 的**共同语言和分类框架**，不是 TTP 本身——TTP 是现实行为，Technique 是对行为的规范化命名与映射。还有对应的行为组（Groups）、软件（Software）、数据源（Data Sources）等。\n- **回答的问题**：*\"这个行为在标准框架里叫什么、编号是什么？\"*\n\n## 4. 告警（Alert）\n\n- **是什么**：检测引擎（规则、UEBA、威胁情报匹配等）**触发的一次信号**，例如\"某进程连接了黑名单 IP\"。\n- **特点**：**未经人工或上下文验证**，可能是误报；一个告警只是线索，粒度上可能对应攻击链的一个瞬间。\n- **回答的问题**：*\"检测系统看到可疑的东西了吗？\"*\n\n## 5. 事件（Incident / Event）\n\n- **两个含义要区分**：\n  - **安全事件（Incident）**：经过研判、确认需要响应处置的**安全问题单元**——由一个或多个告警 + 上下文证据聚合而成，有负责人、状态和处置流程（如你环境中的 `INC-YYYYMMDD-NNNNNN`）。\n  - **原始事件（Event log）**：日志层面的一条记录（登录、进程创建），是告警的原料。\n- **回答的问题**：*\"这是一起需要我处理的安全事件吗？\"*\n\n## 关系链\n\n```\n日志/遥测 (Event) → 检测规则触发 → 告警 (Alert)\n告警 + 上下文取证研判 → 安全事件 (Incident)\n事件中观察到的恶意指标 → IOC（用于阻断和回溯）\n事件中归纳的行为模式 → TTP → 用 MITRE ATT&CK Technique 标准化命名\n```\n\n**核心区分**：IOC 是**短期、可自动化、易失效**的客观指标；TTP 是**长期、行为性、用于狩猎**的手法描述；Technique 是 TTP 的**行业标准词典**；告警是**待验证的信号**；事件是**已进入调查处置流程的确认单元**。IOC 对应\"已知坏\"，TTP/Technique 对应\"坏人怎么做\"，告警对应\"可能有问题\"，事件对应\"确认要处理\"。"
+  ],
+  "session_id": "session-247aa37a-871d-488c-84ac-c887cf12872c",
+  "turns": [
+    {
+      "assistant_text": "# IOC、TTP、MITRE ATT&CK Technique、告警和事件的区别\n\n这五个概念处在攻击链的不同抽象层次，简单说：**IOC 是\"痕迹\"，TTP 是\"手法\"，Technique 是手法的\"标准编号\"，告警是\"检测规则触发\"，事件是\"调查单元\"。**\n\n## 1. IOC（Indicator of Compromise，失陷指标）\n\n- **是什么**：可直接用于匹配的、客观的观察值——恶意 IP/域名、文件哈希、URL、邮箱地址、C2 特征等。\n- **特点**：粒度细、易于自动化消费（封锁、置信匹配），但**生命周期短**（攻击者换个域名就失效）、**只说明\"见过\"，不说明\"为什么恶意\"**。\n- **回答的问题**：*\"这个东西我以前见过是坏的吗？\"*\n\n## 2. TTP（Tactics, Techniques & Procedures，战术、技术与流程）\n\n- **是什么**：攻击者**行为模式**的统称——战术（目标，如持久化、凭据访问）、技术（达成目标的手段，如钓鱼、进程注入）、流程（该组织特有的具体操作习惯，如特定的命令顺序、工具配置）。\n- **特点**：抽象层次高、**很难被\"封禁\"，但很难被伪造**，是威胁情报中最有长期价值、用于狩猎（hunting）和行为检测的部分。\n- **回答的问题**：*\"攻击者是怎么做的？属于哪类手法？\"*\n\n## 3. MITRE ATT&CK Technique\n\n- **是什么**：TTP 中\"技术\"部分的**标准化、结构化编号体系**。ATT&CK 把敌方战术和技术编成带 ID 的知识库（如 `T1566 钓鱼`、`T1059 命令与脚本解释器`，子技术如 `T1059.001 PowerShell`）。\n- **关系**：它是 TTP 的**共同语言和分类框架**，不是 TTP 本身——TTP 是现实行为，Technique 是对行为的规范化命名与映射。还有对应的行为组（Groups）、软件（Software）、数据源（Data Sources）等。\n- **回答的问题**：*\"这个行为在标准框架里叫什么、编号是什么？\"*\n\n## 4. 告警（Alert）\n\n- **是什么**：检测引擎（规则、UEBA、威胁情报匹配等）**触发的一次信号**，例如\"某进程连接了黑名单 IP\"。\n- **特点**：**未经人工或上下文验证**，可能是误报；一个告警只是线索，粒度上可能对应攻击链的一个瞬间。\n- **回答的问题**：*\"检测系统看到可疑的东西了吗？\"*\n\n## 5. 事件（Incident / Event）\n\n- **两个含义要区分**：\n  - **安全事件（Incident）**：经过研判、确认需要响应处置的**安全问题单元**——由一个或多个告警 + 上下文证据聚合而成，有负责人、状态和处置流程（如你环境中的 `INC-YYYYMMDD-NNNNNN`）。\n  - **原始事件（Event log）**：日志层面的一条记录（登录、进程创建），是告警的原料。\n- **回答的问题**：*\"这是一起需要我处理的安全事件吗？\"*\n\n## 关系链\n\n```\n日志/遥测 (Event) → 检测规则触发 → 告警 (Alert)\n告警 + 上下文取证研判 → 安全事件 (Incident)\n事件中观察到的恶意指标 → IOC（用于阻断和回溯）\n事件中归纳的行为模式 → TTP → 用 MITRE ATT&CK Technique 标准化命名\n```\n\n**核心区分**：IOC 是**短期、可自动化、易失效**的客观指标；TTP 是**长期、行为性、用于狩猎**的手法描述；Technique 是 TTP 的**行业标准词典**；告警是**待验证的信号**；事件是**已进入调查处置流程的确认单元**。IOC 对应\"已知坏\"，TTP/Technique 对应\"坏人怎么做\"，告警对应\"可能有问题\"，事件对应\"确认要处理\"。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "bcfcc104-88ca-4a86-a979-34efdb8b151e"
+    }
+  ]
+}

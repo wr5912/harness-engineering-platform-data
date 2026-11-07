@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-MENTION",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答确实进入了故障排查路由并调用了 fault-analysis 技能（证据 0、2），且未编造根因；但按要求信息不足时必须询问源、目的、协议、端口和现象，实际只询问了资产对象、时间和异常表现，缺少源、目的、协议、端口四项关键参数；同时回答中出现“走对应研判流程”的表述，存在进入威胁研判路由的倾向，不满足“不进入威胁研判或处置路由”。因此第 2 项要求未达成，整体判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-MENTION"
+}

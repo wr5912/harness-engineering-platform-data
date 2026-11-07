@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "对资产标识 A-001 执行匹配的巡检。"
+  ],
+  "assistant_texts": [
+    "inspection MCP 服务当前处于断开状态（`server is disconnected`），sec-ops 服务器可用但未列出巡检模板资源。巡检流程要求先查询可执行模板目录再按资产标识发起，目录不可用时不能猜测 `taskId` 或 `definitionVersion`，因此本轮无法发起对 A-001 的巡检。\n\n可行下一步：\n- 请稍后让我重试查询巡检目录，服务恢复后我将匹配 A-001 的巡检项并发起；\n- 若该服务需重新连接或重启，请确认配置后再试。\n\n本轮未发起任何巡检运行，无 `runId` 可供续查。"
+  ],
+  "session_id": "session-48f40ea0-2225-4a57-9a3b-75970c6a931c",
+  "turns": [
+    {
+      "assistant_text": "inspection MCP 服务当前处于断开状态（`server is disconnected`），sec-ops 服务器可用但未列出巡检模板资源。巡检流程要求先查询可执行模板目录再按资产标识发起，目录不可用时不能猜测 `taskId` 或 `definitionVersion`，因此本轮无法发起对 A-001 的巡检。\n\n可行下一步：\n- 请稍后让我重试查询巡检目录，服务恢复后我将匹配 A-001 的巡检项并发起；\n- 若该服务需重新连接或重启，请确认配置后再试。\n\n本轮未发起任何巡检运行，无 `runId` 可供续查。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ee617a9c-363a-43ed-8d9f-a243954e3547"
+    }
+  ]
+}

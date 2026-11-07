@@ -1,0 +1,71 @@
+{
+  "inputs": [
+    "创建一个每隔 30 分钟威胁研判的定时任务。",
+    "把刚才的定时研判改成每隔 20 分钟。"
+  ],
+  "assistant_texts": [
+    "定时任务创建成功！以下是任务详情：\n\n| 项目 | 值 |\n|------|-----|\n| **任务 ID** | `schedule-ffcad44c-6ce5-4da5-b096-ecac92b8aa90` |\n| **标题** | 自动威胁研判-每 30 分钟 |\n| **周期** | 每 1800 秒（30 分钟） |\n| **到期时间** | 2026-10-28 06:56:23 UTC |\n| **状态** | scheduled（已调度） |\n| **投递模式** | host |\n| **触发内容** | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n\n**重要说明：**\n1. 这是 DSH 会话内的原生定时提醒，**尚未执行**过任何研判\n2. 每次心跳到期后会解析 JSON 并调用 `analyze_pending_threat_incidents`（仅由受信 Schedule 桥触发）每次只处理一条待研判事件\n3. 如果检测到认领冲突则跳过该事件并继续查找下一条可认领事件\n4. 上一条事件还在运行时会跳过本次心跳\n\n如需查看当前所有已创建的提醒任务，可告知我。",
+    "定时任务已更新成功！\n\n| 项目 | 值 |\n|------|-----|\n| **任务 ID** | `schedule-ffcad44c-6ce5-4da5-b096-ecac92b8aa90` |\n| **标题** | 自动威胁研判 - 每 30 分钟 |\n| **周期** | 每 1200 秒（20 分钟） |\n| **状态** | scheduled（已调度） |\n| **下次到期时间** | 按创建时间重新对齐 |\n\n任务周期已从 30 分钟调整为**20 分钟**，到期后仍会触发相同的威胁研判流程。"
+  ],
+  "session_id": "session-3af1a958-647a-454c-bcd5-16b20b03c80e",
+  "turns": [
+    {
+      "assistant_text": "定时任务创建成功！以下是任务详情：\n\n| 项目 | 值 |\n|------|-----|\n| **任务 ID** | `schedule-ffcad44c-6ce5-4da5-b096-ecac92b8aa90` |\n| **标题** | 自动威胁研判-每 30 分钟 |\n| **周期** | 每 1800 秒（30 分钟） |\n| **到期时间** | 2026-10-28 06:56:23 UTC |\n| **状态** | scheduled（已调度） |\n| **投递模式** | host |\n| **触发内容** | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n\n**重要说明：**\n1. 这是 DSH 会话内的原生定时提醒，**尚未执行**过任何研判\n2. 每次心跳到期后会解析 JSON 并调用 `analyze_pending_threat_incidents`（仅由受信 Schedule 桥触发）每次只处理一条待研判事件\n3. 如果检测到认领冲突则跳过该事件并继续查找下一条可认领事件\n4. 上一条事件还在运行时会跳过本次心跳\n\n如需查看当前所有已创建的提醒任务，可告知我。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e03b39dd-86ef-4408-86e3-557001e4d585"
+    },
+    {
+      "assistant_text": "定时任务已更新成功！\n\n| 项目 | 值 |\n|------|-----|\n| **任务 ID** | `schedule-ffcad44c-6ce5-4da5-b096-ecac92b8aa90` |\n| **标题** | 自动威胁研判 - 每 30 分钟 |\n| **周期** | 每 1200 秒（20 分钟） |\n| **状态** | scheduled（已调度） |\n| **下次到期时间** | 按创建时间重新对齐 |\n\n任务周期已从 30 分钟调整为**20 分钟**，到期后仍会触发相同的威胁研判流程。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "eea97a9e-3ccc-415b-9d1c-f9bd3ad60242"
+    }
+  ]
+}

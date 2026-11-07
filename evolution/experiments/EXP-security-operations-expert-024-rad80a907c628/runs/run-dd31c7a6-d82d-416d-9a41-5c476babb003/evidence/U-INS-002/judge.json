@@ -1,0 +1,74 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答与工具回执一致显示 inspection 服务器处于 disconnected，list_mcp_resource_templates/list_mcp_resource_templates 等查询均返回连接错误，因此本轮既未成功调用“查询可执行巡检目录”能力，也未列出任何可执行模板或巡检项，第一项要求未满足。同时，回执仅涉及只读资源/模板列举，回答明确声明未发起巡检，满足只读不启动；回答如实说明服务不可用并给出下一步建议，未编造目录内容，第二、三项要求满足。",
+    "requirements": [
+      {
+        "requirement": "通过“查询可执行巡检目录”能力列出本轮返回的可执行模板及巡检项",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "只读查询，不准备、不启动",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "查询失败或目录为空时如实说明，不编造内容",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-a11825bd-7d77-4716-aa67-5fadf589aa1e",
+    "workspace_id": "d786e864-0aa9-4a4e-bb1d-ec3e68389864",
+    "session_title": "评审 U-INS-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

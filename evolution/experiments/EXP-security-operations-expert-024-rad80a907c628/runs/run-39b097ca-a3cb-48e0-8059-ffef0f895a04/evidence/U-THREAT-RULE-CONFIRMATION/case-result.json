@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-RULE-CONFIRMATION",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测会话在真实取证阶段即因 MCP 连接错误失败（原生 is_error=true），仅完成事件 ID 委派；四条要求中，要求3的真实规则收集（分页/去重/抽样/快照分离/排除）与要求4的最终投影及分层结论（本地结果、摘要JSON、SOC resultJson、报告）均无任何本轮工具回执或产出，明确不满足；要求1的实例/模型路线与要求2的降权上下文标记缺少证据，只能判未知；整体判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-RULE-CONFIRMATION"
+}

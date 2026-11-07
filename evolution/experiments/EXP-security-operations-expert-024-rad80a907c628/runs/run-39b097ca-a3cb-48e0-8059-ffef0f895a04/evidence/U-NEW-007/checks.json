@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-NEW-007",
+  "transport": "api",
+  "expected_behavior": "1. 明确回归模板与历史边界：此为2026-11-02根据真实手工Run暴露的SDK根会话兼容缺陷新增的未来回归模板，不追溯声称旧Run事前选用。旧run-ded64e65-5c34-4e11-ab7d-c9796d801e97真实用户仅普通研判000013，真实/.82默认跳过正确；其ROOT_PARENT_UNVERIFIED原值及基础格式失败不改写，不把它当专项漏触或新修复通过。\n\n2. 核对根会话和直接委派来源：在threat-analysis-test001新会话使用当前EXP025与local/Qwen3.8-27B。本输入明确要求只读规则分析，原生父/直接子委派必须唯一绑定相同事件、tool call/catalog/receipt和本次run；来源引用对应真实用户，不读子委派prompt自举授权。SDK v4根header合法不带origin，delegationDepth可缺省0；同时须明确isSeeded=false、inheritedEventCount=0、无parentSession。不能再因缺origin误拒根，也不能因此放行子/孙、fork/seeded、缺继承边界、未知字段或无原生配对来源。\n\n3. 验证真实用户专项例外：有真实专项来源时，私有review_context.explicit_rule_review_requested=true，explicit_rule_review_source.kind=user且引用可追溯；完整研判的规则gate为collect，原因含EXPLICIT_RULE_REVIEW_REQUESTED，即便真实告警confidence_score>=.75或基础机械校验failed也不被其禁产。无可靠来源时仍关闭例外并记录具体source_gap，不猜标志、不让模型字段、工具参数、Schedule或默认开启授权。背景/时间消息不遮盖真实用户；新的真实用户更新应撤销旧意图。\n\n4. 保持预算、候选与基础隔离：收集/模型预算保持64次及120秒、单个二次模型请求120秒，不新增规则写入、启停或处置。按真实规则与命中分别审阅检测/关联规则，有具体修改依据才形成完整草案，否则null具体原因。保持既有三字段投影，其它冻结基础值和校验状态不变；不能安全冻结时仅私有制品，不造公共基础容器。当前SOC规则格式接口未提供/接入，不能称SOC格式通过或效果改善。\n\n5. 分别核对实际验收证据：实际验收须分开来源识别、门槛collect、二次响应提取、完整非空候选、SOC/报告同值及保存；无相应制品不标通过。该Case执行后使用新Run，旧Run及其SOC回执不重发或覆盖。",
+  "session_id": "session-ccf40184-2210-42cd-8ccc-d35d88a50a20",
+  "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+  "session_title": "评测 U-NEW-007",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-d965685e-0365-40d6-bdc2-243f2c919280",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-NEW-007",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

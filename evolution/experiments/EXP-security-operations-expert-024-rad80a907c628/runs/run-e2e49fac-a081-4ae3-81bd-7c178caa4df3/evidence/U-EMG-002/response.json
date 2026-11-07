@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请在 OPNsense 防火墙 172.16.2.103 上封禁源 IP 198.51.100.77，规则名 block-198.51.100.77-20261021。只准备草案。"
+  ],
+  "assistant_texts": [
+    "我准备在 **OPNsense 防火墙 172.16.2.103** 上执行封禁操作，动作如下：\n\n- **动作**：`block-ip`（防火墙封禁源 IP）\n- **处置目标**：防火墙 `172.16.2.103`\n- **封禁源 IP**：`198.51.100.77`\n- **规则名**：`block-198.51.100.77-20261021`\n- **操作号**：待 Platform 返回（当前尚未提交）\n\n当前状态：**草案准备中**，尚未提交执行。如需继续，请确认是否执行该封禁操作。"
+  ],
+  "session_id": "session-2c2e6582-7f38-42d0-9597-4cfdd9be0d9a",
+  "turns": [
+    {
+      "assistant_text": "我准备在 **OPNsense 防火墙 172.16.2.103** 上执行封禁操作，动作如下：\n\n- **动作**：`block-ip`（防火墙封禁源 IP）\n- **处置目标**：防火墙 `172.16.2.103`\n- **封禁源 IP**：`198.51.100.77`\n- **规则名**：`block-198.51.100.77-20261021`\n- **操作号**：待 Platform 返回（当前尚未提交）\n\n当前状态：**草案准备中**，尚未提交执行。如需继续，请确认是否执行该封禁操作。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "33edf190-cc2e-450a-91e2-46447527ebd8"
+    }
+  ]
+}

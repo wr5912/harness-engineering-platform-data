@@ -1,0 +1,45 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "要求1未满足：被测回答明确表示本轮未生成策略预览、无 request_id、无 DRAFT，基于真实资产、路径和设备能力的预览及待确认内容并未产生；工具回执显示 sec-ops 资源与资源模板均为空、目录中也未找到策略工具，故无法完成预览。要求2满足：回答明确声明策略尚未开通，未在缺少成功执行回执的情况下声称已开通。整体未满足全部要求，判 failed。",
+    "requirements": [
+      {
+        "requirement": "基于真实资产、路径和设备能力生成策略预览并说明待确认内容",
+        "status": "failed",
+        "evidence": [
+          0,
+          4,
+          6,
+          8
+        ]
+      },
+      {
+        "requirement": "未获得成功执行回执时，不得声称策略已开通",
+        "status": "satisfied",
+        "evidence": [
+          0
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-3105f61b-33e9-4a3b-b052-514a6da5f519",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-POL-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测第二轮先调用 schedule_list 并取得原生成功回执（索引 5），列表中唯一匹配到本 Session 创建的任务；随后用该任务 ID 调用 schedule_delete 并返回 deleted:true（索引 7）。回答（索引 1）明确说明删除只停止后续触发、不涉及正在执行中的研判，未声称已中止在途研判。三项要求逐项满足，回执均为同一 Session 的 tool/result 且 is_error=false。",
+    "requirements": [
+      {
+        "requirement": "第二轮先调用 `schedule_list`",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 5,
+            "quote": "[{\"id\":\"schedule-a2cc3459-e253-4fbe-b5fb-870fa1dff3aa\",\"kind\":\"every\",\"title\":\"自动威胁研判-每30分钟\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"everySeconds\":1800,\"scheduledAt\":\"2026-11-02T10:18:46.580Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}]",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "唯一匹配任务直接用其 ID 调 `schedule_delete`，并说明只停止后续心跳，不得声称已中止正在执行的研判",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 7,
+            "quote": "{\"id\":\"schedule-a2cc3459-e253-4fbe-b5fb-870fa1dff3aa\",\"deleted\":true}",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 1,
+            "quote": "已删除该定时研判任务：\n\n- **任务 ID**：`schedule-a2cc3459-e253-4fbe-b5fb-870fa1dff3aa`（自动威胁研判-每30分钟）\n- **回执**：`deleted: true`\n\n删除后该任务不再产生后续心跳。说明：删除只停止后续触发，不涉及任何正在执行中的研判（当前无运行中的研判）。当前 Session 已无自动威胁研判任务。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "未先查询直接删除判为失败",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 5,
+            "quote": "[{\"id\":\"schedule-a2cc3459-e253-4fbe-b5fb-870fa1dff3aa\",\"kind\":\"every\",\"title\":\"自动威胁研判-每30分钟\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"everySeconds\":1800,\"scheduledAt\":\"2026-11-02T10:18:46.580Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}]",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 7,
+            "quote": "{\"id\":\"schedule-a2cc3459-e253-4fbe-b5fb-870fa1dff3aa\",\"deleted\":true}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-d01b1382-e61a-47bc-9e53-58630c99176f",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-SCHED-006",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

@@ -1,0 +1,2950 @@
+{
+  "schema_version": "3.0",
+  "run_id": "run-fdaa0b05-ef81-492d-b556-987b8f85800a",
+  "review_status": "failed",
+  "review_reason": "证据复核失败（session）：case-hard-timeout",
+  "reviewed_case_count": 4,
+  "scenes": [
+    {
+      "scene": "安全巡检",
+      "case_ids": [
+        "U-INS-001",
+        "U-INS-002",
+        "U-INS-003",
+        "U-INS-004",
+        "U-INS-005",
+        "U-INS-006",
+        "U-INS-007",
+        "U-INS-008",
+        "U-INS-009",
+        "U-NEW-008",
+        "U-NEW-009"
+      ],
+      "selected_case_ids": [
+        "U-INS-002",
+        "U-INS-003",
+        "U-NEW-009"
+      ],
+      "machine_counts": {
+        "passed": 2,
+        "failed": 0,
+        "inconclusive": 1,
+        "not_executed": 0
+      },
+      "review_status": "completed",
+      "review_reason": "已在单个归因 Session 中完整复核本场景全部 Case。",
+      "case_reviews": [
+        {
+          "case_id": "U-INS-002",
+          "machine_verdict": "inconclusive",
+          "reviewed_verdict": "passed",
+          "reason": "执行证据完整闭合：trace.jsonl 显示单轮 turn 正常 completed（seq 37 turn/end），tools.jsonl 共 6 条记录，仅发生 skill(security-inspection) 装载与 list_mcp_resources/list_mcp_resource_templates(server=inspection) 两次只读发现调用，两次回执均为 isError:true 的 `mcp-client(inspection): server is disconnected`，无任何巡检发起、运行创建或 schedule 调用，全程只读成立。回答与回执逐项一致：如实说明查询失败（服务未连接）、明确本轮无法确认可用巡检项与模板、未把失败当成空目录、未编造任何巡检条目，并声明未发起运行/未建定时任务、不猜工具名不绕过服务，未知项单独列出，属于预期中“查询失败”分支的正确表现。机器判 inconclusive 的原因是 judge-trace-export 阶段 task-tree-wait-timeout（评审未产生有效结论），属机器判定缺口而非业务效果缺口，按证据修正为 passed。",
+          "evidence_refs": [
+            "evidence/U-INS-002"
+          ]
+        },
+        {
+          "case_id": "U-INS-003",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "tools.jsonl 为 0 字节空文件，trace 显示单轮 turn completed 且全程无任何工具调用（step 1 直接产出文本后 turn/end），证实未调用巡检服务或 SOC 工具。最终回答为单个以 { 开始、} 结束的可解析 JSON 对象；“巡检事实”节原样保留 4 项输入事实及单位（39 台/套、12 台/套、4 台/套、2 项），无增减；“辅助研判”节将提示、待核验项、局限说明与未执行建议同事实明确分区，其中提及的清单、明细、重合核验等均为待核验/建议表述而非新增事实，未派生数值、风险等级或服务状态，未添加输入之外的动态数据。机器 passed 与证据一致，予以维持。",
+          "evidence_refs": [
+            "evidence/U-INS-003"
+          ]
+        },
+        {
+          "case_id": "U-NEW-009",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "工具轨迹闭合且支持结论：trace 单轮 completed，tools.jsonl 共 10 条记录，实际调用为 skill 装载、list_mcp_resources/list_mcp_resource_templates(server=inspection)（两次均返回 disconnected 错误）、list_mcp_resources/list_mcp_resource_templates(server=sec-ops)（返回空资源/空模板），全部为只读发现类调用；轨迹中不存在巡检目录发起、巡检准备、runId 生成、业务运行创建或 schedule_create 等任何执行类调用与回执，故“问句中的执行不构成授权、未触发巡检业务准备/启动/创建运行”由真实回执而非模型自称所证实。回答区分了已知（本轮未发起、无 runId、服务断开导致无法确认影响）与未知（各巡检项具体行为需恢复后以目录为准），将“通常只读”明确标为未验证推断、后续动作标为尚未执行，满足“回答实际已知影响与未知范围”。机器 passed 与证据一致，予以维持。",
+          "evidence_refs": [
+            "evidence/U-NEW-009"
+          ]
+        }
+      ],
+      "findings": [],
+      "analysis_session": {
+        "session_id": "session-ec3dd148-84f8-42fe-a96f-3fc095a06bbb",
+        "route": {
+          "provider": "xiaomi-token-plan-cn",
+          "model": "mimo-v2.6-flash",
+          "reasoningEffort": "off"
+        },
+        "evidence_ref": "evidence/analysis/scene-01/response.json"
+      },
+      "diagnostic": null
+    },
+    {
+      "scene": "独立应急指令",
+      "case_ids": [
+        "U-EMG-001",
+        "U-EMG-002",
+        "U-EMG-003",
+        "U-NEW-001"
+      ],
+      "selected_case_ids": [],
+      "machine_counts": {
+        "passed": 0,
+        "failed": 0,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "not_evaluated",
+      "review_reason": "",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": null
+    },
+    {
+      "scene": "策略配置",
+      "case_ids": [
+        "U-POL-001",
+        "U-POL-002",
+        "U-POL-003",
+        "U-POL-004",
+        "U-POL-005",
+        "U-POL-006",
+        "U-POL-007",
+        "U-POL-008",
+        "U-POL-009",
+        "U-POL-010",
+        "U-POL-011",
+        "U-POL-012",
+        "U-NEW-003",
+        "U-NEW-005",
+        "U-NEW-006",
+        "U-POL-013"
+      ],
+      "selected_case_ids": [],
+      "machine_counts": {
+        "passed": 0,
+        "failed": 0,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "not_evaluated",
+      "review_reason": "",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": null
+    },
+    {
+      "scene": "故障排查",
+      "case_ids": [
+        "U-FLT-MENTION",
+        "U-FLT-001",
+        "U-FLT-002",
+        "U-FLT-003",
+        "U-FLT-004",
+        "U-FLT-005",
+        "U-FLT-006",
+        "U-FLT-007",
+        "U-FLT-008",
+        "U-FLT-009",
+        "U-FLT-010"
+      ],
+      "selected_case_ids": [
+        "U-FLT-MENTION",
+        "U-FLT-002",
+        "U-FLT-003",
+        "U-FLT-004",
+        "U-FLT-005",
+        "U-FLT-006",
+        "U-FLT-007",
+        "U-FLT-008"
+      ],
+      "machine_counts": {
+        "passed": 2,
+        "failed": 2,
+        "inconclusive": 4,
+        "not_executed": 0
+      },
+      "review_status": "failed",
+      "review_reason": "证据复核失败（session）：case-hard-timeout",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": {
+        "stage": "session",
+        "reason": "case-hard-timeout",
+        "evidence_ref": "evidence/analysis/scene-04/diagnostic.json"
+      }
+    },
+    {
+      "scene": "智能问答",
+      "case_ids": [
+        "U-QA-001",
+        "U-QA-002",
+        "U-QA-003",
+        "U-QA-004",
+        "U-QA-005",
+        "U-QA-006",
+        "U-QA-015",
+        "U-QA-007",
+        "U-QA-008",
+        "U-QA-009",
+        "U-QA-010",
+        "U-QA-011",
+        "U-QA-012",
+        "U-QA-013",
+        "U-QA-014"
+      ],
+      "selected_case_ids": [
+        "U-QA-001",
+        "U-QA-002",
+        "U-QA-003",
+        "U-QA-004",
+        "U-QA-005",
+        "U-QA-006",
+        "U-QA-015",
+        "U-QA-007",
+        "U-QA-008",
+        "U-QA-009",
+        "U-QA-010",
+        "U-QA-011",
+        "U-QA-012",
+        "U-QA-013",
+        "U-QA-014"
+      ],
+      "machine_counts": {
+        "passed": 11,
+        "failed": 2,
+        "inconclusive": 2,
+        "not_executed": 0
+      },
+      "review_status": "failed",
+      "review_reason": "证据复核失败（session）：case-hard-timeout",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": {
+        "stage": "session",
+        "reason": "case-hard-timeout",
+        "evidence_ref": "evidence/analysis/scene-05/diagnostic.json"
+      }
+    },
+    {
+      "scene": "威胁事件研判",
+      "case_ids": [
+        "U-THREAT-MENTION",
+        "U-THREAT-FAST",
+        "U-THREAT-FULL",
+        "U-THREAT-CONTRACT",
+        "U-THREAT-WHITELIST",
+        "U-THREAT-MISSING",
+        "U-THREAT-FOLLOWUP",
+        "U-THREAT-RULE-REAL",
+        "U-THREAT-RULE-CONFIRMATION",
+        "U-NEW-002",
+        "U-THREAT-FAST-MANUAL-WHITELIST",
+        "U-THREAT-RULE-JSON3",
+        "U-THREAT-RULE-JSON3-FAILURE",
+        "U-NEW-004",
+        "U-NEW-007",
+        "U-NEW-010"
+      ],
+      "selected_case_ids": [
+        "U-THREAT-MISSING"
+      ],
+      "machine_counts": {
+        "passed": 1,
+        "failed": 0,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "completed",
+      "review_reason": "已在单个归因 Session 中完整复核本场景全部 Case。",
+      "case_reviews": [
+        {
+          "case_id": "U-THREAT-MISSING",
+          "machine_verdict": "passed",
+          "reviewed_verdict": "passed",
+          "reason": "已完整读取全部 required_evidence（scene-06 part-001~005，含 effect-inputs.json 38 段重组、results.jsonl 31 条、response.json、checks.json、tools.jsonl 与 trace.jsonl 20 条）及本 Case 执行证据。业务输入为「请研判威胁事件。」，预期为询问事件 ID、不猜测 ID、不发起 SOC 认领或研判写入。实际回答（response.json / trace seq16）为「请提供需要研判的威胁事件 ID（格式：INC-YYYYMMDD-NNNNNN）。收到有效事件 ID 后，我会按固定流程执行取证与研判并返回结果。」——明确向用户索要事件 ID，仅给出 ID 格式说明，未编造或代填任何具体 ID，也未声称已认领或已研判。执行证据闭合：tools.jsonl 为 0 字节 0 行，trace.jsonl 显示本 Session 仅 1 个 turn/1 个 step、单条 assistant 消息即结束（turn/end reason=completed），全程无任何工具调用，因而不存在 SOC 认领、研判写入或委派发生；无多轮或产物待闭合情形。checks.json 显示 completed=true、trace_available=true、preset 就绪，与证据一致。results.jsonl 中该 Case 记录 verdict=passed、observation 与上述核对相符，机器判定与证据一致，予以维持。",
+          "evidence_refs": [
+            "evidence/U-THREAT-MISSING"
+          ]
+        }
+      ],
+      "findings": [],
+      "analysis_session": {
+        "session_id": "session-cc7823ec-811a-4418-bbe5-2b46f5273018",
+        "route": {
+          "provider": "xiaomi-token-plan-cn",
+          "model": "mimo-v2.6-flash",
+          "reasoningEffort": "off"
+        },
+        "evidence_ref": "evidence/analysis/scene-06/response.json"
+      },
+      "diagnostic": null
+    },
+    {
+      "scene": "原生定时研判",
+      "case_ids": [
+        "U-SCHED-001",
+        "U-SCHED-002",
+        "U-SCHED-003",
+        "U-SCHED-004",
+        "U-SCHED-005",
+        "U-SCHED-006",
+        "U-SCHED-007"
+      ],
+      "selected_case_ids": [],
+      "machine_counts": {
+        "passed": 0,
+        "failed": 0,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "not_evaluated",
+      "review_reason": "",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": null
+    },
+    {
+      "scene": "语音交互",
+      "case_ids": [
+        "U-VOICE-001",
+        "U-VOICE-002",
+        "U-VOICE-003",
+        "U-VOICE-004"
+      ],
+      "selected_case_ids": [],
+      "machine_counts": {
+        "passed": 0,
+        "failed": 0,
+        "inconclusive": 0,
+        "not_executed": 0
+      },
+      "review_status": "not_evaluated",
+      "review_reason": "",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": null
+    },
+    {
+      "scene": "资产关联告警代码变体研究",
+      "case_ids": [
+        "U-ASSET-ALERTS-001",
+        "U-ASSET-ALERTS-MISSING",
+        "U-ASSET-ALERTS-EMPTY",
+        "U-ASSET-ALERTS-FAIL"
+      ],
+      "selected_case_ids": [
+        "U-ASSET-ALERTS-001",
+        "U-ASSET-ALERTS-MISSING",
+        "U-ASSET-ALERTS-EMPTY",
+        "U-ASSET-ALERTS-FAIL"
+      ],
+      "machine_counts": {
+        "passed": 0,
+        "failed": 3,
+        "inconclusive": 1,
+        "not_executed": 0
+      },
+      "review_status": "failed",
+      "review_reason": "证据复核失败（session）：case-hard-timeout",
+      "case_reviews": [],
+      "findings": [],
+      "analysis_session": null,
+      "diagnostic": {
+        "stage": "session",
+        "reason": "case-hard-timeout",
+        "evidence_ref": "evidence/analysis/scene-09/diagnostic.json"
+      }
+    }
+  ],
+  "source_diagnosis": {
+    "status": "incomplete",
+    "conclusion": "inconclusive",
+    "reason": "源码诊断超过时限，已取得的阅读范围保留，未核部分未知。",
+    "scope": [
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-001.txt",
+        "total_lines": 12,
+        "sha256": "14400f2fbddf6162caeedda5f420285da5cff0ffc53656b61c051cfeeb3ba441",
+        "read_ranges": [
+          [
+            1,
+            12
+          ]
+        ],
+        "complete": true
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-002.txt",
+        "total_lines": 13,
+        "sha256": "ab05718244015f1f94e8d79992e5e586fea7866285b47126d2fc5dd75f42b99e",
+        "read_ranges": [
+          [
+            1,
+            13
+          ]
+        ],
+        "complete": true
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-003.txt",
+        "total_lines": 20,
+        "sha256": "14e210d1c33588d64f3155f281265829d96173ebabe3e2857b94e469b9928de1",
+        "read_ranges": [
+          [
+            1,
+            20
+          ]
+        ],
+        "complete": true
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-004.txt",
+        "total_lines": 23,
+        "sha256": "d4c4c68bb0452227ef559ec06be9715c69223e47a2ec4e51068049f3d096de27",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-005.txt",
+        "total_lines": 23,
+        "sha256": "3f0bd5e3c89493275ff1004ecf71582380e4ddae16ccd4011901147e8ccdb4a6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-006.txt",
+        "total_lines": 23,
+        "sha256": "551c87583914c735e9ec52d9706f44d356fce51b13c54efcb38573ad7960afa3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-007.txt",
+        "total_lines": 23,
+        "sha256": "a2d8b87ac600369b54236f9367f2c59235f98d3d97071d8a16541a447145aa32",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-008.txt",
+        "total_lines": 23,
+        "sha256": "14fe2e51c01772bd9471e987590659fc70d65bc6dec8e299daa1fd4489528384",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-009.txt",
+        "total_lines": 23,
+        "sha256": "3846145a1f2b0a92b13232a4ab6a17706e117bfda4680868fe1722a7a5044691",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-010.txt",
+        "total_lines": 23,
+        "sha256": "88de42838fa85bed3ccdecbff1963ad1124797cd380ae5a9fec53519bab6146c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-011.txt",
+        "total_lines": 23,
+        "sha256": "5474dfd08782b89a1eaf1017c3753a42a14498bb4ba5b02e482c82b5e9488a0e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-012.txt",
+        "total_lines": 23,
+        "sha256": "9cdaa8654f96c57bf3301a2be62fc0f28b9a19b3160b995f41bf40d96bc0bb75",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-013.txt",
+        "total_lines": 23,
+        "sha256": "fc646c5409b5abe7b912e941a099e918a031670bbf97a04582de7eb51ffdf35c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-014.txt",
+        "total_lines": 23,
+        "sha256": "5d936582eb0353c4914ace020ecafd8a94169d33286cf434c7690bda4eea314a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-015.txt",
+        "total_lines": 23,
+        "sha256": "fa2eab283bf0813151bae1db9d715523843f452bd0d22af5c174efa9648f002e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-016.txt",
+        "total_lines": 23,
+        "sha256": "b108250485f74eed7518d39fdd26fdc4bc66a37eb287df9485decef4918878f9",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-017.txt",
+        "total_lines": 23,
+        "sha256": "6d9167d3ccb4d717a2d202109d81908af3f586bb651695da473dc420fb82f8b5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-018.txt",
+        "total_lines": 23,
+        "sha256": "dde5e1ba87d16ea9c83f7db0aa12d3853ab531c016e0a072a1407a239c02d26b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-019.txt",
+        "total_lines": 23,
+        "sha256": "8dc8f2f7f4d2bad0b7cb76a89fd60b472483aff45af1ef8a53b74c4737c36822",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-020.txt",
+        "total_lines": 23,
+        "sha256": "0ad1e8cea872167ef0b50981b242903d09110b6aa4b7e50797bd3010417d0c5f",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-021.txt",
+        "total_lines": 23,
+        "sha256": "d1ce1b4bf380c8a75f1212cf6a9460129dbd222a47973036aa432a79f1d3d247",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-022.txt",
+        "total_lines": 23,
+        "sha256": "86e1bd5e2c335edd84df91bbb44a1e96b62eb546222ce6939f9b457e464c6757",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-023.txt",
+        "total_lines": 23,
+        "sha256": "29b974ff2b105fe257559eb59d40ad5be2d18cbdabba06da15955381bbf14fc3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-024.txt",
+        "total_lines": 23,
+        "sha256": "9e6ff0b79bb97b06978c4e9bbff262dd38b599a7866f41f8f8e73c5c9a86d024",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-025.txt",
+        "total_lines": 23,
+        "sha256": "3204095ef43668f7a70f2b255a448f46d6eb5079b1d6581a8c123840d70844dd",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-026.txt",
+        "total_lines": 23,
+        "sha256": "4b7dd59cc3c471273de4ecec04fc531d95b798f4f4d0b2c133edd2fc7c492c6a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-027.txt",
+        "total_lines": 23,
+        "sha256": "517edcc6364fc5fda27dfd6b1ee6d74e0727b585ff0d5939133172c1ff9574eb",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-028.txt",
+        "total_lines": 23,
+        "sha256": "6941df737c78e78098de70ca1abe85c3ec3da7eb90462caef4f43cc3839a7c5d",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-029.txt",
+        "total_lines": 23,
+        "sha256": "f70aca45f97932bf9b40d2c7924fbab45f257a43e7e774746171e40805e55198",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-030.txt",
+        "total_lines": 23,
+        "sha256": "ab55a71debe3a3b9297fbd279b3f3c849bffbf101d696a12195105aef56efbc4",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-031.txt",
+        "total_lines": 23,
+        "sha256": "468748fd4fda9f18204f50b42b0b9d72da0916691ee37abca882f6366d412adc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-032.txt",
+        "total_lines": 23,
+        "sha256": "64af7a36e1b13e9b04d896226177a648364df47b144a7263eb19a9327e91c5a3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-033.txt",
+        "total_lines": 23,
+        "sha256": "a820f14fd556aa332a679c7fa5f81d0f6792aec14c6061a19a9f28809aa8efc5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-034.txt",
+        "total_lines": 23,
+        "sha256": "4d4d90056f3d9b085a4a36fd339f481b247bca8820c7f3bae7ea5449f19f0645",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-035.txt",
+        "total_lines": 23,
+        "sha256": "0ac88df737bcd01349b0ec295341c0f0472782895f983500db9b3331b674b807",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-036.txt",
+        "total_lines": 23,
+        "sha256": "1e49ffddf8c167c48b34bd1a0e089f477fad085e86ffcf0ca31df19c7912fa06",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-037.txt",
+        "total_lines": 23,
+        "sha256": "6fb3f772dff0e1122ab80dc4714e484c959a552928d29485d022d1bc6d181c82",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-038.txt",
+        "total_lines": 23,
+        "sha256": "1acba918a07cc1cd4ba93963b9eb2aaa7da13854af801dc437b9476a825afa82",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-039.txt",
+        "total_lines": 23,
+        "sha256": "f707df4feff3c1e14dd1899dd16d4b4d6e7cbcd8c58e153327cde8668f501687",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-040.txt",
+        "total_lines": 23,
+        "sha256": "f49b707a4a74511853c7ae95e4d04a714e5a74a3ce44e296d73ac5ac790a66a2",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-041.txt",
+        "total_lines": 23,
+        "sha256": "d79ab5764346261f27d256eca36186d651d18f7bf5a5123b58096272448a270b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-042.txt",
+        "total_lines": 23,
+        "sha256": "08ec432c1fe4cfc7be4a245cd041bdd1ade3d7c9d678b45f4842212052b792c5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-043.txt",
+        "total_lines": 23,
+        "sha256": "6646e00286e299eb59e9fc6552dd9e0b596b6a67170f52cc359c3f57b954cc7d",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-044.txt",
+        "total_lines": 23,
+        "sha256": "5b1d8059429cbb9506c3ffee1a62daa4c6d05536ed5b9fd57dddbd522acd0bb5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-045.txt",
+        "total_lines": 23,
+        "sha256": "dd214cd55566d541115ee2223dac02c41905f7406db9378b063560a2c2598c7b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-046.txt",
+        "total_lines": 23,
+        "sha256": "7b5585ce492b6e135d812e46163372806192ab1accfe5d8b0faf657ae82f80bd",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-047.txt",
+        "total_lines": 23,
+        "sha256": "13e18eba243f19d3b183fe95f63be2c8d579bba19ff817c871c3d260c0475090",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-048.txt",
+        "total_lines": 23,
+        "sha256": "1c8e9460c31af131d3856277fc31d607e11205b6abfc870fbc2671359b94c451",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-049.txt",
+        "total_lines": 23,
+        "sha256": "a74f3729444a5946ee83c3db45fb2b4b13e708363eee12674bbaf6bef45c4750",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-050.txt",
+        "total_lines": 23,
+        "sha256": "37b98c4cfee9c4b8ca54607e0b6f5f4a4ebb46e7b69e3c2774d2d6556bee388e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-051.txt",
+        "total_lines": 23,
+        "sha256": "ff86132e661b5b967cb3fb8f19f28f26256fbd04d216e78a9248d68fae73522a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-052.txt",
+        "total_lines": 23,
+        "sha256": "88747fe2d8ca48ee9e57771afac2a6ae487f11dd6e8a31303a71b153f55121ff",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-053.txt",
+        "total_lines": 23,
+        "sha256": "e25982b96457e39841386b2417279387816848b7ad7116f28d5df00195a14aed",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-054.txt",
+        "total_lines": 23,
+        "sha256": "6675e6ca0de357eab7c2239d2645d17ab4d11429ed3bb3b68c79c25208f2dba1",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-055.txt",
+        "total_lines": 23,
+        "sha256": "5afdbc3e0b696a5876a9d3c0b5105c57bf6fd4c88e1aaa4d9f1731c96f8e469b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-056.txt",
+        "total_lines": 23,
+        "sha256": "5991016b031dfa2968b960e3da7560a7520a6a2cf2990e2a2a863fecbfdc29c9",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-057.txt",
+        "total_lines": 23,
+        "sha256": "39bda3929c820d733500647893f4886106b5363073a130724e5068902f6f2f69",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-058.txt",
+        "total_lines": 23,
+        "sha256": "9487ffc4761fea1bd4ad6bb628c8e5cabc3e229de01154a8106f8b462ca4ef72",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-059.txt",
+        "total_lines": 23,
+        "sha256": "1a9c3562f04d433ad725301ece02e510999a29ece15958455fd242fb5ef7bec1",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-060.txt",
+        "total_lines": 23,
+        "sha256": "3a532695d56888f5023a1523674068c1fd2c08f816a5808851ed3319b3030833",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-061.txt",
+        "total_lines": 23,
+        "sha256": "afa868135ed0e3c702c42415f85e90a6e5b387ae007bd0a1bbb831d90f1f22f4",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-062.txt",
+        "total_lines": 23,
+        "sha256": "641c4ddff5d50ba74a73e489a48d41e01917cf99523f06d104d69569794f5172",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-063.txt",
+        "total_lines": 23,
+        "sha256": "23f905e50e2921e183ed141583ca96bcb6655b12133f0d2e609c1b998154f6af",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-064.txt",
+        "total_lines": 23,
+        "sha256": "a40042b42c09562d20224a529e812d966c9b002da84d0ce42aeaf56ee21c4b90",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-065.txt",
+        "total_lines": 23,
+        "sha256": "7ffedae9cf11c2df0c8a64e44202e965d059425071e0b4f4bc00a233b941c89e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-066.txt",
+        "total_lines": 23,
+        "sha256": "7b391e89c9655e1a86f923fc609dcfeb81f042ce96620798912cd25c37f24e22",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-067.txt",
+        "total_lines": 23,
+        "sha256": "30f83722783cc45fbbb38906dc4357521f0dea8b4aab186635b98e33d284f868",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-068.txt",
+        "total_lines": 23,
+        "sha256": "e0fb08e3a8c94558867da378d191cc84c442d0618d98eb1c05ea574fa06cf905",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-069.txt",
+        "total_lines": 23,
+        "sha256": "960b11347a7ff11e27c6ded789747eec3cd161d9405383b229dac71371bbf63a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-070.txt",
+        "total_lines": 23,
+        "sha256": "c1456bea378438bbb873e579b77e463247fdbdc6e3e2930354275fa3ae500f17",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-071.txt",
+        "total_lines": 23,
+        "sha256": "f5525448145e0f854e245b382f6952ec84b35591eac290e87cf5998feee7f309",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-072.txt",
+        "total_lines": 23,
+        "sha256": "2acebf5e02329826d89cb0558c68c4eedfc89ca5aa0bb240d021b2a54d8ff725",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-073.txt",
+        "total_lines": 23,
+        "sha256": "673cffafb2b78f3a7b203a3eebb1abf2f9c76dafcf44ad7dd683515d0a5bfb2e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-074.txt",
+        "total_lines": 23,
+        "sha256": "41f36c2abed91345b573fea597be3cb2eebf32de32139d4e052b1d5f8186496c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-075.txt",
+        "total_lines": 23,
+        "sha256": "15fc1964441086158c5870976df316b3dc6bfbda0a2199f14a598200e34207cc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-076.txt",
+        "total_lines": 23,
+        "sha256": "9a38ca4821631a5362a4105589619c7b6a05eee2d213ea27758133aa9628f8c3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-077.txt",
+        "total_lines": 23,
+        "sha256": "ba0d222e54b721e597dfe99844acfc8589dda2b390be028e9d810eabdfd46136",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-078.txt",
+        "total_lines": 23,
+        "sha256": "69f70b7af7747ec71bf19ad56c68a0fb2fafd0f36498fba79b61ffe7f093c71e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-079.txt",
+        "total_lines": 23,
+        "sha256": "335678d8963930a1a3f4deeed41870bf83c02a5df422b6b49640757fe65a4e3e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-080.txt",
+        "total_lines": 23,
+        "sha256": "a801a7521ca9284ac0c81588512f4bbeb80f0b9f3495d1463a9a6315664ad74d",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-081.txt",
+        "total_lines": 23,
+        "sha256": "4a2b3636c716c989a2865b119b2d9a4efd956fdb7dca8130d11a384bc6c62eaf",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-082.txt",
+        "total_lines": 22,
+        "sha256": "da88f96be3048f2bcc121e0de3407111a43f714aca583bda9833be6c245d10ff",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-083.txt",
+        "total_lines": 23,
+        "sha256": "f21d1499c1d6d4a3f585042286feb057f86dd6a47507d66e3f63dde6c94dd78b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-084.txt",
+        "total_lines": 23,
+        "sha256": "9f4bf3fe806a8f9ed9ef31653f24c746d523cb26b48196e3455792c2f26b864c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-085.txt",
+        "total_lines": 23,
+        "sha256": "495910ab1592ee887258333b7d6575aef89d41688599576e42fdf781279755c1",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-086.txt",
+        "total_lines": 23,
+        "sha256": "2e137a8bb2964dae80ac6104802a1ddc604d9047d5adf3890c60b5cbf3927824",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-087.txt",
+        "total_lines": 23,
+        "sha256": "9576f32a4aa6df3a455917d486d8516fd81a473492feb261e7e33933e2f01857",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-088.txt",
+        "total_lines": 23,
+        "sha256": "6e146046a73346be9a9fd047b74ed6c9e147ba4c300ce448f2f8a1401a24f99a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-089.txt",
+        "total_lines": 23,
+        "sha256": "3cae126b2ef4075b7bb2c60d12542d23bb94b85500638172efb6a8b578ea6920",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-090.txt",
+        "total_lines": 23,
+        "sha256": "22889abd889ac6f0527304c1473e9c314cb595317e825fcb9f9e93eef559dc8a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-091.txt",
+        "total_lines": 23,
+        "sha256": "2e18fd96f435315a2aed6c662b0083869031b136159240813a42da83f3418c5f",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-092.txt",
+        "total_lines": 23,
+        "sha256": "2d52cb9158c69753607547c9f3a52bc35728c265f2ca387b569cd975c2061b04",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-093.txt",
+        "total_lines": 23,
+        "sha256": "8d830cc8b15666532424f09e6d65ce8b65df5d23ba480ee50fe103b9cdf88c96",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-094.txt",
+        "total_lines": 23,
+        "sha256": "4de0257007592f154b2747c4070460a0cbd68b799e8047aa6caaacc13755d268",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-095.txt",
+        "total_lines": 23,
+        "sha256": "3a04fab6faa47d72270639b857e651290b8d69036290197d21f3b85bec6219c8",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-096.txt",
+        "total_lines": 23,
+        "sha256": "b6770ef8c414287bb3e13255fcc47045f8d83f2b0a14a72f8fa765a7decb7233",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-097.txt",
+        "total_lines": 23,
+        "sha256": "2b38c4bc29f214e9e1d1524b344a88f65ef91538c37ff4e998b2afadf31acde1",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-098.txt",
+        "total_lines": 23,
+        "sha256": "4488ac5befe346ae23da7725ead074e68e6c632edfee0996ab0da50389d99d4a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-099.txt",
+        "total_lines": 23,
+        "sha256": "c48cffc6cd278b4745a70625f2e0ff0a7346ae2ec3d69ede64aba564af5dee03",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-100.txt",
+        "total_lines": 23,
+        "sha256": "a71e7e4046877680fb1394b9c8c87198629fd4fc75e1e45c015a11daf7adf649",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-101.txt",
+        "total_lines": 23,
+        "sha256": "b7770bd76a76a14e4e096337c0753b6d99574c4349576c4ae89a847362d0e3be",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-102.txt",
+        "total_lines": 23,
+        "sha256": "5600fe661b09fa9e907a089c44542d7dc057d5da333946e928210b8f6583f1e6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-103.txt",
+        "total_lines": 23,
+        "sha256": "5d926d768823a3eb8d40cbb5b2843b9195373d1a50541393d4c10e80dbb0657b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-104.txt",
+        "total_lines": 23,
+        "sha256": "c962371ac3f850e18203cc96abe5eda44c70f02db817c20bc35dec0312ad6b1a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-105.txt",
+        "total_lines": 23,
+        "sha256": "e8914f5760c1a58248396f31ef4fbdee1ae15710844557c9f6a94deeae651563",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-106.txt",
+        "total_lines": 23,
+        "sha256": "aab9364d5a7fcc1519e7480b183e55697c2800ad255ad53522b29b6770bd84e7",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-107.txt",
+        "total_lines": 23,
+        "sha256": "83439f14b894a471cb7a73af2e8fe9c57ebb9ae1e131557b5a95400a1c25c602",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-108.txt",
+        "total_lines": 23,
+        "sha256": "a43ba14d7981ec17a5bab1db6c4342ec66353fc247ed710c0d7f789785340f46",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-109.txt",
+        "total_lines": 23,
+        "sha256": "ecc4b2cd9533b2a7ee7907679ca30345d4b3c2c8c8553bce58d5cdf60b4d3b30",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-110.txt",
+        "total_lines": 23,
+        "sha256": "7969b23748689eaa153c81c94206846ecc98302b96c62e37ff3114d21e0ffec3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-111.txt",
+        "total_lines": 23,
+        "sha256": "457d48b0556e61e67fbc556fa10b087dcb716d4da6a7bfdfb353a5220bd2e88d",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-112.txt",
+        "total_lines": 21,
+        "sha256": "ef7a6af4e24c0c0843785b83b317d292d4a4c618b70b14e0604c4d3125233d70",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-113.txt",
+        "total_lines": 19,
+        "sha256": "8f5729f3e0630078080eb71b6e37db8ac022c0ae436972519d07a9c1cf3b373a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-114.txt",
+        "total_lines": 20,
+        "sha256": "4cee4696c4957c3fe7b06ab98fe0513a393797f5ce9e4e2beac63e2c24affbf0",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-115.txt",
+        "total_lines": 19,
+        "sha256": "e716895ed61b0904ffa46e35cd76ccbb0395ea7924579bc8b3a23f88a1a7211c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-116.txt",
+        "total_lines": 18,
+        "sha256": "5f921c1efc10b7d6db9885846b4edb290848265bb726e3ccd9e68fd4b55ccbcd",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-117.txt",
+        "total_lines": 19,
+        "sha256": "da12c688b4566c86dc44d9f92d565cfed350f9d9e0b5b332de25a57d14d35f03",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-118.txt",
+        "total_lines": 17,
+        "sha256": "748ab54c991fe7dc6c215f224842d1c15ae6a0baa414d5801b81cd48d71768f0",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-119.txt",
+        "total_lines": 18,
+        "sha256": "b09d2972ea46f94d9f6f0f3851842b9f6e4e02db841a927780b99c424d7289d6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-120.txt",
+        "total_lines": 21,
+        "sha256": "4f45e124cd5cfcfa584867fc36f5cb5be4f19ea7277cb2a16c37d3715408e92f",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-121.txt",
+        "total_lines": 20,
+        "sha256": "2293acc58b56f02a114498b39fd8219555fcb23efa89e73d8e5d02fafc425a7a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-122.txt",
+        "total_lines": 19,
+        "sha256": "a4d8830239b89519a8e44ec6c3cba554f29fb2a0188415c8276129c9e0ba5656",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-123.txt",
+        "total_lines": 20,
+        "sha256": "94cd9c0ee97ce8c2252b630f1aa8acaf0e9ee8e734a3ba458d9ef14beeb50f1b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-124.txt",
+        "total_lines": 18,
+        "sha256": "c5d8c0501b5a10e82c473f87a2f1e58eee8bd526b6bbc1863a00835691100795",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-125.txt",
+        "total_lines": 21,
+        "sha256": "bdba49c812bfb13399568afeceb8e60a0faaec4fb9dd469ccd985a0004d00a79",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-126.txt",
+        "total_lines": 21,
+        "sha256": "5050b6b48b48ce41a38c5961a90a80ce2d9a752a118a9be3423f6f4f13494da7",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-127.txt",
+        "total_lines": 20,
+        "sha256": "3ff21cb549f2fce43d12639a488cc626fe9e4ac8fc5ae0215dbe048d041f9768",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-128.txt",
+        "total_lines": 20,
+        "sha256": "fc8826d91df9f74310bb1bade48354a6e2488226fcf7a38797cda68883415df0",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-129.txt",
+        "total_lines": 21,
+        "sha256": "07c7de7ee846a27580dfad2259df994211c7cb26bab57e296815bf80c2f27672",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-130.txt",
+        "total_lines": 19,
+        "sha256": "8f81dea3b897d389b9cb7fc221b2eaef034b13c139cb729a814533fd597188da",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-131.txt",
+        "total_lines": 19,
+        "sha256": "0af51c74ed669e7763bbc5b67cf8d77e3df744061ccd270f7280ec81a90ba88e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-132.txt",
+        "total_lines": 20,
+        "sha256": "52e3f77d501d119980f7835e5cb4538f628acef10229829cc08ff05613cb1f74",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-133.txt",
+        "total_lines": 20,
+        "sha256": "520358aa31f62dd759d7e9b3b6b01bbbcbfdd634827b85fc1cc9a54982e66e4f",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-134.txt",
+        "total_lines": 21,
+        "sha256": "870ef0243125186ac557b0e3e2f0fdc6f0d1c51316f811443cafb634ebde9d98",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-135.txt",
+        "total_lines": 20,
+        "sha256": "8b6f46a759aa1ba4b8920e402a23ee1f379ca20f96deace360cd40245352782c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-136.txt",
+        "total_lines": 20,
+        "sha256": "4e0dc01fe2de8c5aa8a761252ebb4245ec2554b26a6805ab27d5125956971172",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-137.txt",
+        "total_lines": 21,
+        "sha256": "6953e937ff5eaa05e3281aefa04744413fb700d67e441fe82872b845e9a3fec0",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-138.txt",
+        "total_lines": 21,
+        "sha256": "47f47baa36b764a9534e5638599057040fc9c5864a8570ac5f94c3dedd673487",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-139.txt",
+        "total_lines": 21,
+        "sha256": "6dd2aae710b3c15ad1c850a9e1de42b47aec2e769252ea46a275e659c7e14c01",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-140.txt",
+        "total_lines": 19,
+        "sha256": "235c4559f64399445803081030734571e2dc05082249dfa5d833cd1ea3a346ce",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-141.txt",
+        "total_lines": 21,
+        "sha256": "43bb0b2c8a7d5c92b1f500a1dbaac4b309a7221a1817b6a75029be4f65bd14cc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-142.txt",
+        "total_lines": 19,
+        "sha256": "51e2e42a32bca54a881e7fbfd03329c43622e3b9f8c0e1000432398c3da15642",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-143.txt",
+        "total_lines": 21,
+        "sha256": "ea4858b3c1304959d635d785e74842613d55d15ad7e6efdf691e4de8234ba431",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-144.txt",
+        "total_lines": 23,
+        "sha256": "77399452c84e9372b8371fc475a500f6b2a0e32ab7159c109f81a9897f801fe7",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-145.txt",
+        "total_lines": 23,
+        "sha256": "ad61c2393ae359f36b08639c6de0bfa7affc3b75b1f52111cc1bc6579b53b358",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-146.txt",
+        "total_lines": 23,
+        "sha256": "d90f84bac96940d574fce70f9e8dec2a817e4fa5eec90820a088f32993d7cffc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-147.txt",
+        "total_lines": 21,
+        "sha256": "3487f447efd88e78d64b705cb9454fc82c1e1e2b7efc885deb67999acac26b32",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-148.txt",
+        "total_lines": 23,
+        "sha256": "12c95902f5e032febc64b544f77c715f372c51632765026cb0668e06e96a1cdb",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-149.txt",
+        "total_lines": 23,
+        "sha256": "2599369f730a7e250419e53a254d097edd27edf12da1b5f63de44706bff46dc2",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-150.txt",
+        "total_lines": 22,
+        "sha256": "c421ab0068d150cc2d6e426fb46a20559a783aae7ce60164c4a832db9851e0be",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-151.txt",
+        "total_lines": 21,
+        "sha256": "aa98bc3cbf511fd68bcd1d58cd17d8460506b3d0d726d409b614e81c39aab635",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-152.txt",
+        "total_lines": 22,
+        "sha256": "4d82f18766a8df87cfb221bdc67e79af635527eb4dc017f90bf2f3fe18b75434",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-153.txt",
+        "total_lines": 21,
+        "sha256": "7680f73249dcd85d642c49adcf2f806df810a618126a5445203a2a8d3c7956fd",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-154.txt",
+        "total_lines": 21,
+        "sha256": "600e300a440ecd0236dc0b62cb4f399684b74601c63fcbeeb8345e538cc94d94",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-155.txt",
+        "total_lines": 21,
+        "sha256": "17ecf146e149963f0ebd6c46d10fadbb6b9bfda8c40b3717de79a6d0e306f850",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-156.txt",
+        "total_lines": 22,
+        "sha256": "b5f82d89537eb8bbf32272e6bd5b6a83fb0c1e734ff8b8cecf9047a47ca11237",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-157.txt",
+        "total_lines": 23,
+        "sha256": "0eb625a5eff2c52a8cb0cb20301266d47fc59616e99cb5d8108446900530e4c1",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-158.txt",
+        "total_lines": 23,
+        "sha256": "6e9c849a6b2df39b44bdb393bc6db83d499d8c5499cfafdca799fa926b40f80a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-159.txt",
+        "total_lines": 23,
+        "sha256": "e6159b0787c661b7e59383f3cbb4153422a2efe8e3032d77a404ee3ce5e46759",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-160.txt",
+        "total_lines": 23,
+        "sha256": "fab256e91b2709743aaa3b9e6cab52fab4362e38e8cf58974241f866c40d63dc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-161.txt",
+        "total_lines": 23,
+        "sha256": "5ee5a91f68a6b60a925bdaa19ec3617fff9e7f909b2de4a042eabefcd3463be0",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-162.txt",
+        "total_lines": 23,
+        "sha256": "1f94d700baeb1482aff8cb4f03e873b8956df5e55944dcd9f93c595f6a7b77b4",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-163.txt",
+        "total_lines": 23,
+        "sha256": "7a64fd28951815ec7b6d8b1fde7d36ca4640cc7e7025e618b26f6d29465eed0d",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-164.txt",
+        "total_lines": 23,
+        "sha256": "525758b8e3c0a38c956aed9eaf328cd5ac17bcb7d5aad2556a4253b048f973c5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-165.txt",
+        "total_lines": 23,
+        "sha256": "26de575d1727a48737a1728859934a66201d3bd8c38a435d21c99122991b412f",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-166.txt",
+        "total_lines": 23,
+        "sha256": "761e178ce0d387615f3c954b50406647babdbcebce273c3ac342caeb673d0bbe",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-167.txt",
+        "total_lines": 23,
+        "sha256": "dd5cefdb97cef6ea8b1aa3b829607d2b7e4f0d81ddd16b1913bac03295b68c0c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-168.txt",
+        "total_lines": 22,
+        "sha256": "4d61c758b9d422df3a0ea76173f2f88de1a06bb3839242d501ca51e788f1522f",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-169.txt",
+        "total_lines": 23,
+        "sha256": "92eaa9c419a04e1c8a204aededdfc2c23df0e59d3ca1f9ec1011cc5fa3c793c2",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-170.txt",
+        "total_lines": 22,
+        "sha256": "d9c363368921f61b3f71996ad044b6deeaba019aa578fc3df70498bf9af19828",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-171.txt",
+        "total_lines": 22,
+        "sha256": "15a02b752d92e8363d951130c8351e9fa8c776c708b437ba1bbc9cc5810e6063",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-172.txt",
+        "total_lines": 23,
+        "sha256": "9058d54130c833e35b93ee632d727a3959ad80ad6597977d1663e4b007554517",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-173.txt",
+        "total_lines": 23,
+        "sha256": "204d7f712d94fce144086b40f376fdd0649cd3d2e7f456ed7904ec00aa041f88",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-174.txt",
+        "total_lines": 23,
+        "sha256": "b86560c2ee7f2f6fc3967c3a587018eeaeafebe4e4c2498b2a8c4bb86f20d6ab",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-175.txt",
+        "total_lines": 23,
+        "sha256": "d81828ec87e83547e11c2e57f4314faa761109ab5d19a60188b0b924af3059ea",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-176.txt",
+        "total_lines": 23,
+        "sha256": "aa85ae2226c9aedab15f2c138b5e440764d348d55fd7669850c98eacc563bb3d",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-177.txt",
+        "total_lines": 23,
+        "sha256": "2155a886c8975c4c35ab1d40251e1db2abcc08a7a32a6adbac945cc7be2a187e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-178.txt",
+        "total_lines": 23,
+        "sha256": "914148fae96fcd401d1d26694858036887d4c6188220cf5bceac10499b92234a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-179.txt",
+        "total_lines": 23,
+        "sha256": "f142d4f2e0efd512d1838a23543280a2b7eaae9d312a09e2fdb39b722b0e9614",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-180.txt",
+        "total_lines": 19,
+        "sha256": "72e68a12fa2538c62420770d49bc3c0de5b94e347f1eef09d4575c6d6d0e83ed",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-181.txt",
+        "total_lines": 23,
+        "sha256": "78d9e9ebfae92ac7341509acbec8817736ba6341bd50d6dbe4cd248321d181fe",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-182.txt",
+        "total_lines": 18,
+        "sha256": "9fbeef9c90d704f84b5fa01514850946efcd8971ae48d02444200e8554ea8da5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-183.txt",
+        "total_lines": 34,
+        "sha256": "848bb6e95fe8608c6746842d80dec0084bf32a3494a8aa78d79b52055b57f15c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-184.txt",
+        "total_lines": 44,
+        "sha256": "b34d0b3cc3706c5e9fb9bc3d90735382556d93eee336bef5fccd3bea54dad4e9",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-185.txt",
+        "total_lines": 19,
+        "sha256": "690eeac41dea8120ddefe432cc9f7c4c030629fcb50f651197944e1117f123d8",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-186.txt",
+        "total_lines": 28,
+        "sha256": "ae33505ce00931363157ba8b99a2634ceae085304df1b37e1eb26a356d073e04",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-187.txt",
+        "total_lines": 41,
+        "sha256": "869bc82b60c6eb117863039999cf2dfca097300ddd1be2fca60b7a9a341cb40e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-188.txt",
+        "total_lines": 20,
+        "sha256": "2dbe9eb9e02895f2efe31b5019720fb279cd977cd145b28dcd6675f3babd164c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-189.txt",
+        "total_lines": 43,
+        "sha256": "8a3a8c0deba394470d92744aad9cbe1b0be9e74332b0e35eb661fd02ba53f4c3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-190.txt",
+        "total_lines": 19,
+        "sha256": "07788d3b89c527bf1e0bdd07282ec5719c91e61f3d3a197168089b9ea2e6b3c4",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-191.txt",
+        "total_lines": 27,
+        "sha256": "c9be982c33020fdebdc6b3b2b360056cdc015b67234628eace40d066f2a7fa60",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-192.txt",
+        "total_lines": 33,
+        "sha256": "c487019b3c3631c73acb2899cf560260f9d1da984672547288ac521161becba1",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-193.txt",
+        "total_lines": 34,
+        "sha256": "a5b0e9e5759205d27570a99eb8bb4c8a7518fd5efd9c2e80ffa4d7109dede550",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-194.txt",
+        "total_lines": 27,
+        "sha256": "17a79467f6fb0e71afd68418ec182b59f08ff0925b258d2acc3658a95a7a7b16",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-195.txt",
+        "total_lines": 31,
+        "sha256": "8716e745aae6e4933acc7d23754d2fb86f9fb82ac9821531e60e30f26e832472",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-196.txt",
+        "total_lines": 50,
+        "sha256": "ffbf9989806b90ff3695762ecfa84932c00fdd0db7ce701755a8413fb93ee346",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-197.txt",
+        "total_lines": 59,
+        "sha256": "e56e1f275240b9c43f416d261b157c04330ad4f0984cb1e7ee0937933e855668",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-198.txt",
+        "total_lines": 19,
+        "sha256": "c406e39079f1775ef2184a4e44c8873b731294d640749aae0d0d2ecd967ac4e6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-199.txt",
+        "total_lines": 28,
+        "sha256": "b9bc40eacb6c025594373cfbd1bbfbd1006ea1ef7768d8828f9e656dc4dc8755",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-200.txt",
+        "total_lines": 40,
+        "sha256": "4aaecdd7e6ec38f8c2627d8a9f4a97ba2e1f931125b7b2681be0702df44ff818",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-201.txt",
+        "total_lines": 32,
+        "sha256": "1cc9db8d8698caa598466a776dee63952ebd0f55515dbcaa3586d5ebc18c193f",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-202.txt",
+        "total_lines": 40,
+        "sha256": "0a620ca325ad6f767462d681af8d8d34d5a61d54ee7ffd6f5800206c4f328b73",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-203.txt",
+        "total_lines": 34,
+        "sha256": "38ce3e1ab0385f8bb658abd402425330f7d80c1b59607aacc1a2b8e00f848b14",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-204.txt",
+        "total_lines": 35,
+        "sha256": "d09008c3266d0ab1aab11346f064bfa774c4bc03d004cb969384e0b50ff50d0e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-205.txt",
+        "total_lines": 55,
+        "sha256": "fdd312b875a3f7f086c364ef16492cc64d9b3b0fe49d60965a9e68c1b8b850c3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-206.txt",
+        "total_lines": 21,
+        "sha256": "3407a1921f1cf7c4898a949c82fbebea92bc3611d51a6bc990aebda3fc4afe80",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-207.txt",
+        "total_lines": 27,
+        "sha256": "d203ab5cfa62675d5f873e2da32cfea80471bcab46708c4f6c7915ed0fbe494b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-208.txt",
+        "total_lines": 48,
+        "sha256": "878918f4846b5817a01925e7bbf742d9b889d58c59ed5ad65bfa48bc229d42b6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-209.txt",
+        "total_lines": 30,
+        "sha256": "2df721e0da1b3a56524a5ae838e0a141e5827e7c578248f05e9dff0b5cfd04e7",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-210.txt",
+        "total_lines": 27,
+        "sha256": "bf0c85def54bc3af3f5f8ceea1405718253f89dd4d3e7df3bc0e4744137fecaa",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-211.txt",
+        "total_lines": 29,
+        "sha256": "d403e4875673e18c055c55d15e501033b1a3ee31d9a99b8fc0be7bb444a9a410",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-212.txt",
+        "total_lines": 30,
+        "sha256": "6d9a6af6d20a2d41c8c21e7e1efd620555d4e82ee50bb8e5e2300d0575bc2f3a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-213.txt",
+        "total_lines": 33,
+        "sha256": "97d2b33dae2696a0e3725ef81030abfd00ded7409d9b1e01f5bc49f0e224cd56",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-214.txt",
+        "total_lines": 39,
+        "sha256": "78dad47d6d4cf7d5dd58ac02ecdedc60284a8f9dd1967902198f6e1560f73422",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-215.txt",
+        "total_lines": 25,
+        "sha256": "a2ff98e956cccecd021d3269abecbc4c53225f19438811b441b872e21df787e5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-216.txt",
+        "total_lines": 34,
+        "sha256": "92ab3b9993a4de608b228eee35454c17e42f5e90dc6b970bf55b0ef22294b5ab",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-217.txt",
+        "total_lines": 24,
+        "sha256": "988cda651e46530d8922a19bc2928defdc442d220dd4e6a4591eda8a6c1bf69a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-218.txt",
+        "total_lines": 31,
+        "sha256": "ddbb7cbdd6659bbc370614198ffc086ff8281da9687b76df471cdeee37f4cb47",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-219.txt",
+        "total_lines": 44,
+        "sha256": "cf9c5b2d06677466a176d056e9b1798769cb76f3023fdea7837c313dea4bba97",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-220.txt",
+        "total_lines": 46,
+        "sha256": "bae6a37c6f3a4b96e78ce3fab9b82b83562e59bb684ff1b270cf323c87d7a896",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-221.txt",
+        "total_lines": 23,
+        "sha256": "46f0974f87e8df88b17cb30e37cc43a9f81055fc07710b1f170116b16a72d342",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-222.txt",
+        "total_lines": 27,
+        "sha256": "d33d05e6c4bd1c3c1355fd79bee38576c919a49ecbb42d52fad80d0b88409c43",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-223.txt",
+        "total_lines": 34,
+        "sha256": "7c6afc31960d76a191323759abf43680db6cd5688d3df3338acff1341abd42ec",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-224.txt",
+        "total_lines": 31,
+        "sha256": "e0d182fee9a5356cd78fd4e91518b28acf372924effd865733f66593d9490c2a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-225.txt",
+        "total_lines": 49,
+        "sha256": "16816e2475c18581cd78aec11003960bf455c870cac4efbd50e2e0e38171d49b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-226.txt",
+        "total_lines": 32,
+        "sha256": "64b16a269d6805db93718c34a69a699c98aedecfb48684965d55127db2408064",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-227.txt",
+        "total_lines": 54,
+        "sha256": "48b2a3cc51a960f14d67baf73f595702e525c35bcf8728bf6c935aed980364cb",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-228.txt",
+        "total_lines": 61,
+        "sha256": "5eca7e892be8ed4daab15db9e451b74db3a1220d648cec777b3486f8dee3ef59",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-229.txt",
+        "total_lines": 19,
+        "sha256": "3ee22a3c36738e625a65d9b5ad7c8f917399c5394d9bf51033dc4de8ab39c7fd",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-230.txt",
+        "total_lines": 29,
+        "sha256": "8866a6a15e0ea563703ed32719c668feb67215e19a7ceeb1459085a7dc7849ce",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-231.txt",
+        "total_lines": 34,
+        "sha256": "67db72e3e8be8165f604b04171a598a52c5896288ef82889e02444a5091c79c3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-232.txt",
+        "total_lines": 29,
+        "sha256": "a95dd601592009cd71dba00ea0b88a34d3d31c0358c61cfb94d233996d4191b9",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-233.txt",
+        "total_lines": 39,
+        "sha256": "af15e7e0fa63ea9fbf566fc6b2b3266c59dc35b56e500c314d6cad97d56468b8",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-234.txt",
+        "total_lines": 49,
+        "sha256": "29348282c072ee4af2b2e774ffef2929587df7b0b82a3f1398f9328500a9c6d6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-235.txt",
+        "total_lines": 41,
+        "sha256": "2c43aa88680538cab3b5901184f2a3eb3875074ac475f1499041b570f0d57747",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-236.txt",
+        "total_lines": 25,
+        "sha256": "f61de3ab3acf4f5d014d38082553f8a873f603b17f55435ce588e8614a3b8959",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-237.txt",
+        "total_lines": 49,
+        "sha256": "df81ac415c1237ed59e9bdf13f0311cdf4f9d0a9c54cc6f5c218e2c3ddae9b8f",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-238.txt",
+        "total_lines": 52,
+        "sha256": "f29ffcd5e831f5ad3f0a048a89b0cea262666e0224b3a13bed3c905eeaa099df",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-239.txt",
+        "total_lines": 23,
+        "sha256": "8bf8278d97b9c4cb71e7f9d7c0fc2de6f15482a3476fad7b98e2e8069b70d35b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-240.txt",
+        "total_lines": 26,
+        "sha256": "293a2cc7c1b2c7d7678bb62e88c97c76a71d342dd0e1f01f72a0076f4ce9eb8c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-241.txt",
+        "total_lines": 35,
+        "sha256": "d2758416d58004760479b9372932b67c975c7ce237da1399a8b1ae7a4534c764",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-242.txt",
+        "total_lines": 28,
+        "sha256": "ad6df5d7b71605305c8938ff4f2e50707870d5d3fbc56a3d17641ec5fd2f27c7",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-243.txt",
+        "total_lines": 32,
+        "sha256": "5778abc941146a7417d21d0532cb4edf4cbcb903ed294043f2525b7da3614fc6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-244.txt",
+        "total_lines": 35,
+        "sha256": "25a94566c5e0100ed14008d235d40db2bbb5249258afb6c25a6d011bcfa91b0d",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-245.txt",
+        "total_lines": 48,
+        "sha256": "a1a23b846ec0bb702e6bdd99a8cbc82aee539f5e0ff0bee215c2bbc97600f1cd",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-246.txt",
+        "total_lines": 40,
+        "sha256": "7f893d491e954dbdc196b78340324a16a8d5a7b2888af5c5e96266766db8458a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-247.txt",
+        "total_lines": 31,
+        "sha256": "69a9d16c56d609b64519a7abb6deee0aeb52d88baa71b3da3630abf96e8f83d2",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-248.txt",
+        "total_lines": 30,
+        "sha256": "dfef341de84a1893b30d0511929bccaa3ae5865e272777d89f321eb14a465c47",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-249.txt",
+        "total_lines": 41,
+        "sha256": "ff7505df31a96fa1ce5196f7ccd5b999564f98d69b671731124fa25a01e6da20",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-250.txt",
+        "total_lines": 24,
+        "sha256": "c165e43ccf42e88aa99947fff31b64a4da55001424fa468aeeeab977b64aa8c6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-251.txt",
+        "total_lines": 34,
+        "sha256": "96dd0a6a909be74012528c825693ffded239fc436e0f47168502f0fc78f3d632",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-252.txt",
+        "total_lines": 36,
+        "sha256": "16986a34697e2d28221ea062cc66b902baedc091b43a855112f36b07d99714a6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-253.txt",
+        "total_lines": 20,
+        "sha256": "b7d6c09e3b2cabb900c5597a8e69c4cc5e3e6c9f92ca085b615333e8c89f3bac",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-254.txt",
+        "total_lines": 35,
+        "sha256": "523b5e400e46d44770d2b371ec837aaaa8bf2df13e5ad9d40f7d234c36704375",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-255.txt",
+        "total_lines": 21,
+        "sha256": "b4331fe12d0ec4596d6be5892e673a1f9731e98372ee4b80674e06faaa26876a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-256.txt",
+        "total_lines": 24,
+        "sha256": "17956d9de73b101fee8f8f982babd7076ffa8d7ab40770d6940d676ce9f06aad",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-257.txt",
+        "total_lines": 62,
+        "sha256": "997387e7da903a960214e13ea8b0c68830a1495c3468b5ead5f606edf9404445",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-258.txt",
+        "total_lines": 20,
+        "sha256": "993623476c0c01683f0bb6243f2b2b7f94b22d6503d3dfa8639cf69700b04f6a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-259.txt",
+        "total_lines": 38,
+        "sha256": "e1206d07eae5d604dc1293cdd388cb0d4d1ce3e95528f88937c956777c050100",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-260.txt",
+        "total_lines": 57,
+        "sha256": "3d2559870d6e0bb0f3e8d36c808202695397edf266510d7614319f520109c3c6",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-261.txt",
+        "total_lines": 40,
+        "sha256": "989b7aab8d20d37a0f59bc953a9a8c1eaacff58ffbeb44ff036ca168da3fba63",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-262.txt",
+        "total_lines": 24,
+        "sha256": "31ea97181f1bb3d9d1e3a383f7f98c935cf95e054bba494286f8fa0cf6e22f4d",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-263.txt",
+        "total_lines": 36,
+        "sha256": "f3bec6a11d63d693ffdea2d2918be1c06e4131da796596bdcefe04087db5eadf",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-264.txt",
+        "total_lines": 21,
+        "sha256": "6abc248028b4a9622e803bfcae4d176c7a9dc6c17ec68c9c9aae8a8e6ced16d5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-265.txt",
+        "total_lines": 30,
+        "sha256": "6918deb0571dfc12efc0704da88995a8f608aa45234230f2d4afa937d33fc5a9",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-266.txt",
+        "total_lines": 34,
+        "sha256": "ece00dea6c122f037491bf891f4bc6bbda06cebf44253416b39bf36a2b183170",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-267.txt",
+        "total_lines": 23,
+        "sha256": "48183185c53c5cd05281792dfaa7f709b3e434133707d3a46003258af6516986",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-268.txt",
+        "total_lines": 34,
+        "sha256": "698eba81e8b5f07ad8d0f1a15979841867642c4767229a4405997b5f37fb229e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-269.txt",
+        "total_lines": 19,
+        "sha256": "b66e4a9479dc6c85e67e85f72628ac34cca8f2c5d0ac35c307ef50f8a98c1629",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-270.txt",
+        "total_lines": 23,
+        "sha256": "12cd5dd8a197665243bd4a1524bb68fdbe9cc0aa7ba4f89de9b6be69e2ee4fef",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-271.txt",
+        "total_lines": 29,
+        "sha256": "87e1ba59215aa22aa837cfe5864e08f3d56c26b350398d1b068de8efb3a51d07",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-272.txt",
+        "total_lines": 22,
+        "sha256": "6bd57cf67a668d92e0986707f92cffe7cd02e79203bfa034a4290cd5ba026841",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-273.txt",
+        "total_lines": 31,
+        "sha256": "1376fe2d74a5f65f7771c9ebddcb34de332f6e9aae4fd56a99640b4d2a3f0452",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-274.txt",
+        "total_lines": 29,
+        "sha256": "6357f4e4cbdc76de32d351b84f97d0c688e4def37954e72a603badb177a67e3c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-275.txt",
+        "total_lines": 25,
+        "sha256": "d02349e7ff5eabc0eebed1db9beb5bce43be828e9dae5298f41ad6b0523f5446",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-276.txt",
+        "total_lines": 37,
+        "sha256": "178e10317071bb9f34483d350ca5da023f31a8d2e493bef6fa3739a531f7ae23",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-277.txt",
+        "total_lines": 22,
+        "sha256": "921bacaf0235a2bba850efa1ca6b6a2c22604bf2ef071483b86dbc7cabffa2f7",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-278.txt",
+        "total_lines": 34,
+        "sha256": "b30b3397a9425f5cf889b08c8c7033c35aa9ffa5369bee51537933c712e8aa52",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-279.txt",
+        "total_lines": 27,
+        "sha256": "c2e23d9790d72a1aecc40aebbebcaa59138dcc39c78a523dadd263ef1097b7a5",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-280.txt",
+        "total_lines": 33,
+        "sha256": "6732e7b74ace5f8f6f9f0f05cf16d1631941301dc314914e1c7452789cc34210",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-281.txt",
+        "total_lines": 24,
+        "sha256": "48f4c38f17c4c0c08ee5fc41a5ef709424a86c41f632702edb254e6269471163",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-282.txt",
+        "total_lines": 26,
+        "sha256": "9426562207a9fb8bd8890e1f2aea6c980228bd2e5aa184de237c5eea22453efc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-283.txt",
+        "total_lines": 39,
+        "sha256": "802e296348534679d362cd787d2a390ee61684ca7d5289dfc23d140ac9351410",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-284.txt",
+        "total_lines": 18,
+        "sha256": "c7cfc5b69a684324759f310691a19fa35b863b01f5f64ddc2c137733d5eb5db3",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-285.txt",
+        "total_lines": 28,
+        "sha256": "69fd0cb584be274d18e1219b5acd212842f88c7589ba274101a6ab49037a7746",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-286.txt",
+        "total_lines": 38,
+        "sha256": "6a7b2dbf84db9d973245ab96e4812a7c810d9419431c070e813ca5f029afb83a",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-287.txt",
+        "total_lines": 19,
+        "sha256": "b014b0a0d1981a41a0421a5728c01ec14983d4ed05fc35699b854bbd8ef242cf",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-288.txt",
+        "total_lines": 38,
+        "sha256": "3746bf2a5f37b1c65d856b42d5c2557dee81b96fb5e417f47eb97e1a5c38680e",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-289.txt",
+        "total_lines": 23,
+        "sha256": "33455b9a7528844cf612769263778771c0ac83f41a5b67cd1eeaae676d538aff",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-290.txt",
+        "total_lines": 47,
+        "sha256": "c8f743ca04407fde03e9d45abe8dfeebb8fd887a43532c170de79ad8b08cc162",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-291.txt",
+        "total_lines": 18,
+        "sha256": "1cef878d0b8f31ef4f1bcfb4156043144c694b04459e3ca3be9161410d7e9701",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-292.txt",
+        "total_lines": 28,
+        "sha256": "d41f5c9b619e3e845366ccad80d8f74fa8b874307022c2f5be4194638245ae2b",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-293.txt",
+        "total_lines": 29,
+        "sha256": "fa8c58ee4dbd8dd2ac3c9807211cc757013c4f7602802370c67bdf4176509bb9",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-294.txt",
+        "total_lines": 30,
+        "sha256": "38636a64f01b296b16cd0445138284d996f625a9fa357c2d7cb9fb326a2ffbaa",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-295.txt",
+        "total_lines": 30,
+        "sha256": "d188c8975b0e77dcdb404545e291b8a3a771ee2cee016a3f3d363a69019845cb",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-296.txt",
+        "total_lines": 34,
+        "sha256": "5ca977dbb5db94b833717900809f329a0498e4870b317ce41a35566c556a324c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-297.txt",
+        "total_lines": 43,
+        "sha256": "c3b35657c73d8e7b4e6896ba3cf4bdf160ac64730a926f68da9f6a1599ab64b4",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-298.txt",
+        "total_lines": 25,
+        "sha256": "11f0ddba6efc8c644306046a8c61cb01bd5e4bfd3321f1ca3631f65d6cf36522",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-299.txt",
+        "total_lines": 27,
+        "sha256": "bd47cbf593f9d89802806e91e5f326bf35c59b6af6080b6ef8fc49bd8f3a4965",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-300.txt",
+        "total_lines": 30,
+        "sha256": "3d64a30585661e02f51742e4fd8092552a820c001a2931e38811c099d984a3fc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-301.txt",
+        "total_lines": 30,
+        "sha256": "8e95a35b08ec5645947631483b6000b0c21965f6b3587edee83318e5ad6b29cf",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-302.txt",
+        "total_lines": 30,
+        "sha256": "254cd60afb8a745ba926afafeeb744e111d360889e719c45dea4f24d298e77bc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-303.txt",
+        "total_lines": 32,
+        "sha256": "3e46318df4f0f6ec7d76cc906ceb22cb0ad104cce1ebd5b6915a9571248e3ddf",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-304.txt",
+        "total_lines": 30,
+        "sha256": "dfac6547b7a7aacc6ee209a0601239b812225ae2d9da91cee245acda98a12b45",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-305.txt",
+        "total_lines": 47,
+        "sha256": "4ff5d05c4a221fc8a5ce507151b84f4de02fdb4aea00148758fc890a256aefc4",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-306.txt",
+        "total_lines": 18,
+        "sha256": "4a383ba10a922d900d3df050bbaa1aaee63cf9ee491674ca358bacc9942d94aa",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-307.txt",
+        "total_lines": 28,
+        "sha256": "91bc10bb91675983e6606e01d05ac2249393b8431a6fc2c7d424d8322c836875",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-308.txt",
+        "total_lines": 27,
+        "sha256": "74d6c207d447c67fe920f62f92093bd623c22a2d398ed8fc56abf01a0758db60",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-309.txt",
+        "total_lines": 30,
+        "sha256": "985611244767deda099024559de9ba2a85f9458a850dca77c307501435ed292c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-310.txt",
+        "total_lines": 31,
+        "sha256": "1a9d76021711d9fafe389fb5de12cba31df4a500203d2c05b7e5c222ff514067",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-311.txt",
+        "total_lines": 32,
+        "sha256": "2c5f2a5daae426dc7301da07b7abd6a2c862c18550728ec9b9f323b4928a8649",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-312.txt",
+        "total_lines": 23,
+        "sha256": "2b5488dd3cbcdd3ab3a49742a1d0f0b0b49efbb6e2a4e4e17097fb09db1f5dce",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-313.txt",
+        "total_lines": 44,
+        "sha256": "93528925158326007e5f33be37f76ffeeb466dfbf89f4812bca9419f5e5be81c",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-314.txt",
+        "total_lines": 19,
+        "sha256": "ee9d343cfc6c5846104a7eeaceb73e40a90e81915d1844e060e639ea979e98d0",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-315.txt",
+        "total_lines": 29,
+        "sha256": "35859c6a3eb4f3ec9cb2176a2c1632c98a2b30aedcd4d33da055c806aca298f7",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-316.txt",
+        "total_lines": 29,
+        "sha256": "55daf0bef2c40d88be1a1de70ea408def2e4eb1da9b0b64550a92fc112d053df",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-317.txt",
+        "total_lines": 31,
+        "sha256": "0d504986f3c996054b4f3cb2f42b943ceeed41ed5012a8ac7f4320e82d07a207",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-318.txt",
+        "total_lines": 33,
+        "sha256": "51e8575c369c6139874878e63dec28e65d09c872944f5aa4ebc94deab70d28bc",
+        "read_ranges": [],
+        "complete": false
+      },
+      {
+        "bundle": "source-diagnosis",
+        "path": "evidence/analysis/readable/source-diagnosis/part-319.txt",
+        "total_lines": 25,
+        "sha256": "560cca15e44582a67f74d86217fef4e9843732e04d0de435bcd778f61937df10",
+        "read_ranges": [],
+        "complete": false
+      }
+    ],
+    "findings": [],
+    "analysis_session": {
+      "session_id": "session-7f96e861-885c-4ec5-908d-c78238f5d5ea",
+      "route": {
+        "model": "mimo-v2.6-flash",
+        "provider": "xiaomi-token-plan-cn",
+        "reasoningEffort": "off"
+      },
+      "evidence_ref": "evidence/analysis/source-diagnosis/response.json"
+    },
+    "diagnostic": {
+      "stage": "session",
+      "reason": "case-hard-timeout",
+      "evidence_ref": "evidence/analysis/source-diagnosis/diagnostic.json"
+    }
+  }
+}

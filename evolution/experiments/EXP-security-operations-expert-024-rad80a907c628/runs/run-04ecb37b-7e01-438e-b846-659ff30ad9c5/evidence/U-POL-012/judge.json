@@ -1,0 +1,51 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答在当前 Session 无可复用参数的情况下，明确说明无法开始解析或生成预览，并逐项列出仍缺的 5 项必需参数（源端点、目的端点、协议、目的端口、动作）向用户索取，与要求一完全一致；要求二的前提（已有参数）不成立——证据明确本会话没有草稿、操作号或预览结果，因此不存在原样使用参数、查询资产、改写标识或生成预览并执行的情形，回答亦声明不调用 SOC 资产查询且不自行拼装命令，未出现违反该条件分支的行为。两要求均获 citation_allowed=true 的证据支持。",
+    "requirements": [
+      {
+        "requirement": "若当前 Session 没有可复用的完整参数，明确说明无法执行并索取参数",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "当前消息中没有携带具体参数，因此还不能开始解析或生成预览。本会话目前也没有草稿、操作号或预览结果——这些状态只能由本会话的真实工具回执建立。\n\n**本轮尚缺的必需参数**\n\n1. **源端点**：资产名称、IPv4 或网络地址对齐的 IPv4 CIDR\n2. **目的端点**：资产名称、IPv4 或网络地址对齐的 IPv4 CIDR\n3. **协议**：TCP 或 UDP\n4. **目的端口**：1–65535 的单个端口\n5. **动作**：允许（ALLOW）或阻断（DENY）——“策略预览”未说明动作，需要明确\n\n**设备线索**：原话中的“交换机”会作为 `device_query` 原样交给 Platform 核验唯一性，无需重复提供；若你指的是某台具体交换机，可补充其名称、设备 ID 或管理 IP。\n\n**本轮能力边界**\n\n- 仅支持 `ADD` 新增策略，对象为主机/网段到主机/网段，TCP/UDP 单一目的端口；不支持 IPv6、MODIFY、DELETE，也不支持有效期/截止时间。\n- 配置预览由 Platform 在准备阶段生成，我不能自行调用 Preview，也不自行拼装命令。\n- 我不会调用 SOC 资产查询、拓扑或设备映射工具；端点解析只能通过 Platform 的端点解析能力完成，这是草稿与预览的前置步骤。\n- 交换机是否在线、是否具备 ACL 能力由 Platform 真实目录核验；若不合格，会返回替代候选并由你明确选择。\n\n补齐上述 5 项后，我会以新的幂等请求从头走完“端点解析 → 准备 → 配置预览”流程。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "若已有参数，则原样使用，不查询资产、不改写标识，只生成交换机 ACL 预览且不执行策略",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "当前消息中没有携带具体参数，因此还不能开始解析或生成预览。本会话目前也没有草稿、操作号或预览结果——这些状态只能由本会话的真实工具回执建立。\n\n**本轮尚缺的必需参数**\n\n1. **源端点**：资产名称、IPv4 或网络地址对齐的 IPv4 CIDR\n2. **目的端点**：资产名称、IPv4 或网络地址对齐的 IPv4 CIDR\n3. **协议**：TCP 或 UDP\n4. **目的端口**：1–65535 的单个端口\n5. **动作**：允许（ALLOW）或阻断（DENY）——“策略预览”未说明动作，需要明确\n\n**设备线索**：原话中的“交换机”会作为 `device_query` 原样交给 Platform 核验唯一性，无需重复提供；若你指的是某台具体交换机，可补充其名称、设备 ID 或管理 IP。\n\n**本轮能力边界**\n\n- 仅支持 `ADD` 新增策略，对象为主机/网段到主机/网段，TCP/UDP 单一目的端口；不支持 IPv6、MODIFY、DELETE，也不支持有效期/截止时间。\n- 配置预览由 Platform 在准备阶段生成，我不能自行调用 Preview，也不自行拼装命令。\n- 我不会调用 SOC 资产查询、拓扑或设备映射工具；端点解析只能通过 Platform 的端点解析能力完成，这是草稿与预览的前置步骤。\n- 交换机是否在线、是否具备 ACL 能力由 Platform 真实目录核验；若不合格，会返回替代候选并由你明确选择。\n\n补齐上述 5 项后，我会以新的幂等请求从头走完“端点解析 → 准备 → 配置预览”流程。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-13562e4f-5c31-4455-9ae7-fbf4d7706581",
+    "workspace_id": "5b3c6e98-9e62-404a-bc62-f942f1f75907",
+    "session_title": "评审 U-POL-012",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

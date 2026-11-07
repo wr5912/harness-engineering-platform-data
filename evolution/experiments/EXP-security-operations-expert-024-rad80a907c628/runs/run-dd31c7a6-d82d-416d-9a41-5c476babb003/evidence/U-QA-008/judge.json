@@ -1,0 +1,38 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答（证据 0）对 CVSS、EPSS、CISA KEV 的定义与区分准确，也确实说明了内部优先级依赖资产暴露面和业务重要性，并提到与本司资产的匹配；但预期明确要求的四个上下文因素中，补偿控制完全未被提及，受影响情况（受影响资产/版本是否实际部署与可达）也仅在 CVSS 更新说明中顺带出现，未作为优先级因素展开。未满足‘全部要求明确满足才 passed’的条件，且缺失项是可从完整回答中直接确认的缺口，故判 failed。该问答为概念解释，无需真实工具数据；证据 2 为方法论性 Skill 内容，不改变结论。",
+    "requirements": [
+      {
+        "requirement": "准确区分 CVSS 严重度、EPSS 被利用概率估计和 CISA KEV 已知被利用目录，并说明内部优先级还取决于资产暴露、业务重要性、受影响情况和补偿控制等实际上下文",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-ddacc583-0f26-492e-8bb8-41d03587c127",
+    "workspace_id": "d786e864-0aa9-4a4e-bb1d-ec3e68389864",
+    "session_title": "评审 U-QA-008",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

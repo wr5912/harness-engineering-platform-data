@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 9107 近 30 天的关联告警，首页最多 5 个分组。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "子智能体已启动，等待其完成分析任务后再读取结果。\n</think>\n\n正在运行故障分析子智能体，它正在查询资产 9107 的近 30 天告警。请稍候..."
+  ],
+  "session_id": "session-4a3b464c-14ba-4059-ba86-77dc8fd29d44",
+  "turns": [
+    {
+      "assistant_text": "子智能体已启动，等待其完成分析任务后再读取结果。\n</think>\n\n正在运行故障分析子智能体，它正在查询资产 9107 的近 30 天告警。请稍候...",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5ab4e354-445e-4ccc-9f20-3831858ddbab"
+    }
+  ]
+}

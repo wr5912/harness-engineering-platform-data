@@ -1,0 +1,134 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答在工具回执层面真实失败：analyze_threat_incident 返回 is_error=true（trusted platform MCP group connection is unavailable），因此五源融合与模型研判未执行、未产生任何 Run 的结论/置信度/推理摘要/resultJson/HTML 报告与下载链接，要求 1、7 明确不满足。回答本身诚实说明失败、区分事实与缺口并标注建议未执行（要求 4、6、8 满足），但冻结输入摘要、模型、原始响应与校验记录、resultJson 的 target 原文、运行 ID 一致性等在本轮证据中均无从体现，只能判 unknown。存在明确 failed 项，故整体 failed。",
+    "requirements": [
+      {
+        "requirement": "在本轮证据不能快速分类时执行五源融合及模型研判",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 5
+          }
+        ]
+      },
+      {
+        "requirement": "记录冻结输入摘要、实际模型、原始响应和校验结果",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "主会话结论、置信度、核心判断、推理摘要及保存下载来自同一运行",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "不在用户摘要和报告中展示校验提示",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "能够提取有效结论与摘要字段时，不因证据引用路径校验失败而丢弃结果，校验详情仍保留在结果 JSON 中",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "无法提取有效研判内容时明确说明失败，不编造结论",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 5
+          }
+        ]
+      },
+      {
+        "requirement": "正式 HTML 报告按同一 Run 呈现结论与 UTC 研判时间、事实与证据计数、已观察和推测攻击链、结构化处置目标的卡片及证据引用附录",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "建议须标明尚未执行，空数据不伪装成已观察事实",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "`resultJson` 保留 `recommended_actions.target` 对象原文，报告只做阅读投影",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "原始值、下载链接及报告的运行 ID 必须一致",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "本轮若满足快速分类条件，应按实际路由执行，并记录完整研判路径未覆盖",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-efd08157-ef4e-4edf-8e80-1d5d4dd9449f",
+    "workspace_id": "cac1915b-3b23-45cb-ac81-848ede7695a0",
+    "session_title": "评审 U-THREAT-FULL",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

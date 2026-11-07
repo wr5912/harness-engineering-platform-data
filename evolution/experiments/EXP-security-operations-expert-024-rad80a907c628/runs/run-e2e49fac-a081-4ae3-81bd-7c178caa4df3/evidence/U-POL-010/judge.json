@@ -1,0 +1,65 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答明确表示未调用端点解析、prepare、Preview 等工具，未生成 PPV，也未提供与工具结果一致的确认提示；要求 1 的真实查询与 Preview/PPV 证据不满足，要求 2 中“没有确认、创建、提交或执行”部分虽满足，但“给出与工具结果一致的 PPV 和确认提示”不满足。",
+    "requirements": [
+      {
+        "requirement": "真实查询资产、拓扑、设备映射、型号能力和 ACL 模板，只调用一次无状态 Preview",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 1
+          },
+          {
+            "index": 2
+          },
+          {
+            "index": 3
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "回复给出与工具结果一致的 PPV 和确认提示，并且没有确认、创建、提交或执行策略任务",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 5
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 7
+          },
+          {
+            "index": 8
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-487dea0b-7273-49b2-b010-e50ae1d8b849",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-POL-010",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

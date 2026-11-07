@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "CVSS、EPSS 和 CISA KEV 分别表示什么？为什么 CVSS 9.8 也不一定是我司最高优先级？"
+  ],
+  "assistant_texts": [
+    "## 三个指标分别表示什么\n\n| 指标 | 全称 | 性质 | 回答的问题 |\n|---|---|---|---|\n| **CVSS** | Common Vulnerability Scoring System（通用漏洞评分系统） | **固有属性**评分，由 FIRST 维护 | 这个漏洞**技术上有多严重**（可利用性、影响范围、机密性/完整性/可用性影响等），最新版本为 CVSS v4.0 |\n| **EPSS** | Exploit Prediction Scoring System（漏洞利用预测评分系统） | **概率预测**，由 FIRST 维护 | 未来 30 天内**被在野利用的可能性有多高**（0–100% 的百分比） |\n| **CISA KEV** | Known Exploited Vulnerabilities catalog（已知被利用漏洞目录） | **事实清单**，由美国 CISA 维护 | 这个漏洞**是否已经被真实利用**，通常附带修复截止日期（due date） |\n\n三者关系可以概括为：CVSS 说\"坏不坏\"，EPSS 说\"会不会被用\"，KEV 说\"已经被用了\"。\n\n## 为什么 CVSS 9.8 不一定是我司最高优先级\n\n1. **CVSS 不含\"是否在被利用\"的信息**。一个 9.8 分的漏洞如果无公开 PoC、无在野利用记录，实际风险远低于一个 7.5 分但已进 KEV、正在被勒索团伙批量利用的漏洞。\n2. **EPSS/KEV 反映现实威胁**。EPSS > 某阈值或已收录 KEV，意味着攻击已经发生或迫近，应优先于纯理论高分漏洞。\n3. **与我司资产的相关性决定实际暴露面**。CVSS 9.8 的漏洞如果只影响我司不存在的产品/版本、或相关资产不在线、不可达、已有补偿控制，优先级应下调；反之低分漏洞落在关键业务、互联网暴露资产上则应上调。\n4. **可利用性前提可能不满足**。需要特定配置、认证前提、复杂交互条件的漏洞，理论满分也难以利用。\n5. **修复成本与业务影响**。补丁重启影响核心业务时，需要与风险权衡（缓解、隔离、窗口期），而非只看分数。\n6. **KEV 带有合规截止日期**，逾期未修复本身构成合规风险。\n\n**实践中的优先级排序思路（事实层面的通用做法，非我司既定流程）**：先看是否在 KEV 或我司资产已出现利用迹象 → 再看 EPSS 是否高概率 → 再用 CVSS 结合资产暴露面、业务重要性和可达性微调 → 最后纳入补丁窗口与变更成本。\n\n如需结合我司真实资产与漏洞数据核验（例如查询某资产的关联漏洞、可达性），可以给我资产名或 IP，我再走 SOC 取证路线（该动作尚未执行）。"
+  ],
+  "session_id": "session-2592ba4e-d04c-445b-a5d9-edb6310f6780",
+  "turns": [
+    {
+      "assistant_text": "## 三个指标分别表示什么\n\n| 指标 | 全称 | 性质 | 回答的问题 |\n|---|---|---|---|\n| **CVSS** | Common Vulnerability Scoring System（通用漏洞评分系统） | **固有属性**评分，由 FIRST 维护 | 这个漏洞**技术上有多严重**（可利用性、影响范围、机密性/完整性/可用性影响等），最新版本为 CVSS v4.0 |\n| **EPSS** | Exploit Prediction Scoring System（漏洞利用预测评分系统） | **概率预测**，由 FIRST 维护 | 未来 30 天内**被在野利用的可能性有多高**（0–100% 的百分比） |\n| **CISA KEV** | Known Exploited Vulnerabilities catalog（已知被利用漏洞目录） | **事实清单**，由美国 CISA 维护 | 这个漏洞**是否已经被真实利用**，通常附带修复截止日期（due date） |\n\n三者关系可以概括为：CVSS 说\"坏不坏\"，EPSS 说\"会不会被用\"，KEV 说\"已经被用了\"。\n\n## 为什么 CVSS 9.8 不一定是我司最高优先级\n\n1. **CVSS 不含\"是否在被利用\"的信息**。一个 9.8 分的漏洞如果无公开 PoC、无在野利用记录，实际风险远低于一个 7.5 分但已进 KEV、正在被勒索团伙批量利用的漏洞。\n2. **EPSS/KEV 反映现实威胁**。EPSS > 某阈值或已收录 KEV，意味着攻击已经发生或迫近，应优先于纯理论高分漏洞。\n3. **与我司资产的相关性决定实际暴露面**。CVSS 9.8 的漏洞如果只影响我司不存在的产品/版本、或相关资产不在线、不可达、已有补偿控制，优先级应下调；反之低分漏洞落在关键业务、互联网暴露资产上则应上调。\n4. **可利用性前提可能不满足**。需要特定配置、认证前提、复杂交互条件的漏洞，理论满分也难以利用。\n5. **修复成本与业务影响**。补丁重启影响核心业务时，需要与风险权衡（缓解、隔离、窗口期），而非只看分数。\n6. **KEV 带有合规截止日期**，逾期未修复本身构成合规风险。\n\n**实践中的优先级排序思路（事实层面的通用做法，非我司既定流程）**：先看是否在 KEV 或我司资产已出现利用迹象 → 再看 EPSS 是否高概率 → 再用 CVSS 结合资产暴露面、业务重要性和可达性微调 → 最后纳入补丁窗口与变更成本。\n\n如需结合我司真实资产与漏洞数据核验（例如查询某资产的关联漏洞、可达性），可以给我资产名或 IP，我再走 SOC 取证路线（该动作尚未执行）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5c47b3d8-0c08-48bb-a502-ec24124cf988"
+    }
+  ]
+}

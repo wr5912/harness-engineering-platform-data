@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "响应处置支持哪些能力？"
+  ],
+  "assistant_texts": [
+    "**结论：** 当前会话的响应处置能力分为三类——应急指令（单动作、单目标）、网络访问策略配置（仅新增）、响应规划（受信 Runtime 一次性规划）。模型不能直接执行处置，确认与执行由外部受信插件/响应生命周期负责。\n\n**具体能力：**\n\n1. **应急指令（emergency-action）**\n   - 范围：单动作、单目标，及其草案修订、查询、取消。\n   - 按设备类型区分：防火墙 `block-ip` / `unblock-ip`，主机 `host-*` 动作。\n   - 确认：仅当用户单独发送“确认执行”时，由受信应急确认插件绑定本会话最新有效草案并签名提交；排队/受理不等于执行成功，以 Workbench/SOC 权威回执为准。\n\n2. **网络访问策略配置（policy-configuration）**\n   - 仅支持新增 IPv4 主机到主机、TCP/UDP 单目的端口策略。\n   - 支持草稿准备、查询、候选排序及读取 `result_markdown`（含“配置预览”原样展示）。\n   - 确认：仅当用户单独发送“执行”时，由受信策略确认插件绑定最新 DRAFT 并确认；DRAFT 和确认受理都不等于已生效。\n\n3. **响应规划（response-planning）**\n   - 默认被 Guard 拒绝；仅当模型外 Runtime 开启受信 Gate 并冻结输入、候选集合和摘要后，才允许一次零工具规划。\n   - 确认、保存、执行和监控全部由外部响应生命周期负责。\n\n4. **支撑能力（非处置本身）**：`INC-YYYYMMDD-NNNNNN` 威胁研判与报告下载、故障只读取证、安全巡检、定时自动威胁研判（依赖 Runtime 是否开放 `schedule_create`）。\n\n**能力缺口与限制：**\n- 模型没有直接处置/写入工具；Bash、网络搜索、通用委派不可用。\n- 策略与应急不能在同一轮交叉调用；不支持反向动作以外的复杂批量处置。\n- DSH 无暂停/恢复定时任务能力，只有创建、查询、修改、删除。\n- 本轮仅作能力说明，未执行任何处置、策略或规划。"
+  ],
+  "session_id": "session-a19e8914-fe11-4430-9244-adeb2dd840f0",
+  "turns": [
+    {
+      "assistant_text": "**结论：** 当前会话的响应处置能力分为三类——应急指令（单动作、单目标）、网络访问策略配置（仅新增）、响应规划（受信 Runtime 一次性规划）。模型不能直接执行处置，确认与执行由外部受信插件/响应生命周期负责。\n\n**具体能力：**\n\n1. **应急指令（emergency-action）**\n   - 范围：单动作、单目标，及其草案修订、查询、取消。\n   - 按设备类型区分：防火墙 `block-ip` / `unblock-ip`，主机 `host-*` 动作。\n   - 确认：仅当用户单独发送“确认执行”时，由受信应急确认插件绑定本会话最新有效草案并签名提交；排队/受理不等于执行成功，以 Workbench/SOC 权威回执为准。\n\n2. **网络访问策略配置（policy-configuration）**\n   - 仅支持新增 IPv4 主机到主机、TCP/UDP 单目的端口策略。\n   - 支持草稿准备、查询、候选排序及读取 `result_markdown`（含“配置预览”原样展示）。\n   - 确认：仅当用户单独发送“执行”时，由受信策略确认插件绑定最新 DRAFT 并确认；DRAFT 和确认受理都不等于已生效。\n\n3. **响应规划（response-planning）**\n   - 默认被 Guard 拒绝；仅当模型外 Runtime 开启受信 Gate 并冻结输入、候选集合和摘要后，才允许一次零工具规划。\n   - 确认、保存、执行和监控全部由外部响应生命周期负责。\n\n4. **支撑能力（非处置本身）**：`INC-YYYYMMDD-NNNNNN` 威胁研判与报告下载、故障只读取证、安全巡检、定时自动威胁研判（依赖 Runtime 是否开放 `schedule_create`）。\n\n**能力缺口与限制：**\n- 模型没有直接处置/写入工具；Bash、网络搜索、通用委派不可用。\n- 策略与应急不能在同一轮交叉调用；不支持反向动作以外的复杂批量处置。\n- DSH 无暂停/恢复定时任务能力，只有创建、查询、修改、删除。\n- 本轮仅作能力说明，未执行任何处置、策略或规划。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c4c112ce-a00c-4650-823a-78650e865609"
+    }
+  ]
+}

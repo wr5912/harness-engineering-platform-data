@@ -1,0 +1,4702 @@
+{
+  "schema_version": "2.0",
+  "authoritative": false,
+  "representation": "场景内 JSON/JSONL 语义无损视图：S 绑定原文件摘要，J 是可连续重组的 JSON，B 表示 JSONL 空白行，C 定义工具结果中的 $analysis_content_ref；原文件仍是事实源。",
+  "groups": [
+    {
+      "bundle": "scene-01",
+      "sources": [
+        {
+          "source": "evidence/analysis/effect-inputs.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 92248,
+          "sha256": "5b0ae5a3593484e1c1514ebcd1bfda5ff932a55ae8a2f75606837dc4353936eb"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 31,
+          "bytes": 22983,
+          "sha256": "b598d8eb64c117efed5a7cf1f5fe0982a92a3d3c5d6af383f89d6923313b6d7d"
+        },
+        {
+          "source": "evidence/U-INS-002/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3159,
+          "sha256": "d745479b2b3bddab2b720efae10f2c3c411d4ec372c99510f2d62fb28f9edb8d"
+        },
+        {
+          "source": "evidence/U-INS-002/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1499,
+          "sha256": "2a8d0f17eeef780bbcc5adc98842dd1d6c255c06abeb4420955e9bb6cbf290a8"
+        },
+        {
+          "source": "evidence/U-INS-002/tools.jsonl",
+          "format": "jsonl",
+          "records": 6,
+          "bytes": 6442,
+          "sha256": "56ef0a217cc25adf8d9d18ef826ac693e72d34ad9cd3a625150dc21e5ebd51b0"
+        },
+        {
+          "source": "evidence/U-INS-002/trace.jsonl",
+          "format": "jsonl",
+          "records": 37,
+          "bytes": 92290,
+          "sha256": "0cbce19d185bb6fd6806c767bd5b574bda5fcc5985087b244d628c8576476043"
+        },
+        {
+          "source": "evidence/U-INS-003/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4511,
+          "sha256": "d1dfd1d9436b9b0b52bd0acd21fba403ab2509c686f94efb023e1a26aaf25800"
+        },
+        {
+          "source": "evidence/U-INS-003/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1574,
+          "sha256": "d6ff6a5067675e995dfe3dfd70d7a629d258d9a32e1b7df0821452cf25813e9f"
+        },
+        {
+          "source": "evidence/U-INS-003/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-INS-003/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 61468,
+          "sha256": "f217705b8fff4dfc15f1afbf8f3537b8f73d4810d25cc9953b51d2e85cf256a4"
+        },
+        {
+          "source": "evidence/U-NEW-009/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2933,
+          "sha256": "4089f15621bee880cd295792c32eff53098792f69d9b733d035240000b8db004"
+        },
+        {
+          "source": "evidence/U-NEW-009/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1835,
+          "sha256": "a5ebf7c29ec971876b541187d1f17e7978037dce189beac3fcd1a4a191df47d9"
+        },
+        {
+          "source": "evidence/U-NEW-009/tools.jsonl",
+          "format": "jsonl",
+          "records": 10,
+          "bytes": 8069,
+          "sha256": "77df37f727b0202e2970544a3f81aec15c64bcc1baa51928ffcbe23113d1a868"
+        },
+        {
+          "source": "evidence/U-NEW-009/trace.jsonl",
+          "format": "jsonl",
+          "records": 41,
+          "bytes": 115476,
+          "sha256": "186d70517eafbd4d0c1287cc4b1bfdd5f8b4392b241314697655ac867ba3cfe4"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-001.txt",
+          "total_lines": 19,
+          "sha256": "7cb612035d572b9af50ea42f06e1e809587e2ef5826d6b4db835ceaa1cc398b3"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-002.txt",
+          "total_lines": 29,
+          "sha256": "50ba85a5ccab7e9105dc1b85dc6e4d3934b097780e17540ab4be6e4fcb9670b0"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-003.txt",
+          "total_lines": 51,
+          "sha256": "2cc2fe15f1051b8eb25f676fe92d1d9718b6e0dbe231d867e40abe80b3cab3a3"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-004.txt",
+          "total_lines": 19,
+          "sha256": "c8ed96d9dc0f11c5cf87789956d04836e8b387ecdbfac88529d5ab1c165828e2"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-005.txt",
+          "total_lines": 28,
+          "sha256": "876afcb8548a144a106c27e49eea8917e7d57c2c7491d20ab3cc376d85eb489d"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-006.txt",
+          "total_lines": 42,
+          "sha256": "bed26a80d7424235ce01c559a37a077ea2ec2919db989ff010cd98acb5d59ce2"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-007.txt",
+          "total_lines": 20,
+          "sha256": "c0dd70e2a73592b190c8ebc47f603aaf981c482b9017efb38c0e731e055b67c1"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-008.txt",
+          "total_lines": 43,
+          "sha256": "43bbc0f4847ac7c3d1026a010eb5a07b992e3e67ed49a1df23dc168825633ea7"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-009.txt",
+          "total_lines": 19,
+          "sha256": "26f60b63fb89b11dcdf34824508c10c48ad7133fcb29b2f59de2c00293afdecd"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-010.txt",
+          "total_lines": 27,
+          "sha256": "fec8075bcef0fe4dd4182b876f9fbde7f53f5dc7a85386334a2cb778835feb67"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-011.txt",
+          "total_lines": 33,
+          "sha256": "66ab74d3ea52c7801f69e0a52a80edcce3246a7130b01635a5f2ce74d0c617f3"
+        },
+        {
+          "bundle": "scene-01",
+          "path": "evidence/analysis/readable/scene-01/part-012.txt",
+          "total_lines": 5,
+          "sha256": "5167dae90604ab10b3079963cb99406427a83b3ff1a7ffbb397af7e37f24b3e8"
+        }
+      ]
+    },
+    {
+      "bundle": "scene-04",
+      "sources": [
+        {
+          "source": "evidence/analysis/effect-inputs.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 92248,
+          "sha256": "5b0ae5a3593484e1c1514ebcd1bfda5ff932a55ae8a2f75606837dc4353936eb"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 31,
+          "bytes": 22983,
+          "sha256": "b598d8eb64c117efed5a7cf1f5fe0982a92a3d3c5d6af383f89d6923313b6d7d"
+        },
+        {
+          "source": "evidence/U-FLT-MENTION/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2201,
+          "sha256": "d8bbb58d0d3bf17a869a2786cb688b23d84578318912bf871da479f33a96c81f"
+        },
+        {
+          "source": "evidence/U-FLT-MENTION/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1580,
+          "sha256": "4b46af41ac7932c914659573032d510ff5060cdb43b38807af40456265ec7cbe"
+        },
+        {
+          "source": "evidence/U-FLT-MENTION/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 2502,
+          "sha256": "10dd951a6973e94ec057c71c97e4bd9af4ac216e2e0e7edb982fb533caa73ce3"
+        },
+        {
+          "source": "evidence/U-FLT-MENTION/trace.jsonl",
+          "format": "jsonl",
+          "records": 27,
+          "bytes": 85914,
+          "sha256": "04c7ab01e3efcf569407a60c40df4941e0f0eb7aed562236b17b00d5428f67db"
+        },
+        {
+          "source": "evidence/U-FLT-002/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1865,
+          "sha256": "b06b5edebba1d494c0315683901e6dce912975cf0bb908653367361e7c750f49"
+        },
+        {
+          "source": "evidence/U-FLT-002/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 880,
+          "sha256": "3eba52f397c2c268335e0dabf03d830f24ae9d1b6bd8a39539159ad36f820c3f"
+        },
+        {
+          "source": "evidence/U-FLT-002/tools.jsonl",
+          "format": "jsonl",
+          "records": 80,
+          "bytes": 63117,
+          "sha256": "17b29fbf86f3c9e48cd1fb41b8262acd84f57913e68da48c5c7e91663faf3090"
+        },
+        {
+          "source": "evidence/U-FLT-002/trace.jsonl",
+          "format": "jsonl",
+          "records": 151,
+          "bytes": 278040,
+          "sha256": "77cc200b205acee245459fd221c94c9037174d11a739236987f784c967718d68"
+        },
+        {
+          "source": "evidence/U-FLT-003/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2301,
+          "sha256": "acd8e74fdb2838daf96964990b1c1d1d2740de23fe3b70912a46a352da2f6f82"
+        },
+        {
+          "source": "evidence/U-FLT-003/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1571,
+          "sha256": "ac57c719d3e4f75a8dc236aa3fe016d008eaeac25d95acaff6ab31333d72fa0b"
+        },
+        {
+          "source": "evidence/U-FLT-003/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 2502,
+          "sha256": "5c8f48318ad94df302d9fb4d23b210201caa5f583c4434d40d5803c8214f346d"
+        },
+        {
+          "source": "evidence/U-FLT-003/trace.jsonl",
+          "format": "jsonl",
+          "records": 27,
+          "bytes": 80597,
+          "sha256": "775eb2e87a66dcf3720dbf36c0924f5550b9e38986d5b05e4d0e6b5fe4e187c2"
+        },
+        {
+          "source": "evidence/U-FLT-004/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 7847,
+          "sha256": "d8e2dc7b304330f960e0492b1515398ffe50415e10f606ca62ccf4f9625efb52"
+        },
+        {
+          "source": "evidence/U-FLT-004/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1580,
+          "sha256": "72479f72fb451f2b0bd48ef37c5ef699cd23db3ee8acb1f869c5cd0979de6d47"
+        },
+        {
+          "source": "evidence/U-FLT-004/tools.jsonl",
+          "format": "jsonl",
+          "records": 32,
+          "bytes": 17847,
+          "sha256": "8ba0587a3fe622a88946ac461363d14369ee595d599e0bc04e893f90deaab249"
+        },
+        {
+          "source": "evidence/U-FLT-004/trace.jsonl",
+          "format": "jsonl",
+          "records": 102,
+          "bytes": 239429,
+          "sha256": "04cdd76b95e9678eb602b8a197b4f502c9e8da4f3d08ecc006382711424f2dbe"
+        },
+        {
+          "source": "evidence/U-FLT-005/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3529,
+          "sha256": "5a0bc74de2f78690d9110544684088d0f3edfbdcd88fbe09e56312844b139085"
+        },
+        {
+          "source": "evidence/U-FLT-005/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1592,
+          "sha256": "ed2b99f4a1efc40d7c73693358e33d238c51e4b4ec3b02efbab82fda30a7ea4a"
+        },
+        {
+          "source": "evidence/U-FLT-005/tools.jsonl",
+          "format": "jsonl",
+          "records": 4,
+          "bytes": 2176,
+          "sha256": "7bebe6333f9f60da27f281f3f3fe67f3599fb9f9b69e3127063c3e6028ea66ae"
+        },
+        {
+          "source": "evidence/U-FLT-005/trace.jsonl",
+          "format": "jsonl",
+          "records": 32,
+          "bytes": 99909,
+          "sha256": "195cf07f76a7c6402dc1d01bf1462921ce732eabebd769735464789ea9c0a8c5"
+        },
+        {
+          "source": "evidence/U-FLT-006/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1466,
+          "sha256": "e29f72e392f84a8b6fa9378f0eea5dff84fb3d063b66d5e0e1f50482ca5a0ac6"
+        },
+        {
+          "source": "evidence/U-FLT-006/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 880,
+          "sha256": "dafcc2884f4239538735870c54dc4e743d079fc22477fccd480d4a90c9cab50c"
+        },
+        {
+          "source": "evidence/U-FLT-006/tools.jsonl",
+          "format": "jsonl",
+          "records": 52,
+          "bytes": 45687,
+          "sha256": "af2f872438503cfce681c22b9a21df5a8fa7ad0ac90671aa274d2bf13ddf01bc"
+        },
+        {
+          "source": "evidence/U-FLT-006/trace.jsonl",
+          "format": "jsonl",
+          "records": 132,
+          "bytes": 251878,
+          "sha256": "c20e3ba6a93ded9f96589ffe558c6a811770ffa9f913025c87cf1be2c67135eb"
+        },
+        {
+          "source": "evidence/U-FLT-007/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 237,
+          "sha256": "4ac1904914fc33b23039d7269ff1e7cd0007b24291c55aed11588e17ff4e9d91"
+        },
+        {
+          "source": "evidence/U-FLT-007/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 880,
+          "sha256": "56014a813a63af0836d42c8e32e242032e1971d34278a33da1430d800fe2d707"
+        },
+        {
+          "source": "evidence/U-FLT-007/tools.jsonl",
+          "format": "jsonl",
+          "records": 52,
+          "bytes": 36477,
+          "sha256": "657e60df1f6464e58845aaefc611a8f9c182412190e17206469bc54b1a37d66a"
+        },
+        {
+          "source": "evidence/U-FLT-007/trace.jsonl",
+          "format": "jsonl",
+          "records": 143,
+          "bytes": 280975,
+          "sha256": "c98b5ff7f07bc265bfdbe41a28dcafc42d3309bebc79a98bf72a072e8089cbfa"
+        },
+        {
+          "source": "evidence/U-FLT-008/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1573,
+          "sha256": "371927dea6a35ce8ada008a4f8b30131bf24ec39c74a575df04b6f9dfa1ec6d5"
+        },
+        {
+          "source": "evidence/U-FLT-008/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 880,
+          "sha256": "b95a5f803e976b6146dae0e52142d4b72511b41ba485422402686c63d2343bea"
+        },
+        {
+          "source": "evidence/U-FLT-008/tools.jsonl",
+          "format": "jsonl",
+          "records": 74,
+          "bytes": 53802,
+          "sha256": "9e7595f74114ea427ad97997f78c0aff06bae2ed4ccb9469f84347c25946942d"
+        },
+        {
+          "source": "evidence/U-FLT-008/trace.jsonl",
+          "format": "jsonl",
+          "records": 136,
+          "bytes": 286418,
+          "sha256": "7d54bdd78707347a217bd2b51c7d5d58ee3fed3f284d242d790c802e6706cab8"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-001.txt",
+          "total_lines": 19,
+          "sha256": "7cb612035d572b9af50ea42f06e1e809587e2ef5826d6b4db835ceaa1cc398b3"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-002.txt",
+          "total_lines": 29,
+          "sha256": "50ba85a5ccab7e9105dc1b85dc6e4d3934b097780e17540ab4be6e4fcb9670b0"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-003.txt",
+          "total_lines": 46,
+          "sha256": "3ead68e806e33bfae233e75cfd5de707cbdaa0275715acde61089efe4ba010ce"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-004.txt",
+          "total_lines": 19,
+          "sha256": "abf68f80761135205c6dfeb5e7514603c6612a1bfb83a3aae9acd4c5742c87d8"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-005.txt",
+          "total_lines": 29,
+          "sha256": "800299d9a15b6dfd0f333b4f5efb7b0a25ac32bd528d5fde93a4e31bed312b2b"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-006.txt",
+          "total_lines": 51,
+          "sha256": "235b7815f0626701c82a03440a39c8ccf93c8d35c6a7794f366225afd9e49174"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-007.txt",
+          "total_lines": 51,
+          "sha256": "bd24a24c24407ff7387533030d8652a1ed7ce339a400722f0cb7bf7d08c74625"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-008.txt",
+          "total_lines": 34,
+          "sha256": "bb689522bc4c889999a17aaf64efd8bc2c9eeea458fe77d22cb96289b3166700"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-009.txt",
+          "total_lines": 26,
+          "sha256": "df4026471f7cb9e243fe481ab7cd81ff2246e977fda3a70463c1be03ff624d7e"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-010.txt",
+          "total_lines": 40,
+          "sha256": "fc7d48db2c78de36e4be864a480368e42945a1fa089b4c6ca435b3a1e262aefd"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-011.txt",
+          "total_lines": 26,
+          "sha256": "f40c3f17a95b1b96ca08c3d0d462aee09a590c35b0ccdbb4a39bf7fc4df3afff"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-012.txt",
+          "total_lines": 41,
+          "sha256": "6f5e2349782879dc312a1e6f7af042d3491f8345404fbf5199e4c7fc323a681a"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-013.txt",
+          "total_lines": 32,
+          "sha256": "44897f000c9c32a4f8e57747fdfeb5e58b1a5c2eb60abaaa0f35468d0fe34719"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-014.txt",
+          "total_lines": 37,
+          "sha256": "306303db1e356b1e0a7e68c4d22abaa31b159ec843f7480c081168227b574204"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-015.txt",
+          "total_lines": 41,
+          "sha256": "9798495fa4e9329ce768d591fc66146ca1f9972e6f4823d91b31cdae2b373249"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-016.txt",
+          "total_lines": 41,
+          "sha256": "2d02f323bb0a55b77d5f2059f62a1d6a91f66bf410dd7c391fc61370f20f7686"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-017.txt",
+          "total_lines": 26,
+          "sha256": "31e8d06829da3694a2927253aa723f60d4938c8d52bb46dbdff6d981131ceea0"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-018.txt",
+          "total_lines": 28,
+          "sha256": "e616666a47db6247d64eb557af661e0605902e429e49c4b0e8e14b072f4a5fb9"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-019.txt",
+          "total_lines": 50,
+          "sha256": "53c1e8464901c9a700fe53ae950262ff12e0c533382603fb51676566bacd9138"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-020.txt",
+          "total_lines": 26,
+          "sha256": "61d392b8b495a83bbfb761a41f1d1991251d3d0d23887438872e07f8d62ce953"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-021.txt",
+          "total_lines": 31,
+          "sha256": "f9d82232b8f0f4feb3bd519b8ee95538eebfe5739772a55fbb71d9b62d0dbfc4"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-022.txt",
+          "total_lines": 30,
+          "sha256": "e451aa2666c1b9c1412b228930c6e12131aa37809cd2ef9270e0082dd1655b2a"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-023.txt",
+          "total_lines": 26,
+          "sha256": "da84b0c03ef15a81a6e24229a5717699aaed85d27cb73f243eb424f81b613ffb"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-024.txt",
+          "total_lines": 41,
+          "sha256": "03256e77bb4240d5ee1726afdcaae69fd0504abfffc08509b8fe0abaefe3b4bb"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-025.txt",
+          "total_lines": 31,
+          "sha256": "b9e4c964dc996cf2ea6aee57defb1c6e3294a0e0fbbaa2c6640859f88c16c374"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-026.txt",
+          "total_lines": 35,
+          "sha256": "cad8d9ce0e863d4bd8eded58463804a5cc6ba0f869bf2ae89a4d589722454e18"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-027.txt",
+          "total_lines": 23,
+          "sha256": "ee9ac56533b0bbfe854f03ac064a1c3d1a063b66422d0cabbd1a471ed90a50fd"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-028.txt",
+          "total_lines": 29,
+          "sha256": "3c88a1eb98c35fc5de2cdf295e977e9e86816e4f1c4d0be321861e1ccb3c4b42"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-029.txt",
+          "total_lines": 47,
+          "sha256": "57b48b82001903e160339afeb3db9264726db9ae197b1ea813698bd27cfeb551"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-030.txt",
+          "total_lines": 50,
+          "sha256": "15b2c961dae60d20e7781d426f890c976095f23efa67e4a1a743343516d94fc6"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-031.txt",
+          "total_lines": 19,
+          "sha256": "1605dc65ba05caafaf5340f0c21cb091f8224f703e7edd5c9ccfacd5b74ece3c"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-032.txt",
+          "total_lines": 29,
+          "sha256": "236e5d9d7308c31ec1924dd1d167422274d190313a8383586c620e1c807c09b9"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-033.txt",
+          "total_lines": 33,
+          "sha256": "4080266598a4c2dc4485a299ae3d34e9ef375fb7dac0fc4a8fabc2a2ff39ac73"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-034.txt",
+          "total_lines": 29,
+          "sha256": "cbcca494e710b0ce67211c068f0a2051e3961a583817bb87824543ec22b3c0d4"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-035.txt",
+          "total_lines": 44,
+          "sha256": "d2eb41d4533ca3f42d35014a75e0b7dfc65426c60901da5589db0a6a77d9a481"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-036.txt",
+          "total_lines": 34,
+          "sha256": "1565e439dbc144d4ebcc9b73d9464665ae7edd698c80cb4bf635eba061c3cde4"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-037.txt",
+          "total_lines": 46,
+          "sha256": "0b6c21ba8642377ce2b9bb245df2acee0dfa92575ecf7a98b79aa162c2d8ac31"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-038.txt",
+          "total_lines": 60,
+          "sha256": "61282e9bada380813c7eb3d985d6ab174a6e6dbddc2d8c132c6a002dee253d29"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-039.txt",
+          "total_lines": 33,
+          "sha256": "ba08d4815043ba6839a70696c7b5e5196a65c9a0a4b167917aa3681b3d8be6d8"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-040.txt",
+          "total_lines": 27,
+          "sha256": "00c59024b56e803a3525273440e055aa21c2e697aa3cdb666eec40d5f1ba50db"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-041.txt",
+          "total_lines": 29,
+          "sha256": "b59893874db8f486ebf8c9067beca61667e5a47ec73b1b588f3bdf491ab3412e"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-042.txt",
+          "total_lines": 29,
+          "sha256": "0c16e930798e46051438d2d6684dd137a2d5bde5bc33b1907ae057e07da23484"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-043.txt",
+          "total_lines": 37,
+          "sha256": "c86fbdfc4ca2bfe6aecb46990d5dae7018860b37985f44e242c01561902f3176"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-044.txt",
+          "total_lines": 49,
+          "sha256": "ef0daba8ba53a5dd509a9a5e3492df7267414fee7b3c5d9e44e73923bb50cc0d"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-045.txt",
+          "total_lines": 40,
+          "sha256": "6c2c34a890055acdb79281f8ba2446682be5c873c4df5cd68396094995b2d664"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-046.txt",
+          "total_lines": 29,
+          "sha256": "dcea954a529fc39cb96c3d8b63377bd82cda4e9625ef4dbaa612788a5f0cd487"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-047.txt",
+          "total_lines": 39,
+          "sha256": "71bb04a8b25a66460b57e85df0f0dad7e4b9372ee2c500be175851a432fada1b"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-048.txt",
+          "total_lines": 70,
+          "sha256": "613ab483e129dbcd1cac690104c1ffc212ad56ff664206dddd2ac6e3561ed75d"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-049.txt",
+          "total_lines": 19,
+          "sha256": "2f489c17cb39fd200a6ee95eb7db0f7b62406325e1a2340029b5511a2e577c7f"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-050.txt",
+          "total_lines": 29,
+          "sha256": "e2cf3c82b97b9378b2dec35fe1ed2a4dcbf4ec863a3f131dfe288f3956904252"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-051.txt",
+          "total_lines": 35,
+          "sha256": "963488583e31c5c4cbee26de4dc4382006152751a491e2972dc9b4ca730f0298"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-052.txt",
+          "total_lines": 24,
+          "sha256": "01fdfb84883492d6ed1230b62de6fa820311c4369eb13338af4dcaad2312ecd4"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-053.txt",
+          "total_lines": 33,
+          "sha256": "6b821be1b4159e987ef47b160a54b2a488cd0da8c615e4e4884a7f448bdf3ca2"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-054.txt",
+          "total_lines": 34,
+          "sha256": "cb6013605995718152acc3b53f4fc5e013542b73024eb7ce44a8254f9e3c95ad"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-055.txt",
+          "total_lines": 36,
+          "sha256": "c51ddcf624ab1ced6b76294743e9cc732cdcd8653b8501c48bd10f116d801fea"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-056.txt",
+          "total_lines": 42,
+          "sha256": "32d913a12a967e9be341cab0d8cb455f6914ef760ab6e8fbcdbe4cd1a3e0d011"
+        },
+        {
+          "bundle": "scene-04",
+          "path": "evidence/analysis/readable/scene-04/part-057.txt",
+          "total_lines": 8,
+          "sha256": "2d98f04e5023f2e95295ec7490376faa56aba9a3a95c94b37dac21e646b5e1c2"
+        }
+      ]
+    },
+    {
+      "bundle": "scene-05",
+      "sources": [
+        {
+          "source": "evidence/analysis/effect-inputs.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 92248,
+          "sha256": "5b0ae5a3593484e1c1514ebcd1bfda5ff932a55ae8a2f75606837dc4353936eb"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 31,
+          "bytes": 22983,
+          "sha256": "b598d8eb64c117efed5a7cf1f5fe0982a92a3d3c5d6af383f89d6923313b6d7d"
+        },
+        {
+          "source": "evidence/U-QA-001/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3510,
+          "sha256": "afea84af29656c541a4bf3354b1e55daca8f4148705f7833a254e6a6fe0da349"
+        },
+        {
+          "source": "evidence/U-QA-001/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1577,
+          "sha256": "4c90e014c004ca8ff35d578e6d3c4f005b7608b626e9ab910e6df0402cbf5039"
+        },
+        {
+          "source": "evidence/U-QA-001/tools.jsonl",
+          "format": "jsonl",
+          "records": 6,
+          "bytes": 3267,
+          "sha256": "a602a6e3c7f3d319711784c9e17d42c66c06c975f799b720ee235cccb6a16158"
+        },
+        {
+          "source": "evidence/U-QA-001/trace.jsonl",
+          "format": "jsonl",
+          "records": 31,
+          "bytes": 92360,
+          "sha256": "5ca66eb591519d664a857ab549ace712d0edddc7564cdf5b8b8ec29666dc842e"
+        },
+        {
+          "source": "evidence/U-QA-002/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6324,
+          "sha256": "c197c13257e0ff519dab8deaef5b4031a74f896d3c2e09c61de6dd109532f0bd"
+        },
+        {
+          "source": "evidence/U-QA-002/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1655,
+          "sha256": "3aaf5647e948dcdf05fbd068a6a3b0183dee6e318fac3c79e560f118b8854f16"
+        },
+        {
+          "source": "evidence/U-QA-002/tools.jsonl",
+          "format": "jsonl",
+          "records": 10,
+          "bytes": 3709,
+          "sha256": "f1990518d90db0195522bc89db2c3761b93bb5627b33fdc9e68a92dc36ab465f"
+        },
+        {
+          "source": "evidence/U-QA-002/trace.jsonl",
+          "format": "jsonl",
+          "records": 35,
+          "bytes": 94841,
+          "sha256": "b05da9e0ba1e55c9ccb7774e7350481e9740ce8419dca789637874e0ab69a37a"
+        },
+        {
+          "source": "evidence/U-QA-003/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4653,
+          "sha256": "5433a9aec29925baf622ed7905429a3413cb5b90b476d98f05bb18fa2ce7f85b"
+        },
+        {
+          "source": "evidence/U-QA-003/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1571,
+          "sha256": "8fe5d0c246da27ef875e3bb4952869bee850dd7552e43b10e42b80d3f7c90359"
+        },
+        {
+          "source": "evidence/U-QA-003/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-003/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 63566,
+          "sha256": "2a237ebf2d1576c4120c8c3c74d221314172357d76a5e2cfd1518e7ef7277913"
+        },
+        {
+          "source": "evidence/U-QA-004/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6874,
+          "sha256": "b0ab498f697da12aaa7f3925b439ada70187590f9d55250b88603ab63c2f997c"
+        },
+        {
+          "source": "evidence/U-QA-004/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1592,
+          "sha256": "bc63e760f70964df67d658e1a2bea7397c083d6414f66ee4928f13f32bb587f9"
+        },
+        {
+          "source": "evidence/U-QA-004/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-004/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 71984,
+          "sha256": "233be1f4bbb182c3aacdfebfa11c9cb2cb39e2b0ff12a11e98d75fdcd26ef1b6"
+        },
+        {
+          "source": "evidence/U-QA-005/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4355,
+          "sha256": "76af68ca4ba604dca4739eb3fa9aa457b7bae7d3c865338eedf597363be996f7"
+        },
+        {
+          "source": "evidence/U-QA-005/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1565,
+          "sha256": "d78159bd9858b62133fde5abaf1a2a6ef1c210bb20efbbc9bd4aedfd05212b92"
+        },
+        {
+          "source": "evidence/U-QA-005/tools.jsonl",
+          "format": "jsonl",
+          "records": 40,
+          "bytes": 14947,
+          "sha256": "42f49d7523b7f0d9552516aebaec6095a7da39ef756a8842f63e2d1eca74c9b6"
+        },
+        {
+          "source": "evidence/U-QA-005/trace.jsonl",
+          "format": "jsonl",
+          "records": 92,
+          "bytes": 144227,
+          "sha256": "f36681827cc6158a66138b845547cd9b14e3772112f8ba3c53303b32d84908b6"
+        },
+        {
+          "source": "evidence/U-QA-006/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5262,
+          "sha256": "e3d44bb8406281cdf7f29a0bc81568bebdd2030af01e0587d4cf4f12f3be276a"
+        },
+        {
+          "source": "evidence/U-QA-006/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1583,
+          "sha256": "7c2a30c43503914fdbb8bf4a8b20ededd59dc88011df37c487948cf0ce4e8b5d"
+        },
+        {
+          "source": "evidence/U-QA-006/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-006/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 60912,
+          "sha256": "1aed04f564ce734024526afcfb1f7ca4e6440ad6a127946b193ff996c0a85ec6"
+        },
+        {
+          "source": "evidence/U-QA-015/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5562,
+          "sha256": "b3f2fa98d418e306e2c6d721c0f74b2848b740b2ac5b5d4f2384716a45899c82"
+        },
+        {
+          "source": "evidence/U-QA-015/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1758,
+          "sha256": "2d9b2ec86af605b2d9882b1e466769a08440be2ca6594c824308fd6cab5c8e37"
+        },
+        {
+          "source": "evidence/U-QA-015/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-015/trace.jsonl",
+          "format": "jsonl",
+          "records": 30,
+          "bytes": 80020,
+          "sha256": "629aa82cd29b786c5faef3eaf977516b3ca261057350c50a2df407f8b4803e20"
+        },
+        {
+          "source": "evidence/U-QA-007/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6910,
+          "sha256": "724a797b84ad49a28cc792155f4add3d07550ef851fcefe8511aedcbf6ac3729"
+        },
+        {
+          "source": "evidence/U-QA-007/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1588,
+          "sha256": "bec0e3a9505c20bb2e381873cb6e1fd9cdc48c562e1848d18f42b210bc460eee"
+        },
+        {
+          "source": "evidence/U-QA-007/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-007/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 67013,
+          "sha256": "04a28c22d47cbd097ab0f5cff4338adfe5639179edea8afea3c44c46d96173c8"
+        },
+        {
+          "source": "evidence/U-QA-008/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 7683,
+          "sha256": "9e5cf0b305d32c028933eaf0eb5a12d9476415b442f99ee511c88b63a0707cfc"
+        },
+        {
+          "source": "evidence/U-QA-008/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1625,
+          "sha256": "a44f111f583b855ed3c167f6be576d3db5f6d26537fe7ffef8cf8d5a53dea891"
+        },
+        {
+          "source": "evidence/U-QA-008/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-008/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 73991,
+          "sha256": "e1f7935ea144e7c9ec2f5b341b0e337787e36ea6771eac47e7aec98475ad49fa"
+        },
+        {
+          "source": "evidence/U-QA-009/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 11775,
+          "sha256": "ae6a9424166b0017eb564f7116b4a36a5eb5344536a3c6a3b2844c1ae70dd79f"
+        },
+        {
+          "source": "evidence/U-QA-009/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1584,
+          "sha256": "42fe4e57cc8d2e50dc8a9efae996885f9f98ff49c28f8334c3ba0a423cd856d5"
+        },
+        {
+          "source": "evidence/U-QA-009/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-009/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 73221,
+          "sha256": "d048548e2e5b59de05f4203e641fc62a81001be6207079661a75d6bb8cf249d0"
+        },
+        {
+          "source": "evidence/U-QA-010/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 8593,
+          "sha256": "23fcf89c709accb8f95007e3c8045198caec38ecf7403bc9d1cb10f92f036ddf"
+        },
+        {
+          "source": "evidence/U-QA-010/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1796,
+          "sha256": "156773c81f21c6fc1bc50a8be14d1f9f55b121f49c49cf6094c8ccc4e06b8cd5"
+        },
+        {
+          "source": "evidence/U-QA-010/tools.jsonl",
+          "format": "jsonl",
+          "records": 16,
+          "bytes": 12377,
+          "sha256": "982a6feeef95ec9e4e083ff436aee3af3bdbf472789450dd4abc6b2a673b5760"
+        },
+        {
+          "source": "evidence/U-QA-010/trace.jsonl",
+          "format": "jsonl",
+          "records": 50,
+          "bytes": 137771,
+          "sha256": "45dee4d4ff10d5df39b272fd48546c3542e1f4c0cd0fc07ab0b41eecb160261d"
+        },
+        {
+          "source": "evidence/U-QA-011/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4912,
+          "sha256": "f373164da6bff8d443fbbd982c19e3152a74a9b4a7f54e9c6fd2771826413879"
+        },
+        {
+          "source": "evidence/U-QA-011/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1583,
+          "sha256": "81d737bba887e04bc8d6c75cb3431a7fe3647a55f551c3d9f511ad5767d5d297"
+        },
+        {
+          "source": "evidence/U-QA-011/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 1776,
+          "sha256": "d2e138b62cc8782502e47875f6e2e4c5d6f2fcb3dcfc7dd5188130ef67bf0d77"
+        },
+        {
+          "source": "evidence/U-QA-011/trace.jsonl",
+          "format": "jsonl",
+          "records": 27,
+          "bytes": 85319,
+          "sha256": "32b236caed4e668af2ac1fab89e110754b3e8c29090ef5e22f7e2e98b9f20f39"
+        },
+        {
+          "source": "evidence/U-QA-012/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4628,
+          "sha256": "11766984dae23256658224729c4c4fd651f43e5dd1bdb200918b4cfd38e0b1b2"
+        },
+        {
+          "source": "evidence/U-QA-012/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1622,
+          "sha256": "1018657b5f34cadc5878375d0b577b331fad51280db2ee823ebf26c76eee213c"
+        },
+        {
+          "source": "evidence/U-QA-012/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 1776,
+          "sha256": "9a67720fd82e238d53df2317532e8b2a3c7a3a7eba0f260d33f234a8dd811db3"
+        },
+        {
+          "source": "evidence/U-QA-012/trace.jsonl",
+          "format": "jsonl",
+          "records": 27,
+          "bytes": 88789,
+          "sha256": "8e54fa2a94bc2299e013543ecd25c10c7d30fd2047c937e0fb57030551a956fc"
+        },
+        {
+          "source": "evidence/U-QA-013/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3596,
+          "sha256": "040519ccc9ac6d9ec7c95d1b38ffb8ceb554ba243dd9501236f6df81521033cf"
+        },
+        {
+          "source": "evidence/U-QA-013/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1541,
+          "sha256": "427b4ae5c94a6211313586bed2996f303f291b85acc7e66f51b5e0443960e5a4"
+        },
+        {
+          "source": "evidence/U-QA-013/tools.jsonl",
+          "format": "jsonl",
+          "records": 4,
+          "bytes": 3208,
+          "sha256": "782f88b5af818dd87a87f03bc62e23dfc7a05de293fb86c01d6fce66ca90f3ff"
+        },
+        {
+          "source": "evidence/U-QA-013/trace.jsonl",
+          "format": "jsonl",
+          "records": 29,
+          "bytes": 94423,
+          "sha256": "1ff9ff56b20b839b6f956f5427e8f9a79d7bc95050b4cd226eb127fd20668145"
+        },
+        {
+          "source": "evidence/U-QA-014/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4613,
+          "sha256": "bd19ac1062ecf9b43db22dbe0680364311d48d4e22f28910caf027e79b7e022c"
+        },
+        {
+          "source": "evidence/U-QA-014/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1537,
+          "sha256": "1f804f0b18c8ccf2ae4effb472c2eb0970cac68fb76e99158ee647aa680acf58"
+        },
+        {
+          "source": "evidence/U-QA-014/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-014/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 59411,
+          "sha256": "cb615bf1070e6686b2a6f025f097f2d1bd47819bfa032fb16f2b4df61e7270aa"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-001.txt",
+          "total_lines": 19,
+          "sha256": "7cb612035d572b9af50ea42f06e1e809587e2ef5826d6b4db835ceaa1cc398b3"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-002.txt",
+          "total_lines": 29,
+          "sha256": "50ba85a5ccab7e9105dc1b85dc6e4d3934b097780e17540ab4be6e4fcb9670b0"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-003.txt",
+          "total_lines": 51,
+          "sha256": "d3831d4942d2b11b4fb5fb3a1c038a4ecf9bce1df835eee686a7c361f7b6e40c"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-004.txt",
+          "total_lines": 19,
+          "sha256": "e80cc19a2be45703b23c6241ec1228ba1e0382dbd08cec0f8b6c81071fdc3e33"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-005.txt",
+          "total_lines": 31,
+          "sha256": "c57803119f15c20f19234e62f906dbcc4145ca9d5c4ccfc3e95c85c2001544ba"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-006.txt",
+          "total_lines": 44,
+          "sha256": "3575d77b728b0957bc7c30762a0003a32458de55cab177468bee8c161fa69440"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-007.txt",
+          "total_lines": 19,
+          "sha256": "c4a84580faca849ed8a990082adadb4e1d35a4e0e580788dbd7c3fca76290a34"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-008.txt",
+          "total_lines": 35,
+          "sha256": "66c6846b05ffb7fbacde5d894e3fcddc41e149a9d6a7a0f3fc520325989252a9"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-009.txt",
+          "total_lines": 35,
+          "sha256": "149fbad6bd666e79775cabd5566b817ac295a39ffd929c9add83662db4ebcfc6"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-010.txt",
+          "total_lines": 19,
+          "sha256": "3d7d4a9b5991124a5bee270ff2d159c167311ec02a966a3fefaa3e92d56b4c37"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-011.txt",
+          "total_lines": 37,
+          "sha256": "e04802a9cda1ea8416ab556ebe6fdaa4cec4de60d7abb797b83c163d880f3a65"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-012.txt",
+          "total_lines": 19,
+          "sha256": "30d4c933575c14de60c43cde1781125736a3db269c01dd41446e48c25f6d8fcf"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-013.txt",
+          "total_lines": 26,
+          "sha256": "c2656e46511ac559ff5ab36306dc22eecce7aacd350b8c0b1458034092280ed9"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-014.txt",
+          "total_lines": 59,
+          "sha256": "4b86608a2c9a7b5b4c3edf6eedc8c6824b3a580e457b73b40dd0a895b232abee"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-015.txt",
+          "total_lines": 25,
+          "sha256": "09ffdf6ea388b2cf5476513cce8e8256c7f531074401097a233ae1b221247efe"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-016.txt",
+          "total_lines": 41,
+          "sha256": "f09cfc2366735f85ca42b368437d6dfd2b9f2c27d82dbee44172ab263797b82e"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-017.txt",
+          "total_lines": 55,
+          "sha256": "351b20ce08681289aa728ec670f121c8973c8b4768246c69604210eb3a336e8e"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-018.txt",
+          "total_lines": 41,
+          "sha256": "0bb819cbdc630d7d38caea9a2e18eb4dfffd1ffec03ecafb38bb241d8e30b882"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-019.txt",
+          "total_lines": 19,
+          "sha256": "a6cb37fc62254312bbfd5f95af30359a55af1b38b512482363a50226c598d29f"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-020.txt",
+          "total_lines": 38,
+          "sha256": "18addcf1076b81742240f56536c5dba1bc8110fe371784ee8f908d5a8dab265a"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-021.txt",
+          "total_lines": 19,
+          "sha256": "f73efb8d2936c45a84921a7e857ce374952ad496a460deaf4d298fd1118dc11d"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-022.txt",
+          "total_lines": 31,
+          "sha256": "20de5db869410398848c3d1d087372f315f9eab5eeb169a872a15dbaf8eabb92"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-023.txt",
+          "total_lines": 33,
+          "sha256": "39e42675f2d9253a53c1ddef26ab8f08cb76b14904e7a8290b35e1a9a2bd042c"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-024.txt",
+          "total_lines": 23,
+          "sha256": "61c38bf4bdb5b040db578544c1522dffe00bd4c25e71cef47acedd2da316f659"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-025.txt",
+          "total_lines": 32,
+          "sha256": "d00bc577295d4721d374e939c08e28cfdc2f120d308f6efb73199d524845f240"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-026.txt",
+          "total_lines": 23,
+          "sha256": "6934a78ff894e96ca41ac2002a1b006376630a0fef3a63e1aa4bee9daf477cef"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-027.txt",
+          "total_lines": 23,
+          "sha256": "c18215e6ef48334fafa277b83c99efd59b8c9cbc325fd60a585baff001fbd1a7"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-028.txt",
+          "total_lines": 30,
+          "sha256": "81290ce83dd97e175cfd8780069981261a9816e45346c3a6146523484d71b3ea"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-029.txt",
+          "total_lines": 19,
+          "sha256": "1f50fb669aa5ac5467cfc8bfb5e90dc0cc8cf3078c5e397a2fb9d63600600fed"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-030.txt",
+          "total_lines": 43,
+          "sha256": "2efeabfe8e38eb7d354dbf2cd6ca99669c200556b71dea0ce987c859215ed246"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-031.txt",
+          "total_lines": 19,
+          "sha256": "c831742b9c510f578bb29ba803be03f0c08d51114faaebd3e17a05e67231c361"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-032.txt",
+          "total_lines": 26,
+          "sha256": "8e78abbe165076c23a4cf2fb83cce4806d7f51c9d94d57423b84a4f967b04ba6"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-033.txt",
+          "total_lines": 40,
+          "sha256": "f5afc018184d939832991fe4b43150044c9f818b3508148ed7c2720e460e9451"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-034.txt",
+          "total_lines": 22,
+          "sha256": "9559726193ca2972d5abcdfe3291ed5364eddb0c88ad66bfa3dfee9f357dd343"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-035.txt",
+          "total_lines": 30,
+          "sha256": "aca0badc97304905bf211f870c34d841c9b188bbab1393fd907e22a52fa51341"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-036.txt",
+          "total_lines": 27,
+          "sha256": "8b9dfbd98b3584e6a59202b4b7a05131f9af9c66ba28bf3a4701ac6501d0e359"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-037.txt",
+          "total_lines": 37,
+          "sha256": "3327a81d67eaedbae3d948e5245775d1a1f683460352e853778d6b9919ba846e"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-038.txt",
+          "total_lines": 19,
+          "sha256": "b1ed5949b7cd6738629bc45041af4d264fe386bb43c0bde941279ffe85233573"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-039.txt",
+          "total_lines": 28,
+          "sha256": "406f0b8e7be41af2dbbd1bc26c7b229ce1a110ff1110e1a30814e4b0081fb101"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-040.txt",
+          "total_lines": 34,
+          "sha256": "51a1ec2679e9f69f6420935bec7513fded2e454b1c2fa3dac65e808e99fc0a5c"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-041.txt",
+          "total_lines": 20,
+          "sha256": "6509647d9e1b9fcbfbeffb5cbfa9b0a153db107aa7cbe264c84fc7917edbf535"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-042.txt",
+          "total_lines": 30,
+          "sha256": "1247f9feaf72e8ed8710cf2475cd40e671ef99f1d3200bae67cd5f7adbb89e94"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-043.txt",
+          "total_lines": 34,
+          "sha256": "ec27c50ce13ed606950c2619c7ecf205ea24275f1d90034025fdbb801589599c"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-044.txt",
+          "total_lines": 23,
+          "sha256": "1c9e97e44e7e97b316fff25d7446a9874c33f4c1cab0f54ecd7fed0cabdb9811"
+        },
+        {
+          "bundle": "scene-05",
+          "path": "evidence/analysis/readable/scene-05/part-045.txt",
+          "total_lines": 9,
+          "sha256": "40f3af7592d09bc4cd2919aa17fd0a3b294f1d048f5d54a1411f79946d3e60e1"
+        }
+      ]
+    },
+    {
+      "bundle": "scene-06",
+      "sources": [
+        {
+          "source": "evidence/analysis/effect-inputs.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 92248,
+          "sha256": "5b0ae5a3593484e1c1514ebcd1bfda5ff932a55ae8a2f75606837dc4353936eb"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 31,
+          "bytes": 22983,
+          "sha256": "b598d8eb64c117efed5a7cf1f5fe0982a92a3d3c5d6af383f89d6923313b6d7d"
+        },
+        {
+          "source": "evidence/U-THREAT-MISSING/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2125,
+          "sha256": "84aeb53b4fb761af2df36cc6f6ed07ada03debb36414d1181cb13a0380c482d7"
+        },
+        {
+          "source": "evidence/U-THREAT-MISSING/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1507,
+          "sha256": "cc5077230540ee030c150a51c85d2377dd8c6bf17dd54b282cc3d67517adc039"
+        },
+        {
+          "source": "evidence/U-THREAT-MISSING/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-THREAT-MISSING/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 57051,
+          "sha256": "9b68993cc4796688a5297f218875787e4e4a5731aa6440a6482fd88d0c6d12be"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-06",
+          "path": "evidence/analysis/readable/scene-06/part-001.txt",
+          "total_lines": 19,
+          "sha256": "7cb612035d572b9af50ea42f06e1e809587e2ef5826d6b4db835ceaa1cc398b3"
+        },
+        {
+          "bundle": "scene-06",
+          "path": "evidence/analysis/readable/scene-06/part-002.txt",
+          "total_lines": 29,
+          "sha256": "50ba85a5ccab7e9105dc1b85dc6e4d3934b097780e17540ab4be6e4fcb9670b0"
+        },
+        {
+          "bundle": "scene-06",
+          "path": "evidence/analysis/readable/scene-06/part-003.txt",
+          "total_lines": 45,
+          "sha256": "ccdc01e55d66bed85f69ccf216910b0fb4fe68b690424724e52cc65d67aa1943"
+        },
+        {
+          "bundle": "scene-06",
+          "path": "evidence/analysis/readable/scene-06/part-004.txt",
+          "total_lines": 20,
+          "sha256": "f3f0491ff97131e9e2ec33b84fa40fed1f7e8885a05a3efc3c00df01622c55bf"
+        },
+        {
+          "bundle": "scene-06",
+          "path": "evidence/analysis/readable/scene-06/part-005.txt",
+          "total_lines": 11,
+          "sha256": "0ef1bd1a14e3b1cc13f87a7a5c0dd7def5ad97b7c8e10ceac4fbc043122fbff2"
+        }
+      ]
+    },
+    {
+      "bundle": "scene-09",
+      "sources": [
+        {
+          "source": "evidence/analysis/effect-inputs.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 92248,
+          "sha256": "5b0ae5a3593484e1c1514ebcd1bfda5ff932a55ae8a2f75606837dc4353936eb"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 31,
+          "bytes": 22983,
+          "sha256": "b598d8eb64c117efed5a7cf1f5fe0982a92a3d3c5d6af383f89d6923313b6d7d"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-001/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5063,
+          "sha256": "c21b512d8ff1404c470c8e6a37c638be879ecc88ca119d215c98e3d7b7f7ea5c"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-001/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2102,
+          "sha256": "43ceff230fa2998cec8823d9f2f681eae09df0472c8df8313682403dcf195e5a"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-001/tools.jsonl",
+          "format": "jsonl",
+          "records": 18,
+          "bytes": 12870,
+          "sha256": "cd2d0d7e181b4b044c33673145dc93c7ab531daf785b9fc17d7d89630bcce518"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-001/trace.jsonl",
+          "format": "jsonl",
+          "records": 88,
+          "bytes": 232777,
+          "sha256": "9682158099cc1d0bfe4d0454573c474ecb4b75abfcb50d4e0eb1ed5419715f8a"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-MISSING/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5063,
+          "sha256": "846c93653083698750c32f38a964285d0b4af3438ba92dd417c135ba9baffbc7"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-MISSING/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1895,
+          "sha256": "d35a18650762322e37761e6deb3c05349da00d592778f692faaffb1406231ad4"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-MISSING/tools.jsonl",
+          "format": "jsonl",
+          "records": 16,
+          "bytes": 9820,
+          "sha256": "a84fafbac320cc0eaad53a6c9297acc0c418cf6513b24da28e1d0422c2c3c154"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-MISSING/trace.jsonl",
+          "format": "jsonl",
+          "records": 90,
+          "bytes": 251299,
+          "sha256": "e38818b3710aedd77f014b9ca22fe264f8caec94daaacc5f63ac4d6f021f7335"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-EMPTY/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5683,
+          "sha256": "bb2b14034edccfd41d50c58f11ab810dc742e2fdb3933be49962c174c6981bd7"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-EMPTY/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1683,
+          "sha256": "b093e65abebd9f7fe4487875876f10c203aa1b6d5bb7b223e85912d8276e311c"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-EMPTY/tools.jsonl",
+          "format": "jsonl",
+          "records": 18,
+          "bytes": 12215,
+          "sha256": "bab103eaddfa3190d7b99cb265380136f1ca4cecf7ac791acb00bf8c3a9e0175"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-EMPTY/trace.jsonl",
+          "format": "jsonl",
+          "records": 88,
+          "bytes": 254151,
+          "sha256": "41b6260d33779e7770bad1e82120b4c70a229ae220f55af77c6274e07ed8836e"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-FAIL/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4391,
+          "sha256": "c046333c24651e6d5e753bcc65a1c3992ed7429b7586f6f43ce4707b2be15089"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-FAIL/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2022,
+          "sha256": "647dffd880a2b02907879fe56d8b3c99e08cfbe3b657f19fcc0d8318b508aa0a"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-FAIL/tools.jsonl",
+          "format": "jsonl",
+          "records": 16,
+          "bytes": 9770,
+          "sha256": "1282251dbe22bb39c22817cb4028f3fd986471887ff63255be332da80d76228a"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-FAIL/trace.jsonl",
+          "format": "jsonl",
+          "records": 83,
+          "bytes": 209205,
+          "sha256": "db00efd72fde915e48842dcad767ee8ed11a43c3fd594eb04ae999bd1d4e9438"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-001.txt",
+          "total_lines": 19,
+          "sha256": "7cb612035d572b9af50ea42f06e1e809587e2ef5826d6b4db835ceaa1cc398b3"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-002.txt",
+          "total_lines": 29,
+          "sha256": "50ba85a5ccab7e9105dc1b85dc6e4d3934b097780e17540ab4be6e4fcb9670b0"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-003.txt",
+          "total_lines": 43,
+          "sha256": "6616996a478c0cd9728e1218e99221b75a8b47171a771a87af1202321794f60b"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-004.txt",
+          "total_lines": 33,
+          "sha256": "55516da686c777167b10b0f11968a956d5df13d0d674d5db4cd896b01616cb95"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-005.txt",
+          "total_lines": 26,
+          "sha256": "8a46b8a4f94c5f1c57ae14deee53fc0b315a6472b79330fc2574f563283bf864"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-006.txt",
+          "total_lines": 26,
+          "sha256": "6466d689852ecd4aed559e4e43fd37f7adeb7fd6abeae796d6d259cbc8a5050d"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-007.txt",
+          "total_lines": 34,
+          "sha256": "62abddf4b1dd42c8d6aa0eb90109748e191bf0046fd8c3b457e9205658fb9a68"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-008.txt",
+          "total_lines": 29,
+          "sha256": "1ff53b9a8d1b0ce207d445f58ab643c2a2ec634ba9758847527f82a1fc1d5b09"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-009.txt",
+          "total_lines": 31,
+          "sha256": "32a01dd791a091d5c7b4156e8f530bfa2e4808315dda091a215ded9ea159ba59"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-010.txt",
+          "total_lines": 33,
+          "sha256": "c24f8cd1d8ae9d67a1455f4bd04da3c6ee5239a6658fc383b9f5bc68756ddb0a"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-011.txt",
+          "total_lines": 38,
+          "sha256": "ed6b56e65d1f5a9015a2cc82540bee56aaa2d576025b429fc577c940479baf08"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-012.txt",
+          "total_lines": 27,
+          "sha256": "a43c71cda083e2690b4dfe87c522238024c53e7f5b28071d2e622195e9257e56"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-013.txt",
+          "total_lines": 30,
+          "sha256": "390eb7419f0b4cbdbb160e0ba0c9ad693b869a778e89bd5b254bff527b010627"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-014.txt",
+          "total_lines": 29,
+          "sha256": "b61bb8dbe575ecfac06b3c3e7af049491cd21f83f65373886827bffc5550a55e"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-015.txt",
+          "total_lines": 32,
+          "sha256": "17dd5cd1b36e35057f6a9dd6fea395a916656d8807f89f066525043644bbbd38"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-016.txt",
+          "total_lines": 31,
+          "sha256": "b2220f4696d387b08224ad75aa92a98361af6b1e17a080add2032199f0dea473"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-017.txt",
+          "total_lines": 31,
+          "sha256": "19d8bbb62cf13b033788ffadd9c1df2f430afffe22e11f3f3aacf8855e275031"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-018.txt",
+          "total_lines": 29,
+          "sha256": "5668a179863764d836866c1a9644c4f01b0fd56c7a4553a7b959d31772c5a667"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-019.txt",
+          "total_lines": 36,
+          "sha256": "3c26fc8e2709614ef37a3213a9532ee24957987e86613b3dd23a7f6061ebfb24"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-020.txt",
+          "total_lines": 27,
+          "sha256": "a60628964b02da7b5896da60339d01881ce71539f1b61a0a33dfcdc1ab778e95"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-021.txt",
+          "total_lines": 27,
+          "sha256": "c39a936849125751847a5d0e0d54360fef508c114313e077ebc1d5437aaddce9"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-022.txt",
+          "total_lines": 32,
+          "sha256": "13f61865bb5045ca458d8bce59aa9ec73d514ccb16bf7305750ed6c2c5b92d44"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-023.txt",
+          "total_lines": 25,
+          "sha256": "f4b8c79319e3f87dcea0722585e630f6e2c9c6730db32be3459390dce83703f7"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-024.txt",
+          "total_lines": 36,
+          "sha256": "b937251c793d05115fb473418e24affbc5efa4f9dce5727fbaa3f64d3f2ffdb7"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-025.txt",
+          "total_lines": 27,
+          "sha256": "3c858fa164c4916b5c5c175b8ff152bb516659a77d8d7ee48103a9a5f10b5455"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-026.txt",
+          "total_lines": 42,
+          "sha256": "d835541a99b86d216a05dd7d6b9f643fc324b3b509803d7b3facf947a4b4cc85"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-027.txt",
+          "total_lines": 21,
+          "sha256": "89570cbb0856ac66ec290601c0054407a97b96f9d9ae5e7f48db01faa06990b3"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-028.txt",
+          "total_lines": 28,
+          "sha256": "6138c63a9478f8d876c7d82b6ad519e89364b60292796e139ded89d608790f6d"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-029.txt",
+          "total_lines": 30,
+          "sha256": "22e4a7a4273318d0b14d851790924c04572281ed0c3023daabab1708ed69b476"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-030.txt",
+          "total_lines": 31,
+          "sha256": "0bdd77ccdc6455bb368d7c8219997cea15c5705a51d3cb265e8a8e0d3353591b"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-031.txt",
+          "total_lines": 31,
+          "sha256": "f6289f01eed46a1e4cd5588367aa686c60149b51ba1e89a7ac7459faf55a7241"
+        },
+        {
+          "bundle": "scene-09",
+          "path": "evidence/analysis/readable/scene-09/part-032.txt",
+          "total_lines": 30,
+          "sha256": "6fdb23393dbfcebc39d153e105bbb81a9d05912356aff75b0c3f068489c96b7a"
+        }
+      ]
+    },
+    {
+      "bundle": "source-diagnosis",
+      "sources": [
+        {
+          "source": "evidence/analysis/harness.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6265937,
+          "sha256": "c303ca349cd5af4c79468c0af63787aa322599f46c765e5ad3086c2318f05926"
+        },
+        {
+          "source": "evidence/analysis/effect-inputs.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 92248,
+          "sha256": "5b0ae5a3593484e1c1514ebcd1bfda5ff932a55ae8a2f75606837dc4353936eb"
+        },
+        {
+          "source": "results.jsonl",
+          "format": "jsonl",
+          "records": 31,
+          "bytes": 22983,
+          "sha256": "b598d8eb64c117efed5a7cf1f5fe0982a92a3d3c5d6af383f89d6923313b6d7d"
+        },
+        {
+          "source": "evidence/U-INS-002/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3159,
+          "sha256": "d745479b2b3bddab2b720efae10f2c3c411d4ec372c99510f2d62fb28f9edb8d"
+        },
+        {
+          "source": "evidence/U-INS-002/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1499,
+          "sha256": "2a8d0f17eeef780bbcc5adc98842dd1d6c255c06abeb4420955e9bb6cbf290a8"
+        },
+        {
+          "source": "evidence/U-INS-002/tools.jsonl",
+          "format": "jsonl",
+          "records": 6,
+          "bytes": 6442,
+          "sha256": "56ef0a217cc25adf8d9d18ef826ac693e72d34ad9cd3a625150dc21e5ebd51b0"
+        },
+        {
+          "source": "evidence/U-INS-002/trace.jsonl",
+          "format": "jsonl",
+          "records": 37,
+          "bytes": 92290,
+          "sha256": "0cbce19d185bb6fd6806c767bd5b574bda5fcc5985087b244d628c8576476043"
+        },
+        {
+          "source": "evidence/U-INS-003/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4511,
+          "sha256": "d1dfd1d9436b9b0b52bd0acd21fba403ab2509c686f94efb023e1a26aaf25800"
+        },
+        {
+          "source": "evidence/U-INS-003/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1574,
+          "sha256": "d6ff6a5067675e995dfe3dfd70d7a629d258d9a32e1b7df0821452cf25813e9f"
+        },
+        {
+          "source": "evidence/U-INS-003/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-INS-003/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 61468,
+          "sha256": "f217705b8fff4dfc15f1afbf8f3537b8f73d4810d25cc9953b51d2e85cf256a4"
+        },
+        {
+          "source": "evidence/U-NEW-009/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2933,
+          "sha256": "4089f15621bee880cd295792c32eff53098792f69d9b733d035240000b8db004"
+        },
+        {
+          "source": "evidence/U-NEW-009/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1835,
+          "sha256": "a5ebf7c29ec971876b541187d1f17e7978037dce189beac3fcd1a4a191df47d9"
+        },
+        {
+          "source": "evidence/U-NEW-009/tools.jsonl",
+          "format": "jsonl",
+          "records": 10,
+          "bytes": 8069,
+          "sha256": "77df37f727b0202e2970544a3f81aec15c64bcc1baa51928ffcbe23113d1a868"
+        },
+        {
+          "source": "evidence/U-NEW-009/trace.jsonl",
+          "format": "jsonl",
+          "records": 41,
+          "bytes": 115476,
+          "sha256": "186d70517eafbd4d0c1287cc4b1bfdd5f8b4392b241314697655ac867ba3cfe4"
+        },
+        {
+          "source": "evidence/U-FLT-MENTION/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2201,
+          "sha256": "d8bbb58d0d3bf17a869a2786cb688b23d84578318912bf871da479f33a96c81f"
+        },
+        {
+          "source": "evidence/U-FLT-MENTION/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1580,
+          "sha256": "4b46af41ac7932c914659573032d510ff5060cdb43b38807af40456265ec7cbe"
+        },
+        {
+          "source": "evidence/U-FLT-MENTION/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 2502,
+          "sha256": "10dd951a6973e94ec057c71c97e4bd9af4ac216e2e0e7edb982fb533caa73ce3"
+        },
+        {
+          "source": "evidence/U-FLT-MENTION/trace.jsonl",
+          "format": "jsonl",
+          "records": 27,
+          "bytes": 85914,
+          "sha256": "04c7ab01e3efcf569407a60c40df4941e0f0eb7aed562236b17b00d5428f67db"
+        },
+        {
+          "source": "evidence/U-FLT-002/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1865,
+          "sha256": "b06b5edebba1d494c0315683901e6dce912975cf0bb908653367361e7c750f49"
+        },
+        {
+          "source": "evidence/U-FLT-002/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 880,
+          "sha256": "3eba52f397c2c268335e0dabf03d830f24ae9d1b6bd8a39539159ad36f820c3f"
+        },
+        {
+          "source": "evidence/U-FLT-002/tools.jsonl",
+          "format": "jsonl",
+          "records": 80,
+          "bytes": 63117,
+          "sha256": "17b29fbf86f3c9e48cd1fb41b8262acd84f57913e68da48c5c7e91663faf3090"
+        },
+        {
+          "source": "evidence/U-FLT-002/trace.jsonl",
+          "format": "jsonl",
+          "records": 151,
+          "bytes": 278040,
+          "sha256": "77cc200b205acee245459fd221c94c9037174d11a739236987f784c967718d68"
+        },
+        {
+          "source": "evidence/U-FLT-003/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2301,
+          "sha256": "acd8e74fdb2838daf96964990b1c1d1d2740de23fe3b70912a46a352da2f6f82"
+        },
+        {
+          "source": "evidence/U-FLT-003/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1571,
+          "sha256": "ac57c719d3e4f75a8dc236aa3fe016d008eaeac25d95acaff6ab31333d72fa0b"
+        },
+        {
+          "source": "evidence/U-FLT-003/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 2502,
+          "sha256": "5c8f48318ad94df302d9fb4d23b210201caa5f583c4434d40d5803c8214f346d"
+        },
+        {
+          "source": "evidence/U-FLT-003/trace.jsonl",
+          "format": "jsonl",
+          "records": 27,
+          "bytes": 80597,
+          "sha256": "775eb2e87a66dcf3720dbf36c0924f5550b9e38986d5b05e4d0e6b5fe4e187c2"
+        },
+        {
+          "source": "evidence/U-FLT-004/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 7847,
+          "sha256": "d8e2dc7b304330f960e0492b1515398ffe50415e10f606ca62ccf4f9625efb52"
+        },
+        {
+          "source": "evidence/U-FLT-004/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1580,
+          "sha256": "72479f72fb451f2b0bd48ef37c5ef699cd23db3ee8acb1f869c5cd0979de6d47"
+        },
+        {
+          "source": "evidence/U-FLT-004/tools.jsonl",
+          "format": "jsonl",
+          "records": 32,
+          "bytes": 17847,
+          "sha256": "8ba0587a3fe622a88946ac461363d14369ee595d599e0bc04e893f90deaab249"
+        },
+        {
+          "source": "evidence/U-FLT-004/trace.jsonl",
+          "format": "jsonl",
+          "records": 102,
+          "bytes": 239429,
+          "sha256": "04cdd76b95e9678eb602b8a197b4f502c9e8da4f3d08ecc006382711424f2dbe"
+        },
+        {
+          "source": "evidence/U-FLT-005/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3529,
+          "sha256": "5a0bc74de2f78690d9110544684088d0f3edfbdcd88fbe09e56312844b139085"
+        },
+        {
+          "source": "evidence/U-FLT-005/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1592,
+          "sha256": "ed2b99f4a1efc40d7c73693358e33d238c51e4b4ec3b02efbab82fda30a7ea4a"
+        },
+        {
+          "source": "evidence/U-FLT-005/tools.jsonl",
+          "format": "jsonl",
+          "records": 4,
+          "bytes": 2176,
+          "sha256": "7bebe6333f9f60da27f281f3f3fe67f3599fb9f9b69e3127063c3e6028ea66ae"
+        },
+        {
+          "source": "evidence/U-FLT-005/trace.jsonl",
+          "format": "jsonl",
+          "records": 32,
+          "bytes": 99909,
+          "sha256": "195cf07f76a7c6402dc1d01bf1462921ce732eabebd769735464789ea9c0a8c5"
+        },
+        {
+          "source": "evidence/U-FLT-006/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1466,
+          "sha256": "e29f72e392f84a8b6fa9378f0eea5dff84fb3d063b66d5e0e1f50482ca5a0ac6"
+        },
+        {
+          "source": "evidence/U-FLT-006/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 880,
+          "sha256": "dafcc2884f4239538735870c54dc4e743d079fc22477fccd480d4a90c9cab50c"
+        },
+        {
+          "source": "evidence/U-FLT-006/tools.jsonl",
+          "format": "jsonl",
+          "records": 52,
+          "bytes": 45687,
+          "sha256": "af2f872438503cfce681c22b9a21df5a8fa7ad0ac90671aa274d2bf13ddf01bc"
+        },
+        {
+          "source": "evidence/U-FLT-006/trace.jsonl",
+          "format": "jsonl",
+          "records": 132,
+          "bytes": 251878,
+          "sha256": "c20e3ba6a93ded9f96589ffe558c6a811770ffa9f913025c87cf1be2c67135eb"
+        },
+        {
+          "source": "evidence/U-FLT-007/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 237,
+          "sha256": "4ac1904914fc33b23039d7269ff1e7cd0007b24291c55aed11588e17ff4e9d91"
+        },
+        {
+          "source": "evidence/U-FLT-007/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 880,
+          "sha256": "56014a813a63af0836d42c8e32e242032e1971d34278a33da1430d800fe2d707"
+        },
+        {
+          "source": "evidence/U-FLT-007/tools.jsonl",
+          "format": "jsonl",
+          "records": 52,
+          "bytes": 36477,
+          "sha256": "657e60df1f6464e58845aaefc611a8f9c182412190e17206469bc54b1a37d66a"
+        },
+        {
+          "source": "evidence/U-FLT-007/trace.jsonl",
+          "format": "jsonl",
+          "records": 143,
+          "bytes": 280975,
+          "sha256": "c98b5ff7f07bc265bfdbe41a28dcafc42d3309bebc79a98bf72a072e8089cbfa"
+        },
+        {
+          "source": "evidence/U-FLT-008/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1573,
+          "sha256": "371927dea6a35ce8ada008a4f8b30131bf24ec39c74a575df04b6f9dfa1ec6d5"
+        },
+        {
+          "source": "evidence/U-FLT-008/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 880,
+          "sha256": "b95a5f803e976b6146dae0e52142d4b72511b41ba485422402686c63d2343bea"
+        },
+        {
+          "source": "evidence/U-FLT-008/tools.jsonl",
+          "format": "jsonl",
+          "records": 74,
+          "bytes": 53802,
+          "sha256": "9e7595f74114ea427ad97997f78c0aff06bae2ed4ccb9469f84347c25946942d"
+        },
+        {
+          "source": "evidence/U-FLT-008/trace.jsonl",
+          "format": "jsonl",
+          "records": 136,
+          "bytes": 286418,
+          "sha256": "7d54bdd78707347a217bd2b51c7d5d58ee3fed3f284d242d790c802e6706cab8"
+        },
+        {
+          "source": "evidence/U-QA-001/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3510,
+          "sha256": "afea84af29656c541a4bf3354b1e55daca8f4148705f7833a254e6a6fe0da349"
+        },
+        {
+          "source": "evidence/U-QA-001/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1577,
+          "sha256": "4c90e014c004ca8ff35d578e6d3c4f005b7608b626e9ab910e6df0402cbf5039"
+        },
+        {
+          "source": "evidence/U-QA-001/tools.jsonl",
+          "format": "jsonl",
+          "records": 6,
+          "bytes": 3267,
+          "sha256": "a602a6e3c7f3d319711784c9e17d42c66c06c975f799b720ee235cccb6a16158"
+        },
+        {
+          "source": "evidence/U-QA-001/trace.jsonl",
+          "format": "jsonl",
+          "records": 31,
+          "bytes": 92360,
+          "sha256": "5ca66eb591519d664a857ab549ace712d0edddc7564cdf5b8b8ec29666dc842e"
+        },
+        {
+          "source": "evidence/U-QA-002/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6324,
+          "sha256": "c197c13257e0ff519dab8deaef5b4031a74f896d3c2e09c61de6dd109532f0bd"
+        },
+        {
+          "source": "evidence/U-QA-002/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1655,
+          "sha256": "3aaf5647e948dcdf05fbd068a6a3b0183dee6e318fac3c79e560f118b8854f16"
+        },
+        {
+          "source": "evidence/U-QA-002/tools.jsonl",
+          "format": "jsonl",
+          "records": 10,
+          "bytes": 3709,
+          "sha256": "f1990518d90db0195522bc89db2c3761b93bb5627b33fdc9e68a92dc36ab465f"
+        },
+        {
+          "source": "evidence/U-QA-002/trace.jsonl",
+          "format": "jsonl",
+          "records": 35,
+          "bytes": 94841,
+          "sha256": "b05da9e0ba1e55c9ccb7774e7350481e9740ce8419dca789637874e0ab69a37a"
+        },
+        {
+          "source": "evidence/U-QA-003/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4653,
+          "sha256": "5433a9aec29925baf622ed7905429a3413cb5b90b476d98f05bb18fa2ce7f85b"
+        },
+        {
+          "source": "evidence/U-QA-003/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1571,
+          "sha256": "8fe5d0c246da27ef875e3bb4952869bee850dd7552e43b10e42b80d3f7c90359"
+        },
+        {
+          "source": "evidence/U-QA-003/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-003/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 63566,
+          "sha256": "2a237ebf2d1576c4120c8c3c74d221314172357d76a5e2cfd1518e7ef7277913"
+        },
+        {
+          "source": "evidence/U-QA-004/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6874,
+          "sha256": "b0ab498f697da12aaa7f3925b439ada70187590f9d55250b88603ab63c2f997c"
+        },
+        {
+          "source": "evidence/U-QA-004/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1592,
+          "sha256": "bc63e760f70964df67d658e1a2bea7397c083d6414f66ee4928f13f32bb587f9"
+        },
+        {
+          "source": "evidence/U-QA-004/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-004/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 71984,
+          "sha256": "233be1f4bbb182c3aacdfebfa11c9cb2cb39e2b0ff12a11e98d75fdcd26ef1b6"
+        },
+        {
+          "source": "evidence/U-QA-005/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4355,
+          "sha256": "76af68ca4ba604dca4739eb3fa9aa457b7bae7d3c865338eedf597363be996f7"
+        },
+        {
+          "source": "evidence/U-QA-005/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1565,
+          "sha256": "d78159bd9858b62133fde5abaf1a2a6ef1c210bb20efbbc9bd4aedfd05212b92"
+        },
+        {
+          "source": "evidence/U-QA-005/tools.jsonl",
+          "format": "jsonl",
+          "records": 40,
+          "bytes": 14947,
+          "sha256": "42f49d7523b7f0d9552516aebaec6095a7da39ef756a8842f63e2d1eca74c9b6"
+        },
+        {
+          "source": "evidence/U-QA-005/trace.jsonl",
+          "format": "jsonl",
+          "records": 92,
+          "bytes": 144227,
+          "sha256": "f36681827cc6158a66138b845547cd9b14e3772112f8ba3c53303b32d84908b6"
+        },
+        {
+          "source": "evidence/U-QA-006/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5262,
+          "sha256": "e3d44bb8406281cdf7f29a0bc81568bebdd2030af01e0587d4cf4f12f3be276a"
+        },
+        {
+          "source": "evidence/U-QA-006/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1583,
+          "sha256": "7c2a30c43503914fdbb8bf4a8b20ededd59dc88011df37c487948cf0ce4e8b5d"
+        },
+        {
+          "source": "evidence/U-QA-006/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-006/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 60912,
+          "sha256": "1aed04f564ce734024526afcfb1f7ca4e6440ad6a127946b193ff996c0a85ec6"
+        },
+        {
+          "source": "evidence/U-QA-015/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5562,
+          "sha256": "b3f2fa98d418e306e2c6d721c0f74b2848b740b2ac5b5d4f2384716a45899c82"
+        },
+        {
+          "source": "evidence/U-QA-015/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1758,
+          "sha256": "2d9b2ec86af605b2d9882b1e466769a08440be2ca6594c824308fd6cab5c8e37"
+        },
+        {
+          "source": "evidence/U-QA-015/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-015/trace.jsonl",
+          "format": "jsonl",
+          "records": 30,
+          "bytes": 80020,
+          "sha256": "629aa82cd29b786c5faef3eaf977516b3ca261057350c50a2df407f8b4803e20"
+        },
+        {
+          "source": "evidence/U-QA-007/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 6910,
+          "sha256": "724a797b84ad49a28cc792155f4add3d07550ef851fcefe8511aedcbf6ac3729"
+        },
+        {
+          "source": "evidence/U-QA-007/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1588,
+          "sha256": "bec0e3a9505c20bb2e381873cb6e1fd9cdc48c562e1848d18f42b210bc460eee"
+        },
+        {
+          "source": "evidence/U-QA-007/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-007/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 67013,
+          "sha256": "04a28c22d47cbd097ab0f5cff4338adfe5639179edea8afea3c44c46d96173c8"
+        },
+        {
+          "source": "evidence/U-QA-008/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 7683,
+          "sha256": "9e5cf0b305d32c028933eaf0eb5a12d9476415b442f99ee511c88b63a0707cfc"
+        },
+        {
+          "source": "evidence/U-QA-008/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1625,
+          "sha256": "a44f111f583b855ed3c167f6be576d3db5f6d26537fe7ffef8cf8d5a53dea891"
+        },
+        {
+          "source": "evidence/U-QA-008/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-008/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 73991,
+          "sha256": "e1f7935ea144e7c9ec2f5b341b0e337787e36ea6771eac47e7aec98475ad49fa"
+        },
+        {
+          "source": "evidence/U-QA-009/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 11775,
+          "sha256": "ae6a9424166b0017eb564f7116b4a36a5eb5344536a3c6a3b2844c1ae70dd79f"
+        },
+        {
+          "source": "evidence/U-QA-009/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1584,
+          "sha256": "42fe4e57cc8d2e50dc8a9efae996885f9f98ff49c28f8334c3ba0a423cd856d5"
+        },
+        {
+          "source": "evidence/U-QA-009/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-009/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 73221,
+          "sha256": "d048548e2e5b59de05f4203e641fc62a81001be6207079661a75d6bb8cf249d0"
+        },
+        {
+          "source": "evidence/U-QA-010/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 8593,
+          "sha256": "23fcf89c709accb8f95007e3c8045198caec38ecf7403bc9d1cb10f92f036ddf"
+        },
+        {
+          "source": "evidence/U-QA-010/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1796,
+          "sha256": "156773c81f21c6fc1bc50a8be14d1f9f55b121f49c49cf6094c8ccc4e06b8cd5"
+        },
+        {
+          "source": "evidence/U-QA-010/tools.jsonl",
+          "format": "jsonl",
+          "records": 16,
+          "bytes": 12377,
+          "sha256": "982a6feeef95ec9e4e083ff436aee3af3bdbf472789450dd4abc6b2a673b5760"
+        },
+        {
+          "source": "evidence/U-QA-010/trace.jsonl",
+          "format": "jsonl",
+          "records": 50,
+          "bytes": 137771,
+          "sha256": "45dee4d4ff10d5df39b272fd48546c3542e1f4c0cd0fc07ab0b41eecb160261d"
+        },
+        {
+          "source": "evidence/U-QA-011/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4912,
+          "sha256": "f373164da6bff8d443fbbd982c19e3152a74a9b4a7f54e9c6fd2771826413879"
+        },
+        {
+          "source": "evidence/U-QA-011/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1583,
+          "sha256": "81d737bba887e04bc8d6c75cb3431a7fe3647a55f551c3d9f511ad5767d5d297"
+        },
+        {
+          "source": "evidence/U-QA-011/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 1776,
+          "sha256": "d2e138b62cc8782502e47875f6e2e4c5d6f2fcb3dcfc7dd5188130ef67bf0d77"
+        },
+        {
+          "source": "evidence/U-QA-011/trace.jsonl",
+          "format": "jsonl",
+          "records": 27,
+          "bytes": 85319,
+          "sha256": "32b236caed4e668af2ac1fab89e110754b3e8c29090ef5e22f7e2e98b9f20f39"
+        },
+        {
+          "source": "evidence/U-QA-012/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4628,
+          "sha256": "11766984dae23256658224729c4c4fd651f43e5dd1bdb200918b4cfd38e0b1b2"
+        },
+        {
+          "source": "evidence/U-QA-012/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1622,
+          "sha256": "1018657b5f34cadc5878375d0b577b331fad51280db2ee823ebf26c76eee213c"
+        },
+        {
+          "source": "evidence/U-QA-012/tools.jsonl",
+          "format": "jsonl",
+          "records": 2,
+          "bytes": 1776,
+          "sha256": "9a67720fd82e238d53df2317532e8b2a3c7a3a7eba0f260d33f234a8dd811db3"
+        },
+        {
+          "source": "evidence/U-QA-012/trace.jsonl",
+          "format": "jsonl",
+          "records": 27,
+          "bytes": 88789,
+          "sha256": "8e54fa2a94bc2299e013543ecd25c10c7d30fd2047c937e0fb57030551a956fc"
+        },
+        {
+          "source": "evidence/U-QA-013/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 3596,
+          "sha256": "040519ccc9ac6d9ec7c95d1b38ffb8ceb554ba243dd9501236f6df81521033cf"
+        },
+        {
+          "source": "evidence/U-QA-013/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1541,
+          "sha256": "427b4ae5c94a6211313586bed2996f303f291b85acc7e66f51b5e0443960e5a4"
+        },
+        {
+          "source": "evidence/U-QA-013/tools.jsonl",
+          "format": "jsonl",
+          "records": 4,
+          "bytes": 3208,
+          "sha256": "782f88b5af818dd87a87f03bc62e23dfc7a05de293fb86c01d6fce66ca90f3ff"
+        },
+        {
+          "source": "evidence/U-QA-013/trace.jsonl",
+          "format": "jsonl",
+          "records": 29,
+          "bytes": 94423,
+          "sha256": "1ff9ff56b20b839b6f956f5427e8f9a79d7bc95050b4cd226eb127fd20668145"
+        },
+        {
+          "source": "evidence/U-QA-014/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4613,
+          "sha256": "bd19ac1062ecf9b43db22dbe0680364311d48d4e22f28910caf027e79b7e022c"
+        },
+        {
+          "source": "evidence/U-QA-014/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1537,
+          "sha256": "1f804f0b18c8ccf2ae4effb472c2eb0970cac68fb76e99158ee647aa680acf58"
+        },
+        {
+          "source": "evidence/U-QA-014/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-QA-014/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 59411,
+          "sha256": "cb615bf1070e6686b2a6f025f097f2d1bd47819bfa032fb16f2b4df61e7270aa"
+        },
+        {
+          "source": "evidence/U-THREAT-MISSING/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2125,
+          "sha256": "84aeb53b4fb761af2df36cc6f6ed07ada03debb36414d1181cb13a0380c482d7"
+        },
+        {
+          "source": "evidence/U-THREAT-MISSING/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1507,
+          "sha256": "cc5077230540ee030c150a51c85d2377dd8c6bf17dd54b282cc3d67517adc039"
+        },
+        {
+          "source": "evidence/U-THREAT-MISSING/tools.jsonl",
+          "format": "jsonl",
+          "records": 0,
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "source": "evidence/U-THREAT-MISSING/trace.jsonl",
+          "format": "jsonl",
+          "records": 20,
+          "bytes": 57051,
+          "sha256": "9b68993cc4796688a5297f218875787e4e4a5731aa6440a6482fd88d0c6d12be"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-001/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5063,
+          "sha256": "c21b512d8ff1404c470c8e6a37c638be879ecc88ca119d215c98e3d7b7f7ea5c"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-001/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2102,
+          "sha256": "43ceff230fa2998cec8823d9f2f681eae09df0472c8df8313682403dcf195e5a"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-001/tools.jsonl",
+          "format": "jsonl",
+          "records": 18,
+          "bytes": 12870,
+          "sha256": "cd2d0d7e181b4b044c33673145dc93c7ab531daf785b9fc17d7d89630bcce518"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-001/trace.jsonl",
+          "format": "jsonl",
+          "records": 88,
+          "bytes": 232777,
+          "sha256": "9682158099cc1d0bfe4d0454573c474ecb4b75abfcb50d4e0eb1ed5419715f8a"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-MISSING/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5063,
+          "sha256": "846c93653083698750c32f38a964285d0b4af3438ba92dd417c135ba9baffbc7"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-MISSING/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1895,
+          "sha256": "d35a18650762322e37761e6deb3c05349da00d592778f692faaffb1406231ad4"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-MISSING/tools.jsonl",
+          "format": "jsonl",
+          "records": 16,
+          "bytes": 9820,
+          "sha256": "a84fafbac320cc0eaad53a6c9297acc0c418cf6513b24da28e1d0422c2c3c154"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-MISSING/trace.jsonl",
+          "format": "jsonl",
+          "records": 90,
+          "bytes": 251299,
+          "sha256": "e38818b3710aedd77f014b9ca22fe264f8caec94daaacc5f63ac4d6f021f7335"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-EMPTY/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 5683,
+          "sha256": "bb2b14034edccfd41d50c58f11ab810dc742e2fdb3933be49962c174c6981bd7"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-EMPTY/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 1683,
+          "sha256": "b093e65abebd9f7fe4487875876f10c203aa1b6d5bb7b223e85912d8276e311c"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-EMPTY/tools.jsonl",
+          "format": "jsonl",
+          "records": 18,
+          "bytes": 12215,
+          "sha256": "bab103eaddfa3190d7b99cb265380136f1ca4cecf7ac791acb00bf8c3a9e0175"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-EMPTY/trace.jsonl",
+          "format": "jsonl",
+          "records": 88,
+          "bytes": 254151,
+          "sha256": "41b6260d33779e7770bad1e82120b4c70a229ae220f55af77c6274e07ed8836e"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-FAIL/response.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 4391,
+          "sha256": "c046333c24651e6d5e753bcc65a1c3992ed7429b7586f6f43ce4707b2be15089"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-FAIL/checks.json",
+          "format": "json",
+          "records": 1,
+          "bytes": 2022,
+          "sha256": "647dffd880a2b02907879fe56d8b3c99e08cfbe3b657f19fcc0d8318b508aa0a"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-FAIL/tools.jsonl",
+          "format": "jsonl",
+          "records": 16,
+          "bytes": 9770,
+          "sha256": "1282251dbe22bb39c22817cb4028f3fd986471887ff63255be332da80d76228a"
+        },
+        {
+          "source": "evidence/U-ASSET-ALERTS-FAIL/trace.jsonl",
+          "format": "jsonl",
+          "records": 83,
+          "bytes": 209205,
+          "sha256": "db00efd72fde915e48842dcad767ee8ed11a43c3fd594eb04ae999bd1d4e9438"
+        }
+      ],
+      "content_refs": 0,
+      "parts": [
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-001.txt",
+          "total_lines": 12,
+          "sha256": "14400f2fbddf6162caeedda5f420285da5cff0ffc53656b61c051cfeeb3ba441"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-002.txt",
+          "total_lines": 13,
+          "sha256": "ab05718244015f1f94e8d79992e5e586fea7866285b47126d2fc5dd75f42b99e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-003.txt",
+          "total_lines": 20,
+          "sha256": "14e210d1c33588d64f3155f281265829d96173ebabe3e2857b94e469b9928de1"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-004.txt",
+          "total_lines": 23,
+          "sha256": "d4c4c68bb0452227ef559ec06be9715c69223e47a2ec4e51068049f3d096de27"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-005.txt",
+          "total_lines": 23,
+          "sha256": "3f0bd5e3c89493275ff1004ecf71582380e4ddae16ccd4011901147e8ccdb4a6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-006.txt",
+          "total_lines": 23,
+          "sha256": "551c87583914c735e9ec52d9706f44d356fce51b13c54efcb38573ad7960afa3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-007.txt",
+          "total_lines": 23,
+          "sha256": "a2d8b87ac600369b54236f9367f2c59235f98d3d97071d8a16541a447145aa32"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-008.txt",
+          "total_lines": 23,
+          "sha256": "14fe2e51c01772bd9471e987590659fc70d65bc6dec8e299daa1fd4489528384"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-009.txt",
+          "total_lines": 23,
+          "sha256": "3846145a1f2b0a92b13232a4ab6a17706e117bfda4680868fe1722a7a5044691"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-010.txt",
+          "total_lines": 23,
+          "sha256": "88de42838fa85bed3ccdecbff1963ad1124797cd380ae5a9fec53519bab6146c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-011.txt",
+          "total_lines": 23,
+          "sha256": "5474dfd08782b89a1eaf1017c3753a42a14498bb4ba5b02e482c82b5e9488a0e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-012.txt",
+          "total_lines": 23,
+          "sha256": "9cdaa8654f96c57bf3301a2be62fc0f28b9a19b3160b995f41bf40d96bc0bb75"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-013.txt",
+          "total_lines": 23,
+          "sha256": "fc646c5409b5abe7b912e941a099e918a031670bbf97a04582de7eb51ffdf35c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-014.txt",
+          "total_lines": 23,
+          "sha256": "5d936582eb0353c4914ace020ecafd8a94169d33286cf434c7690bda4eea314a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-015.txt",
+          "total_lines": 23,
+          "sha256": "fa2eab283bf0813151bae1db9d715523843f452bd0d22af5c174efa9648f002e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-016.txt",
+          "total_lines": 23,
+          "sha256": "b108250485f74eed7518d39fdd26fdc4bc66a37eb287df9485decef4918878f9"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-017.txt",
+          "total_lines": 23,
+          "sha256": "6d9167d3ccb4d717a2d202109d81908af3f586bb651695da473dc420fb82f8b5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-018.txt",
+          "total_lines": 23,
+          "sha256": "dde5e1ba87d16ea9c83f7db0aa12d3853ab531c016e0a072a1407a239c02d26b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-019.txt",
+          "total_lines": 23,
+          "sha256": "8dc8f2f7f4d2bad0b7cb76a89fd60b472483aff45af1ef8a53b74c4737c36822"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-020.txt",
+          "total_lines": 23,
+          "sha256": "0ad1e8cea872167ef0b50981b242903d09110b6aa4b7e50797bd3010417d0c5f"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-021.txt",
+          "total_lines": 23,
+          "sha256": "d1ce1b4bf380c8a75f1212cf6a9460129dbd222a47973036aa432a79f1d3d247"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-022.txt",
+          "total_lines": 23,
+          "sha256": "86e1bd5e2c335edd84df91bbb44a1e96b62eb546222ce6939f9b457e464c6757"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-023.txt",
+          "total_lines": 23,
+          "sha256": "29b974ff2b105fe257559eb59d40ad5be2d18cbdabba06da15955381bbf14fc3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-024.txt",
+          "total_lines": 23,
+          "sha256": "9e6ff0b79bb97b06978c4e9bbff262dd38b599a7866f41f8f8e73c5c9a86d024"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-025.txt",
+          "total_lines": 23,
+          "sha256": "3204095ef43668f7a70f2b255a448f46d6eb5079b1d6581a8c123840d70844dd"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-026.txt",
+          "total_lines": 23,
+          "sha256": "4b7dd59cc3c471273de4ecec04fc531d95b798f4f4d0b2c133edd2fc7c492c6a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-027.txt",
+          "total_lines": 23,
+          "sha256": "517edcc6364fc5fda27dfd6b1ee6d74e0727b585ff0d5939133172c1ff9574eb"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-028.txt",
+          "total_lines": 23,
+          "sha256": "6941df737c78e78098de70ca1abe85c3ec3da7eb90462caef4f43cc3839a7c5d"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-029.txt",
+          "total_lines": 23,
+          "sha256": "f70aca45f97932bf9b40d2c7924fbab45f257a43e7e774746171e40805e55198"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-030.txt",
+          "total_lines": 23,
+          "sha256": "ab55a71debe3a3b9297fbd279b3f3c849bffbf101d696a12195105aef56efbc4"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-031.txt",
+          "total_lines": 23,
+          "sha256": "468748fd4fda9f18204f50b42b0b9d72da0916691ee37abca882f6366d412adc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-032.txt",
+          "total_lines": 23,
+          "sha256": "64af7a36e1b13e9b04d896226177a648364df47b144a7263eb19a9327e91c5a3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-033.txt",
+          "total_lines": 23,
+          "sha256": "a820f14fd556aa332a679c7fa5f81d0f6792aec14c6061a19a9f28809aa8efc5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-034.txt",
+          "total_lines": 23,
+          "sha256": "4d4d90056f3d9b085a4a36fd339f481b247bca8820c7f3bae7ea5449f19f0645"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-035.txt",
+          "total_lines": 23,
+          "sha256": "0ac88df737bcd01349b0ec295341c0f0472782895f983500db9b3331b674b807"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-036.txt",
+          "total_lines": 23,
+          "sha256": "1e49ffddf8c167c48b34bd1a0e089f477fad085e86ffcf0ca31df19c7912fa06"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-037.txt",
+          "total_lines": 23,
+          "sha256": "6fb3f772dff0e1122ab80dc4714e484c959a552928d29485d022d1bc6d181c82"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-038.txt",
+          "total_lines": 23,
+          "sha256": "1acba918a07cc1cd4ba93963b9eb2aaa7da13854af801dc437b9476a825afa82"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-039.txt",
+          "total_lines": 23,
+          "sha256": "f707df4feff3c1e14dd1899dd16d4b4d6e7cbcd8c58e153327cde8668f501687"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-040.txt",
+          "total_lines": 23,
+          "sha256": "f49b707a4a74511853c7ae95e4d04a714e5a74a3ce44e296d73ac5ac790a66a2"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-041.txt",
+          "total_lines": 23,
+          "sha256": "d79ab5764346261f27d256eca36186d651d18f7bf5a5123b58096272448a270b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-042.txt",
+          "total_lines": 23,
+          "sha256": "08ec432c1fe4cfc7be4a245cd041bdd1ade3d7c9d678b45f4842212052b792c5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-043.txt",
+          "total_lines": 23,
+          "sha256": "6646e00286e299eb59e9fc6552dd9e0b596b6a67170f52cc359c3f57b954cc7d"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-044.txt",
+          "total_lines": 23,
+          "sha256": "5b1d8059429cbb9506c3ffee1a62daa4c6d05536ed5b9fd57dddbd522acd0bb5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-045.txt",
+          "total_lines": 23,
+          "sha256": "dd214cd55566d541115ee2223dac02c41905f7406db9378b063560a2c2598c7b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-046.txt",
+          "total_lines": 23,
+          "sha256": "7b5585ce492b6e135d812e46163372806192ab1accfe5d8b0faf657ae82f80bd"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-047.txt",
+          "total_lines": 23,
+          "sha256": "13e18eba243f19d3b183fe95f63be2c8d579bba19ff817c871c3d260c0475090"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-048.txt",
+          "total_lines": 23,
+          "sha256": "1c8e9460c31af131d3856277fc31d607e11205b6abfc870fbc2671359b94c451"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-049.txt",
+          "total_lines": 23,
+          "sha256": "a74f3729444a5946ee83c3db45fb2b4b13e708363eee12674bbaf6bef45c4750"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-050.txt",
+          "total_lines": 23,
+          "sha256": "37b98c4cfee9c4b8ca54607e0b6f5f4a4ebb46e7b69e3c2774d2d6556bee388e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-051.txt",
+          "total_lines": 23,
+          "sha256": "ff86132e661b5b967cb3fb8f19f28f26256fbd04d216e78a9248d68fae73522a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-052.txt",
+          "total_lines": 23,
+          "sha256": "88747fe2d8ca48ee9e57771afac2a6ae487f11dd6e8a31303a71b153f55121ff"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-053.txt",
+          "total_lines": 23,
+          "sha256": "e25982b96457e39841386b2417279387816848b7ad7116f28d5df00195a14aed"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-054.txt",
+          "total_lines": 23,
+          "sha256": "6675e6ca0de357eab7c2239d2645d17ab4d11429ed3bb3b68c79c25208f2dba1"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-055.txt",
+          "total_lines": 23,
+          "sha256": "5afdbc3e0b696a5876a9d3c0b5105c57bf6fd4c88e1aaa4d9f1731c96f8e469b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-056.txt",
+          "total_lines": 23,
+          "sha256": "5991016b031dfa2968b960e3da7560a7520a6a2cf2990e2a2a863fecbfdc29c9"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-057.txt",
+          "total_lines": 23,
+          "sha256": "39bda3929c820d733500647893f4886106b5363073a130724e5068902f6f2f69"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-058.txt",
+          "total_lines": 23,
+          "sha256": "9487ffc4761fea1bd4ad6bb628c8e5cabc3e229de01154a8106f8b462ca4ef72"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-059.txt",
+          "total_lines": 23,
+          "sha256": "1a9c3562f04d433ad725301ece02e510999a29ece15958455fd242fb5ef7bec1"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-060.txt",
+          "total_lines": 23,
+          "sha256": "3a532695d56888f5023a1523674068c1fd2c08f816a5808851ed3319b3030833"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-061.txt",
+          "total_lines": 23,
+          "sha256": "afa868135ed0e3c702c42415f85e90a6e5b387ae007bd0a1bbb831d90f1f22f4"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-062.txt",
+          "total_lines": 23,
+          "sha256": "641c4ddff5d50ba74a73e489a48d41e01917cf99523f06d104d69569794f5172"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-063.txt",
+          "total_lines": 23,
+          "sha256": "23f905e50e2921e183ed141583ca96bcb6655b12133f0d2e609c1b998154f6af"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-064.txt",
+          "total_lines": 23,
+          "sha256": "a40042b42c09562d20224a529e812d966c9b002da84d0ce42aeaf56ee21c4b90"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-065.txt",
+          "total_lines": 23,
+          "sha256": "7ffedae9cf11c2df0c8a64e44202e965d059425071e0b4f4bc00a233b941c89e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-066.txt",
+          "total_lines": 23,
+          "sha256": "7b391e89c9655e1a86f923fc609dcfeb81f042ce96620798912cd25c37f24e22"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-067.txt",
+          "total_lines": 23,
+          "sha256": "30f83722783cc45fbbb38906dc4357521f0dea8b4aab186635b98e33d284f868"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-068.txt",
+          "total_lines": 23,
+          "sha256": "e0fb08e3a8c94558867da378d191cc84c442d0618d98eb1c05ea574fa06cf905"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-069.txt",
+          "total_lines": 23,
+          "sha256": "960b11347a7ff11e27c6ded789747eec3cd161d9405383b229dac71371bbf63a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-070.txt",
+          "total_lines": 23,
+          "sha256": "c1456bea378438bbb873e579b77e463247fdbdc6e3e2930354275fa3ae500f17"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-071.txt",
+          "total_lines": 23,
+          "sha256": "f5525448145e0f854e245b382f6952ec84b35591eac290e87cf5998feee7f309"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-072.txt",
+          "total_lines": 23,
+          "sha256": "2acebf5e02329826d89cb0558c68c4eedfc89ca5aa0bb240d021b2a54d8ff725"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-073.txt",
+          "total_lines": 23,
+          "sha256": "673cffafb2b78f3a7b203a3eebb1abf2f9c76dafcf44ad7dd683515d0a5bfb2e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-074.txt",
+          "total_lines": 23,
+          "sha256": "41f36c2abed91345b573fea597be3cb2eebf32de32139d4e052b1d5f8186496c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-075.txt",
+          "total_lines": 23,
+          "sha256": "15fc1964441086158c5870976df316b3dc6bfbda0a2199f14a598200e34207cc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-076.txt",
+          "total_lines": 23,
+          "sha256": "9a38ca4821631a5362a4105589619c7b6a05eee2d213ea27758133aa9628f8c3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-077.txt",
+          "total_lines": 23,
+          "sha256": "ba0d222e54b721e597dfe99844acfc8589dda2b390be028e9d810eabdfd46136"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-078.txt",
+          "total_lines": 23,
+          "sha256": "69f70b7af7747ec71bf19ad56c68a0fb2fafd0f36498fba79b61ffe7f093c71e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-079.txt",
+          "total_lines": 23,
+          "sha256": "335678d8963930a1a3f4deeed41870bf83c02a5df422b6b49640757fe65a4e3e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-080.txt",
+          "total_lines": 23,
+          "sha256": "a801a7521ca9284ac0c81588512f4bbeb80f0b9f3495d1463a9a6315664ad74d"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-081.txt",
+          "total_lines": 23,
+          "sha256": "4a2b3636c716c989a2865b119b2d9a4efd956fdb7dca8130d11a384bc6c62eaf"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-082.txt",
+          "total_lines": 22,
+          "sha256": "da88f96be3048f2bcc121e0de3407111a43f714aca583bda9833be6c245d10ff"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-083.txt",
+          "total_lines": 23,
+          "sha256": "f21d1499c1d6d4a3f585042286feb057f86dd6a47507d66e3f63dde6c94dd78b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-084.txt",
+          "total_lines": 23,
+          "sha256": "9f4bf3fe806a8f9ed9ef31653f24c746d523cb26b48196e3455792c2f26b864c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-085.txt",
+          "total_lines": 23,
+          "sha256": "495910ab1592ee887258333b7d6575aef89d41688599576e42fdf781279755c1"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-086.txt",
+          "total_lines": 23,
+          "sha256": "2e137a8bb2964dae80ac6104802a1ddc604d9047d5adf3890c60b5cbf3927824"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-087.txt",
+          "total_lines": 23,
+          "sha256": "9576f32a4aa6df3a455917d486d8516fd81a473492feb261e7e33933e2f01857"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-088.txt",
+          "total_lines": 23,
+          "sha256": "6e146046a73346be9a9fd047b74ed6c9e147ba4c300ce448f2f8a1401a24f99a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-089.txt",
+          "total_lines": 23,
+          "sha256": "3cae126b2ef4075b7bb2c60d12542d23bb94b85500638172efb6a8b578ea6920"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-090.txt",
+          "total_lines": 23,
+          "sha256": "22889abd889ac6f0527304c1473e9c314cb595317e825fcb9f9e93eef559dc8a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-091.txt",
+          "total_lines": 23,
+          "sha256": "2e18fd96f435315a2aed6c662b0083869031b136159240813a42da83f3418c5f"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-092.txt",
+          "total_lines": 23,
+          "sha256": "2d52cb9158c69753607547c9f3a52bc35728c265f2ca387b569cd975c2061b04"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-093.txt",
+          "total_lines": 23,
+          "sha256": "8d830cc8b15666532424f09e6d65ce8b65df5d23ba480ee50fe103b9cdf88c96"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-094.txt",
+          "total_lines": 23,
+          "sha256": "4de0257007592f154b2747c4070460a0cbd68b799e8047aa6caaacc13755d268"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-095.txt",
+          "total_lines": 23,
+          "sha256": "3a04fab6faa47d72270639b857e651290b8d69036290197d21f3b85bec6219c8"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-096.txt",
+          "total_lines": 23,
+          "sha256": "b6770ef8c414287bb3e13255fcc47045f8d83f2b0a14a72f8fa765a7decb7233"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-097.txt",
+          "total_lines": 23,
+          "sha256": "2b38c4bc29f214e9e1d1524b344a88f65ef91538c37ff4e998b2afadf31acde1"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-098.txt",
+          "total_lines": 23,
+          "sha256": "4488ac5befe346ae23da7725ead074e68e6c632edfee0996ab0da50389d99d4a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-099.txt",
+          "total_lines": 23,
+          "sha256": "c48cffc6cd278b4745a70625f2e0ff0a7346ae2ec3d69ede64aba564af5dee03"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-100.txt",
+          "total_lines": 23,
+          "sha256": "a71e7e4046877680fb1394b9c8c87198629fd4fc75e1e45c015a11daf7adf649"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-101.txt",
+          "total_lines": 23,
+          "sha256": "b7770bd76a76a14e4e096337c0753b6d99574c4349576c4ae89a847362d0e3be"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-102.txt",
+          "total_lines": 23,
+          "sha256": "5600fe661b09fa9e907a089c44542d7dc057d5da333946e928210b8f6583f1e6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-103.txt",
+          "total_lines": 23,
+          "sha256": "5d926d768823a3eb8d40cbb5b2843b9195373d1a50541393d4c10e80dbb0657b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-104.txt",
+          "total_lines": 23,
+          "sha256": "c962371ac3f850e18203cc96abe5eda44c70f02db817c20bc35dec0312ad6b1a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-105.txt",
+          "total_lines": 23,
+          "sha256": "e8914f5760c1a58248396f31ef4fbdee1ae15710844557c9f6a94deeae651563"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-106.txt",
+          "total_lines": 23,
+          "sha256": "aab9364d5a7fcc1519e7480b183e55697c2800ad255ad53522b29b6770bd84e7"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-107.txt",
+          "total_lines": 23,
+          "sha256": "83439f14b894a471cb7a73af2e8fe9c57ebb9ae1e131557b5a95400a1c25c602"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-108.txt",
+          "total_lines": 23,
+          "sha256": "a43ba14d7981ec17a5bab1db6c4342ec66353fc247ed710c0d7f789785340f46"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-109.txt",
+          "total_lines": 23,
+          "sha256": "ecc4b2cd9533b2a7ee7907679ca30345d4b3c2c8c8553bce58d5cdf60b4d3b30"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-110.txt",
+          "total_lines": 23,
+          "sha256": "7969b23748689eaa153c81c94206846ecc98302b96c62e37ff3114d21e0ffec3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-111.txt",
+          "total_lines": 23,
+          "sha256": "457d48b0556e61e67fbc556fa10b087dcb716d4da6a7bfdfb353a5220bd2e88d"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-112.txt",
+          "total_lines": 21,
+          "sha256": "ef7a6af4e24c0c0843785b83b317d292d4a4c618b70b14e0604c4d3125233d70"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-113.txt",
+          "total_lines": 19,
+          "sha256": "8f5729f3e0630078080eb71b6e37db8ac022c0ae436972519d07a9c1cf3b373a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-114.txt",
+          "total_lines": 20,
+          "sha256": "4cee4696c4957c3fe7b06ab98fe0513a393797f5ce9e4e2beac63e2c24affbf0"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-115.txt",
+          "total_lines": 19,
+          "sha256": "e716895ed61b0904ffa46e35cd76ccbb0395ea7924579bc8b3a23f88a1a7211c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-116.txt",
+          "total_lines": 18,
+          "sha256": "5f921c1efc10b7d6db9885846b4edb290848265bb726e3ccd9e68fd4b55ccbcd"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-117.txt",
+          "total_lines": 19,
+          "sha256": "da12c688b4566c86dc44d9f92d565cfed350f9d9e0b5b332de25a57d14d35f03"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-118.txt",
+          "total_lines": 17,
+          "sha256": "748ab54c991fe7dc6c215f224842d1c15ae6a0baa414d5801b81cd48d71768f0"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-119.txt",
+          "total_lines": 18,
+          "sha256": "b09d2972ea46f94d9f6f0f3851842b9f6e4e02db841a927780b99c424d7289d6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-120.txt",
+          "total_lines": 21,
+          "sha256": "4f45e124cd5cfcfa584867fc36f5cb5be4f19ea7277cb2a16c37d3715408e92f"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-121.txt",
+          "total_lines": 20,
+          "sha256": "2293acc58b56f02a114498b39fd8219555fcb23efa89e73d8e5d02fafc425a7a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-122.txt",
+          "total_lines": 19,
+          "sha256": "a4d8830239b89519a8e44ec6c3cba554f29fb2a0188415c8276129c9e0ba5656"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-123.txt",
+          "total_lines": 20,
+          "sha256": "94cd9c0ee97ce8c2252b630f1aa8acaf0e9ee8e734a3ba458d9ef14beeb50f1b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-124.txt",
+          "total_lines": 18,
+          "sha256": "c5d8c0501b5a10e82c473f87a2f1e58eee8bd526b6bbc1863a00835691100795"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-125.txt",
+          "total_lines": 21,
+          "sha256": "bdba49c812bfb13399568afeceb8e60a0faaec4fb9dd469ccd985a0004d00a79"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-126.txt",
+          "total_lines": 21,
+          "sha256": "5050b6b48b48ce41a38c5961a90a80ce2d9a752a118a9be3423f6f4f13494da7"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-127.txt",
+          "total_lines": 20,
+          "sha256": "3ff21cb549f2fce43d12639a488cc626fe9e4ac8fc5ae0215dbe048d041f9768"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-128.txt",
+          "total_lines": 20,
+          "sha256": "fc8826d91df9f74310bb1bade48354a6e2488226fcf7a38797cda68883415df0"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-129.txt",
+          "total_lines": 21,
+          "sha256": "07c7de7ee846a27580dfad2259df994211c7cb26bab57e296815bf80c2f27672"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-130.txt",
+          "total_lines": 19,
+          "sha256": "8f81dea3b897d389b9cb7fc221b2eaef034b13c139cb729a814533fd597188da"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-131.txt",
+          "total_lines": 19,
+          "sha256": "0af51c74ed669e7763bbc5b67cf8d77e3df744061ccd270f7280ec81a90ba88e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-132.txt",
+          "total_lines": 20,
+          "sha256": "52e3f77d501d119980f7835e5cb4538f628acef10229829cc08ff05613cb1f74"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-133.txt",
+          "total_lines": 20,
+          "sha256": "520358aa31f62dd759d7e9b3b6b01bbbcbfdd634827b85fc1cc9a54982e66e4f"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-134.txt",
+          "total_lines": 21,
+          "sha256": "870ef0243125186ac557b0e3e2f0fdc6f0d1c51316f811443cafb634ebde9d98"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-135.txt",
+          "total_lines": 20,
+          "sha256": "8b6f46a759aa1ba4b8920e402a23ee1f379ca20f96deace360cd40245352782c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-136.txt",
+          "total_lines": 20,
+          "sha256": "4e0dc01fe2de8c5aa8a761252ebb4245ec2554b26a6805ab27d5125956971172"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-137.txt",
+          "total_lines": 21,
+          "sha256": "6953e937ff5eaa05e3281aefa04744413fb700d67e441fe82872b845e9a3fec0"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-138.txt",
+          "total_lines": 21,
+          "sha256": "47f47baa36b764a9534e5638599057040fc9c5864a8570ac5f94c3dedd673487"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-139.txt",
+          "total_lines": 21,
+          "sha256": "6dd2aae710b3c15ad1c850a9e1de42b47aec2e769252ea46a275e659c7e14c01"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-140.txt",
+          "total_lines": 19,
+          "sha256": "235c4559f64399445803081030734571e2dc05082249dfa5d833cd1ea3a346ce"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-141.txt",
+          "total_lines": 21,
+          "sha256": "43bb0b2c8a7d5c92b1f500a1dbaac4b309a7221a1817b6a75029be4f65bd14cc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-142.txt",
+          "total_lines": 19,
+          "sha256": "51e2e42a32bca54a881e7fbfd03329c43622e3b9f8c0e1000432398c3da15642"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-143.txt",
+          "total_lines": 21,
+          "sha256": "ea4858b3c1304959d635d785e74842613d55d15ad7e6efdf691e4de8234ba431"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-144.txt",
+          "total_lines": 23,
+          "sha256": "77399452c84e9372b8371fc475a500f6b2a0e32ab7159c109f81a9897f801fe7"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-145.txt",
+          "total_lines": 23,
+          "sha256": "ad61c2393ae359f36b08639c6de0bfa7affc3b75b1f52111cc1bc6579b53b358"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-146.txt",
+          "total_lines": 23,
+          "sha256": "d90f84bac96940d574fce70f9e8dec2a817e4fa5eec90820a088f32993d7cffc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-147.txt",
+          "total_lines": 21,
+          "sha256": "3487f447efd88e78d64b705cb9454fc82c1e1e2b7efc885deb67999acac26b32"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-148.txt",
+          "total_lines": 23,
+          "sha256": "12c95902f5e032febc64b544f77c715f372c51632765026cb0668e06e96a1cdb"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-149.txt",
+          "total_lines": 23,
+          "sha256": "2599369f730a7e250419e53a254d097edd27edf12da1b5f63de44706bff46dc2"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-150.txt",
+          "total_lines": 22,
+          "sha256": "c421ab0068d150cc2d6e426fb46a20559a783aae7ce60164c4a832db9851e0be"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-151.txt",
+          "total_lines": 21,
+          "sha256": "aa98bc3cbf511fd68bcd1d58cd17d8460506b3d0d726d409b614e81c39aab635"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-152.txt",
+          "total_lines": 22,
+          "sha256": "4d82f18766a8df87cfb221bdc67e79af635527eb4dc017f90bf2f3fe18b75434"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-153.txt",
+          "total_lines": 21,
+          "sha256": "7680f73249dcd85d642c49adcf2f806df810a618126a5445203a2a8d3c7956fd"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-154.txt",
+          "total_lines": 21,
+          "sha256": "600e300a440ecd0236dc0b62cb4f399684b74601c63fcbeeb8345e538cc94d94"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-155.txt",
+          "total_lines": 21,
+          "sha256": "17ecf146e149963f0ebd6c46d10fadbb6b9bfda8c40b3717de79a6d0e306f850"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-156.txt",
+          "total_lines": 22,
+          "sha256": "b5f82d89537eb8bbf32272e6bd5b6a83fb0c1e734ff8b8cecf9047a47ca11237"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-157.txt",
+          "total_lines": 23,
+          "sha256": "0eb625a5eff2c52a8cb0cb20301266d47fc59616e99cb5d8108446900530e4c1"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-158.txt",
+          "total_lines": 23,
+          "sha256": "6e9c849a6b2df39b44bdb393bc6db83d499d8c5499cfafdca799fa926b40f80a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-159.txt",
+          "total_lines": 23,
+          "sha256": "e6159b0787c661b7e59383f3cbb4153422a2efe8e3032d77a404ee3ce5e46759"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-160.txt",
+          "total_lines": 23,
+          "sha256": "fab256e91b2709743aaa3b9e6cab52fab4362e38e8cf58974241f866c40d63dc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-161.txt",
+          "total_lines": 23,
+          "sha256": "5ee5a91f68a6b60a925bdaa19ec3617fff9e7f909b2de4a042eabefcd3463be0"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-162.txt",
+          "total_lines": 23,
+          "sha256": "1f94d700baeb1482aff8cb4f03e873b8956df5e55944dcd9f93c595f6a7b77b4"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-163.txt",
+          "total_lines": 23,
+          "sha256": "7a64fd28951815ec7b6d8b1fde7d36ca4640cc7e7025e618b26f6d29465eed0d"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-164.txt",
+          "total_lines": 23,
+          "sha256": "525758b8e3c0a38c956aed9eaf328cd5ac17bcb7d5aad2556a4253b048f973c5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-165.txt",
+          "total_lines": 23,
+          "sha256": "26de575d1727a48737a1728859934a66201d3bd8c38a435d21c99122991b412f"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-166.txt",
+          "total_lines": 23,
+          "sha256": "761e178ce0d387615f3c954b50406647babdbcebce273c3ac342caeb673d0bbe"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-167.txt",
+          "total_lines": 23,
+          "sha256": "dd5cefdb97cef6ea8b1aa3b829607d2b7e4f0d81ddd16b1913bac03295b68c0c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-168.txt",
+          "total_lines": 22,
+          "sha256": "4d61c758b9d422df3a0ea76173f2f88de1a06bb3839242d501ca51e788f1522f"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-169.txt",
+          "total_lines": 23,
+          "sha256": "92eaa9c419a04e1c8a204aededdfc2c23df0e59d3ca1f9ec1011cc5fa3c793c2"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-170.txt",
+          "total_lines": 22,
+          "sha256": "d9c363368921f61b3f71996ad044b6deeaba019aa578fc3df70498bf9af19828"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-171.txt",
+          "total_lines": 22,
+          "sha256": "15a02b752d92e8363d951130c8351e9fa8c776c708b437ba1bbc9cc5810e6063"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-172.txt",
+          "total_lines": 23,
+          "sha256": "9058d54130c833e35b93ee632d727a3959ad80ad6597977d1663e4b007554517"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-173.txt",
+          "total_lines": 23,
+          "sha256": "204d7f712d94fce144086b40f376fdd0649cd3d2e7f456ed7904ec00aa041f88"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-174.txt",
+          "total_lines": 23,
+          "sha256": "b86560c2ee7f2f6fc3967c3a587018eeaeafebe4e4c2498b2a8c4bb86f20d6ab"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-175.txt",
+          "total_lines": 23,
+          "sha256": "d81828ec87e83547e11c2e57f4314faa761109ab5d19a60188b0b924af3059ea"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-176.txt",
+          "total_lines": 23,
+          "sha256": "aa85ae2226c9aedab15f2c138b5e440764d348d55fd7669850c98eacc563bb3d"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-177.txt",
+          "total_lines": 23,
+          "sha256": "2155a886c8975c4c35ab1d40251e1db2abcc08a7a32a6adbac945cc7be2a187e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-178.txt",
+          "total_lines": 23,
+          "sha256": "914148fae96fcd401d1d26694858036887d4c6188220cf5bceac10499b92234a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-179.txt",
+          "total_lines": 23,
+          "sha256": "f142d4f2e0efd512d1838a23543280a2b7eaae9d312a09e2fdb39b722b0e9614"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-180.txt",
+          "total_lines": 19,
+          "sha256": "72e68a12fa2538c62420770d49bc3c0de5b94e347f1eef09d4575c6d6d0e83ed"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-181.txt",
+          "total_lines": 23,
+          "sha256": "78d9e9ebfae92ac7341509acbec8817736ba6341bd50d6dbe4cd248321d181fe"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-182.txt",
+          "total_lines": 18,
+          "sha256": "9fbeef9c90d704f84b5fa01514850946efcd8971ae48d02444200e8554ea8da5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-183.txt",
+          "total_lines": 34,
+          "sha256": "848bb6e95fe8608c6746842d80dec0084bf32a3494a8aa78d79b52055b57f15c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-184.txt",
+          "total_lines": 44,
+          "sha256": "b34d0b3cc3706c5e9fb9bc3d90735382556d93eee336bef5fccd3bea54dad4e9"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-185.txt",
+          "total_lines": 19,
+          "sha256": "690eeac41dea8120ddefe432cc9f7c4c030629fcb50f651197944e1117f123d8"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-186.txt",
+          "total_lines": 28,
+          "sha256": "ae33505ce00931363157ba8b99a2634ceae085304df1b37e1eb26a356d073e04"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-187.txt",
+          "total_lines": 41,
+          "sha256": "869bc82b60c6eb117863039999cf2dfca097300ddd1be2fca60b7a9a341cb40e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-188.txt",
+          "total_lines": 20,
+          "sha256": "2dbe9eb9e02895f2efe31b5019720fb279cd977cd145b28dcd6675f3babd164c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-189.txt",
+          "total_lines": 43,
+          "sha256": "8a3a8c0deba394470d92744aad9cbe1b0be9e74332b0e35eb661fd02ba53f4c3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-190.txt",
+          "total_lines": 19,
+          "sha256": "07788d3b89c527bf1e0bdd07282ec5719c91e61f3d3a197168089b9ea2e6b3c4"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-191.txt",
+          "total_lines": 27,
+          "sha256": "c9be982c33020fdebdc6b3b2b360056cdc015b67234628eace40d066f2a7fa60"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-192.txt",
+          "total_lines": 33,
+          "sha256": "c487019b3c3631c73acb2899cf560260f9d1da984672547288ac521161becba1"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-193.txt",
+          "total_lines": 34,
+          "sha256": "a5b0e9e5759205d27570a99eb8bb4c8a7518fd5efd9c2e80ffa4d7109dede550"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-194.txt",
+          "total_lines": 27,
+          "sha256": "17a79467f6fb0e71afd68418ec182b59f08ff0925b258d2acc3658a95a7a7b16"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-195.txt",
+          "total_lines": 31,
+          "sha256": "8716e745aae6e4933acc7d23754d2fb86f9fb82ac9821531e60e30f26e832472"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-196.txt",
+          "total_lines": 50,
+          "sha256": "ffbf9989806b90ff3695762ecfa84932c00fdd0db7ce701755a8413fb93ee346"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-197.txt",
+          "total_lines": 59,
+          "sha256": "e56e1f275240b9c43f416d261b157c04330ad4f0984cb1e7ee0937933e855668"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-198.txt",
+          "total_lines": 19,
+          "sha256": "c406e39079f1775ef2184a4e44c8873b731294d640749aae0d0d2ecd967ac4e6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-199.txt",
+          "total_lines": 28,
+          "sha256": "b9bc40eacb6c025594373cfbd1bbfbd1006ea1ef7768d8828f9e656dc4dc8755"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-200.txt",
+          "total_lines": 40,
+          "sha256": "4aaecdd7e6ec38f8c2627d8a9f4a97ba2e1f931125b7b2681be0702df44ff818"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-201.txt",
+          "total_lines": 32,
+          "sha256": "1cc9db8d8698caa598466a776dee63952ebd0f55515dbcaa3586d5ebc18c193f"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-202.txt",
+          "total_lines": 40,
+          "sha256": "0a620ca325ad6f767462d681af8d8d34d5a61d54ee7ffd6f5800206c4f328b73"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-203.txt",
+          "total_lines": 34,
+          "sha256": "38ce3e1ab0385f8bb658abd402425330f7d80c1b59607aacc1a2b8e00f848b14"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-204.txt",
+          "total_lines": 35,
+          "sha256": "d09008c3266d0ab1aab11346f064bfa774c4bc03d004cb969384e0b50ff50d0e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-205.txt",
+          "total_lines": 55,
+          "sha256": "fdd312b875a3f7f086c364ef16492cc64d9b3b0fe49d60965a9e68c1b8b850c3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-206.txt",
+          "total_lines": 21,
+          "sha256": "3407a1921f1cf7c4898a949c82fbebea92bc3611d51a6bc990aebda3fc4afe80"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-207.txt",
+          "total_lines": 27,
+          "sha256": "d203ab5cfa62675d5f873e2da32cfea80471bcab46708c4f6c7915ed0fbe494b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-208.txt",
+          "total_lines": 48,
+          "sha256": "878918f4846b5817a01925e7bbf742d9b889d58c59ed5ad65bfa48bc229d42b6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-209.txt",
+          "total_lines": 30,
+          "sha256": "2df721e0da1b3a56524a5ae838e0a141e5827e7c578248f05e9dff0b5cfd04e7"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-210.txt",
+          "total_lines": 27,
+          "sha256": "bf0c85def54bc3af3f5f8ceea1405718253f89dd4d3e7df3bc0e4744137fecaa"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-211.txt",
+          "total_lines": 29,
+          "sha256": "d403e4875673e18c055c55d15e501033b1a3ee31d9a99b8fc0be7bb444a9a410"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-212.txt",
+          "total_lines": 30,
+          "sha256": "6d9a6af6d20a2d41c8c21e7e1efd620555d4e82ee50bb8e5e2300d0575bc2f3a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-213.txt",
+          "total_lines": 33,
+          "sha256": "97d2b33dae2696a0e3725ef81030abfd00ded7409d9b1e01f5bc49f0e224cd56"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-214.txt",
+          "total_lines": 39,
+          "sha256": "78dad47d6d4cf7d5dd58ac02ecdedc60284a8f9dd1967902198f6e1560f73422"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-215.txt",
+          "total_lines": 25,
+          "sha256": "a2ff98e956cccecd021d3269abecbc4c53225f19438811b441b872e21df787e5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-216.txt",
+          "total_lines": 34,
+          "sha256": "92ab3b9993a4de608b228eee35454c17e42f5e90dc6b970bf55b0ef22294b5ab"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-217.txt",
+          "total_lines": 24,
+          "sha256": "988cda651e46530d8922a19bc2928defdc442d220dd4e6a4591eda8a6c1bf69a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-218.txt",
+          "total_lines": 31,
+          "sha256": "ddbb7cbdd6659bbc370614198ffc086ff8281da9687b76df471cdeee37f4cb47"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-219.txt",
+          "total_lines": 44,
+          "sha256": "cf9c5b2d06677466a176d056e9b1798769cb76f3023fdea7837c313dea4bba97"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-220.txt",
+          "total_lines": 46,
+          "sha256": "bae6a37c6f3a4b96e78ce3fab9b82b83562e59bb684ff1b270cf323c87d7a896"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-221.txt",
+          "total_lines": 23,
+          "sha256": "46f0974f87e8df88b17cb30e37cc43a9f81055fc07710b1f170116b16a72d342"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-222.txt",
+          "total_lines": 27,
+          "sha256": "d33d05e6c4bd1c3c1355fd79bee38576c919a49ecbb42d52fad80d0b88409c43"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-223.txt",
+          "total_lines": 34,
+          "sha256": "7c6afc31960d76a191323759abf43680db6cd5688d3df3338acff1341abd42ec"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-224.txt",
+          "total_lines": 31,
+          "sha256": "e0d182fee9a5356cd78fd4e91518b28acf372924effd865733f66593d9490c2a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-225.txt",
+          "total_lines": 49,
+          "sha256": "16816e2475c18581cd78aec11003960bf455c870cac4efbd50e2e0e38171d49b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-226.txt",
+          "total_lines": 32,
+          "sha256": "64b16a269d6805db93718c34a69a699c98aedecfb48684965d55127db2408064"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-227.txt",
+          "total_lines": 54,
+          "sha256": "48b2a3cc51a960f14d67baf73f595702e525c35bcf8728bf6c935aed980364cb"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-228.txt",
+          "total_lines": 61,
+          "sha256": "5eca7e892be8ed4daab15db9e451b74db3a1220d648cec777b3486f8dee3ef59"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-229.txt",
+          "total_lines": 19,
+          "sha256": "3ee22a3c36738e625a65d9b5ad7c8f917399c5394d9bf51033dc4de8ab39c7fd"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-230.txt",
+          "total_lines": 29,
+          "sha256": "8866a6a15e0ea563703ed32719c668feb67215e19a7ceeb1459085a7dc7849ce"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-231.txt",
+          "total_lines": 34,
+          "sha256": "67db72e3e8be8165f604b04171a598a52c5896288ef82889e02444a5091c79c3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-232.txt",
+          "total_lines": 29,
+          "sha256": "a95dd601592009cd71dba00ea0b88a34d3d31c0358c61cfb94d233996d4191b9"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-233.txt",
+          "total_lines": 39,
+          "sha256": "af15e7e0fa63ea9fbf566fc6b2b3266c59dc35b56e500c314d6cad97d56468b8"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-234.txt",
+          "total_lines": 49,
+          "sha256": "29348282c072ee4af2b2e774ffef2929587df7b0b82a3f1398f9328500a9c6d6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-235.txt",
+          "total_lines": 41,
+          "sha256": "2c43aa88680538cab3b5901184f2a3eb3875074ac475f1499041b570f0d57747"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-236.txt",
+          "total_lines": 25,
+          "sha256": "f61de3ab3acf4f5d014d38082553f8a873f603b17f55435ce588e8614a3b8959"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-237.txt",
+          "total_lines": 49,
+          "sha256": "df81ac415c1237ed59e9bdf13f0311cdf4f9d0a9c54cc6f5c218e2c3ddae9b8f"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-238.txt",
+          "total_lines": 52,
+          "sha256": "f29ffcd5e831f5ad3f0a048a89b0cea262666e0224b3a13bed3c905eeaa099df"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-239.txt",
+          "total_lines": 23,
+          "sha256": "8bf8278d97b9c4cb71e7f9d7c0fc2de6f15482a3476fad7b98e2e8069b70d35b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-240.txt",
+          "total_lines": 26,
+          "sha256": "293a2cc7c1b2c7d7678bb62e88c97c76a71d342dd0e1f01f72a0076f4ce9eb8c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-241.txt",
+          "total_lines": 35,
+          "sha256": "d2758416d58004760479b9372932b67c975c7ce237da1399a8b1ae7a4534c764"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-242.txt",
+          "total_lines": 28,
+          "sha256": "ad6df5d7b71605305c8938ff4f2e50707870d5d3fbc56a3d17641ec5fd2f27c7"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-243.txt",
+          "total_lines": 32,
+          "sha256": "5778abc941146a7417d21d0532cb4edf4cbcb903ed294043f2525b7da3614fc6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-244.txt",
+          "total_lines": 35,
+          "sha256": "25a94566c5e0100ed14008d235d40db2bbb5249258afb6c25a6d011bcfa91b0d"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-245.txt",
+          "total_lines": 48,
+          "sha256": "a1a23b846ec0bb702e6bdd99a8cbc82aee539f5e0ff0bee215c2bbc97600f1cd"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-246.txt",
+          "total_lines": 40,
+          "sha256": "7f893d491e954dbdc196b78340324a16a8d5a7b2888af5c5e96266766db8458a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-247.txt",
+          "total_lines": 31,
+          "sha256": "69a9d16c56d609b64519a7abb6deee0aeb52d88baa71b3da3630abf96e8f83d2"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-248.txt",
+          "total_lines": 30,
+          "sha256": "dfef341de84a1893b30d0511929bccaa3ae5865e272777d89f321eb14a465c47"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-249.txt",
+          "total_lines": 41,
+          "sha256": "ff7505df31a96fa1ce5196f7ccd5b999564f98d69b671731124fa25a01e6da20"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-250.txt",
+          "total_lines": 24,
+          "sha256": "c165e43ccf42e88aa99947fff31b64a4da55001424fa468aeeeab977b64aa8c6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-251.txt",
+          "total_lines": 34,
+          "sha256": "96dd0a6a909be74012528c825693ffded239fc436e0f47168502f0fc78f3d632"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-252.txt",
+          "total_lines": 36,
+          "sha256": "16986a34697e2d28221ea062cc66b902baedc091b43a855112f36b07d99714a6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-253.txt",
+          "total_lines": 20,
+          "sha256": "b7d6c09e3b2cabb900c5597a8e69c4cc5e3e6c9f92ca085b615333e8c89f3bac"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-254.txt",
+          "total_lines": 35,
+          "sha256": "523b5e400e46d44770d2b371ec837aaaa8bf2df13e5ad9d40f7d234c36704375"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-255.txt",
+          "total_lines": 21,
+          "sha256": "b4331fe12d0ec4596d6be5892e673a1f9731e98372ee4b80674e06faaa26876a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-256.txt",
+          "total_lines": 24,
+          "sha256": "17956d9de73b101fee8f8f982babd7076ffa8d7ab40770d6940d676ce9f06aad"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-257.txt",
+          "total_lines": 62,
+          "sha256": "997387e7da903a960214e13ea8b0c68830a1495c3468b5ead5f606edf9404445"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-258.txt",
+          "total_lines": 20,
+          "sha256": "993623476c0c01683f0bb6243f2b2b7f94b22d6503d3dfa8639cf69700b04f6a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-259.txt",
+          "total_lines": 38,
+          "sha256": "e1206d07eae5d604dc1293cdd388cb0d4d1ce3e95528f88937c956777c050100"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-260.txt",
+          "total_lines": 57,
+          "sha256": "3d2559870d6e0bb0f3e8d36c808202695397edf266510d7614319f520109c3c6"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-261.txt",
+          "total_lines": 40,
+          "sha256": "989b7aab8d20d37a0f59bc953a9a8c1eaacff58ffbeb44ff036ca168da3fba63"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-262.txt",
+          "total_lines": 24,
+          "sha256": "31ea97181f1bb3d9d1e3a383f7f98c935cf95e054bba494286f8fa0cf6e22f4d"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-263.txt",
+          "total_lines": 36,
+          "sha256": "f3bec6a11d63d693ffdea2d2918be1c06e4131da796596bdcefe04087db5eadf"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-264.txt",
+          "total_lines": 21,
+          "sha256": "6abc248028b4a9622e803bfcae4d176c7a9dc6c17ec68c9c9aae8a8e6ced16d5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-265.txt",
+          "total_lines": 30,
+          "sha256": "6918deb0571dfc12efc0704da88995a8f608aa45234230f2d4afa937d33fc5a9"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-266.txt",
+          "total_lines": 34,
+          "sha256": "ece00dea6c122f037491bf891f4bc6bbda06cebf44253416b39bf36a2b183170"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-267.txt",
+          "total_lines": 23,
+          "sha256": "48183185c53c5cd05281792dfaa7f709b3e434133707d3a46003258af6516986"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-268.txt",
+          "total_lines": 34,
+          "sha256": "698eba81e8b5f07ad8d0f1a15979841867642c4767229a4405997b5f37fb229e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-269.txt",
+          "total_lines": 19,
+          "sha256": "b66e4a9479dc6c85e67e85f72628ac34cca8f2c5d0ac35c307ef50f8a98c1629"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-270.txt",
+          "total_lines": 23,
+          "sha256": "12cd5dd8a197665243bd4a1524bb68fdbe9cc0aa7ba4f89de9b6be69e2ee4fef"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-271.txt",
+          "total_lines": 29,
+          "sha256": "87e1ba59215aa22aa837cfe5864e08f3d56c26b350398d1b068de8efb3a51d07"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-272.txt",
+          "total_lines": 22,
+          "sha256": "6bd57cf67a668d92e0986707f92cffe7cd02e79203bfa034a4290cd5ba026841"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-273.txt",
+          "total_lines": 31,
+          "sha256": "1376fe2d74a5f65f7771c9ebddcb34de332f6e9aae4fd56a99640b4d2a3f0452"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-274.txt",
+          "total_lines": 29,
+          "sha256": "6357f4e4cbdc76de32d351b84f97d0c688e4def37954e72a603badb177a67e3c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-275.txt",
+          "total_lines": 25,
+          "sha256": "d02349e7ff5eabc0eebed1db9beb5bce43be828e9dae5298f41ad6b0523f5446"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-276.txt",
+          "total_lines": 37,
+          "sha256": "178e10317071bb9f34483d350ca5da023f31a8d2e493bef6fa3739a531f7ae23"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-277.txt",
+          "total_lines": 22,
+          "sha256": "921bacaf0235a2bba850efa1ca6b6a2c22604bf2ef071483b86dbc7cabffa2f7"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-278.txt",
+          "total_lines": 34,
+          "sha256": "b30b3397a9425f5cf889b08c8c7033c35aa9ffa5369bee51537933c712e8aa52"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-279.txt",
+          "total_lines": 27,
+          "sha256": "c2e23d9790d72a1aecc40aebbebcaa59138dcc39c78a523dadd263ef1097b7a5"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-280.txt",
+          "total_lines": 33,
+          "sha256": "6732e7b74ace5f8f6f9f0f05cf16d1631941301dc314914e1c7452789cc34210"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-281.txt",
+          "total_lines": 24,
+          "sha256": "48f4c38f17c4c0c08ee5fc41a5ef709424a86c41f632702edb254e6269471163"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-282.txt",
+          "total_lines": 26,
+          "sha256": "9426562207a9fb8bd8890e1f2aea6c980228bd2e5aa184de237c5eea22453efc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-283.txt",
+          "total_lines": 39,
+          "sha256": "802e296348534679d362cd787d2a390ee61684ca7d5289dfc23d140ac9351410"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-284.txt",
+          "total_lines": 18,
+          "sha256": "c7cfc5b69a684324759f310691a19fa35b863b01f5f64ddc2c137733d5eb5db3"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-285.txt",
+          "total_lines": 28,
+          "sha256": "69fd0cb584be274d18e1219b5acd212842f88c7589ba274101a6ab49037a7746"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-286.txt",
+          "total_lines": 38,
+          "sha256": "6a7b2dbf84db9d973245ab96e4812a7c810d9419431c070e813ca5f029afb83a"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-287.txt",
+          "total_lines": 19,
+          "sha256": "b014b0a0d1981a41a0421a5728c01ec14983d4ed05fc35699b854bbd8ef242cf"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-288.txt",
+          "total_lines": 38,
+          "sha256": "3746bf2a5f37b1c65d856b42d5c2557dee81b96fb5e417f47eb97e1a5c38680e"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-289.txt",
+          "total_lines": 23,
+          "sha256": "33455b9a7528844cf612769263778771c0ac83f41a5b67cd1eeaae676d538aff"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-290.txt",
+          "total_lines": 47,
+          "sha256": "c8f743ca04407fde03e9d45abe8dfeebb8fd887a43532c170de79ad8b08cc162"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-291.txt",
+          "total_lines": 18,
+          "sha256": "1cef878d0b8f31ef4f1bcfb4156043144c694b04459e3ca3be9161410d7e9701"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-292.txt",
+          "total_lines": 28,
+          "sha256": "d41f5c9b619e3e845366ccad80d8f74fa8b874307022c2f5be4194638245ae2b"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-293.txt",
+          "total_lines": 29,
+          "sha256": "fa8c58ee4dbd8dd2ac3c9807211cc757013c4f7602802370c67bdf4176509bb9"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-294.txt",
+          "total_lines": 30,
+          "sha256": "38636a64f01b296b16cd0445138284d996f625a9fa357c2d7cb9fb326a2ffbaa"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-295.txt",
+          "total_lines": 30,
+          "sha256": "d188c8975b0e77dcdb404545e291b8a3a771ee2cee016a3f3d363a69019845cb"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-296.txt",
+          "total_lines": 34,
+          "sha256": "5ca977dbb5db94b833717900809f329a0498e4870b317ce41a35566c556a324c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-297.txt",
+          "total_lines": 43,
+          "sha256": "c3b35657c73d8e7b4e6896ba3cf4bdf160ac64730a926f68da9f6a1599ab64b4"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-298.txt",
+          "total_lines": 25,
+          "sha256": "11f0ddba6efc8c644306046a8c61cb01bd5e4bfd3321f1ca3631f65d6cf36522"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-299.txt",
+          "total_lines": 27,
+          "sha256": "bd47cbf593f9d89802806e91e5f326bf35c59b6af6080b6ef8fc49bd8f3a4965"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-300.txt",
+          "total_lines": 30,
+          "sha256": "3d64a30585661e02f51742e4fd8092552a820c001a2931e38811c099d984a3fc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-301.txt",
+          "total_lines": 30,
+          "sha256": "8e95a35b08ec5645947631483b6000b0c21965f6b3587edee83318e5ad6b29cf"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-302.txt",
+          "total_lines": 30,
+          "sha256": "254cd60afb8a745ba926afafeeb744e111d360889e719c45dea4f24d298e77bc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-303.txt",
+          "total_lines": 32,
+          "sha256": "3e46318df4f0f6ec7d76cc906ceb22cb0ad104cce1ebd5b6915a9571248e3ddf"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-304.txt",
+          "total_lines": 30,
+          "sha256": "dfac6547b7a7aacc6ee209a0601239b812225ae2d9da91cee245acda98a12b45"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-305.txt",
+          "total_lines": 47,
+          "sha256": "4ff5d05c4a221fc8a5ce507151b84f4de02fdb4aea00148758fc890a256aefc4"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-306.txt",
+          "total_lines": 18,
+          "sha256": "4a383ba10a922d900d3df050bbaa1aaee63cf9ee491674ca358bacc9942d94aa"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-307.txt",
+          "total_lines": 28,
+          "sha256": "91bc10bb91675983e6606e01d05ac2249393b8431a6fc2c7d424d8322c836875"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-308.txt",
+          "total_lines": 27,
+          "sha256": "74d6c207d447c67fe920f62f92093bd623c22a2d398ed8fc56abf01a0758db60"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-309.txt",
+          "total_lines": 30,
+          "sha256": "985611244767deda099024559de9ba2a85f9458a850dca77c307501435ed292c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-310.txt",
+          "total_lines": 31,
+          "sha256": "1a9d76021711d9fafe389fb5de12cba31df4a500203d2c05b7e5c222ff514067"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-311.txt",
+          "total_lines": 32,
+          "sha256": "2c5f2a5daae426dc7301da07b7abd6a2c862c18550728ec9b9f323b4928a8649"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-312.txt",
+          "total_lines": 23,
+          "sha256": "2b5488dd3cbcdd3ab3a49742a1d0f0b0b49efbb6e2a4e4e17097fb09db1f5dce"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-313.txt",
+          "total_lines": 44,
+          "sha256": "93528925158326007e5f33be37f76ffeeb466dfbf89f4812bca9419f5e5be81c"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-314.txt",
+          "total_lines": 19,
+          "sha256": "ee9d343cfc6c5846104a7eeaceb73e40a90e81915d1844e060e639ea979e98d0"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-315.txt",
+          "total_lines": 29,
+          "sha256": "35859c6a3eb4f3ec9cb2176a2c1632c98a2b30aedcd4d33da055c806aca298f7"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-316.txt",
+          "total_lines": 29,
+          "sha256": "55daf0bef2c40d88be1a1de70ea408def2e4eb1da9b0b64550a92fc112d053df"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-317.txt",
+          "total_lines": 31,
+          "sha256": "0d504986f3c996054b4f3cb2f42b943ceeed41ed5012a8ac7f4320e82d07a207"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-318.txt",
+          "total_lines": 33,
+          "sha256": "51e8575c369c6139874878e63dec28e65d09c872944f5aa4ebc94deab70d28bc"
+        },
+        {
+          "bundle": "source-diagnosis",
+          "path": "evidence/analysis/readable/source-diagnosis/part-319.txt",
+          "total_lines": 25,
+          "sha256": "560cca15e44582a67f74d86217fef4e9843732e04d0de435bcd778f61937df10"
+        }
+      ]
+    }
+  ]
+}

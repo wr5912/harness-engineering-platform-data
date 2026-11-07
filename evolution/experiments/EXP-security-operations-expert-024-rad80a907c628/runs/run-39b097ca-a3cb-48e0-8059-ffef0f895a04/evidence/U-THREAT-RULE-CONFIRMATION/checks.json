@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-THREAT-RULE-CONFIRMATION",
+  "transport": "api",
+  "expected_behavior": "1. 核对事件、实例与冻结基础：使用指定实例threat-analysis-test001的新会话和原local/Qwen3.8-27B模型路线，核对实际事件为INC-20261029-000016，不把28日同尾号事件或旧Run当作本轮结果。基础取证、提示词、快速路由和校验器保持不变；基础validation和结论/证据冻结后不被规则模型改写。\n\n2. 保留基础失败并降权上下文：基础校验failed或未知时，不因该状态一刀切停止案内规则只读收集；状态原样保留且进入模型的有效上下文必须标记partial、confirmation_only、unverified_model_output，基础归纳不作为已核实事实，引用白名单排除基础模型F事实ID，只用本案真实hitId和告警ID。收集failed仍不调用规则模型；not_applicable只表示无SOC候选，不表示基础通过。模型只可给needs_confirmation，无实际candidate_changes，并引用G-BASE-VALIDATION；不得静默删除非法候选来通过JSON校验。\n\n3. 核对真实规则收集：通过实际规则MCP核对分页、家族/业务ID/版本去重、命中抽样覆盖、历史快照/当前定义分离以及外部EDR排除；数量取自本轮，不固定历史值。两个目录可选、三排除接口不调用；不调用SOC DSL验证/规则写入。实际模型输入、校验所用上下文、runtime和报告共用有效降权状态。\n\n4. 核验最终投影和分层结论：本地JSON通过只证明载体可存储，不表示基础通过或规则有效；JSON/模型/采集失败保持真实失败，合法空建议不掩盖partial。最终建议在本地结果、摘要JSON、SOC resultJson和报告一致，原基础除建议字段外不变；保存状态分别核验。新模块的待确认技术链路与完整业务通过分别判断，基础合同failed时不能标记整体通过。未覆盖窗口家族、正向SOC检测定义或效果回放保持未知。",
+  "session_id": "session-a35bf622-aae5-4e54-b705-736cf300bf4a",
+  "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+  "session_title": "评测 U-THREAT-RULE-CONFIRMATION",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-b3737dcc-0d89-4bc2-9e1b-0d8e028e36b9",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-THREAT-RULE-CONFIRMATION",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

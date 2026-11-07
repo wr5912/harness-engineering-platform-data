@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "为了帮您进行故障分析，我需要先了解业务系统访问异常的具体信息。请提供以下细节：\n\n1. **受影响的主系统**：哪个业务系统无法访问？\n2. **访问异常现象**：具体是什么异常？（例如：无法登录、连接超时、403/404 错误、数据加密问题等）\n3. **受影响的时间窗口**：从什么时候开始，影响了多长？\n4. **影响范围**：是所有用户都无法访问，还是特定用户/部门受影响？\n5. **是否伴有安全事件**：如 TLS/SNI/主机异常等安全事件（如果有事件 ID，请提供）\n6. **是否关联特定事件 ID**：如果有相关的 SOC 威胁事件 ID，请提供\n\n我将根据您的详细描述，启动故障分析子智能体进行针对性调查。"
+  ],
+  "session_id": "session-33d8ae44-14d8-4c96-817f-e4433f16652d",
+  "turns": [
+    {
+      "assistant_text": "为了帮您进行故障分析，我需要先了解业务系统访问异常的具体信息。请提供以下细节：\n\n1. **受影响的主系统**：哪个业务系统无法访问？\n2. **访问异常现象**：具体是什么异常？（例如：无法登录、连接超时、403/404 错误、数据加密问题等）\n3. **受影响的时间窗口**：从什么时候开始，影响了多长？\n4. **影响范围**：是所有用户都无法访问，还是特定用户/部门受影响？\n5. **是否伴有安全事件**：如 TLS/SNI/主机异常等安全事件（如果有事件 ID，请提供）\n6. **是否关联特定事件 ID**：如果有相关的 SOC 威胁事件 ID，请提供\n\n我将根据您的详细描述，启动故障分析子智能体进行针对性调查。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b6cf294b-07b4-4a0c-9d12-42bfc798552f"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "inputs": [
+    "创建一个每天 9 点开始每隔 30 分钟从 SOC 获取威胁事件进行研判的任务。",
+    "每天 18 点结束。"
+  ],
+  "assistant_texts": [
+    "任务已创建：\n\n| 项目 | 值 |\n|------|-----|\n| **提醒 ID** | `schedule-076d64a6-73de-4b06-94a9-cb201111426f` |\n| **标题** | 自动威胁研判 - 每 30 分钟 |\n| **触发间隔** | 1800 秒 = 每 30 分钟 |\n| **创建时间** | 2026-10-28T06:55:58.280Z |\n| **下次到期** | 创建时间后 30 分钟（首次触发） |\n| **定时区** | 系统本地时区 |\n\n**重要说明**：\n- 这是一次**持续间隔型提醒**，不会再次执行，仅每隔 30 分钟重复\n- 首次触发在系统创建时间的 30 分钟后，而非 9 点\n- 到达到期时自动调用固定 prompt 触发研判\n- 每条心跳只研判一条事件；若上条仍未完成则跳过本次\n\n如需精确从 9 点开始触发，请稍后再告诉我调整方案。",
+    "已为您创建两条定时规则，覆盖每天 09:00 至 18:00 的时间窗口：\n\n| 提醒 ID | 标题 | 表达式 | 说明 |\n|---------|------|--------|------|\n| `schedule-e183fefb-0aae-4be8-84ae-09cdee44c6a4` | 自动威胁研判 - 窗口 09-17 | `*/30 9-17 * * *` | 每天 09:00–17:30，每 30 分钟触发（含 17:30） |\n| `schedule-84861933-1341-432f-9ee2-75507a8b12e9` | 自动威胁研判 - 窗口 18 | `0 18 * * *` | 每天 18:00 整触发一次 |\n\n**说明**：\n- 两条任务均触发固定 prompt：`{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}`\n- (expr)_区：Asia/Shanghai\n- 每周 7 天均执行\n- 到期后系统调用 `analyze_pending_threat_incidents` 进行单次研判，每次只处理一条事件\n- DSH 不支持暂停/恢复；如需修改删除请使用 `schedule_update` 或 `schedule_delete`\n\n执行状态以 drun 结果为准，当前尚未运行。"
+  ],
+  "session_id": "session-1b789c7e-19e6-4c75-bd6d-901551e296a0",
+  "turns": [
+    {
+      "assistant_text": "任务已创建：\n\n| 项目 | 值 |\n|------|-----|\n| **提醒 ID** | `schedule-076d64a6-73de-4b06-94a9-cb201111426f` |\n| **标题** | 自动威胁研判 - 每 30 分钟 |\n| **触发间隔** | 1800 秒 = 每 30 分钟 |\n| **创建时间** | 2026-10-28T06:55:58.280Z |\n| **下次到期** | 创建时间后 30 分钟（首次触发） |\n| **定时区** | 系统本地时区 |\n\n**重要说明**：\n- 这是一次**持续间隔型提醒**，不会再次执行，仅每隔 30 分钟重复\n- 首次触发在系统创建时间的 30 分钟后，而非 9 点\n- 到达到期时自动调用固定 prompt 触发研判\n- 每条心跳只研判一条事件；若上条仍未完成则跳过本次\n\n如需精确从 9 点开始触发，请稍后再告诉我调整方案。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a488dc00-4406-4af9-a1a4-fd140b555e9e"
+    },
+    {
+      "assistant_text": "已为您创建两条定时规则，覆盖每天 09:00 至 18:00 的时间窗口：\n\n| 提醒 ID | 标题 | 表达式 | 说明 |\n|---------|------|--------|------|\n| `schedule-e183fefb-0aae-4be8-84ae-09cdee44c6a4` | 自动威胁研判 - 窗口 09-17 | `*/30 9-17 * * *` | 每天 09:00–17:30，每 30 分钟触发（含 17:30） |\n| `schedule-84861933-1341-432f-9ee2-75507a8b12e9` | 自动威胁研判 - 窗口 18 | `0 18 * * *` | 每天 18:00 整触发一次 |\n\n**说明**：\n- 两条任务均触发固定 prompt：`{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}`\n- (expr)_区：Asia/Shanghai\n- 每周 7 天均执行\n- 到期后系统调用 `analyze_pending_threat_incidents` 进行单次研判，每次只处理一条事件\n- DSH 不支持暂停/恢复；如需修改删除请使用 `schedule_update` 或 `schedule_delete`\n\n执行状态以 drun 结果为准，当前尚未运行。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "ba977720-83af-4d50-b0fb-8a4adb067723"
+    }
+  ]
+}

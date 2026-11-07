@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-QA-005",
+  "transport": "api",
+  "expected_behavior": "结合当前配置说明 sec-ops 是什么、提供哪些接口以及适用边界；无法读取配置时明确说明，不能臆测本地配置内容。",
+  "session_id": "session-db171f4e-1b35-47ce-a80a-e861663e88a5",
+  "workspace_id": "10935fca-d5eb-4ea6-acb3-b94a05ac761b",
+  "session_title": "评测 U-QA-005",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-a82ba1bc-457f-408a-81fb-b503a97a175f",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

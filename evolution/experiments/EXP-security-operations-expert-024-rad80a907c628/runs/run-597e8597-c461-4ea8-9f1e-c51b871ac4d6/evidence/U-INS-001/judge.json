@@ -1,0 +1,80 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "巡检 MCP 服务（inspection）在本轮处于 disconnected 状态，目录查询与资源查询均以原生 is_error=true 失败，因此无法从真实目录选定模板、无法准备 READY、未发起任何巡检、没有 requestId/runId、也没有报告与 reportDownloadUrl。被测回答如实报告依赖缺口、未绕过巡检服务、未伪造数据，但五项要求所依赖的真实工具数据全部缺失，无法判定任何一项为满足，整体不通过。",
+    "requirements": [
+      {
+        "requirement": "1. 从本轮真实目录选择唯一匹配的常规巡检模板，使用实际 taskId、definitionVersion，按显式全量范围准备；缺少模板必填业务输入时仅澄清缺项",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 3
+          },
+          {
+            "index": 5
+          }
+        ]
+      },
+      {
+        "requirement": "2. 参数完整且准备 READY 时，同轮通过“启动巡检”能力发起一次巡检，不另等确认、不伪造上下文",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "3. 稳定 requestId 绑定同一真实请求与原始输入；准备过期仅按原选择器和业务输入刷新。启动回执未知先查原请求，不能新 ID 重试。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "4. 取得真实 runId 后沿用该运行查询；运行中报告状态和标识，不重新启动或冒充完成。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "5. 报告就绪后按同次回执交付 conclusionStatus、businessSummary、reportSummaryMarkdown、设备数量与证据缺口，只提供真实 reportDownloadUrl；服务拒绝同轮启动时保留失败证据，记为依赖缺口，不能绕过有效准备条件或判通过。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 3
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-b458505a-479c-4088-b5ee-24efb5de0227",
+    "workspace_id": "f892dd9e-6f10-48d8-8327-c0d806d7de78",
+    "session_title": "评审 U-INS-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

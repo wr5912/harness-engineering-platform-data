@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答准确解释了 CVE（Common Vulnerabilities and Exposures）的含义及其作为唯一标识符的用途，并逐项说明了编号不能单独表示严重度（需 CVSS）、是否受影响、是否已被利用（需 KEV 等）以及修复优先级，与预期完全一致，证据充足。",
+    "requirements": [
+      {
+        "requirement": "准确解释 CVE 及编号用途，明确编号可用于唯一标识公开漏洞记录，但不能单独表示严重度、是否受影响、是否已利用或修复优先级",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "**CVE（Common Vulnerabilities and Exposures，通用漏洞和披露）** 是一套公开的漏洞编号标准，由 MITRE 维护（CVE 计划的资金来自美国 CISA），目的是给每个已公开披露的安全漏洞一个全球唯一的标识符，方便厂商、安全工具和用户之间不产生歧义地引用同一个漏洞。\n\n## CVE 编号能告诉你什么\n\n- **唯一标识**：格式为 `CVE-YYYY-NNNNN`，例如 `CVE-2021-44228`。看到一串编号，所有厂商、扫描器、公告都在说同一个漏洞。\n- **收录年份（大致）**：`YYYY` 是该编号被分配/收录进 CVE 目录的年份，**不等于**漏洞被发现的年份，也不等于补丁发布的年份。\n- **指向权威描述**：通过 CVE 记录可以查到官方简介，通常包含受影响的产品/版本范围、漏洞类型（如缓冲区溢出、命令注入、权限绕过）、以及各厂商的通告和补丁链接。\n- **可作为情报交换的锚点**：SIEM 规则、漏洞扫描器、威胁情报、合规基线都以 CVE 编号作为对齐键。\n\n## CVE 编号不能告诉你什么\n\n- **严重程度**：CVE 编号本身不含风险等级。严重度要看 **CVSS 评分**，而且 CVSS 是通用基准，不等于你在本环境的实际风险。\n- **是否被实际利用**：编号不表示该漏洞是否在野利用、是否有公开 PoC。这要看 CISA KEV 目录、厂商通告、威胁情报等来源。\n- **你是否受影响**：是否中招取决于具体产品、版本、配置和暴露面，光有编号判断不了。\n- **补丁状态和修复时间**：CVE 不告诉你是否已修复、修复版本是什么、你部署的补丁是否覆盖它。\n- **漏洞的完整技术细节**：CVE 记录是摘要，深度分析要去看厂商公告、NVD 分析、研究报告。\n- **发现时间、披露时间线**：编号年份≠发现年份，也≠厂商悄悄修复的时间（有些 CVE 回溯收录多年以前的漏洞）。\n- **风险是否需要立刻处理**：风险 = 漏洞严重度 × 资产暴露面 × 业务重要性 × 利用可行性，这些都要结合本地资产和业务上下文评估。\n\n**一句话总结**：CVE 编号是\"漏洞身份证号\"，解决的是**无歧义引用**的问题；至于\"危不危、有没有人利用、我是否受影响、先修哪个\"，需要结合 CVSS、KEV、厂商通告和本地资产情报另行判断。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-54c3766d-8f4f-480f-99fb-1297a5a37c33",
+    "workspace_id": "14a11e08-348f-4150-a050-f98c045abbc2",
+    "session_title": "评审 U-QA-007",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

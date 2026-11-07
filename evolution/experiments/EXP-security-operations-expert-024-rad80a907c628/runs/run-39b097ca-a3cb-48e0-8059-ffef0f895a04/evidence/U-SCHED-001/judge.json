@@ -1,0 +1,94 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "工具回执 is_error=false 且完整回显标题、prompt、时间与时区，与回答一致；回答中的任务 ID、规则和下次到期时间均与真实回执逐项吻合，并明确说明尚未执行，未在工具失败时虚报成功。",
+    "requirements": [
+      {
+        "requirement": "注：类型：自动研判",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "已创建每日定时威胁研判任务。\n\n**任务信息**\n- 任务 ID：`schedule-1da58b9e-fcab-48f6-97ab-3aa6f343acba`\n- 标题：自动威胁研判-每天12:00\n- 规则：每天 `12:00:00`（时区 `Asia/Shanghai`）\n- 下次到期：2026-11-04 12:00（北京时间，即 `2026-11-04T04:00:00Z`）\n- 状态：scheduled（已排期待投递）\n\n**说明**\n- 该提醒绑定当前 Session，到期后由本地受信 Schedule 框解析固定 prompt 并调用 `analyze_pending_threat_incidents`，每次只研判一条事件；上一条仍在运行时会跳过本次心跳、不排队。\n- 目前任务**尚未执行**任何研判，需等到下次到期时间触发。\n- 之后如需修改周期或删除该任务，告诉我即可（DSH 不提供暂停能力，暂停需改为删除）。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 4,
+            "quote": "{\"id\":\"schedule-1da58b9e-fcab-48f6-97ab-3aa6f343acba\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-04T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "1. 创建本会话提醒：用 DSH `schedule_create` 创建绑定本 Session 的提醒，时间选择器为 `daily: {\"time\":\"12:00:00\",\"time_zone\":\"Asia/Shanghai\"}`（用户未说明时区时不追问）",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"id\":\"schedule-1da58b9e-fcab-48f6-97ab-3aa6f343acba\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-04T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "`prompt` 固定为 `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}`，标题 `自动威胁研判-每天12:00`",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"id\":\"schedule-1da58b9e-fcab-48f6-97ab-3aa6f343acba\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-04T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "2. 核对创建回执：回复中的任务标识、规则和下次到期时间与真实回执一致，并明确尚未执行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "已创建每日定时威胁研判任务。\n\n**任务信息**\n- 任务 ID：`schedule-1da58b9e-fcab-48f6-97ab-3aa6f343acba`\n- 标题：自动威胁研判-每天12:00\n- 规则：每天 `12:00:00`（时区 `Asia/Shanghai`）\n- 下次到期：2026-11-04 12:00（北京时间，即 `2026-11-04T04:00:00Z`）\n- 状态：scheduled（已排期待投递）\n\n**说明**\n- 该提醒绑定当前 Session，到期后由本地受信 Schedule 框解析固定 prompt 并调用 `analyze_pending_threat_incidents`，每次只研判一条事件；上一条仍在运行时会跳过本次心跳、不排队。\n- 目前任务**尚未执行**任何研判，需等到下次到期时间触发。\n- 之后如需修改周期或删除该任务，告诉我即可（DSH 不提供暂停能力，暂停需改为删除）。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 4,
+            "quote": "{\"id\":\"schedule-1da58b9e-fcab-48f6-97ab-3aa6f343acba\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-04T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "注：工具未成功返回时不得声称创建成功",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"id\":\"schedule-1da58b9e-fcab-48f6-97ab-3aa6f343acba\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-04T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-d627ea26-e73f-4531-a3c9-1988d51be41f",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-SCHED-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

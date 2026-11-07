@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-NEW-006",
+  "completed": false,
+  "expected_behavior": "1. 核对本轮部门与目的身份：以真实用户完整指令作为本次创建依据，动态核当次部门及主机/声明IPv4与真实目的身份。\n\n2. 持久化并回读本地任务：生成并真实保存一份policy-department-task/v1本地任务，包含当次至少两条完整ADD/ALLOW访问意图；使用真实任务标识回读同一任务，任务内容与索引有实际保存回执，不能只输出内存或模拟任务。\n\n3. 独立呈现 SOC 阻塞：若authority/SOC阻塞允许逐条保留原分析结果，整体EXTERNAL_BLOCKED或PARTIALLY_READY，仍须成功保存完整意图；soc_task_id=null、execution_allowed=false、task_precheck_status=NOT_RUN，不伪造设备、命令或SOC草稿，不触发审批执行或旧确认。\n\n4. 核对幂等性与通过依据：重复和未知不换号重建。若缺部署/接口/当前有不足两条完整意图则如实失败或证据不足，不得降低正向验收为仅安全停点；仍须记录明确阻塞，无虚构任务。",
+  "failure_reason": "api 评测失败（退出码 2）"
+}

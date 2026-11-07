@@ -37,3 +37,8 @@
 - id: operation-result-delivery
   name: /opt/dsh-managed/operation-result-delivery.mjs
   disabled: false
+
+# 与既有结果交付器共享队列；只包装当前已挂载的巡检工具。
+- id: inspection-preparation-runtime
+  name: /opt/dsh-managed/inspection-preparation-runtime.mjs
+  disabled: false

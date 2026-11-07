@@ -1,0 +1,73 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答在 inspection 服务断连时如实说明状态，未调用 schedule_create 创建提醒、未发起巡检（要求2满足），也未将一次巡检或提醒冒充模板创建、未猜测 taskId/definitionVersion（要求3满足）；但回答只补问了巡检项/目标、范围、周期三项参数，通篇未询问用户是立即执行还是创建 DSH 周期任务，反而直接默认'创建定时巡检任务'，要求1未被明确满足，故整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "询问是立即执行还是创建 DSH 周期任务，并补齐内容、范围及周期",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "条件未齐全时不得创建提醒或发起巡检",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "是否可创建模板以当前服务的接口文档与可用目录为准，不能将一次巡检或提醒冒充模板创建",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 8
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-010d8d33-b1f2-4918-9807-1bb747b11a53",
+    "workspace_id": "fff66a88-2042-46bc-81b0-694162488812",
+    "session_title": "评审 U-INS-004",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

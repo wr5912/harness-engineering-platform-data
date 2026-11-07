@@ -1,0 +1,44 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "被测回答仅确认已委派只读取证子 Agent 并说明取证顺序与后续汇总方式，没有返回任何采集、检测、同步、事件生成环节的真实状态，既未定位最后成功点和首个失败点，也未对各环节标注未知；索引中可见证据只有子 Agent 启动回执，无其查询结果，证据不足，无法判定满足预期。",
+    "requirements": [
+      {
+        "requirement": "按采集、检测、同步、事件生成顺序核对真实状态，定位最后成功点和首个失败点",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 5
+          }
+        ]
+      },
+      {
+        "requirement": "无法查询的环节明确标注未知，不用通用建议替代诊断结论",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-c8eb0c4e-e8f0-47cf-a9a0-b3554edbf68b",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-FLT-008",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

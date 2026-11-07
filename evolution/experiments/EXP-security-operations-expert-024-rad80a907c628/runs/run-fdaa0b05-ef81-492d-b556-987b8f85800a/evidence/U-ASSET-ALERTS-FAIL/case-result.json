@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-ALERTS-FAIL",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 从未执行告警查询：资产查询返回 code=500「资产 9108 不存在或已删除」，既非受控存在资产，也未以任何返回 ID 查询告警，因此不存在 HTTP 200 + code 503 的告警业务失败回执；回答还直接给出「本次查询范围内未找到资产 9108 的关联告警」这一未命中业务结论，未说明固定 Mock/replay 的受控失败与告警查询未完成，失败回执与固定输入摘要也无法完整回读。仅只读、未重试/换资产/写入部分满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ASSET-ALERTS-FAIL"
+}

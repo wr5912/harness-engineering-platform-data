@@ -1,0 +1,57 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "冻结要求规定本轮只调用 list_executable_inspections，但同一 Session 的工具证据中不存在该工具的调用或回执，实际发生的是 skill 加载以及对 inspection、sec-ops 的 list_mcp_resources/list_mcp_resource_templates 调用（回执见索引 4、6、8、10），回答还自称“已按要求只做目录查询”，与事实不符。查询失败（inspection 断开、sec-ops 资源为空）的说明本身与回执一致且未编造模板，且未见准备、启动或 KEV 调用，但首要要求未满足，故整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "只调用 list_executable_inspections",
+        "status": "failed",
+        "evidence": [
+          4,
+          6,
+          8,
+          10
+        ]
+      },
+      {
+        "requirement": "列出本轮返回的可执行模板及巡检项，不准备、不启动、不调用 KEV",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          4,
+          8
+        ]
+      },
+      {
+        "requirement": "查询失败或目录为空时如实说明，不编造内容",
+        "status": "satisfied",
+        "evidence": [
+          4,
+          6,
+          8,
+          10
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-db02adb1-0edc-4358-b9d9-f74212b86555",
+    "workspace_id": "5b3c6e98-9e62-404a-bc62-f942f1f75907",
+    "session_title": "评审 U-INS-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

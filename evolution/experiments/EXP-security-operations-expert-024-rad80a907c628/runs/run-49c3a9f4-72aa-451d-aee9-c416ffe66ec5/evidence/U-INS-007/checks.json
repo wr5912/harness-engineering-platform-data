@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-007",
+  "transport": "api",
+  "expected_behavior": "第一轮按真实目录准备并同轮启动一次。第二轮只查询同一 Session 已取得的 runId，不能重新准备或启动。依真实状态、业务结论、摘要、设备数量和证据缺口回答；下载地址与原运行一致，续查保留原运行标识。没有成功服务回执不能判通过。",
+  "session_id": "session-3f04a8db-a440-46f5-845d-73b532fd94dd",
+  "workspace_id": "80588fa1-9bb9-482a-9f06-bac08366c707",
+  "session_title": "评测 U-INS-007",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-ba6d1cc7-0010-44f7-940f-5a1924284344",
+    "unavailable_reason": "task-tree-wait-timeout",
+    "failure_stage": "judge-trace-export",
+    "last_successful_step": "prompt-accepted",
+    "rpc_method": null,
+    "http_status": null,
+    "error_code": null,
+    "request_id": "e82cb8fe-5eca-4af5-9765-30e67132a6f2"
+  },
+  "trace_available": true
+}

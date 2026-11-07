@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-MENTION",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测按威胁研判路由经 threat-analysis 技能调用 delegate_threat_analysis，事件 ID INC-20260917-000001 原样传递（工具回执显示子智能体已启动）；子智能体 analyze_threat_incident 返回原生 is_error=true 的真实失败回执，回答如实引用失败原文、明确无研判结论与报告链接，未改走故障排查、未编造结果，符合 U-THREAT-FAST 对状态、失败原因、结果与后续建议的证据要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-MENTION"
+}

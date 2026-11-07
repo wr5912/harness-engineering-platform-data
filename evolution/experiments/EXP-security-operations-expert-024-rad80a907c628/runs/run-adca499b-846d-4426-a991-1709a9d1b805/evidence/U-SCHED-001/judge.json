@@ -1,0 +1,84 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "工具回执 is_error=false，返回 schedule-c9de27fe-9434-4bf7-b060-75fe7a439a85，kind=daily、time=12:00:00.000、timeZone=Asia/Shanghai、title 与 prompt 与冻结要求逐字一致，state=scheduled、scheduledAt=2026-11-03T04:00:00.000Z。回复中的任务 ID、规则、下次到期时间（2026-11-03 12:00 北京时间）与回执完全对应，并明确“尚未执行任何研判”，未在工具成功前虚报结果。用户未说明时区，回复未追问，直接采用 Asia/Shanghai。四项要求均满足。",
+    "requirements": [
+      {
+        "requirement": "用 DSH `schedule_create` 创建绑定本 Session 的提醒，时间选择器为 `daily: {\"time\":\"12:00:00\",\"time_zone\":\"Asia/Shanghai\"}`（用户未说明时区时不追问）",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "已创建每日定时威胁研判任务。\n\n**任务信息**\n- 任务 ID：`schedule-c9de27fe-9434-4bf7-b060-75fe7a439a85`\n- 标题：自动威胁研判-每天12:00\n- 规则：每天 12:00:00（时区 `Asia/Shanghai`）\n- 下次到期：2026-11-03 12:00（北京时间，对应回执 `2026-11-03T04:00:00Z`）\n- 状态：scheduled（已排期）\n\n**说明**\n- 该任务已排期，**尚未执行任何研判**；到期后由本地受信桥解析固定 prompt 并调用待研判接口，每次心跳只研判一条事件。\n- Schedule 投递成功不等于研判完成，实际结果以带事件 ID 和 Run ID 的工具回执为准。\n- 如需修改周期或删除该任务，随时告诉我。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 2,
+            "quote": "{\"id\":\"schedule-c9de27fe-9434-4bf7-b060-75fe7a439a85\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-03T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "`prompt` 固定为 `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}`，标题 `自动威胁研判-每天12:00`",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"id\":\"schedule-c9de27fe-9434-4bf7-b060-75fe7a439a85\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-03T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "回复中的任务标识、规则和下次到期时间与真实回执一致，并明确尚未执行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "已创建每日定时威胁研判任务。\n\n**任务信息**\n- 任务 ID：`schedule-c9de27fe-9434-4bf7-b060-75fe7a439a85`\n- 标题：自动威胁研判-每天12:00\n- 规则：每天 12:00:00（时区 `Asia/Shanghai`）\n- 下次到期：2026-11-03 12:00（北京时间，对应回执 `2026-11-03T04:00:00Z`）\n- 状态：scheduled（已排期）\n\n**说明**\n- 该任务已排期，**尚未执行任何研判**；到期后由本地受信桥解析固定 prompt 并调用待研判接口，每次心跳只研判一条事件。\n- Schedule 投递成功不等于研判完成，实际结果以带事件 ID 和 Run ID 的工具回执为准。\n- 如需修改周期或删除该任务，随时告诉我。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 2,
+            "quote": "{\"id\":\"schedule-c9de27fe-9434-4bf7-b060-75fe7a439a85\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-03T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "工具未成功返回时不得声称创建成功",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"id\":\"schedule-c9de27fe-9434-4bf7-b060-75fe7a439a85\",\"kind\":\"daily\",\"title\":\"自动威胁研判-每天12:00\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"time\":\"12:00:00.000\",\"timeZone\":\"Asia/Shanghai\",\"scheduledAt\":\"2026-11-03T04:00:00.000Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-205fd0a8-1b82-494d-b7df-1bfb2e7ee318",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-SCHED-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

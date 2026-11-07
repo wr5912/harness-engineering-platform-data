@@ -1,0 +1,53 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求先通过真实资产与拓扑查询识别安全设备并生成策略预览，但被测回答明确表示本轮未调用任何端点解析或策略工具、未生成草稿，第一项要求直接不满足；第二项（引用本轮工具回执并明确未执行）可由本轮 skill 装载回执与 sec-ops 资源空列表及回答原文支持，故判 failed。",
+    "requirements": [
+      {
+        "requirement": "通过真实资产和拓扑查询识别需要配置的安全设备，再生成策略预览",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "结果引用本轮工具返回，未执行时明确停留在预览或确认阶段",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-2eae91b2-bcb6-40a7-91c6-24c892c1e3b6",
+    "workspace_id": "f892dd9e-6f10-48d8-8327-c0d806d7de78",
+    "session_title": "评审 U-POL-003",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

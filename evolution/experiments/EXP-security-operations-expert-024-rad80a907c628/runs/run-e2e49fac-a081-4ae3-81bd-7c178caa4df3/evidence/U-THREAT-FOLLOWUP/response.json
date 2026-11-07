@@ -1,0 +1,71 @@
+{
+  "inputs": [
+    "请研判威胁事件 INC-20260917-000001。",
+    "解释什么是横向移动，不要再研判事件。"
+  ],
+  "assistant_texts": [
+    "已启动威胁研判子智能体。\n\n任务：研判 INC-20260917-000001\n\n结果将在任务结束后返回。",
+    "INC-20260917-000001 研判未完成。\n\n- **结果**：没有产生任何研判产出（无取证、无分类、无结论）。\n- **原因**：研判所需的 SOC 取证通道不可用，威胁研判工具返回 `trusted platform MCP group connection is unavailable`。\n- **当前状态**：仅确认事件 ID 格式有效；未执行真实取证、分类或回写。\n- **下一步**：待可信平台 MCP 连接恢复后，可重试该事件研判。\n\n这不是事件本身“无威胁”的结论，而是取证通道故障导致的未执行结果。"
+  ],
+  "session_id": "session-cbeb720b-b6a7-4d4c-8bd9-5b1bdb01ecd3",
+  "turns": [
+    {
+      "assistant_text": "已启动威胁研判子智能体。\n\n任务：研判 INC-20260917-000001\n\n结果将在任务结束后返回。",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "3d0462c1-dcfb-4f8e-a176-84f9bfe8158e"
+    },
+    {
+      "assistant_text": "INC-20260917-000001 研判未完成。\n\n- **结果**：没有产生任何研判产出（无取证、无分类、无结论）。\n- **原因**：研判所需的 SOC 取证通道不可用，威胁研判工具返回 `trusted platform MCP group connection is unavailable`。\n- **当前状态**：仅确认事件 ID 格式有效；未执行真实取证、分类或回写。\n- **下一步**：待可信平台 MCP 连接恢复后，可重试该事件研判。\n\n这不是事件本身“无威胁”的结论，而是取证通道故障导致的未执行结果。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "c1ee6271-4c78-4ce1-8711-f7b8177b9c3b"
+    }
+  ]
+}

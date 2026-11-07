@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请在设备 172.16.2.103 上封禁源 IP 198.51.100.77 的 443 端口。只准备草案，不确认执行。"
+  ],
+  "assistant_texts": [
+    "已进入策略配置流程，正在识别源、目的资产并核对五元组……\n\n请明确说明策略动作（允许或阻断）：\n- 要新增 **允许** 198.51.100.77 访问 172.16.2.103 的 TCP 443，还是\n- 要新增 **阻断**（封禁）源 IP 198.51.100.77 对 172.16.2.103 的 TCP 443？"
+  ],
+  "session_id": "session-e230e0a1-85cb-4d45-bc84-fd41b598d16e",
+  "turns": [
+    {
+      "assistant_text": "已进入策略配置流程，正在识别源、目的资产并核对五元组……\n\n请明确说明策略动作（允许或阻断）：\n- 要新增 **允许** 198.51.100.77 访问 172.16.2.103 的 TCP 443，还是\n- 要新增 **阻断**（封禁）源 IP 198.51.100.77 对 172.16.2.103 的 TCP 443？",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "cf071347-2162-4fec-b135-91dfa44ac904"
+    }
+  ]
+}

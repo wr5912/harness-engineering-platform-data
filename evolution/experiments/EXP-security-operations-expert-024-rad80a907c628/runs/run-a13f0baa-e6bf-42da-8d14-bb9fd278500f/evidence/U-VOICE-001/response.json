@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "你好，这是语音测试。"
+  ],
+  "assistant_texts": [
+    "用户正在进行语音测试，这不是一个实际的安全运营请求，所以不需要调用任何技能或工具，只需礼貌地确认会话并说明如何才需要安全服务支持。\n</think>\n\n您好！我是网络安全运营专家助手。我看到这似乎是一个语音测试，感谢您的测试！\n\n如果有任何网络安全相关的任务需要我协助，请告诉我，我可以帮您：\n\n1. **威胁研判** - 对 SOC 威胁事件 ID (INC-YYYYMMDD-NNNNNN 格式) 进行取证和研判\n2. **策略配置** - 新增网络访问策略\n3. **应急指令** - 执行隔离、封禁等单动作应急处置\n4. **故障排查** - 调查资产、事件、路径等安全问题\n5. **安全巡检** - 执行资产与威胁的自动化巡检\n6. **响应规划** - 制定结构化响应方案\n7. **通用调查** - 基于现有材料的安全调查\n\n请告诉我您具体需要什么帮助？"
+  ],
+  "session_id": "session-058975f9-1da3-4463-93bc-ca61c097fae2",
+  "turns": [
+    {
+      "assistant_text": "用户正在进行语音测试，这不是一个实际的安全运营请求，所以不需要调用任何技能或工具，只需礼貌地确认会话并说明如何才需要安全服务支持。\n</think>\n\n您好！我是网络安全运营专家助手。我看到这似乎是一个语音测试，感谢您的测试！\n\n如果有任何网络安全相关的任务需要我协助，请告诉我，我可以帮您：\n\n1. **威胁研判** - 对 SOC 威胁事件 ID (INC-YYYYMMDD-NNNNNN 格式) 进行取证和研判\n2. **策略配置** - 新增网络访问策略\n3. **应急指令** - 执行隔离、封禁等单动作应急处置\n4. **故障排查** - 调查资产、事件、路径等安全问题\n5. **安全巡检** - 执行资产与威胁的自动化巡检\n6. **响应规划** - 制定结构化响应方案\n7. **通用调查** - 基于现有材料的安全调查\n\n请告诉我您具体需要什么帮助？",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "83fb504e-f6e4-4de9-a8d6-aaf7b768a578"
+    }
+  ]
+}

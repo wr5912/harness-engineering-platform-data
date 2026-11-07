@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "排查告警采集、检测、级联数据同步或事件生成链路为什么没有数据。"
+  ],
+  "assistant_texts": [
+    "已按故障排查路由委派子智能体（Run ID: 4e930489-40a8-4ad5-9c69-a520aec72ba5），正在用 SOC 只读工具取证排查告警采集、检测、级联同步与事件生成链路的无数据问题。子智能体完成后我会汇报事实、推断与证据缺口。"
+  ],
+  "session_id": "session-55577a5d-f2fa-4803-be37-3edfc827a35c",
+  "turns": [
+    {
+      "assistant_text": "已按故障排查路由委派子智能体（Run ID: 4e930489-40a8-4ad5-9c69-a520aec72ba5），正在用 SOC 只读工具取证排查告警采集、检测、级联同步与事件生成链路的无数据问题。子智能体完成后我会汇报事实、推断与证据缺口。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "3ac77c0e-26a3-418c-a36b-b0cbb488f95b"
+    }
+  ]
+}

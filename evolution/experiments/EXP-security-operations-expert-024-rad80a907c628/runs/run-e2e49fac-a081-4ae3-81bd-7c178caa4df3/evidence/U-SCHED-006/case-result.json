@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：删除轮未先调用 schedule_list，直接以既有 ID 调 schedule_delete，明确违反“未先查询直接删除判为失败”的冻结要求；虽删除成功且回答未声称中止正在执行的研判，但整体不满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-006"
+}

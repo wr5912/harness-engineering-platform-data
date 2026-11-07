@@ -1,0 +1,91 @@
+{
+  "inputs": [
+    "你好",
+    "请简短介绍你能帮助我做什么。"
+  ],
+  "assistant_texts": [
+    "你好！我是网络安全运营专家，可以协助你处理以下工作：\n\n- **威胁研判**：提供 SOC 事件 ID（`INC-YYYYMMDD-NNNNNN`）即可开展取证与研判\n- **故障排查**：资产、事件、路径、覆盖与可达性等只读调查\n- **策略配置**：新增主机间网络访问策略的草稿准备\n- **应急指令**：单目标隔离、封禁等处置的草案与查询\n- **巡检**：查询巡检模板、执行巡检并获取报告\n- **安全调查**：基于已有材料的防御性分析\n\n请告诉我你本轮想处理的具体事项。",
+    "我可以协助你做以下防御性安全运营工作：\n\n- **威胁研判**：给出事件 ID（如 `INC-20260101-000123`），我执行固定取证并输出摘要与报告链接\n- **故障排查**：调查资产、事件、路径、网络可达性等问题，只取证不下结论式处置\n- **巡检**：查询可执行模板、发起巡检、按 runId 获取报告\n- **策略配置**：准备新增网络访问策略的 DRAFT（不自动下发）\n- **应急指令**：准备单目标隔离/封禁等处置草案，支持查询与取消\n- **安全调查**：基于你提供的材料做结构化分析，标注事实、推断与证据缺口\n\n说明：处置与下发需要独立的受信确认环节；我不会执行攻击性操作。你想从哪项开始？"
+  ],
+  "session_id": "session-a12f6341-5bd1-4281-b01a-6280e5dfb0c1",
+  "turns": [
+    {
+      "assistant_text": "你好！我是网络安全运营专家，可以协助你处理以下工作：\n\n- **威胁研判**：提供 SOC 事件 ID（`INC-YYYYMMDD-NNNNNN`）即可开展取证与研判\n- **故障排查**：资产、事件、路径、覆盖与可达性等只读调查\n- **策略配置**：新增主机间网络访问策略的草稿准备\n- **应急指令**：单目标隔离、封禁等处置的草案与查询\n- **巡检**：查询巡检模板、执行巡检并获取报告\n- **安全调查**：基于已有材料的防御性分析\n\n请告诉我你本轮想处理的具体事项。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "dd3d0780-a30b-4d30-b585-4e14b0cd65ce"
+    },
+    {
+      "assistant_text": "我可以协助你做以下防御性安全运营工作：\n\n- **威胁研判**：给出事件 ID（如 `INC-20260101-000123`），我执行固定取证并输出摘要与报告链接\n- **故障排查**：调查资产、事件、路径、网络可达性等问题，只取证不下结论式处置\n- **巡检**：查询可执行模板、发起巡检、按 runId 获取报告\n- **策略配置**：准备新增网络访问策略的 DRAFT（不自动下发）\n- **应急指令**：准备单目标隔离/封禁等处置草案，支持查询与取消\n- **安全调查**：基于你提供的材料做结构化分析，标注事实、推断与证据缺口\n\n说明：处置与下发需要独立的受信确认环节；我不会执行攻击性操作。你想从哪项开始？",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "70bf68cd-ed5a-4729-b471-5929dbb83987"
+    }
+  ]
+}

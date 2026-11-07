@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "响应处置支持哪些能力？"
+  ],
+  "assistant_texts": [
+    "**结论：** 当前会话的“响应处置”支持 **应急指令、策略配置、响应规划、威胁研判、巡检、故障排查** 六条路线，其中只有前两者可准备真实处置草案，且**确认与执行由外部受信插件负责，模型本身不能直接下发任何处置**。\n\n## 支持的能力\n\n| 能力 | 内容 | 关键限制 |\n|---|---|---|\n| **应急指令**（`emergency-action`） | 单动作、单目标处置草案：防火墙 `block-ip` / `unblock-ip`，主机 `host-*` 动作；支持草案修订、查询、取消 | 仅单动作单目标；用户单独说“确认执行”时才由受信应急确认插件签名提交；排队/受理 ≠ 执行成功 |\n| **策略配置**（`policy-configuration`） | 新增 IPv4 主机到主机、TCP/UDP 单目的端口访问策略；草稿准备、候选排序、结果读取 | 仅新增策略；展示 Workbench 冻结的配置预览原文，不自行生成命令；用户单独说“执行”时才触发受信确认；DRAFT ≠ 已生效 |\n| **响应规划**（`response-planning`） | 一次零工具的结构化响应规划（影响范围、候选动作、摘要） | `delegate_response_planning` 默认被 Guard 拒绝；仅在模型外 Runtime 开启受信 Gate、冻结输入与候选集合后才允许一次；确认、保存、执行、监控均由外部响应生命周期负责 |\n| **威胁研判**（`threat-analysis`） | 对 `INC-YYYYMMDD-NNNNNN` 事件执行固定取证与研判，输出固定摘要和可下载报告；可用 `schedule_create` 配置自动周期研判 | 缺事件 ID 先询问；自动研判每心跳只处理一条；Schedule 投递 ≠ 研判完成 |\n| **巡检**（`security-inspection`） | 查询模板目录、发起巡检、按 `runId` 查询结果、授权后定时触发 | 仅查目录不发起；执行中沿用同一 `runId`；报告以服务返回的 `conclusionStatus`/`reportMarkdown` 为准 |\n| **故障排查**（`fault-analysis`） | 15 个 SOC 只读工具取证：资产、漏洞、事件、路径、覆盖、可达性 | 只取证分析，**不创建运行、不执行处置**；子 Agent 不得再委派 |\n\n## 明确不支持的能力\n\n- Bash/PowerShell/代码执行、网络搜索、通用委派、跨租户访问。\n- 模型直接调用 SOC 写接口或确认/提交工具；确认轮次不能借用其他业务工具域。\n- 未列入 `role-tool-matrix.yaml` 的 MCP 工具一律拒绝；不通过 Shell、文件或底层 HTTP 绕过工具。\n- 同一轮不交叉调用策略配置与应急指令（需先确定本轮处理哪一项）。\n\n**建议（尚未执行）：** 如需实际处置，请给出明确的目标与参数（应急单动作，或资产/IP 与端口的新增策略），我再走对应草案流程；规划类请求则需 Runtime 侧受信 Gate 开启后才能委派。"
+  ],
+  "session_id": "session-4c8352dd-032d-4eef-a464-138f7dc6e430",
+  "turns": [
+    {
+      "assistant_text": "**结论：** 当前会话的“响应处置”支持 **应急指令、策略配置、响应规划、威胁研判、巡检、故障排查** 六条路线，其中只有前两者可准备真实处置草案，且**确认与执行由外部受信插件负责，模型本身不能直接下发任何处置**。\n\n## 支持的能力\n\n| 能力 | 内容 | 关键限制 |\n|---|---|---|\n| **应急指令**（`emergency-action`） | 单动作、单目标处置草案：防火墙 `block-ip` / `unblock-ip`，主机 `host-*` 动作；支持草案修订、查询、取消 | 仅单动作单目标；用户单独说“确认执行”时才由受信应急确认插件签名提交；排队/受理 ≠ 执行成功 |\n| **策略配置**（`policy-configuration`） | 新增 IPv4 主机到主机、TCP/UDP 单目的端口访问策略；草稿准备、候选排序、结果读取 | 仅新增策略；展示 Workbench 冻结的配置预览原文，不自行生成命令；用户单独说“执行”时才触发受信确认；DRAFT ≠ 已生效 |\n| **响应规划**（`response-planning`） | 一次零工具的结构化响应规划（影响范围、候选动作、摘要） | `delegate_response_planning` 默认被 Guard 拒绝；仅在模型外 Runtime 开启受信 Gate、冻结输入与候选集合后才允许一次；确认、保存、执行、监控均由外部响应生命周期负责 |\n| **威胁研判**（`threat-analysis`） | 对 `INC-YYYYMMDD-NNNNNN` 事件执行固定取证与研判，输出固定摘要和可下载报告；可用 `schedule_create` 配置自动周期研判 | 缺事件 ID 先询问；自动研判每心跳只处理一条；Schedule 投递 ≠ 研判完成 |\n| **巡检**（`security-inspection`） | 查询模板目录、发起巡检、按 `runId` 查询结果、授权后定时触发 | 仅查目录不发起；执行中沿用同一 `runId`；报告以服务返回的 `conclusionStatus`/`reportMarkdown` 为准 |\n| **故障排查**（`fault-analysis`） | 15 个 SOC 只读工具取证：资产、漏洞、事件、路径、覆盖、可达性 | 只取证分析，**不创建运行、不执行处置**；子 Agent 不得再委派 |\n\n## 明确不支持的能力\n\n- Bash/PowerShell/代码执行、网络搜索、通用委派、跨租户访问。\n- 模型直接调用 SOC 写接口或确认/提交工具；确认轮次不能借用其他业务工具域。\n- 未列入 `role-tool-matrix.yaml` 的 MCP 工具一律拒绝；不通过 Shell、文件或底层 HTTP 绕过工具。\n- 同一轮不交叉调用策略配置与应急指令（需先确定本轮处理哪一项）。\n\n**建议（尚未执行）：** 如需实际处置，请给出明确的目标与参数（应急单动作，或资产/IP 与端口的新增策略），我再走对应草案流程；规划类请求则需 Runtime 侧受信 Gate 开启后才能委派。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "54a1edf3-b74b-4b50-a97b-c437f9ee6510"
+    }
+  ]
+}

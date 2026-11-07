@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "请研判威胁事件 INC-20260917-000001。"
+  ],
+  "assistant_texts": [
+    "**研判未完成 —— 取证链路不可用**\n\n- **事件 ID**：INC-20260917-000001\n- **状态**：研判调用失败，未产生结论\n- **错误信息**：`trusted platform MCP group connection is unavailable`\n- **下载链接**：无（报告未生成，无 persistence 产物可取）\n\n**说明**：受信平台 MCP 连接组当前不可达，SOC 认领与取证、名单分类/融合研判、报告存储链路均无法执行，因此本事件无法返回研判结论，也不存在可展示的报告链接。\n\n**待办（尚未执行）**：\n1. 由平台侧恢复 `sec-ops` / `inspection` 等 MCP 资源服务连接；\n2. 连接恢复后，以原样事件 ID `INC-20260917-000001` 重新发起研判。\n\n需要我在连接恢复后重新发起该事件的研判吗？"
+  ],
+  "session_id": "session-091b9f80-822a-49c7-bc34-285de54624a8",
+  "turns": [
+    {
+      "assistant_text": "**研判未完成 —— 取证链路不可用**\n\n- **事件 ID**：INC-20260917-000001\n- **状态**：研判调用失败，未产生结论\n- **错误信息**：`trusted platform MCP group connection is unavailable`\n- **下载链接**：无（报告未生成，无 persistence 产物可取）\n\n**说明**：受信平台 MCP 连接组当前不可达，SOC 认领与取证、名单分类/融合研判、报告存储链路均无法执行，因此本事件无法返回研判结论，也不存在可展示的报告链接。\n\n**待办（尚未执行）**：\n1. 由平台侧恢复 `sec-ops` / `inspection` 等 MCP 资源服务连接；\n2. 连接恢复后，以原样事件 ID `INC-20260917-000001` 重新发起研判。\n\n需要我在连接恢复后重新发起该事件的研判吗？",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "7324fc50-4781-4847-a6e5-8bc924230cc5"
+    }
+  ]
+}

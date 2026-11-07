@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "帮我创建一个每天中午 12 点定时威胁研判的任务。"
+  ],
+  "assistant_texts": [
+    "定时威胁研判任务已创建成功。\n\n- **任务 ID**：`schedule-67e8b0f0-4a56-4c39-b9f2-0c84fd456343`\n- **规则**：每天 12:00:00（Asia/Shanghai）\n- **下次到期**：2026-10-28 12:00（北京时间），即 04:00 UTC\n\n说明：该提醒仅表示按周期投递，尚未执行任何研判。每次到期后由受信 Schedule 桥固定调用 `analyze_pending_threat_incidents`，每次心跳只研判一条待研判事件。如需修改周期或停止任务，直接告诉我即可。"
+  ],
+  "session_id": "session-c2daa78b-7088-4cf2-98d3-47b9011b0b6b",
+  "turns": [
+    {
+      "assistant_text": "定时威胁研判任务已创建成功。\n\n- **任务 ID**：`schedule-67e8b0f0-4a56-4c39-b9f2-0c84fd456343`\n- **规则**：每天 12:00:00（Asia/Shanghai）\n- **下次到期**：2026-10-28 12:00（北京时间），即 04:00 UTC\n\n说明：该提醒仅表示按周期投递，尚未执行任何研判。每次到期后由受信 Schedule 桥固定调用 `analyze_pending_threat_incidents`，每次心跳只研判一条待研判事件。如需修改周期或停止任务，直接告诉我即可。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5b4133ce-1798-4112-ae7b-a09d9fb73543"
+    }
+  ]
+}

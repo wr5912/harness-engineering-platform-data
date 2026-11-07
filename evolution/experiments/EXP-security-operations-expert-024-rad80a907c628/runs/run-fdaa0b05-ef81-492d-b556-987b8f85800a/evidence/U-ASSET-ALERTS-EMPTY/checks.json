@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-ASSET-ALERTS-EMPTY",
+  "transport": "api",
+  "expected_behavior": "1. 查询同一资产的告警：实际执行资产查询，再以该响应的实际资产 ID 调告警查询。\n\n2. 核对受控空结果：两步 HTTP 和业务码均成功，告警 groups 为空、总分组和总告警均为 0。\n\n3. 交付准确结论与回执：回复准确说明本次固定样本的受控空结果、查询范围及未查询真实 SOC；不将它描述为工具失败，也不据此认定真实资产无告警或无风险。\n\n   注：保留两个原子步骤与同一固定样本的回执，不执行写入。",
+  "session_id": "session-ad198422-cc4c-4224-b3d9-ca7c71fbb295",
+  "workspace_id": "e66bea4a-3927-49d2-b235-9ec19b50d5d5",
+  "session_title": "评测 U-ASSET-ALERTS-EMPTY",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-410a20ce-3058-40f7-88b2-7edb86138f47",
+    "unavailable_reason": "task-tree-wait-timeout",
+    "failure_stage": "judge-trace-export",
+    "last_successful_step": "prompt-accepted",
+    "rpc_method": null,
+    "http_status": null,
+    "error_code": null,
+    "request_id": "06439bd6-c29b-451a-acc6-5ae2d8a5ebca"
+  },
+  "trace_available": true
+}

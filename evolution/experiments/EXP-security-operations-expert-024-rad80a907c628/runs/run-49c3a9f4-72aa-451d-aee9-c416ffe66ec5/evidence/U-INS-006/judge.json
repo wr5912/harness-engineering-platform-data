@@ -1,0 +1,65 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "工具回执显示 inspection 服务端断开（index 4、6 均为 is_error=true 的 server is disconnected），被测会话未查询到真实巡检模板目录、未调用发起工具，因此没有产生 runId，第一项要求的“从真实目录选模板并以 ASSET_IDS、values [\"A-001\"] 在 READY 后同轮执行”未发生，第三项“按实际运行标识核对范围和结果”也无运行标识可核对；被测回答如实说明服务错误、未用 ALL 替代范围，该项满足，但其余冻结要求明确未满足。",
+    "requirements": [
+      {
+        "requirement": "从真实目录选择唯一匹配模板，用 ASSET_IDS、values: [\"A-001\"] 准备并在 READY 后同轮执行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "资产非法、未命中或模板不唯一时只澄清或说明服务错误，不用 ALL 代替",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "按实际运行标识核对范围和结果",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-a30419ef-560d-474c-8f9b-cbd35222d80b",
+    "workspace_id": "80588fa1-9bb9-482a-9f06-bac08366c707",
+    "session_title": "评审 U-INS-006",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

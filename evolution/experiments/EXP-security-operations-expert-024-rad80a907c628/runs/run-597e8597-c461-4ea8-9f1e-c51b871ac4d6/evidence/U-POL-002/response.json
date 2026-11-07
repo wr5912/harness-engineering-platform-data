@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "指定设备：172.16.1.155；请为 172.16.1.155 到 172.16.2.103 开通 TCP 19730 访问策略。"
+  ],
+  "assistant_texts": [
+    "**结论：本轮无法准备该策略草稿——当前会话的工具目录中缺少策略配置所需的端点解析工具，已按边界停止，未发起任何解析、准备或下发。**\n\n已确认的请求参数（来自您的原文，尚未经过 Platform 解析）：\n\n| 参数 | 值 |\n|---|---|\n| 操作 | 新增（ADD） |\n| 动作 | 允许（ALLOW，\"开通\"） |\n| 源端点 | 172.16.1.155 |\n| 目的端点 | 172.16.2.103 |\n| 协议 | TCP |\n| 目的端口 | 19730 |\n| 指定设备线索 | 172.16.1.155 |\n\n**能力缺口（事实）**：策略配置路线要求的第一个调用是 `workbench-policy-endpoint-resolution/v1` 端点解析工具，但当前 Runtime 提供的工具目录中没有任何 policy-configuration 来源的策略工具；`sec-ops` MCP 服务器也未暴露可用资源。按规则我不能猜测工具名、不能改用其他来源的相似工具，也不能绕过该步骤直接准备草稿。\n\n**因此**：当前会话没有 operation ID、没有 DRAFT，也无法续查状态；您提供的参数不会被丢弃，但必须由 Platform 解析后才能生成候选与配置预览。\n\n**下一步（尚未执行）**：请在恢复了策略配置工具（端点解析能力）的会话中重新提交上述请求；工具可用后我会先完成端点解析（含设备线索 172.16.1.155 的核验），再准备草稿并展示配置预览，确认前不会下发。"
+  ],
+  "session_id": "session-121507b3-a9af-4c1c-ac41-5b56b8cc13fd",
+  "turns": [
+    {
+      "assistant_text": "**结论：本轮无法准备该策略草稿——当前会话的工具目录中缺少策略配置所需的端点解析工具，已按边界停止，未发起任何解析、准备或下发。**\n\n已确认的请求参数（来自您的原文，尚未经过 Platform 解析）：\n\n| 参数 | 值 |\n|---|---|\n| 操作 | 新增（ADD） |\n| 动作 | 允许（ALLOW，\"开通\"） |\n| 源端点 | 172.16.1.155 |\n| 目的端点 | 172.16.2.103 |\n| 协议 | TCP |\n| 目的端口 | 19730 |\n| 指定设备线索 | 172.16.1.155 |\n\n**能力缺口（事实）**：策略配置路线要求的第一个调用是 `workbench-policy-endpoint-resolution/v1` 端点解析工具，但当前 Runtime 提供的工具目录中没有任何 policy-configuration 来源的策略工具；`sec-ops` MCP 服务器也未暴露可用资源。按规则我不能猜测工具名、不能改用其他来源的相似工具，也不能绕过该步骤直接准备草稿。\n\n**因此**：当前会话没有 operation ID、没有 DRAFT，也无法续查状态；您提供的参数不会被丢弃，但必须由 Platform 解析后才能生成候选与配置预览。\n\n**下一步（尚未执行）**：请在恢复了策略配置工具（端点解析能力）的会话中重新提交上述请求；工具可用后我会先完成端点解析（含设备线索 172.16.1.155 的核验），再准备草稿并展示配置预览，确认前不会下发。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5196f2c7-ac18-499c-a3b0-1dba80e6d1f9"
+    }
+  ]
+}

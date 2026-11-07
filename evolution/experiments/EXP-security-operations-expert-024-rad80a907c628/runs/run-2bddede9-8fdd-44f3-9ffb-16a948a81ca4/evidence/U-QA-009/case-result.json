@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-009",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答逐一区分了 IOC（可观察指标）、TTP（攻击行为模式）、MITRE ATT&CK Technique（技术分类编号体系）、Alert（检测信号/告警）与 Event（事件），并进一步说明 Event 经规则匹配产生 Alert、研判确认后关联 IOC 与 Technique 的关联链条，明确指出各概念处于不同层次、可关联但不能互相等同（如 Event≠威胁、Alert≠确认事件、Technique 是 TTP 的子集/编码体系），完全满足预期要求，且引用的证据项 citation_allowed 为 true。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-009"
+}

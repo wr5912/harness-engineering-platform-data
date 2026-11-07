@@ -1,0 +1,55 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求完成真实资产、路径与设备能力核对并生成可确认的策略预览。被测会话中策略端点解析工具缺失、inspection 服务器断开、sec-ops 无任何资源与模板、工作区也未发现策略相关文件，全程没有解析回执、prepare 或 DRAFT 结果，因此第一项要求明确未满足。第二项要求（准确说明当前阶段、未获执行回执不声称已开通）由回答原文明确声明未解析端点、未创建草稿、未下发策略，得到满足。整体因关键能力核对与预览生成缺失判定为 failed。",
+    "requirements": [
+      {
+        "requirement": "完成真实资产、路径和设备能力核对并生成可确认的策略预览",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 8
+          },
+          {
+            "index": 14
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "回复准确说明当前阶段，未获得执行回执时不声称已开通",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-d38f7ab2-f4c0-4298-aa8a-868c508a6bbe",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-POL-006",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

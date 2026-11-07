@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "**结论：无法确认 SEC-KB-078 的内容。**\n\n- **事实**：当前会话未配置知识库检索服务，没有可用于读取 `SEC-KB-078` 条目的工具或数据源；本轮也没有任何来自该编号的输入材料。\n- **推断（非事实）**：按编号形式看，`SEC-KB-078` 像是安全知识库中的一条条目编号，但其是否对应某个 SOAR 剧本文档无法核实。\n- **一般概念（通用知识，非该条目内容）**：SOAR 剧本（playbook）通常指把检测、研判、处置流程固化为可自动或半自动执行的编排流程，例如告警富化 → 条件判定 → 通知/封禁/工单等步骤。\n- **能力缺口**：本会话不提供知识库检索，也不以文件、策略或巡检工具替代该检索，因此不能给出 `SEC-KB-078` 的具体定义、适用范围或版本信息。\n\n**未执行的建议**：如你能提供该条目的原文、导出文件或截图，我可以基于材料整理其定义、触发条件与处置步骤；或由你确认是否有其他已授权数据源可供查询。"
+  ],
+  "session_id": "session-52853dc8-10d1-4eaf-b705-4961b9420b96",
+  "turns": [
+    {
+      "assistant_text": "**结论：无法确认 SEC-KB-078 的内容。**\n\n- **事实**：当前会话未配置知识库检索服务，没有可用于读取 `SEC-KB-078` 条目的工具或数据源；本轮也没有任何来自该编号的输入材料。\n- **推断（非事实）**：按编号形式看，`SEC-KB-078` 像是安全知识库中的一条条目编号，但其是否对应某个 SOAR 剧本文档无法核实。\n- **一般概念（通用知识，非该条目内容）**：SOAR 剧本（playbook）通常指把检测、研判、处置流程固化为可自动或半自动执行的编排流程，例如告警富化 → 条件判定 → 通知/封禁/工单等步骤。\n- **能力缺口**：本会话不提供知识库检索，也不以文件、策略或巡检工具替代该检索，因此不能给出 `SEC-KB-078` 的具体定义、适用范围或版本信息。\n\n**未执行的建议**：如你能提供该条目的原文、导出文件或截图，我可以基于材料整理其定义、触发条件与处置步骤；或由你确认是否有其他已授权数据源可供查询。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "8c6fc86f-4fd0-4f20-bfc2-b793e739daec"
+    }
+  ]
+}

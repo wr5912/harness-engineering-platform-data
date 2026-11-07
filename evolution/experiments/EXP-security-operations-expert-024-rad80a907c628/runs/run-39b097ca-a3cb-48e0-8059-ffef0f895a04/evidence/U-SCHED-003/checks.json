@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-SCHED-003",
+  "transport": "api",
+  "expected_behavior": "注：类型：自动研判。\n\n与“每隔 10 分钟研判”等价：`every_seconds: 600`，标题 `自动威胁研判-每10分钟`；“从 SOC 拉取”是到期后固定行为，不额外追问参数。",
+  "session_id": "session-94a113ec-3016-4f60-bb5f-97ae24cc3b99",
+  "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+  "session_title": "评测 U-SCHED-003",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "trace_available": true
+}

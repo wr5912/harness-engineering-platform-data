@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "请简短说明你能提供哪些安全分析帮助，并给出适合继续追问的问题。"
+  ],
+  "assistant_texts": [
+    "## 我能提供的安全分析帮助\n\n**1. 威胁研判**\n- 对明确的 SOC 事件 ID（`INC-YYYYMMDD-NNNNNN`）执行固定取证与研判，输出结论和可下载报告。\n- 支持用原生定时任务做周期性自动研判（每条心跳研判一条事件）。\n\n**2. 故障排查与取证**\n- 通过 SOC 只读工具调查资产详情、漏洞、告警、网络路径可达性、流量观测、采集覆盖率、合规违规等。\n- 只取证分析，区分事实、推断与证据缺口，不做处置。\n\n**3. 即时巡检**\n- 查询可执行的巡检模板、发起一次巡检、按 `runId` 查询进度与报告（含结论与下载链接）。\n\n**4. 策略配置（新增）**\n- 准备 IPv4 主机到主机、TCP/UDP 单目的端口的网络访问策略草稿，展示配置预览；确认前不下发。\n\n**5. 应急指令（单动作）**\n- 防火墙封禁/解封 IP、主机隔离类单动作草案的准备、查询与取消；确认执行走受信通道。\n\n**6. 通用安全调查与响应规划**\n- 基于你提供的材料做结构化分析、影响评估和响应建议（建议均标注\"尚未执行\"）。\n\n---\n\n## 适合继续追问的问题示例\n\n- \"研判一下 INC-20261102-000001\"\n- \"每天中午 12 点定时从 SOC 拉取威胁研判\"\n- \"查一下资产 10.x.x.x 的漏洞和采集覆盖情况\"\n- \"这台主机到数据库的 3306 端口通不通？\"\n- \"发起一次巡检，看看最新模板有哪些\"\n- \"给 A 系统和 B 系统之间新增一条 TCP 443 访问策略\"\n- \"封禁 203.0.113.5\"（单目标应急指令）\n- \"帮我分析这份告警日志，给出结论和待核验项\"\n\n如果你有现成的事件 ID、资产 IP 或日志材料，直接发给我即可开始。"
+  ],
+  "session_id": "session-7526423e-8b65-4414-8149-6719d462dc9e",
+  "turns": [
+    {
+      "assistant_text": "## 我能提供的安全分析帮助\n\n**1. 威胁研判**\n- 对明确的 SOC 事件 ID（`INC-YYYYMMDD-NNNNNN`）执行固定取证与研判，输出结论和可下载报告。\n- 支持用原生定时任务做周期性自动研判（每条心跳研判一条事件）。\n\n**2. 故障排查与取证**\n- 通过 SOC 只读工具调查资产详情、漏洞、告警、网络路径可达性、流量观测、采集覆盖率、合规违规等。\n- 只取证分析，区分事实、推断与证据缺口，不做处置。\n\n**3. 即时巡检**\n- 查询可执行的巡检模板、发起一次巡检、按 `runId` 查询进度与报告（含结论与下载链接）。\n\n**4. 策略配置（新增）**\n- 准备 IPv4 主机到主机、TCP/UDP 单目的端口的网络访问策略草稿，展示配置预览；确认前不下发。\n\n**5. 应急指令（单动作）**\n- 防火墙封禁/解封 IP、主机隔离类单动作草案的准备、查询与取消；确认执行走受信通道。\n\n**6. 通用安全调查与响应规划**\n- 基于你提供的材料做结构化分析、影响评估和响应建议（建议均标注\"尚未执行\"）。\n\n---\n\n## 适合继续追问的问题示例\n\n- \"研判一下 INC-20261102-000001\"\n- \"每天中午 12 点定时从 SOC 拉取威胁研判\"\n- \"查一下资产 10.x.x.x 的漏洞和采集覆盖情况\"\n- \"这台主机到数据库的 3306 端口通不通？\"\n- \"发起一次巡检，看看最新模板有哪些\"\n- \"给 A 系统和 B 系统之间新增一条 TCP 443 访问策略\"\n- \"封禁 203.0.113.5\"（单目标应急指令）\n- \"帮我分析这份告警日志，给出结论和待核验项\"\n\n如果你有现成的事件 ID、资产 IP 或日志材料，直接发给我即可开始。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "814c97de-ffd3-4f90-b2a8-4a489e4cc987"
+    }
+  ]
+}

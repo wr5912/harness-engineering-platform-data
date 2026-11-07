@@ -1,0 +1,32 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答仅凭 MCP 资源列表与工具目录判断策略端点解析工具不可用而停止，未使用真实资产和拓扑查询识别需要配置的安全设备，也未生成策略预览；与预期“通过真实资产和拓扑查询识别安全设备并生成预览，结果引用本轮工具返回且未执行时停留在预览或确认阶段”不符，属于明确不满足。",
+    "requirements": [
+      {
+        "requirement": "通过真实资产和拓扑查询识别需要配置的安全设备，再生成策略预览；结果引用本轮工具返回，未执行时明确停留在预览或确认阶段。",
+        "status": "failed",
+        "evidence": [
+          0,
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-b612f062-d1fa-4766-922f-ee23e112092b",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-POL-003",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

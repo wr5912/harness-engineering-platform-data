@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请列出当前可用的巡检项，只查询目录，不要执行巡检。"
+  ],
+  "assistant_texts": [
+    "当前无法列出巡检项，原因如下（事实）：\n\n- 巡检目录查询所需的 `inspection` MCP 服务器当前处于**断连状态**，资源查询返回 `server is disconnected`；\n- 另一可见的 `sec-ops` 服务器可查询，但其资源列表为空（`\"resources\":[]`），不包含巡检模板。\n\n按照巡检流程，目录只应通过巡检服务的目录查询工具获取。由于该服务不可用，本轮未能取得任何可执行巡检项，**不能列出或猜测**任何模板名称、taskId 或版本，也**未发起任何巡检**。\n\n建议（尚未执行）：\n1. 待 `inspection` 服务恢复连接后，我可以重新查询巡检目录；\n2. 如你知道巡检服务的接入配置，可先排查其连接状态，恢复后我再重试。"
+  ],
+  "session_id": "session-ea79eddd-805a-48eb-89ae-72a5e9beea4c",
+  "turns": [
+    {
+      "assistant_text": "当前无法列出巡检项，原因如下（事实）：\n\n- 巡检目录查询所需的 `inspection` MCP 服务器当前处于**断连状态**，资源查询返回 `server is disconnected`；\n- 另一可见的 `sec-ops` 服务器可查询，但其资源列表为空（`\"resources\":[]`），不包含巡检模板。\n\n按照巡检流程，目录只应通过巡检服务的目录查询工具获取。由于该服务不可用，本轮未能取得任何可执行巡检项，**不能列出或猜测**任何模板名称、taskId 或版本，也**未发起任何巡检**。\n\n建议（尚未执行）：\n1. 待 `inspection` 服务恢复连接后，我可以重新查询巡检目录；\n2. 如你知道巡检服务的接入配置，可先排查其连接状态，恢复后我再重试。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "3d7559ba-a939-4ef8-8eb2-25efb85fb0fe"
+    }
+  ]
+}

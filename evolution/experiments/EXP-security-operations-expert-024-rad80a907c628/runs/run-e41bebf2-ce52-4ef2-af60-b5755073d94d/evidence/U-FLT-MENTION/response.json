@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "@故障分析子智能体 业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "请先补充本次故障分析的必要信息（只追问一次）：\n\n1. **异常对象**：受影响的业务系统名称、资产名或 IP 是什么？（若不确定，可说明大致范围，如某网段或某应用名）\n2. **异常表现**：是访问超时、报错、中断，还是其他现象？\n3. **时间**：异常发生的时间或时段是什么？（本轮采样时间为 2026-11-02 08:32 UTC，若\"今天\"请明确时区）\n\n收到后我会通过 @故障分析子智能体 走只读取证流程，区分事实、推断与证据缺口。"
+  ],
+  "session_id": "session-30db11e8-d180-4e34-b7ac-586057e5b39f",
+  "turns": [
+    {
+      "assistant_text": "请先补充本次故障分析的必要信息（只追问一次）：\n\n1. **异常对象**：受影响的业务系统名称、资产名或 IP 是什么？（若不确定，可说明大致范围，如某网段或某应用名）\n2. **异常表现**：是访问超时、报错、中断，还是其他现象？\n3. **时间**：异常发生的时间或时段是什么？（本轮采样时间为 2026-11-02 08:32 UTC，若\"今天\"请明确时区）\n\n收到后我会通过 @故障分析子智能体 走只读取证流程，区分事实、推断与证据缺口。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "81d5073d-ca5c-4cc4-868d-c0b1f3ca30f0"
+    }
+  ]
+}

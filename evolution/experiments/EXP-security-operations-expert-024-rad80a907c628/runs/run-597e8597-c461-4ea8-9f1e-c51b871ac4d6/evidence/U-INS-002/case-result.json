@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答未编造任何巡检项数据，且与工具回执一致：对 inspection 服务器的资源与资源模板查询均以原生错误回执返回 server is disconnected（索引 4、6），sec-ops 的资源与资源模板列表均为空数组（索引 8、10）；回答据此如实说明目录查询失败、未获得任何模板与巡检项，并明确区分了未执行的发起动作（索引 0）。只读要求方面，本 Session 证据中的工具调用仅为加载 skill 与只读资源列举，无任何准备或启动巡检的调用，符合预期中“查询失败时如实说明”的可接受路径，三项要求均满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 9106 近 30 天的关联告警，展示首页最多 5 个分组，说明总量和查询时段。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "## 资产 9106 近 30 天关联告警（只读查询结果）\n\n**结论：** 固定 Mock/replay 样本中，资产 9106（`asset:9106`，172.16.138.241，联试硬件服务器241，online）近 30 天关联告警总量为 **19 条**，全部为中低危及高危，无严重/信息级告警。\n\n### ① 总量与分组（事实，来自 `get_graph_node_detail`）\n\n首页最多 5 个分组，按严重度展示：\n\n| 分组 | 计数 |\n|---|---|\n| criticalSec（严重） | 0 |\n| high（高危） | 1 |\n| medium（中危） | 2 |\n| low（低危） | 16 |\n| info（信息） | 0 |\n| **合计** | **19** |\n\n交叉核对（事实）：`trend30d` 共 30 个逐日桶，逐日值为 `[0,0,0,2,17,0,0,…]`，合计 19，与分组计数一致；非零值集中在最早 5 个桶内。\n\n### ② 查询时段\n\n- **事实**：工具返回体**未包含**显式起止时间字段，也未返回时区；仅字段名 `trend30d` 表明为 30 天趋势。\n- **推断**（未经工具确认）：按本轮采样锚点 2026-11-04T02:39:22Z 推算，窗口约为 **2026-10-05T02:39:22Z ~ 2026-11-04T02:39:22Z（UTC）**。\n\n### ③ 证据缺口\n\n1. 当前可见 SOC 工具中无“按资产分页列告警”接口，无法逐条枚举这 19 条告警，也无法核验告警名称、规则名、状态等字段。\n2. 统计窗口起止时间与时区只能推断，无工具返回值确认。\n3. `inspection` MCP 服务器返回 `disconnected`，其资源/模板不可枚举（`sec-ops` 正常，但资源与模板均为空数组）。\n4. 补充事实：`get_soc_asset_vulnerabilities(9106)` 返回空数组（无关联漏洞）；资产采集配置 `generic-ssh` 最近状态为 error（SSH 建连失败）——属资产上下文，非告警数据。\n\n### 声明\n\n本次全部为**只读查询**：未执行任何处置、未创建分析运行、未读写文件、未执行命令。所有数字均为工具实际返回值，推断与缺口已单独标注。"
+  ],
+  "session_id": "session-512b9375-9bf2-4223-94da-37d80edfbb4a",
+  "turns": [
+    {
+      "assistant_text": "## 资产 9106 近 30 天关联告警（只读查询结果）\n\n**结论：** 固定 Mock/replay 样本中，资产 9106（`asset:9106`，172.16.138.241，联试硬件服务器241，online）近 30 天关联告警总量为 **19 条**，全部为中低危及高危，无严重/信息级告警。\n\n### ① 总量与分组（事实，来自 `get_graph_node_detail`）\n\n首页最多 5 个分组，按严重度展示：\n\n| 分组 | 计数 |\n|---|---|\n| criticalSec（严重） | 0 |\n| high（高危） | 1 |\n| medium（中危） | 2 |\n| low（低危） | 16 |\n| info（信息） | 0 |\n| **合计** | **19** |\n\n交叉核对（事实）：`trend30d` 共 30 个逐日桶，逐日值为 `[0,0,0,2,17,0,0,…]`，合计 19，与分组计数一致；非零值集中在最早 5 个桶内。\n\n### ② 查询时段\n\n- **事实**：工具返回体**未包含**显式起止时间字段，也未返回时区；仅字段名 `trend30d` 表明为 30 天趋势。\n- **推断**（未经工具确认）：按本轮采样锚点 2026-11-04T02:39:22Z 推算，窗口约为 **2026-10-05T02:39:22Z ~ 2026-11-04T02:39:22Z（UTC）**。\n\n### ③ 证据缺口\n\n1. 当前可见 SOC 工具中无“按资产分页列告警”接口，无法逐条枚举这 19 条告警，也无法核验告警名称、规则名、状态等字段。\n2. 统计窗口起止时间与时区只能推断，无工具返回值确认。\n3. `inspection` MCP 服务器返回 `disconnected`，其资源/模板不可枚举（`sec-ops` 正常，但资源与模板均为空数组）。\n4. 补充事实：`get_soc_asset_vulnerabilities(9106)` 返回空数组（无关联漏洞）；资产采集配置 `generic-ssh` 最近状态为 error（SSH 建连失败）——属资产上下文，非告警数据。\n\n### 声明\n\n本次全部为**只读查询**：未执行任何处置、未创建分析运行、未读写文件、未执行命令。所有数字均为工具实际返回值，推断与缺口已单独标注。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "f16c0333-637a-4747-a34e-4b0a8edf6d8f"
+    }
+  ]
+}

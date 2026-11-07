@@ -1,0 +1,53 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "要求一未满足：本轮被测 Session 的工具回执仅包含 Skill 装载、MCP 资源枚举与文件检索（sec-ops 资源与模板均为空、inspection 服务器断开、未找到角色工具矩阵），没有任何真实资产或拓扑查询回执，也未生成任何策略预览；被测回答自述在端点解析前即因能力缺口停止、无草稿。要求二部分满足但整体未满足：回答确实明确说明未执行任何操作，但其停留位置是能力缺口/停止阶段，而非要求的预览或确认阶段，且该阶段前置的预览从未产生，因此不满足“未执行时明确停留在预览或确认阶段”。Skill 的迁移限制只能解释该失败，不能改变冻结要求。",
+    "requirements": [
+      {
+        "requirement": "通过真实资产和拓扑查询识别需要配置的安全设备，再生成策略预览",
+        "status": "failed",
+        "evidence": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10,
+          14
+        ]
+      },
+      {
+        "requirement": "结果引用本轮工具返回，未执行时明确停留在预览或确认阶段",
+        "status": "failed",
+        "evidence": [
+          0,
+          4,
+          6,
+          8,
+          10
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-5acf9d35-c7de-4a7d-917d-cfc613da5d3b",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-POL-003",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

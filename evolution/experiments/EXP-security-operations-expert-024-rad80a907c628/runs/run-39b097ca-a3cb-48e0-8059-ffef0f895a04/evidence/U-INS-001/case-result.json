@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 的工具回执显示 inspection 服务器断开（list_mcp_resources/list_mcp_resource_templates 均 is_error=true），因此本轮未选定任何 taskId/definitionVersion、未调用 start_inspection、未产生 requestId 与 runId、也无报告回执：要求 1、2 明确未满足；要求 3、4、5 所涉阶段均未到达，仅能判为 unknown（其中依赖缺口的记录可见于回答，但缺少启动拒绝与报告就绪的回执来判定）。整体未达成预期，判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-001"
+}

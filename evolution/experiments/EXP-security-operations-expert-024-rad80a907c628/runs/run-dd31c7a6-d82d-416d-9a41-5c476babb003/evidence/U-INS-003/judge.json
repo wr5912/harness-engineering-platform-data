@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答是一个可解析的 JSON 对象，完整保留了输入中的四项巡检事实（39 台/套、12 台/套、4 台/套、2 项），并通过“巡检事实”“辅助研判”“未知项”区分事实与建议，未添加输入中没有的动态数据，且回答自述未调用任何巡检或核验工具，与预期一致。",
+    "requirements": [
+      {
+        "requirement": "只返回一个可解析的 JSON 对象，准确保留给定事实并区分事实与建议，不添加输入中没有的动态数据，不调用巡检服务",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "{\"巡检事实\":{\"巡检资产总数\":\"39 台/套\",\"离线设备\":\"12 台/套\",\"存在严重或高危漏洞的设备\":\"4 台/套\",\"异常结论\":\"2 项\"},\"辅助研判\":{\"提示与待核验项\":[\"离线设备与存在严重或高危漏洞的设备可能与异常结论存在重叠，需按设备逐一核验后确认，当前无法确认其对应关系\",\"离线设备可能影响漏洞与状态数据的完整性，离线期间的实际情况待核验\",\"2 项异常结论的具体内容、判定依据及影响范围未提供，无法在本轮确认\"],\"是否已执行\":false,\"说明\":\"以上提示仅基于所给事实推断，未调用任何巡检或核验工具，未执行任何处置动作，相关核验建议尚未执行\"},\"未知项\":[\"异常结论的具体内容\",\"各事实项之间的对应关系\",\"数据采集时间与数据时效\"]}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-6ca6e314-5e81-4383-a1e5-e0cd0acc1f42",
+    "workspace_id": "d786e864-0aa9-4a4e-bb1d-ec3e68389864",
+    "session_title": "评审 U-INS-003",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

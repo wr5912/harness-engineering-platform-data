@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答与工具回执一致显示 inspection 服务器处于 disconnected，list_mcp_resource_templates/list_mcp_resource_templates 等查询均返回连接错误，因此本轮既未成功调用“查询可执行巡检目录”能力，也未列出任何可执行模板或巡检项，第一项要求未满足。同时，回执仅涉及只读资源/模板列举，回答明确声明未发起巡检，满足只读不启动；回答如实说明服务不可用并给出下一步建议，未编造目录内容，第二、三项要求满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

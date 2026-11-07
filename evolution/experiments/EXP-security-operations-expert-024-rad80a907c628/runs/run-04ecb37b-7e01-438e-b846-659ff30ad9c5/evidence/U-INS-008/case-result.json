@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-008",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：要求一满足：glob 工具回执（索引 4）显示主 Agent 实读了真实目录并列出 .agents/skills 下各技能模板文件，属于可读取真实目录核对模板的真实回执。要求二满足：回答（索引 0）在“本轮抽定对象”无可解析标识时仅追问资产名称/IP/主机名/资产组等必要标识与可选时间窗，未调用 start_inspection、未默认全部设备、未伪造任何核查结果，且其转述的 sec-ops 无资源与 inspection 断连均有同 Session 错误回执（索引 6、8、10、12）支撑。要求三证据不足：本 Session 中范围与必填输入始终未补齐，同轮仅完成技能准备（索引 2，fault-analysis 技能加载回执）并声明“收到标识后立即委派”，既没有实际执行委派/核查的工具回执，也没有出现 KEV 调用回执；“同轮准备并执行”这一关键点缺少真实工具数据支持，既不能判定满足也不能判定违反，故整体 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-008"
+}

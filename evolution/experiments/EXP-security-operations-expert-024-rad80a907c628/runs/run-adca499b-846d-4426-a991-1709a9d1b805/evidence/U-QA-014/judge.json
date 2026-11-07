@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答为全英文，明确说明 CVE ID 标识的是单个、特定的公开披露漏洞（publicly disclosed cybersecurity vulnerability），并逐条列出编号本身不标识的内容，其中显式声明“It does not identify an exploit or attack; many CVEs have no known exploit”，即不把编号当作已被利用的证明；同时其对编号结构（前缀、年份、序号）的解释表明编号本身不编码严重度，全文也未将编号表述为严重度依据。要求各要点均有对应英文表述，故判定满足。",
+    "requirements": [
+      {
+        "requirement": "用英语准确说明 CVE ID 标识公开记录的漏洞，不把编号本身当成严重度或是否已被利用的证明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "## What a CVE ID Identifies\n\nA **CVE ID** (e.g., `CVE-2021-44228`) uniquely identifies a *single, specific publicly disclosed cybersecurity vulnerability* — one particular flaw in one particular product or product version.\n\n### Structure of the ID\n\n| Part | Meaning |\n|---|---|\n| `CVE` | Prefix indicating the Common Vulnerabilities and Exposures identifier system |\n| `2021` | The year the CVE ID was **assigned** (not necessarily when the flaw was discovered or fixed) |\n| `44228` | A zero-padded sequence number assigned in order within that year |\n\n### What it points to\n\n- **One vulnerability, one entry:** It refers to a distinct security flaw — such as a buffer overflow, SQL injection, or remote-code-execution bug — in a specific product (e.g., Apache Log4j, Microsoft Windows, a Linux kernel component).\n- **A shared reference:** The ID lets advisories, patch notes, vulnerability scanners, and risk-score databases (like NVD or vendor PSIRTs) all talk about the *same* flaw without confusion.\n- **A caveat — what it does *not* identify:**\n  - It does not identify an exploit or attack; many CVEs have no known exploit.\n  - It does not, by itself, identify affected *versions* or fix status — those live in the associated record.\n  - If one product has multiple distinct flaws, each gets its own CVE ID; a single CVE is not used for a whole product line.\n\n### Quick example\n\n`CVE-2021-44228` → the Log4Shell remote-code-execution vulnerability in Apache Log4j 2 — one specific flaw in one specific component, referenced consistently across the entire security industry.",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-0338b3d1-65cd-4e91-9c85-3587989e687e",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-QA-014",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

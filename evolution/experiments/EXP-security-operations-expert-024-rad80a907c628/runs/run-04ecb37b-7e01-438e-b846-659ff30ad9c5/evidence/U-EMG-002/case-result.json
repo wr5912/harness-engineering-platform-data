@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：要求1：被测回答明确表示未调用任何 prepare/revise、没有生成 DRAFT，索引证据中不存在任何 prepare_emergency_action 调用或返回 block-ip 草案的 tool/result，冻结动作是否为 block-ip 无从核对，该要求未满足。要求2：回答确实未确认、未声称已封禁（索引0），但其“应急草案工具不在会话工具目录、能力不可用”的关键结论只由 MCP 资源列表回执（sec-ops 无资源/无模板，索引4、6）和 inspection 断连回执（索引8、10）间接支撑，缺少工具目录或 prepare 尝试的直接回执，resources 为空不等于 tools 缺失，证据不足判为 inconclusive。整体因要求1明确失败判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-EMG-002"
+}

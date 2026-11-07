@@ -1,0 +1,77 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "indexed_evidence 仅包含被测助手关于威胁研判/定时播报的正文（索引 0）、threat-analysis skill 内容回执（索引 2）与 schedule_list 空数组回执（索引 4），以及两条 citation_allowed 为 false 的调用记录。全部证据均未涉及摘要生成事件、`/api/remote.mux` 复用、音频合成输入、设置页保存字数/提示词/模型，也未提供任何摘要调用次数或插件安装状态的工具回执；skill 与 schedule_list 回执只能说明本轮未创建定时任务和委派研判，不能证实或证伪摘要相关行为。五项要求均无足够证据，故判定为 inconclusive。",
+    "requirements": [
+      {
+        "requirement": "每次主 LLM Call 正常完成且含可见正文时独立生成一次摘要，默认目标约 30 字",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "工具前正文可触发，纯推理、纯工具调用、失败和中断不触发",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "摘要事件与原生 Session 流共用 `/api/remote.mux`，音频合成输入与摘要文字一致",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "设置页可保存字数、提示词和已配置模型，后续摘要采用新值",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "不开启自动播报或未装插件时不增加摘要调用",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-5abc7e44-4ae7-4e09-9f4f-8b3b7502344a",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-VOICE-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

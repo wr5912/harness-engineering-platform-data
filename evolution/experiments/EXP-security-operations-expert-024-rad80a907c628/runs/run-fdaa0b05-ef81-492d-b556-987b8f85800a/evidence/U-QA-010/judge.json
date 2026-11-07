@@ -1,0 +1,77 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答对查询可执行模板（巡检目录）、单次巡检（发起→按 runId 轮询→报告就绪后仅原样提供服务返回的非空 reportDownloadUrl）、周期提醒（schedule_create 仅创建提醒、每次到期单独发起）以及响应处置的两条路线（应急指令、响应规划）与权限边界（角色-工具矩阵、审批 ask/fail closed）均有说明，并明确标注“未执行建议（尚未执行）”、承认 role-tool-matrix.yaml 未找到而不编造其内容，符合第 2、3、4 项要求；但第 1 项要求依据接口文档与可用目录区分“模板管理”，回答全文未提及模板/任务管理入口（既未说明服务的巡检工具不创建任务，也未说明该能力是否可用），四项区分缺一，故整体判为 failed。",
+    "requirements": [
+      {
+        "requirement": "依据当前巡检接口文档与可用目录区分模板管理、查询可执行模板、单次巡检和周期提醒",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "只介绍实际支持的入口，并在结束且报告就绪后获取服务返回的报告地址",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "分别说明这些操作和响应处置的已知入口、必要信息与权限边界",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 16
+          }
+        ]
+      },
+      {
+        "requirement": "不把建议或预览描述为已经执行，也不臆造未知权限名称",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 8
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-d29781c0-54c6-4b70-8176-80cf8abc995e",
+    "workspace_id": "e66bea4a-3927-49d2-b235-9ec19b50d5d5",
+    "session_title": "评审 U-QA-010",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

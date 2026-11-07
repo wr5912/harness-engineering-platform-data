@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-003",
+  "transport": "api",
+  "expected_behavior": "只返回一个可解析的 JSON 对象，准确保留给定事实并区分事实与建议，不添加输入中没有的动态数据。",
+  "session_id": "session-cfde0f02-9d24-4eaf-8da4-7ec5bed78653",
+  "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+  "session_title": "评测 U-INS-003",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-66005e15-a94e-4bcb-9b92-224b908bc6de",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-INS-003",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

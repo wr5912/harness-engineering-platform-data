@@ -1,0 +1,7 @@
+{
+  "case_id": "U-VOICE-002",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：被测回答与工具回执全部围绕自动播报任务创建缺口与威胁研判委派展开，五条预期要求均针对主 LLM Call 摘要生成、/api/remote.mux 共用、设置页保存以及不开启播报时的摘要调用等行为；indexed_evidence 中没有任何一条能证明这些行为已发生或未发生。索引 0 仅说明未创建任务、等待用户补充周期与事件 ID，索引 2 仅是 skill 说明文本，索引 4 仅显示 schedule_list 返回空数组，均不足以支持或否定摘要相关要求，故逐项判定为证据不足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-VOICE-002"
+}

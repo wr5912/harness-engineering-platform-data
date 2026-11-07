@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "请简短说明你能提供哪些安全分析帮助，并给出适合继续追问的问题。"
+  ],
+  "assistant_texts": [
+    "## 我能提供的安全分析帮助\n\n基于我当前的工具集和能力，我可以提供以下安全运营支持：\n\n### 🔍 威胁研判 (Threat Analysis)\n- 对 SOC 明确的事件 ID（格式：`INC-YYYYMMDD-NNNNNN`）执行深度取证和研判\n- 支持自动定时研判任务（每天定时、每隔固定分钟、定时窗口）\n- 生成研判报告和可下载结论\n\n### 🛡️ 应急处置 (Emergency Action)\n- 单动作、单目标的隔离/解封指令提交\n- 防火墙主机 IP 级别的封禁/解封操作草案准备\n\n### 📋 策略配置 (Policy Configuration)\n- 新增网络访问策略（IPv4 主机到主机、TCP/UDP 单目的端口）\n- 按 Workbench 要求准备配置草案和命令\n\n### 🔬 故障排查 (Fault Analysis)\n- 资产调查、漏洞扫描结果查询\n- 主机对路径可达性分析\n- 资产间的流量流域和端口观测\n- 网络合规违规记录查询\n\n### 📊 安全巡检 (Security Inspection)\n- 查询可用的巡检模板\n- 执行一次完整的资产安全巡检\n- 经授权后设置定时巡检提醒\n\n### 📚 通用调查 (Security Investigation)\n- 基于现有材料的防御性安全分析\n- 事件材料关联和冲突信息审查\n- 证据缺口和后续行动建议\n\n---\n\n## 💡 适合继续追问的问题\n\n1. **如果您有具体事件要研判**：请提供 SOC 事件 ID，我来执行威胁研判\n2. **如果存在紧急威胁**：告诉我需要隔开的主机或 IP，我帮您准备应急指令\n3. **需要新增访问控制策略**：提供源/目 IP 和端口要求，我为您准备策略草案\n4. **遇到资产异常或告警**：说明现象，我可以帮您排查资产、漏洞或网络连通性问题\n5. **想要周期性安全巡检**：告诉我期望频率（如\"每周六凌晨\"），我帮您设置定时巡检任务\n6. **需要了解某资产的安全状况**：提供资产 ID 或主机名，我帮您查询关联风险\n7. **需要网络路径分析**：提供源 IP 和目标 IP，我帮您分析可达性和流量监测"
+  ],
+  "session_id": "session-39da9ea5-d79c-4988-a7d6-cc7ee180d637",
+  "turns": [
+    {
+      "assistant_text": "## 我能提供的安全分析帮助\n\n基于我当前的工具集和能力，我可以提供以下安全运营支持：\n\n### 🔍 威胁研判 (Threat Analysis)\n- 对 SOC 明确的事件 ID（格式：`INC-YYYYMMDD-NNNNNN`）执行深度取证和研判\n- 支持自动定时研判任务（每天定时、每隔固定分钟、定时窗口）\n- 生成研判报告和可下载结论\n\n### 🛡️ 应急处置 (Emergency Action)\n- 单动作、单目标的隔离/解封指令提交\n- 防火墙主机 IP 级别的封禁/解封操作草案准备\n\n### 📋 策略配置 (Policy Configuration)\n- 新增网络访问策略（IPv4 主机到主机、TCP/UDP 单目的端口）\n- 按 Workbench 要求准备配置草案和命令\n\n### 🔬 故障排查 (Fault Analysis)\n- 资产调查、漏洞扫描结果查询\n- 主机对路径可达性分析\n- 资产间的流量流域和端口观测\n- 网络合规违规记录查询\n\n### 📊 安全巡检 (Security Inspection)\n- 查询可用的巡检模板\n- 执行一次完整的资产安全巡检\n- 经授权后设置定时巡检提醒\n\n### 📚 通用调查 (Security Investigation)\n- 基于现有材料的防御性安全分析\n- 事件材料关联和冲突信息审查\n- 证据缺口和后续行动建议\n\n---\n\n## 💡 适合继续追问的问题\n\n1. **如果您有具体事件要研判**：请提供 SOC 事件 ID，我来执行威胁研判\n2. **如果存在紧急威胁**：告诉我需要隔开的主机或 IP，我帮您准备应急指令\n3. **需要新增访问控制策略**：提供源/目 IP 和端口要求，我为您准备策略草案\n4. **遇到资产异常或告警**：说明现象，我可以帮您排查资产、漏洞或网络连通性问题\n5. **想要周期性安全巡检**：告诉我期望频率（如\"每周六凌晨\"），我帮您设置定时巡检任务\n6. **需要了解某资产的安全状况**：提供资产 ID 或主机名，我帮您查询关联风险\n7. **需要网络路径分析**：提供源 IP 和目标 IP，我帮您分析可达性和流量监测",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a8a58e4b-4920-40fa-9343-13a99335b829"
+    }
+  ]
+}

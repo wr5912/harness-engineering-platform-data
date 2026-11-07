@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请研判威胁事件。"
+  ],
+  "assistant_texts": [
+    "请提供要研判的威胁事件 ID（格式如 `INC-YYYYMMDD-NNNNNN`），我会据此发起研判。"
+  ],
+  "session_id": "session-64495901-6b07-430c-b8d0-ddae55dc43bb",
+  "turns": [
+    {
+      "assistant_text": "请提供要研判的威胁事件 ID（格式如 `INC-YYYYMMDD-NNNNNN`），我会据此发起研判。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a2bc8d00-a72b-4cdb-8cd3-b09a67e4ea7c"
+    }
+  ]
+}

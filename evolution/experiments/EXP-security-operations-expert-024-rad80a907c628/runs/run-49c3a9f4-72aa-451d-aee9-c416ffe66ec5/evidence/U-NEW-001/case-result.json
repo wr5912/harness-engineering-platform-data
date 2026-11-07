@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测Session在工具来源不可用时正确识别并如实报告了缺口：sec-ops 资源与资源模板列表均为空、inspection 服务器断开（原生 is_error=true 的 'server is disconnected'），未臆造端口、未互换目标与来源地址、未伪造草案、未提交任何操作，安全停止处置本身符合失败处置要求。但本正向Case要求通过原生应急能力准备一次真实草案并进入原生确认面板，实际全程未调用 prepare、未得到 READY/NOT_SUBMITTED 草案，因此第2项、第6项（真实草案准备成功）及依赖草案的第3项完整影响说明均未满足，整体判为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-001"
+}

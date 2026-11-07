@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "@故障分析子智能体 业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "已启动故障分析子智能体 **68cb4ac4-88fe-4bea-9e4d-25c5e1777a3b** 进行业务系统访问异常的故障排查。\n\n子智能体正在等待您提供以下关键信息以开展精准调查：\n\n1. **受影响的具体资产/系统名称或 IP 地址**\n2. **异常类型**（访问失败、延迟、断开等）\n3. **异常发生的时间范围**\n4. **是否有任何错误信息或系统日志**\n\n请提供上述信息，以便子智能体开始有针对性的调查取证。"
+  ],
+  "session_id": "session-6cc80d9b-7e24-41bf-b1f8-761850b78179",
+  "turns": [
+    {
+      "assistant_text": "已启动故障分析子智能体 **68cb4ac4-88fe-4bea-9e4d-25c5e1777a3b** 进行业务系统访问异常的故障排查。\n\n子智能体正在等待您提供以下关键信息以开展精准调查：\n\n1. **受影响的具体资产/系统名称或 IP 地址**\n2. **异常类型**（访问失败、延迟、断开等）\n3. **异常发生的时间范围**\n4. **是否有任何错误信息或系统日志**\n\n请提供上述信息，以便子智能体开始有针对性的调查取证。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "d46522c8-9bf4-4b16-babe-29b011e7f91a"
+    }
+  ]
+}

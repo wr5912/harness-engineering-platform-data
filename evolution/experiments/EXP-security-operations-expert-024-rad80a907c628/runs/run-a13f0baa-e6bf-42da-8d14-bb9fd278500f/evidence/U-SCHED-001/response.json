@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "帮我创建一个每天中午 12 点定时威胁研判的任务。"
+  ],
+  "assistant_texts": [
+    "任务已成功创建，需要向用户展示确认结果，包括任务 ID、规则、下次执行时间和状态，并明确说明这是定时任务而非已执行。\n</think>\n\n✅ **自动威胁研判定时任务已创建成功**\n\n| 项目 | 详情 |\n|------|------|\n| **任务 ID** | `schedule-ec851b86-9073-4a2f-be8e-465ccb55debd` |\n| **标题** | 自动威胁研判 - 每天 12:00 |\n| **执行时间** | 每天 12:00:00（北京时间 Asia/Shanghai） |\n| **执行周期** | Daily |\n| **任务状态** | scheduled（已排期） |\n| **定时 prompt** | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n\n**说明：**\n- 此任务将为每天中午 12 点（北京时间）自动触发威胁研判流程\n- 到期后，DSH 的受信桥会解析该 prompt 并调用 `analyze_pending_threat_incidents` 工具处理待研判事件\n- 每次只处理一条待研判事件，认领冲突事件时会自动跳过并继续查找\n\n任务已在当前会话中创建，下次到期时间为今天（2026-10-28）中午 12 点。您是否需要我帮您查看未来几天该定时任务的执行计划？"
+  ],
+  "session_id": "session-58cd11e0-0338-4f7e-80e5-63ee465aa920",
+  "turns": [
+    {
+      "assistant_text": "任务已成功创建，需要向用户展示确认结果，包括任务 ID、规则、下次执行时间和状态，并明确说明这是定时任务而非已执行。\n</think>\n\n✅ **自动威胁研判定时任务已创建成功**\n\n| 项目 | 详情 |\n|------|------|\n| **任务 ID** | `schedule-ec851b86-9073-4a2f-be8e-465ccb55debd` |\n| **标题** | 自动威胁研判 - 每天 12:00 |\n| **执行时间** | 每天 12:00:00（北京时间 Asia/Shanghai） |\n| **执行周期** | Daily |\n| **任务状态** | scheduled（已排期） |\n| **定时 prompt** | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n\n**说明：**\n- 此任务将为每天中午 12 点（北京时间）自动触发威胁研判流程\n- 到期后，DSH 的受信桥会解析该 prompt 并调用 `analyze_pending_threat_incidents` 工具处理待研判事件\n- 每次只处理一条待研判事件，认领冲突事件时会自动跳过并继续查找\n\n任务已在当前会话中创建，下次到期时间为今天（2026-10-28）中午 12 点。您是否需要我帮您查看未来几天该定时任务的执行计划？",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "47360be8-5111-4e89-8391-d52164bb6e84"
+    }
+  ]
+}

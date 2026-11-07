@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "创建一个每 10 分钟执行一次、覆盖当前巡检服务全部资产的设备在线状态巡检任务；每次执行时以当时的资产清单为准。"
+  ],
+  "assistant_texts": [
+    "已启动威胁研判子智能体。\n\n任务：当前 Runtime 能力确认\n\n结果将在任务结束后返回。"
+  ],
+  "session_id": "session-aae7eea8-9e06-465f-92b0-84fcb1c82b84",
+  "turns": [
+    {
+      "assistant_text": "已启动威胁研判子智能体。\n\n任务：当前 Runtime 能力确认\n\n结果将在任务结束后返回。",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f65f2cd6-fa0b-4867-870d-3acb15ab0058"
+    }
+  ]
+}

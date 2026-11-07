@@ -1,0 +1,94 @@
+{
+ "Qwen3.8-27B": {
+  "run": "run-e2e49fac-a081-4ae3-81bd-7c178caa4df3",
+  "sessions": 162,
+  "total_calls": 987,
+  "input_tokens": 32713964,
+  "output_tokens": 168165,
+  "by_role": {
+   "target": {
+    "calls": 293,
+    "calls_with_usage": 285,
+    "input_tokens": 3103552,
+    "output_tokens": 54177,
+    "dur_min_ms": 11,
+    "dur_p50_ms": 3962,
+    "dur_p90_ms": 27732,
+    "dur_max_ms": 118985,
+    "dur_mean_ms": 10235
+   },
+   "subagent": {
+    "calls": 625,
+    "calls_with_usage": 625,
+    "input_tokens": 29358800,
+    "output_tokens": 90277,
+    "dur_min_ms": 1315,
+    "dur_p50_ms": 3698,
+    "dur_p90_ms": 12308,
+    "dur_max_ms": 252405,
+    "dur_mean_ms": 9378
+   },
+   "judge": {
+    "calls": 69,
+    "calls_with_usage": 69,
+    "input_tokens": 251612,
+    "output_tokens": 23711,
+    "dur_min_ms": 2859,
+    "dur_p50_ms": 10825,
+    "dur_p90_ms": 24457,
+    "dur_max_ms": 118987,
+    "dur_mean_ms": 15201
+   }
+  },
+  "aux": {
+   "title_requests": 0,
+   "compaction_calls": 0
+  }
+ },
+ "Qwen3.5-4B": {
+  "run": "run-a13f0baa-e6bf-42da-8d14-bb9fd278500f",
+  "sessions": 158,
+  "total_calls": 622,
+  "input_tokens": 6563755,
+  "output_tokens": 193901,
+  "by_role": {
+   "target": {
+    "calls": 400,
+    "calls_with_usage": 390,
+    "input_tokens": 4456636,
+    "output_tokens": 73590,
+    "dur_min_ms": 10,
+    "dur_p50_ms": 1902,
+    "dur_p90_ms": 8139,
+    "dur_max_ms": 106694,
+    "dur_mean_ms": 4041
+   },
+   "subagent": {
+    "calls": 153,
+    "calls_with_usage": 152,
+    "input_tokens": 1832284,
+    "output_tokens": 49930,
+    "dur_min_ms": 10,
+    "dur_p50_ms": 6564,
+    "dur_p90_ms": 19386,
+    "dur_max_ms": 173189,
+    "dur_mean_ms": 10013
+   },
+   "judge": {
+    "calls": 69,
+    "calls_with_usage": 69,
+    "input_tokens": 274835,
+    "output_tokens": 70381,
+    "dur_min_ms": 5479,
+    "dur_p50_ms": 12910,
+    "dur_p90_ms": 35073,
+    "dur_max_ms": 53587,
+    "dur_mean_ms": 16448
+   }
+  },
+  "aux": {
+   "title_requests": 0,
+   "compaction_calls": 0
+  }
+ }
+}

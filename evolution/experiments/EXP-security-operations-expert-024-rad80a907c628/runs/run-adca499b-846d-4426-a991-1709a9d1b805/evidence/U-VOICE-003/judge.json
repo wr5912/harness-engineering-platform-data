@@ -1,0 +1,92 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答（索引 0）未执行也未回应本用例的任何预期行为：它明确声明缺少播报控制、会话管理与连接管理能力，仅提出澄清问题并承诺不发起任何调用，因此没有产生同一回合的两步正文、没有展示按序生成播报、取消中止、失败跳过、卸载释放、重连与冷加载等任何可观测结果，也没有给出受控模型/测试音频的链路证据。全部七项要求均无满足证据，唯一可用证据（索引 0）反而表明任务未被履行，故判定为 failed。",
+    "requirements": [
+      {
+        "requirement": "同一会话按正文完成顺序生成和播报，下一步不取消前一步",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "取消会中止辅助请求和音频，忽略迟到结果",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "失败时提示并跳过，不阻塞主回合或退回全文播报",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "插件卸载后释放队列和订阅",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "重连只接收未来事件，冷加载历史 Session 不产生重复摘要或未知事件错误",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "受控模型和测试音频仅证明链路",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "真实模型的语义保真、字数偏差、延迟与听感另行观察",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-00af0503-e797-47ba-aa52-5d2a7f1e4d97",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-VOICE-003",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

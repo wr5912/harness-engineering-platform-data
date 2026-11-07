@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "帮我创建每天中午 12 点自动威胁研判的任务。"
+  ],
+  "assistant_texts": [
+    "已创建每日自动威胁研判定时任务：\n\n- **任务 ID**：`schedule-46fff6c2-c610-417b-9d1c-c378deb23890`\n- **规则**：每天 `12:00:00`（Asia/Shanghai）\n- **下次到期**：2026-10-28 12:00（北京时间）\n- **状态**：已创建并排程，尚未执行过任何研判；每次到期只自动研判 1 条待研判事件，结果以带事件 ID 和 Run ID 的工具回执为准。\n\n如需调整周期、停止或删除该任务，直接告诉我即可。"
+  ],
+  "session_id": "session-1b859172-0365-4ed2-813c-cf7ccc22f184",
+  "turns": [
+    {
+      "assistant_text": "已创建每日自动威胁研判定时任务：\n\n- **任务 ID**：`schedule-46fff6c2-c610-417b-9d1c-c378deb23890`\n- **规则**：每天 `12:00:00`（Asia/Shanghai）\n- **下次到期**：2026-10-28 12:00（北京时间）\n- **状态**：已创建并排程，尚未执行过任何研判；每次到期只自动研判 1 条待研判事件，结果以带事件 ID 和 Run ID 的工具回执为准。\n\n如需调整周期、停止或删除该任务，直接告诉我即可。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "9bc6fb08-d0e9-4767-8aa4-c6b5a7ecd9f2"
+    }
+  ]
+}

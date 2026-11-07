@@ -1,0 +1,7 @@
+{
+  "case_id": "U-VOICE-003",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：被测回答仅说明同一回合连续产生了两步正文，并明确声明四个中断动作（摘要生成时打断、关闭播报、切换会话、断开连接）均未执行、其可观察点属于未验证推断；indexed_evidence 中除该正文（索引0）和一条被工具过滤器拒绝的 working_directory 错误回执（索引2，索引1 的调用请求 citation_allowed 为 false 不可选）外，没有任何关于播报顺序、取消中止辅助请求与音频、失败跳过、插件卸载释放、重连与冷加载历史 Session、受控模型与测试音频、真实模型语义保真等要求的同一 Session 事实证据。工具回执 is_error 为真且仅为工具集过滤错误，与语音链路要求无对应关系。因此七项要求均证据不足，不能判定为满足或不满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-VOICE-003"
+}

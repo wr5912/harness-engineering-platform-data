@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "分析资产 172.16.2.103 的主机安全配置异常，并排查资产未纳管或关联对象异常。"
+  ],
+  "assistant_texts": [
+    "已启动子智能体对资产 172.16.2.103 进行故障分析调查，子智能体将依次使用 SOC 只读工具核查资产纳管状态、主机安全配置和关联对象情况。调查完成后会将结果以 Markdown 格式报告，包含事实、推断、证据缺口和未执行建议，并标注各项分析的置信度。"
+  ],
+  "session_id": "session-93b56b25-f77e-4645-b8ed-1c9ffa567a0d",
+  "turns": [
+    {
+      "assistant_text": "已启动子智能体对资产 172.16.2.103 进行故障分析调查，子智能体将依次使用 SOC 只读工具核查资产纳管状态、主机安全配置和关联对象情况。调查完成后会将结果以 Markdown 格式报告，包含事实、推断、证据缺口和未执行建议，并标注各项分析的置信度。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "1f42ff2b-ba64-4982-9bec-53eec638330a"
+    }
+  ]
+}

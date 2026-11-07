@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-ALERTS-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：资产详情查询（assetId=9106，code 200）与映射后的关联告警查询（vid=asset:9106，code 200）确已实际执行且回执完整，答复也准确保留了资产标识、5 个分组、总量 19、from/to、Mock/replay 边界并声明只读未写入；但被测会话中不存在任何带第 1 页、每页 5 组、2592000 秒参数的请求——实际调用仅有 assetId=9106 与 vid=asset:9106，工具亦无分页/时间窗参数，冻结的请求格式要求明确未满足，故整体判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ASSET-ALERTS-001"
+}

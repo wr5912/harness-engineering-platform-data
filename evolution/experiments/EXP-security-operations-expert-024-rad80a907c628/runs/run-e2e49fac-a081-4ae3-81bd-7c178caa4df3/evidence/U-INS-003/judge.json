@@ -1,0 +1,32 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "证据仅包含被测回答的候选 JSON 与技能内容，未提供可直接判定的完整被测输出是否“只返回一个可解析 JSON 对象”的最终形式，无法确认是否存在额外说明或不可解析内容。",
+    "requirements": [
+      {
+        "requirement": "只返回一个可解析的 JSON 对象，准确保留给定事实并区分事实与建议，不添加输入中没有的动态数据",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-66005e15-a94e-4bcb-9b92-224b908bc6de",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-INS-003",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

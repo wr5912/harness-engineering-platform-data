@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-FAST",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：同一被测 Session 的工具回执显示 analyze_threat_incident 返回错误（trusted platform MCP group connection is unavailable），本轮未取得任何名单证据，无法验证按名单选路及 llm_invoked=false 的快速分类要求（要求1 证据不足）；主会话仅交付失败说明，未展示程序摘要与可下载报告，明确不满足交付要求（要求2 failed）；回答如实说明名单快速分类未执行、记录了连接失败原因、未强行快速分类也未据此认定快速研判验证通过（要求3 satisfied）。存在明确不满足项，故整体判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-FAST"
+}

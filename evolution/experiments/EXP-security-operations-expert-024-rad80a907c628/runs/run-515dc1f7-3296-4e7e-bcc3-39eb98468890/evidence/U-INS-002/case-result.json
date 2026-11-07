@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测 Session 本轮确实针对 inspection 服务器发起了真实的目录/资源查询调用（tool/result 回执显示原生 is_error 为真，错误为 mcp-client(inspection): server is disconnected），未把该失败伪装成空目录，也未编造任何模板、巡检项或 taskId/definitionVersion；回答明确说明因服务未连接而无法确认可用项目，并建议恢复后重新查询，同时声明未调用发起工具、未执行巡检。四条要求均按当次真实回执得到满足：查询尝试真实发生（失败分支），条件性的“成功时列出内容”未触发且回答未虚构条目，失败被如实说明，全程仅做只读的资源/模板列表查询。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

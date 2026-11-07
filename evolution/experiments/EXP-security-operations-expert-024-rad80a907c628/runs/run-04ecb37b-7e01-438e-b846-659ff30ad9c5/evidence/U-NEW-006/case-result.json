@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答仅在缺少端点解析工具后安全停点：未通过EXP027受信原生分组工作流或受控高层工具核当次部门与目的IPv4身份（仅在正文中自行列表格，无任何受信工具回执）；未生成、保存或按task_id回读policy-department-task/v1本地任务，证据中不存在任何任务创建/持久化/回读的tool/result，也无真实pgt标识与保存回执；因任务从未创建，SOC阻塞字段（soc_task_id=null、execution_allowed=false、task_precheck_status=NOT_RUN）与整体EXTERNAL_BLOCKED/PARTIALLY_READY均未呈现，也未形成两条ADD/ALLOW意图；幂等性未核验。工具目录仅有sec-ops空资源/模板与已断连的inspection及技能文件列表，确认无任务接口，属正向验收未达成而非仅安全停点，故判failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-006"
+}

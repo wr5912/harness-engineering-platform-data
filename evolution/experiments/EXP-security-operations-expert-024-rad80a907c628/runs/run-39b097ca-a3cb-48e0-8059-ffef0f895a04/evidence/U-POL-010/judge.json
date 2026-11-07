@@ -1,0 +1,49 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答明确声明本轮未查询资产/拓扑/设备映射/型号能力/ACL 模板，未调用任何 Preview 工具，也未生成 PPV 或确认提示；同一 Session 的工具回执仅有一次 skill 装载调用（索引 1，citation_allowed=false）及其返回的 Skill 文本（索引 2），不存在任何 Preview、策略查询或结果回执。因此两项要求均未满足：既未完成事实查询与单次无状态 Preview 调用，也未交付与工具结果一致的 PPV 与确认提示。回答中未确认/未创建/未提交/未执行的说法与证据一致，但这不足以满足预期。",
+    "requirements": [
+      {
+        "requirement": "1. 查询预览所需事实：真实查询资产、拓扑、设备映射、型号能力和 ACL 模板，只调用一次无状态 Preview",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "2. 交付无状态预览：回复给出与工具结果一致的 PPV 和确认提示，并且没有确认、创建、提交或执行策略任务",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-4afc9558-fa81-4d7b-b98f-778d345f0640",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-POL-010",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

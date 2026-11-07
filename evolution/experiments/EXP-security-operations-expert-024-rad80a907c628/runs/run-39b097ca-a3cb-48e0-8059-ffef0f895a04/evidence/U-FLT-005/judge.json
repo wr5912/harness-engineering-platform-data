@@ -1,0 +1,51 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答在同 Session 缺少此前故障上下文的情况下，未继续盲目替换 IP、端口、提示词，而是先向用户询问必要信息（具体问题、对象标识、原始报错等），并明确说明尚未执行任何查询或处置，符合先询问、不盲动的预期；在无上下文前提下不触发有上下文时的转向分支，且其索要证据的方向与核对正式故障证据一致。",
+    "requirements": [
+      {
+        "requirement": "若同一 Session 缺少此前故障上下文，先询问必要信息",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "你这句话信息不足，我这边没有可承接的上下文，无法确定要走哪条路线。当前会话里我没有看到此前的 IP、端口、提示词修改记录，也没有对应的事件 ID、资产或报错原文。\n\n请补充以下任意一项，我再继续：\n\n- **具体问题**：想解决什么？（例如某资产采集失败、策略下发报错、MCP/工具连接失败、巡检结果异常等）\n- **对象标识**：事件 ID（`INC-YYYYMMDD-NNNNNN`）、资产 IP/主机名、策略或应急草案编号、巡检 `runId` 等。\n- **原始报错**：最近一次失败的完整报错文本或工具返回，以及你已经尝试过的 IP、端口、提示词分别是什么。\n\n说明：以上仅为请你补充信息，尚未执行任何查询或处置。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "有上下文时停止盲目替换参数，转向核对正式故障证据、链路状态和失败原因",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "你这句话信息不足，我这边没有可承接的上下文，无法确定要走哪条路线。当前会话里我没有看到此前的 IP、端口、提示词修改记录，也没有对应的事件 ID、资产或报错原文。\n\n请补充以下任意一项，我再继续：\n\n- **具体问题**：想解决什么？（例如某资产采集失败、策略下发报错、MCP/工具连接失败、巡检结果异常等）\n- **对象标识**：事件 ID（`INC-YYYYMMDD-NNNNNN`）、资产 IP/主机名、策略或应急草案编号、巡检 `runId` 等。\n- **原始报错**：最近一次失败的完整报错文本或工具返回，以及你已经尝试过的 IP、端口、提示词分别是什么。\n\n说明：以上仅为请你补充信息，尚未执行任何查询或处置。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-247ffe1a-d855-4c89-92db-0fb8a033a817",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-FLT-005",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

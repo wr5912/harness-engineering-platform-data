@@ -1,0 +1,53 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "第二轮修改规则的 `schedule_update` 虽使用任务 ID 且未改动 `prompt`，但缺少先调用 `schedule_list` 的证据，且工具回执未显示标题随规则同步更新，不满足全部冻结要求。",
+    "requirements": [
+      {
+        "requirement": "第二轮先调用 `schedule_list`",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "当前 Session 只有一个匹配的自动研判任务时，直接用其 ID 调 `schedule_update` 原地修改规则为 `every_seconds: 1200`，不改动 `prompt`，并回复更新后的规则",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 5
+          },
+          {
+            "index": 1
+          }
+        ]
+      },
+      {
+        "requirement": "未先查询或改动 `prompt` 判为失败",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 6
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-2b109246-a857-4e4b-b9ac-e15ac75de02b",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-SCHED-005",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

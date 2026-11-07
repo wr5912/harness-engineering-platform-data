@@ -110,6 +110,7 @@ export function createGuard() {
 }
 
 export function apply(ctx) {
+  if (ctx.get?.('businessRuntime')?.requiresAuthentication?.() === false) return
   const guard = createGuard()
   ctx.on('agent/created', ({ agent }) => {
     agent.ctx.tools.restrict({ allow: (agent.session?.header?.delegationDepth ?? 0) === 0 ? ALLOWED_TOOLS : [] })

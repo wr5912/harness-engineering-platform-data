@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-007",
+  "completed": false,
+  "expected_behavior": "第一轮按真实目录准备并同轮启动一次。第二轮只查询同一 Session 已取得的 runId，不能重新准备或启动。默认读取 includeReport: false，依真实状态、业务结论、摘要、设备数量和证据缺口回答；下载地址与原运行一致。Variant status 必须保留原 runId。没有成功服务回执不能判通过。",
+  "failure_reason": "evaluation-interrupted"
+}

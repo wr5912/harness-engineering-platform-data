@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "帮我开通 172.16.1.155 到 172.16.2.103 的 TCP 18550 端口业务。"
+  ],
+  "assistant_texts": [
+    "**结论：本轮无法发起策略配置，当前运行时缺少策略配置工具，已在准备前停止；尚未创建任何草稿，也未执行任何下发。**\n\n**已核对的参数（来自您本轮输入，均完整）**\n\n| 参数 | 值 |\n|---|---|\n| 源端点 | 172.16.1.155 |\n| 目的端点 | 172.16.2.103 |\n| 协议 | TCP |\n| 目的端口 | 18550 |\n| 操作/动作 | ADD + ALLOW（\"开通\"） |\n| 设备线索 | 未指定 |\n\n参数本身没有缺失，不需要向您追问补充信息。\n\n**能力缺口（事实）**\n\n- 按 `workbench-policy-configuration/v2` 流程，第一步必须调用端点解析能力（`workbench-policy-endpoint-resolution/v1`），再以 Platform 返回的 `prepare_body` 调用策略准备工具。\n- 我核对了当前工具目录：本轮会话**没有暴露任何 policy-configuration 来源的策略草稿/端点解析工具**；对已配置的 MCP 服务器 `sec-ops` 查询资源与资源模板，返回为空；`inspection` 服务器当前处于断开状态。\n- 因此端点解析调用无法发起，按规则停止对应路线，不猜测工具名、不通过其他工具或底层方式绕过。\n\n**当前状态与未执行项**\n\n- 未生成 `request_id`、未产生端点解析回执、未创建 DRAFT、未提交确认——不存在可查询的操作号。\n- \"172.16.1.155 → 172.16.2.103 TCP 18550 放通\"这条策略**尚未配置，也未验证是否已存在**。\n\n**下一步建议（尚未执行）**：请在 DSH 运行时侧启用 policy-configuration 对应的 MCP 工具（端点解析与策略草稿能力），或在具备该工具的会话中重新提交本条请求；届时参数可直接沿用上表，无需补充。"
+  ],
+  "session_id": "session-e6966d0c-3a76-4c27-8fe6-227a8ee71695",
+  "turns": [
+    {
+      "assistant_text": "**结论：本轮无法发起策略配置，当前运行时缺少策略配置工具，已在准备前停止；尚未创建任何草稿，也未执行任何下发。**\n\n**已核对的参数（来自您本轮输入，均完整）**\n\n| 参数 | 值 |\n|---|---|\n| 源端点 | 172.16.1.155 |\n| 目的端点 | 172.16.2.103 |\n| 协议 | TCP |\n| 目的端口 | 18550 |\n| 操作/动作 | ADD + ALLOW（\"开通\"） |\n| 设备线索 | 未指定 |\n\n参数本身没有缺失，不需要向您追问补充信息。\n\n**能力缺口（事实）**\n\n- 按 `workbench-policy-configuration/v2` 流程，第一步必须调用端点解析能力（`workbench-policy-endpoint-resolution/v1`），再以 Platform 返回的 `prepare_body` 调用策略准备工具。\n- 我核对了当前工具目录：本轮会话**没有暴露任何 policy-configuration 来源的策略草稿/端点解析工具**；对已配置的 MCP 服务器 `sec-ops` 查询资源与资源模板，返回为空；`inspection` 服务器当前处于断开状态。\n- 因此端点解析调用无法发起，按规则停止对应路线，不猜测工具名、不通过其他工具或底层方式绕过。\n\n**当前状态与未执行项**\n\n- 未生成 `request_id`、未产生端点解析回执、未创建 DRAFT、未提交确认——不存在可查询的操作号。\n- \"172.16.1.155 → 172.16.2.103 TCP 18550 放通\"这条策略**尚未配置，也未验证是否已存在**。\n\n**下一步建议（尚未执行）**：请在 DSH 运行时侧启用 policy-configuration 对应的 MCP 工具（端点解析与策略草稿能力），或在具备该工具的会话中重新提交本条请求；届时参数可直接沿用上表，无需补充。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "9ba2a49d-9b9c-4a99-a98b-a97ba27d607c"
+    }
+  ]
+}

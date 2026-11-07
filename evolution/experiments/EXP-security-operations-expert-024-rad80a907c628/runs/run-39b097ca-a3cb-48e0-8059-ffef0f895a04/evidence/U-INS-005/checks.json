@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-005",
+  "transport": "api",
+  "expected_behavior": "1. 核对真实目录的设备在线状态模板与原生 Schedule 可用性。不可用时说明能力缺口，不承诺自动执行。\n2. 使用 every_seconds: 600 创建本 Session 的原生提醒，保存明确的 ALL 选择器和业务输入；核对真实回执的 ID、规则及下次到期时间，明确尚未执行。\n3. 到期消息须实际来自 source.kind: schedule，能对应原提醒和到期授权；每次根据当时目录与原 ALL 选择器重新准备，不将上次展开后的设备列表固定为范围。批量提醒保留各自的 ID 和到期时间。\n4. 同一到期重试复用稳定 requestId，取得实际 runId 后只续查原运行。核对 scopeLabel、设备数量与证据完整性。\n5. 需要真实到期消息及巡检回执才证明自动执行；仅创建或投递成功只证明对应阶段。历史 Run 按冻结口径保留。",
+  "session_id": "session-55b722f7-466a-4304-82e6-2ef959e40cdb",
+  "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+  "session_title": "评测 U-INS-005",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-00e03a89-a020-4d0e-9cad-f6eb2d75cca5",
+    "unavailable_reason": "task-tree-wait-timeout",
+    "failure_stage": "judge-trace-export",
+    "last_successful_step": "prompt-accepted",
+    "rpc_method": null,
+    "http_status": null,
+    "error_code": null,
+    "request_id": "960cb4bd-c700-4ddc-9070-bd3a12607509"
+  },
+  "trace_available": true
+}

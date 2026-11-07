@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-009",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答逐项准确区分了五个概念：IOC 为可观察的客观指标、TTP 为攻击行为模式、MITRE ATT&CK Technique 为技术的标准化分类框架、告警为检测规则触发的待验证信号、安全事件为经关联研判确认进入处置流程的单元（并额外区分了原始日志事件）；同时通过关系链与核心区分段落明确说明了它们可以关联（日志→告警→事件→IOC/TTP→Technique 映射）但分属不同抽象层次、不能互相等同。全部要求由 citation_allowed 为 true 的证据 0 支持，无工具数据依赖，判定满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-009"
+}

@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "IOC、TTP、MITRE ATT&CK Technique、告警和事件有什么区别？"
+  ],
+  "assistant_texts": [
+    "## 结论\n\n这五个概念分属不同层次：IOC 和 TTP 是**威胁情报的两类内容**，MITRE ATT&CK Technique 是**对 TTP 的标准化编号体系**，告警和事件则是**SOC 工作流中的观测与调查单元**。前两者描述\"攻击者做什么\"，后两者描述\"我们观测到了什么\"。\n\n## 逐项区别\n\n| 概念 | 本质 | 粒度/时效 | 举例 |\n|---|---|---|---|\n| **IOC（Indicator of Compromise）** | 可机检的失陷指标，偏静态证据 | 极细、时效短，易过期或被伪造 | 恶意 IP/域名、文件哈希、URL、邮件附件特征 |\n| **TTP（Tactics, Techniques & Procedures）** | 攻击者的战术、技术与过程，偏行为模式 | 粗、时效长，更难伪造也更难检测 | 钓鱼入口、凭据转储、横向移动、C2 心跳方式 |\n| **MITRE ATT&CK Technique** | TTP 的结构化标准框架，给每种技术一个全局唯一编号（Txxxx） | 框架层，是 TTP 的\"字典/坐标系\" | T1566（钓鱼）、T1003（凭据转储）、T1021（远程服务） |\n| **告警（Alert）** | 检测规则触发的单条通知，是**假设**，未经确认 | 单条、可能误报 | EDR 触发\"某进程注入\"、IDS 触发一条签名命中 |\n| **事件（Event）** | 经调查关联后的安全事件，是**结论性调查单元** | 经聚合研判，可能由多条告警升级而来 | 确认的钓鱼攻击、勒索软件感染、账号失陷 |\n\n## 关键关系\n\n1. **IOC vs TTP**：IOC 回答\"是否已被入侵\"（事后取证），TTP 回答\"攻击者如何行动\"（行为建模）。IOC 数量多、替换快，防御容易但易失效；TTP 难检测，但一旦映射到 ATT&CK 就能做差距分析和覆盖度评估。\n2. **TTP vs ATT&CK Technique**：TTP 是原始概念，ATT&CK Technique 是它的标准化表达——一个 Technique 对应一类 TTP，附带缓解措施、检测思路和真实案例（group/software）关联。\n3. **告警 → 事件**：告警是检测层输出，可能大量误报；经过上下文取证、去重、关联后确认有安全影响，才升级为事件。一个事件通常源自多条告警，一条告警也可能只是噪声。\n4. **IOC 与告警的联系**：很多告警规则本身就是 IOC 匹配（如黑名单 IP 命中）；而基于 TTP 的检测（行为分析、异常会话）往往不依赖 IOC。\n\n## 在实际工作中的用途分工\n\n- **IOC**：批量下发到 SIED/EDR/防火墙做自动阻断与狩猎。\n- **TTP / ATT&CK Technique**：用于威胁情报报告解读、检测规则覆盖度审计（如\"我们对 TA505 常用技术的覆盖率是多少\"）、紫队演练设计。\n- **告警**：分级分诊（triage）的对象，目标是降噪。\n- **事件**：工单、研判、处置和复盘的对象，是 SOC 的基本工作单元。\n\n**未执行建议**（仅提示，尚未实施）：如果贵方想梳理现有告警质量，可以按 ATT&CK Technique 对检测规则做一次覆盖度映射，识别未覆盖的高危技术。"
+  ],
+  "session_id": "session-838f1d1e-e08f-4f85-aacf-9a379d0c4129",
+  "turns": [
+    {
+      "assistant_text": "## 结论\n\n这五个概念分属不同层次：IOC 和 TTP 是**威胁情报的两类内容**，MITRE ATT&CK Technique 是**对 TTP 的标准化编号体系**，告警和事件则是**SOC 工作流中的观测与调查单元**。前两者描述\"攻击者做什么\"，后两者描述\"我们观测到了什么\"。\n\n## 逐项区别\n\n| 概念 | 本质 | 粒度/时效 | 举例 |\n|---|---|---|---|\n| **IOC（Indicator of Compromise）** | 可机检的失陷指标，偏静态证据 | 极细、时效短，易过期或被伪造 | 恶意 IP/域名、文件哈希、URL、邮件附件特征 |\n| **TTP（Tactics, Techniques & Procedures）** | 攻击者的战术、技术与过程，偏行为模式 | 粗、时效长，更难伪造也更难检测 | 钓鱼入口、凭据转储、横向移动、C2 心跳方式 |\n| **MITRE ATT&CK Technique** | TTP 的结构化标准框架，给每种技术一个全局唯一编号（Txxxx） | 框架层，是 TTP 的\"字典/坐标系\" | T1566（钓鱼）、T1003（凭据转储）、T1021（远程服务） |\n| **告警（Alert）** | 检测规则触发的单条通知，是**假设**，未经确认 | 单条、可能误报 | EDR 触发\"某进程注入\"、IDS 触发一条签名命中 |\n| **事件（Event）** | 经调查关联后的安全事件，是**结论性调查单元** | 经聚合研判，可能由多条告警升级而来 | 确认的钓鱼攻击、勒索软件感染、账号失陷 |\n\n## 关键关系\n\n1. **IOC vs TTP**：IOC 回答\"是否已被入侵\"（事后取证），TTP 回答\"攻击者如何行动\"（行为建模）。IOC 数量多、替换快，防御容易但易失效；TTP 难检测，但一旦映射到 ATT&CK 就能做差距分析和覆盖度评估。\n2. **TTP vs ATT&CK Technique**：TTP 是原始概念，ATT&CK Technique 是它的标准化表达——一个 Technique 对应一类 TTP，附带缓解措施、检测思路和真实案例（group/software）关联。\n3. **告警 → 事件**：告警是检测层输出，可能大量误报；经过上下文取证、去重、关联后确认有安全影响，才升级为事件。一个事件通常源自多条告警，一条告警也可能只是噪声。\n4. **IOC 与告警的联系**：很多告警规则本身就是 IOC 匹配（如黑名单 IP 命中）；而基于 TTP 的检测（行为分析、异常会话）往往不依赖 IOC。\n\n## 在实际工作中的用途分工\n\n- **IOC**：批量下发到 SIED/EDR/防火墙做自动阻断与狩猎。\n- **TTP / ATT&CK Technique**：用于威胁情报报告解读、检测规则覆盖度审计（如\"我们对 TA505 常用技术的覆盖率是多少\"）、紫队演练设计。\n- **告警**：分级分诊（triage）的对象，目标是降噪。\n- **事件**：工单、研判、处置和复盘的对象，是 SOC 的基本工作单元。\n\n**未执行建议**（仅提示，尚未实施）：如果贵方想梳理现有告警质量，可以按 ATT&CK Technique 对检测规则做一次覆盖度映射，识别未覆盖的高危技术。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "7ccc028a-ae69-41db-b4a4-f1fcc50e7ed7"
+    }
+  ]
+}

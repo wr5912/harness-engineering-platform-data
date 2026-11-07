@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "响应处置支持哪些能力？"
+  ],
+  "assistant_texts": [
+    "根据已加载的**emergency-action**技能内容，当前系统支持以下响应处置能力：\n\n## 应急指令能力 (Emergency Action)\n\n### 核心功能\n1. **单目标、单动作应急处置** - 仅处理一个明确的处置目标和单一操作动作\n\n### 可用工具（6 项草案能力）\n| 工具 | 功能 |\n|------|------|\n| `prepare_emergency_action` | 应急操作准备 |\n| `revise_emergency_action` | 修订应急草案 |\n| `get_emergency_action` | 查询冻结概要 |\n| `list_emergency_actions` | 列出所有操作 |\n| `get_emergency_action_result` | 查询执行结果 |\n| `cancel_emergency_action` | 取消待提交操作 |\n\n### 支持的设备类型和动作\n- **防火墙/网络设备**：使用 `block-ip`（封禁）、`unblock-ip`（解封）\n- **主机/EDR 端点**：\n  - `host-block-ip-port`（带端口的封禁）\n  - `host-block-ip`（端口独立性封禁）\n  - `host-unblock-ip-port`（带端口的解封）\n  - `host-unblock-ip`（端口独立性解封）\n\n### 处置流程\n1. **准备阶段**：明确设备目标 → 构建草案 → 进入准备状态\n2. **验收阶段**：查看冻结摘要 → 用户确认（原面板\"确认执行\"键）\n3. **提交阶段**：受控运行时签名提交（模型不可直接调用）\n4. **状态追踪**：查询进度（待审批/执行中/SUCCESS 等）\n5. **取消阶段**：仅对未提交的操作有效\n\n### 能力边界\n- ✅ 单目标、单动作\n- ✅ 支持查询、修订、取消\n- ✅ 提供冻结摘要展示\n- ❌ 不支持批量操作\n- ❌ 不支持跨设备操作\n- ❌ 不生成分析报告或处置建议\n- ❌ 模型不能直接执行提交，需通过受控确认流程\n\n### 状态含义\n- **UNAVAILABLE**：能力缺失，无法提交\n- **QUEUED/UNKNOWN/NOT_SUBMITTED**：已排队或待处理\n- **SUCCESS/SUCCEEDED**：执行成功\n- **CONFIRM**：待用户确认执行\n\n需要您说明具体的处置目标（主机/防火墙 IP 或设备 ID）和处置动作（封禁/解封攻击源），我可以协助准备应急处置草案。"
+  ],
+  "session_id": "session-dbfa753c-cda6-4d5b-9d37-9d67f5cb7801",
+  "turns": [
+    {
+      "assistant_text": "根据已加载的**emergency-action**技能内容，当前系统支持以下响应处置能力：\n\n## 应急指令能力 (Emergency Action)\n\n### 核心功能\n1. **单目标、单动作应急处置** - 仅处理一个明确的处置目标和单一操作动作\n\n### 可用工具（6 项草案能力）\n| 工具 | 功能 |\n|------|------|\n| `prepare_emergency_action` | 应急操作准备 |\n| `revise_emergency_action` | 修订应急草案 |\n| `get_emergency_action` | 查询冻结概要 |\n| `list_emergency_actions` | 列出所有操作 |\n| `get_emergency_action_result` | 查询执行结果 |\n| `cancel_emergency_action` | 取消待提交操作 |\n\n### 支持的设备类型和动作\n- **防火墙/网络设备**：使用 `block-ip`（封禁）、`unblock-ip`（解封）\n- **主机/EDR 端点**：\n  - `host-block-ip-port`（带端口的封禁）\n  - `host-block-ip`（端口独立性封禁）\n  - `host-unblock-ip-port`（带端口的解封）\n  - `host-unblock-ip`（端口独立性解封）\n\n### 处置流程\n1. **准备阶段**：明确设备目标 → 构建草案 → 进入准备状态\n2. **验收阶段**：查看冻结摘要 → 用户确认（原面板\"确认执行\"键）\n3. **提交阶段**：受控运行时签名提交（模型不可直接调用）\n4. **状态追踪**：查询进度（待审批/执行中/SUCCESS 等）\n5. **取消阶段**：仅对未提交的操作有效\n\n### 能力边界\n- ✅ 单目标、单动作\n- ✅ 支持查询、修订、取消\n- ✅ 提供冻结摘要展示\n- ❌ 不支持批量操作\n- ❌ 不支持跨设备操作\n- ❌ 不生成分析报告或处置建议\n- ❌ 模型不能直接执行提交，需通过受控确认流程\n\n### 状态含义\n- **UNAVAILABLE**：能力缺失，无法提交\n- **QUEUED/UNKNOWN/NOT_SUBMITTED**：已排队或待处理\n- **SUCCESS/SUCCEEDED**：执行成功\n- **CONFIRM**：待用户确认执行\n\n需要您说明具体的处置目标（主机/防火墙 IP 或设备 ID）和处置动作（封禁/解封攻击源），我可以协助准备应急处置草案。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "0412fc71-b759-47f0-8449-ae0df7147be6"
+    }
+  ]
+}

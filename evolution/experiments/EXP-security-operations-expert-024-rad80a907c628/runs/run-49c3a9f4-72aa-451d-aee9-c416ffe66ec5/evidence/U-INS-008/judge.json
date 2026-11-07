@@ -1,0 +1,65 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "第1项要求读取真实巡检目录核对模板，但同一被测 Session 的工具回执显示 inspection 服务器两次/三次均返回 server is disconnected，sec-ops 资源与模板列表为空，未获得任何模板名称、taskId 或 definitionVersion，目录核对明确未完成，故不满足；第2项被测回答明确追问“本轮抽定对象”的资产标识、未发起任何巡检、未默认全部设备、未伪造结论，满足；第3项因本轮范围与必填输入始终未补齐、且巡检服务不可用，同轮准备并执行的前提未出现，证据不足，判为 unknown。综上第1项 failed，整体 failed。",
+    "requirements": [
+      {
+        "requirement": "可读取真实目录核对模板",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 11
+          }
+        ]
+      },
+      {
+        "requirement": "“本轮抽定对象”没有实际范围时，追问资产标识或可用选择条件，不启动巡检，不默认为全部设备，不伪造结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "范围和必填输入补齐后同轮准备并执行，不另加下一轮确认",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-b754acc0-4a72-4992-8483-3938be46b426",
+    "workspace_id": "80588fa1-9bb9-482a-9f06-bac08366c707",
+    "session_title": "评审 U-INS-008",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

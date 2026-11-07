@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测会话中 inspection 服务器断连，list_mcp_resources 与 list_mcp_resource_templates 均返回 is_error 为 true 的 disconnected 错误，未查询到任何巡检目录，因此无法从真实目录选定唯一匹配模板，也未以 ASSET_IDS、values [\"A-001\"] 发起巡检，没有 runId、状态或范围可核对；回答仅解释服务错误且未用 ALL 代替，但核心执行要求与按 runId 核对要求均未达成；KEV 与 Variant 相关要求缺乏对应证据。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-006"
+}

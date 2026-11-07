@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-003",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：被测会话本轮未进行端点解析、未调用 prepare、未生成也未回读任何草稿，仅装载了 policy-configuration skill 并做了 MCP 资源/模板列举（sec-ops 返回空资源与空模板、inspection 断开报错）以及两次 glob 空结果。证据中没有任何 list_tools 类回执或策略工具调用回执，无法证实策略高层能力（解析/prepare/回读）究竟是否实际挂载，也无部门专用分支、真实目录或主数据的回执，因此第1至第4项的前置条件与执行事实均证据不足，只能判 unknown，不能判 failed。第5项满足：能力或事实不足时被测回答如实停止、明确未创建草稿与操作号、声明未纳入原因只能来自 Platform 且不编造、未凑规则也未谎称多明细目标已通过，目录/资源查询成功未被当作业务目标达成。因关键前置事实（能力挂载状态、部门范围数据）缺乏同会话工具回执支撑，整体判 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-003"
+}

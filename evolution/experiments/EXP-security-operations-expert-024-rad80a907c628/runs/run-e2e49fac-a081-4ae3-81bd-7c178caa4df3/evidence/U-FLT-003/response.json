@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "请补充几个必要信息，我马上委派故障分析：\n\n1. **异常对象**：是哪个业务系统/主机/IP/域名访问异常？\n2. **异常现象**：无法连接、超时、间歇性失败，还是只有部分客户端受影响？\n3. **发生时间**：从什么时间开始出现（尽量给日期和大致时段）？\n\n提供后我会按 SOC 只读取证流程排查路径、覆盖和事件关联。"
+  ],
+  "session_id": "session-d4e576e0-7620-4531-a1f6-7b2b73cc12e9",
+  "turns": [
+    {
+      "assistant_text": "请补充几个必要信息，我马上委派故障分析：\n\n1. **异常对象**：是哪个业务系统/主机/IP/域名访问异常？\n2. **异常现象**：无法连接、超时、间歇性失败，还是只有部分客户端受影响？\n3. **发生时间**：从什么时间开始出现（尽量给日期和大致时段）？\n\n提供后我会按 SOC 只读取证流程排查路径、覆盖和事件关联。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "8d12b5bb-ed87-40ec-baac-a4c44d608ed8"
+    }
+  ]
+}

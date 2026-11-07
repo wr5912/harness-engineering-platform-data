@@ -1,0 +1,63 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "被测回答如实报告了本轮未准备草案、未确认、未声称已封禁，且给出了参数解析，但这与要求中的'使用 block-ip 准备草案、冻结动作为 block-ip'并不等同——没有实际 prepare 回执可证明草案已生成或动作键保持 block-ip。已提供的工具回执仅显示 sec-ops 资源与资源模板为空、inspection 断开，均属资源列表而非工具目录/prepare 调用结果，不足以证明 prepare_emergency_action 确实不可用，也不足以证明草案动作键。关于 mock_service 仅支持主机动作、防火墙效果需真实目标验证的条目在回答与回执中均无对应证据。证据不足，判为 inconclusive。",
+    "requirements": [
+      {
+        "requirement": "目标确认为防火墙后，使用 `block-ip` 与明确的 `params.src_ip`、`params.rule_name` 准备草案",
+        "status": "unknown",
+        "evidence": [
+          0,
+          4,
+          5
+        ]
+      },
+      {
+        "requirement": "冻结动作必须仍为 `block-ip`，不能变为主机侧 `host-block-ip`",
+        "status": "unknown",
+        "evidence": [
+          0,
+          4,
+          5
+        ]
+      },
+      {
+        "requirement": "只以实际 Workbench 回执报告草案或能力不可用，不确认、不声称已封禁",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "requirement": "当前 `mock_service` 仅支持主机动作，此 Case 的防火墙业务效果需真实目标验证",
+        "status": "unknown",
+        "evidence": []
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-cb01a7fa-54bc-4e99-b9f5-feef11296e2e",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-EMG-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

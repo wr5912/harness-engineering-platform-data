@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 9108 近 30 天的关联告警，首页最多 5 个分组。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "已通过 `delegate_fault_analysis` 委派故障分析子智能体执行只读取证（任务 ID：10be4c54-3417-4334-8a5b-e4ea40952d60）：解析资产 9108，查询近 30 天（2026-09-28 至 2026-10-28）关联告警，仅取第一页、最多 5 个分组。等待子智能体返回结果后，我会把事实、证据缺口与未执行建议一并汇总给你。"
+  ],
+  "session_id": "session-bd83749d-8283-4148-99dc-f069a0305ff7",
+  "turns": [
+    {
+      "assistant_text": "已通过 `delegate_fault_analysis` 委派故障分析子智能体执行只读取证（任务 ID：10be4c54-3417-4334-8a5b-e4ea40952d60）：解析资产 9108，查询近 30 天（2026-09-28 至 2026-10-28）关联告警，仅取第一页、最多 5 个分组。等待子智能体返回结果后，我会把事实、证据缺口与未执行建议一并汇总给你。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a07f28fa-8bc0-4ae3-8882-81f5b7b4fcea"
+    }
+  ]
+}

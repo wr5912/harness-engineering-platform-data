@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "开通访问策略后验证业务连通性；若失败，诊断原因并生成回退策略预览。"
+  ],
+  "assistant_texts": [
+    "已委派故障分析子智能体（ID: `49af4d70-f973-4209-a76d-bdd6c809024c`），正在执行只读取证。\n\n当前进展：\n- 策略 DRAFT 已受理，等待执行结果\n- 业务连通性验证进行中（子智能体诊断中）\n\n等待子智能体返回后，我会汇总诊断结论；若连通性失败，再给出回退策略预览。"
+  ],
+  "session_id": "session-90e9f843-8a8f-4158-b861-dd191b1f12d1",
+  "turns": [
+    {
+      "assistant_text": "已委派故障分析子智能体（ID: `49af4d70-f973-4209-a76d-bdd6c809024c`），正在执行只读取证。\n\n当前进展：\n- 策略 DRAFT 已受理，等待执行结果\n- 业务连通性验证进行中（子智能体诊断中）\n\n等待子智能体返回后，我会汇总诊断结论；若连通性失败，再给出回退策略预览。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "0a07827a-64b5-4fcb-8577-18b7ad9227c6"
+    }
+  ]
+}

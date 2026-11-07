@@ -1,0 +1,51 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答使用了与真实工具回执一致的任务 ID、标题、1800 秒周期和下次到期时间，并明确说明已调度但尚未执行；工具调用与回执均满足创建方式与参数要求，且未见额外追问周期或批量参数。",
+    "requirements": [
+      {
+        "requirement": "用 `schedule_create` 创建，`every_seconds: 1800`，标题 `自动威胁研判-每30分钟`，不额外追问周期或批量参数",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 2,
+            "quote": "{\"id\":\"schedule-5fff4832-b4e5-420a-bd55-75e8bf808160\",\"kind\":\"every\",\"title\":\"自动威胁研判-每30分钟\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"everySeconds\":1800,\"scheduledAt\":\"2026-10-28T02:39:07.709Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "回复任务标识、规则和下次到期时间与真实回执一致，并明确尚未执行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "已创建定时威胁研判任务：\n\n- 任务 ID：`schedule-5fff4832-b4e5-420a-bd55-75e8bf808160`\n- 标题：自动威胁研判-每30分钟\n- 规则：每 30 分钟（1800 秒）执行一次\n- 下次到期：2026-10-28 02:39:07 UTC（北京时间 10:39:07）\n- 状态：已调度，尚未执行；每次到期只研判 1 条待研判事件，上一条仍在运行时会跳过本次心跳",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 2,
+            "quote": "{\"id\":\"schedule-5fff4832-b4e5-420a-bd55-75e8bf808160\",\"kind\":\"every\",\"title\":\"自动威胁研判-每30分钟\",\"prompt\":\"{\\\"type\\\":\\\"threat-analysis.pending\\\",\\\"version\\\":1,\\\"batchSize\\\":1}\",\"everySeconds\":1800,\"scheduledAt\":\"2026-10-28T02:39:07.709Z\",\"state\":\"scheduled\",\"deliveryMode\":\"host\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-5b67bee7-65e9-41a1-b948-cf7d69e2b4eb",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-SCHED-002",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

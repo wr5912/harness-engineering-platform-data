@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-THREAT-FAST-MANUAL-WHITELIST",
+  "transport": "api",
+  "expected_behavior": "1. 核对本次模板与真实名单来源：本输入为后续复测的规范化模板，不声称重建用户已完成Run的完整消息。用指定threat-analysis-test001实例，不改既定模型策略、基础提示词、取证或校验器；名单条件以本轮实际服务回执为准，不以用户口头白名单标签代替证据。\n\n2. 验证内层快速分支：当名单完整、事件直接实体仅单侧命中白名单时，应走fast_classification，保留原快速输出verdict/matches；内层llm_invoked=false、model=null，不产生内层模型制品，不进入新增规则优化阶段，不生成新版规则建议或规则阶段模型调用。主会话的正常模型调用与内层研判不同，不用本业务Run推断外层实际模型。\n\n3. 核对不适用条件及名单证据：若名单不完整、双侧命中或不满足直接实体条件，应按实际走完整研判并记录原因，不能强判快速分支通过。核对名单条目身份、实体值、证据引用、查询时间与真实快照；接口未返回版本时保留null，不自造版本。按名单规则输出误报不等于已证实无威胁，须保留未完整行为研判的说明。\n\n4. 核对同一结果的交付与保存：快判原始输出、本地结果和SOC resultJson一致，摘要按原投影与matches一致；报告HTML与提交内容一致，摘要和报告保存各按真实回执。下载与主会话展示未回读时不宣称已验证。\n\n   注：此用例在用户手工业务Run run-e46f10d3-313f-4d96-9a03-d11d3c0fc27c完成后补录，预期沿用会话测试前已声明及既有U-THREAT-FAST的条件，不把新Case说成本次Run事前冻结项，不改写历史Run/原Case。只代表该分支覆盖，不替代基础failed降权、基本Mock合同、其他规则家族或效果验证。",
+  "session_id": "session-f35495cb-cf74-41ac-a8fb-85e2dd08443c",
+  "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+  "session_title": "评测 U-THREAT-FAST-MANUAL-WHITELIST",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-72b813e6-3023-439f-ad66-0cdb3885c948",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-THREAT-FAST-MANUAL-WHITELIST",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

@@ -1,0 +1,40 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答为单个可解析的 JSON 对象，逐字保留了 39 台/套、12 台/套、4 台/套、2 项等给定事实，通过“巡检事实”与“辅助研判”分区区分事实与建议，未派生时间、风险等级、服务状态等输入中没有的动态数据，且回答中未调用或声称调用巡检服务；无工具回执与之矛盾。",
+    "requirements": [
+      {
+        "requirement": "只返回一个可解析的 JSON 对象，准确保留给定事实并区分事实与建议，不添加输入中没有的动态数据，不调用巡检服务",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "{\"巡检事实\":{\"巡检资产总数\":\"39 台/套\",\"离线设备\":\"12 台/套\",\"存在严重或高危漏洞的设备\":\"4 台/套\",\"异常结论\":\"2 项\"},\"辅助研判\":[{\"类型\":\"证据缺口\",\"内容\":\"离线设备与存在严重或高危漏洞的设备是否为同一批，输入未提供设备明细，无法确认\",\"状态\":\"尚未执行\"},{\"类型\":\"证据缺口\",\"内容\":\"异常结论 2 项的具体内容未提供，需补充原始巡检报告核验\",\"状态\":\"尚未执行\"},{\"类型\":\"待核验建议\",\"内容\":\"结合设备清单核对离线设备及严重/高危漏洞设备的具体对象与影响范围\",\"状态\":\"尚未执行\"}],\"说明\":\"以上事实均来自用户提供的巡检数据；因缺少比较基准，未对数量或比例作高低判断，未派生时间、风险等级或服务状态等输入中没有的字段。\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-991328af-8d51-4ab2-beff-1ee86308d9b5",
+    "workspace_id": "5b3c6e98-9e62-404a-bc62-f942f1f75907",
+    "session_title": "评审 U-INS-003",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

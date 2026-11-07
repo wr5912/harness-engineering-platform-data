@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-004",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答在 inspection 服务断连时如实说明状态，未调用 schedule_create 创建提醒、未发起巡检（要求2满足），也未将一次巡检或提醒冒充模板创建、未猜测 taskId/definitionVersion（要求3满足）；但回答只补问了巡检项/目标、范围、周期三项参数，通篇未询问用户是立即执行还是创建 DSH 周期任务，反而直接默认'创建定时巡检任务'，要求1未被明确满足，故整体判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-004"
+}

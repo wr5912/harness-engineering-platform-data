@@ -1,0 +1,92 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测 Session 从未进入真实巡检流程：仅有 skill 加载与 list_mcp_resource_templates/list_mcp_resources 两次回执（call_id call_504d4c9d8b0e4e5e96723ce0、call_f64b80a3ae63468ba696e0be），原生 is_error=true，正文均为 `mcp-client(inspection): server is disconnected`。因此没有真实目录查询结果、没有选定模板与 taskId/definitionVersion、没有发起巡检、没有 requestId、没有 runId、也没有任何报告回执；回答（索引 0）本身也自述“无法查询模板、未发起巡检、没有 runId、没有报告下载地址”。要求 1–4 的关键动作与关键数据完全缺失，要求 5 的报告交付部分同样无任何 tool/result 支持（仅“保留失败证据、记为依赖缺口、不判通过”这一点与预期一致，不足以使该项整体满足）。证据明确显示未满足而非仅证据不足，故判 failed。",
+    "requirements": [
+      {
+        "requirement": "1. 从本轮真实目录选择唯一匹配的常规巡检模板，使用实际 taskId、definitionVersion，按显式全量范围准备；缺少模板必填业务输入时仅澄清缺项",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "2. 参数完整且准备 READY 时，同轮通过“启动巡检”能力发起一次巡检，不另等确认、不伪造上下文",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "3. 稳定 requestId 绑定同一真实请求与原始输入；准备过期仅按原选择器和业务输入刷新。启动回执未知先查原请求，不能新 ID 重试",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "4. 取得真实 runId 后沿用该运行查询；运行中报告状态和标识，不重新启动或冒充完成",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "5. 报告就绪后按同次回执交付 conclusionStatus、businessSummary、reportSummaryMarkdown、设备数量与证据缺口，只提供真实 reportDownloadUrl。服务拒绝同轮启动时保留失败证据，记为依赖缺口，不能绕过有效准备条件或判通过",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-399fae31-c748-4a10-8fa0-27af221751b1",
+    "workspace_id": "71532cb1-4fc1-4916-9bc2-712e30d8d986",
+    "session_title": "评审 U-INS-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

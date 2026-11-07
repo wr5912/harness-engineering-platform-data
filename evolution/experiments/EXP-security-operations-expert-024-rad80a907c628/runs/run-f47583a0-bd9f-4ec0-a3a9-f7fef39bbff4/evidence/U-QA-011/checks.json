@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-QA-011",
+  "transport": "api",
+  "expected_behavior": "只依据真实检索到的内部规范回答，给出可核对来源并区分原文要求与解释；检索不到时明确说明，不用通用经验冒充内部标准。",
+  "session_id": "session-7e9eb95c-ac95-4d4c-b478-e2875e26a735",
+  "workspace_id": "10935fca-d5eb-4ea6-acb3-b94a05ac761b",
+  "session_title": "评测 U-QA-011",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-347164e7-16ac-4479-8f03-a6398f15a18c",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

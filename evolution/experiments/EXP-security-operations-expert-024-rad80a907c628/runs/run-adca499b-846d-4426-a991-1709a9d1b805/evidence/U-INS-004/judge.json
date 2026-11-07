@@ -1,0 +1,65 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "回答未询问用户是要立即执行一次巡检还是创建 DSH 周期任务，而是直接列出了巡检项、范围、周期三项待补信息（要求1不满足）；回答也未说明三个巡检 MCP 工具本身没有任务创建入口（要求4不满足）。回答确实列出了巡检项、范围和周期，且在巡检服务断开的情况下未创建任何提醒、未发起巡检（要求2、3满足）。因存在明确不满足项，判定为 failed。",
+    "requirements": [
+      {
+        "requirement": "询问用户是要立即执行一次巡检，还是创建 DSH 周期任务",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "创建周期任务还需明确巡检项、范围和周期",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "未得到这些条件前不得创建提醒或发起巡检",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "三个巡检 MCP 工具本身没有任务创建入口",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-1396b151-b712-4cc3-8674-e2b11eb8d88c",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-INS-004",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

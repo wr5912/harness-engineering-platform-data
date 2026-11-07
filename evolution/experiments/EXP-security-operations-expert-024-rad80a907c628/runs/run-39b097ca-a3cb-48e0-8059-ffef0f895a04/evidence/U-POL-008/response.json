@@ -1,0 +1,133 @@
+{
+  "inputs": [
+    "开通策略。",
+    "查询状态。",
+    "调整端口。",
+    "业务验证结束后关闭策略。"
+  ],
+  "assistant_texts": [
+    "本轮缺少必要参数，暂不发起任何工具调用，也不存在已生成的草稿或操作号。\n\n请补充以下信息：\n\n1. **源端点**：资产名称、IPv4 或 IPv4 CIDR（例如 `192.0.2.10` 或 `192.0.2.0/28`）\n2. **目的端点**：资产名称、IPv4 或 IPv4 CIDR\n3. **协议**：TCP 或 UDP\n4. **目的端口**：1–65535 的单个端口\n5. **动作**：允许（ALLOW）还是阻断（DENY）？“开通”通常指允许访问，请确认；若实际是要阻断，请明确说“阻断”\n6. **设备线索（可选）**：如“在防火墙上”或指定防火墙名称/管理 IP，请给出原话\n\n本轮能力边界（超出将停止并说明）：\n\n- 仅支持**新增**（ADD）策略，不支持修改、删除或“关闭/停用”\n- 仅支持 IPv4 主机/网段到主机/网段、TCP/UDP **单个目的端口**\n- 不支持 IPv6 网段；CIDR 须使用网络地址（如 `172.16.1.0/28`）\n- 不支持有效期/截止时间约束\n- 草稿就绪后需您在原生确认面单独回复“执行”才会进入确认，草稿本身不代表已下发\n\n请补齐参数，我再继续解析端点并准备草稿。",
+    "当前会话还没有任何策略草稿：上一轮因参数不足未调用解析或准备工具，因此没有可供续查的 operation ID（操作号）。\n\n策略状态查询只支持续查**本会话成功 prepare 回执**中的操作号，无法查询其他会话、历史任务或您自行提供的操作号，也不会猜测或代填一个编号去查询。\n\n下一步二选一：\n\n- 补齐上一轮列出的必需参数（源、目的、协议、目的端口、动作），我会重新走解析与准备流程，并在生成草稿后可继续查询其状态；\n- 如果您是想查**其他会话或旧平台任务**的状态，本会话不具备该能力，请到对应会话或平台侧查询。",
+    "“调整端口”属于对已有策略的修改（MODIFY），超出本轮能力边界，我不会发起任何工具调用。当前策略配置只支持**新增（ADD）**允许或阻断策略，不支持修改、删除或停用已有策略。\n\n另外说明两点事实：\n\n- 本会话目前没有成功 prepare 的草稿或操作号，因此也不存在可被“调整”的在途任务；\n- 已有策略的端口修改需要在原平台/原会话中处理，本会话不具备该能力。\n\n如果您实际是想**新增一条不同端口的策略**，请提供：源端点、目的端点、协议（TCP/UDP）、新的目的端口、动作（允许/阻断），以及可选的设备线索，我会按新增流程解析并准备草稿。",
+    "“关闭策略”属于删除（DELETE）已有策略，超出本轮能力边界，我不会发起任何工具调用。\n\n当前策略配置路线仅支持**新增（ADD）**主机/网段到主机/网段、TCP/UDP 单目的端口的允许或阻断策略；不支持 MODIFY、DELETE，也不把“关闭/停用”解释为可执行的删除操作。此外，“业务验证结束后”这类**定时/到期自动关闭**的语义也未端到端验证，我不会生成带有效期的策略，也不会推算关闭时间。\n\n本会话目前也没有已确认下发的策略草稿或操作号，因此不存在可关闭的对象。\n\n补充建议（尚未执行）：到期自动回收的需求需要在具备策略生命周期管理能力的平台上实现，或由运维流程在验证结束后人工发起删除；本会话无法代办。\n\n如果您实际是想**新增**一条策略，请提供：源端点、目的端点、协议（TCP/UDP）、目的端口、动作（允许/阻断），以及可选设备线索。"
+  ],
+  "session_id": "session-652f6c62-d13f-4ded-b2be-ec2fd45e1c62",
+  "turns": [
+    {
+      "assistant_text": "本轮缺少必要参数，暂不发起任何工具调用，也不存在已生成的草稿或操作号。\n\n请补充以下信息：\n\n1. **源端点**：资产名称、IPv4 或 IPv4 CIDR（例如 `192.0.2.10` 或 `192.0.2.0/28`）\n2. **目的端点**：资产名称、IPv4 或 IPv4 CIDR\n3. **协议**：TCP 或 UDP\n4. **目的端口**：1–65535 的单个端口\n5. **动作**：允许（ALLOW）还是阻断（DENY）？“开通”通常指允许访问，请确认；若实际是要阻断，请明确说“阻断”\n6. **设备线索（可选）**：如“在防火墙上”或指定防火墙名称/管理 IP，请给出原话\n\n本轮能力边界（超出将停止并说明）：\n\n- 仅支持**新增**（ADD）策略，不支持修改、删除或“关闭/停用”\n- 仅支持 IPv4 主机/网段到主机/网段、TCP/UDP **单个目的端口**\n- 不支持 IPv6 网段；CIDR 须使用网络地址（如 `172.16.1.0/28`）\n- 不支持有效期/截止时间约束\n- 草稿就绪后需您在原生确认面单独回复“执行”才会进入确认，草稿本身不代表已下发\n\n请补齐参数，我再继续解析端点并准备草稿。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ba27bde5-a2c7-4cd1-8f8b-2f1a873e54ad"
+    },
+    {
+      "assistant_text": "当前会话还没有任何策略草稿：上一轮因参数不足未调用解析或准备工具，因此没有可供续查的 operation ID（操作号）。\n\n策略状态查询只支持续查**本会话成功 prepare 回执**中的操作号，无法查询其他会话、历史任务或您自行提供的操作号，也不会猜测或代填一个编号去查询。\n\n下一步二选一：\n\n- 补齐上一轮列出的必需参数（源、目的、协议、目的端口、动作），我会重新走解析与准备流程，并在生成草稿后可继续查询其状态；\n- 如果您是想查**其他会话或旧平台任务**的状态，本会话不具备该能力，请到对应会话或平台侧查询。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "2a9ae9df-a425-4561-98bd-b30d0f19dc67"
+    },
+    {
+      "assistant_text": "“调整端口”属于对已有策略的修改（MODIFY），超出本轮能力边界，我不会发起任何工具调用。当前策略配置只支持**新增（ADD）**允许或阻断策略，不支持修改、删除或停用已有策略。\n\n另外说明两点事实：\n\n- 本会话目前没有成功 prepare 的草稿或操作号，因此也不存在可被“调整”的在途任务；\n- 已有策略的端口修改需要在原平台/原会话中处理，本会话不具备该能力。\n\n如果您实际是想**新增一条不同端口的策略**，请提供：源端点、目的端点、协议（TCP/UDP）、新的目的端口、动作（允许/阻断），以及可选的设备线索，我会按新增流程解析并准备草稿。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 3,
+      "input_message_id": "41c91a23-9625-4629-8b57-62d8585731c0"
+    },
+    {
+      "assistant_text": "“关闭策略”属于删除（DELETE）已有策略，超出本轮能力边界，我不会发起任何工具调用。\n\n当前策略配置路线仅支持**新增（ADD）**主机/网段到主机/网段、TCP/UDP 单目的端口的允许或阻断策略；不支持 MODIFY、DELETE，也不把“关闭/停用”解释为可执行的删除操作。此外，“业务验证结束后”这类**定时/到期自动关闭**的语义也未端到端验证，我不会生成带有效期的策略，也不会推算关闭时间。\n\n本会话目前也没有已确认下发的策略草稿或操作号，因此不存在可关闭的对象。\n\n补充建议（尚未执行）：到期自动回收的需求需要在具备策略生命周期管理能力的平台上实现，或由运维流程在验证结束后人工发起删除；本会话无法代办。\n\n如果您实际是想**新增**一条策略，请提供：源端点、目的端点、协议（TCP/UDP）、目的端口、动作（允许/阻断），以及可选设备线索。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 4,
+      "input_message_id": "131750c8-7e71-4a90-becc-de4414cfc98d"
+    }
+  ]
+}

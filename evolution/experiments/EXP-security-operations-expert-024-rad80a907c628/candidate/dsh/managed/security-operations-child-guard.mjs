@@ -18,6 +18,7 @@ function allowedTools(ctx, role) {
 }
 
 export function apply(ctx, config) {
+  if (ctx.get?.('businessRuntime')?.requiresAuthentication?.() === false) return
   if (!roles.has(config?.role)) throw new Error('invalid security-operations child role')
   const restricted = new WeakSet()
   ctx.on('agent/pre-step', async ({ agent }, next) => {

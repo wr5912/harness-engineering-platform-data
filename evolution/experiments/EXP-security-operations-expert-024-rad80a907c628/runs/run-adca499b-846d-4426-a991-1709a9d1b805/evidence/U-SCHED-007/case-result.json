@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-007",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：索引2的 schedule_create 成功回执（is_error=false，state=scheduled，scheduledAt=2026-11-03T04:00:00.000Z）表明本实例原生定时能力已由平台接通，因此“未开放工具需说明不能创建”的条件未触发，且创建走的是 Runtime 原生工具、回执来自同一被测 Session，未见绕过或借用隔离实例回执。但要求3在能力已接通时须按身份、网关和到期回执重新验证：回答仅复述了到期时间与状态，indexed_evidence 中没有身份与网关校验的证据，该项证据不足，故整体判为 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-007"
+}

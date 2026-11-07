@@ -1,0 +1,44 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答明确声明本轮在参数门禁处停止，未调用端点解析、设备/型号能力/ACL 模板查询，也未生成 Preview，因而不存在真实工具回执可支持资产、拓扑、设备映射、型号能力、ACL 模板的查询与一次性无状态 Preview；回答也自述没有 PPV 与确认提示。虽然回答确实没有确认、创建、提交或执行策略任务，但该项要求的前半部分（真实查询与 PPV、确认提示）明确缺失。目标 Skill 关于“有效期”能力边界的限制只能解释为何失败，不能改变冻结要求，故逐项判定为不满足。",
+    "requirements": [
+      {
+        "requirement": "真实查询资产、拓扑、设备映射、型号能力和 ACL 模具，并只调用一次无状态 Preview",
+        "status": "failed",
+        "evidence": [
+          0,
+          2
+        ]
+      },
+      {
+        "requirement": "回复给出与工具结果一致的 PPV 和确认提示，并且没有确认、创建、提交或执行策略任务",
+        "status": "failed",
+        "evidence": [
+          0
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-32a2fcdd-70f6-4f54-b9e7-7823a35a5f6d",
+    "workspace_id": "cac1915b-3b23-45cb-ac81-848ede7695a0",
+    "session_title": "评审 U-POL-010",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

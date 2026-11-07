@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "帮我开通 172.16.1.155 到 172.16.2.103 的 TCP 18550 端口业务。"
+  ],
+  "assistant_texts": [
+    "策略配置流程中无法调用其他业务能力。当前需要执行端点解析和策略准备。请在下方确认策略参数：\n\n- 源端点：**172.16.1.155**\n- 目端点：**172.16.2.103**\n- 协议：**TCP**\n- 目标端口：**18550**\n- 动作：**ALLOW（允许访问）**\n\n参数已完整，准备发起端点解析。"
+  ],
+  "session_id": "session-60063b2f-2207-41f1-9dcc-efed98a8f096",
+  "turns": [
+    {
+      "assistant_text": "策略配置流程中无法调用其他业务能力。当前需要执行端点解析和策略准备。请在下方确认策略参数：\n\n- 源端点：**172.16.1.155**\n- 目端点：**172.16.2.103**\n- 协议：**TCP**\n- 目标端口：**18550**\n- 动作：**ALLOW（允许访问）**\n\n参数已完整，准备发起端点解析。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ba7a24c7-c79a-49c7-83fe-c09482f9e11f"
+    }
+  ]
+}

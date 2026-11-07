@@ -1,0 +1,59 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "要求1未满足：回答的观察表按数据源罗列，未按采集→检测→同步→事件生成顺序逐环节核对，也未给出明确的“最后成功点/首个失败点”；其关键推断“asset:9107 近3天持续有 medium 告警（累计51）”与同 Session 回执 index 22 的 trend30d 不符（趋势值 19/24/8 位于窗口最早三格，其后约27天为0），定位结论建立在误读之上，且同步环节未作状态判定。要求2基本满足：事件生成环节标注为无法确认、工具错误（index 14 的窄窗 500）与空结果分开记录、建议均标注“未执行”。因存在明确不满足项，整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "按采集、检测、同步、事件生成顺序核对真实状态，定位最后成功点和首个失败点",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 22
+          },
+          {
+            "index": 16
+          }
+        ]
+      },
+      {
+        "requirement": "无法查询的环节明确标注未知，不用通用建议替代诊断结论",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 14
+          },
+          {
+            "index": 32
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-51866e2f-834f-40c0-abd9-3e2453029511",
+    "workspace_id": "14a11e08-348f-4150-a050-f98c045abbc2",
+    "session_title": "评审 U-FLT-008",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

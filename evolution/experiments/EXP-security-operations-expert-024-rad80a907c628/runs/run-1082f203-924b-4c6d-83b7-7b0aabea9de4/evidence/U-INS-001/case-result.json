@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 从未进入真实巡检流程：仅有 skill 加载与 list_mcp_resource_templates/list_mcp_resources 两次回执（call_id call_504d4c9d8b0e4e5e96723ce0、call_f64b80a3ae63468ba696e0be），原生 is_error=true，正文均为 `mcp-client(inspection): server is disconnected`。因此没有真实目录查询结果、没有选定模板与 taskId/definitionVersion、没有发起巡检、没有 requestId、没有 runId、也没有任何报告回执；回答（索引 0）本身也自述“无法查询模板、未发起巡检、没有 runId、没有报告下载地址”。要求 1–4 的关键动作与关键数据完全缺失，要求 5 的报告交付部分同样无任何 tool/result 支持（仅“保留失败证据、记为依赖缺口、不判通过”这一点与预期一致，不足以使该项整体满足）。证据明确显示未满足而非仅证据不足，故判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-001"
+}

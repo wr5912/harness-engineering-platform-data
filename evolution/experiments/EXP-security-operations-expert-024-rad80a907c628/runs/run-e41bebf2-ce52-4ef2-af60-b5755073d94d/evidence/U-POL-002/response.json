@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "指定设备：172.16.1.155；请为 172.16.1.155 到 172.16.2.103 开通 TCP 19730 访问策略。"
+  ],
+  "assistant_texts": [
+    "**结论：本轮无法发起策略配置——当前会话缺少策略配置工具，路线在起点终止。**\n\n**参数核对（来自您的原文，已齐全）**\n\n| 参数 | 取值 |\n|---|---|\n| 源端点 | 172.16.1.155 |\n| 目的端点 | 172.16.2.103 |\n| 协议 / 目的端口 | TCP / 19730 |\n| 意图 / 动作 | 新增（ADD）/ 允许（ALLOW，\"开通\"） |\n| 设备线索（device_query） | 172.16.1.155（您原话\"指定设备\"后的单一线索，将原样提交） |\n\n**能力缺口（事实）**\n\n按 `policy-configuration` Skill，第一跳必须调用 `workbench-policy-endpoint-resolution/v1` 端点解析工具，随后才是准备与草稿查询。但当前 Runtime 暴露给本会话的工具目录中**不存在**策略配置的四个草稿工具（端点解析、歧义选择、准备、结果/状态查询）。按约束我不能猜测工具名，也不能改用 SOC 资产查询、Shell 或底层 HTTP 绕过，因此未发出任何调用。\n\n**状态说明**\n\n- 未创建任何 DRAFT、operation ID 或设备选择记录；本会话当前没有可续查的操作号。\n- 上述参数仅为本轮解析结果，尚未提交给 Platform，也未做资产/设备在线核验。\n\n**下一步建议（未执行）**\n\n请在已开通策略配置工具（`workbench-policy-endpoint-resolution/v1` 及配套 prepare/result 能力）的会话或 Profile 中重新发起同一请求；参数可直接沿用上表。若该工具本应在此会话可用，属于 MCP 绑定或工具过滤器配置问题，需要在宿主侧核查后重试。"
+  ],
+  "session_id": "session-d01c9a8d-316b-45a3-8bea-5acc4bae6104",
+  "turns": [
+    {
+      "assistant_text": "**结论：本轮无法发起策略配置——当前会话缺少策略配置工具，路线在起点终止。**\n\n**参数核对（来自您的原文，已齐全）**\n\n| 参数 | 取值 |\n|---|---|\n| 源端点 | 172.16.1.155 |\n| 目的端点 | 172.16.2.103 |\n| 协议 / 目的端口 | TCP / 19730 |\n| 意图 / 动作 | 新增（ADD）/ 允许（ALLOW，\"开通\"） |\n| 设备线索（device_query） | 172.16.1.155（您原话\"指定设备\"后的单一线索，将原样提交） |\n\n**能力缺口（事实）**\n\n按 `policy-configuration` Skill，第一跳必须调用 `workbench-policy-endpoint-resolution/v1` 端点解析工具，随后才是准备与草稿查询。但当前 Runtime 暴露给本会话的工具目录中**不存在**策略配置的四个草稿工具（端点解析、歧义选择、准备、结果/状态查询）。按约束我不能猜测工具名，也不能改用 SOC 资产查询、Shell 或底层 HTTP 绕过，因此未发出任何调用。\n\n**状态说明**\n\n- 未创建任何 DRAFT、operation ID 或设备选择记录；本会话当前没有可续查的操作号。\n- 上述参数仅为本轮解析结果，尚未提交给 Platform，也未做资产/设备在线核验。\n\n**下一步建议（未执行）**\n\n请在已开通策略配置工具（`workbench-policy-endpoint-resolution/v1` 及配套 prepare/result 能力）的会话或 Profile 中重新发起同一请求；参数可直接沿用上表。若该工具本应在此会话可用，属于 MCP 绑定或工具过滤器配置问题，需要在宿主侧核查后重试。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c154a73b-3a9f-460d-b206-060fb5bcfe06"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-THREAT-FOLLOWUP",
+  "transport": "api",
+  "expected_behavior": "第一轮交付与本轮结果一致的研判摘要；第二轮正常解释横向移动，不再次调用威胁研判工具、不发起新的 SOC 认领或研判写入，也不复用上一轮固定摘要替代回答。",
+  "session_id": "session-cbeb720b-b6a7-4d4c-8bd9-5b1bdb01ecd3",
+  "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+  "session_title": "评测 U-THREAT-FOLLOWUP",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-f9b76cf9-ea6b-400d-8b24-8c2a99cf7385",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-THREAT-FOLLOWUP",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": false
+  },
+  "trace_available": true
+}

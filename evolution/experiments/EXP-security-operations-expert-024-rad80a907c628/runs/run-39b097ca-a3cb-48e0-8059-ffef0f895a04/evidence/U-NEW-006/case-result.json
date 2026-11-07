@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答在第一步即因缺少端点解析工具而停止，未生成也未保存任何 policy-department-task/v1 本地任务：没有 pgt task_id、没有按 ID 回读、没有 Persistence/策略索引保存回执，因此核心的持久化与回读要求明确不满足。同时没有任何工具回执显示经过 EXP027 受信原生分组工作流或受控高层工具动态核对了当次部门与目的 IPv4 身份，回答中的参数表仅为模型自行罗列；也未按要求独立呈现 SOC 阻塞（soc_task_id=null、execution_allowed=false、task_precheck_status=NOT_RUN、整体 EXTERNAL_BLOCKED/PARTIALLY_READY），证据中不存在此类结构化输出。幂等性与 request_id 处理完全未涉及。唯一符合预期的是回答如实报告能力缺口、未虚构任务或 SOC 草稿，但单凭安全停点不能满足正向验收。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-006"
+}

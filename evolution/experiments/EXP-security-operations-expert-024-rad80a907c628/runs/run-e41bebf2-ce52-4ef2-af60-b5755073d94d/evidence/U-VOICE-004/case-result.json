@@ -1,0 +1,7 @@
+{
+  "case_id": "U-VOICE-004",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：被测 Session 的 indexed_evidence 仅包含三条 assistant 正文，没有任何 tool/result 回执。三条正文在内容层面确实逐条保留了否定、风险、未确认与未完成状态且与输入事实一致，但这只能部分触及第一项要求，且无法证实自动播报开启、约 30 字摘要与合成输入一致；关于思考关闭设置、正文/摘要/排队/TTS 首包/浏览器起播的链路关联、流式 TTS 起播时机、双模型原版与整改版各三次的逐次耗时与字数偏差、中位数性能目标以及‘未验证’记录等要求，均缺少同一被测 Session 的工具回执与运行证据，属于证据不足，故整体判定为 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-VOICE-004"
+}

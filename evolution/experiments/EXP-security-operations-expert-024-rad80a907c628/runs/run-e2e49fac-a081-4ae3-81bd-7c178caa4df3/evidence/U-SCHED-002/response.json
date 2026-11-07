@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "创建一个每隔 30 分钟威胁研判的定时任务。"
+  ],
+  "assistant_texts": [
+    "已创建定时威胁研判任务：\n\n- 任务 ID：`schedule-5fff4832-b4e5-420a-bd55-75e8bf808160`\n- 标题：自动威胁研判-每30分钟\n- 规则：每 30 分钟（1800 秒）执行一次\n- 下次到期：2026-10-28 02:39:07 UTC（北京时间 10:39:07）\n- 状态：已调度，尚未执行；每次到期只研判 1 条待研判事件，上一条仍在运行时会跳过本次心跳"
+  ],
+  "session_id": "session-a5b0453b-6261-43e8-b7ed-475bd1d035c1",
+  "turns": [
+    {
+      "assistant_text": "已创建定时威胁研判任务：\n\n- 任务 ID：`schedule-5fff4832-b4e5-420a-bd55-75e8bf808160`\n- 标题：自动威胁研判-每30分钟\n- 规则：每 30 分钟（1800 秒）执行一次\n- 下次到期：2026-10-28 02:39:07 UTC（北京时间 10:39:07）\n- 状态：已调度，尚未执行；每次到期只研判 1 条待研判事件，上一条仍在运行时会跳过本次心跳",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "7a9c3918-547c-497f-8364-7efbc5b78f1e"
+    }
+  ]
+}

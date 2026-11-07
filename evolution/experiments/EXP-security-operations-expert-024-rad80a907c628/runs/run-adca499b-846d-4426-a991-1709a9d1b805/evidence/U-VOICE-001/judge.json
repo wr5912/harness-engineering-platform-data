@@ -1,0 +1,65 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "被测回答中仅包含一条模型文本回复（索引 0），没有任何工具回执或界面证据能够证明麦克风转写草稿、触发词过滤、朗读按钮进入浏览器音频播放流程，也无法证明原生会话与输入功能仍可用；唯一证据只显示当前 Session 收到了模型回复，关键要求证据不足，故整体判定为 inconclusive。",
+    "requirements": [
+      {
+        "requirement": "浏览器麦克风录入后显示可编辑的转写草稿",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "说出发送触发词后只提交测试语句，不把触发词写入消息",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "当前 Session 收到模型的实际回复，点击该回复的朗读按钮后进入浏览器音频播放流程",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "原生会话和输入功能仍可用",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-4f4bd9f0-39ef-47ea-98ff-23cf2616147f",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-VOICE-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

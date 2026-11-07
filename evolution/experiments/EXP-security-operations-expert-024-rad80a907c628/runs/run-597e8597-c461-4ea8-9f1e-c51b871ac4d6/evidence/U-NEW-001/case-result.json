@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：正向 Case 要求通过原生应急能力准备出真实 READY/NOT_SUBMITTED 草案并进入确认面板，但被测 Session 中该能力缺失：emergency-action Skill 明确要求的 prepare_emergency_action 等六项工具未在目录中暴露，sec-ops 的资源与资源模板列表均为空，inspection 服务器断开。回答如实报告了这些真实错误、未伪造草案、未提交未执行、且正确保持了 wishclamAV（172.16.2.114）为执行目标、198.51.100.77 为封禁源且未臆造端口（满足要求 1 与要求 4 的失败处置），但要求 2（真实草案）与要求 3（基于真实草案的影响说明与原生确认等待）因此无法达成，故整体判为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-001"
+}

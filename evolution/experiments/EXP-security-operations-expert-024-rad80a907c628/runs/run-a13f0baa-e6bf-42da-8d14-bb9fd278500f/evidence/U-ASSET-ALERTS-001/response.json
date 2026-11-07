@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 9106 近 30 天的关联告警，展示首页最多 5 个分组，说明总量和查询时段。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "等待故障分析子智能体执行查询后，汇总结果。\n</think>\n\n等待中..."
+  ],
+  "session_id": "session-1d24084b-dad9-4a87-8eaf-e191d359019e",
+  "turns": [
+    {
+      "assistant_text": "等待故障分析子智能体执行查询后，汇总结果。\n</think>\n\n等待中...",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "6f68d09a-923d-4fe5-836c-37088cd50505"
+    }
+  ]
+}

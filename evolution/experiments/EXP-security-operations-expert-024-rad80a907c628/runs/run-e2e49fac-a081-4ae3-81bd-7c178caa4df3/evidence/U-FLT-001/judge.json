@@ -1,0 +1,51 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "现有证据仅显示被测回答声明已按故障排查流程委派只读取证子智能体并规划后续按正式结果发起处置，以及实际调用 fault-analysis 技能与 delegate_fault_analysis 工具且收到“started subagent”回执；但子智能体尚未返回任何关于 172.16.1.165 到 172.16.2.100 的真实取证结果、证据/根因/建议区分或修复建议，也未见正式故障结果的形成与处置发起的后续证据。被测输入中的回答仅为过程性声明，未提供可核验的正式故障分析结论，无法满足“使用真实故障分析能力形成正式结果，区分证据、根因和建议”的验证要求，也未能验证处置是否仅基于正式结果并经过必要确认。当前证据不足以判定通过或失败。",
+    "requirements": [
+      {
+        "requirement": "使用真实故障分析能力形成正式结果，区分证据、根因和建议",
+        "status": "unknown",
+        "evidence": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "requirement": "处置只能基于该正式结果并在必要确认后发起",
+        "status": "unknown",
+        "evidence": [
+          0,
+          5
+        ]
+      },
+      {
+        "requirement": "工具失败时不编造诊断或处置状态",
+        "status": "unknown",
+        "evidence": [
+          4,
+          5
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-fbea26e6-e13d-4690-8e62-4de66b93b03f",
+    "workspace_id": "6763f60d-24d0-454f-aca2-ad73e6a3ae3e",
+    "session_title": "评审 U-FLT-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "local",
+      "model": "Qwen3.8-27B"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

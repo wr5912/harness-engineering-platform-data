@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-EMG-003",
+  "completed": false,
+  "expected_behavior": "使用 `unblock-ip`，`params.rule_name` 逐值使用原规则 UUID；不能用旧规则名称、新生成名称或 `host-unblock-ip` 代替。草案的动作、目标和 UUID 必须回读一致；未获得正确草案时说明缺口，不展示确认入口。不得提交解封。",
+  "failure_reason": "driver-container-stop-unconfirmed"
+}

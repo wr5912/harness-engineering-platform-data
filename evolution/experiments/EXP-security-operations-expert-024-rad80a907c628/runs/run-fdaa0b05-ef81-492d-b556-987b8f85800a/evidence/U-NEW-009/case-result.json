@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-009",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答明确区分了已知事实（本轮仅尝试查询巡检资源、未生成 runId、无已运行巡检）与未知范围（inspection 服务断开，无法核实各巡检项是否影响业务），满足回答实际已知影响与未知范围。真实工具轨迹中仅出现 skill 读取与 list_mcp_resources/list_mcp_resource_templates 只读查询，inspection 返回 disconnected 错误、sec-ops 返回空资源列表，没有任何巡检准备、发起或运行创建的调用与回执，故未触发业务执行；这些只读调用属普通内部答复编排而非巡检业务工作流。判定依据全部来自同 Session 的 tool/result 回执（index 2/4/6/8/10），而非模型自称未执行。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-009"
+}

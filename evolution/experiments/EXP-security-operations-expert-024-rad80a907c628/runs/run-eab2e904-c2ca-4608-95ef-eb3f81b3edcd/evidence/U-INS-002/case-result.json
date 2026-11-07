@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：本轮目录查询确实失败：inspection 服务器返回 is_error=true 的 'server is disconnected'（证据 4、6），sec-ops 的 resources 与 resourceTemplates 均为空（证据 8、10），因此本轮返回的可执行模板与巡检项集合为空。被测回答据此如实说明'无法列出巡检项目录、本轮未查询到任何巡检项'，未编造任何模板名称、taskId 或巡检项，符合预期中'查询失败时如实说明，不编造内容'的分支；回答中关于断开与空目录的关键陈述均能由同一 Session 的工具回执（4、6、8、10）支持。只读方面，证据中出现的工具调用结果仅为 skill 读取与 list_mcp_resources/list_mcp_resource_templates 查询，无准备或发起类调用，回答也明确声明未发起巡检、无 runId（证据 0），未越出'只查询目录，不要执行巡检'的限制。三项要求均满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

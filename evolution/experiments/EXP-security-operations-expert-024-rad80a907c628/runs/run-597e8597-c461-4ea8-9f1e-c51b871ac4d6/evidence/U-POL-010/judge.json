@@ -1,0 +1,50 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "要求 1 需要真实查询资产、拓扑、设备映射、型号能力与 ACL 模板并只调用一次无状态 Preview。被测回答（索引 0）自述本轮未调用任何工具、没有 Preview，且唯一可见的工具回执（索引 2）仅为 Skill 说明文本，不含任何资产/拓扑/设备映射/型号能力/ACL 模板的真实查询回执，更无 Preview 调用，故明确不满足。要求 2 需要回复给出与工具结果一致的 PPV 和确认提示；被测回答未交付任何 PPV 与确认提示（仅给出停止说明并要求用户在 1/2 间选择），虽然其未确认/创建/提交/执行，但前半部分明确缺失，故不满足。Skill 的限时策略能力边界只能解释失败原因，不能改变冻结要求。",
+    "requirements": [
+      {
+        "requirement": "1. 查询预览所需事实：真实查询资产、拓扑、设备映射、型号能力和 ACL 模板，只调用一次无状态 Preview。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "2. 交付无状态预览：回复给出与工具结果一致的 PPV 和确认提示，并且没有确认、创建、提交或执行策略任务。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-25e756e1-9eb8-4d20-9b89-f664ad8c5f42",
+    "workspace_id": "f892dd9e-6f10-48d8-8327-c0d806d7de78",
+    "session_title": "评审 U-POL-010",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

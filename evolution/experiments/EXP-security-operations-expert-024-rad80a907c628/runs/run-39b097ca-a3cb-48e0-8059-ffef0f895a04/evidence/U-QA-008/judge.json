@@ -1,0 +1,40 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "回答通过单一证据块明确区分了 CVSS（固有技术严重度，0–10 分）、EPSS（未来 30 天野外被利用概率，0–100%）与 CISA KEV（确凿已利用清单及修复期限），并说明内部优先级还取决于资产暴露面、业务关键性、实际受影响情况及 WAF/隔离等补偿控制，同时给出分层排序思路与范围声明；要求为方法论说明，无需真实工具数据即可满足。",
+    "requirements": [
+      {
+        "requirement": "准确区分 CVSS 严重度、EPSS 被利用概率估计和 CISA KEV 已知被利用目录，并说明内部优先级还取决于资产暴露、业务重要性、受影响情况和补偿控制等实际上下文",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "## 三个指标分别是什么（事实性说明）\n\n| 指标 | 全称/来源 | 度量什么 | 形式 |\n|---|---|---|---|\n| **CVSS** | Common Vulnerability Scoring System（FIRST 组织维护） | 漏洞本身的**固有技术严重度**：攻击向量、复杂度、权限要求、影响机密性/完整性/可用性等 | 0–10 分，≥9.0 为 Critical（9.8 即接近满分的高危） |\n| **EPSS** | Exploitation Prediction Scoring System（FIRST 维护） | 未来 30 天内该漏洞**在野外被实际利用的概率**，基于公开利用事件等数据建模 | 0–100% 概率 |\n| **CISA KEV** | Known Exploited Vulnerabilities Catalog（美国 CISA 维护） | 有**确凿证据表明已被野外利用**的漏洞清单，并给出联邦机构的修复期限 | 是/否在列 + due date |\n\n一句话区分：**CVSS 问\"打中了有多疼\"，EPSS 问\"会不会真的被打\"，KEV 问\"是不是已经在被打\"。**\n\n## 为什么 CVSS 9.8 不一定是我司最高优先级（推断/研判）\n\n1. **CVSS 是脱离上下文的固有分值**。它不包含\"是否已被利用\"和\"我司是否暴露\"两个关键变量。9.8 分但 EPSS < 1%、且不在 KEV 的漏洞，属于\"理论高危、现实低概率\"。\n2. **利用可能性可能很低**。CVSS 9.8 常见于需要特定配置或本地条件的漏洞；若 EPSS 显示利用概率很低，或需要攻击者已具备很高权限，实际风险大幅下降。\n3. **资产上下文决定实际暴露面**。即使漏洞本身 9.8 分，若受影响组件在我司**未部署、无外网暴露、有补偿控制**（WAF、网络隔离、功能禁用），优先级应下调；反之，一个 CVSS 7.5 的漏洞若在我司**互联网关键资产**上且已进 KEV，可能更优先。\n4. **已确认利用优先于理论严重度**。经验做法：**在 KEV 且有修复期限 → 优先于**单纯的高 CVSS 未利用漏洞；KEV/高 EPSS + 高 CVSS + 关键暴露资产三者叠加才是最高优先级。\n5. **修复成本与业务影响**是排序的最后调节项（重启窗口、补丁可用性等），但属于我司内部因素，需结合实际排定。\n\n## 建议的优先级排序思路（尚未执行，仅方法建议）\n\n1. 第一梯队：**在 KEV 中**（尤其已过/临近 due date）且资产受影响；\n2. 第二梯队：**高 EPSS（如 >10–50%）+ 高 CVSS + 资产外网暴露或业务关键**；\n3. 第三梯队：高 CVSS 但 EPSS 低、不在 KEV、无暴露面；\n4. 每层内再按业务影响和修复成本微调。\n\n**范围与未知项**：以上为通用方法论，未调用任何工具、未查询我司实际漏洞数据或 KEV/EPSS 实时库，因此没有给出针对具体资产的排序结论；EPSS 数值会随时间更新，判断时应以查询当日的数据为准。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-862d72b3-120e-4e57-9d2e-713799fabbe3",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-QA-008",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "IOC、TTP、MITRE ATT&CK Technique、告警和事件有什么区别？"
+  ],
+  "assistant_texts": [
+    "这几个概念分属不同层次，简单区分如下：\n\n## 概念区别\n\n| 概念 | 层次 | 本质 | 举例 |\n|---|---|---|---|\n| **IOC**（Indicator of Compromise，失陷指标） | 最底层、最具体 | 单个可观测的\"证据点\"，回答\"看到了什么\" | 恶意 IP/域名、文件哈希、URL、注册表键值、C2 特征串 |\n| **TTP**（战术、技术与过程） | 行为层 | 攻击者的**行为模式**，回答\"怎么做的\"，比 IOC 更稳定、更难伪造 | 钓鱼投递、凭据爆破、横向移动、计划任务持久化 |\n| **MITRE ATT&CK Technique** | 标准化框架层 | 对 TTP 的**标准化编号与命名**，是 TTP 的\"字典/坐标系\" | T1566（鱼叉式钓鱼附件）、T1059（命令与脚本执行） |\n| **告警（Alert）** | 检测输出层 | 检测规则/设备触发的**单条通知**，可能是误报 | \"防火墙命中木马 C2 规则\"、\"EDR 检测到可疑进程\" |\n| **事件（Incident）** | 运营处置层 | 经研判确认、需要跟进处置的**安全事件**，可由多条告警关联聚合而成 | 确认某主机被入侵、某账号被盗用 |\n\n## 关键关系\n\n- **IOC ↔ TTP**：IOC 是\"痕迹\"，TTP 是\"行为\"。IOC 易变（换个 IP 就失效）、易伪造（可被投毒污染）；TTP 相对稳定，是狩猎（Threat Hunting）和检测工程的更高质量依据。一个 TTP 会产生多个 IOC，一个 IOC 也可能对应多种 TTP。\n- **TTP ↔ ATT&CK Technique**：TTP 是概念，Technique 是它在 MITRE ATT&CK 中的标准化表达（含唯一 ID、子技术 T1xxx.001、缓解措施和检测建议）。把内部检测规则映射到 Technique，便于衡量检测覆盖率、对齐红蓝对抗语言。\n- **告警 → 事件**：告警是检测系统的原始输出，量大且含误报；告警经过降噪、关联、上下文富化和人工/模型研判后，确认有价值的部分才升级为事件（Incident）。即：**告警不一定成为事件，事件一般源自告警**（也可能源自情报或人工上报）。\n\n## 一句话总结\n\n**IOC 是线索，TTP 是手法，ATT&CK Technique 是手法的标准编号，告警是检测器的喊话，事件是确认要处理的案件。**\n\n以上为概念性说明，不涉及本环境的实际数据查询。"
+  ],
+  "session_id": "session-7fe2a4e3-a160-4ee4-aeff-50d8e4871bf0",
+  "turns": [
+    {
+      "assistant_text": "这几个概念分属不同层次，简单区分如下：\n\n## 概念区别\n\n| 概念 | 层次 | 本质 | 举例 |\n|---|---|---|---|\n| **IOC**（Indicator of Compromise，失陷指标） | 最底层、最具体 | 单个可观测的\"证据点\"，回答\"看到了什么\" | 恶意 IP/域名、文件哈希、URL、注册表键值、C2 特征串 |\n| **TTP**（战术、技术与过程） | 行为层 | 攻击者的**行为模式**，回答\"怎么做的\"，比 IOC 更稳定、更难伪造 | 钓鱼投递、凭据爆破、横向移动、计划任务持久化 |\n| **MITRE ATT&CK Technique** | 标准化框架层 | 对 TTP 的**标准化编号与命名**，是 TTP 的\"字典/坐标系\" | T1566（鱼叉式钓鱼附件）、T1059（命令与脚本执行） |\n| **告警（Alert）** | 检测输出层 | 检测规则/设备触发的**单条通知**，可能是误报 | \"防火墙命中木马 C2 规则\"、\"EDR 检测到可疑进程\" |\n| **事件（Incident）** | 运营处置层 | 经研判确认、需要跟进处置的**安全事件**，可由多条告警关联聚合而成 | 确认某主机被入侵、某账号被盗用 |\n\n## 关键关系\n\n- **IOC ↔ TTP**：IOC 是\"痕迹\"，TTP 是\"行为\"。IOC 易变（换个 IP 就失效）、易伪造（可被投毒污染）；TTP 相对稳定，是狩猎（Threat Hunting）和检测工程的更高质量依据。一个 TTP 会产生多个 IOC，一个 IOC 也可能对应多种 TTP。\n- **TTP ↔ ATT&CK Technique**：TTP 是概念，Technique 是它在 MITRE ATT&CK 中的标准化表达（含唯一 ID、子技术 T1xxx.001、缓解措施和检测建议）。把内部检测规则映射到 Technique，便于衡量检测覆盖率、对齐红蓝对抗语言。\n- **告警 → 事件**：告警是检测系统的原始输出，量大且含误报；告警经过降噪、关联、上下文富化和人工/模型研判后，确认有价值的部分才升级为事件（Incident）。即：**告警不一定成为事件，事件一般源自告警**（也可能源自情报或人工上报）。\n\n## 一句话总结\n\n**IOC 是线索，TTP 是手法，ATT&CK Technique 是手法的标准编号，告警是检测器的喊话，事件是确认要处理的案件。**\n\n以上为概念性说明，不涉及本环境的实际数据查询。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "eaef351e-261a-4422-bbfd-51b2fb0dcba7"
+    }
+  ]
+}

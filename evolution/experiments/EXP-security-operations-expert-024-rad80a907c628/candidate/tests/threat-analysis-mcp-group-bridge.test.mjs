@@ -1,13 +1,36 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import test, { after } from 'node:test'
 import { createServer } from 'node:http'
 import { createRequire } from 'node:module'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { mkdtemp, readFile, rm } from 'node:fs/promises'
+import { mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { apply as applyMcpManager } from '../dsh/managed/mcp-manager/index.mjs'
+import { pathToFileURL } from 'node:url'
+// 使用启动器挂载的共享源码与构建适配，不使用 Candidate 中停用的历史副本。
+assert.ok(process.env.HARNESS_PROGRAM_ROOT, '集成测试需设置 HARNESS_PROGRAM_ROOT，指向程序仓库')
+const pluginRoot = join(process.env.HARNESS_PROGRAM_ROOT, 'platform/plugin')
+const programRequire = createRequire(join(pluginRoot, 'package.json'))
+const { build } = programRequire('esbuild')
+const managerDirectory = await mkdtemp(join(tmpdir(), 'threat-mcp-manager-'))
+after(() => rm(managerDirectory, { recursive: true, force: true }))
+await symlink(join(pluginRoot, 'node_modules'), join(managerDirectory, 'node_modules'), 'dir')
+const buildSource = await readFile(join(pluginRoot, 'build.mjs'), 'utf8')
+const adapterStart = buildSource.indexOf('export const managerSource =')
+const adapterEnd = buildSource.indexOf('\nconst { name } =', adapterStart)
+assert.ok(adapterStart > 0 && adapterEnd > adapterStart)
+const adapterFile = join(managerDirectory, 'adapter.mjs')
+await writeFile(adapterFile, `import { readFile } from 'node:fs/promises'; import { resolve as pathResolve } from 'node:path';
+const resolve = (...parts) => pathResolve(${JSON.stringify(pluginRoot)}, ...parts);
+` + buildSource.slice(adapterStart, adapterEnd).replace(
+  /fileURLToPath\(new URL\('..\/..\/plugins\/mcp-manager', import.meta.url\)\)/,
+  JSON.stringify(join(process.env.HARNESS_PROGRAM_ROOT, 'plugins/mcp-manager'))))
+const { managerSources } = await import(pathToFileURL(adapterFile))
+const managerFile = join(managerDirectory, 'manager.mjs')
+await build({ stdin: { contents: "export * from 'harness-mcp-manager-server'", resolveDir: pluginRoot, loader: 'ts' },
+  outfile: managerFile, bundle: true, platform: 'node', format: 'esm', packages: 'external', plugins: [managerSources] })
+const { apply: applyMcpManager } = await import(pathToFileURL(managerFile))
 
 import {
   LOGICAL_MAPPINGS,
@@ -27,7 +50,8 @@ function discovery(selected = LOGICAL_MAPPINGS) {
   const resources = []
   const resourceTemplates = []
   for (const item of selected) {
-    if (item.target.kind === 'tool') tools.push({ name: `${item.target.sourceId.replaceAll('_', '_0')}__${item.target.rawName}`, inputSchema: { type: 'object' } })
+    if (item.target.kind === 'tool') tools.push({ name: item.target.rawName, inputSchema: { type: 'object' },
+      _meta: { 'io.deepseek.dsh/mcp-group-tool': { serverId: item.target.sourceId, kind: 'tool', sourceName: item.target.rawName } } })
     else if (item.target.kind === 'resource') resources.push({
       name: item.target.name, uri: `mcp-group:/threat-analysis-runtime/${item.target.sourceId}/r/${Buffer.from(`https://soc.example/resources/${item.target.name}`).toString('base64url')}`,
     })
@@ -135,6 +159,25 @@ test('手工预检固定为 18 项 SOC，报告工具缺失不阻断', async () 
     await bridge.close()
   }
   assert.equal(client.closed, 1)
+})
+
+test('工具映射使用来源元数据，不猜测前缀且拒绝缺失、错误或重复身份', async () => {
+  const selected = LOGICAL_MAPPINGS.filter(item => item.tool.endsWith('__get_correlate_incident_judge_pending'))
+  const source = discovery(selected)
+  source.tools[0].name = 'published_pending'
+  const active = await open('pending', source)
+  try {
+    const item = selected[0]
+    await invoke(active.bridge, { resource: item.resource, tool: item.tool, args: {} })
+    assert.equal(active.client.calls[0][1], 'published_pending')
+  } finally { await active.bridge.close() }
+  for (const mode of ['missing', 'wrong-source', 'duplicate']) {
+    const invalid = discovery(selected)
+    if (mode === 'missing') delete invalid.tools[0]._meta
+    if (mode === 'wrong-source') invalid.tools[0]._meta['io.deepseek.dsh/mcp-group-tool'].serverId = 'another-source'
+    if (mode === 'duplicate') invalid.tools.push({ ...invalid.tools[0], name: 'another_public_name' })
+    await assert.rejects(open('pending', invalid))
+  }
 })
 
 test('pending 运行只预检待研判入口，手工运行缺少任一 SOC 映射即失败', async () => {

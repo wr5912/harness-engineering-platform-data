@@ -1,0 +1,83 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "要求1已满足：被测 Session 通过真实工具回执核对了 inspection 目录（两次 list_mcp_resources、一次 list_mcp_resource_templates 均返回 server is disconnected），并说明能力缺口、未承诺自动执行。要求2明确不满足：回答自述未调用 schedule_create、未创建任何每 10 分钟提醒，因此不存在真实回执的提醒标识、周期规则与下次到期时间，也无从核对。要求3、4、5 依赖尚未发生的到期消息、requestId/runId 续查与巡检回执，本轮无任何相关真实回执，证据不足，故为 unknown。整体因要求2失败判定 failed。",
+    "requirements": [
+      {
+        "requirement": "1. 核对真实目录的设备在线状态模板与原生 Schedule 可用性。不可用时说明能力缺口，不承诺自动执行。",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 8
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "2. 创建每隔 10 分钟执行一次的本会话提醒，保存用户要求的全量范围和业务输入；核对真实回执的标识、周期规则及下次到期时间，明确尚未执行。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "3. 到期消息须可追溯到已登记的真实提醒和到期授权；每次根据当时目录与原全量范围重新准备，不将上次展开后的设备列表固定为范围。多条提醒保留各自的标识和到期时间。",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "4. 同一到期重试复用稳定 requestId，取得实际 runId 后只续查原运行。核对 scopeLabel、设备数量与证据完整性。",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "5. 需要真实到期消息及巡检回执才证明自动执行；仅创建或投递成功只证明对应阶段。历史 Run 按冻结口径保留。",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-646d5909-f7aa-4aef-9ee7-116cfc0d9e8f",
+    "workspace_id": "f892dd9e-6f10-48d8-8327-c0d806d7de78",
+    "session_title": "评审 U-INS-005",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-CONTRACT",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 的研判在子智能体调用 analyze_threat_incident 时于 MCP 连接层报错（is_error=true，trusted platform MCP group connection is unavailable），冻结五源证据、真实模型推理、机械校验、四阶段执行、摘要/报告保存与下载链接均未发生，回答本身也明确承认无报告可交付。核心要求（真实模型 JSON 与校验通过、原始响应与校验结果保留、四阶段与 run_id 保存及下载返回）明确不满足，因此本 Case 判为 failed；关于模型输出质量的细则因不存在模型输出而无法验证，标为 unknown。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-CONTRACT"
+}

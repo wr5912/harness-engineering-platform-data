@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ASSET-ALERTS-FAIL",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：预期要求先执行受控存在资产查询并以其真实返回 ID 查询告警，且告警应呈现 HTTP 200 / 业务 code 503 的业务失败。实际回执显示 get_soc_asset_by_asset_id 返回 code 500『资产 9108 不存在或已删除』，list_soc_asset 与 search_graph_assets 均返回空集，未取得任何『存在资产』及其返回 ID；随后的告警查询直接使用 vid=asset:9108（非实际返回 ID），且 get_graph_node_detail 返回 code 200『操作成功』、incidents 全 0，既无 503 也未被判为业务失败，反而被当作事实陈述。第 1、2 项核心要求因此明确不满足。回答在未完成范围披露、不重试不换资产不写入、保留失败回执与输入摘要、不把 Mock/受控样本声称为在线服务事实等方面基本做到，但不足以改变整体 failed 结论。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ASSET-ALERTS-FAIL"
+}

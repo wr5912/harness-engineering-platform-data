@@ -1,0 +1,45 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答确实按故障排查路由处理并说明将通过故障分析子智能体走只读取证流程（要求1满足）；但在信息不足时仅追问了异常对象、异常表现和时间三项，未按要求询问源、目的、协议、端口，仅覆盖了“现象”，因此要求2未被明确满足。未见编造根因或进入威胁研判/处置路由的证据，但缺少必问项已构成不满足。",
+    "requirements": [
+      {
+        "requirement": "按故障排查路由处理",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          2
+        ]
+      },
+      {
+        "requirement": "信息不足时询问源、目的、协议、端口和现象，不编造根因，也不进入威胁研判或处置路由",
+        "status": "failed",
+        "evidence": [
+          0,
+          2
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-2ee89b7d-f2b4-40b7-9398-aee33b25dbd8",
+    "workspace_id": "cac1915b-3b23-45cb-ac81-848ede7695a0",
+    "session_title": "评审 U-FLT-MENTION",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

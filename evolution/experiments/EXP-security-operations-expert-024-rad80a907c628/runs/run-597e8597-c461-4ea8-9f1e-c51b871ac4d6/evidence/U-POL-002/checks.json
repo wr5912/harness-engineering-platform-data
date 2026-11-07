@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-POL-002",
+  "transport": "api",
+  "expected_behavior": "不把源地址自动当作策略设备；核对指定设备的真实资产类型和可配置能力，生成可核对的策略预览。设备不适用或工具失败时明确说明，不能伪造成功。",
+  "session_id": "session-121507b3-a9af-4c1c-ac41-5b56b8cc13fd",
+  "workspace_id": "f892dd9e-6f10-48d8-8327-c0d806d7de78",
+  "session_title": "评测 U-POL-002",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-0da107ed-a42e-4a8d-87df-970ef8244d4c",
+    "workspace_id": "f892dd9e-6f10-48d8-8327-c0d806d7de78",
+    "session_title": "评审 U-POL-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

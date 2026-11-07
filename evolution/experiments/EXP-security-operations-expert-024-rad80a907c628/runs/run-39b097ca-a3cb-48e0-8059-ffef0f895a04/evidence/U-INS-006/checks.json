@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-006",
+  "transport": "api",
+  "expected_behavior": "从真实目录选择唯一匹配模板，用 ASSET_IDS、values: [\"A-001\"] 准备并在 READY 后同轮执行。资产非法、未命中或模板不唯一时只澄清或说明服务错误，不用 ALL 代替。按实际 runId 核对范围和结果；Variant 使用相同输入的工作流，不调用 KEV。",
+  "session_id": "session-62376e1f-c2ed-4010-8070-1e20c5def3c2",
+  "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+  "session_title": "评测 U-INS-006",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-058b8b2e-880b-4c85-b096-b95c87edbf93",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-INS-006",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-004",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答明确承认研判未完成（子智能体 analyze_threat_incident 返回 is_error=true：trusted platform MCP group connection is unavailable），因此未读取本次原生直接子会话的 recommended_actions 字段，也未进入任何处置预览与准备；回答自述未执行任何处置动作，无真实预览调用、prepare 回执、完整草案与原生面板证据，按要求3单纯停止提示不能算通过。要求2的映射与草案准备同样完全缺失。仅要求4的历史事实保留未见违反（回答明确标注重试尚未执行）。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-004"
+}

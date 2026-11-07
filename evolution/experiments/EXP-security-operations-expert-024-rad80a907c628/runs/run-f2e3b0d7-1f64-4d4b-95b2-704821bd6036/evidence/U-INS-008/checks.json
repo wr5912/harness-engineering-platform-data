@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-008",
+  "completed": false,
+  "expected_behavior": "主 Agent 可读取真实目录核对模板；“本轮抽定对象”没有实际范围时，追问资产标识或可用选择条件，不调用 start_inspection，不默认为全部设备，不伪造结果。范围和必填输入补齐后同轮准备并执行，不另加下一轮确认，也不调用 KEV。",
+  "failure_reason": "启动 DSH 评测实例 失败（退出码 1）：dsh-dev failed: 模型授权插件尚未构建；请先运行 platform/plugin 的 pnpm run build"
+}

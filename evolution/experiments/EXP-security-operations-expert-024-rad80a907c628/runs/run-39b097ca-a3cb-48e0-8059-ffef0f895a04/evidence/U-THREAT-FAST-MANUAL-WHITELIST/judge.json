@@ -1,0 +1,76 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答与工具回执显示研判在取证入口即被阻断：analyze_threat_incident 返回原生 is_error=true（trusted platform MCP group connection is unavailable），本 Session 内不存在任何名单/白名单取证回执，也没有 fast_classification 输出、verdict/matches、llm_invoked=false/model=null 的内层结果、SOC resultJson、摘要或报告保存回执。要求2、3、4所依赖的关键数据在被测 Session 的 tool/result 中完全缺失，无法视为满足；要求1的名单条件也只能以真实回执为准，而回执为错误状态。回答本身如实报告故障、未编造结论或保存成功，但工具通道故障只能解释为何无法验证，不能改变冻结要求，故整体判定未通过。",
+    "requirements": [
+      {
+        "requirement": "核对本次模板与真实名单来源：本输入为后续复测的规范化模板，不声称重建用户已完成Run的完整消息。用指定threat-analysis-test001实例，不改既定模型策略、基础提示词、取证或校验器；名单条件以本轮实际服务回执为准，不以用户口头白名单标签代替证据。",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "验证内层快速分支：当名单完整、事件直接实体仅单侧命中白名单时，应走fast_classification，保留原快速输出verdict/matches；内层llm_invoked=false、model=null，不产生内层模型制品，不进入新增规则优化阶段，不生成新版规则建议或规则阶段模型调用。主会话的正常模型调用与内层研判不同，不用本业务Run推断外层实际模型。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "核对不适用条件及名单证据：若名单不完整、双侧命中或不满足直接实体条件，应按实际走完整研判并记录原因，不能强判快速分支通过。核对名单条目身份、实体值、证据引用、查询时间与真实快照；接口未返回版本时保留null，不自造版本。按名单规则输出误报不等于已证实无威胁，须保留未完整行为研判的说明。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "核对同一结果的交付与保存：快判原始输出、本地结果和SOC resultJson一致，摘要按原投影与matches一致；报告HTML与提交内容一致，摘要和报告保存各按真实回执。下载与主会话展示未回读时不宣称已验证。",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-72b813e6-3023-439f-ad66-0cdb3885c948",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-THREAT-FAST-MANUAL-WHITELIST",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

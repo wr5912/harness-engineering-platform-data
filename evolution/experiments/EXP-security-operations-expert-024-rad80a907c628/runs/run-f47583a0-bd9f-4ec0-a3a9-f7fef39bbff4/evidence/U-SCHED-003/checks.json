@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-SCHED-003",
+  "transport": "api",
+  "expected_behavior": "与“每隔 10 分钟研判”等价：`every_seconds: 600`，标题 `自动威胁研判-每10分钟`；“从 SOC 拉取”是到期后固定行为，不额外追问参数。",
+  "session_id": "session-3fa9b88a-d265-44e7-a0ad-39aff92af5d7",
+  "workspace_id": "10935fca-d5eb-4ea6-acb3-b94a05ac761b",
+  "session_title": "评测 U-SCHED-003",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-8cdda8e2-bd2b-470b-8201-77fc3cd5cbd9",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

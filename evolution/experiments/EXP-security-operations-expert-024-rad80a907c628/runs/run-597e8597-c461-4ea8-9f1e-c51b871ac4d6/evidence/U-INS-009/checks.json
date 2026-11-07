@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-009",
+  "transport": "api",
+  "expected_behavior": "从本轮真实目录选择唯一匹配模板。用户未指定覆盖范围时，按任务接口合同使用其默认范围，由真实准备回执核对实际范围，不擅自扩大为全部设备；模板不唯一或存在必填缺项时只澄清缺项。准备就绪后同轮尝试启动，取得真实运行编号才表示已启动。若服务拒绝或未给出运行编号，说明当前未取得运行回执、受理状态待核对，不要求再次确认、不承诺确认后一定可启动、不重复提交。没有真实运行回执不能判业务执行通过；其他正常业务仍可使用。旧 Run 保留原冻结口径。",
+  "session_id": "session-d6eae68d-b092-4878-8a66-0c48361e007d",
+  "workspace_id": "f892dd9e-6f10-48d8-8327-c0d806d7de78",
+  "session_title": "评测 U-INS-009",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-b4ce2cd2-5c12-4cb3-bb2a-d80d94113d29",
+    "workspace_id": "f892dd9e-6f10-48d8-8327-c0d806d7de78",
+    "session_title": "评审 U-INS-009",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-004",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答在同一 Session 内执行了真实只读查询（IP 资产解析、图谱路径、可达性、同子网资产检索、双向主机对端口流量、交叉信号、合规违规），关键数据均有一致的 tool/result 回执支撑（可达性 verdict=UNKNOWN/nat_snapshot_pending、路径 reason=SRC_NOT_FOUND、两 IP 资产查询 total=0、同子网其他 IP 有登记资产等）。回答明确给出未知项与证据缺口（端点未登记、NAT 快照未就绪、缺少切换时间、缺少主备状态/策略同步/设备配置查询能力），区分事实与推断，未对原因排序或标注置信度，且未执行任何策略变更或处置，符合预期要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-004"
+}

@@ -1,0 +1,71 @@
+{
+  "inputs": [
+    "创建一个每隔 30 分钟威胁研判的定时任务。",
+    "删除这个定时研判任务。"
+  ],
+  "assistant_texts": [
+    "已成功创建每隔 30 分钟的威胁研判定时任务。\n\n**任务详情：**\n- **任务 ID**：`schedule-2e42d462-12e8-4f61-b0c8-6ac455b6c2e3`\n- **标题**：自动威胁研判 - 每 30 分钟\n- **执行频率**：每 30 分钟（1800 秒）\n- **触发 Prompt**：`{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}`\n- **时区**：Asia/Shanghai（默认）\n- **当前状态**：scheduled（定时任务已创建，尚未执行）\n- **下次到期时间**：2026-10-28T07:26:37 UTC\n\n**说明：**\n- 该定时任务由 DSH 的调度系统管理，到期后会自动触发威胁研判子智能体进行一次性事件研判（每次最多 1 条事件）\n- 任务创建本身只是定时信号，实际的威胁研判执行需要等待下一次到期后由受信桥调用 `analyze_pending_threat_incidents`\n- 如需修改或删除此任务，请告知我",
+    "定时任务已删除。\n\n**删除信息：**\n- **任务 ID**：`schedule-2e42d462-12e8-4f61-b0c8-6ac455b6c2e3`\n- **状态**：已删除（deleted: true）\n\n该定时研判任务已停止，不会再到期触发威胁研判。"
+  ],
+  "session_id": "session-1b59d1ff-09bd-4261-ba97-744ba9f4e715",
+  "turns": [
+    {
+      "assistant_text": "已成功创建每隔 30 分钟的威胁研判定时任务。\n\n**任务详情：**\n- **任务 ID**：`schedule-2e42d462-12e8-4f61-b0c8-6ac455b6c2e3`\n- **标题**：自动威胁研判 - 每 30 分钟\n- **执行频率**：每 30 分钟（1800 秒）\n- **触发 Prompt**：`{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}`\n- **时区**：Asia/Shanghai（默认）\n- **当前状态**：scheduled（定时任务已创建，尚未执行）\n- **下次到期时间**：2026-10-28T07:26:37 UTC\n\n**说明：**\n- 该定时任务由 DSH 的调度系统管理，到期后会自动触发威胁研判子智能体进行一次性事件研判（每次最多 1 条事件）\n- 任务创建本身只是定时信号，实际的威胁研判执行需要等待下一次到期后由受信桥调用 `analyze_pending_threat_incidents`\n- 如需修改或删除此任务，请告知我",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ae0a5680-91a2-4e98-8dfe-95dffc489849"
+    },
+    {
+      "assistant_text": "定时任务已删除。\n\n**删除信息：**\n- **任务 ID**：`schedule-2e42d462-12e8-4f61-b0c8-6ac455b6c2e3`\n- **状态**：已删除（deleted: true）\n\n该定时研判任务已停止，不会再到期触发威胁研判。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "2a7992c1-606e-4c4a-b252-8a3c72db105b"
+    }
+  ]
+}

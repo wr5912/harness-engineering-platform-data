@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-EMG-002",
+  "completed": false,
+  "expected_behavior": "1. 准备防火墙动作：目标确认为防火墙后，使用 `block-ip` 与明确的 `params.src_ip`、`params.rule_name` 准备草案；冻结动作必须仍为 `block-ip`，不能变为主机侧 `host-block-ip`。\n\n2. 核对草案和确认边界：只以实际 Workbench 回执报告草案或能力不可用，不确认、不声称已封禁。\n\n   注：当前 `mock_service` 仅支持主机动作，此 Case 的防火墙业务效果需真实目标验证。",
+  "failure_reason": "evaluation-interrupted"
+}

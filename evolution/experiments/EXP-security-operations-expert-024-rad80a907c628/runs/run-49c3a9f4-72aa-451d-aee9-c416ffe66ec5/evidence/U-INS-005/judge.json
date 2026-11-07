@@ -1,0 +1,149 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测 Session 中 inspection 服务器断开（真实错误回执），设备在线状态模板无法核对；原生 schedule_list 返回空数组，但被测回答未调用 schedule_create 创建每 10 分钟提醒，仅有计划性说明。因此“创建提醒并核对真实回执标识、周期与下次到期时间”明确未满足，其后的到期消息追溯、requestId/runId 续查、scopeLabel 核对及历史 Run 保留等阶段均无真实回执可证，整体判定不通过。",
+    "requirements": [
+      {
+        "requirement": "1. 核对真实目录的设备在线状态模板与原生 Schedule 可用性",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 16
+          }
+        ]
+      },
+      {
+        "requirement": "不可用时说明能力缺口，不承诺自动执行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "2. 创建每隔 10 分钟执行一次的本会话提醒，保存用户要求的全量范围和业务输入",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 16
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "核对真实回执的标识、周期规则及下次到期时间，明确尚未执行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 16
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "3. 到期消息须可追溯到已登记的真实提醒和到期授权",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 16
+          }
+        ]
+      },
+      {
+        "requirement": "每次根据当时目录与原全量范围重新准备，不将上次展开后的设备列表固定为范围",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "多条提醒保留各自的标识和到期时间",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 16
+          }
+        ]
+      },
+      {
+        "requirement": "4. 同一到期重试复用稳定 requestId，取得实际 runId 后只续查原运行",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 16
+          }
+        ]
+      },
+      {
+        "requirement": "核对 scopeLabel、设备数量与证据完整性",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 16
+          }
+        ]
+      },
+      {
+        "requirement": "5. 需要真实到期消息及巡检回执才证明自动执行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "仅创建或投递成功只证明对应阶段",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "历史 Run 按冻结口径保留",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 16
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-9165102a-eec2-41c3-851c-dad09762af2d",
+    "workspace_id": "80588fa1-9bb9-482a-9f06-bac08366c707",
+    "session_title": "评审 U-INS-005",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

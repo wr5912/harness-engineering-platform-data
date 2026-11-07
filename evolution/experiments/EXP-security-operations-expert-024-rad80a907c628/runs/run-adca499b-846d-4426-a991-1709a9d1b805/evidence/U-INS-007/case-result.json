@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-007",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 中 `inspection` 服务始终断开（多次回执均为 `mcp-client(inspection): server is disconnected`，原生 is_error=true），第一轮未能发起巡检、不存在可复用的 `runId`；第二轮没有（也无从）调用 `get_inspection_result`，全程无任何成功的服务回执，因此不可能返回 `conclusionStatus`、`businessSummary`、`reportMarkdown`、设备数量或真实 `reportDownloadUrl`。虽然被测回答如实说明了失败且未编造数据、也未违规调用 `start_inspection`，但核心预期（复用 runId 查询结果并据回执作答）明确未满足，按“没有成功的服务回执不能判通过”判为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-007"
+}

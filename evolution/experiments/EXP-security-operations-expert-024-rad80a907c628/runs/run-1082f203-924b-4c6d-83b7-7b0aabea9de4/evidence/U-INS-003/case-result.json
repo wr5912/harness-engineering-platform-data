@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-003",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答为单个可解析 JSON 对象，事实部分逐字保留了输入中的 39、12、4、2 四项数据及单位，未新增输入之外的动态数值；辅助研判与未执行建议被明确分区且标注尚未执行，与事实区分清晰。索引 0 为回答原文，索引 2 为同 Session 唯一工具回执（security-investigation Skill 内容，原生 is_error=false），未见任何巡检服务调用，满足不调用巡检服务的要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-003"
+}

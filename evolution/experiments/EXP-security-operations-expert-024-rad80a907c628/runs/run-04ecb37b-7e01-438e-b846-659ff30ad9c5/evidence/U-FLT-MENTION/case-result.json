@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-MENTION",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：路由处理得到满足：被测回答声明按故障排查路由委派故障分析子智能体，且同会话 tool/result 显示 fault-analysis skill 成功加载（is_error=false），未进入写处置或威胁研判。但信息询问环节不满足冻结要求：回答仅追问异常对象、异常现象和时间范围，未询问源、目的、协议、端口这四项关键参数，因此“信息不足时询问源、目的、协议、端口和现象”整体未达成，判定该项失败。未编造根因一项得到证据支持，但不改变整体判定。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-MENTION"
+}

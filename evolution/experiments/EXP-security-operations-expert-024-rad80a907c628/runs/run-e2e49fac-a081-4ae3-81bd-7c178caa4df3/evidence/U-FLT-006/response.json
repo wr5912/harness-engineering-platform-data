@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "变更策略后业务访问失败，分析是否由策略变化、主备设备策略漂移或安全设备 172.16.138.214 配置漂移引起，并检查是否影响业务访问。"
+  ],
+  "assistant_texts": [
+    "四个子 Agent 正在并行取证，继续等待结果返回。"
+  ],
+  "session_id": "session-fbc5f19c-9692-41e4-83c5-278a4d49ae52",
+  "turns": [
+    {
+      "assistant_text": "四个子 Agent 正在并行取证，继续等待结果返回。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "36be7755-84a2-4a7c-b5bb-733aca250ea2"
+    }
+  ]
+}

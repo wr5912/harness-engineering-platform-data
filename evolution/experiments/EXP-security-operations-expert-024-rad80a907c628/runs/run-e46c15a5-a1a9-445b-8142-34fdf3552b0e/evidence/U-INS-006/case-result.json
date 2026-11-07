@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：巡检 MCP 服务器两次回执均为原生 is_error 的 server is disconnected，本轮未查询目录、未选定模板、未发起巡检、也没有任何 runId，因此“从真实目录选定唯一模板并以 ASSET_IDS/values:[\"A-001\"] 在 READY 后同轮执行”和“按实际运行标识核对范围与结果”两项冻结要求均未完成；回答对服务错误的说明属实且未用 ALL 替代范围，仅满足第二项澄清要求，Skill 限制只能解释失败，不能改写要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-006"
+}

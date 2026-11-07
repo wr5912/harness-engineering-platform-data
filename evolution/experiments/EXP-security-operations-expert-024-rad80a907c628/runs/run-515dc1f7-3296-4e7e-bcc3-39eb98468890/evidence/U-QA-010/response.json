@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "如何创建巡检任务、查看报告或发起响应处置？我需要什么权限？"
+  ],
+  "assistant_texts": [
+    "## 结论\n\n这三类操作在本工作区分别走不同路线，权限由 Runtime 强制决定，不由 Prompt 或提问本身授予。**本轮我实际核验到：巡检（inspection）MCP 服务当前处于断开状态，因此此刻无法查询巡检目录或发起巡检**；下面的流程说明来自工作区规则与 Skill，属于能力说明，不是已执行的操作。\n\n## 1. 创建巡检任务、查看报告（巡检路线）\n\n正常流程（`security-inspection` Skill 规定）：\n\n1. **查目录**：先调用无参数的巡检目录查询工具，拿到已发布、绑定启用且版本一致的模板（名称、巡检项、`taskId`、`definitionVersion`）。只问\"有哪些巡检项\"时到此为止。\n2. **发起**：选定唯一适用模板后，调用巡检发起工具，传 `taskId`、`definitionVersion` 和本次请求稳定的 `requestId`；异步返回 `runId`。巡检的 3 个 MCP 工具**不创建任务**，只是发起一次运行。\n3. **查报告**：保存 `runId`，只用它轮询结果查询工具。运行中状态未结束、`reportDownloadUrl` 为空，不得重复发起。\n4. **报告就绪后**：按服务返回的 `conclusionStatus`、`businessSummary`、完整 `reportMarkdown` 回答；只有 `reportDownloadUrl` 非空时才原样提供下载链接，不自行拼接 URL。`PARTIAL` 表示有证据缺口，不等于全部正常。\n\n**周期巡检**：需要你明确给出巡检项、范围和周期，且当前 Runtime 实际开放 DSH `schedule_create` 才能创建提醒；到期后每次单独发起一次巡检。提醒投递 ≠ 巡检已执行。\n\n## 2. 发起响应处置\n\n有两条不同路线，不能混用：\n\n- **受信响应规划（response-planning）**：只由 Runtime 在**模型外**完成身份、租户、会话、授权和上下文冻结后，以专用 route 委派；模型侧零工具、零副作用，只在冻结候选内规划一次。确认、保存、执行、监控、效果验证都由外部响应生命周期负责——普通用户消息无法建立这条路线。\n- **应急指令（emergency-action）**：单动作、单目标处置（防火墙 block-ip/unblock-ip、主机 host-* 等）。我准备草案并展示冻结摘要；单独发送\"确认执行\"时，只有**受信应急确认插件**能绑定本会话最新有效草案并签名提交，模型不能直接确认或调用 SOC 写接口。排队/受理 ≠ 执行成功。\n- 另有**策略配置**：新增网络访问策略走 DRAFT → 展示配置预览 → 单独发送\"执行\"由受信策略确认插件处理；DRAFT 和确认受理都不等于已生效。\n\n## 3. 我需要什么权限？\n\n- **总原则**：Prompt、Skill、Preset 只描述行为；实际权限由 DSH Profile、Guard、工具过滤器和 MCP 绑定决定，工具结果与审批是权威。\n- **巡检**：需要 inspection 来源的 3 个巡检工具对主 Agent 可见；周期巡检额外需要 Runtime 开放 `schedule_create`。\n- **响应/应急**：需要对应 MCP 工具在 `role-tool-matrix.yaml` 中绑定可见；未列入矩阵的工具一律拒绝。确认环节需要受信确认插件 + 审批（本 Session 审批策略为 `ask`，需有人应答）。\n- **委派**：威胁研判、故障排查、响应规划分别只能走 `delegate_threat_analysis` / `delegate_fault_analysis` / `delegate_response_planning`，深度最多 1；15 个 SOC 只读工具只给故障子 Agent；`delegate_response_planning` 默认被 Guard 拒绝，需模型外受信 Gate 开启。\n- **Shell、PowerShell、网络搜索、直接处置、跨租户访问不可用**；`analyze_pending_threat_incidents` 只由受信 Schedule 桥调用。\n\n## 本轮实际状态与缺口（事实）\n\n- `inspection` MCP 服务断开（`server is disconnected`），巡检目录查询、发起、结果查询**本轮均不可用**，我未发起任何巡检。\n- `sec-ops` 服务器无可见资源；本会话也未发现其他可用巡检资源。\n- 本轮尝试加载 `emergency-action` Skill 被跨能力限制拦截，故未进入应急路线。\n- **尚未执行的建议**：待 inspection 服务恢复后，可先查巡检目录确认可用模板；需要处置时请单独发起一轮应急指令或策略请求（同一轮不交叉）。"
+  ],
+  "session_id": "session-6d2a352b-266b-43e0-bcbe-7c1a081e44cd",
+  "turns": [
+    {
+      "assistant_text": "## 结论\n\n这三类操作在本工作区分别走不同路线，权限由 Runtime 强制决定，不由 Prompt 或提问本身授予。**本轮我实际核验到：巡检（inspection）MCP 服务当前处于断开状态，因此此刻无法查询巡检目录或发起巡检**；下面的流程说明来自工作区规则与 Skill，属于能力说明，不是已执行的操作。\n\n## 1. 创建巡检任务、查看报告（巡检路线）\n\n正常流程（`security-inspection` Skill 规定）：\n\n1. **查目录**：先调用无参数的巡检目录查询工具，拿到已发布、绑定启用且版本一致的模板（名称、巡检项、`taskId`、`definitionVersion`）。只问\"有哪些巡检项\"时到此为止。\n2. **发起**：选定唯一适用模板后，调用巡检发起工具，传 `taskId`、`definitionVersion` 和本次请求稳定的 `requestId`；异步返回 `runId`。巡检的 3 个 MCP 工具**不创建任务**，只是发起一次运行。\n3. **查报告**：保存 `runId`，只用它轮询结果查询工具。运行中状态未结束、`reportDownloadUrl` 为空，不得重复发起。\n4. **报告就绪后**：按服务返回的 `conclusionStatus`、`businessSummary`、完整 `reportMarkdown` 回答；只有 `reportDownloadUrl` 非空时才原样提供下载链接，不自行拼接 URL。`PARTIAL` 表示有证据缺口，不等于全部正常。\n\n**周期巡检**：需要你明确给出巡检项、范围和周期，且当前 Runtime 实际开放 DSH `schedule_create` 才能创建提醒；到期后每次单独发起一次巡检。提醒投递 ≠ 巡检已执行。\n\n## 2. 发起响应处置\n\n有两条不同路线，不能混用：\n\n- **受信响应规划（response-planning）**：只由 Runtime 在**模型外**完成身份、租户、会话、授权和上下文冻结后，以专用 route 委派；模型侧零工具、零副作用，只在冻结候选内规划一次。确认、保存、执行、监控、效果验证都由外部响应生命周期负责——普通用户消息无法建立这条路线。\n- **应急指令（emergency-action）**：单动作、单目标处置（防火墙 block-ip/unblock-ip、主机 host-* 等）。我准备草案并展示冻结摘要；单独发送\"确认执行\"时，只有**受信应急确认插件**能绑定本会话最新有效草案并签名提交，模型不能直接确认或调用 SOC 写接口。排队/受理 ≠ 执行成功。\n- 另有**策略配置**：新增网络访问策略走 DRAFT → 展示配置预览 → 单独发送\"执行\"由受信策略确认插件处理；DRAFT 和确认受理都不等于已生效。\n\n## 3. 我需要什么权限？\n\n- **总原则**：Prompt、Skill、Preset 只描述行为；实际权限由 DSH Profile、Guard、工具过滤器和 MCP 绑定决定，工具结果与审批是权威。\n- **巡检**：需要 inspection 来源的 3 个巡检工具对主 Agent 可见；周期巡检额外需要 Runtime 开放 `schedule_create`。\n- **响应/应急**：需要对应 MCP 工具在 `role-tool-matrix.yaml` 中绑定可见；未列入矩阵的工具一律拒绝。确认环节需要受信确认插件 + 审批（本 Session 审批策略为 `ask`，需有人应答）。\n- **委派**：威胁研判、故障排查、响应规划分别只能走 `delegate_threat_analysis` / `delegate_fault_analysis` / `delegate_response_planning`，深度最多 1；15 个 SOC 只读工具只给故障子 Agent；`delegate_response_planning` 默认被 Guard 拒绝，需模型外受信 Gate 开启。\n- **Shell、PowerShell、网络搜索、直接处置、跨租户访问不可用**；`analyze_pending_threat_incidents` 只由受信 Schedule 桥调用。\n\n## 本轮实际状态与缺口（事实）\n\n- `inspection` MCP 服务断开（`server is disconnected`），巡检目录查询、发起、结果查询**本轮均不可用**，我未发起任何巡检。\n- `sec-ops` 服务器无可见资源；本会话也未发现其他可用巡检资源。\n- 本轮尝试加载 `emergency-action` Skill 被跨能力限制拦截，故未进入应急路线。\n- **尚未执行的建议**：待 inspection 服务恢复后，可先查巡检目录确认可用模板；需要处置时请单独发起一轮应急指令或策略请求（同一轮不交叉）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "5c994e42-ae82-4d70-b7e6-e8763ddb30ee"
+    }
+  ]
+}

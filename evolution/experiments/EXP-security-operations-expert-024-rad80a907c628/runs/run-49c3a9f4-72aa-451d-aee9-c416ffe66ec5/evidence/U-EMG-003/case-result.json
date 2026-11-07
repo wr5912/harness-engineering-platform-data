@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-003",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：被测会话在缺少 emergency-action 六项草案工具的情况下停止路线并如实说明缺口（index 0、10、12），未展示任何确认入口，也没有出现任何 prepare/revise/submit 类调用，因此“说明缺口不展示确认入口”和“不得提交解封”有直接证据支持；回答中列出的动作与 rule_name 也确实是 unblock-ip 和原规则 UUID，未出现旧规则名、新生成名或 host-unblock-ip。但本次没有任何 prepare 调用及其回执，也不存在可回读的草案，索引证据中也没有工具目录/工具清单类回执能证实六项工具确实缺失或确实可用，因此“实际使用 unblock-ip 与逐值 UUID”和“草案动作、目标、UUID 回读一致”两项既不能判为满足、也未见明确违反，属证据不足；未全部明确满足，故整体为 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-EMG-003"
+}

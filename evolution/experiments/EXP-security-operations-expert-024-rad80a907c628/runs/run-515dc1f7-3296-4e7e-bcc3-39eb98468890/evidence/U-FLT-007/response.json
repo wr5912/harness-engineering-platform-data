@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "分析资产 172.16.2.103 的主机安全配置异常，并排查资产未纳管或关联对象异常。"
+  ],
+  "assistant_texts": [
+    "## 排查结论\n\n在本次授权的只读查询范围内，**172.16.2.103 未匹配到任何资产登记记录**，因此主机安全配置类证据无法按对象取得；覆盖/纳管查询也因缺少 assetId 无法按对象执行。以上仅说明**本次范围内未命中记录**，不构成\"资产不存在\"或\"未纳管\"的确定结论。\n\n### 事实（附来源）\n\n**1. 资产解析**\n- `search_graph_assets` 关键字 172.16.2.103 → `data:[]`\n- `list_soc_asset` 按 IP / 按 keyword → `total:0`\n- `get_graph_resolve_ip_host(172.16.2.103)` → 200 但无 data 字段；对照同网段 172.16.2.102 正常返回 `assetId:9140`\n- 同网段登记资产共 3 条：9127（172.16.2.1）、9139（172.16.2.99）、9140（172.16.2.102），**列表中无 .103**\n\n**2. 主机安全配置/基线证据**\n- `get_graph_node_detail(ip:172.16.2.103)` → `metricAvailable:false`，各等级事件计数全 0，30 天趋势全 0；对照 asset:9140 节点为 `high:21, low:218`（非零）\n- `get_graph_compliance_violations(status=all)` → `data:[]`（**全局结果，未按对象过滤**）\n- inspection MCP 服务：`server is disconnected`（主机基线/检查类核心证据源不可访问）\n- 漏洞、采集配置、资产详情、业务关联四类工具必填 assetId，本次无可用 assetId，未产生该对象的补丁/基线分配证据\n\n**3. 纳管/覆盖与关联对象**\n- `get_graph_path_query`（src=dst=.103）→ `verdict:UNKNOWN, reason:SRC_NOT_FOUND`，gap：\"指定端点未登记为资产\"，`trafficEvidence:NOT_QUERIED`\n- `get_reachability_path_by_ip` → `REACHABLE, l2_same_segment`（基于网段的判定）\n- `get_graph_flow_host_pair_ports` → `data:[]`；`get_reachability_cross_signal` → 全 0\n- `get_graph_coverage` 全局 → `registered:12, collected:5, coveragePct:29`（无法归属到 .103）\n- `get_graph_coverage(assetIds=172.16.2.103)` → 500；对照 `assetIds=9140` 正常返回 → **500 属参数类型不匹配的工具错误，不计入否定证据**\n\n### 推断（未做原因判定）\n1. 四类独立查询均未返回该 IP，且解析工具对同网段 .102 正常 → 该 IP 在本次查询的资产库范围内无登记条目。\n2. 两套可达性系统观察不一致（`SRC_NOT_FOUND` vs `l2_same_segment`）：对象口径与判定依据不同，**无同一对象、同一时段的交叉流量证据**，故并列描述，不推断原因、不排序、不标置信度。\n3. 该 vid 下未取到指标与事件数据，**不等于该主机无安全事件**。\n\n### 证据缺口\n- 无 assetId → 漏洞、采集配置、按对象覆盖率无法执行\n- inspection 服务断开 → 任务 1 核心证据源缺失\n- 无按 IP 的事件检索入口 → \"关联事件\"无法枚举\n- 合规为空、覆盖率 29%、交叉信号全 0 均为**全局/非对象级**结果，不能作为 .103 的直接证据\n\n### 未执行的后续建议\n① 恢复 inspection 服务后重查主机基线/配置检查；② 先经资产发现取得该 IP 的 assetId，再查漏洞、采集配置与按对象覆盖率；③ 取得事件索引与事件 ID 后核查关联事件。以上均**尚未执行**；本次排查未做任何处置、未创建分析运行。"
+  ],
+  "session_id": "session-694d2a25-0c3d-4235-b5d5-48ddae195c0c",
+  "turns": [
+    {
+      "assistant_text": "## 排查结论\n\n在本次授权的只读查询范围内，**172.16.2.103 未匹配到任何资产登记记录**，因此主机安全配置类证据无法按对象取得；覆盖/纳管查询也因缺少 assetId 无法按对象执行。以上仅说明**本次范围内未命中记录**，不构成\"资产不存在\"或\"未纳管\"的确定结论。\n\n### 事实（附来源）\n\n**1. 资产解析**\n- `search_graph_assets` 关键字 172.16.2.103 → `data:[]`\n- `list_soc_asset` 按 IP / 按 keyword → `total:0`\n- `get_graph_resolve_ip_host(172.16.2.103)` → 200 但无 data 字段；对照同网段 172.16.2.102 正常返回 `assetId:9140`\n- 同网段登记资产共 3 条：9127（172.16.2.1）、9139（172.16.2.99）、9140（172.16.2.102），**列表中无 .103**\n\n**2. 主机安全配置/基线证据**\n- `get_graph_node_detail(ip:172.16.2.103)` → `metricAvailable:false`，各等级事件计数全 0，30 天趋势全 0；对照 asset:9140 节点为 `high:21, low:218`（非零）\n- `get_graph_compliance_violations(status=all)` → `data:[]`（**全局结果，未按对象过滤**）\n- inspection MCP 服务：`server is disconnected`（主机基线/检查类核心证据源不可访问）\n- 漏洞、采集配置、资产详情、业务关联四类工具必填 assetId，本次无可用 assetId，未产生该对象的补丁/基线分配证据\n\n**3. 纳管/覆盖与关联对象**\n- `get_graph_path_query`（src=dst=.103）→ `verdict:UNKNOWN, reason:SRC_NOT_FOUND`，gap：\"指定端点未登记为资产\"，`trafficEvidence:NOT_QUERIED`\n- `get_reachability_path_by_ip` → `REACHABLE, l2_same_segment`（基于网段的判定）\n- `get_graph_flow_host_pair_ports` → `data:[]`；`get_reachability_cross_signal` → 全 0\n- `get_graph_coverage` 全局 → `registered:12, collected:5, coveragePct:29`（无法归属到 .103）\n- `get_graph_coverage(assetIds=172.16.2.103)` → 500；对照 `assetIds=9140` 正常返回 → **500 属参数类型不匹配的工具错误，不计入否定证据**\n\n### 推断（未做原因判定）\n1. 四类独立查询均未返回该 IP，且解析工具对同网段 .102 正常 → 该 IP 在本次查询的资产库范围内无登记条目。\n2. 两套可达性系统观察不一致（`SRC_NOT_FOUND` vs `l2_same_segment`）：对象口径与判定依据不同，**无同一对象、同一时段的交叉流量证据**，故并列描述，不推断原因、不排序、不标置信度。\n3. 该 vid 下未取到指标与事件数据，**不等于该主机无安全事件**。\n\n### 证据缺口\n- 无 assetId → 漏洞、采集配置、按对象覆盖率无法执行\n- inspection 服务断开 → 任务 1 核心证据源缺失\n- 无按 IP 的事件检索入口 → \"关联事件\"无法枚举\n- 合规为空、覆盖率 29%、交叉信号全 0 均为**全局/非对象级**结果，不能作为 .103 的直接证据\n\n### 未执行的后续建议\n① 恢复 inspection 服务后重查主机基线/配置检查；② 先经资产发现取得该 IP 的 assetId，再查漏洞、采集配置与按对象覆盖率；③ 取得事件索引与事件 ID 后核查关联事件。以上均**尚未执行**；本次排查未做任何处置、未创建分析运行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "fc87d6d3-5b33-419a-acbc-1eb02c79031d"
+    }
+  ]
+}

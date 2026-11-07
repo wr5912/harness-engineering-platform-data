@@ -1,0 +1,39 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "被测回答对四条响应路线及能力层级（仅规划/草案、需受信插件确认、外部执行、仅建议）的区分完整，也明确声明本轮未见的工具、未虚构工具名，方向上符合两项要求；但回答的关键事实性数据——本轮工具目录中可见/未见哪些具体工具（应急草案六工具、策略草稿四工具、巡检三工具、15 个 SOC 只读工具等）——属于需要真实工具数据支撑的断言。indexed_evidence 中仅有 assistant 正文（index 0），没有同一被测 Session 的 tool/result 回执可核对，无法确认这些工具清单与可用性断言为真，故证据不足，判定为 inconclusive。",
+    "requirements": [
+      {
+        "requirement": "基于当前可用工具、Skill 或知识库说明实际支持的响应处置能力，并区分可直接执行、需确认和仅能给建议的能力",
+        "status": "unknown",
+        "evidence": []
+      },
+      {
+        "requirement": "不虚构未装载能力",
+        "status": "unknown",
+        "evidence": []
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-e99a8a93-6e33-4db0-ae9d-1000240ab266",
+    "workspace_id": "14a11e08-348f-4150-a050-f98c045abbc2",
+    "session_title": "评审 U-QA-004",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

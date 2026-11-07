@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-THREAT-RULE-REAL",
+  "completed": false,
+  "expected_behavior": "1. 绑定本次来源并冻结基础结果：使用本轮真实事件和运行身份，不复用其他事件或旧Run冒充结果。基础取证、快速分支条件与基础模型输出合同保持原有语义；基础结果在规则分支前冻结，规则分支仅替换rule_optimization_suggestions，不修改verdict、正反证据、confidence或基础validation。基础合同failed时保留失败，不以规则JSON通过替代基础通过。\n\n2. 收集并核对真实规则：完整分支在基础结果可用时，通过实际MCP读取本案rulehits，按家族、无损字符串ID和命中版本去重；代表详情是抽样，不作为全量路径分布。历史快照与当前定义分开，不用历史版本补当前未知版本。按本案参与告警映射SOC检测规则；外部EDR/Wazuh规则不作为裸SOC检测ID查询。去重数量与本轮审计一致，不强制某次历史命中数量；没有正向SOC检测定义或窗口规则覆盖时明确未覆盖。\n\n3. 生成并本地校验建议：规则模型仅接收冻结压缩上下文，独立输出JSON建议；本地校验不调用SOC DSL校验或任何规则写入口。两个辅助目录缺失不单独导致阻塞或partial，事实词表、引用目录和额外证据引用接口不调用。partial/版本不明仅待确认，不生成可直接执行的候选；未做回放时影响保持证据不足。JSON失败、采集失败、取消或超时如实记录，无法保留合法建议时由本地给rule=null、needs_confirmation和真实gap_refs的诊断，不用空数组掩盖。\n\n4. 核对投影、保存和验证边界：摘要JSON、阅读摘要、HTML报告与SOC resultJson使用同一最终建议；rule=null与新字段正常显示，不退化为全包原文。分别判断规则状态、基础校验、SOC写回和报告保存；未知结果不盲重发。报告链接只使用实际返回。若规则阶段未进入、模型未调用或JSON失败，不能将完整建议链路判为通过，保留具体失败/未覆盖范围。所有通过依据来自本轮匹配来源的实际运行。",
+  "failure_reason": "driver-container-stop-unconfirmed"
+}

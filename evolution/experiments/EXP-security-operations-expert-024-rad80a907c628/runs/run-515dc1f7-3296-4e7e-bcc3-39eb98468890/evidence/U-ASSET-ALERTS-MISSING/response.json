@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 999999 近 30 天的关联告警，首页最多 5 个分组。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "## 查询结论\n\n**资产 999999 近 30 天关联告警查询未获得有效结果：资产本身在三路只读查询中均未命中，因此无法确认任何关联告警；“首页最多 5 个分组”在当前工具能力下无法落地。全程只读，未执行任何处置。**\n\n### 事实（工具原始返回）\n\n**1. 资产解析 —— 三路交叉查询均未命中**\n\n| 工具 | 入参 | 返回 | 判定 |\n|---|---|---|---|\n| `get_soc_asset_by_asset_id` | assetId=999999 | `{\"code\":500,\"msg\":\"资产 999999 不存在或已删除\"}` | 未命中（明确文案） |\n| `search_graph_assets` | q=999999, limit=5 | `{\"code\":200,\"data\":[]}` | 成功但空集 |\n| `list_soc_asset` | keyword=999999, pageSize=5 | `{\"code\":200,\"total\":0,\"rows\":[]}` | 成功但空集 |\n\n**2. 唯一含告警字段的查询**：`get_graph_node_detail`（vid=`asset:999999`）返回 `incidents` 五档计数（critical/high/medium/low/info）全为 0，`trend30d` 为 30 个 0；`metricAvailable:false`，资源指标全为 null。该工具**不接受时间范围和分页参数**。\n\n**3. 分组落地情况**：当前可见工具目录中不存在带时间范围 + `limit`/分页的“告警列表/分组”工具，因此无法设置首页 5 个分组；实际返回告警分组数为 0。\n\n**4. 工具状态**：`sec-ops` 资源列表为空（无数据，非错误）；`inspection` 服务器返回 `server is disconnected`（**工具错误**，与未命中分开记录）。\n\n### 推断\n\n- 资产标识 999999 当前不可解析为任何被管资产。\n- 全零告警既可能是节点确无告警，也可能是节点不存在时的默认空返回，**二者无法区分**。\n- `trend30d` 长度为 30 但无日期标签与时区声明，**不能确认对齐到 2026-10-05～2026-11-04 UTC**。\n\n### 证据缺口\n\n- 无“时间范围 + 分页”的告警查询工具，30 天窗口与 5 分组限制均无法在工具侧实现。\n- 无法区分“零告警”与“空返回”；无法判定 999999 是否为占位/测试 ID。\n- `inspection` 服务器断连，其可能承载的数据本次未能访问。\n\n### 未执行事项（尚未执行的建议）\n\n- 未调用写工具、未创建分析运行、未做任何处置或状态变更、未补造结果。\n- 建议后续（**尚未执行**）：核对 999999 的正确标识形式；`inspection` 服务器恢复后重试其告警/巡检数据；如需严格 30 天窗口与分组分页，需补充具备对应参数的只读告警查询能力。"
+  ],
+  "session_id": "session-b1e4a19a-3c80-49e6-bd55-bed3db7ab499",
+  "turns": [
+    {
+      "assistant_text": "## 查询结论\n\n**资产 999999 近 30 天关联告警查询未获得有效结果：资产本身在三路只读查询中均未命中，因此无法确认任何关联告警；“首页最多 5 个分组”在当前工具能力下无法落地。全程只读，未执行任何处置。**\n\n### 事实（工具原始返回）\n\n**1. 资产解析 —— 三路交叉查询均未命中**\n\n| 工具 | 入参 | 返回 | 判定 |\n|---|---|---|---|\n| `get_soc_asset_by_asset_id` | assetId=999999 | `{\"code\":500,\"msg\":\"资产 999999 不存在或已删除\"}` | 未命中（明确文案） |\n| `search_graph_assets` | q=999999, limit=5 | `{\"code\":200,\"data\":[]}` | 成功但空集 |\n| `list_soc_asset` | keyword=999999, pageSize=5 | `{\"code\":200,\"total\":0,\"rows\":[]}` | 成功但空集 |\n\n**2. 唯一含告警字段的查询**：`get_graph_node_detail`（vid=`asset:999999`）返回 `incidents` 五档计数（critical/high/medium/low/info）全为 0，`trend30d` 为 30 个 0；`metricAvailable:false`，资源指标全为 null。该工具**不接受时间范围和分页参数**。\n\n**3. 分组落地情况**：当前可见工具目录中不存在带时间范围 + `limit`/分页的“告警列表/分组”工具，因此无法设置首页 5 个分组；实际返回告警分组数为 0。\n\n**4. 工具状态**：`sec-ops` 资源列表为空（无数据，非错误）；`inspection` 服务器返回 `server is disconnected`（**工具错误**，与未命中分开记录）。\n\n### 推断\n\n- 资产标识 999999 当前不可解析为任何被管资产。\n- 全零告警既可能是节点确无告警，也可能是节点不存在时的默认空返回，**二者无法区分**。\n- `trend30d` 长度为 30 但无日期标签与时区声明，**不能确认对齐到 2026-10-05～2026-11-04 UTC**。\n\n### 证据缺口\n\n- 无“时间范围 + 分页”的告警查询工具，30 天窗口与 5 分组限制均无法在工具侧实现。\n- 无法区分“零告警”与“空返回”；无法判定 999999 是否为占位/测试 ID。\n- `inspection` 服务器断连，其可能承载的数据本次未能访问。\n\n### 未执行事项（尚未执行的建议）\n\n- 未调用写工具、未创建分析运行、未做任何处置或状态变更、未补造结果。\n- 建议后续（**尚未执行**）：核对 999999 的正确标识形式；`inspection` 服务器恢复后重试其告警/巡检数据；如需严格 30 天窗口与分组分页，需补充具备对应参数的只读告警查询能力。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "6ab7042f-0cdc-4119-9806-0a3e3062cff6"
+    }
+  ]
+}

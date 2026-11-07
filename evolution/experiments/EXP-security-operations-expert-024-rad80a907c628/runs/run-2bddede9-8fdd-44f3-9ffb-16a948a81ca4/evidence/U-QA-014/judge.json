@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答为英语，明确定义 CVE ID 是针对单一公开披露漏洞的标识，并明确说明编号本身不表示严重度（NNNNN 不含任何属性，严重度另由 CVSS 等记录）、也不是 exploit/malware/attack/risk score，即不把编号当作是否已被利用的证明，且未覆盖尚未公开披露的漏洞。以上内容完整满足预期要求，所引证据项 citation_allowed 为 true。",
+    "requirements": [
+      {
+        "requirement": "用英语准确说明 CVE ID 标识公开记录的漏洞，不把编号本身当成严重度或是否已被利用的证明",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "A **CVE ID** (Common Vulnerabilities and Exposures identifier) is a unique, standardized label assigned to a **single publicly disclosed cybersecurity vulnerability** in specific software or firmware.\n\n## Format\n\n`CVE-YYYY-NNNNN`\n\n- **CVE** — the program prefix (maintained by MITRE for the U.S. cybersecurity community).\n- **YYYY** — the year the identifier was reserved (not necessarily the year the flaw was discovered or disclosed).\n- **NNNNN** — an arbitrary sequence number, assigned in order; it does not indicate severity or any other property.\n\nExample: `CVE-2021-44228` identifies the Log4Shell vulnerability in Apache Log4j.\n\n## What it identifies\n\n- **One distinct vulnerability** — a specific root-cause flaw in a specific product/version range, so everyone (vendors, defenders, scanners, patch tools) can reference the same issue without confusion.\n- It is **not** an exploit, malware, attack, or risk score. Severity is recorded separately (e.g., CVSS scores, CPE applicability lists).\n\n## What it does not cover\n\n- Vulnerabilities that are **not yet publicly disclosed** (zero-days typically have no CVE until reserved/disclosed).\n- Misconfigurations, policy failures, or incidents without an underlying software flaw.\n- Issues the CVE program has declined to assign an ID to.\n\n## Role in practice\n\nCVE IDs serve as the common vocabulary for vulnerability databases (NVD, vendor advisories), patch management, compliance checklists, and threat intelligence — enabling consistent tracking from disclosure through remediation.",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-3744bb64-0990-4071-8ac9-300e08a6aa15",
+    "workspace_id": "1177b700-7df2-4fb8-8a19-54917eb9a040",
+    "session_title": "评审 U-QA-014",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

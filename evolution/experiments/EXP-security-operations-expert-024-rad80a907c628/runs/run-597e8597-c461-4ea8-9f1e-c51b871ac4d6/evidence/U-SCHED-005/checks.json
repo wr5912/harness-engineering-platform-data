@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-SCHED-005",
+  "completed": false,
+  "expected_behavior": "注：类型：自动研判。\n\n1. 查询并原地修改本会话任务：第二轮先“查询定时提醒”；当前会话只有一个匹配任务时，用其真实标识“修改定时提醒”，将周期改为每隔 20 分钟，保留原研判业务与会话归属，不重复创建任务。\n\n2. 核对修改结果：并回复更新后的规则。\n\n   注：未核对目标、误改业务内容或修改未成功却报告完成，均判为失败。",
+  "failure_reason": "evaluation-interrupted"
+}

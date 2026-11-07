@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测 Session 仅加载目标 Skill 并调用 list_executable_inspections，回执 is_error=false 且返回 6 个模板；回答逐项列出的名称、taskId、definitionVersion、inspectionItems 与 tool/result 完全一致，未出现 prepare_inspection、启动或 KEV 调用，也未编造内容，全部要求满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

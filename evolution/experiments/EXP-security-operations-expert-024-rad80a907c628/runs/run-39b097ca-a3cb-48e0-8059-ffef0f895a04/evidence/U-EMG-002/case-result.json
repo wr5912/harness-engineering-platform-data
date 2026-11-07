@@ -1,0 +1,7 @@
+{
+  "case_id": "U-EMG-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：要求1明确未满足：预期要求在确认目标为防火墙后以 block-ip、params.src_ip、params.rule_name 实际准备草案，但被测回答自述未提交、未生成草案，indexed_evidence 中也不存在任何 prepare_emergency_action 调用或其回执，仅有 skill 加载（索引2）、MCP 资源为空（索引3、4）、inspection 断开（索引5、6）与文件 glob（索引7），无法证明草案已按 block-ip 准备。要求2基本满足：回答仅依据实际回执报告能力不可用，未确认、未声称已封禁（索引0、3、4、5、6），但因缺少工具目录核查回执，能力缺口的表述只能部分佐证。总体因要求1未达成判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-EMG-002"
+}

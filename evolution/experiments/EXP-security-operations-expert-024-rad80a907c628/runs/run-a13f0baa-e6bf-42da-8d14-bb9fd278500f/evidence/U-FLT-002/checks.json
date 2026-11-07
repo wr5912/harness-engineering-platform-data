@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-FLT-002",
+  "transport": "api",
+  "expected_behavior": "基于真实资产、巡检或探测结果分析各设备状态，区分离线与探测不可达，不把推测写成已确认根因，并给出可核对的下一步。",
+  "session_id": "session-803a0a53-7c6f-4792-8279-e27fd49189e5",
+  "workspace_id": "45814c64-d673-4c77-91df-34f358c06b5f",
+  "session_title": "评测 U-FLT-002",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-8ba6b9c1-5c71-40ad-8280-de130cd4d13d",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

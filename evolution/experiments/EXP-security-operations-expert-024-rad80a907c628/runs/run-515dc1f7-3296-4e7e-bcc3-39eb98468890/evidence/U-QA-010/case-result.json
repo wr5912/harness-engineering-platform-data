@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-010",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答依据同 Session 的 skill 回执（security-inspection、response-planning）与 MCP 资源查询回执，明确区分了模板管理（3 个巡检工具不创建任务）、无参数目录查询可执行模板、单次巡检（taskId/definitionVersion/requestId→runId→结果轮询）与周期提醒（schedule_create，提醒≠执行）四类概念；如实说明 inspection 服务本轮断开、emergency-action 跨能力被拦截，只介绍实际可用入口；报告地址严格要求服务返回非空 reportDownloadUrl 才原样提供、不自行拼接；分别给出巡检、受信响应规划、应急处置与策略配置的入口、必要信息与权限边界，并将建议、预览、受理与已执行状态清楚区分，未把未执行动作说成已执行，未臆造未知权限名称。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-010"
+}

@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 9107 近 30 天的关联告警，首页最多 5 个分组。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "子 Agent `bd5e289a` 已启动，正在以只读方式查询资产 9107 近 30 天的关联告警（首页最多 5 个分组），等待其返回结果。"
+  ],
+  "session_id": "session-2e6ba35e-f138-465f-a059-ad6854a62fe1",
+  "turns": [
+    {
+      "assistant_text": "子 Agent `bd5e289a` 已启动，正在以只读方式查询资产 9107 近 30 天的关联告警（首页最多 5 个分组），等待其返回结果。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c3ed2cbf-3db0-4415-b7f8-6907bbb63449"
+    }
+  ]
+}

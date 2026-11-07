@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-005",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 中 inspection 服务器断开（真实错误回执），设备在线状态模板无法核对；原生 schedule_list 返回空数组，但被测回答未调用 schedule_create 创建每 10 分钟提醒，仅有计划性说明。因此“创建提醒并核对真实回执标识、周期与下次到期时间”明确未满足，其后的到期消息追溯、requestId/runId 续查、scopeLabel 核对及历史 Run 保留等阶段均无真实回执可证，整体判定不通过。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-005"
+}

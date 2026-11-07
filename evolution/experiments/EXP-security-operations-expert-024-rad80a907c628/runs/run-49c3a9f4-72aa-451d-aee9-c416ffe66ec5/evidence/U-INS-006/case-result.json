@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：工具回执显示 inspection 服务端断开（index 4、6 均为 is_error=true 的 server is disconnected），被测会话未查询到真实巡检模板目录、未调用发起工具，因此没有产生 runId，第一项要求的“从真实目录选模板并以 ASSET_IDS、values [\"A-001\"] 在 READY 后同轮执行”未发生，第三项“按实际运行标识核对范围和结果”也无运行标识可核对；被测回答如实说明服务错误、未用 ALL 替代范围，该项满足，但其余冻结要求明确未满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-006"
+}

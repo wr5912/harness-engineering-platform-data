@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答完整覆盖唯一要求的五个概念：IOC 对应可观察指标，TTP 对应攻击行为模式，MITRE ATT&CK Technique 对应 ATT&CK 技术分类，告警对应检测信号，事件对应经关联研判的安全事件；逐项给出了层面、粒度、稳定性与是否需研判的对照区分，并通过典型链路（TTP→IOC→告警→事件）说明它们可以关联，同时明确指出 IOC 不等于攻击手法、告警不等于入侵、ATT&CK 技术只是 TTP 的规范化子集，即不能互相等同。证据单一且 citation_allowed 为 true，无需工具回执即可支持判定。",
+    "requirements": [
+      {
+        "requirement": "准确区分可观察指标、攻击行为模式、ATT&CK 技术分类、检测信号和经关联研判的安全事件，并说明它们可以关联但不能互相等同",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "这五个概念分属“威胁知识”与“安全运营数据”两个层面，粒度和用途都不同。\n\n## 一、威胁知识侧（描述“攻击是什么”）\n\n### IOC（Indicator of Compromise，失陷指标）\n- **粒度**：最细，通常是单个可观测的静态值。\n- **例子**：恶意 IP/域名、文件哈希、URL、邮箱地址、C2 回连特征。\n- **特点**：只回答“**看到这个就算命中**”，本身不说明攻击手法。时效性强（IP、域名可能几小时就失效），误报相对多。\n- **用途**：边界防火墙、EDR、SIEM 的快速阻断与匹配，适合自动化。\n\n### TTP（Tactics, Techniques & Procedures，战术、技术与过程）\n- **粒度**：最粗、最接近“攻击者怎么干活”。\n  - **战术（Tactic）**：攻击者的阶段目标，如“持久化”“凭据窃取”“横向移动”。\n  - **技术（Technique）**：达成战术的具体方法，如“PowerShell 执行”“Pass the Hash”。\n  - **过程（Procedure）**：某组织在具体案例中的实现细节，如某组织惯用的命名、参数、落地方式。\n- **特点**：比 IOC 稳定得多（攻击者换工具但手法常保留），难以直接自动化阻断，但适合狩猎（threat hunting）和行为检测。\n\n### MITRE ATT&CK Technique（ATT&CK 技术条目）\n- **关系**：ATT&CK 是把业界观测到的 TTP **结构化、标准化编号**的公开知识库。它把“技术”细化为带 ID 的条目，例如 `T1059.001`（PowerShell）、`T1003.001`（LSASS 凭据转储）。\n- **作用**：给 TTP 一个通用语言，便于：跨组织共享情报、映射检测规则的覆盖范围、做攻击模拟（如 Atomic Red Team）、评估防守盲区。\n- **注意**：ATT&CK Technique 是 TTP 中“技术”这一层的**规范化表示**，不是 TTP 的全部——战术在 ATT&CK 中对应 Enterprise 矩阵的列（如 TA0003 持久化），过程（Procedure）则通常在情报报告里，不单独编号。\n\n## 二、安全运营数据侧（描述“我们观测到了什么”）\n\n### 告警（Alert）\n- 安全设备/规则引擎**判断为可疑**后产生的通知，例如“某主机在 5 分钟内对 200 个 IP 发起扫描”。\n- 是**规则或模型的输出**，带置信度，可能是误报。一条告警本身不等于发生了入侵。\n- 需要人（或 SOAR）研判，确认后可能升级为事件。\n\n### 事件（Event）\n- 广义：系统/网络中发生的**一条原始或聚合的事实记录**，如一次登录、一条防火墙放行记录、进程创建日志——不一定有安全含义。\n- SOC 语义（如本环境的 `INC-YYYYMMDD-NNNNNN`）：指**经确认或研判、需要跟踪处置的安全事件**，由一条或多条告警聚合、分级后形成，有生命周期（研判、处置、关闭）。\n- 在这两种语义下，“事件”都比“告警”更接近**事实/结论**，而不是单纯的规则触发。\n\n## 三、核心区别对照\n\n| 概念 | 层面 | 粒度 | 稳定性 | 是否需要研判 |\n|---|---|---|---|---|\n| IOC | 威胁知识 | 单个静态指标 | 差（易失效） | 命中即可能处置 |\n| TTP | 威胁知识 | 攻击者行为模式 | 好 | 用于狩猎与行为检测 |\n| ATT&CK Technique | 威胁知识（标准化） | 单个技术条目，带 ID | 好 | 用于映射、覆盖评估 |\n| 告警 | 运营数据 | 规则触发结果 | — | 是，需确认真伪 |\n| 事件 | 运营数据 | 聚合后的安全事实/案例 | — | 已在研判流程中 |\n\n**一条典型链路**：攻击者使用某手法（TTP，可映射到 ATT&CK `Txxxx`）→ 留下可观测痕迹（IOC）→ 被检测规则命中（告警）→ 聚合研判确认（事件）。\n\n以上为概念性说明，未涉及任何实际查询或处置动作。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-f108914f-9bda-4461-8e05-ea04cb34b30c",
+    "workspace_id": "24dec62a-d45f-4941-9cf1-fef2804efccd",
+    "session_title": "评审 U-QA-009",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

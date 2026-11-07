@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "创建一个每隔 30 分钟威胁研判的定时任务。"
+  ],
+  "assistant_texts": [
+    "已创建自动威胁研判定时任务：\n\n- **任务 ID**：`schedule-f83491b2-81ba-4f9e-af55-ea98478d0ee1`\n- **规则**：每 30 分钟触发一次（间隔 1800 秒），绑定本 Session\n- **下次到期**：2026-11-02 10:24:09 UTC（Asia/Shanghai 时间 18:24:09）\n- **到期行为**：由本地受信桥解析后调用待研判事件接口，每次心跳只研判一条事件（batchSize=1）\n\n说明：本次仅完成提醒的创建与投递安排，**尚未执行任何威胁研判**；实际研判结果以到期后返回的事件 ID 和 Run ID 为准。若上一条研判仍在运行，本次心跳会跳过且不排队。"
+  ],
+  "session_id": "session-68abc9c5-9aa1-4b40-8565-79102bfe928f",
+  "turns": [
+    {
+      "assistant_text": "已创建自动威胁研判定时任务：\n\n- **任务 ID**：`schedule-f83491b2-81ba-4f9e-af55-ea98478d0ee1`\n- **规则**：每 30 分钟触发一次（间隔 1800 秒），绑定本 Session\n- **下次到期**：2026-11-02 10:24:09 UTC（Asia/Shanghai 时间 18:24:09）\n- **到期行为**：由本地受信桥解析后调用待研判事件接口，每次心跳只研判一条事件（batchSize=1）\n\n说明：本次仅完成提醒的创建与投递安排，**尚未执行任何威胁研判**；实际研判结果以到期后返回的事件 ID 和 Run ID 为准。若上一条研判仍在运行，本次心跳会跳过且不排队。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f724f3eb-93e1-4852-a4fb-ca82f614de70"
+    }
+  ]
+}

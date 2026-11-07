@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "IOC、TTP、MITRE ATT&CK Technique、告警和事件有什么区别？"
+  ],
+  "assistant_texts": [
+    "这四个概念分属**对象、行为、战术框架、检测信号、业务实体**五个层面，可以按“从下往上”的链路理解：\n\n## 一句话区分\n\n| 概念 | 本质 | 回答的问题 | 典型例子 |\n|---|---|---|---|\n| **IOC** | 可观测的指标（\"指纹\"） | \"攻击者留下了什么可匹配的痕迹？\" | `45.13.220.12`、恶意域名 `evil-update.com`、文件哈希 `a3f5…` |\n| **TTP** | 攻击者的技术、战术、过程（\"手法\"） | \"攻击者怎么做的？\" | \"先钓鱼拿凭据，再用 PowerShell 下载第二阶段载荷\" |\n| **MITRE ATT&CK Technique** | TTP 中\"技术\"的标准化条目（\"分类法\"） | \"这个手法在行业里叫什么？\" | `T1059.001 PowerShell`、`T1566.001 钓鱼附件` |\n| **告警** | 单条检测信号（\"原始噪音/线索\"） | \"哪个规则在哪个时间点了什么？\" | \"主机 A 触发『PowerShell 下载文件』规则，02:01\" |\n| **事件** | 多条告警/证据聚合后的业务实体（\"研判对象\"） | \"要研判/处置的是什么？\" | `INC-20261028-000123`，关联 8 条告警，目标为主机 A |\n\n## 关系链路\n\n```\n原始日志 → 告警（单条规则命中）\n              │  聚合/去重/关联\n              ▼\n           事件（INC-xxx，研判与处置的基本单位）\n              │  研判时提取证据\n              ├──→ IOC（可回查、可布防的指标：IP/域名/哈希/URL…）\n              └──→ TTP（手法描述）\n                        │  映射到行业标准\n                        ▼\n                 MITRE ATT&CK Technique（T1059.001 等）\n```\n\n- **IOC 是\"点\"**：静态、可机器匹配（黑名单、沙箱、流量检测），但单一 IOC 不代表攻击一定发生——它可能误报，也可能只是攻击的残留痕迹。\n- **TTP 是\"线\"**：描述攻击者\"怎么做\"，粒度比 IOC 高、比 ATT&CK 描述更自由；同一个 TTP 可以对应多条 IOC。\n- **ATT&CK Technique 是\"格\"**：把 TTP 装进 MITRE ATT&CK 的标准格子里（有唯一 ID、成熟度、平台标签），用于横向比较、覆盖度统计和知识库对齐。TTP 是实际观察到的手法叙事，Technique 是它的标准坐标。\n- **告警是\"原料\"**：规则引擎对单条/单组日志的判定，数量大、噪音多，本身通常不足以支撑处置决策。\n- **事件是\"成品\"**：把相关联的告警、IOC、受影响资产、时间线聚合成一个带 ID 的业务对象（如本平台的 `INC-YYYYMMDD-NNNNNN`），是研判、工单和处置的挂载点。\n\n## 一个例子串起来\n\n> 某员工点开钓鱼邮件（**TTP**：`T1566.001 钓鱼附件`）→ 附件释放 PowerShell 下载木马（**TTP**：`T1059.001`）→ EDR 产生 3 条**告警**，WAF 产生 1 条**告警** → 平台聚合为**事件** `INC-20261028-000042` → 研判提取出 C2 域名和木马哈希（**IOC**）→ 布防封禁、全网排查该哈希。\n\n## 常见混淆点\n\n1. **IOC ≠ 攻击确认**：一个 IOC 命中只说明\"出现了与已知攻击相同的痕迹\"，需结合上下文判断是否为真实攻击（误报/历史残留/蜜罐诱饵都可能）。\n2. **TTP ≠ Technique**：TTP 是观察到的完整手法（战术+技术+过程），Technique 只是其中\"技术\"部分的标准编号；且 TTP 包含\"战术选择\"（为什么这样做），ATT&CK 只给\"技术\"定位。\n3. **告警 ≠ 事件**：告警是检测器输出，事件是运营单元；一个事件可包含零到上千条告警，告警也可能因去重归入同一事件。\n4. **ATT&CK 是参考框架不是检测系统**：它描述\"攻击者已知会做什么\"，不直接产生告警；告警靠 SIEM/EDR 规则或检测逻辑产生，再通过 Technique ID 与框架对齐。\n\n简言之：**IOC 找痕迹，TTP 说手法，ATT&CK 给编号，告警是信号，事件是处置单位。**"
+  ],
+  "session_id": "session-91491357-1e40-4aff-a2ab-cdc24a05fc6b",
+  "turns": [
+    {
+      "assistant_text": "这四个概念分属**对象、行为、战术框架、检测信号、业务实体**五个层面，可以按“从下往上”的链路理解：\n\n## 一句话区分\n\n| 概念 | 本质 | 回答的问题 | 典型例子 |\n|---|---|---|---|\n| **IOC** | 可观测的指标（\"指纹\"） | \"攻击者留下了什么可匹配的痕迹？\" | `45.13.220.12`、恶意域名 `evil-update.com`、文件哈希 `a3f5…` |\n| **TTP** | 攻击者的技术、战术、过程（\"手法\"） | \"攻击者怎么做的？\" | \"先钓鱼拿凭据，再用 PowerShell 下载第二阶段载荷\" |\n| **MITRE ATT&CK Technique** | TTP 中\"技术\"的标准化条目（\"分类法\"） | \"这个手法在行业里叫什么？\" | `T1059.001 PowerShell`、`T1566.001 钓鱼附件` |\n| **告警** | 单条检测信号（\"原始噪音/线索\"） | \"哪个规则在哪个时间点了什么？\" | \"主机 A 触发『PowerShell 下载文件』规则，02:01\" |\n| **事件** | 多条告警/证据聚合后的业务实体（\"研判对象\"） | \"要研判/处置的是什么？\" | `INC-20261028-000123`，关联 8 条告警，目标为主机 A |\n\n## 关系链路\n\n```\n原始日志 → 告警（单条规则命中）\n              │  聚合/去重/关联\n              ▼\n           事件（INC-xxx，研判与处置的基本单位）\n              │  研判时提取证据\n              ├──→ IOC（可回查、可布防的指标：IP/域名/哈希/URL…）\n              └──→ TTP（手法描述）\n                        │  映射到行业标准\n                        ▼\n                 MITRE ATT&CK Technique（T1059.001 等）\n```\n\n- **IOC 是\"点\"**：静态、可机器匹配（黑名单、沙箱、流量检测），但单一 IOC 不代表攻击一定发生——它可能误报，也可能只是攻击的残留痕迹。\n- **TTP 是\"线\"**：描述攻击者\"怎么做\"，粒度比 IOC 高、比 ATT&CK 描述更自由；同一个 TTP 可以对应多条 IOC。\n- **ATT&CK Technique 是\"格\"**：把 TTP 装进 MITRE ATT&CK 的标准格子里（有唯一 ID、成熟度、平台标签），用于横向比较、覆盖度统计和知识库对齐。TTP 是实际观察到的手法叙事，Technique 是它的标准坐标。\n- **告警是\"原料\"**：规则引擎对单条/单组日志的判定，数量大、噪音多，本身通常不足以支撑处置决策。\n- **事件是\"成品\"**：把相关联的告警、IOC、受影响资产、时间线聚合成一个带 ID 的业务对象（如本平台的 `INC-YYYYMMDD-NNNNNN`），是研判、工单和处置的挂载点。\n\n## 一个例子串起来\n\n> 某员工点开钓鱼邮件（**TTP**：`T1566.001 钓鱼附件`）→ 附件释放 PowerShell 下载木马（**TTP**：`T1059.001`）→ EDR 产生 3 条**告警**，WAF 产生 1 条**告警** → 平台聚合为**事件** `INC-20261028-000042` → 研判提取出 C2 域名和木马哈希（**IOC**）→ 布防封禁、全网排查该哈希。\n\n## 常见混淆点\n\n1. **IOC ≠ 攻击确认**：一个 IOC 命中只说明\"出现了与已知攻击相同的痕迹\"，需结合上下文判断是否为真实攻击（误报/历史残留/蜜罐诱饵都可能）。\n2. **TTP ≠ Technique**：TTP 是观察到的完整手法（战术+技术+过程），Technique 只是其中\"技术\"部分的标准编号；且 TTP 包含\"战术选择\"（为什么这样做），ATT&CK 只给\"技术\"定位。\n3. **告警 ≠ 事件**：告警是检测器输出，事件是运营单元；一个事件可包含零到上千条告警，告警也可能因去重归入同一事件。\n4. **ATT&CK 是参考框架不是检测系统**：它描述\"攻击者已知会做什么\"，不直接产生告警；告警靠 SIEM/EDR 规则或检测逻辑产生，再通过 Technique ID 与框架对齐。\n\n简言之：**IOC 找痕迹，TTP 说手法，ATT&CK 给编号，告警是信号，事件是处置单位。**",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "7829b8ab-42a5-4523-92d9-8b282b8926e3"
+    }
+  ]
+}

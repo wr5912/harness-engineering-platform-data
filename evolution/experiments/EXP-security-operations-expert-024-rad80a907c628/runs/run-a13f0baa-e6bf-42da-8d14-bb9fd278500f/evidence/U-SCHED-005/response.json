@@ -1,0 +1,71 @@
+{
+  "inputs": [
+    "创建一个每隔 30 分钟威胁研判的定时任务。",
+    "把刚才的定时研判改成每隔 20 分钟。"
+  ],
+  "assistant_texts": [
+    "定时任务已成功创建，现在需要总结任务详情并提醒用户这只是一个提醒，实际的威胁研判需要主管授权通过 `analyze_pending_threat_incidents` 工具触发。\n</think>\n\n✅ **定时威胁研判任务创建成功**\n\n| 项目 | 详情 |\n|------|------|\n| **Task ID** | `schedule-0b8145b0-9c5f-4f77-87f5-c27e03aaa41d` |\n| **标题** | 自动威胁研判 - 每 30 分钟 |\n| **触发间隔** | 1800 秒（30 分钟） |\n| **下次到期时间** | 2026-10-28 04:03:20 UTC |\n| **状态** | scheduled（已排定） |\n| **触发 Prompt** | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n\n**重要说明**：\n- 定时任务已创建并排定，到期后会自动投递给信受的 Schedule 桥\n- 每次心跳只处理一条待研判事件（batchSize=1）\n- Schedule 投递成功不等于研判完成，实际研判以带事件 ID 和 Run ID 的工具结果为准\n\n如需修改、删除或查看其他定时任务，请告知我。",
+    "定时任务更新成功，需要确认新的配置参数给用户提供。\n</think>\n\n✅ **定时研判任务更新成功**\n\n| 项目 | 详情 |\n|------|------|\n| **Task ID** | `schedule-0b8145b0-9c5f-4f77-87f5-c27e03aaa41d` |\n| **标题** | 自动威胁研判 - 每 30 分钟 |\n| **触发间隔** | **1200 秒（20 分钟）** |\n| **下次到期时间** | 2026-10-28 03:43:27 UTC |\n| **状态** | scheduled（已排定） |\n| **触发 Prompt** | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n\n任务已成功从 30 分钟改为 20 分钟，每隔 20 分钟将自动触发一次威胁研判。"
+  ],
+  "session_id": "session-b8efe590-61dd-42eb-8f32-eac9a5067ed0",
+  "turns": [
+    {
+      "assistant_text": "定时任务已成功创建，现在需要总结任务详情并提醒用户这只是一个提醒，实际的威胁研判需要主管授权通过 `analyze_pending_threat_incidents` 工具触发。\n</think>\n\n✅ **定时威胁研判任务创建成功**\n\n| 项目 | 详情 |\n|------|------|\n| **Task ID** | `schedule-0b8145b0-9c5f-4f77-87f5-c27e03aaa41d` |\n| **标题** | 自动威胁研判 - 每 30 分钟 |\n| **触发间隔** | 1800 秒（30 分钟） |\n| **下次到期时间** | 2026-10-28 04:03:20 UTC |\n| **状态** | scheduled（已排定） |\n| **触发 Prompt** | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n\n**重要说明**：\n- 定时任务已创建并排定，到期后会自动投递给信受的 Schedule 桥\n- 每次心跳只处理一条待研判事件（batchSize=1）\n- Schedule 投递成功不等于研判完成，实际研判以带事件 ID 和 Run ID 的工具结果为准\n\n如需修改、删除或查看其他定时任务，请告知我。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b9405879-4fe2-4428-8433-d404240a8882"
+    },
+    {
+      "assistant_text": "定时任务更新成功，需要确认新的配置参数给用户提供。\n</think>\n\n✅ **定时研判任务更新成功**\n\n| 项目 | 详情 |\n|------|------|\n| **Task ID** | `schedule-0b8145b0-9c5f-4f77-87f5-c27e03aaa41d` |\n| **标题** | 自动威胁研判 - 每 30 分钟 |\n| **触发间隔** | **1200 秒（20 分钟）** |\n| **下次到期时间** | 2026-10-28 03:43:27 UTC |\n| **状态** | scheduled（已排定） |\n| **触发 Prompt** | `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}` |\n\n任务已成功从 30 分钟改为 20 分钟，每隔 20 分钟将自动触发一次威胁研判。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "73a49e09-865a-4c78-b36f-5fbe6e96c1b6"
+    }
+  ]
+}

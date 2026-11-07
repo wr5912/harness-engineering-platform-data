@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-002",
+  "transport": "api",
+  "expected_behavior": "本轮真实调用“查询可执行巡检目录”能力；查询成功且返回可执行模板及巡检项时，依据当次回执列出实际内容；明确返回空目录时说明本次没有可列出的项目，查询失败时说明失败及无法确认可用项目，不把失败当作空目录或把空目录编造成条目。全程只读，不准备、不启动巡检。",
+  "session_id": "session-dceb7f01-e0da-498f-ad04-2798a9845e5c",
+  "workspace_id": "16f8e4c6-0b58-4a44-b2ac-59fcdf2236c4",
+  "session_title": "评测 U-INS-002",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": null,
+    "status": "not-declared"
+  },
+  "completed": true,
+  "trace_available": true
+}

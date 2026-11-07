@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-VOICE-002",
+  "completed": false,
+  "expected_behavior": "1. 按每次正文完成生成摘要：每次主 LLM Call 正常完成且含可见正文时独立生成一次摘要，默认目标约 30 字；工具前正文可触发，纯推理、纯工具调用、失败和中断不触发。\n\n2. 核对原生事件与合成输入：摘要事件与原生 Session 流共用 `/api/remote.mux`，音频合成输入与摘要文字一致。\n\n3. 保存并使用播报设置：设置页可保存字数、提示词和已配置模型，后续摘要采用新值；不开启自动播报或未装插件时不增加摘要调用。",
+  "failure_reason": "driver-container-stop-unconfirmed"
+}

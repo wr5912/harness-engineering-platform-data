@@ -1,0 +1,68 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答明确承认本轮未调用任何策略工具，因此既未核对指定设备 172.16.1.155 的真实资产类型与可配置能力，也未生成任何可核对的策略预览；工具回执显示 sec-ops 的资源与资源模板均为空，仅成功装载了 policy-configuration Skill，无法支持设备能力核对与预览这两项关键数据。第 1、3 项（未把源地址自动当作策略设备、如实说明工具失败且未伪造成功）有证据支持，但第 2 项明确未满足，故整体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "不把源地址自动当作策略设备",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "核对指定设备的真实资产类型和可配置能力，生成可核对的策略预览",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "设备不适用或工具失败时明确说明，不能伪造成功",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-95332e25-75aa-4b42-8717-59c5f3b4fc89",
+    "workspace_id": "80588fa1-9bb9-482a-9f06-bac08366c707",
+    "session_title": "评审 U-POL-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

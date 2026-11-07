@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-001",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具回执 is_error=false，返回 schedule-c9de27fe-9434-4bf7-b060-75fe7a439a85，kind=daily、time=12:00:00.000、timeZone=Asia/Shanghai、title 与 prompt 与冻结要求逐字一致，state=scheduled、scheduledAt=2026-11-03T04:00:00.000Z。回复中的任务 ID、规则、下次到期时间（2026-11-03 12:00 北京时间）与回执完全对应，并明确“尚未执行任何研判”，未在工具成功前虚报结果。用户未说明时区，回复未追问，直接采用 Asia/Shanghai。四项要求均满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-001"
+}

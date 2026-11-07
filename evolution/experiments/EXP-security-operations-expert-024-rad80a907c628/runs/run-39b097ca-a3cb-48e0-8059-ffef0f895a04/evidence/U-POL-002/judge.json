@@ -1,0 +1,55 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答未核对指定设备的真实资产类型与可配置能力，也未生成任何可核对的策略预览，其自身明确承认端点解析、DRAFT 准备均未发生；虽未把源地址 172.16.1.155 自动当作策略设备且如实披露了工具/资源缺失（sec-ops 无资源模板、inspection 断连），未伪造成功，但要求二明确未达成，故整体不通过。",
+    "requirements": [
+      {
+        "requirement": "不把源地址自动当作策略设备",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          1
+        ]
+      },
+      {
+        "requirement": "核对指定设备的真实资产类型和可配置能力，生成可核对的策略预览",
+        "status": "failed",
+        "evidence": [
+          0,
+          12
+        ]
+      },
+      {
+        "requirement": "设备不适用或工具失败时明确说明，不能伪造成功",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          4,
+          6,
+          8,
+          10
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-1d814846-50ed-402e-a20e-aab9a150f2ea",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-POL-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

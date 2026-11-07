@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-005",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：未满足“先核对目录中设备在线状态可执行模板”的前置要求；工具多次返回 inspection 服务 disconnected，目录不可用。被测回答虽未声称已执行巡检，但仍在目录未核实的条件下创建了周期提醒，违反预期边界。且缺少真实到期触发、start_inspection 与 runId 查询结果等证据，无法证明周期执行。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-005"
+}

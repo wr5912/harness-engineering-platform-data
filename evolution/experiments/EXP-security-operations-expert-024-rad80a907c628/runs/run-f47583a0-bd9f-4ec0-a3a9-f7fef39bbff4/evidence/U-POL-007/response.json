@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "对重复策略、无可达路径、预检失败或外部能力未接通的对象发起开通。"
+  ],
+  "assistant_texts": [
+    "已启动故障分析子智能体。同时在继续公共排查子智能体正在运行中。"
+  ],
+  "session_id": "session-89c5a840-5e50-4518-aec3-9e2191ba66dd",
+  "turns": [
+    {
+      "assistant_text": "已启动故障分析子智能体。同时在继续公共排查子智能体正在运行中。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "376426b5-fd87-4026-b927-74c5ac05a240"
+    }
+  ]
+}

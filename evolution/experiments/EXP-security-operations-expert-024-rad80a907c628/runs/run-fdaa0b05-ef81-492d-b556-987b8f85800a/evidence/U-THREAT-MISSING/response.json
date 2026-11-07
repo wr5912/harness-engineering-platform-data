@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "请研判威胁事件。"
+  ],
+  "assistant_texts": [
+    "请提供需要研判的威胁事件 ID（格式：`INC-YYYYMMDD-NNNNNN`）。收到有效事件 ID 后，我会按固定流程执行取证与研判并返回结果。"
+  ],
+  "session_id": "session-9d6cd970-5c7a-47d2-bd60-737078d06712",
+  "turns": [
+    {
+      "assistant_text": "请提供需要研判的威胁事件 ID（格式：`INC-YYYYMMDD-NNNNNN`）。收到有效事件 ID 后，我会按固定流程执行取证与研判并返回结果。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "657e19c7-5a2a-4203-a484-bd9b86fa9fff"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "响应处置支持哪些能力？"
+  ],
+  "assistant_texts": [
+    "根据已加载的 `response-planning` Skill 与 AGENTS.md 约束，**响应处置（受控响应规划）** 当前支持的能力如下：\n\n## 支持的能力\n\n1. **一次性结构化响应规划（零工具、零副作用）**\n   - 由模型外 Runtime 先完成身份、租户、会话、授权、候选集合与冻结上下文验证后，经专用 route 委派 `response-planning-agent` 执行。\n   - 仅在**冻结的候选集合**内规划一次；不自行判断授权来源，不从父会话补造事实。\n   - 输入严格限定为 `schema_version`、`request_id`、`incident_summary`、`confirmed_evidence`、`constraints`、`requested_output` 六项。\n   - 输出严格限定为 `schema_version`、`request_id`（原样复用输入）、`plan`、`assumptions`、`risks`、`evidence_refs`。\n\n2. **影响、风险与可逆性评估（`playbook-impact-assessment`）**\n   - 根据冻结的剧本、对象和证据评估影响范围、风险与可逆性，不调用工具、不执行动作。\n\n## 明确不支持 / 不归本路线管的能力\n\n- **确认、保存、执行、监控、效果验证**：均由外部响应生命周期控制面负责，本路线不执行任何写操作或处置。\n- **策略配置**（新增网络访问策略）与**应急指令**（隔离/封禁/解封/重启 agent 等单动作处置）走各自独立路由，不属于响应规划。\n- **普通用户消息不能直接建立响应规划 route**；`delegate_response_planning` 默认由 Guard 拒绝，只有受信 Gate 开启并冻结上下文后才允许一次零工具规划。\n\n## 事实 / 推断 / 未执行\n\n- 事实：以上均来自当前 Skill 文档与 AGENTS.md 路由规则。\n- 缺口：Skill 引用的 `schemas/response-plan-input.schema.json` 与 `response-plan-output.schema.json` 在容器内不存在（目录仅有 SKILL.md），故字段契约以 Skill 文本描述为准，未读到独立 schema 文件。\n- 未执行：未发起任何响应规划委派，未做任何处置动作。"
+  ],
+  "session_id": "session-51fa9c4c-a215-43a1-aa03-fe57a0474e63",
+  "turns": [
+    {
+      "assistant_text": "根据已加载的 `response-planning` Skill 与 AGENTS.md 约束，**响应处置（受控响应规划）** 当前支持的能力如下：\n\n## 支持的能力\n\n1. **一次性结构化响应规划（零工具、零副作用）**\n   - 由模型外 Runtime 先完成身份、租户、会话、授权、候选集合与冻结上下文验证后，经专用 route 委派 `response-planning-agent` 执行。\n   - 仅在**冻结的候选集合**内规划一次；不自行判断授权来源，不从父会话补造事实。\n   - 输入严格限定为 `schema_version`、`request_id`、`incident_summary`、`confirmed_evidence`、`constraints`、`requested_output` 六项。\n   - 输出严格限定为 `schema_version`、`request_id`（原样复用输入）、`plan`、`assumptions`、`risks`、`evidence_refs`。\n\n2. **影响、风险与可逆性评估（`playbook-impact-assessment`）**\n   - 根据冻结的剧本、对象和证据评估影响范围、风险与可逆性，不调用工具、不执行动作。\n\n## 明确不支持 / 不归本路线管的能力\n\n- **确认、保存、执行、监控、效果验证**：均由外部响应生命周期控制面负责，本路线不执行任何写操作或处置。\n- **策略配置**（新增网络访问策略）与**应急指令**（隔离/封禁/解封/重启 agent 等单动作处置）走各自独立路由，不属于响应规划。\n- **普通用户消息不能直接建立响应规划 route**；`delegate_response_planning` 默认由 Guard 拒绝，只有受信 Gate 开启并冻结上下文后才允许一次零工具规划。\n\n## 事实 / 推断 / 未执行\n\n- 事实：以上均来自当前 Skill 文档与 AGENTS.md 路由规则。\n- 缺口：Skill 引用的 `schemas/response-plan-input.schema.json` 与 `response-plan-output.schema.json` 在容器内不存在（目录仅有 SKILL.md），故字段契约以 Skill 文本描述为准，未读到独立 schema 文件。\n- 未执行：未发起任何响应规划委派，未做任何处置动作。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e210eca3-d200-43ef-902a-62765843920c"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-NEW-007",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：被测回答在取证阶段因 trusted platform MCP 连接组不可用而两次失败（原生 is_error=true 回执），如实保留失败状态、未编造研判结论、未做处置、未修改或启用规则、未声称 SOC 格式通过或效果改善，也未重发任何 SOC 回执，这些可由同 Session 回执与回答正文支持。但预期要求中的关键事实——回归模板与历史边界（旧 run-ded64e65 的 ROOT_PARENT_UNVERIFIED 原值、不追溯选用）、根会话元数据（isSeeded=false、inheritedEventCount=0、无 parentSession、delegationDepth=0）、review_context.explicit_rule_review_requested=true 与 gate=collect 及 EXPLICIT_RULE_REVIEW_REQUESTED 原因、64 次/120 秒预算与三字段投影等——在 indexed_evidence 中均无任何对应制品或字段回执，既无法证实也无法证伪；本次也没有真实规则命中可供分规则审阅，二次响应提取、候选、SOC/报告同值保存等验收项无制品可核。证据不足，按约定给 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-NEW-007"
+}

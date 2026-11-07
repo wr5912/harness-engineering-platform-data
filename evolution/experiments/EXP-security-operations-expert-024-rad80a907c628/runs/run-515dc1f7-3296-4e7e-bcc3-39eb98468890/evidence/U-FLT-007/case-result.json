@@ -1,0 +1,7 @@
+{
+  "case_id": "U-FLT-007",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答的关键数据均有同一被测 Session 的 tool/result 回执支撑：search_graph_assets/list_soc_asset 对 172.16.2.103 均返回空（data:[]、total:0），同网段列表仅 3 条且无 .103；resolve_ip_host 对 .103 无 data 而对 .102 正常返回 assetId:9140；path_query 返回 verdict:UNKNOWN/SRC_NOT_FOUND 且 trafficEvidence:NOT_QUERIED，与另一套 reachability 的 REACHABLE/l2_same_segment 并列描述且未推断原因；node_detail(ip:172.16.2.103) metricAvailable:false 与 asset:9140 的 high:21/low:218 对照属实；coverage 500 按 is_error:true 记为工具错误、全局 coverage 29%、compliance 为空、inspection 服务 disconnected 均如实标注为非对象级或证据缺口。回答按事实/推断/证据缺口/未执行建议分层，明确未知项（无指标不等于无事件），给出恢复 inspection、先取得 assetId 再查等建议，未伪造资产关系或处置动作。两项要求均满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-FLT-007"
+}

@@ -340,6 +340,7 @@ export function createSecurityOperationsGuard() {
 }
 
 export function apply(ctx) {
+  if (ctx.get?.('businessRuntime')?.requiresAuthentication?.() === false) return
   const guard = createSecurityOperationsGuard()
   ctx.on('agent/pre-step', ({ agent, messages, step }, next) => {
     if (step !== 1) return next()

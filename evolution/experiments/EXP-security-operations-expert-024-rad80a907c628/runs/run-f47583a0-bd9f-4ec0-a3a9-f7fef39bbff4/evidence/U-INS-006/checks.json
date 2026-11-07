@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-006",
+  "transport": "api",
+  "expected_behavior": "先调用 `list_executable_inspections`，从本轮目录选出唯一匹配且无需额外必填输入的可执行任务；使用返回的 `taskId`、`definitionVersion` 和稳定 `requestId` 调用 `start_inspection`，指定 `scope={\"type\":\"ASSET_IDS\",\"assetIds\":[\"A-001\"]}`，再按同一 `runId` 查询结果。不存在匹配任务或资产时如实说明或澄清，不猜任务标识，也不以全量巡检冒充完成。",
+  "session_id": "session-1e601412-f00e-46f1-ade2-52be18bc4485",
+  "workspace_id": "10935fca-d5eb-4ea6-acb3-b94a05ac761b",
+  "session_title": "评测 U-INS-006",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-d9d79489-7f20-44e1-91a0-24809666987e",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请研判威胁事件 INC-20260917-000001。"
+  ],
+  "assistant_texts": [
+    "已启动威胁研判子智能体。\n\n任务：研判威胁事件 INC-20260917-000001\n\n结果将在任务结束后返回。"
+  ],
+  "session_id": "session-7be68b68-d7a2-43c1-8daa-1add1c693ffc",
+  "turns": [
+    {
+      "assistant_text": "已启动威胁研判子智能体。\n\n任务：研判威胁事件 INC-20260917-000001\n\n结果将在任务结束后返回。",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "03c22492-451a-4d69-a792-d493b6031cc7"
+    }
+  ]
+}

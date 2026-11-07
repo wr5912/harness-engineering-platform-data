@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-CONTRACT",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：本轮被测运行未完成任何研判交付：子智能体调用 analyze_threat_incident 返回原生错误 trusted platform MCP group connection is unavailable，sec-ops 资源列表为空、inspection 服务器断开，因此没有形成真实模型 JSON、没有机械校验结果、没有四阶段与保存产物、也没有报告下载地址，交付回答也明确声明无结论无产物。要求 1、2、4 明确不满足；要求 3 因无模型输出可核对而无法判定。目标 Skill 的限制只解释失败原因，不能改变冻结要求，故判为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-CONTRACT"
+}

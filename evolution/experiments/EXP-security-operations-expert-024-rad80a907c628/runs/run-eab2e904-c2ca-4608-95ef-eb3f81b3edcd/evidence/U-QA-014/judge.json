@@ -1,0 +1,38 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答确实以英语准确说明了 CVE ID 标识单个公开披露（publicly disclosed）的漏洞，并在 'What it does not identify' 中明确写出 'Not the severity itself — severity comes from the CVSS score, not from the ID'，满足了不把编号当严重度证明的部分；但整段回答没有任何关于编号不能证明漏洞是否已被利用的表述（只提到 exploit 是独立制品、可引用 CVE，属于概念区分而非利用状态），'或是否已被利用的证明' 这一半要求缺失，故未明确满足全部要求，判为 failed。",
+    "requirements": [
+      {
+        "requirement": "用英语准确说明 CVE ID 标识公开记录的漏洞，不把编号本身当成严重度或是否已被利用的证明",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-91354f5d-58b7-45e1-ac6b-6806cab23481",
+    "workspace_id": "3d69380c-30cd-48af-a640-c5cde9d62df9",
+    "session_title": "评审 U-QA-014",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

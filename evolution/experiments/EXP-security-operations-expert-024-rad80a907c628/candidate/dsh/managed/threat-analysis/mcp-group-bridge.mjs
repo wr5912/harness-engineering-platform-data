@@ -57,8 +57,10 @@ export function resolveMappings(discovery, groupId = 'threat-analysis-runtime') 
     for (const item of LOGICAL_MAPPINGS) {
         let discovered;
         if (item.target.kind === 'tool') {
-            const wire = `${item.target.sourceId.replaceAll('_', '_0')}__${item.target.rawName}`;
-            const matches = tools.filter(tool => tool?.name === wire);
+            const matches = tools.filter(tool => {
+                const source = tool?._meta?.['io.deepseek.dsh/mcp-group-tool'];
+                return source?.serverId === item.target.sourceId && source.kind === 'tool' && source.sourceName === item.target.rawName;
+            });
             if (matches.length > 1)
                 throw new Error(`threat-analysis MCP mapping ambiguous: ${item.target.sourceId}/${item.target.rawName}`);
             discovered = matches[0];

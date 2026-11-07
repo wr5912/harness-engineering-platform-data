@@ -53,8 +53,10 @@ export const TOOL_ROUTES = Object.freeze({
   ]),
   inspection: Object.freeze([
     'mcp__inspection__list_executable_inspections',
+    'mcp__inspection__prepare_inspection',
     'mcp__inspection__start_inspection',
     'mcp__inspection__get_inspection_result',
+    'mcp__inspection__get_inspection_report_details',
   ]),
   faultAnalysis: Object.freeze([
     'mcp__sec-ops__search_graph_assets',
@@ -477,6 +479,7 @@ export function createSecurityOperationsGuard(options = {}) {
 }
 
 export function apply(ctx) {
+  if (ctx.get?.('businessRuntime')?.requiresAuthentication?.() === false) return
   const known = [
     ...Object.values(TOOL_ROUTES).flat(),
     ...PERMANENTLY_DENIED,

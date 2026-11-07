@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "开启会话自动播报，分析可疑登录，并保留尚未确认的状态。"
+  ],
+  "assistant_texts": [
+    "已启动威胁研判子智能体。\n\n任务：拉取待研判威胁事件\n\n结果将在任务结束后返回。"
+  ],
+  "session_id": "session-9fc63bcc-c5cd-4066-a5d1-d42a9fc5a1f1",
+  "turns": [
+    {
+      "assistant_text": "已启动威胁研判子智能体。\n\n任务：拉取待研判威胁事件\n\n结果将在任务结束后返回。",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "50e33ef8-0f09-420d-879b-352ecf33b1ec"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "业务系统访问异常，帮我做故障分析。"
+  ],
+  "assistant_texts": [
+    "已收到您的故障分析请求。按照故障排查流程，我需要先确认以下必要信息（一次性列出，请补充）：\n\n1. **异常对象**：出问题的业务系统名称、资产名称或 IP 地址是什么？\n2. **异常现象**：具体表现是什么？（例如：无法访问、访问超时、报错码、间歇性卡顿、部分用户受影响等）\n3. **发生时间**：异常大约什么时候开始？当前是持续存在还是已恢复？（请注明时间，如\"今天上午 10 点左右\"）\n\n补充说明：本轮采样时间为 2026-11-02 08:35 UTC，如您提到的时间未注明时区或日期，我会再向您确认。\n\n收到以上信息后，我将委派故障分析子智能体，通过已授权的 SOC 只读工具（资产解析、拓扑可达性、覆盖与事件等）开展取证，并区分事实、推断与证据缺口输出分析结论；整个过程只做只读查询，不执行任何处置动作。"
+  ],
+  "session_id": "session-4a293b5d-cf37-483a-bbe4-61cc260773d7",
+  "turns": [
+    {
+      "assistant_text": "已收到您的故障分析请求。按照故障排查流程，我需要先确认以下必要信息（一次性列出，请补充）：\n\n1. **异常对象**：出问题的业务系统名称、资产名称或 IP 地址是什么？\n2. **异常现象**：具体表现是什么？（例如：无法访问、访问超时、报错码、间歇性卡顿、部分用户受影响等）\n3. **发生时间**：异常大约什么时候开始？当前是持续存在还是已恢复？（请注明时间，如\"今天上午 10 点左右\"）\n\n补充说明：本轮采样时间为 2026-11-02 08:35 UTC，如您提到的时间未注明时区或日期，我会再向您确认。\n\n收到以上信息后，我将委派故障分析子智能体，通过已授权的 SOC 只读工具（资产解析、拓扑可达性、覆盖与事件等）开展取证，并区分事实、推断与证据缺口输出分析结论；整个过程只做只读查询，不执行任何处置动作。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "621eb3ff-4f0a-455f-8e19-8d17b9425beb"
+    }
+  ]
+}

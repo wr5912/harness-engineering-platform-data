@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "分析资产 172.16.2.103 的主机安全配置异常，并排查资产未纳管或关联对象异常。"
+  ],
+  "assistant_texts": [
+    "子智能体已启动，需要等待任务完成后再根据结果汇报。\n</think>\n\n子智能体已启动。等待汇报结果。"
+  ],
+  "session_id": "session-763ac5d8-46e3-463d-9e05-6818b5355685",
+  "turns": [
+    {
+      "assistant_text": "子智能体已启动，需要等待任务完成后再根据结果汇报。\n</think>\n\n子智能体已启动。等待汇报结果。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "09e3eed8-9a82-44b7-b5e7-d88cdacc9792"
+    }
+  ]
+}

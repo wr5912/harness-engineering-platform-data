@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "请简短说明你能提供哪些安全分析帮助，并给出适合继续追问的问题。"
+  ],
+  "assistant_texts": [
+    "我可以提供以下防御性安全运营帮助（均为只读取证与规划类能力）：\n\n**能力概览**\n\n1. **威胁研判**：给出明确 SOC 事件 ID（格式 `INC-YYYYMMDD-NNNNNN`）后，执行固定取证与研判流程，产出结论、证据链和可下载报告。也支持设置定时自动研判（如每天定点、每 N 分钟）。\n2. **故障排查**：针对资产离线、事件异常、网络路径/可达性问题，使用 SOC 只读工具调查资产、事件、流量路径、采集覆盖与可达性，区分事实、推断和证据缺口。\n3. **安全巡检**：查询可用巡检模板、发起一次巡检、按 `runId` 跟踪结果；获得你明确授权后可创建周期巡检提醒。\n4. **策略配置**：新增 IPv4 主机到主机、TCP/UDP 单目的端口的网络访问策略，先出 DRAFT 并展示配置预览，经确认流程后才可能下发。\n5. **应急指令**：单动作、单目标的应急处置（如防火墙封禁/解封 IP、主机隔离/重启 agent 等）的草案准备、查询与取消。\n6. **通用安全调查**：基于你提供的材料做防御性分析，整理事实、缺口和未执行建议。\n7. **响应规划**：在受信 Gate 冻结输入与候选集合后，执行一次零工具的响应规划。\n\n**适合继续追问的问题**\n\n- 「请研判事件 `INC-XXXXXXXX-NNNNNN`」（替换为实际事件 ID）\n- 「帮我排查资产 `主机名/IP` 最近为什么离线/采集异常」\n- 「查看当前可执行的巡检模板，并对 XX 业务发起一次巡检」\n- 「我想让 A 主机（IPv4）能访问 B 主机 22 端口，准备策略草稿」\n- 「帮我封禁 IP `x.x.x.x`（防火墙单动作），并查询操作状态」\n- 「基于这份告警/日志材料，帮我做初步研判」（粘贴材料即可）\n\n请告诉我你想先处理哪一项？"
+  ],
+  "session_id": "session-aac2c8fd-b7e4-4d96-9bd8-c2546d674524",
+  "turns": [
+    {
+      "assistant_text": "我可以提供以下防御性安全运营帮助（均为只读取证与规划类能力）：\n\n**能力概览**\n\n1. **威胁研判**：给出明确 SOC 事件 ID（格式 `INC-YYYYMMDD-NNNNNN`）后，执行固定取证与研判流程，产出结论、证据链和可下载报告。也支持设置定时自动研判（如每天定点、每 N 分钟）。\n2. **故障排查**：针对资产离线、事件异常、网络路径/可达性问题，使用 SOC 只读工具调查资产、事件、流量路径、采集覆盖与可达性，区分事实、推断和证据缺口。\n3. **安全巡检**：查询可用巡检模板、发起一次巡检、按 `runId` 跟踪结果；获得你明确授权后可创建周期巡检提醒。\n4. **策略配置**：新增 IPv4 主机到主机、TCP/UDP 单目的端口的网络访问策略，先出 DRAFT 并展示配置预览，经确认流程后才可能下发。\n5. **应急指令**：单动作、单目标的应急处置（如防火墙封禁/解封 IP、主机隔离/重启 agent 等）的草案准备、查询与取消。\n6. **通用安全调查**：基于你提供的材料做防御性分析，整理事实、缺口和未执行建议。\n7. **响应规划**：在受信 Gate 冻结输入与候选集合后，执行一次零工具的响应规划。\n\n**适合继续追问的问题**\n\n- 「请研判事件 `INC-XXXXXXXX-NNNNNN`」（替换为实际事件 ID）\n- 「帮我排查资产 `主机名/IP` 最近为什么离线/采集异常」\n- 「查看当前可执行的巡检模板，并对 XX 业务发起一次巡检」\n- 「我想让 A 主机（IPv4）能访问 B 主机 22 端口，准备策略草稿」\n- 「帮我封禁 IP `x.x.x.x`（防火墙单动作），并查询操作状态」\n- 「基于这份告警/日志材料，帮我做初步研判」（粘贴材料即可）\n\n请告诉我你想先处理哪一项？",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "bce70a0f-a85c-4ad2-bd33-f0093c837150"
+    }
+  ]
+}

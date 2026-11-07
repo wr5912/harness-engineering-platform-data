@@ -1,0 +1,41 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答在单一证据块中完整覆盖了全部预期：分别准确定义了 CVSS（漏洞自身内在严重度、0–10 分、FIRST 维护）、EPSS（未来 30 天被利用概率、百分比、动态预测）和 CISA KEV（已被证实野外利用的目录、二值事实含 due date），并明确区分三者分别为静态理论评分、动态概率预测与已发生事实清单；同时说明 CVSS 9.8 不自动等于最高优先级，理由涵盖资产是否受影响/是否面向互联网的暴露面、业务关键性、网络分区与补偿控制（虚拟补丁、WAF 规则）等实际上下文，并给出 KEV→EPSS→资产暴露与业务等级→CVSS 的排序逻辑。回答还如实标注未查询 SOC 数据、未执行处置，未把未执行的操作声称为已完成。证据 citation_allowed 为 true，可支持该要求判定为满足。",
+    "requirements": [
+      {
+        "requirement": "准确区分 CVSS 严重度、EPSS 被利用概率估计和 CISA KEV 已知被利用目录，并说明内部优先级还取决于资产暴露、业务重要性、受影响情况和补偿控制等实际上下文",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "**结论**：三者分别回答三个不同问题——CVSS 说“漏洞本身有多严重”、EPSS 说“未来 30 天被利用的可能性有多大”、CISA KEV 说“这个漏洞已经被证实野战利用过”。优先级取决于“严重性 × 可利用性 × 我司暴露面”，所以 CVSS 9.8 只是其中一个输入，不自动等于最高优先级。\n\n## 三者含义（事实性说明）\n\n| 指标 | 全称/维护方 | 回答的问题 | 形式 |\n|---|---|---|---|\n| **CVSS** | Common Vulnerability Scoring System，由 FIRST 维护 | 漏洞自身的内在严重程度（攻击向量、利用复杂度、所需权限、机密性/完整性/可用性影响等） | 0–10 分，如 9.8、7.5；常用 v3.1，另有 v4.0 |\n| **EPSS** | Exploitation Prediction Scoring System，由 FIRST 维护 | 该漏洞在未来 30 天内被实际利用的**概率** | 0–100% 的百分比，基于大规模遥测数据，几乎每日更新 |\n| **CISA KEV** | Known Exploited Vulnerabilities 目录，美国 CISA 维护 | 该漏洞**已被确认**在野外被利用过（并给出修复截止日期） | 二值事实：在/不在目录中，附 due date |\n\n关键区别：CVSS 是静态的理论评分；EPSS 是动态的概率预测；KEV 是已发生事实的清单。\n\n## 为什么 CVSS 9.8 不一定是我司最高优先级\n\n- **CVSS 不含“是否被利用”的信息**：一个 9.8 分的漏洞可能 EPSS 只有 0.1%、也不在 KEV 中，说明目前几乎没有现实利用压力。\n- **CVSS 不含资产上下文**：我司可能根本没有运行受影响的软件版本；即使有，若该资产不面向互联网、不可达、已有补偿控制（如虚拟补丁、WAF 规则），实际风险远低于评分暗示。\n- **CVSS 是通用分，不是环境分**：它假设“典型受影响资产”，没有代入贵司的业务关键性、网络分区和暴露面。CVSS 本身也有时间/环境维度指标可修订，但通常大家引用的都是基础分。\n- **现实优先级的常见排序逻辑**（推断/实践建议，非我司已执行的策略）：\n  1. 已在 KEV 中且我司存在受影响资产 → 最优先（已证实野战利用）；\n  2. EPSS 高（如 >70%）且资产面向互联网或业务关键 → 次优先；\n  3. CVSS 高但 EPSS 低、无 KEV、资产内部不可达 → 可排后并持续观察 EPSS 变化；\n  4. 低 CVSS 但已在 KEV 或 EPSS 飙升 → 需要上调，不能因评分低而忽略。\n\n## 建议（尚未执行）\n\n- 建立“KEV 命中 → EPSS 分档 → 资产暴露面/业务等级 → CVSS”的四因子排序规则，而不是单按 CVSS 排队。\n- 对 CVSS 高但 EPSS 低的漏洞设置 EPSS 复查点，防止评分不变但利用概率突然上升。\n- 以上为通用方法论说明；本轮未查询任何 SOC 数据，未核对我司实际资产与漏洞清单，也未执行任何处置。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-6515e70b-68c7-44a2-8a22-b663baa3aab3",
+    "workspace_id": "e66bea4a-3927-49d2-b235-9ec19b50d5d5",
+    "session_title": "评审 U-QA-008",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

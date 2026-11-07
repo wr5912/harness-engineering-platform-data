@@ -1,0 +1,7 @@
+{
+  "case_id": "U-POL-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：要求1未满足：被测回答明确未调用端点解析、未生成任何基于真实资产/路径/设备能力的策略预览，也未说明待确认内容，仅以能力缺失停止；其“无策略能力”的关键结论只用 list_mcp_resources / list_mcp_resource_templates 的空资源列表和 inspection 断开作为依据，未核对 MCP 工具目录，而同会话 tool 回执显示 policy-configuration Skill 已成功装载，能力缺失结论缺乏工具回执支撑，无法判为满足。要求2满足：回答明确表示未创建草稿、未下发策略，未声称已开通。因要求1明确不满足，整体判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-POL-001"
+}

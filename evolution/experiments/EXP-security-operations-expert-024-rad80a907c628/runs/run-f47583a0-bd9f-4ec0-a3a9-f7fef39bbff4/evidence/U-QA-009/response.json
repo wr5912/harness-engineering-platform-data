@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "IOC、TTP、MITRE ATT&CK Technique、告警和事件有什么区别？"
+  ],
+  "assistant_texts": [
+    "这是一些网络安全核心概念的区别，我将从定义、数据来源和使用场景三个方面来解释：\n\n## 1. **IOC (Indicators of Compromise)**\n- **定义**：入侵指标，是表明潜在网络威胁的具体数据点\n- **内容**：IP 地址、域名、文件哈希、用户名、恶意注册表键值等可验证的数据\n- **特点**：静态、可索引，用于识别和拦截已知威胁\n- **例子**：C2 服务器 IP `192.168.1.100`、恶意文件哈希 `a1b2c3d4`\n\n## 2. **TTP (Tactics, Techniques, and Procedures)**\n- **定义**：攻击者的作战方式和方法论，描述攻击行为的过程\n- **内容**：战术（目标）、技术（手段）、程序（步骤）\n- **特点**：动态、描述性，用于关联和定位未知威胁\n- **例子**：使用\"文件下载\"战术、\"执行欺骗内容\"技术来建立持久化访问\n\n## 3. **MITRE ATT&CK Technique**\n- **定义**：MITRE 组织发布的标准化攻击技术映射框架\n- **内容**：编号化的攻击技术（如 T1059 命令和脚本、T1078 有效账户）\n- **特点**：结构化、可扩展，用于情报共享和威胁建模\n- **例子**：T1059.001: Command and Scripting Interpreter - PowerShell\n\n## 4. **告警 (Alert)**\n- **定义**：安全设备或系统检测到的安全事件的实时通知\n- **内容**：触发规则、检测事件类型、相关资产、事件时间\n- **特点**：动态、上下文相关，基于规则或行为触发\n- **例子**：防火墙规则触发\"禁止访问恶意网站\"告警\n\n## 5. **威胁事件 (Threat Incident)**\n- **定义**：被确认的、需要调查和响应的安全事件记录\n- **内容**：事件 ID、调查状态、初步研判结果、证据链、处置动作\n- **特点**：经过确认、可跟踪、可审计，是具体的工作项\n- **例子**：INC-20240101-000001 号事件，完整取证报告\n\n---\n\n## 关系图谱\n\n```\nIOC → 触发 → 告警 → 需要研判 → 威胁事件\n              ↓\n         TTP/MITRE ATT&CK\n              ↓\n        威胁情报关联\n```\n\n**简单比喻**：\n- **IOC** = 指纹（具体证据）\n- **告警** = 指纹报警器响了\n- **威胁事件** = 完整的 Investigation 报告\n- **TTP/MITRE ATT&CK** = 犯罪手法数据库（帮助理解攻击意图）\n\n这是纯粹的理论知识问答，没有涉及实际的 SOC 运营操作。"
+  ],
+  "session_id": "session-b12ffafa-5ec3-45e5-95cd-b4371ba4330f",
+  "turns": [
+    {
+      "assistant_text": "这是一些网络安全核心概念的区别，我将从定义、数据来源和使用场景三个方面来解释：\n\n## 1. **IOC (Indicators of Compromise)**\n- **定义**：入侵指标，是表明潜在网络威胁的具体数据点\n- **内容**：IP 地址、域名、文件哈希、用户名、恶意注册表键值等可验证的数据\n- **特点**：静态、可索引，用于识别和拦截已知威胁\n- **例子**：C2 服务器 IP `192.168.1.100`、恶意文件哈希 `a1b2c3d4`\n\n## 2. **TTP (Tactics, Techniques, and Procedures)**\n- **定义**：攻击者的作战方式和方法论，描述攻击行为的过程\n- **内容**：战术（目标）、技术（手段）、程序（步骤）\n- **特点**：动态、描述性，用于关联和定位未知威胁\n- **例子**：使用\"文件下载\"战术、\"执行欺骗内容\"技术来建立持久化访问\n\n## 3. **MITRE ATT&CK Technique**\n- **定义**：MITRE 组织发布的标准化攻击技术映射框架\n- **内容**：编号化的攻击技术（如 T1059 命令和脚本、T1078 有效账户）\n- **特点**：结构化、可扩展，用于情报共享和威胁建模\n- **例子**：T1059.001: Command and Scripting Interpreter - PowerShell\n\n## 4. **告警 (Alert)**\n- **定义**：安全设备或系统检测到的安全事件的实时通知\n- **内容**：触发规则、检测事件类型、相关资产、事件时间\n- **特点**：动态、上下文相关，基于规则或行为触发\n- **例子**：防火墙规则触发\"禁止访问恶意网站\"告警\n\n## 5. **威胁事件 (Threat Incident)**\n- **定义**：被确认的、需要调查和响应的安全事件记录\n- **内容**：事件 ID、调查状态、初步研判结果、证据链、处置动作\n- **特点**：经过确认、可跟踪、可审计，是具体的工作项\n- **例子**：INC-20240101-000001 号事件，完整取证报告\n\n---\n\n## 关系图谱\n\n```\nIOC → 触发 → 告警 → 需要研判 → 威胁事件\n              ↓\n         TTP/MITRE ATT&CK\n              ↓\n        威胁情报关联\n```\n\n**简单比喻**：\n- **IOC** = 指纹（具体证据）\n- **告警** = 指纹报警器响了\n- **威胁事件** = 完整的 Investigation 报告\n- **TTP/MITRE ATT&CK** = 犯罪手法数据库（帮助理解攻击意图）\n\n这是纯粹的理论知识问答，没有涉及实际的 SOC 运营操作。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a9bd946e-108b-4d4d-8200-9b90b9a631dc"
+    }
+  ]
+}

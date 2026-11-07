@@ -1,0 +1,73 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测按威胁研判路由经 threat-analysis 技能调用 delegate_threat_analysis，事件 ID INC-20260917-000001 原样传递（工具回执显示子智能体已启动）；子智能体 analyze_threat_incident 返回原生 is_error=true 的真实失败回执，回答如实引用失败原文、明确无研判结论与报告链接，未改走故障排查、未编造结果，符合 U-THREAT-FAST 对状态、失败原因、结果与后续建议的证据要求。",
+    "requirements": [
+      {
+        "requirement": "按威胁研判路由调用 `delegate_threat_analysis`，原样传递事件 ID",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "started subagent 0cd08eb0-689b-4bcf-8c11-a07e3721688a",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "回复和工具轨迹满足 `U-THREAT-FAST` 的证据要求",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "**研判未完成（工具连接失败）**\n\n- **事件 ID**：`INC-20260917-000001`（格式有效）\n- **执行状态**：子智能体已按流程原样调用一次研判工具，调用失败\n- **失败原因（工具返回原文）**：`trusted platform MCP group connection is unavailable`（可信平台 MCP 组连接不可用）\n- **结果**：本次未取得任何取证、分类或研判输出，**无法生成正式摘要，也无可下载报告链接**\n\n这是工具侧的连接可用性问题，不代表事件本身无威胁或已处置；本轮没有执行任何处置动作。\n\n**后续建议（尚未执行）**：待可信平台 MCP 组连接恢复后，重新发起对 `INC-20260917-000001` 的研判；若连接持续不可用，需由上层检查 `sec-ops` MCP 资源服务器的组连接状态。如需我在连接恢复后重试，请告知。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 6,
+            "quote": "Error: trusted platform MCP group connection is unavailable",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "委派不可用时如实说明，不改走故障排查或编造研判结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "**研判未完成（工具连接失败）**\n\n- **事件 ID**：`INC-20260917-000001`（格式有效）\n- **执行状态**：子智能体已按流程原样调用一次研判工具，调用失败\n- **失败原因（工具返回原文）**：`trusted platform MCP group connection is unavailable`（可信平台 MCP 组连接不可用）\n- **结果**：本次未取得任何取证、分类或研判输出，**无法生成正式摘要，也无可下载报告链接**\n\n这是工具侧的连接可用性问题，不代表事件本身无威胁或已处置；本轮没有执行任何处置动作。\n\n**后续建议（尚未执行）**：待可信平台 MCP 组连接恢复后，重新发起对 `INC-20260917-000001` 的研判；若连接持续不可用，需由上层检查 `sec-ops` MCP 资源服务器的组连接状态。如需我在连接恢复后重试，请告知。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 6,
+            "quote": "Error: trusted platform MCP group connection is unavailable",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-07d31b0e-a0f3-442f-bf5c-61c723e267ee",
+    "workspace_id": "340e822a-32a6-463d-8aa6-6e7bfa288d6e",
+    "session_title": "评审 U-THREAT-MENTION",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

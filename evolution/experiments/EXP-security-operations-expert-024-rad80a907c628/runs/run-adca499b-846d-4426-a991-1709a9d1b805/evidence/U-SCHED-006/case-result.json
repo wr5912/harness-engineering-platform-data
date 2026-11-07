@@ -1,0 +1,7 @@
+{
+  "case_id": "U-SCHED-006",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测第二轮先调用 schedule_list 并取得原生成功回执（索引 5），列表中唯一匹配到本 Session 创建的任务；随后用该任务 ID 调用 schedule_delete 并返回 deleted:true（索引 7）。回答（索引 1）明确说明删除只停止后续触发、不涉及正在执行中的研判，未声称已中止在途研判。三项要求逐项满足，回执均为同一 Session 的 tool/result 且 is_error=false。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-SCHED-006"
+}

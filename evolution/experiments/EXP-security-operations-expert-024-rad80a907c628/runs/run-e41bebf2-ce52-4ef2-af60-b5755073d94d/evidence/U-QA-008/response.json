@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "CVSS、EPSS 和 CISA KEV 分别表示什么？为什么 CVSS 9.8 也不一定是我司最高优先级？"
+  ],
+  "assistant_texts": [
+    "## 三个指标分别表示什么\n\n**CVSS（Common Vulnerability Scoring System，通用漏洞评分系统）**\n由 FIRST 维护的漏洞严重度评分，范围 0–10，衡量的是漏洞的**固有技术特性**：攻击向量、是否需要认证、是否需用户交互、对机密性/完整性/可用性的影响等。CVSS 9.8 通常意味着“网络可达、无需认证、可远程利用且后果严重”——它回答的是“**这个漏洞一旦被利用，技术上有多糟**”。\n\n**EPSS（Exploitation Prediction Scoring System，漏洞利用预测评分）**\n由 FIRST 维护的利用概率预测模型，输出 0–1 的分数（如 0.03 = 模型预测未来 30 天内被利用的概率约 30%）。它回答的是“**这个漏洞实际被攻击者利用的可能性有多大**”，基于真实的利用事件遥测数据持续更新，分数随时间变化。\n\n**CISA KEV（Known Exploited Vulnerabilities，已知被利用漏洞目录）**\n由美国 CISA 维护的权威清单，收录**已确认在现实中被实际利用**的漏洞，并附带修复截止日期。它回答的是“**这个漏洞已经被证明在野外利用了**”——不是预测，而是既成事实的证据。\n\n## 为什么 CVSS 9.8 不一定是你司最高优先级\n\n**核心原因：CVSS 只衡量漏洞本身的技术严重度，不衡量你环境中的真实风险。** 风险 ≈ 严重度 × 可利用性 × 资产暴露面与业务价值，CVSS 只覆盖了第一项。\n\n具体来说：\n\n1. **可能根本没有威胁活动。** 一个 CVSS 9.8 的漏洞若 EPSS 分数很低（如 <1%）且不在 KEV 目录中，说明攻击者尚未关注它；反之，一个 CVSS 7.5 的漏洞若已进 KEV、EPSS 超过 50%，应优先处置。\n\n2. **可能在你司不可利用。** 漏洞所在资产若不暴露在公网、被网络策略隔离、相关组件未启用，实际攻击路径可能不通。反之，若 9.8 漏洞落在互联网暴露的入口资产上，优先级应上调。\n\n3. **资产价值不同。** 同样的漏洞，落在核心业务数据库上与落在隔离的测试机上，业务风险完全不同。\n\n4. **已有在野利用 vs. 纯理论风险。** 行业通行的优先级实践（如 CISA“Patch Ready”原则、各大厂商的风险分级）普遍把 **KEV 收录 + EPSS 高分**视为比单纯 CVSS 高分更强的行动信号。\n\n## 建议的排序思路（尚未执行）\n\n综合排序时可参考：\n\n| 信号组合 | 建议优先级 |\n|---|---|\n| KEV 收录（或 EPSS 很高）+ 资产暴露/核心业务 | 最高，优先修复 |\n| CVSS 9.8 但 EPSS 低、不在 KEV、资产非暴露 | 中等，按常规补丁周期处理 |\n| CVSS 中等但在 KEV 且落在关键资产 | 高于纯理论高分漏洞 |\n\n落到你司环境，需要进一步核对：你司资产上的漏洞列表、对应资产的暴露面与业务归属。如果你提供具体资产或漏洞清单，我可以基于实际数据帮你做优先级排序——以上内容仅为分析框架，未执行任何核验或处置动作。"
+  ],
+  "session_id": "session-65e0c7fa-4314-4bf8-893d-d280b8876e68",
+  "turns": [
+    {
+      "assistant_text": "## 三个指标分别表示什么\n\n**CVSS（Common Vulnerability Scoring System，通用漏洞评分系统）**\n由 FIRST 维护的漏洞严重度评分，范围 0–10，衡量的是漏洞的**固有技术特性**：攻击向量、是否需要认证、是否需用户交互、对机密性/完整性/可用性的影响等。CVSS 9.8 通常意味着“网络可达、无需认证、可远程利用且后果严重”——它回答的是“**这个漏洞一旦被利用，技术上有多糟**”。\n\n**EPSS（Exploitation Prediction Scoring System，漏洞利用预测评分）**\n由 FIRST 维护的利用概率预测模型，输出 0–1 的分数（如 0.03 = 模型预测未来 30 天内被利用的概率约 30%）。它回答的是“**这个漏洞实际被攻击者利用的可能性有多大**”，基于真实的利用事件遥测数据持续更新，分数随时间变化。\n\n**CISA KEV（Known Exploited Vulnerabilities，已知被利用漏洞目录）**\n由美国 CISA 维护的权威清单，收录**已确认在现实中被实际利用**的漏洞，并附带修复截止日期。它回答的是“**这个漏洞已经被证明在野外利用了**”——不是预测，而是既成事实的证据。\n\n## 为什么 CVSS 9.8 不一定是你司最高优先级\n\n**核心原因：CVSS 只衡量漏洞本身的技术严重度，不衡量你环境中的真实风险。** 风险 ≈ 严重度 × 可利用性 × 资产暴露面与业务价值，CVSS 只覆盖了第一项。\n\n具体来说：\n\n1. **可能根本没有威胁活动。** 一个 CVSS 9.8 的漏洞若 EPSS 分数很低（如 <1%）且不在 KEV 目录中，说明攻击者尚未关注它；反之，一个 CVSS 7.5 的漏洞若已进 KEV、EPSS 超过 50%，应优先处置。\n\n2. **可能在你司不可利用。** 漏洞所在资产若不暴露在公网、被网络策略隔离、相关组件未启用，实际攻击路径可能不通。反之，若 9.8 漏洞落在互联网暴露的入口资产上，优先级应上调。\n\n3. **资产价值不同。** 同样的漏洞，落在核心业务数据库上与落在隔离的测试机上，业务风险完全不同。\n\n4. **已有在野利用 vs. 纯理论风险。** 行业通行的优先级实践（如 CISA“Patch Ready”原则、各大厂商的风险分级）普遍把 **KEV 收录 + EPSS 高分**视为比单纯 CVSS 高分更强的行动信号。\n\n## 建议的排序思路（尚未执行）\n\n综合排序时可参考：\n\n| 信号组合 | 建议优先级 |\n|---|---|\n| KEV 收录（或 EPSS 很高）+ 资产暴露/核心业务 | 最高，优先修复 |\n| CVSS 9.8 但 EPSS 低、不在 KEV、资产非暴露 | 中等，按常规补丁周期处理 |\n| CVSS 中等但在 KEV 且落在关键资产 | 高于纯理论高分漏洞 |\n\n落到你司环境，需要进一步核对：你司资产上的漏洞列表、对应资产的暴露面与业务归属。如果你提供具体资产或漏洞清单，我可以基于实际数据帮你做优先级排序——以上内容仅为分析框架，未执行任何核验或处置动作。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "37f4b0df-8ea3-4c31-aced-6c2850f195c2"
+    }
+  ]
+}

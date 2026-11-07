@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "帮我开通 172.16.1.155 到 172.16.2.103 的 TCP 18550 端口业务。"
+  ],
+  "assistant_texts": [
+    "**当前无法准备该策略草稿：策略端点解析能力在本会话工具目录中缺失。**\n\n**已确认的需求（来自您的原话）**\n- 操作：新增（ADD）\n- 动作：允许（“开通”）\n- 源：`172.16.1.155`\n- 目的：`172.16.2.103`\n- 协议：TCP\n- 目的端口：18550\n\n**能力缺口（事实）**\n- 按 `policy-configuration` 流程，第一步必须调用 `workbench-policy-endpoint-resolution/v1` 端点解析工具，再由 Platform 生成 DRAFT。\n- 本轮可见的 MCP 服务器只有 `sec-ops`（无资源、无策略工具）和 `inspection`（已断开）；当前工具目录中没有端点解析、策略准备、候选选择或结果查询能力。\n- 按 Skill 约束，工具缺失时停止对应路线，不猜测工具名、不改用其他来源的相似工具、不经 Shell 或底层 HTTP 绕过。\n\n**因此**\n- 尚未生成 DRAFT、尚未产生 operationId、策略未下发、未做任何验证。\n- 请在具备 `policy-configuration` 策略工具（端点解析等四个草稿工具）的会话/环境中重新发起该请求；参数按上面五项原样提供即可。"
+  ],
+  "session_id": "session-98b36606-f608-49c7-9ffa-0ad8a2f09b9f",
+  "turns": [
+    {
+      "assistant_text": "**当前无法准备该策略草稿：策略端点解析能力在本会话工具目录中缺失。**\n\n**已确认的需求（来自您的原话）**\n- 操作：新增（ADD）\n- 动作：允许（“开通”）\n- 源：`172.16.1.155`\n- 目的：`172.16.2.103`\n- 协议：TCP\n- 目的端口：18550\n\n**能力缺口（事实）**\n- 按 `policy-configuration` 流程，第一步必须调用 `workbench-policy-endpoint-resolution/v1` 端点解析工具，再由 Platform 生成 DRAFT。\n- 本轮可见的 MCP 服务器只有 `sec-ops`（无资源、无策略工具）和 `inspection`（已断开）；当前工具目录中没有端点解析、策略准备、候选选择或结果查询能力。\n- 按 Skill 约束，工具缺失时停止对应路线，不猜测工具名、不改用其他来源的相似工具、不经 Shell 或底层 HTTP 绕过。\n\n**因此**\n- 尚未生成 DRAFT、尚未产生 operationId、策略未下发、未做任何验证。\n- 请在具备 `policy-configuration` 策略工具（端点解析等四个草稿工具）的会话/环境中重新发起该请求；参数按上面五项原样提供即可。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "97f4b035-f4fb-42af-8350-9d8bb016883d"
+    }
+  ]
+}

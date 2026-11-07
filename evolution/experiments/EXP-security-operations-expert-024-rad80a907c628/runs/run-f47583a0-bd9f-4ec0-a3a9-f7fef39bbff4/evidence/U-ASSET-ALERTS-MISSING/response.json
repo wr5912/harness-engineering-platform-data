@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 999999 近 30 天的关联告警，首页最多 5 个分组。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "已启动故障分析子智能体（ID: 2706a787-e2fc-4f3e-aed9-6e6b07a6c6f7）执行查询任务。该子智能体会调用 SOC 只读工具完成资产 999999 近 30 天关联告警的查询，并按分组形式返回结果。\n\n当前状态：子智能体正在运行中，结果将通过 `send_message` 返回。\n\n**任务记录：**\n- 资产 ID：999999\n- 查询时间范围：近 30 天\n- 约束条件：首页最多 5 个分组，仅只读查询\n- 处置行动：无（已明确不执行）"
+  ],
+  "session_id": "session-ff42b9b0-23a2-4482-a717-381810f93eab",
+  "turns": [
+    {
+      "assistant_text": "已启动故障分析子智能体（ID: 2706a787-e2fc-4f3e-aed9-6e6b07a6c6f7）执行查询任务。该子智能体会调用 SOC 只读工具完成资产 999999 近 30 天关联告警的查询，并按分组形式返回结果。\n\n当前状态：子智能体正在运行中，结果将通过 `send_message` 返回。\n\n**任务记录：**\n- 资产 ID：999999\n- 查询时间范围：近 30 天\n- 约束条件：首页最多 5 个分组，仅只读查询\n- 处置行动：无（已明确不执行）",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "f9a3b594-cb7d-48a7-8c0b-ca86c3f408b9"
+    }
+  ]
+}

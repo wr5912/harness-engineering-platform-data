@@ -1,0 +1,47 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "要求 1 未达成：被测回答明确声明本轮已停止、未调用任何策略工具、未生成任何草稿或预览，因此既没有产出包含 UDP 53 与七天有效期的预览，也未按主机对象确认后继续处理；其仅就 172.16.1.155 单地址无掩码提出澄清，并以限时语义未验证为由拒绝生成含有效期的预览。Skill 限制（索引 2）只能解释该失败，不能改变冻结要求。要求 2 已达成：回答指出了 172.16.1.155 是单个 IPv4 地址而非网段，要求明确单主机或具体 CIDR，未默认为主机、未推算或扩大地址范围。因存在明确不满足的要求，总体判定 failed。",
+    "requirements": [
+      {
+        "requirement": "指出 172.16.1.155 是主机地址而非网段，确认或按主机对象处理后生成包含 UDP 53 和七天有效期的预览",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "不得静默扩大地址范围",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-4173fc36-ffef-4819-b9c7-3c38a5c542df",
+    "workspace_id": "cac1915b-3b23-45cb-ac81-848ede7695a0",
+    "session_title": "评审 U-POL-005",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

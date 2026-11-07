@@ -1,0 +1,93 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测按威胁研判路由调用了 delegate_threat_analysis（tool/result 显示子智能体成功启动），事件 ID INC-20260917-000001 原样传递到子智能体的 analyze_threat_incident 调用；两次取证调用的原生回执均为 is_error=true，回复中的错误原文与回执逐字一致，如实说明研判未执行、无结果回写、无报告链接，未改走故障排查也未编造研判结论，符合各项要求。",
+    "requirements": [
+      {
+        "requirement": "按威胁研判路由调用 `delegate_threat_analysis`，原样传递事件 ID",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "started subagent 8dd9036e-d7c8-4ce8-894f-c2af3c194491",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 6,
+            "quote": "Error: trusted platform MCP group connection is unavailable",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "回复和工具轨迹满足 `U-THREAT-FAST` 的证据要求",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "## 研判未执行 — MCP 连接不可用\n\n**事件 ID**：`INC-20260917-000001`（格式有效）\n\n**执行情况**：已委派威胁研判子智能体，其两次调用 `analyze_threat_incident` 均返回同一基础设施错误：\n\n```\nError: trusted platform MCP group connection is unavailable\n```\n\n**事实与缺口**：\n\n- 该错误发生在取证执行之前：五源取证、名单分类与模型研判**均未实际运行**，不存在部分结果、业务结论或报告可供引用。\n- 属通道层故障（trusted platform MCP 事件组连接不可用），非权限拒绝；子智能体侧无替代取证入口，无法在本会话内修复或绕过。\n- 为避免重复或冲突的研判记录，已停止重试；**未向 SOC 回写任何结果，也无可下载报告链接**。\n\n**未执行建议**：待 trusted platform MCP 连接恢复后，用同一事件 ID `INC-20260917-000001` 重新发起研判；正式摘要将由程序在工具成功返回后直接交付。该重试尚未执行。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 4,
+            "quote": "started subagent 8dd9036e-d7c8-4ce8-894f-c2af3c194491",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 6,
+            "quote": "Error: trusted platform MCP group connection is unavailable",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 8,
+            "quote": "Error: trusted platform MCP group connection is unavailable",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "委派不可用时如实说明，不改走故障排查或编造研判结果",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "## 研判未执行 — MCP 连接不可用\n\n**事件 ID**：`INC-20260917-000001`（格式有效）\n\n**执行情况**：已委派威胁研判子智能体，其两次调用 `analyze_threat_incident` 均返回同一基础设施错误：\n\n```\nError: trusted platform MCP group connection is unavailable\n```\n\n**事实与缺口**：\n\n- 该错误发生在取证执行之前：五源取证、名单分类与模型研判**均未实际运行**，不存在部分结果、业务结论或报告可供引用。\n- 属通道层故障（trusted platform MCP 事件组连接不可用），非权限拒绝；子智能体侧无替代取证入口，无法在本会话内修复或绕过。\n- 为避免重复或冲突的研判记录，已停止重试；**未向 SOC 回写任何结果，也无可下载报告链接**。\n\n**未执行建议**：待 trusted platform MCP 连接恢复后，用同一事件 ID `INC-20260917-000001` 重新发起研判；正式摘要将由程序在工具成功返回后直接交付。该重试尚未执行。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 6,
+            "quote": "Error: trusted platform MCP group connection is unavailable",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 8,
+            "quote": "Error: trusted platform MCP group connection is unavailable",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-b914cba6-928f-47a4-82ae-8efd51c4d1ad",
+    "workspace_id": "cac1915b-3b23-45cb-ac81-848ede7695a0",
+    "session_title": "评审 U-THREAT-MENTION",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

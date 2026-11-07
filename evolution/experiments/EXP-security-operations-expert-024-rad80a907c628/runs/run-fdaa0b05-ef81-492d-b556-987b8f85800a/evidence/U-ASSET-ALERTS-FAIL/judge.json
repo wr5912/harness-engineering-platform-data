@@ -1,0 +1,95 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测 Session 从未执行告警查询：资产查询返回 code=500「资产 9108 不存在或已删除」，既非受控存在资产，也未以任何返回 ID 查询告警，因此不存在 HTTP 200 + code 503 的告警业务失败回执；回答还直接给出「本次查询范围内未找到资产 9108 的关联告警」这一未命中业务结论，未说明固定 Mock/replay 的受控失败与告警查询未完成，失败回执与固定输入摘要也无法完整回读。仅只读、未重试/换资产/写入部分满足。",
+    "requirements": [
+      {
+        "requirement": "1. 核对 HTTP 与业务失败：实际执行受控存在资产查询，再以实际返回 ID 查询告警",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 8
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "告警 HTTP 为 200，但业务 code 为 503，必须判为业务失败",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 8
+          }
+        ]
+      },
+      {
+        "requirement": "2. 准确报告未完成范围：回复说明固定 Mock/replay 的受控失败、本次告警查询未完成，不能报告没有告警、完成研判或任何成功业务结论",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "注：不重试、不换资产、不执行写入",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 8
+          }
+        ]
+      },
+      {
+        "requirement": "3. 保留失败回执与输入：原始业务失败与固定输入摘要可回读",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 8
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "不把受控存在资产和故障声称为在线服务事实",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-bc69a585-5703-4c2d-b330-7e3db6ff5cec",
+    "workspace_id": "e66bea4a-3927-49d2-b235-9ec19b50d5d5",
+    "session_title": "评审 U-ASSET-ALERTS-FAIL",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

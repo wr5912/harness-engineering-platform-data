@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "响应处置支持哪些能力？"
+  ],
+  "assistant_texts": [
+    "**结论**：本工作区的“响应处置”由四条受控路线组成，全部属于**规划/草案级能力**——模型本身不直接执行任何处置，确认与执行由模型外的受信组件负责。以下按“设计上支持的能力”和“本轮实际可用性”分别说明。\n\n## 设计上支持的四条响应路线\n\n1. **应急指令（`emergency-action` Skill）**\n   - 支持单动作、单目标处置：防火墙 `block-ip` / `unblock-ip`，主机 `host-*` 动作（如隔离）。\n   - 支持草案的准备、修订、查询、取消。\n   - “确认执行”只能由受信应急确认插件绑定本会话最新有效草案并签名提交；排队、受理不等于执行成功，以 Workbench/SOC 权威回执为准。\n\n2. **网络访问策略配置（`policy-configuration` Skill）**\n   - 仅支持**新增** IPv4 主机到主机、TCP/UDP 单目的端口策略；参数不足时追问。\n   - 支持策略草稿的准备、查询、候选排序与结果读取，原样展示 Workbench 生成的配置预览。\n   - “执行”只能由受信策略确认插件绑定本会话最新 DRAFT；DRAFT 和确认受理都不代表已生效。\n\n3. **响应规划（`response-planning` Skill / `delegate_response_planning`）**\n   - 仅在受信 Runtime 于模型外完成授权、冻结输入/候选/摘要后，执行一次**零工具**结构化响应规划。\n   - 该委派默认由 Guard 拒绝；确认、保存、执行、监控全部由外部响应生命周期负责。\n\n4. **剧本影响评估（`playbook-impact-assessment` Skill）**\n   - 基于已冻结的剧本、对象和证据评估影响范围、风险与可逆性；不调用工具、不执行动作。\n\n**证据输入类支撑能力**（为响应提供依据，本身不处置）：威胁研判（`INC-YYYYMMDD-NNNNNN` 固定取证、报告与下载链接）、故障排查只读取证（15 个 SOC 只读工具，仅故障子智能体可用）、巡检发起与结果查询、周期自动化任务（DSH Schedule 四工具）。\n\n## 边界（事实）\n\n- 模型不能直接确认、提交应急/策略操作，不能调用 SOC 写接口；Bash、代码执行、直接处置均不可用。\n- Prompt 不授予权限，实际权限以 DSH Profile、Guard、工具过滤器、MCP 服务端、审批与审计结果为准。\n\n## 本轮实际可用性与缺口\n\n- 本轮工具目录中**可见**：三个委派入口（威胁研判/故障排查/响应规划）、DSH Schedule 四个工具、15 个 SOC 只读查询工具。\n- 本轮工具目录中**未见**：应急草案六工具、策略草稿四工具、巡检三工具。因此这三条路线本轮无法执行，属于能力缺口；我未猜测工具名，也未通过其他方式绕过。\n- 本轮未发起任何处置、规划或委派，以上均为能力说明，不代表已执行。"
+  ],
+  "session_id": "session-80a4828e-afcc-4dad-a239-5f81bca8aa84",
+  "turns": [
+    {
+      "assistant_text": "**结论**：本工作区的“响应处置”由四条受控路线组成，全部属于**规划/草案级能力**——模型本身不直接执行任何处置，确认与执行由模型外的受信组件负责。以下按“设计上支持的能力”和“本轮实际可用性”分别说明。\n\n## 设计上支持的四条响应路线\n\n1. **应急指令（`emergency-action` Skill）**\n   - 支持单动作、单目标处置：防火墙 `block-ip` / `unblock-ip`，主机 `host-*` 动作（如隔离）。\n   - 支持草案的准备、修订、查询、取消。\n   - “确认执行”只能由受信应急确认插件绑定本会话最新有效草案并签名提交；排队、受理不等于执行成功，以 Workbench/SOC 权威回执为准。\n\n2. **网络访问策略配置（`policy-configuration` Skill）**\n   - 仅支持**新增** IPv4 主机到主机、TCP/UDP 单目的端口策略；参数不足时追问。\n   - 支持策略草稿的准备、查询、候选排序与结果读取，原样展示 Workbench 生成的配置预览。\n   - “执行”只能由受信策略确认插件绑定本会话最新 DRAFT；DRAFT 和确认受理都不代表已生效。\n\n3. **响应规划（`response-planning` Skill / `delegate_response_planning`）**\n   - 仅在受信 Runtime 于模型外完成授权、冻结输入/候选/摘要后，执行一次**零工具**结构化响应规划。\n   - 该委派默认由 Guard 拒绝；确认、保存、执行、监控全部由外部响应生命周期负责。\n\n4. **剧本影响评估（`playbook-impact-assessment` Skill）**\n   - 基于已冻结的剧本、对象和证据评估影响范围、风险与可逆性；不调用工具、不执行动作。\n\n**证据输入类支撑能力**（为响应提供依据，本身不处置）：威胁研判（`INC-YYYYMMDD-NNNNNN` 固定取证、报告与下载链接）、故障排查只读取证（15 个 SOC 只读工具，仅故障子智能体可用）、巡检发起与结果查询、周期自动化任务（DSH Schedule 四工具）。\n\n## 边界（事实）\n\n- 模型不能直接确认、提交应急/策略操作，不能调用 SOC 写接口；Bash、代码执行、直接处置均不可用。\n- Prompt 不授予权限，实际权限以 DSH Profile、Guard、工具过滤器、MCP 服务端、审批与审计结果为准。\n\n## 本轮实际可用性与缺口\n\n- 本轮工具目录中**可见**：三个委派入口（威胁研判/故障排查/响应规划）、DSH Schedule 四个工具、15 个 SOC 只读查询工具。\n- 本轮工具目录中**未见**：应急草案六工具、策略草稿四工具、巡检三工具。因此这三条路线本轮无法执行，属于能力缺口；我未猜测工具名，也未通过其他方式绕过。\n- 本轮未发起任何处置、规划或委派，以上均为能力说明，不代表已执行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "dea49f4b-88aa-43fa-97ac-128ab75608b6"
+    }
+  ]
+}

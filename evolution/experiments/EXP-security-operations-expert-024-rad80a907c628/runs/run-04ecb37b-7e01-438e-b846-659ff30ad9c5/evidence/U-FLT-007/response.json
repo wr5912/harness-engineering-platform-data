@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "分析资产 172.16.2.103 的主机安全配置异常，并排查资产未纳管或关联对象异常。"
+  ],
+  "assistant_texts": [
+    "## 资产 172.16.2.103 取证结论（只读）\n\n### 结论\n在本次可见 SOC 数据范围内，**172.16.2.103 未登记为资产（未纳管）**，因此其主机安全配置、基线、采集、指标与告警数据均不可得——这属于\"无数据/未纳管\"，不能解读为\"配置正常\"或\"无异常\"。\n\n### 主机安全配置异常（事实）\n- 资产解析 `get_graph_resolve_ip_host`(.103) 返回 `code:200` 但**无 data**；对照 IP .102 正常命中（assetId 9140），说明是未命中而非工具故障。\n- `list_soc_asset`（ip/keyword）→ `total:0`；`search_graph_assets` → 空；节点详情 `metricAvailable=false`，CPU/内存/磁盘为 null，告警计数全 0（\"无数据\"口径）。\n- 因无 assetId，**无法查询**采集配置、漏洞、业务系统、基线评估（`assessmentScore`/`baselineAssigned` 等字段全部无入参）。\n\n### 未纳管 / 关联对象异常（事实）\n| 证据 | 结果 |\n|---|---|\n| 图谱路径 .102→.103 | `reachable:false`，`DST_NOT_FOUND`，缺口：\"指定端点未登记为资产\" |\n| 主机对端口流量（.102/.99/.1 ↔ .103，共 4 组） | 全部空 `[]`；通信日志 `NOT_QUERIED`（端点未登记） |\n| IP 可达性 .102→.103 | `REACHABLE`，`l2_same_segment`（仅按网段推断，**不是**在线/已纳管证据） |\n| 同网段参照 | .102/.99/.1 已登记，但均 `baselineAssigned=0`、`collectionStatus=\"non_collectable\"`、`assessmentScore=null`（仅环境事实，不外推到 .103） |\n\n两个可达性工具口径不同：图谱路径校验资产登记（`DST_NOT_FOUND/UNKNOWN`），IP 可达性仅按网段推断（`REACHABLE`），二者不构成矛盾。\n\n### 推断\n- **A**：.103 在本次 SOC 台账中无纳管记录，主机安全配置异常无法评估——异常点本身就是\"未纳管/未登记\"。\n- **B**：`REACHABLE(l2_same_segment)` 不能作为 .103 在线或已部署的证据。\n- **C**：与同网段 3 台已登记主机之间本次未见流量观测记录，仅表示该查询未命中。\n- 无同一对象、时段的终端/ARP/日志侧交叉证据，**不推断 .103 未登记的原因、不排序、不标置信度**。\n\n### 证据缺口\n1. 无 assetId → 采集配置、漏洞、业务关联、覆盖度查询全部无入参（工具入参缺口）。\n2. 主机安全配置/基线/健康检查字段：目标对象零记录。\n3. 流量侧无交叉证据；`metricAvailable=false` 不能断言\"无异常\"。\n4. 无终端、交换机/ARP、日志平台的同时段外部证据，无法判断 .103 实际是否在线或在其他系统纳管。\n5. 过程中 1 次工具名笔误被拒，已用正确工具名重查，不影响结论。\n\n### 未执行建议（尚未执行）\n- 未做任何写操作：未补登资产、未配 Agent/采集、未下发基线、未发起探测、未改分组/拓扑。\n- 建议后续：先核实 172.16.2.103 的真实身份与所在网络，再决定是否纳入资产台账与采集覆盖；需要时可在授权后继续排查。"
+  ],
+  "session_id": "session-1ced3431-2cea-471a-81b8-bcdc49c9b769",
+  "turns": [
+    {
+      "assistant_text": "## 资产 172.16.2.103 取证结论（只读）\n\n### 结论\n在本次可见 SOC 数据范围内，**172.16.2.103 未登记为资产（未纳管）**，因此其主机安全配置、基线、采集、指标与告警数据均不可得——这属于\"无数据/未纳管\"，不能解读为\"配置正常\"或\"无异常\"。\n\n### 主机安全配置异常（事实）\n- 资产解析 `get_graph_resolve_ip_host`(.103) 返回 `code:200` 但**无 data**；对照 IP .102 正常命中（assetId 9140），说明是未命中而非工具故障。\n- `list_soc_asset`（ip/keyword）→ `total:0`；`search_graph_assets` → 空；节点详情 `metricAvailable=false`，CPU/内存/磁盘为 null，告警计数全 0（\"无数据\"口径）。\n- 因无 assetId，**无法查询**采集配置、漏洞、业务系统、基线评估（`assessmentScore`/`baselineAssigned` 等字段全部无入参）。\n\n### 未纳管 / 关联对象异常（事实）\n| 证据 | 结果 |\n|---|---|\n| 图谱路径 .102→.103 | `reachable:false`，`DST_NOT_FOUND`，缺口：\"指定端点未登记为资产\" |\n| 主机对端口流量（.102/.99/.1 ↔ .103，共 4 组） | 全部空 `[]`；通信日志 `NOT_QUERIED`（端点未登记） |\n| IP 可达性 .102→.103 | `REACHABLE`，`l2_same_segment`（仅按网段推断，**不是**在线/已纳管证据） |\n| 同网段参照 | .102/.99/.1 已登记，但均 `baselineAssigned=0`、`collectionStatus=\"non_collectable\"`、`assessmentScore=null`（仅环境事实，不外推到 .103） |\n\n两个可达性工具口径不同：图谱路径校验资产登记（`DST_NOT_FOUND/UNKNOWN`），IP 可达性仅按网段推断（`REACHABLE`），二者不构成矛盾。\n\n### 推断\n- **A**：.103 在本次 SOC 台账中无纳管记录，主机安全配置异常无法评估——异常点本身就是\"未纳管/未登记\"。\n- **B**：`REACHABLE(l2_same_segment)` 不能作为 .103 在线或已部署的证据。\n- **C**：与同网段 3 台已登记主机之间本次未见流量观测记录，仅表示该查询未命中。\n- 无同一对象、时段的终端/ARP/日志侧交叉证据，**不推断 .103 未登记的原因、不排序、不标置信度**。\n\n### 证据缺口\n1. 无 assetId → 采集配置、漏洞、业务关联、覆盖度查询全部无入参（工具入参缺口）。\n2. 主机安全配置/基线/健康检查字段：目标对象零记录。\n3. 流量侧无交叉证据；`metricAvailable=false` 不能断言\"无异常\"。\n4. 无终端、交换机/ARP、日志平台的同时段外部证据，无法判断 .103 实际是否在线或在其他系统纳管。\n5. 过程中 1 次工具名笔误被拒，已用正确工具名重查，不影响结论。\n\n### 未执行建议（尚未执行）\n- 未做任何写操作：未补登资产、未配 Agent/采集、未下发基线、未发起探测、未改分组/拓扑。\n- 建议后续：先核实 172.16.2.103 的真实身份与所在网络，再决定是否纳入资产台账与采集覆盖；需要时可在授权后继续排查。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "7b931b88-0682-4a43-b06c-994ed79ec942"
+    }
+  ]
+}

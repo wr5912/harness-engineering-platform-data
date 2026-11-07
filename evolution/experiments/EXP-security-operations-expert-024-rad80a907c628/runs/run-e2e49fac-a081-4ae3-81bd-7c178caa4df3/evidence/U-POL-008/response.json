@@ -1,0 +1,133 @@
+{
+  "inputs": [
+    "开通策略。",
+    "查询状态。",
+    "调整端口。",
+    "业务验证结束后关闭策略。"
+  ],
+  "assistant_texts": [
+    "我需要补充完整参数才能进入策略配置：\n\n- **源端点**（资产名称 / IPv4 / IPv4 CIDR）\n- **目的端点**（资产名称 / IPv4 / IPv4 CIDR）\n- **协议**（TCP / UDP）\n- **目的端口**（1–65535 的单个端口）\n- **动作**：允许（ALLOW）或阻断（DENY）\n\n例如：“开通 web-01 到 192.0.2.10 的 TCP 443 访问”。如果是在指定防火墙上下发，也请一并说明设备名称；如给出 CIDR 请使用网络地址（如 `172.16.1.0/28`）。",
+    "当前会话还没有任何策略配置任务：此前未成功调用端点解析或策略准备工具，因此没有可查询的 operation ID。无法查询状态，请补充完整参数（源端点、目的端点、TCP/UDP、目的端口、允许/阻断）后发起配置。",
+    "当前会话没有任何已冻结的策略草稿或 DRAFT（此前未发起过解析与 prepare），不存在可调整端口的对象。\n\n如果你要按新的端口新建策略，请给出完整参数：\n- **源端点**（资产名称 / IPv4 / IPv4 CIDR）\n- **目的端点**\n- **协议**（TCP / UDP）\n- **目的端口**（1–65535）\n- **动作**：允许或阻断\n\n例如：“开通 web-01 到 192.0.2.10 的 TCP 443 访问”。",
+    "当前不支持该操作：\n\n1. **本轮能力边界**：策略路线只支持 `ADD`（新增允许/阻断），`MODIFY`、`DELETE`、关闭/停用不在支持范围内，我不能把“关闭”解释为删除并提交。\n2. **没有已存在的草稿**：本会话从未成功发起策略配置，没有可关闭的策略对象或 operation ID。\n\n如果“业务验证结束后”是希望设置**有效期/截止时间**，也需说明：限时下发与到期语义尚未端到端验证，本轮不会带时间约束生成策略，也不会自行推算起止时间。\n\n可行的做法是：验证结束后由你发起删除/关闭请求并走相应审批流程（或告诉我你希望先新增哪条策略，我按完整参数发起 ADD）。"
+  ],
+  "session_id": "session-773c8f47-169f-45da-92f3-b8225c485946",
+  "turns": [
+    {
+      "assistant_text": "我需要补充完整参数才能进入策略配置：\n\n- **源端点**（资产名称 / IPv4 / IPv4 CIDR）\n- **目的端点**（资产名称 / IPv4 / IPv4 CIDR）\n- **协议**（TCP / UDP）\n- **目的端口**（1–65535 的单个端口）\n- **动作**：允许（ALLOW）或阻断（DENY）\n\n例如：“开通 web-01 到 192.0.2.10 的 TCP 443 访问”。如果是在指定防火墙上下发，也请一并说明设备名称；如给出 CIDR 请使用网络地址（如 `172.16.1.0/28`）。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "63049024-8548-45cd-a110-823b74519b26"
+    },
+    {
+      "assistant_text": "当前会话还没有任何策略配置任务：此前未成功调用端点解析或策略准备工具，因此没有可查询的 operation ID。无法查询状态，请补充完整参数（源端点、目的端点、TCP/UDP、目的端口、允许/阻断）后发起配置。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "aa7774b9-8e0d-4587-bc53-589c40c788b2"
+    },
+    {
+      "assistant_text": "当前会话没有任何已冻结的策略草稿或 DRAFT（此前未发起过解析与 prepare），不存在可调整端口的对象。\n\n如果你要按新的端口新建策略，请给出完整参数：\n- **源端点**（资产名称 / IPv4 / IPv4 CIDR）\n- **目的端点**\n- **协议**（TCP / UDP）\n- **目的端口**（1–65535）\n- **动作**：允许或阻断\n\n例如：“开通 web-01 到 192.0.2.10 的 TCP 443 访问”。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 3,
+      "input_message_id": "4717917c-4843-462d-a783-4056b7659f47"
+    },
+    {
+      "assistant_text": "当前不支持该操作：\n\n1. **本轮能力边界**：策略路线只支持 `ADD`（新增允许/阻断），`MODIFY`、`DELETE`、关闭/停用不在支持范围内，我不能把“关闭”解释为删除并提交。\n2. **没有已存在的草稿**：本会话从未成功发起策略配置，没有可关闭的策略对象或 operation ID。\n\n如果“业务验证结束后”是希望设置**有效期/截止时间**，也需说明：限时下发与到期语义尚未端到端验证，本轮不会带时间约束生成策略，也不会自行推算起止时间。\n\n可行的做法是：验证结束后由你发起删除/关闭请求并走相应审批流程（或告诉我你希望先新增哪条策略，我按完整参数发起 ADD）。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.8-27B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 4,
+      "input_message_id": "40de2e1e-e4a5-40ba-835b-96741e7d9b2a"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "请简短说明你能提供哪些安全分析帮助，并给出适合继续追问的问题。"
+  ],
+  "assistant_texts": [
+    "用户询问我能提供哪些安全分析帮助和适合继续追问的问题，我需要根据可用的技能目录，按清晰分类概述防御性安全运营能力，并提供引导性的问题示例。\n</think>\n\n作为网络安全运营专家，我可以在以下方面提供安全分析帮助：\n\n## 核心能力\n\n### 🔍 威胁研判 (Threat Analysis)\n- 对 SOC 事件 ID（格式：INC-YYYYMMDD-NNNNNN）执行真实取证和研判\n- 处理待研判事件的批量认领与分析\n- 支持定时自动研判任务（创建周期提醒、每小时/每日自动触发）\n\n### 🛡️ 应急指令 (Emergency Action)\n- 单动作、单目标的应急处置（隔离、封禁、解封、重启等）\n- 防火墙和主机层面的操作草案准备与执行跟踪\n- 查询、修改、取消应急操作\n\n### 📜 策略配置 (Policy Configuration)\n- 新增 IPv4 主机到主机、TCP/UDP 单目的端口访问策略\n- 按 Workbench 要求准备、查询和排序候选策略\n- 配置预览展示（不直接下发）\n\n### 🔧 故障排查 (Fault Analysis)\n- 资产详情、漏洞列表、关联业务系统查询\n- 网络路径可达性分析、主机对流量观测\n- 资产采集覆盖率、网络合规违规记录\n- 终端与采集设备配置调查\n\n### 📊 即时巡检 (Security Inspection)\n- 查询可执行巡检模板\n- 按授权执行并查询一次巡检结果\n- 支持经授权的定时周期巡检\n\n### ❓ 通用安全调查 (Security Investigation)\n- 基于现有材料进行防御性安全调查\n- 区分事实、推断和未执行建议\n- 证据不足时明确说明缺口\n\n---\n\n## 💡 适合继续追问的问题\n\n1. **威胁相关**\n   - \"当前待研判的威胁事件有哪些？\"\n   - \"如何配置自动威胁研判任务？\"\n   - \"是否有近期发生的安全事件需要分析？\"\n\n2. **应急操作**\n   - \"如何隔离某个宿主资产或封禁 IP 地址？\"\n   - \"我当前的应急操作历史上有什么记录？\"\n\n3. **策略配置**\n   - \"如何为某个资产对新增访问控制策略？\"\n   - \"目前有哪些可用的网络策略候选？\"\n\n4. **资产调查**\n   - \"我的资产列表和覆盖情况如何？\"\n   - \"某个资产（资产 ID/名称/IP）有哪些漏洞？\"\n   - \"网络路径可达性检查结果是什么？\"\n\n5. **巡检需求**\n   - \"有哪些可用的巡检模板？\"\n   - \"执行一次全面安全巡检\"\n\n请给我一个具体的任务方向或事件 ID，我可以立即开展相应分析。"
+  ],
+  "session_id": "session-133c0ef2-314f-4884-9c9c-45e2730d317f",
+  "turns": [
+    {
+      "assistant_text": "用户询问我能提供哪些安全分析帮助和适合继续追问的问题，我需要根据可用的技能目录，按清晰分类概述防御性安全运营能力，并提供引导性的问题示例。\n</think>\n\n作为网络安全运营专家，我可以在以下方面提供安全分析帮助：\n\n## 核心能力\n\n### 🔍 威胁研判 (Threat Analysis)\n- 对 SOC 事件 ID（格式：INC-YYYYMMDD-NNNNNN）执行真实取证和研判\n- 处理待研判事件的批量认领与分析\n- 支持定时自动研判任务（创建周期提醒、每小时/每日自动触发）\n\n### 🛡️ 应急指令 (Emergency Action)\n- 单动作、单目标的应急处置（隔离、封禁、解封、重启等）\n- 防火墙和主机层面的操作草案准备与执行跟踪\n- 查询、修改、取消应急操作\n\n### 📜 策略配置 (Policy Configuration)\n- 新增 IPv4 主机到主机、TCP/UDP 单目的端口访问策略\n- 按 Workbench 要求准备、查询和排序候选策略\n- 配置预览展示（不直接下发）\n\n### 🔧 故障排查 (Fault Analysis)\n- 资产详情、漏洞列表、关联业务系统查询\n- 网络路径可达性分析、主机对流量观测\n- 资产采集覆盖率、网络合规违规记录\n- 终端与采集设备配置调查\n\n### 📊 即时巡检 (Security Inspection)\n- 查询可执行巡检模板\n- 按授权执行并查询一次巡检结果\n- 支持经授权的定时周期巡检\n\n### ❓ 通用安全调查 (Security Investigation)\n- 基于现有材料进行防御性安全调查\n- 区分事实、推断和未执行建议\n- 证据不足时明确说明缺口\n\n---\n\n## 💡 适合继续追问的问题\n\n1. **威胁相关**\n   - \"当前待研判的威胁事件有哪些？\"\n   - \"如何配置自动威胁研判任务？\"\n   - \"是否有近期发生的安全事件需要分析？\"\n\n2. **应急操作**\n   - \"如何隔离某个宿主资产或封禁 IP 地址？\"\n   - \"我当前的应急操作历史上有什么记录？\"\n\n3. **策略配置**\n   - \"如何为某个资产对新增访问控制策略？\"\n   - \"目前有哪些可用的网络策略候选？\"\n\n4. **资产调查**\n   - \"我的资产列表和覆盖情况如何？\"\n   - \"某个资产（资产 ID/名称/IP）有哪些漏洞？\"\n   - \"网络路径可达性检查结果是什么？\"\n\n5. **巡检需求**\n   - \"有哪些可用的巡检模板？\"\n   - \"执行一次全面安全巡检\"\n\n请给我一个具体的任务方向或事件 ID，我可以立即开展相应分析。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "27e6b729-8098-447d-bd3a-026c1756aa92"
+    }
+  ]
+}

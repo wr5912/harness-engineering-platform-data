@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-014",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答确实以英语准确说明了 CVE ID 标识单个公开披露（publicly disclosed）的漏洞，并在 'What it does not identify' 中明确写出 'Not the severity itself — severity comes from the CVSS score, not from the ID'，满足了不把编号当严重度证明的部分；但整段回答没有任何关于编号不能证明漏洞是否已被利用的表述（只提到 exploit 是独立制品、可引用 CVE，属于概念区分而非利用状态），'或是否已被利用的证明' 这一半要求缺失，故未明确满足全部要求，判为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-014"
+}

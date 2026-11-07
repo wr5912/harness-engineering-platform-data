@@ -1,0 +1,7 @@
+{
+  "case_id": "U-POL-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答明确承认本轮未调用任何策略工具，因此既未核对指定设备 172.16.1.155 的真实资产类型与可配置能力，也未生成任何可核对的策略预览；工具回执显示 sec-ops 的资源与资源模板均为空，仅成功装载了 policy-configuration Skill，无法支持设备能力核对与预览这两项关键数据。第 1、3 项（未把源地址自动当作策略设备、如实说明工具失败且未伪造成功）有证据支持，但第 2 项明确未满足，故整体判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-POL-002"
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-THREAT-WHITELIST",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答明确声明本轮无任何取证数据、分类结论或报告产出，因此四项预期要求均未落地：未按本轮实际名单输出匹配结果、未记录该事件曾出现白名单误分类、未将技术合同成功与业务正确性分别记录、也未在缺少独立业务真值时把业务正确性记为无法判定。子智能体的 analyze_threat_incident 回执 is_error=true（trusted platform MCP group connection is unavailable），属基础设施故障，Skill 限制只能解释失败原因，不能替代或改变这些冻结要求，故判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-THREAT-WHITELIST"
+}

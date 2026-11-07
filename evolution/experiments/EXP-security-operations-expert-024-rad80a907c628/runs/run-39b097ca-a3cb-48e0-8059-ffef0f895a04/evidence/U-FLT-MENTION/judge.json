@@ -1,0 +1,46 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答确实按故障排查路线处理（调用了 fault-analysis skill 并声明走故障排查），但信息核对项不完整：回答仅询问了异常对象/资产、异常现象与时间及可选事件编号，未按要求询问源、目的、协议、端口（仅涉及资产与现象，缺源、协议、端口），且结尾提及'有事件 ID 时也可直接转威胁研判路线'，与不进入威胁研判路由的要求存在冲突。要求2未被完整满足，故整体判 failed。",
+    "requirements": [
+      {
+        "requirement": "按故障排查路由处理",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "信息不足时询问源、目的、协议、端口和现象，不编造根因，也不进入威胁研判或处置路由",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-81b451a2-c028-4c74-8ca7-1476cd8c91d8",
+    "workspace_id": "a1cd08bb-0f20-455a-96cd-7927aa1093ca",
+    "session_title": "评审 U-FLT-MENTION",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

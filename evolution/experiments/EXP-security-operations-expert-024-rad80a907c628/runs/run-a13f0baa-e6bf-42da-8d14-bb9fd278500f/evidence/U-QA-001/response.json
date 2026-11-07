@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "SEC-KB-078 SOAR 剧本是什么？"
+  ],
+  "assistant_texts": [
+    "技能加载完成，用户询问的是 SOAR 剧本定义而非影响评估，需要解释安全编排自动化与响应的基础概念和组件，并结合可能的数据源提供应用层面的说明，同时保持防御性定位。\n</think>\n\n关于 **SOAR 剧本**（Security Orchestration, Automation and Response Playbook）的定义和应用：\n\n## 什么是 SOAR 剧本？\n\nSOAR 剧本是一套预定义的、可自动执行的安全操作流程，用于编排、自动化和响应网络安全事件。\n\n### 核心作用：\n\n1. **编排（Orchestration）**\n   - 协调多个安全系统之间的协作\n   - 加密调用防火墙、SIEM、EDR 等工具\n   - 统一事件处理逻辑\n\n2. **自动化（Automation）**\n   - 自动收集证据\n   - 自动隔离受影响资产\n   - 自动更新防护规则\n   - 自动关联分析\n\n3. **响应（Response）**\n   - 标准化处置流程\n   - 减少人工操作错误\n   - 提升响应速度（MTTR）\n\n### 典型流程：\n\n```\n事件检测 → 剧本触发 → 证据收集 → 威胁验证 → 处置执行 → 结果反馈\n         ↓\n      （可串行或并行执行多个子动作）\n```\n\n### 在 DSH 平台建设中的 notes\n\nDSH 平台包含与 SOAR 剧本相关的技能：\n\n- **`threat-analysis`** - 威胁研判，对明确的事件 ID 执行取证与分类\n- **`emergency-action`** - 应急指令，处理单动作的单目标应急处置\n- **`playbook-impact-assessment`** - 剧本影响评估，评估冻结剧本的风险范围\n\n这些技能主要用于**防御性安全运营**，而不是执行攻击性操作。\n\n---\n\n如果您有具体的剧本需求（如增删策略、应急操作等），请明确告知处理类型：\n- **威胁研判** → `threat-analysis` Skill\n- **应急操作** → `emergency-action` Skill  \n- **剧本影响评估** → `playbook-impact-assessment` Skill\n- **策略配置** → `policy-configuration` Skill"
+  ],
+  "session_id": "session-917360f3-a701-499a-841c-aba6c128cdc8",
+  "turns": [
+    {
+      "assistant_text": "技能加载完成，用户询问的是 SOAR 剧本定义而非影响评估，需要解释安全编排自动化与响应的基础概念和组件，并结合可能的数据源提供应用层面的说明，同时保持防御性定位。\n</think>\n\n关于 **SOAR 剧本**（Security Orchestration, Automation and Response Playbook）的定义和应用：\n\n## 什么是 SOAR 剧本？\n\nSOAR 剧本是一套预定义的、可自动执行的安全操作流程，用于编排、自动化和响应网络安全事件。\n\n### 核心作用：\n\n1. **编排（Orchestration）**\n   - 协调多个安全系统之间的协作\n   - 加密调用防火墙、SIEM、EDR 等工具\n   - 统一事件处理逻辑\n\n2. **自动化（Automation）**\n   - 自动收集证据\n   - 自动隔离受影响资产\n   - 自动更新防护规则\n   - 自动关联分析\n\n3. **响应（Response）**\n   - 标准化处置流程\n   - 减少人工操作错误\n   - 提升响应速度（MTTR）\n\n### 典型流程：\n\n```\n事件检测 → 剧本触发 → 证据收集 → 威胁验证 → 处置执行 → 结果反馈\n         ↓\n      （可串行或并行执行多个子动作）\n```\n\n### 在 DSH 平台建设中的 notes\n\nDSH 平台包含与 SOAR 剧本相关的技能：\n\n- **`threat-analysis`** - 威胁研判，对明确的事件 ID 执行取证与分类\n- **`emergency-action`** - 应急指令，处理单动作的单目标应急处置\n- **`playbook-impact-assessment`** - 剧本影响评估，评估冻结剧本的风险范围\n\n这些技能主要用于**防御性安全运营**，而不是执行攻击性操作。\n\n---\n\n如果您有具体的剧本需求（如增删策略、应急操作等），请明确告知处理类型：\n- **威胁研判** → `threat-analysis` Skill\n- **应急操作** → `emergency-action` Skill  \n- **剧本影响评估** → `playbook-impact-assessment` Skill\n- **策略配置** → `policy-configuration` Skill",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e6e15441-2862-47de-848d-9601c6c69c03"
+    }
+  ]
+}

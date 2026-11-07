@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-007",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：第一轮要求按真实巡检目录准备并在同轮发起一次巡检，但 inspection 服务持续 disconnected，目录查询与发起均未发生，也未取得任何 runId，核心要求明确不满足；第二轮未重新准备或启动、且如实说明无 runId 可续查，但因第一轮失败，整体判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-007"
+}

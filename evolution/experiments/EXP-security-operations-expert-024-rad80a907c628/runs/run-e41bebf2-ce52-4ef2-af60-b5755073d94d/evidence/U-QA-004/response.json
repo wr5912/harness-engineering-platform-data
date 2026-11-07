@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    "响应处置支持哪些能力？"
+  ],
+  "assistant_texts": [
+    "**结论：**本环境的“响应处置”不是一条直通链路，而是分为 **应急处置、策略配置、响应规划、剧本影响评估** 四类能力，均以“草案 → 受信确认 → 后台执行 → 权威回执”为边界；模型本身不能直接执行处置。\n\n## 一、可支持的响应处置能力\n\n**1. 应急指令（单动作、单目标处置）**\n- 覆盖：防火墙 `block-ip`/`unblock-ip`，主机类 `host-*` 动作（如隔离）。\n- 支持操作：准备草案、查询结果、草案修订、取消；“确认执行”仅由受信应急确认插件绑定本会话最新有效草案并签名提交。\n- 边界：仅单动作、单目标；排队/受理不等于执行成功，以 Workbench/SOC 权威回执为准。\n\n**2. 策略配置（新增网络访问策略）**\n- 覆盖：仅新增 IPv4 主机到主机、TCP/UDP 单目的端口策略。\n- 支持操作：端点解析、候选多选、草稿准备与查询、展示配置预览；“执行”仅由受信策略确认插件绑定最新 DRAFT 确认。\n- 边界：参数不足会追问；DRAFT 和确认受理都不等于策略已生效。\n\n**3. 响应规划（受信、模型外）**\n- `delegate_response_planning` 默认由 Guard 拒绝；只有模型外 Runtime 开启受信 Gate，并冻结输入、候选集合和摘要后，才允许一次**零工具**规划。\n- 确认、保存、执行、监控全部由外部响应生命周期负责，规划结果本身不是处置动作。\n\n**4. 剧本影响评估（`playbook-impact-assessment`）**\n- 依据冻结的剧本、对象和证据评估影响范围、风险与可逆性；不调用工具、不执行动作，属于处置前评估。\n\n## 二、支撑响应的调查研判能力\n\n- **威胁研判**：对 `INC-YYYYMMDD-NNNNNN` 事件执行固定取证与研判，可保存报告；支持定时自动研判（本 Runtime 已提供 Schedule 能力）。\n- **故障排查**：15 个 SOC 只读查询工具取证，只分析不处置。\n- **巡检**：查询模板、发起/查询巡检，可经授权定时触发。\n- **通用安全调查**：仅依据已有材料分析，不取实时 SOC 证据。\n\n## 三、不可用与未执行说明\n\n- Bash/Shell、网络搜索、直接处置、跨租户访问均不可用；未列入角色工具矩阵的 MCP 工具一律拒绝。\n- 本回答仅为能力说明，**未发起或执行任何处置、策略或规划动作**。如需实际处置，请给出明确的目标与动作（如封禁某 IP 或隔离某主机），我会按对应路由准备草案。"
+  ],
+  "session_id": "session-c5766de8-9af7-43db-a8bf-9c4cad5b6cc9",
+  "turns": [
+    {
+      "assistant_text": "**结论：**本环境的“响应处置”不是一条直通链路，而是分为 **应急处置、策略配置、响应规划、剧本影响评估** 四类能力，均以“草案 → 受信确认 → 后台执行 → 权威回执”为边界；模型本身不能直接执行处置。\n\n## 一、可支持的响应处置能力\n\n**1. 应急指令（单动作、单目标处置）**\n- 覆盖：防火墙 `block-ip`/`unblock-ip`，主机类 `host-*` 动作（如隔离）。\n- 支持操作：准备草案、查询结果、草案修订、取消；“确认执行”仅由受信应急确认插件绑定本会话最新有效草案并签名提交。\n- 边界：仅单动作、单目标；排队/受理不等于执行成功，以 Workbench/SOC 权威回执为准。\n\n**2. 策略配置（新增网络访问策略）**\n- 覆盖：仅新增 IPv4 主机到主机、TCP/UDP 单目的端口策略。\n- 支持操作：端点解析、候选多选、草稿准备与查询、展示配置预览；“执行”仅由受信策略确认插件绑定最新 DRAFT 确认。\n- 边界：参数不足会追问；DRAFT 和确认受理都不等于策略已生效。\n\n**3. 响应规划（受信、模型外）**\n- `delegate_response_planning` 默认由 Guard 拒绝；只有模型外 Runtime 开启受信 Gate，并冻结输入、候选集合和摘要后，才允许一次**零工具**规划。\n- 确认、保存、执行、监控全部由外部响应生命周期负责，规划结果本身不是处置动作。\n\n**4. 剧本影响评估（`playbook-impact-assessment`）**\n- 依据冻结的剧本、对象和证据评估影响范围、风险与可逆性；不调用工具、不执行动作，属于处置前评估。\n\n## 二、支撑响应的调查研判能力\n\n- **威胁研判**：对 `INC-YYYYMMDD-NNNNNN` 事件执行固定取证与研判，可保存报告；支持定时自动研判（本 Runtime 已提供 Schedule 能力）。\n- **故障排查**：15 个 SOC 只读查询工具取证，只分析不处置。\n- **巡检**：查询模板、发起/查询巡检，可经授权定时触发。\n- **通用安全调查**：仅依据已有材料分析，不取实时 SOC 证据。\n\n## 三、不可用与未执行说明\n\n- Bash/Shell、网络搜索、直接处置、跨租户访问均不可用；未列入角色工具矩阵的 MCP 工具一律拒绝。\n- 本回答仅为能力说明，**未发起或执行任何处置、策略或规划动作**。如需实际处置，请给出明确的目标与动作（如封禁某 IP 或隔离某主机），我会按对应路由准备草案。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "e5cbbfeb-18c6-4b19-a1c7-298ef21e3ce1"
+    }
+  ]
+}

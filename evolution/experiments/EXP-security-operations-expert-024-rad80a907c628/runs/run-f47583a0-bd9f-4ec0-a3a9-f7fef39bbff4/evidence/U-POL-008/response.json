@@ -1,0 +1,133 @@
+{
+  "inputs": [
+    "开通策略。",
+    "查询状态。",
+    "调整端口。",
+    "业务验证结束后关闭策略。"
+  ],
+  "assistant_texts": [
+    "在策略配置流程中，正在识别您的源端点和目的端点……\n\n请明确提供配置项：\n- **源地址**（资产名称、IPv4 或 CIDR 网段）\n- **目的地址**（资产名称、IPv4 或 CIDR 网段）\n- **协议**：TCP 或 UDP\n- **目的端口**：1-65535\n- **动作**：新增允许访问或新增阻断访问\n\n例如：\"开通 A 到 B 的 TCP 443 访问\"或\"在防火墙上阻断 C 到 D 的 UDP 80 访问\"",
+    "当前工作区为空，未发现策略配置文件。如果您之前创建过策略配置任务，请提供 **operation ID**（操作号），我可以查询当前会话中的策略状态。\n\n本会话中没有既存的策略操作记录，因此无法查询到历史状态。新的策略任务需要您明确需求后直接创建。",
+    "端口调调整属于策略 MODIF Y 类操作。当前策略配置能力仅限新增（ADD），不包含修改或微调已有四项的策略行为。\n\n如您需优先开通或放开某条访问路径，可今年明确**源地址、目的地址、协议、目的端口、动作（允许/阻断）**，我将为您准备新增策略草稿。",
+    "端口调整涉及策略修改（MODIFY），当前策略配置能力仅限新增策略（ADD）和删除策略（DELETE），无法直接修改已生效策略。\n\n如需执行策略调整，我需要：\n1. 您提供策略的 **operation ID（操作号）**\n2. 说明需要删除或修改的具体策略内容\n\n或者您也可以：\n- 直接删除已开通的策略（通过提供operation ID）\n- 新开一组阻断策略来覆盖已开通的权限\n\n您希望采取哪种方式？"
+  ],
+  "session_id": "session-c37c1da8-0d52-48d0-88cb-70dd39fdef3e",
+  "turns": [
+    {
+      "assistant_text": "在策略配置流程中，正在识别您的源端点和目的端点……\n\n请明确提供配置项：\n- **源地址**（资产名称、IPv4 或 CIDR 网段）\n- **目的地址**（资产名称、IPv4 或 CIDR 网段）\n- **协议**：TCP 或 UDP\n- **目的端口**：1-65535\n- **动作**：新增允许访问或新增阻断访问\n\n例如：\"开通 A 到 B 的 TCP 443 访问\"或\"在防火墙上阻断 C 到 D 的 UDP 80 访问\"",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b334d891-568a-4395-8be1-eaebd0e6163b"
+    },
+    {
+      "assistant_text": "当前工作区为空，未发现策略配置文件。如果您之前创建过策略配置任务，请提供 **operation ID**（操作号），我可以查询当前会话中的策略状态。\n\n本会话中没有既存的策略操作记录，因此无法查询到历史状态。新的策略任务需要您明确需求后直接创建。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 2,
+      "input_message_id": "a9dc8c4f-a8d0-4b7c-a583-50eda9f60177"
+    },
+    {
+      "assistant_text": "端口调调整属于策略 MODIF Y 类操作。当前策略配置能力仅限新增（ADD），不包含修改或微调已有四项的策略行为。\n\n如您需优先开通或放开某条访问路径，可今年明确**源地址、目的地址、协议、目的端口、动作（允许/阻断）**，我将为您准备新增策略草稿。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 3,
+      "input_message_id": "fcd71ec5-71ad-4495-aa8e-dceb6ecf1211"
+    },
+    {
+      "assistant_text": "端口调整涉及策略修改（MODIFY），当前策略配置能力仅限新增策略（ADD）和删除策略（DELETE），无法直接修改已生效策略。\n\n如需执行策略调整，我需要：\n1. 您提供策略的 **operation ID（操作号）**\n2. 说明需要删除或修改的具体策略内容\n\n或者您也可以：\n- 直接删除已开通的策略（通过提供operation ID）\n- 新开一组阻断策略来覆盖已开通的权限\n\n您希望采取哪种方式？",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 4,
+      "input_message_id": "369a3dca-878f-4071-89ed-8d24ff5137ae"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "帮我创建每天中午 12 点自动威胁研判的任务。"
+  ],
+  "assistant_texts": [
+    "已完成。\n\n## 每日自动威胁研判任务已创建\n\n| 项目 | 详情 |\n|------|------|\n| **任务 ID** | `schedule-d38c9636-8dcf-4356-88f5-e0ac6033ed99` |\n| **标题** | 自动威胁研判 - 每天 12:00 |\n| **触发时间** | 每天 12:00:00（Asia/Shanghai 时区） |\n| **触发后行为** | 到期通过受信桥调用 `analyze_pending_threat_incidents(batch_size=1)` 处理一项待研判事件 |\n| **状态** | scheduled（待定时触发） |\n| **下次到期时间** | 按当前会话域名，今日 12:00 触发 |\n\n## 重要说明\n\n- ✅ 提醒已创建，**尚未执行**（定时投递尚未发生）\n- ⚠️ DSH 没有\"暂停/恢复\"工具，如需停止请删除（使用 `schedule_delete`）\n- 🔄 每次到期回调触发时，仅实际可申请的一条待研判事件会被处理\n\n需要修改或删除该定时提醒，请告知。"
+  ],
+  "session_id": "session-74da265c-d906-46fd-a83b-578d675b2d3a",
+  "turns": [
+    {
+      "assistant_text": "已完成。\n\n## 每日自动威胁研判任务已创建\n\n| 项目 | 详情 |\n|------|------|\n| **任务 ID** | `schedule-d38c9636-8dcf-4356-88f5-e0ac6033ed99` |\n| **标题** | 自动威胁研判 - 每天 12:00 |\n| **触发时间** | 每天 12:00:00（Asia/Shanghai 时区） |\n| **触发后行为** | 到期通过受信桥调用 `analyze_pending_threat_incidents(batch_size=1)` 处理一项待研判事件 |\n| **状态** | scheduled（待定时触发） |\n| **下次到期时间** | 按当前会话域名，今日 12:00 触发 |\n\n## 重要说明\n\n- ✅ 提醒已创建，**尚未执行**（定时投递尚未发生）\n- ⚠️ DSH 没有\"暂停/恢复\"工具，如需停止请删除（使用 `schedule_delete`）\n- 🔄 每次到期回调触发时，仅实际可申请的一条待研判事件会被处理\n\n需要修改或删除该定时提醒，请告知。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "21a2550e-3dd5-458c-a3c1-8a213dfa5d92"
+    }
+  ]
+}

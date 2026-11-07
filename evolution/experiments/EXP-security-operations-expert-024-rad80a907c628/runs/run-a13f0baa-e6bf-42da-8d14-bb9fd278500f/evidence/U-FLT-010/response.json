@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "排查 172.16.1.155 到 172.16.2.103 访问失败；基于正式故障结果恢复受影响服务并验证。"
+  ],
+  "assistant_texts": [
+    "已启动威胁研判子智能体。\n\n任务：排查访问失败关联威胁\n\n结果将在任务结束后返回。"
+  ],
+  "session_id": "session-2b55c60c-4353-42ee-a024-d1cd2e1ae940",
+  "turns": [
+    {
+      "assistant_text": "已启动威胁研判子智能体。\n\n任务：排查访问失败关联威胁\n\n结果将在任务结束后返回。",
+      "route": {
+        "provider": "threat-analysis-delivery",
+        "model": "fixed-summary"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b94f993a-2437-49bf-9327-cb5c34a79abc"
+    }
+  ]
+}

@@ -51,7 +51,7 @@
 
 ### 巡检
 
-使用 `security-inspection` Skill。主 Agent 直接调用当前工具目录中的巡检目录、发起与结果查询能力：查询可执行模板、按本轮目录发起巡检、按 `runId` 查询结果。只查询目录时不得发起运行；执行中沿用同一 `runId`，不能重复发起。用户明确授权周期巡检且当前 Runtime 实际开放 DSH `schedule_create` 时才创建提醒；受控业务实例未开放时说明能力缺口。到期后基于原授权执行一次巡检，区分提醒投递、巡检发起与结果就绪。
+使用 `security-inspection` Skill。按真实目录选择唯一模板；明确执行请求且范围、业务输入齐全时，按原始 `deviceSelector` 与 `businessInputs` 同轮准备、READY 启动并查询原 `runId`，不另加确认或 KEV。缺项只澄清，不默认全部资产。续查与明细只读原运行；未知提交先按原 requestId 查账，不重复启动。周期巡检仅用原生 Schedule 的真实授权与到期消息。
 
 ### 响应规划
 
@@ -67,7 +67,7 @@
 
 - 唯一子 Agent 入口是 `delegate_threat_analysis`、`delegate_fault_analysis` 和 `delegate_response_planning`。
 - 委派深度最多为 1；子 Agent 不得再次委派。
-- 策略四个草稿工具、应急六个草案工具、DSH 四个 Schedule 工具和三个巡检工具只允许主 Agent 调用，并且策略或应急轮次不能跨其他业务工具域；15 个 SOC 只读工具只允许故障子 Agent 调用。
+- 策略四个草稿工具、应急六个草案工具、DSH 四个 Schedule 工具和五个巡检工具只允许主 Agent 调用，并且策略或应急轮次不能跨其他业务工具域；15 个 SOC 只读工具只允许故障子 Agent 调用。
 - “执行”只触发策略受信确认；“确认执行”只触发应急受信确认。未命中各自确认词时，不触发确认。确认轮次不能借用其他业务工具。
 - `analyze_threat_incident` 只对威胁研判子智能体可见；内部固定代码取证及双存储，不开放任意 MCP 调用给模型。
 - `analyze_pending_threat_incidents` 只允许主 Agent 的受信 Schedule 桥固定调用；普通用户消息、普通提醒和子 Agent 调用均不构成授权。
@@ -86,4 +86,4 @@ Authoring 容器只能修改本工作区内的 `AGENTS.md`、Skill、Prompt、Wo
 
 仅依据用户材料作结构化输出时，保留输入中的原始事实及单位，不添加输入中没有的时间等事实字段；未经要求不派生数值、风险等级或服务状态，没有比较基准时不判断数量或比例高低。要求辅助研判时，把基于事实的提示或待核验项与原始事实分开，并标明尚未执行。
 
-巡检回答遵守 `security-inspection` Skill：报告就绪后依据服务返回的 `conclusionStatus`、`businessSummary` 和完整 `reportMarkdown` 回答，仅在 `reportDownloadUrl` 非空时提供原地址；运行中说明状态并保留 `runId` 以便续查，不补造结论或下载链接。建议动作必须说明尚未执行。
+巡检回答遵守 `security-inspection` Skill：报告就绪后依据服务返回的 `conclusionStatus`、`businessSummary` 和 `reportSummaryMarkdown` 回答；只有用户明确要全文才读取完整 `reportMarkdown`，触发原生内联预算时明确未内联全文并交付同次摘要与原下载链接，仅在 `reportDownloadUrl` 非空时提供原地址；运行中说明状态并保留 `runId` 以便续查，不补造结论或下载链接。建议动作必须说明尚未执行。

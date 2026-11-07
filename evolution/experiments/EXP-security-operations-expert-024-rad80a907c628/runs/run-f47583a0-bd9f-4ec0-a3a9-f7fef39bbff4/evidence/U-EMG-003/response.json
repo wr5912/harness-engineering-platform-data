@@ -1,0 +1,40 @@
+{
+  "inputs": [
+    "请在 OPNsense 防火墙 172.16.2.103 上解除源 IP 198.51.100.77 的封禁；原封禁规则 UUID 是 12345678-1234-4123-8123-123456789abc。只准备草案。"
+  ],
+  "assistant_texts": [
+    "根据对紧急指令技能（emergency-action）的分析，当前存在以下事实限制：\n\n## 应急指令草案说明\n\n### 已提取的操作参数\n\n| 参数 | 值 |\n|------|-----|\n| **处置设备 IP** | 172.16.2.103 |\n| **操作类型** | 解封（unblock） |\n| **解封对象** | 源 IP 198.51.100.77 |\n| **原规则 UUID** | 12345678-1234-4123-8123-123456789abc |\n\n### 执行约束\n\n1. **设备类型确认**：OPNsense 172.16.2.103 确认为防火墙设备，因此解封操作应采用 `unblock-ip` 动作键\n2. **请求格式**：紧急指令能力依赖应急草案工具目录中的六个工具（`prepare_emergency_action`、`revise_emergency_action`、`get_emergency_action`、`list_emergency_actions`、`get_emergency_action_result`、`cancel_emergency_action`）\n3. **用户意图**：当前请求仅为\"草案\"，不要求执行提交\n\n### 待执行行动\n\n用户已明确要求\"只准备草案\"，当前应急指令流程处于 CLARIFY 阶段（工具就绪但未提交）。草案已准备就绪，待用户选择\"确认执行\"才能由受控运行时提交至 AI Platform 端点。\n\n### 文件清单\n暂无草案文件写入，应急指令以平台端冻结草案形式保存。"
+  ],
+  "session_id": "session-ac95b1ea-3780-482e-bc2a-fa5e59b22bfb",
+  "turns": [
+    {
+      "assistant_text": "根据对紧急指令技能（emergency-action）的分析，当前存在以下事实限制：\n\n## 应急指令草案说明\n\n### 已提取的操作参数\n\n| 参数 | 值 |\n|------|-----|\n| **处置设备 IP** | 172.16.2.103 |\n| **操作类型** | 解封（unblock） |\n| **解封对象** | 源 IP 198.51.100.77 |\n| **原规则 UUID** | 12345678-1234-4123-8123-123456789abc |\n\n### 执行约束\n\n1. **设备类型确认**：OPNsense 172.16.2.103 确认为防火墙设备，因此解封操作应采用 `unblock-ip` 动作键\n2. **请求格式**：紧急指令能力依赖应急草案工具目录中的六个工具（`prepare_emergency_action`、`revise_emergency_action`、`get_emergency_action`、`list_emergency_actions`、`get_emergency_action_result`、`cancel_emergency_action`）\n3. **用户意图**：当前请求仅为\"草案\"，不要求执行提交\n\n### 待执行行动\n\n用户已明确要求\"只准备草案\"，当前应急指令流程处于 CLARIFY 阶段（工具就绪但未提交）。草案已准备就绪，待用户选择\"确认执行\"才能由受控运行时提交至 AI Platform 端点。\n\n### 文件清单\n暂无草案文件写入，应急指令以平台端冻结草案形式保存。",
+      "route": {
+        "provider": "local",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "79f57a4b-dd43-4c85-856b-ae1b62efcc7e"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "inputs": [
+    "请根据下面的巡检事实生成结构化辅助研判，只返回一个 JSON 对象：巡检资产总数 39 台/套，离线设备 12 台/套，存在严重或高危漏洞的设备 4 台/套，异常结论 2 项。"
+  ],
+  "assistant_texts": [
+    "{\"巡检事实\":{\"巡检资产总数\":\"39 台/套\",\"离线设备\":\"12 台/套\",\"存在严重或高危漏洞的设备\":\"4 台/套\",\"异常结论\":\"2 项\"},\"辅助研判\":[{\"类型\":\"证据缺口\",\"内容\":\"离线设备与存在严重或高危漏洞的设备是否为同一批，输入未提供设备明细，无法确认\",\"状态\":\"尚未执行\"},{\"类型\":\"证据缺口\",\"内容\":\"异常结论 2 项的具体内容未提供，需补充原始巡检报告核验\",\"状态\":\"尚未执行\"},{\"类型\":\"待核验建议\",\"内容\":\"结合设备清单核对离线设备及严重/高危漏洞设备的具体对象与影响范围\",\"状态\":\"尚未执行\"}],\"说明\":\"以上事实均来自用户提供的巡检数据；因缺少比较基准，未对数量或比例作高低判断，未派生时间、风险等级或服务状态等输入中没有的字段。\"}"
+  ],
+  "session_id": "session-613d9a5f-748f-4dca-bdc7-4da4fca2ca36",
+  "turns": [
+    {
+      "assistant_text": "{\"巡检事实\":{\"巡检资产总数\":\"39 台/套\",\"离线设备\":\"12 台/套\",\"存在严重或高危漏洞的设备\":\"4 台/套\",\"异常结论\":\"2 项\"},\"辅助研判\":[{\"类型\":\"证据缺口\",\"内容\":\"离线设备与存在严重或高危漏洞的设备是否为同一批，输入未提供设备明细，无法确认\",\"状态\":\"尚未执行\"},{\"类型\":\"证据缺口\",\"内容\":\"异常结论 2 项的具体内容未提供，需补充原始巡检报告核验\",\"状态\":\"尚未执行\"},{\"类型\":\"待核验建议\",\"内容\":\"结合设备清单核对离线设备及严重/高危漏洞设备的具体对象与影响范围\",\"状态\":\"尚未执行\"}],\"说明\":\"以上事实均来自用户提供的巡检数据；因缺少比较基准，未对数量或比例作高低判断，未派生时间、风险等级或服务状态等输入中没有的字段。\"}",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "analyze_threat_incident",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__sec-ops__get_event_by_id",
+        "mcp__sec-ops__get_graph_compliance_violations",
+        "mcp__sec-ops__get_graph_coverage",
+        "mcp__sec-ops__get_graph_flow_host_pair_ports",
+        "mcp__sec-ops__get_graph_node_detail",
+        "mcp__sec-ops__get_graph_path_query",
+        "mcp__sec-ops__get_graph_resolve_ip_host",
+        "mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id",
+        "mcp__sec-ops__get_reachability_cross_signal",
+        "mcp__sec-ops__get_reachability_path_by_ip",
+        "mcp__sec-ops__get_soc_asset_biz_systems",
+        "mcp__sec-ops__get_soc_asset_by_asset_id",
+        "mcp__sec-ops__get_soc_asset_vulnerabilities",
+        "mcp__sec-ops__list_soc_asset",
+        "mcp__sec-ops__search_graph_assets",
+        "read",
+        "read_image",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "working_directory",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a7615be2-6e1d-477b-be00-a8c1ec589553"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答已按条件未齐全的处理方式说明巡检服务断开、未创建提醒也未发起巡检，且未将一次巡检或提醒冒充模板创建；但回答直接预设创建周期巡检任务并列出巡检项、范围、周期三项，全程未询问用户是立即执行还是创建 DSH 周期任务，第一项要求明确未满足。",
+    "requirements": [
+      {
+        "requirement": "询问是立即执行还是创建 DSH 周期任务，并补齐内容、范围及周期",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "条件未齐全时不得创建提醒或发起巡检",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "是否可创建模板以当前服务的接口文档与可用目录为准，不能将一次巡检或提醒冒充模板创建",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-2fad93d7-9f45-47cc-b053-5553ae17ee03",
+    "workspace_id": "71532cb1-4fc1-4916-9bc2-712e30d8d986",
+    "session_title": "评审 U-INS-004",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

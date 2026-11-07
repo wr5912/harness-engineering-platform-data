@@ -1,0 +1,110 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "预期要求先执行受控存在资产查询并以其真实返回 ID 查询告警，且告警应呈现 HTTP 200 / 业务 code 503 的业务失败。实际回执显示 get_soc_asset_by_asset_id 返回 code 500『资产 9108 不存在或已删除』，list_soc_asset 与 search_graph_assets 均返回空集，未取得任何『存在资产』及其返回 ID；随后的告警查询直接使用 vid=asset:9108（非实际返回 ID），且 get_graph_node_detail 返回 code 200『操作成功』、incidents 全 0，既无 503 也未被判为业务失败，反而被当作事实陈述。第 1、2 项核心要求因此明确不满足。回答在未完成范围披露、不重试不换资产不写入、保留失败回执与输入摘要、不把 Mock/受控样本声称为在线服务事实等方面基本做到，但不足以改变整体 failed 结论。",
+    "requirements": [
+      {
+        "requirement": "1. 核对 HTTP 与业务失败：实际执行受控存在资产查询，再以实际返回 ID 查询告警",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 20
+          },
+          {
+            "index": 24
+          },
+          {
+            "index": 26
+          },
+          {
+            "index": 30
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "告警 HTTP 为 200，但业务 code 为 503，必须判为业务失败",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 30
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "2. 准确报告未完成范围：回复说明固定 Mock/replay 的受控失败、本次告警查询未完成，不能报告没有告警、完成研判或任何成功业务结论",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "注：不重试、不换资产、不执行写入",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 20
+          },
+          {
+            "index": 24
+          },
+          {
+            "index": 26
+          },
+          {
+            "index": 30
+          }
+        ]
+      },
+      {
+        "requirement": "3. 保留失败回执与输入：原始业务失败与固定输入摘要可回读",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "不把受控存在资产和故障声称为在线服务事实",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-6362e6e3-e3b6-4556-84e1-9292aa985ad5",
+    "workspace_id": "14a11e08-348f-4150-a050-f98c045abbc2",
+    "session_title": "评审 U-ASSET-ALERTS-FAIL",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}
