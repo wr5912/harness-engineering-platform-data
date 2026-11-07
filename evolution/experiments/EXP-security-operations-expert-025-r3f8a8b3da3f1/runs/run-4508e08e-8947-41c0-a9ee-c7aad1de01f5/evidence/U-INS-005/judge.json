@@ -1,0 +1,105 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测回答未创建任何周期提醒，也未产生任何真实巡检回执：三次对 inspection 服务的访问均以 `mcp-client(inspection): server is disconnected` 报错返回，回答据此停止并明确未创建提醒、未执行巡检，未捏造提醒 ID、状态或下次到期时间，也未追问资产 ID、未把固定资产集合称为每次全部资产，守住了不虚构的下限。但本用例的核心验收项均未达成：(1) 没有证据证明本轮 Runtime 装载并实际验证了 DSH 原生 Schedule（回答仅口头声称 `schedule_create` 可用，无任何工具回执支撑）；(2) 未能核对设备在线状态的可执行模板及其“当前资产清单”语义，回答只是通过资源列表报错推断工具目录缺失，未见任何巡检目录工具的真实调用回执；(3) 未调用 `schedule_create`，因而不存在与回执一致的提醒 ID、状态与下次到期时间；(4) 不存在真实到期消息，也没有省略 `scope` 的 `start_inspection`、复用 `requestId`、按 `runId` 查询结果及 `scopeLabel` 与设备数量核对的任何证据。依据“需要一条真实到期消息和相应巡检工具回执才能判定周期执行通过”“工具未成功返回时不得声称创建成功”的冻结口径，创建、投递、到期执行、结果查询四个阶段全部缺失，故判定不通过（而非证据不足的不确定结论）。",
+    "requirements": [
+      {
+        "requirement": "此创建与到期用例在实际装载 DSH 原生 Schedule 的 Runtime 中执行，统一网关实例也按实际能力验证，当前平台能力和边界见[首期定时任务边界](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/05_实施路线与迭代计划.md#首期定时任务边界与影响)",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "先核对本轮目录中设备在线状态的可执行模板，且模板描述说明覆盖“当前资产清单”",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 3
+          },
+          {
+            "index": 5
+          },
+          {
+            "index": 7
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "若目录未说明，不得把固定资产集合称为每次的全部资产",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "可用时用 DSH `schedule_create` 的 `every_seconds: 600` 创建绑定本 Session 的周期提醒，回复中的提醒 ID、状态和下次到期时间与真实回执一致，并明确尚未执行巡检",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "无需追问单个资产 ID",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "工具未成功返回时，不得声称创建成功",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "到期后应以原用户授权和提醒 ID 确认触发，重新查询当时目录，省略 `scope` 对模板当前任务范围调用一次 `start_inspection`，同一到期时点重试复用 `requestId`，再按 `runId` 查询结果，并核对结果中的 `scopeLabel` 与设备数量",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "需要一条真实到期消息和相应巡检工具回执才能判定周期执行通过；只见 `schedule_create` 或提醒投递，最多证明创建或投递",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-5e972d2c-ceb8-47f7-8963-c255392966cc",
+    "workspace_id": "85c0ef6e-a6dd-414d-b06d-b0425991ba4a",
+    "session_title": "评审 U-INS-005",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

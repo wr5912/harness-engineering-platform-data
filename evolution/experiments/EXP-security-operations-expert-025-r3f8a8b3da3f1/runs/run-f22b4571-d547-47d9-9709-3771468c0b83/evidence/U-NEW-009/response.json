@@ -1,0 +1,51 @@
+{
+  "inputs": [
+    "执行巡检会影响业务吗？"
+  ],
+  "assistant_texts": [
+    "**结论：一般不会影响业务。**\n\n巡检的工作方式决定了它对业务是低风险的：\n\n**为什么不影响业务（事实）**\n\n- **只读取、不探测**：巡检只读取 SOC 中已有的状态、基线、漏洞与关系结果，不主动发起扫描，不向目标设备发送探测流量。\n- **不修改配置**：巡检过程中不下发策略、不变更设备配置、不重启或隔离任何设备。\n- **不自动处置**：发现异常也不会自动把设备转为故障处理或触发应急处置，更不会自动修复。\n- **不产生写操作**：整个过程是对已有数据的收集与分析，对业务系统本身没有写入行为。\n\n**边界说明（未执行建议）**\n\n- 如果某个具体模板包含业务可达性规则，其范围由该模板的实际 `runtimeInputSchema` 和业务输入决定，执行前可以在准备回执中查看设备范围和业务范围预览。\n- 如果你担心特定范围（例如生产网段、核心设备），可以在执行时用资产 IP、资产编号或分组限定范围，而不是默认全部资产。\n\n如果你告诉我巡检模板名称或想限定的范围，我可以先只查询目录、做范围预览（不启动），供你确认。"
+  ],
+  "session_id": "session-f93c456c-8ec7-4b37-afae-be710f51cb3f",
+  "turns": [
+    {
+      "assistant_text": "**结论：一般不会影响业务。**\n\n巡检的工作方式决定了它对业务是低风险的：\n\n**为什么不影响业务（事实）**\n\n- **只读取、不探测**：巡检只读取 SOC 中已有的状态、基线、漏洞与关系结果，不主动发起扫描，不向目标设备发送探测流量。\n- **不修改配置**：巡检过程中不下发策略、不变更设备配置、不重启或隔离任何设备。\n- **不自动处置**：发现异常也不会自动把设备转为故障处理或触发应急处置，更不会自动修复。\n- **不产生写操作**：整个过程是对已有数据的收集与分析，对业务系统本身没有写入行为。\n\n**边界说明（未执行建议）**\n\n- 如果某个具体模板包含业务可达性规则，其范围由该模板的实际 `runtimeInputSchema` 和业务输入决定，执行前可以在准备回执中查看设备范围和业务范围预览。\n- 如果你担心特定范围（例如生产网段、核心设备），可以在执行时用资产 IP、资产编号或分组限定范围，而不是默认全部资产。\n\n如果你告诉我巡检模板名称或想限定的范围，我可以先只查询目录、做范围预览（不启动），供你确认。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_report_details",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__prepare_inspection",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "98e9d752-cdd4-4ce7-813d-e83d8b27007d"
+    }
+  ]
+}

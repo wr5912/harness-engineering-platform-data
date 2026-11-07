@@ -1,0 +1,82 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测 Session 从未调用 prepare_emergency_action，仅调用了 skill 工具加载 emergency-action 指令（tool_events[1]）以及 list_mcp_resources/list_mcp_resource_templates 查询 sec-ops 的资源与模板（tool_events[3]、tool_events[5]，回执均为空），并据此在回复中判定工具目录缺失。因此无法原样传入设备、源 IP 和端口，也没有任何 Workbench 草案回执可供核对封禁动作、目标和参数，更未得到 READY/NOT_SUBMITTED 草案或操作号。回复对“能力不可用”原因的说明与工具回执一致，且未调用确认、未声称已封禁，这两项约束满足；但按 Case 预期（能力不可用时仍须说明原因、但该 Case 不通过），核心的准备草案要求未达成，故整体不通过。",
+    "requirements": [
+      {
+        "requirement": "在新 Session 中调用 `prepare_emergency_action`，原样传入设备、源 IP 和端口",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": "assistant_texts[0]",
+            "quote": "实际检查结果显示，本会话没有暴露这些工具；已配置的 `sec-ops` MCP 服务当前也没有任何可用资源或资源模板。"
+          },
+          {
+            "index": "tool_events[3]",
+            "quote": "MCP server: sec-ops\n{\"_meta\":{\"io.modelcontextprotocol/serverInfo\":{\"name\":\"sec-ops\",\"version\":\"0.1.0\"}},\"ttlMs\":0,\"cacheScope\":\"private\",\"resources\":[]}"
+          }
+        ]
+      },
+      {
+        "requirement": "以 Workbench 回执核对封禁动作、目标和参数",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": "assistant_texts[0]",
+            "quote": "按工作区约束，我不能猜测工具名称，也不能通过 Shell、文件或底层 HTTP 绕过 MCP 去提交请求，因此这条处置路线在此终止。"
+          }
+        ]
+      },
+      {
+        "requirement": "应得到 `READY/NOT_SUBMITTED` 草案，回复操作号并说明等待单独确认",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": "assistant_texts[0]",
+            "quote": "**尚未执行的事项：** 封禁草案未创建、未提交、未生效；设备上不会有任何变更。"
+          }
+        ]
+      },
+      {
+        "requirement": "若返回澄清或能力不可用，须准确说明原因，但该 Case 不通过",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": "assistant_texts[0]",
+            "quote": "**结论：本轮无法准备该封禁草案——当前会话的工具目录中没有应急草案能力，已停止对应路线，未提交任何请求。**"
+          },
+          {
+            "index": "tool_events[5]",
+            "quote": "MCP server: sec-ops\n{\"_meta\":{\"io.modelcontextprotocol/serverInfo\":{\"name\":\"sec-ops\",\"version\":\"0.1.0\"}},\"ttlMs\":0,\"cacheScope\":\"private\",\"resourceTemplates\":[]}"
+          }
+        ]
+      },
+      {
+        "requirement": "不得调用确认或声称已封禁",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": "assistant_texts[0]",
+            "quote": "封禁草案未创建、未提交、未生效；设备上不会有任何变更。"
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-1dd62ada-f944-4c13-940f-28ee255408c4",
+    "workspace_id": "5d42382f-b1ad-48cb-b20c-ae166d42ffd5",
+    "session_title": "评审 U-EMG-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

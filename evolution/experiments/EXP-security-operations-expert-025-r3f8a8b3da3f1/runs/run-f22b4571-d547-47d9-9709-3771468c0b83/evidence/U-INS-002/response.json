@@ -1,0 +1,51 @@
+{
+  "inputs": [
+    "请列出当前可用的巡检项，只查询目录，不要执行巡检。"
+  ],
+  "assistant_texts": [
+    "当前已发布且启用的巡检目录共 **6 项**（仅查询目录，未准备、未执行任何巡检）：\n\n| 巡检项 | 版本 | 检查内容 | 业务输入 |\n|---|---|---|---|\n| 深度巡检 | V9 | 设备在线状态、基线核查、配置关系业务可达性巡检、设备漏洞 | 无需 |\n| 常规巡检 | V9 | 设备在线状态、基线核查、配置关系业务可达性巡检 | 无需 |\n| 单项巡检·设备在线状态 | V4 | 设备在线状态 | 无需 |\n| 单项巡检·统一基线 | V5 | 基线核查 | 无需 |\n| 单项巡检·资产漏洞 | V4 | 设备漏洞 | 无需 |\n| 单项巡检·业务可达性 | V5 | 仅检查 SOC 全部启用的业务可达规则（可选模式 FULL / MUST_PASS，默认 FULL） | 可选 `mode` |\n\n说明：\n- 所有巡检均为只读，读取 SOC 已有状态、基线、漏洞与关系结果，不主动扫描、不自动修复。\n- 业务可达性模板按 SOC 启用规则检查，不能用设备范围缩小其全局规则。\n- 如需执行，请告知模板名称和设备范围（如全部、指定资产 ID、IP、网段等），我再按原范围准备并启动。"
+  ],
+  "session_id": "session-05b7c903-4d7c-4c9c-8349-6f62b205bae0",
+  "turns": [
+    {
+      "assistant_text": "当前已发布且启用的巡检目录共 **6 项**（仅查询目录，未准备、未执行任何巡检）：\n\n| 巡检项 | 版本 | 检查内容 | 业务输入 |\n|---|---|---|---|\n| 深度巡检 | V9 | 设备在线状态、基线核查、配置关系业务可达性巡检、设备漏洞 | 无需 |\n| 常规巡检 | V9 | 设备在线状态、基线核查、配置关系业务可达性巡检 | 无需 |\n| 单项巡检·设备在线状态 | V4 | 设备在线状态 | 无需 |\n| 单项巡检·统一基线 | V5 | 基线核查 | 无需 |\n| 单项巡检·资产漏洞 | V4 | 设备漏洞 | 无需 |\n| 单项巡检·业务可达性 | V5 | 仅检查 SOC 全部启用的业务可达规则（可选模式 FULL / MUST_PASS，默认 FULL） | 可选 `mode` |\n\n说明：\n- 所有巡检均为只读，读取 SOC 已有状态、基线、漏洞与关系结果，不主动扫描、不自动修复。\n- 业务可达性模板按 SOC 启用规则检查，不能用设备范围缩小其全局规则。\n- 如需执行，请告知模板名称和设备范围（如全部、指定资产 ID、IP、网段等），我再按原范围准备并启动。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_report_details",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__prepare_inspection",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "d267f2fc-99c0-4994-a69a-28cb6c9465bf"
+    }
+  ]
+}

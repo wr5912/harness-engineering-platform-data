@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测会话未出现任何巡检执行链路：没有 list_executable_inspections、start_inspection、get_inspection_result 的调用与成功回执，唯一与 inspection 相关的两条工具回执（索引 4、5）原生均为 is_error=true 的“server is disconnected”。回答对“服务不可用、未发起巡检、无 runId、报告状态未知”的陈述与这些回执一致，且未虚构 taskId/definitionVersion、未编造结论或设备数量、未提供下载地址、未声称完成，符合要求 5、6 的约束。但按冻结要求，巡检服务失败只构成解释，不能替代执行：目录选择与发起（要求 1）、同 runId 结果轮询（要求 2）、依据 conclusionStatus/businessSummary/reportMarkdown 与设备数量的回复（要求 3）均明确未发生，要求 4 的设备数量无任何数据支撑，要求 7 不存在 PARTIAL 结果可核对。整体不满足预期，判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-001"
+}

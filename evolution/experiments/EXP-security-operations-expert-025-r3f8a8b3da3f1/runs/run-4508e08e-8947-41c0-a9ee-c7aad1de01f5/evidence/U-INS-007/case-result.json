@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-007",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：第二轮尝试时 `inspection` MCP 服务仍处于断开状态（连续两次探测均返回 `mcp-client(inspection): server is disconnected`），整个 Session 中从未成功调用巡检目录或发起工具，因此不存在任何真实 `runId`，也从未出现 `get_inspection_result` 的调用与成功服务回执。预期要求第二轮复用同一 `runId` 并只调用结果查询工具、在有成功回执基础上依据 `conclusionStatus`、`businessSummary`、完整 `reportMarkdown` 与设备数量作答；实际既无 `runId` 可复用，也无任何成功回执，关键要求均无法满足。依据“没有成功的服务回执不能判通过”的冻结要求，不能判为通过，且第一、二、三项要求有明确反证（仅错误回执、无结果查询调用），故判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-007"
+}

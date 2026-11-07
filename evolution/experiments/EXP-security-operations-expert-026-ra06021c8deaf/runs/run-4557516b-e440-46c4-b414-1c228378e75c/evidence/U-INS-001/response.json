@@ -1,0 +1,43 @@
+{
+  "inputs": [
+    "执行一次常规巡检。"
+  ],
+  "assistant_texts": [
+    "\n\n巡检已启动执行。\n\n## 巡检执行状态\n\n```json\n{\n  \"runId\": \"run-98cd35a678cb4fa18ce93f48e1679a73\",\n  \"taskId\": \"task-73aa54d940fb4b94bbb364a7ca7829d0\",\n  \"templateName\": \"常规巡检\",\n  \"definitionVersion\": \"V4\",\n  \"scope\": \"设备全覆盖（默认范围）\",\n  \"status\": \"RUNNING\",\n  \"conclusionStatus\": \"PENDING\"\n}\n```\n\n### 巡检覆盖项\n- ✅ 设备在线状态\n- ✅ 基线核查\n- ✅ 配置关系业务可达性巡检\n\n### 后续操作\n该巡检任务已异步提交，正在运行中。您可以通过 `runId: run-98cd35a678cb4fa18ce93f48e1679a73` 在我后续的查询中获取报告状态和下载地址。\n\n巡检结果将在完成后提供：\n- 业务摘要与异常列表\n- 完整 HTML 报告下载链接（就绪后提供）"
+  ],
+  "session_id": "session-5ddccb38-d513-45d5-93ce-7d2f35a05f05",
+  "turns": [
+    {
+      "assistant_text": "\n\n巡检已启动执行。\n\n## 巡检执行状态\n\n```json\n{\n  \"runId\": \"run-98cd35a678cb4fa18ce93f48e1679a73\",\n  \"taskId\": \"task-73aa54d940fb4b94bbb364a7ca7829d0\",\n  \"templateName\": \"常规巡检\",\n  \"definitionVersion\": \"V4\",\n  \"scope\": \"设备全覆盖（默认范围）\",\n  \"status\": \"RUNNING\",\n  \"conclusionStatus\": \"PENDING\"\n}\n```\n\n### 巡检覆盖项\n- ✅ 设备在线状态\n- ✅ 基线核查\n- ✅ 配置关系业务可达性巡检\n\n### 后续操作\n该巡检任务已异步提交，正在运行中。您可以通过 `runId: run-98cd35a678cb4fa18ce93f48e1679a73` 在我后续的查询中获取报告状态和下载地址。\n\n巡检结果将在完成后提供：\n- 业务摘要与异常列表\n- 完整 HTML 报告下载链接（就绪后提供）",
+      "route": {
+        "provider": "qwen",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "63c86e21-fc76-4835-bddb-125639953677"
+    }
+  ]
+}

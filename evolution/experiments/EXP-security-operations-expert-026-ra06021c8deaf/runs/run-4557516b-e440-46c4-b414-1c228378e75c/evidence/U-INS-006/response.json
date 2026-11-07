@@ -1,0 +1,43 @@
+{
+  "inputs": [
+    "对资产标识 A-001 执行匹配的巡检。"
+  ],
+  "assistant_texts": [
+    "\n\n已查询到可执行的巡检模板，现为您列出 6 个可用的巡检项：\n\n| 巡检模板 | 巡检项 | 适用场景 |\n|---------|--------|----------|\n| 单项巡检·统一基线 | 基线核查 | 检查设备基线配置 |\n| 深度巡检 | 设备在线状态、基线核查、配置关系业务可达性巡检、设备漏洞 | 全面深度检查（支持指定资产） |\n| 常规巡检 | 设备在线状态、基线核查、配置关系业务可达性巡检 | 常规业务检查（支持指定资产） |\n| 单项巡检·资产漏洞 | 设备漏洞 | 仅检查漏洞 |\n| 单项巡检·设备在线状态 | 设备在线状态 | 仅检查在线状态 |\n| 单项巡检·业务可达性 | 配置关系业务可达性巡检 | 仅检查业务可达规则 |\n\n您想对资产 **A-001** 执行哪一次巡检？请说明：\n1. 巡检模板名称（如\"深度巡检\"或\"常规巡检\"）\n2. 确认仅巡检该资产（A-001）\n\n确认后我将启动巡检任务并为您保留 `runId` 供后续查询结果。"
+  ],
+  "session_id": "session-88aa305b-115e-4b08-acdb-b691ae059dc3",
+  "turns": [
+    {
+      "assistant_text": "\n\n已查询到可执行的巡检模板，现为您列出 6 个可用的巡检项：\n\n| 巡检模板 | 巡检项 | 适用场景 |\n|---------|--------|----------|\n| 单项巡检·统一基线 | 基线核查 | 检查设备基线配置 |\n| 深度巡检 | 设备在线状态、基线核查、配置关系业务可达性巡检、设备漏洞 | 全面深度检查（支持指定资产） |\n| 常规巡检 | 设备在线状态、基线核查、配置关系业务可达性巡检 | 常规业务检查（支持指定资产） |\n| 单项巡检·资产漏洞 | 设备漏洞 | 仅检查漏洞 |\n| 单项巡检·设备在线状态 | 设备在线状态 | 仅检查在线状态 |\n| 单项巡检·业务可达性 | 配置关系业务可达性巡检 | 仅检查业务可达规则 |\n\n您想对资产 **A-001** 执行哪一次巡检？请说明：\n1. 巡检模板名称（如\"深度巡检\"或\"常规巡检\"）\n2. 确认仅巡检该资产（A-001）\n\n确认后我将启动巡检任务并为您保留 `runId` 供后续查询结果。",
+      "route": {
+        "provider": "qwen",
+        "model": "Qwen3.5-4B"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "4c1b8d9f-2ff5-4613-b6ae-a84304d3493f"
+    }
+  ]
+}

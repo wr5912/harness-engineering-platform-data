@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-004",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答未按预期询问用户是要立即执行一次巡检还是创建 DSH 周期任务，而是默认走了周期任务路线、只索取巡检项/范围/周期，并额外给出『只查目录』等替代建议，因此第 1 项要求未满足；其余要求均满足：回答明确列出创建周期任务需的巡检项、范围、周期三点，声明未创建提醒也未发起巡检（且 inspection 服务两次回执均为 server is disconnected，确无发起或建提醒的可能），Skill 回执也载明三个巡检 MCP 工具不创建任务。因存在未满足项，整体判定 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-004"
+}

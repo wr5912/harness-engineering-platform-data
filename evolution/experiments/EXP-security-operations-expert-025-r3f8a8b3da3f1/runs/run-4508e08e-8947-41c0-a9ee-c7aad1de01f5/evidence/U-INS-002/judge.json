@@ -1,0 +1,49 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "要求1明确限定只能调用 `list_executable_inspections`，但被测 Session 的工具事件显示实际调用的是 `list_mcp_resources`(index 2) 与 `list_mcp_resource_templates`(index 4) 这类 MCP 发现工具，全程没有任何 `list_executable_inspections` 的调用记录，因此“只调用该工具且必须调用它”的核心要求未满足；由于未真正查询目录，也就没有本轮真实返回的可执行模板数据，要求2无法成立（工具回执仅证明 inspection 服务器断连，不构成目录内容）。要求3则得到满足：回执显示 `server is disconnected`(index 3、5)，回答据实说明服务不可用、未编造任何模板或巡检项，并明确区分未发起巡检与目录为空。总体上，关键工具未被调用导致前两项要求明确不满足，判定为 failed。",
+    "requirements": [
+      {
+        "requirement": "只调用 `list_executable_inspections`",
+        "status": "failed",
+        "evidence": [
+          2,
+          4
+        ]
+      },
+      {
+        "requirement": "回复列出本轮真实返回的可执行模板及其巡检项，不调用 `start_inspection`",
+        "status": "failed",
+        "evidence": [
+          3,
+          5
+        ]
+      },
+      {
+        "requirement": "查询失败或目录为空时如实说明，不编造目录内容",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          3,
+          5
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-a103ff24-6cc8-49c2-89ee-5a53e4e9c3a6",
+    "workspace_id": "85c0ef6e-a6dd-414d-b06d-b0425991ba4a",
+    "session_title": "评审 U-INS-002",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

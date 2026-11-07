@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-005",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答未创建任何周期提醒，也未产生任何真实巡检回执：三次对 inspection 服务的访问均以 `mcp-client(inspection): server is disconnected` 报错返回，回答据此停止并明确未创建提醒、未执行巡检，未捏造提醒 ID、状态或下次到期时间，也未追问资产 ID、未把固定资产集合称为每次全部资产，守住了不虚构的下限。但本用例的核心验收项均未达成：(1) 没有证据证明本轮 Runtime 装载并实际验证了 DSH 原生 Schedule（回答仅口头声称 `schedule_create` 可用，无任何工具回执支撑）；(2) 未能核对设备在线状态的可执行模板及其“当前资产清单”语义，回答只是通过资源列表报错推断工具目录缺失，未见任何巡检目录工具的真实调用回执；(3) 未调用 `schedule_create`，因而不存在与回执一致的提醒 ID、状态与下次到期时间；(4) 不存在真实到期消息，也没有省略 `scope` 的 `start_inspection`、复用 `requestId`、按 `runId` 查询结果及 `scopeLabel` 与设备数量核对的任何证据。依据“需要一条真实到期消息和相应巡检工具回执才能判定周期执行通过”“工具未成功返回时不得声称创建成功”的冻结口径，创建、投递、到期执行、结果查询四个阶段全部缺失，故判定不通过（而非证据不足的不确定结论）。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-005"
+}

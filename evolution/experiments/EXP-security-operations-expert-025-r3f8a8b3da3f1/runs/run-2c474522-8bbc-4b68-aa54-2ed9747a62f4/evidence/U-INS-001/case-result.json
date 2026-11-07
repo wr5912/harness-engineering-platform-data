@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-001",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：巡检服务 MCP 断连，本轮从未成功调用 list_executable_inspections，也没有 start_inspection 与基于同一 runId 的 get_inspection_result 回执，未产生 conclusionStatus、businessSummary、reportMarkdown 及设备数量；被测回答据此如实说明未执行、未声称完成，但前四项硬性要求（发起一次巡检、轮询至报告就绪、按服务结论与设备数量作答、设备数量缺失不得判通过）均未满足，故整体判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-001"
+}

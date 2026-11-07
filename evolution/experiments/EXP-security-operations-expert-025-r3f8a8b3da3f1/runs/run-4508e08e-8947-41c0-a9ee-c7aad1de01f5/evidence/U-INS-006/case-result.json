@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答明确承认未完成本轮巡检任务：没有成功调用 `list_executable_inspections` 取得可执行目录，因而无法选定 `taskId`/`definitionVersion`，也未调用 `start_inspection`、未产生 `runId`。现有 indexed_evidence 中的工具回执仅有 `list_mcp_resources` 和 `list_mcp_resource_templates` 的 `is_error=true`（server is disconnected），它们既不能替代目录查询工具的成功回执，也不足以直接证明三个巡检工具均不可用；回答中\"三个工具均不可用\"的关键结论缺少同 Session 内 `list_executable_inspections`/`start_inspection`/巡检结果查询的真实回执支撑。虽然回答如实报告了失败、未猜测任务标识、未以全量巡检冒充完成（符合不伪造的底线），但 requirements 的核心动作（查目录→发起→按 runId 查询结果）均未执行，且\"服务断开\"也不属于预期中\"不存在匹配任务或资产\"的澄清分支，故判为 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-006"
+}

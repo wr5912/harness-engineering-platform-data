@@ -1,0 +1,79 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "巡检服务 MCP 断连，本轮从未成功调用 list_executable_inspections，也没有 start_inspection 与基于同一 runId 的 get_inspection_result 回执，未产生 conclusionStatus、businessSummary、reportMarkdown 及设备数量；被测回答据此如实说明未执行、未声称完成，但前四项硬性要求（发起一次巡检、轮询至报告就绪、按服务结论与设备数量作答、设备数量缺失不得判通过）均未满足，故整体判 failed。",
+    "requirements": [
+      {
+        "requirement": "先调用 `list_executable_inspections`，从本轮目录选出唯一匹配的已发布常规巡检任务，使用返回的 `taskId`、`definitionVersion` 和本次请求稳定的 `requestId` 调用一次 `start_inspection`，全量巡检不传 `scope`",
+        "status": "failed",
+        "evidence": [
+          4,
+          6,
+          0
+        ]
+      },
+      {
+        "requirement": "之后只以同一 `runId` 调用 `get_inspection_result` 直到报告就绪，不重复发起",
+        "status": "failed",
+        "evidence": [
+          4,
+          0
+        ]
+      },
+      {
+        "requirement": "回复依据服务的 `conclusionStatus`、`businessSummary` 和完整 `reportMarkdown`，准确给出设备数量，不改写结论",
+        "status": "failed",
+        "evidence": [
+          0,
+          4
+        ]
+      },
+      {
+        "requirement": "设备数量缺失时说明缺口，该项不得判通过",
+        "status": "failed",
+        "evidence": [
+          0,
+          4
+        ]
+      },
+      {
+        "requirement": "仅当 `reportDownloadUrl` 非空时原样提供下载地址",
+        "status": "satisfied",
+        "evidence": [
+          0
+        ]
+      },
+      {
+        "requirement": "运行中、工具失败或报告未就绪时不得声称完成",
+        "status": "satisfied",
+        "evidence": [
+          0,
+          4
+        ]
+      },
+      {
+        "requirement": "结果为 `PARTIAL` 时须说明证据缺口",
+        "status": "unknown",
+        "evidence": [
+          0
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-a84ff3d2-df75-4d0b-a13d-0bca16b070ad",
+    "workspace_id": "3ce1270d-4b57-4be0-aab0-c0c26661ace7",
+    "session_title": "评审 U-INS-001",
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

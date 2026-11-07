@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-ASSET-ALERTS-001",
+  "transport": "api",
+  "expected_behavior": "本轮实际执行资产详情查询，核对资产 ID 后将实际返回 ID 映射到关联告警查询；请求为第 1 页、每页 5 组、2592000 秒。保留 HTTP、业务码和完整响应证据。答复准确保留返回的资产标识、分组和告警总量、from/to、页码及截断状态，不将首页描述为全量明细，不推断没有风险。明确固定 Mock/replay 边界和未查询真实 SOC；未执行写入。两侧原子调用返回来自同一固定输入摘要，允许由生成的工作流执行这些原子步骤。",
+  "session_id": "session-9a7f6a55-514f-4f63-aabf-69ae1a0cff04",
+  "workspace_id": "5d42382f-b1ad-48cb-b20c-ae166d42ffd5",
+  "session_title": "评测 U-ASSET-ALERTS-001",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-c3d367e1-c6d0-4ee8-9be1-aae74efe0d34",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

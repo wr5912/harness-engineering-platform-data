@@ -1,0 +1,41 @@
+{
+  "inputs": [
+    "请基于本研究的固定 Mock/replay 样本，查询资产 999999 近 30 天的关联告警，首页最多 5 个分组。只读，不执行处置。"
+  ],
+  "assistant_texts": [
+    "已按故障排查路由委派只读查询子智能体：解析资产 999999 并检索其近 30 天（约 2026-09-27 至 2026-10-27）的关联告警，首批最多 5 个分组。等待子智能体返回工具取证结果后，我再汇总事实与缺口。"
+  ],
+  "session_id": "session-13704799-e443-4c2b-bdbc-01d784ab27f6",
+  "turns": [
+    {
+      "assistant_text": "已按故障排查路由委派只读查询子智能体：解析资产 999999 并检索其近 30 天（约 2026-09-27 至 2026-10-27）的关联告警，首批最多 5 个分组。等待子智能体返回工具取证结果后，我再汇总事实与缺口。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "a84425cf-4357-4f60-8509-ede7b5b506b8"
+    }
+  ]
+}

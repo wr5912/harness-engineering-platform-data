@@ -1,0 +1,46 @@
+{
+  "inputs": [
+    "请列出当前可用的巡检项，只查询目录，不要执行巡检。"
+  ],
+  "assistant_texts": [
+    "当前已发布、启用的巡检目录共 **5 个模板**（仅目录查询，本轮未准备、未启动任何巡检）：\n\n| # | 模板名称 | 版本 | 检查项 | 设备范围 | 业务输入 |\n|---|---------|------|--------|---------|---------|\n| 1 | 深度巡检 | V9 | 设备在线状态、基线核查、配置关系业务可达性巡检、设备漏洞 | 支持 ALL/资产类别/资产ID/CIDR/IP/拓扑分组/组合筛选，默认全部 | 无需填写 |\n| 2 | 常规巡检 | V9 | 设备在线状态、基线核查、配置关系业务可达性巡检 | 同上，默认全部 | 无需填写 |\n| 3 | 单项巡检·业务可达性 | V5 | 配置关系业务可达性巡检 | 仅 SOC 全部启用的业务可达规则（不按设备缩小） | `mode`：FULL（默认）/ MUST_PASS |\n| 4 | 单项巡检·统一基线 | V5 | 基线核查 | 支持全部选择器，默认全部 | 无 |\n| 5 | 单项巡检·设备在线状态 | V4 | 设备在线状态 | 支持全部选择器，默认全部 | 无 |\n| 6 | 单项巡检·资产漏洞 | V4 | 设备漏洞 | 支持全部选择器，默认全部 | 无 |\n\n**说明与边界：**\n- 以上均为只读巡检模板，读取 SOC 已有的状态、基线、漏洞与关系结果，不主动扫描、不自动修复。\n- 所有模板均为 `defaultForChat: false`，且标注 `confirmationRequired: true`；执行时需按你指定的范围先准备（READY）再启动。\n- 模板默认“全部资产”不等于已授权全部资产；如需执行，请告知模板名称与设备范围（如资产 ID、IP、网段、拓扑分组等）。\n- 本轮只做了目录查询，未执行任何巡检。"
+  ],
+  "session_id": "session-4f69a3d0-d10e-43fe-be2a-1729486e8b3b",
+  "turns": [
+    {
+      "assistant_text": "当前已发布、启用的巡检目录共 **5 个模板**（仅目录查询，本轮未准备、未启动任何巡检）：\n\n| # | 模板名称 | 版本 | 检查项 | 设备范围 | 业务输入 |\n|---|---------|------|--------|---------|---------|\n| 1 | 深度巡检 | V9 | 设备在线状态、基线核查、配置关系业务可达性巡检、设备漏洞 | 支持 ALL/资产类别/资产ID/CIDR/IP/拓扑分组/组合筛选，默认全部 | 无需填写 |\n| 2 | 常规巡检 | V9 | 设备在线状态、基线核查、配置关系业务可达性巡检 | 同上，默认全部 | 无需填写 |\n| 3 | 单项巡检·业务可达性 | V5 | 配置关系业务可达性巡检 | 仅 SOC 全部启用的业务可达规则（不按设备缩小） | `mode`：FULL（默认）/ MUST_PASS |\n| 4 | 单项巡检·统一基线 | V5 | 基线核查 | 支持全部选择器，默认全部 | 无 |\n| 5 | 单项巡检·设备在线状态 | V4 | 设备在线状态 | 支持全部选择器，默认全部 | 无 |\n| 6 | 单项巡检·资产漏洞 | V4 | 设备漏洞 | 支持全部选择器，默认全部 | 无 |\n\n**说明与边界：**\n- 以上均为只读巡检模板，读取 SOC 已有的状态、基线、漏洞与关系结果，不主动扫描、不自动修复。\n- 所有模板均为 `defaultForChat: false`，且标注 `confirmationRequired: true`；执行时需按你指定的范围先准备（READY）再启动。\n- 模板默认“全部资产”不等于已授权全部资产；如需执行，请告知模板名称与设备范围（如资产 ID、IP、网段、拓扑分组等）。\n- 本轮只做了目录查询，未执行任何巡检。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__inspection__get_inspection_report_details",
+        "mcp__inspection__get_inspection_result",
+        "mcp__inspection__list_executable_inspections",
+        "mcp__inspection__prepare_inspection",
+        "mcp__inspection__start_inspection",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "7e3227c2-d9e6-4027-a392-918291cce059"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "inputs": [
+    "请列出当前可用的巡检项，只查询目录，不要执行巡检。"
+  ],
+  "assistant_texts": [
+    "**结论：本轮无法列出巡检项 —— 巡检服务当前不可用，未发起任何巡检。**\n\n**实际结果**\n- 按 `security-inspection` 流程，本应只调用无参数的“巡检目录查询工具”；\n- 实际检查当前工具目录与 MCP 资源发现结果：`inspection` 服务器返回错误 `mcp-client(inspection): server is disconnected`，目录查询和资源模板查询均失败；\n- 本轮工具目录中没有可用的巡检目录工具，因此无法返回任何真实的巡检项名称、模板或适用说法 —— 不猜测、不列举示例模板。\n\n**状态说明**\n- 未调用巡检发起工具，未产生 `runId`，没有巡检执行或结果；\n- 这是能力/连接缺口，不是“目录为空”。\n\n**建议（尚未执行）**：待 `inspection` 服务恢复连接后，重新提出同一请求，我再仅查询目录列出可用巡检项。"
+  ],
+  "session_id": "session-67449f4e-3d3d-4ad0-8386-d061bc5c968d",
+  "turns": [
+    {
+      "assistant_text": "**结论：本轮无法列出巡检项 —— 巡检服务当前不可用，未发起任何巡检。**\n\n**实际结果**\n- 按 `security-inspection` 流程，本应只调用无参数的“巡检目录查询工具”；\n- 实际检查当前工具目录与 MCP 资源发现结果：`inspection` 服务器返回错误 `mcp-client(inspection): server is disconnected`，目录查询和资源模板查询均失败；\n- 本轮工具目录中没有可用的巡检目录工具，因此无法返回任何真实的巡检项名称、模板或适用说法 —— 不猜测、不列举示例模板。\n\n**状态说明**\n- 未调用巡检发起工具，未产生 `runId`，没有巡检执行或结果；\n- 这是能力/连接缺口，不是“目录为空”。\n\n**建议（尚未执行）**：待 `inspection` 服务恢复连接后，重新提出同一请求，我再仅查询目录列出可用巡检项。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "779d523e-9094-4a5f-b0fd-3b2811f7cf69"
+    }
+  ]
+}

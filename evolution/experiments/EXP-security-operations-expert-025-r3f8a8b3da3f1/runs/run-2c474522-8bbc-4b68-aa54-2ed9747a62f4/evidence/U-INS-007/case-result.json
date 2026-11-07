@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-007",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：同一被测 Session 中未出现任何成功的服务回执：inspection 服务器多次返回 is_error=true 的 server is disconnected（无 runId、无 get_inspection_result 结果），第二轮也未调用 get_inspection_result 复用运行标识，未产生运行状态、报告结论或 reportDownloadUrl，因此核心要求无法满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-007"
+}

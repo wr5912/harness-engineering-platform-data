@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-006",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测会话未调用 `list_executable_inspections` 查询巡检目录，也未调用 `start_inspection` 发起运行；其实际动作只有对 MCP 资源列表的探测（`list_mcp_resources` / `list_mcp_resource_templates`），且三次均返回 `server is disconnected` 错误回执。目录与发起两个核心阶段完全缺失，因此前两项要求明确不满足。回答虽如实说明未发起任何巡检、未猜测任务标识、未以全量巡检冒充完成，但这是对服务不可用的说明，而非“无匹配任务/资产”的情形，无法替代被要求的真实工具调用。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-006"
+}

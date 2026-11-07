@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-003",
+  "transport": "api",
+  "expected_behavior": "只返回一个可解析的 JSON 对象，准确保留给定事实并区分事实与建议，不添加输入中没有的动态数据。",
+  "session_id": "session-3febd59c-9c75-4cdd-83da-8ed21860f59f",
+  "workspace_id": "de7a1fe8-39db-422f-b772-a3dbf4a580df",
+  "session_title": "评测 U-INS-003",
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-058070e4-78a6-41d1-ad28-83690e3b7342",
+    "unavailable_reason": "judge-output-not-json"
+  },
+  "trace_available": true
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测回答未调用要求中指定的 `list_executable_inspections`，而是改为调用 `list_mcp_resources` 与 `list_mcp_resource_templates` 两个非要求工具（工具回执 index 4、6 显示这两次调用确实发生并返回 inspection 服务器断开错误），因此第一项“只调用 list_executable_inspections”这一冻结要求明确未满足，整体不能判为 passed。另一方面，回答确实未发起任何 `start_inspection`，且在查询失败时如实说明“巡检服务断开、无法列出巡检项、不猜测模板名”，与真实错误回执一致，没有编造目录内容——这两项（不执行巡检、如实说明失败）是满足的。但只要有一项要求明确不满足，即判 failed。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-008",
+  "execution_status": "completed",
+  "verdict": "inconclusive",
+  "observation": "语义判定：第 1、2 项要求有同一被测 Session 的真实工具回执与回答支撑：主 Agent 确实调用 list_executable_inspections 并取得真实模板目录回执，且因“本轮抽定对象”无实际范围而追问资产编号/IP/类别，未见任何 start_inspection 调用、未默认 ALL、也明确声明尚未启动任何巡检、未伪造结果。但第 3 项“范围和必填输入补齐后同轮准备并执行、不另加确认、不调用 KEV”是条件性要求，本次输入并未补齐范围，被测方也未实际调用 prepare_inspection/start_inspection，缺少可核验的工具回执，无法判定其在范围补齐后的行为是否符合预期，故整体证据不足，判为 inconclusive。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-008"
+}
