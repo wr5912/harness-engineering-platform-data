@@ -20,6 +20,7 @@ import random
 import re
 import subprocess
 import sys
+from training_plan import reporting
 
 
 PARTITIONS = ('train', 'development', 'calibration', 'test')
@@ -453,6 +454,11 @@ def main(argv=None):
     parser.add_argument('--allow-tokenizer-download', action='store_true')
     parser.add_argument('--json', action='store_true', help='以 JSON 返回程序回执；完整机器报告始终保存')
     args = parser.parse_args(argv)
+    try:
+        human = reporting()
+    except (ValueError, OSError) as exc:
+        print('编码检查未开始：' + str(exc), file=sys.stderr)
+        return 1
     out = Path(args.out)
     human_path = out.with_suffix('.md') if out.suffix != '.md' else out.with_name(out.name + '.md')
     if out.exists() or out.is_symlink() or human_path.exists() or human_path.is_symlink():
@@ -479,9 +485,6 @@ def main(argv=None):
         return 1
     result = {'status': report['status'], 'report': str(out.resolve()), 'checked_records': report['checked_records'],
               'training_recipe': report['training_recipe'], 'failure_codes': [failure['code'] for failure in report['failures']]}
-    spec = importlib.util.spec_from_file_location('kev_encoding_human_report', Path(__file__).resolve().parents[2] / 'kev-trace-pipeline/scripts/human_report.py')
-    human = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(human)
     passed = report['status'] == 'ready'
     summary = (f"配方 {report['training_recipe']}，已检查 {report['checked_records']} 条记录，当前数据的编码与长度检查通过。尚未启动训练。" if passed
                else f"编码检查未通过，已检查 {report['checked_records']} 条记录；当前不能继续训练。")

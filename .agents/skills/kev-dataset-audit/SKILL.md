@@ -7,24 +7,24 @@ description: "对 Kev 数据和训练交接做对抗审查，核对输入泄漏�
 
 ## 入口与继续条件
 
-固定算力策划或 Run 抽样专项不执行本技能的离线命令；沿用其指定技能与工具。只有当前任务允许离线处理且有真实执行工具时继续。完整边界见同级 `kev-trace-pipeline/references/platform-runtime.md`。
+固定算力策划或 Run 抽样专项不执行本技能的离线命令；沿用其指定技能与工具。只有当前任务允许离线处理且有真实执行工具时继续。不因审计扩大训练或部署授权。
 
-从实际 Skill 位置解析同级 core，使用脚本和输入输出的绝对路径。一次完成一个阶段后读取 `stage-status.json`：blocked 停止依赖步骤，requires_review 完成当前复核；不因退出 0 或有文件就自动进入训练。已有输出先回读，续做使用新目录。
+从平台 context 的 program_root 解析公开工具目录 `<kev_data>`，使用输入输出的绝对路径。一次完成一个阶段后读取 `stage-status.json`：blocked 停止依赖步骤，requires_review 完成当前复核；不因退出 0 或有文件就自动进入训练。已有输出先回读，续做使用新目录。
 
 ## 本阶段操作
 
 
-1. 先选正确格式：IR 产物执行 core audit-dataset；旧数据导入产物执行 legacy_native.py audit；平台桥接核对完整回执和桥接报告。检查实际四份非空文件的 ID、来源组、会话和相同输入交集。审查隔离记录，不默默丢弃；三种入口均保留原生题型，但来源合同不能互相套用。
+1. 先选正确格式：IR 产物执行 `<kev_data>/kev_trace.py audit-dataset`；旧数据导入产物执行 `<kev_data>/legacy_native.py audit`；平台桥接核对完整回执和桥接报告。检查实际四份非空文件的 ID、来源组、会话和相同输入交集。审查隔离记录，不默默丢弃；三种入口均保留原生题型，但来源合同不能互相套用。
 2. 检查输入保留字段、未来证据、历史动作与答案是否混入 state。合法的上一步业务 result/status 不是自动泄漏；按时间与合同判断。
-3. 抽查高置信与分歧样本、少数类、短句、阶段变化、动态候选、多任务、失败恢复及域外/缺证据边界。分歧只作为检索线索。
+3. 对照合同中固定 Skill 的规范分支和实际覆盖，核查渐进可见性、替换、版本冲突及未覆盖分支。抽查高置信与分歧样本、少数类、短句、阶段变化、动态候选、多任务、失败恢复及域外/缺证据边界。分歧只作为检索线索；合成覆盖和轨迹数量不能充当真实分支通过率。
 4. 核验固定 Kev 提交、基座 tokenizer、原生 renderer、长度过滤、候选洗牌映射和实际 loss。该脚本不加载 tokenizer；未完成时明确 token_budget=not_checked。
 5. 固定闭集首轮保留洗牌、关闭 none/候选增删增强作为基线；动态候选另做消融。使用真实分布校准，不以均衡合成集替代。
 6. 比较现有 Harness、规则/廉价分类器和 Kev。报告每 site/每类错误、混淆、覆盖与风险、任务级成功、成本、P50/P95、回退与恢复。
 7. 不把新动作拼接旧轨迹后半段。LangGraph checkpoint 不等于外部环境快照；用可恢复环境或统一任务初态重跑。
 8. 最终测试一旦用于定向造训练数据，转为开发/回归材料；版本号不能恢复独立性。接管后收集新状态并重新验证。
 
-读取本技能 `references/audit.md` 和 core training-handoff.md。交付明确状态：结构检查通过、编码待验、训练未运行、任务效果未验证等；不要给一个没有覆盖依据的“可上线”结论。
+读取本技能 `references/audit.md`。交付明确状态：结构检查通过、编码待验、训练未运行、任务效果未验证等；不要给一个没有覆盖依据的“可上线”结论。
 
-共享实现位置：`../kev-trace-pipeline/scripts/kev_trace.py`。所有同级 core 引用路径均相对于本技能目录。
+公开依赖：[kev-data 工具合同](https://github.com/wr5912/harness-engineering-platform/blob/main/runtime/research/kev-data/README.md)。`<kev_data>` 为 program_root 下 runtime/research/kev-data。输入未准备好时，通过 [数据准备公开入口](https://github.com/wr5912/harness-engineering-platform-data/blob/main/.agents/skills/kev-trace-pipeline/SKILL.md#数据准备与审计交接) 交接原始材料、当前阶段与缺口，消费实际回执后继续，不读取兄弟技能私有资料。
 
-若输入是外部既有 Kev JSONL，先按 core `references/legacy-native.md` 检查原生格式、分组和复核缺口；不要因缺少本套 IR 审计字段就称其不兼容 Kev。报告先写会影响使用的结论，再用“问题、依据、影响、处理方法”表格呈现需要修改的事项。区分确定错误与待复核疑点，完整字段、错误码和哈希留在必要的定位明细中。
+若输入是外部既有 Kev JSONL，先用上述公开工具检查原生格式、分组和复核缺口；不要因缺少本套 IR 审计字段就称其不兼容 Kev。报告先写会影响使用的结论，再用“问题、依据、影响、处理方法”表格呈现需要修改的事项。区分确定错误与待复核疑点，完整字段、错误码和哈希留在必要的定位明细中。

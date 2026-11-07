@@ -14,6 +14,7 @@ import hashlib
 import importlib.util
 import json
 import math
+import os
 import re
 import shlex
 import sys
@@ -28,10 +29,9 @@ PREDICTOR_UNSET = ("KEV_MERGE", "KEV_ATTN", "KEV_CUDA_GRAPHS", "KEV_FUSED")
 EXECUTION_PATHS = ("HF_HUB_CACHE", "UV_PROJECT_ENVIRONMENT")
 EXECUTION_SWITCHES = {"HF_HUB_OFFLINE": ("0", "1"), "TRANSFORMERS_OFFLINE": ("0", "1"),
                       "UV_NO_SYNC": ("0", "1"), "USE_HUB_KERNELS": ("NO", "YES")}
-SKILLS = Path(__file__).resolve().parents[2]
+PACKAGE = Path(__file__).resolve().parents[1]
 VENDOR_ROOTS = {
-    "kev-finetune": SKILLS / "kev-training/references/upstream/kev-finetune",
-    "kev-deploy": SKILLS / "kev-deploy/references/upstream/kev-deploy",
+    "kev-finetune": PACKAGE / "references/upstream/kev-finetune",
 }
 HEX40 = re.compile(r"[0-9a-f]{40}\Z")
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
@@ -85,8 +85,16 @@ def load_module(name, path):
     return module
 
 
+def research_root():
+    root = os.environ.get("HARNESS_PROGRAM_ROOT")
+    require(root and Path(root).is_absolute(), "请将 HARNESS_PROGRAM_ROOT 设为程序仓库的绝对路径；公共工具合同见 kev-trace-pipeline 的数据准备与审计交接。")
+    directory = Path(root) / "runtime/research/kev-data"
+    require((directory / "README.md").is_file(), "缺少公共 KEV 数据工具：" + str(directory))
+    return directory
+
+
 def reporting():
-    return load_module("kev_human_report", SKILLS / "kev-trace-pipeline/scripts/human_report.py")
+    return load_module("kev_human_report", research_root() / "human_report.py")
 
 
 def verify_vendor():
@@ -132,7 +140,7 @@ def inspect_dataset(directory, kind):
     manifest = read_json(manifest_path)
     require(manifest.get("status") == "ready" and not manifest.get("blocked"), "split_not_ready")
     checker = load_module("kev_vendor_validator", VENDOR_ROOTS["kev-finetune"] / "scripts/split_data.py")
-    native_input = load_module("kev_native_input_identity", SKILLS / "kev-trace-pipeline/scripts/native_input.py")
+    native_input = load_module("kev_native_input_identity", research_root() / "native_input.py")
     rows, files, identities, groups, forms = {}, {}, {}, {}, {}
     for partition in PARTITIONS:
         path = root / (partition + ".jsonl")
@@ -161,7 +169,7 @@ def inspect_dataset(directory, kind):
         files[partition] = {"path": str(path.resolve()), "sha256": digest(path), "records": len(records),
                             "questions": sum(len(r["questions"]) for r in records), "groups": len(group_set)}
     if kind == "trace-ir":
-        core = load_module("kev_core_dataset", SKILLS / "kev-trace-pipeline/scripts/dataset.py")
+        core = load_module("kev_core_dataset", research_root() / "dataset.py")
         audit = core.audit_partitions(rows)
         require(audit.get("ok") is True, "trace_ir_audit_failed: " + json.dumps(audit.get("errors", []), ensure_ascii=False))
         require(all(r["_meta"].get("label_status") == "verified" and not r["_meta"].get("training_only")
@@ -170,7 +178,7 @@ def inspect_dataset(directory, kind):
         audit_identity = {"kind": "recomputed_trace_ir_audit", "ok": True}
     elif kind == "legacy-native":
         require(manifest.get("source_format") == "legacy-native", "legacy_native_manifest_required")
-        legacy = load_module("kev_legacy_native", SKILLS / "kev-trace-pipeline/scripts/legacy_native.py")
+        legacy = load_module("kev_legacy_native", research_root() / "legacy_native.py")
         audit = legacy.audit_directory(root)
         require(audit.get("ok") is True, "legacy_native_audit_failed: " + json.dumps(audit.get("errors", []), ensure_ascii=False))
         for partition in PARTITIONS:
@@ -329,6 +337,15 @@ def recipe_dtype(recipe):
     return RECIPE_DTYPES[recipe]
 
 
+def settings_recipe(settings):
+    dtype = settings.get("dtype")
+    if "dtype" in settings:
+        require(dtype in ("bf16", "fp32"), "invalid_training_dtype")
+    recipe = settings.get("recipe", "cuda-" + dtype + "-lora" if dtype else DEFAULT_RECIPE)
+    require(dtype is None or recipe_dtype(recipe) == dtype, "training_recipe_dtype_mismatch")
+    return recipe
+
+
 def execution_prefix(execution_env):
     """显式使用所选任务venv的uv，不依赖远端登录PATH。"""
     venv = execution_env.get("UV_PROJECT_ENVIRONMENT")
@@ -342,17 +359,17 @@ def training_argv(checkpoint, dataset, settings, run_root, execution_env=None):
         argv += ["--" + key, str(execution_init_from(checkpoint) if key == "init_from" else checkpoint[key])]
     for key in ("epochs", "lr", "batch", "accum", "seed"):
         argv += ["--" + key, str(settings[key])]
-    dtype = recipe_dtype(settings.get("recipe", DEFAULT_RECIPE))
+    dtype = recipe_dtype(settings_recipe(settings))
     return argv + ["--checkpointing", "1", "--dtype", dtype, "--device", "cuda", "--max_state", "384",
                    "--p_none", "0", "--p_none_distract", "0", "--p_distract", "0", "--p_none_pair", "0",
                    "--out", str(Path(run_root) / "checkpoint")]
 
 
 def training_recipe(plan):
-    """核对配方与训练命令；旧版未命名计划沿用原有 BF16 配方。"""
+    """核对配方与训练命令；旧版未命名计划沿用原 dtype，缺省为 BF16。"""
     settings = plan.get("training")
     require(isinstance(settings, dict), "invalid_training_recipe")
-    recipe = settings.get("recipe", DEFAULT_RECIPE)
+    recipe = settings_recipe(settings)
     dtype = recipe_dtype(recipe)
     checkpoint = plan.get("checkpoint")
     require(dtype != "fp32" or isinstance(checkpoint, dict) and checkpoint.get("weights_dtype") == "fp32",
@@ -403,9 +420,11 @@ def build_plan(request, request_path):
     settings = {"recipe": DEFAULT_RECIPE, "epochs": 1, "lr": 2e-5, "batch": 1, "accum": 8, "seed": 0, "calibration_folds": 5,
                 "calibration_policy": "report_only"}
     supplied = request.get("training", {})
-    require(isinstance(supplied, dict) and not (set(supplied) - set(settings)), "unsupported_training_option")
+    require(isinstance(supplied, dict) and not (set(supplied) - set(settings) - {"dtype"}), "unsupported_training_option")
     settings.update(supplied)
+    settings["recipe"] = settings_recipe(supplied)
     dtype = recipe_dtype(settings["recipe"])
+    require(dtype != "fp32" or checkpoint["weights_dtype"] == "fp32", "fp32_recipe_requires_fp32_checkpoint_weights")
     for key in ("epochs", "batch", "accum", "calibration_folds"):
         require(type(settings[key]) is int and settings[key] > 0, "invalid_training_" + key)
     require(settings["calibration_folds"] >= 2 and settings["calibration_folds"] <= dataset["files"]["calibration"]["groups"],
@@ -446,7 +465,7 @@ def build_plan(request, request_path):
                             **({"env": execution_env} if "env" in environment else {})},
             "training": settings, "context_limits": LIMITS, "augmentation": {"p_none": 0, "p_none_distract": 0, "p_distract": 0, "p_none_pair": 0, "choice_shuffle": True},
             "commands": commands, "execution": {"tokenization": "not_run", "training": "not_run", "calibration": "not_run", "deployment": "not_run", "equivalence": "not_evaluated"},
-            "warnings": ["Command cards are not jobs or proof of execution; platform medium-button sessions remain plan-only.",
+            "warnings": ["Command cards are not jobs or proof of execution; plan_only requests must not execute, while explicit implement tasks still require a real executor and execution receipts.",
                          "The " + settings["recipe"] + " recipe requires LoRA and CUDA/" + dtype + "; hardware support and budget need actual executor checks.",
                          "Calibration report does not persist temperature. See references/calibration.md before any checkpoint change.",
                          "Final-test card is reserved for independent acceptance; the external executor must enforce the frozen-checkpoint gate. Raw benchmarks use T=1.",
@@ -461,7 +480,8 @@ def authorized_training_card(plan_path, report_path):
     require(report.get("schema_version") == "kev-encoding-report/v1" and report.get("status") == "ready", "encoding_not_ready")
     require(report.get("plan_sha256") == digest(plan_path), "encoding_report_plan_mismatch")
     recipe = training_recipe(plan)
-    require(report.get("training_recipe", DEFAULT_RECIPE) == recipe, "encoding_training_recipe_mismatch")
+    report_recipe = report.get("training_recipe", recipe if "recipe" not in plan["training"] else DEFAULT_RECIPE)
+    require(report_recipe == recipe, "encoding_training_recipe_mismatch")
     checkpoint_source = verify_checkpoint_source(plan["checkpoint"])
     if plan["checkpoint"].get("local_snapshot") is not None:
         require(report.get("checkpoint_source") == checkpoint_source, "encoding_checkpoint_source_mismatch")

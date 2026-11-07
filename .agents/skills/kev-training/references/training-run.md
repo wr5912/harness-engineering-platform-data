@@ -4,7 +4,7 @@
 
 未修改的千问、KEV 基座和原始 checkpoint 放在 `.local/` 等 Git 忽略目录，不提交模型权重；仓库保留下载来源、固定 Revision、摘要和复现所需的配置。本次微调生成的 LoRA、决策头与校准工件，以及生成的源码和构建产物，作为对应变体的交付物保存。交付清单分别标明基础依赖和本次生成工件，不能仅以正在运行的模型接口代替模型文件。
 
-本套原生训练依据 Kev `2074cc44256200bb37540103fa4572901faa10f3`。执行环境需要该完整 Git checkout、其依赖、符合所选 recipe 的 CUDA GPU、固定的基座与 Kev checkpoint。训练计划只生成命令，不安装依赖、下载权重、连接服务器或启动作业。
+本套原生训练依据 Kev `2074cc44256200bb37540103fa4572901faa10f3`。执行环境需要该完整 Git checkout、其依赖、可用 CUDA GPU、固定的基座与 Kev checkpoint。训练精度默认 bf16；无原生 bf16 的硬件可选择 fp32，保留 fp32 checkpoint 权重，先核对实际前后向计算及显存。训练计划只生成命令，不安装依赖、下载权重、连接服务器或启动作业。
 
 `training_config.json` 从所选固定 Kev checkpoint 获取。脚本读取 base、base_revision、LoRA/head 参数，核对文件摘要；它不能离线认证文件发布者。来源获取回执应一起保存。base 与 init_from 是不同身份；init_from 始终是 `owner/repo@40位提交` 的固定来源，不用模型路由字符串或本地目录代替。执行位置可由下述 local_snapshot 绑定。完整权重 checkpoint 不使用当前 LoRA recipe。
 
@@ -16,7 +16,7 @@
 - dataset：目录与 kind（平台桥接产物 platform-v2，离线 IR 产物 trace-ir，既有数据已复核导入产物 legacy-native）。四份非空文件与 split-manifest.json 必须真实存在。
 - checkpoint：init_from、同一固定来源的 training_config_path 与 training_config_sha256；按需提供 local_snapshot。
 - environment：实际训练环境的 kev_root、新 run_root，以及可选 server_id/credential_ref/env。路径或执行环境改变后重新准备与编码。
-- training：recipe、epochs/lr/batch/accum/seed/calibration_folds，以及 calibration_policy。recipe 默认 `cuda-bf16-lora`，需要原生 BF16 支持；`cuda-fp32-lora` 使用 FP32 训练，适用于不支持原生 BF16 的 CUDA GPU，要求 checkpoint 元数据中的 weights_dtype 为 fp32。训练 dtype 由 recipe 唯一决定，checkpoint 的 weights_dtype 仍读取固定来源元数据。默认超参只是初次 LoRA recipe；GPU、显存、时限、费用和效果仍需真实检查。
+- training：recipe、epochs/lr/batch/accum/seed/calibration_folds，以及 calibration_policy。recipe 默认 `cuda-bf16-lora`，需要原生 BF16 支持；`cuda-fp32-lora` 使用 FP32 训练，适用于不支持原生 BF16 的 CUDA GPU，要求 checkpoint 元数据中的 weights_dtype 为 fp32。训练 dtype 由 recipe 唯一决定，checkpoint 的 weights_dtype 仍读取固定来源元数据。默认超参只是初次 LoRA recipe；GPU、显存、时限、费用和效果仍需真实检查。原有 dtype 字段仍兼容；与 recipe 同时指定时须一致。
 
 可选 `environment.env` 是非秘密字符串映射，仅支持 `HF_HUB_CACHE`、`UV_PROJECT_ENVIRONMENT` 两个绝对路径，`HF_HUB_OFFLINE`、`TRANSFORMERS_OFFLINE`、`UV_NO_SYNC` 的 `"0"`/`"1"`，以及 `USE_HUB_KERNELS` 的 `"NO"`/`"YES"`。使用已核验的缓存和venv时，按请求示例设置路径、离线开关和 `UV_NO_SYNC=1`；指定 venv 时命令卡统一调用其 `bin/uv`，须先在该任务环境安装并核验；未指定时调用原生 `uv`。计划器不安装依赖、不创建 venv 或重新同步依赖。
 
@@ -40,7 +40,7 @@ repository_metadata_path 指向固定 revision 的 Hugging Face 仓库元数据 
 
 两种 recipe 均采用 state/branch/packed 为 384/1024/2048 的预算，四项候选增删增强为 0，保留选项洗牌。初始训练默认 epochs=1、lr=2e-5、batch=1、accum=8。recipe 会同时进入计划、训练命令、硬件检查条件和报告；改变 recipe 后重新准备与编码，不直接编辑已核对的 argv。原生 trainer 不支持 FP16 训练。
 
-模型建议不能自行补人员复核。trace-ir 的 verified 只表示其记录的复核/规则依据，不成为平台人工确认。当前准备器采用全部已复核标签的基线，不允许弱标签混入该 recipe。人工构造输入的技术兼容性探针不属于正式训练，也不能替代已审阅的四分区业务数据或效果验证。
+模型建议不能自行补人员复核。trace-ir 的 verified 只表示其记录的复核/规则依据，不成为平台人工确认。当前准备器采用全部已复核标签的基线，不允许弱标签混入该 recipe。
 
 legacy-native 的准备器重新读取 source.jsonl 和 reviews.jsonl，重放复核、闭包分组与四用途构建，再核对实际派生文件；不只相信先前 report.ok。原文件身份、标签来源、复核方式和来源组保留，不转换成 DSH 来源。缺少可靠独立标签或真实业务测试时，只能说明格式与复核记录符合当前要求。
 
@@ -50,7 +50,7 @@ legacy-native 的准备器重新读取 source.jsonl 和 reviews.jsonl，重放�
 
 1. `training_plan.py prepare` 核对完整官方文件哈希、分区、来源组、标签、checkpoint 元数据和参数，生成训练计划。
 2. `check_encoding.py` 在同一固定 checkout 运行实际原生加载/物化/编码。默认不联网；输出 token 数、拒收和洗牌检查。只有 ready 才继续。
-3. `training_plan.py commands` 重新核对计划、编码报告、checkpoint 执行位置及数据摘要，仅返回训练 command card，不执行。真实执行器按 argv 参数数组调用；不要把不可信输入拼成 shell。
+3. `training_plan.py commands` 重新核对计划、编码报告和数据摘要，仅返回训练 command card，不执行。真实执行器按 argv 参数数组调用；不要把不可信输入拼成 shell。
 4. 执行器保存命令、环境、开始/结束时间、真实 job_id 或进程身份、日志与退出状态。没有作业 API 时由操作者在已授权训练环境执行；管理助手不伪造平台接口。
 5. 成功 checkpoint 至少核对 head.pt、LoRA 权重、adapter_config.json、training_config.json、training_metrics.json 与 tokenizer 文件；记录内容摘要。原生 trainer 不自动生成 train.log，执行器要捕获 stdout/stderr。
 6. 用独立 development 和 calibration 阶段核对；最终 test 单独冻结后使用。完成训练不自动生成或装载 Harness 变体。
@@ -59,9 +59,26 @@ legacy-native 的准备器重新读取 source.jsonl 和 reviews.jsonl，重放�
 
 `commands.*.env` 是本次设置，`unset_env` 是需清除的继承值。特别固定 `KEV_LORA_SCALE=1` 和 torch 后端，避免意外关闭 LoRA 后还声称在评估训练工件。最终测试不继承 KEV_TEMPERATURE 覆盖。
 
+本地模型快照、受限执行环境变量、命令卡传输与 IR 复核的完整合同见[原生执行交接](native-execution.md)。本地快照的固定身份和文件摘要在准备、编码与取训练命令时重新核对，不能只信目录名称。
+
+## SSH 命令卡执行器
+
+程序根的 `runtime/research/training-ssh.mts` 提供现有命令卡的 SSH 执行与回收。先用 `node --experimental-strip-types <program_root>/runtime/research/training-ssh.mts --help` 核对当前参数。每次调用都指定 `--asset-root <asset_root>` 和数据根 `.local/` 内的绝对 `--receipt FILE`；服务器 ID 与凭据引用来自当前训练连接登记，不在命令、日志或证据中展开凭据。
+
+| 动作 | 额外参数与结果 |
+|---|---|
+| `exec` | `--server-id ID --card FILE`；FILE 是计划中的单张命令卡，保留 cwd/argv/env/unset_env/requires。回执记录命令卡摘要、远端目录、PID 与出生时间；命令在远端独立运行，正常连接持续收集输出至结束 |
+| `status` / `cancel` | 读取原回执，核对原作业身份；不重新派发。断线、超时或未知状态先 status，禁止换回执重复启动 |
+| `transfer` | `--server-id ID --direction upload\|download --local FILE --remote ABSOLUTE_FILE`；回执核对两端文件 SHA-256 |
+| `forward` | `--server-id ID --mappings FILE`；按帮助中的映射结构建立隧道，由原生后台 Job 保持，不占用其他任务的监听端口 |
+
+同一作业继续使用原回执。只有命令卡输入改变或已确认需要重新试验时才创建新作业；保存旧失败，不把文件存在或退出码 0 单独当作阶段完成。执行器校验命令结构与进程身份；命令卡 requires 中的编码、硬件、校准和冻结条件由当前配方核对，不能跳过语义前提。
+
+`.local` 中的执行器回执用于作业恢复，不是变体的持久研究资产。完成回收后，将核验材料按 `compute-variant-research` 的训练回执合同绑定到变体，再使用 `compute-variants/prepare` 自动归档引用闭包并冻结；检查归档后的回执和实际工件均属于该 Experiment。模型配置、tokenizer、训练参数与指标、状态构造器的资源文件须纳入显式恢复依赖，并核对相对加载关系；只有权重文件不足以证明可以恢复。模型下载缓存、SSH 隧道、服务 PID、私有绑定和 Session 保留运行身份，不随研究归档或复制整个工作目录。
+
 ## 官方 Modal 路径的差别
 
-官方[微调包](upstream/kev-finetune/UPSTREAM.md)与[部署包](../../kev-deploy/references/upstream/kev-deploy/UPSTREAM.md)均保留原 SKILL、脚本、许可及来源记录，不再从旧顶层官方目录取文件。仅需通用工作负载微调时从 [modal-workload.md](modal-workload.md) 继续；本节原生准备器不包装 Modal 配方。
+官方[微调包](upstream/kev-finetune/UPSTREAM.md)与[部署包](../../kev-deploy/SKILL.md)均保留原 SKILL、脚本、许可及来源记录，不再从旧顶层官方目录取文件。仅需通用工作负载微调时从 [modal-workload.md](modal-workload.md) 继续；本节原生准备器不包装 Modal 配方。
 
 官方训练 Skill 的 kev_modal.py 默认 KEV_REF 为 fc4a17e194bca35a48c57211392ec49ea54a94ac，可用环境变量覆盖。官方部署 kev_serve.py 把相同值写成常量，环境变量不会覆盖它。两提交当前 kev/*.py 和 pyproject.toml 一致，但实际运行身份仍分开记录。
 

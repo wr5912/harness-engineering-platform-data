@@ -1,6 +1,6 @@
 # 网络安全八类业务意图路由：有界参考合同
 
-`cybersecurity-routing-v1` 将已满足边界条件的 DSH 决策前缀投影为一题 `agent_route`。静态定义位于 [`assets/security-routing-contract.json`](../assets/security-routing-contract.json)，合同版本为 `cybersecurity-routing-contract/v1`；输入构造器版本为 `security-routing-input/v1`。原始数据题型中的八个中文候选键和通用职责得以保留，未复制真实输入、原始记录或标签。
+`cybersecurity-routing-v1` 将已满足边界条件的 DSH 决策前缀投影为一题 `agent_route`。静态定义位于 [公开工具的安全路由合同](https://github.com/wr5912/harness-engineering-platform/blob/main/runtime/research/kev-data/README.md#安全路由合同)，合同版本为 `cybersecurity-routing-contract/v1`；输入构造器版本为 `security-routing-input/v1`。原始数据题型中的八个中文候选键和通用职责得以保留，未复制真实输入、原始记录或标签。
 
 这是离线业务意图分类任务的参考投影。八个名称表示候选职责，不证明平台上存在八个对应 Agent。抽取结果的 `candidate_bindings` 始终为 `{}`；`deployment_ready=false`。本合同没有覆盖全部安全业务，也没有完成在线执行接管。
 
@@ -74,7 +74,7 @@
 
 ## 4. 构造器与逐步交接
 
-`scripts/trace_adapter.py:build_sample(snap, profile="cybersecurity-routing-v1")` 进入本投影，`extract(audit, profile)` 沿用原有抽取流程。业务实现位于 `scripts/security_routing.py`。
+`<kev_data>/trace_adapter.py:build_sample(snap, profile="cybersecurity-routing-v1")` 进入本投影，`extract(audit, profile)` 沿用原有抽取流程。业务实现位于 `<kev_data>/security_routing.py`。
 
 纯函数入口：
 

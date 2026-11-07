@@ -10,7 +10,7 @@
 
 ## 阶段参考与共享实现
 
-kev-trace-pipeline 是数据入口及唯一脚本所有者。发现、抽取、标注、编译/切分分别读取 [discovery](stages/discovery.md)、[extraction](stages/extraction.md)、[labeling](stages/labeling.md)、[build](stages/build.md)；它们不再注册为独立 Skill。dsh-trace-audit 与 kev-dataset-audit 保留独立诊断/审查入口并共享同一实现。Python 标准库即可运行数据工具；模型训练与 tokenizer 检查在明确选择的 Kev 环境执行。
+kev-trace-pipeline 是数据方法入口，脚本唯一来源为程序侧公开 kev-data 工具。发现、抽取、标注、编译/切分分别读取 [discovery](stages/discovery.md)、[extraction](stages/extraction.md)、[labeling](stages/labeling.md)、[build](stages/build.md)；它们不再注册为独立 Skill。dsh-trace-audit 与 kev-dataset-audit 保留独立诊断/审查入口并共享同一实现。Python 标准库即可运行数据工具；模型训练与 tokenizer 检查在明确选择的 Kev 环境执行。
 
 已有产物可直接继续任一阶段，不要求从头执行。旧调用名 kev-decision-discovery、kev-sample-extraction、kev-sample-labeling、kev-dataset-build 改用 kev-trace-pipeline 并说明所需阶段；没有运行时别名，也不因此改变 CLI 子命令或数据格式。
 
@@ -21,13 +21,13 @@ kev-trace-pipeline 是数据入口及唯一脚本所有者。发现、抽取、�
 下列相对路径仅用于展示各阶段关系；执行时从实际 Skill 位置解析脚本绝对路径，输入输出也用绝对路径。一次只执行当前一条，读取 stage-status.json 后再决定下一条，不把整段作为连续批处理。每个输出目录用新名字。
 
 ```bash
-python3 scripts/kev_trace.py audit trace.jsonl --out work/01-audit
-python3 scripts/kev_trace.py discover trace.jsonl --profile inspection-v1 --out work/02-discovery
-python3 scripts/kev_trace.py extract trace.jsonl --profile inspection-v1 --out work/03-extract
-python3 scripts/kev_trace.py annotate --samples work/03-extract/samples.jsonl --annotations reviewed-labels.jsonl --out work/04-labels
-python3 scripts/kev_trace.py compile --input work/04-labels/samples.labeled.jsonl --out work/05-compile
-python3 scripts/kev_trace.py split --input work/05-compile/compiled.jsonl --out work/06-split
-python3 scripts/kev_trace.py audit-dataset --dataset-dir work/06-split --out work/07-audit
+python3 <kev_data>/kev_trace.py audit trace.jsonl --out work/01-audit
+python3 <kev_data>/kev_trace.py discover trace.jsonl --profile inspection-v1 --out work/02-discovery
+python3 <kev_data>/kev_trace.py extract trace.jsonl --profile inspection-v1 --out work/03-extract
+python3 <kev_data>/kev_trace.py annotate --samples work/03-extract/samples.jsonl --annotations reviewed-labels.jsonl --out work/04-labels
+python3 <kev_data>/kev_trace.py compile --input work/04-labels/samples.labeled.jsonl --out work/05-compile
+python3 <kev_data>/kev_trace.py split --input work/05-compile/compiled.jsonl --out work/06-split
+python3 <kev_data>/kev_trace.py audit-dataset --dataset-dir work/06-split --out work/07-audit
 ```
 
 annotations.todo.jsonl 是待填监督侧，不是已有答案。未标注样本进入 quarantine 属于预期行为。split blocked 后不运行 audit-dataset 假装有四份数据。

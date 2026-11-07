@@ -4,6 +4,8 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
+import sys
 from pathlib import Path
 import tempfile
 import unittest
@@ -12,6 +14,7 @@ from snapshot_fixture import make_snapshot
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'check_encoding.py'
+sys.path.insert(0, str(SCRIPT.parent))
 SPEC = importlib.util.spec_from_file_location('encoding_preflight_contract', SCRIPT)
 encoding = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(encoding)
@@ -21,6 +24,15 @@ PLANNER_SPEC.loader.exec_module(planner)
 
 
 class EncodingContractTests(unittest.TestCase):
+    def test_missing_public_tool_stops_before_any_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory) / 'encoding.json'
+            with patch.dict(os.environ, {'HARNESS_PROGRAM_ROOT': ''}), contextlib.redirect_stderr(io.StringIO()) as error:
+                code = encoding.main(['--plan', 'missing.json', '--kev-root', directory, '--out', str(out)])
+            self.assertEqual(code, 1)
+            self.assertIn('HARNESS_PROGRAM_ROOT', error.getvalue())
+            self.assertFalse(out.exists())
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

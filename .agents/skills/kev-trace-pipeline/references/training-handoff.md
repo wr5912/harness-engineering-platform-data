@@ -4,7 +4,7 @@
 
 固定 Kev commit、基础 checkpoint 和 tokenizer revision；保存实际输入编码及长度分布。已核验参考版本 2074cc44256200bb37540103fa4572901faa10f3 的默认训练预算为 state 384、state+单问题分支 1024、packed 2048。以实际安装版本参数为准。完整 DSH prompt 远长于压缩决策状态，不能直接假定能装入。
 
-本数据技能的脚本不加载分词器或权重，报告 token_budget=not_checked。实际编码检查由 `kev-training/scripts/check_encoding.py` 在选定训练环境执行，使用原生 loader/renderer/encoder/长度过滤。记录过滤后各决策点、类别和来源的数量，不用字符长度作合格判定，也不让隔离记录悄悄消失。
+本数据技能的脚本不加载分词器或权重，报告 token_budget=not_checked。实际编码检查由 kev-training 公开入口中的编码检查步骤 在选定训练环境执行，使用原生 loader/renderer/encoder/长度过滤。记录过滤后各决策点、类别和来源的数量，不用字符长度作合格判定，也不让隔离记录悄悄消失。
 
 ## 交给训练技能的顺序
 

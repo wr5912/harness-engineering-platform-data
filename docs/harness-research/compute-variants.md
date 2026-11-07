@@ -36,12 +36,12 @@
 
 比较既看任务质量，也看资源证据及来源可比性。关键任务退步、两侧都失败、重复不足、输入变化、资源未知或收益未达标都不能认定等效。保留 continue 或 inconclusive，不放宽原计划让比较通过。
 
-平台的 `eligible_for_end` 只是当前计划下的条件判断，不代表总体任务分布上的统计非劣性。人员复核实际 Run、输出与完整工具结果后，由界面确认 `end`；助手不伪造确认或直接写状态绕过。`VAR-` 前缀表示变体，所有变体都不能被继承，`end` 只表示限定任务的效果/资源证据与人员确认，不决定继承资格；`end` 仍不代表发布、实例切换或所有环境成本更低。
+平台的 `eligible_for_end` 只是当前计划下的条件判断，不代表总体任务分布上的统计非劣性。人员复核实际 Run、输出与完整工具结果后，由界面确认 `end`；助手不伪造确认或直接写状态绕过。终端身份限定继承关系，不代表发布、实例切换或所有环境成本更低。
 
 
 ## KEV 中算力变体：当前平台的办理路径
 
-中算力提供“仅策划”和“生成并验证”两个入口，按 `compute-variant-research` 的意图表确定本次范围。策划沿用固定 task_context，只诊断和交付计划，不连接服务器、不训练、不创建变体。实施沿用固定来源与已有产物，通过当前允许的工具继续所需阶段；缺服务器、数据或工具时准确说明。计划先写真实决策点、证据、缺口与下一阶段，不要求先补齐所有训练参数才能策划。
+中算力弹窗区分“仅发送策划请求”和“生成并验证变体”。前者为 planning_intent=plan_only，按需读取 compute-variant-research 并保持只读，不执行 datasets、服务器连接、训练或变体创建。后者为 generation_intent=implement，沿用固定 task_context，按需使用现有原生执行工具及 KEV 技能，从真实轨迹识别决策点、抽取并复核四分区数据，实际训练 KEV 决策模型、校准、冻结测试，再生成和比较变体。plan_only 优先，助手不能自行升级意图。缺少输入只暂停依赖阶段，不把计划当执行结果。
 
 ### 一次一阶段
 
@@ -50,7 +50,7 @@
 | 策划 | 当前算力专项 | 完整固定父版、实际 Run、候选决策职责及缺口 |
 | 抽取 | 指定 Run 的 decision-sample-extraction | 单题 v2 合同，真实来源，自动保存 suggested 后回读 |
 | 复核与用途 | 现有决策样本页面 | 逐题 reviewed、decision_time_reviewed，显式四种用途 |
-| KEV 数据转换 | 后续获授权任务中的平台 v2 桥接器 | 回执/分组/标签检查通过，四份实际文件与摘要 |
+| KEV 数据转换 | 明确执行任务的 KEV 轨迹流水线或平台 v2 桥接器 | 回执/分组/标签检查通过，四份实际文件与摘要 |
 | 编码与训练准备 | kev-training | 固定 checkout/checkpoint/tokenizer，实际原生编码通过 |
 | 训练与校准 | 真实获授权训练环境 | 作业回执、日志、模型工件、独立校准及开发报告 |
 | 接入与等效比较 | 实际服务/工具绑定后按现有算力流程 | generated/built/frozen/loaded/compared 分别取证，end 由人员确认 |
@@ -61,7 +61,9 @@
 
 保留任务上下文 medium 的实际值：model_suggestions 中各模型的 kind、source、baseModel、revision、purpose，combination_preference，以及 training_server_mode、server_id、工作目录与 credential_ref 等。小尺寸 LLM 和决策模型均可引用 Hugging Face、ModelScope 或本地权重；推理供应商的 provider/model 是运行路由，不自动等于可下载、可 LoRA 训练的权重。未选模型、来源或版本时保留待选；只询问会改变当前阶段决策的缺口。服务器 probe 只检查 TCP/SSH banner，不证明认证、GPU、依赖或训练可用。
 
-训练参数属于独立 handoff 工件，不塞入现有严格 ComputePlan。已有授权范围内的变体创建、构建、冻结和比较直接按当前平台动作办理，写入遵循 DSH 原生权限。当前平台没有训练 start/status/cancel/collect 动作；不得猜 API、清空 task_context、执行临时 shell 或调用内部实现弥补接口缺失。
+训练参数属于独立 handoff 工件，不塞入现有严格 ComputePlan；训练回执按当前 generation_contract.decision_training 引用真实文件与摘要，再以 decision_training 绑定计划。公开 checkpoint 仅作初始化，角色登记不能代替本次优化步骤、日志、校准与测试。平台核验回收材料及模型绑定，缺失或不一致时不能认定训练完成或满足 end 条件；该核验不替代真实执行、标签复核和业务效果。已有计划更换训练后模型身份时，从固定完整父版创建新变体，保留旧结果。
+
+已有授权范围内的变体创建、构建、冻结和比较直接按当前平台动作办理，写入遵循 DSH 原生权限。当前平台没有训练调度动作；明确执行任务使用已授权原生工具和既有 KEV 配方，核对真实作业并回收工件。不得猜 API、清空 task_context 或调用内部实现绕过仅策划范围。连接中断先核对原作业，未知时不重复启动。
 
 ### 四份数据与来源
 
@@ -79,6 +81,8 @@
 
 calibration-report 仅生成报告；只有按已评审业务校准口径执行对应写入步骤，才能说新 checkpoint 应用了温度。最终 test 不参与拟合。原生上游对自定义业务分布校准有明确限制，具体支持选项和含义在训练技能 calibration 参考中说明，不能隐去偏差。
 
-训练完成后还需真实推理服务或工具 schema。当前生成合同保留 LangGraph AOT、callTool、文本 infer 和真实路由；`decision_training` 绑定训练回执、四用途数据及工件摘要，并供构建、冻结和结束条件核对。材料或摘要缺失时不能满足对应完成条件；合同通过仍不证明模型已装载或业务等效。完整路径成本包括状态构造、候选生成、回退、重试、工具和服务延迟。
+训练完成后还需真实推理服务或工具 schema。当前生成合同是 LangGraph AOT + callTool + 文本 infer，没有专用 KEV 权重/概率绑定；不能凭模型工件存在说 Variant 已装载。完整路径成本包括状态构造、候选生成、回退、重试、工具和服务延迟。
 
 管理模型能力较弱时，使用一次一阶段、单题提交、实际字段复制和脚本状态判定。报告 blocked 就停止依赖步骤，保存已有成果。此适配不自动更改业务父版模型，也不构成 GPT-5.5 等模型的实测成绩。
+
+实施任务与已授权普通管理会话从真实未完成阶段继续；只读策划优先，不能借原生工具扩大专项范围。明确委托的 AI 逐题复核保留实际模型、Session、输入读取证据与 `functional_validation` 用途，不作为人工真值或 end 确认。SSH 命令卡、IR 复核、工件回收与 Candidate 导入见[原生执行交接](../../.agents/skills/kev-training/references/native-execution.md)，使用前核对实际程序版本和工具合同。

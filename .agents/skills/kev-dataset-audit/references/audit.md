@@ -6,4 +6,4 @@
 
 已通过 _meta 隔离就不要再说元数据泄漏；若训练会洗牌，不把固定 criteria 顺序直接判成位置偏差。输出不足时明确缺口，不造测试分数。
 
-训练交接阅读 ../kev-trace-pipeline/references/training-handoff.md。模型接管价值必须在新动作实际影响后续状态的任务运行中验证；离线 top-1 一致率只说明单步标签匹配。
+编码与训练通过 [kev-training 公开入口](https://github.com/wr5912/harness-engineering-platform-data/blob/main/.agents/skills/kev-training/SKILL.md) 交接数据文件、摘要、来源与复核缺口，消费其真实编码回执。模型接管价值必须在新动作实际影响后续状态的任务运行中验证；离线 top-1 一致率只说明单步标签匹配。

@@ -22,6 +22,8 @@ IR schema_version: kev-decision-ir/v1。
 
 state_evidence_refs/candidate_evidence_refs 中 event 类型必须带整数 seq，且小于 decision_seq；静态候选合同使用 kind=contract 与 contract_version。label 的证据可以来自后续结果，但不能因此让输入获得未来事实。仅通过 seq 检查不能证明语义无泄漏，仍需原始证据核对和未来不变性检查。
 
+Skill 规范与轨迹的对照方法见[决策合同与覆盖](stages/discovery.md)。目标 Skill 版本及分支证据使用现有合同 source_refs/evaluation_slices；样本保留决策时可见上下文及其来源，不把抽取助手的版本当作目标 Skill 版本。
+
 ## 标签
 
 - unlabeled：仅抽取，value 为 null。

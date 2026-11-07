@@ -12,8 +12,8 @@ description: "部署或运维已有 Kev checkpoint：获取 TypeSafe/System One 
 | 当前对象 | 按需读取 | 本次办理范围 |
 |---|---|---|
 | 公共或自定义 Hub checkpoint，选择 Modal | [官方部署 Skill](references/upstream/kev-deploy/SKILL.md) 与其 scripts/kev_serve.py | 选定模型/版本、资源和认证后部署、验证 |
-| 已在官方 Modal 微调卷中的 run | [官方微调部署说明](../kev-training/references/upstream/kev-finetune/references/deploy.md) | 使用同包 kev_modal.py 的 Serve 路径，不假装它是 Hub checkpoint |
-| 已有本地 checkpoint，选择本地 CUDA 服务 | 上述官方微调部署说明的 local serving 部分；接入当前 Harness 预算证明时读[原生 CUDA 接入](references/native-cuda.md) | 沿用已选环境的真实服务入口，核对所用接入合同与实际证明 |
+| 已在官方 Modal 微调卷中的 run | [微调运行的服务交接](../kev-training/SKILL.md#已有微调运行的服务交接) | 把已有 run、目标环境和已授权动作交给 kev-training 的服务路径，取得端点与验证回执后继续；不重新训练 |
+| 已有本地 checkpoint，选择本地 CUDA 服务 | [原生 CUDA 接入](references/native-cuda.md) | 沿用已选环境的真实服务入口，核对所用接入合同与实际证明 |
 | 已有服务，只验证、调整保温或停服 | 对应部署路径中的验证/配置/清理部分 | 直接处理指定服务，不重新训练或默认部署另一模型 |
 | 需要微调、生成训练数据或评估训练工件 | `kev-training` | 交接所需训练阶段 |
 
@@ -25,11 +25,11 @@ description: "部署或运维已有 Kev checkpoint：获取 TypeSafe/System One 
 2. 从实际官方包位置解析脚本绝对路径，使用已核对的本地副本；原文 main 下载示例不替代固定来源。官方部署脚本的 KEV_REF 是常量，环境变量不会覆盖；微调 kev_modal.py 支持环境覆盖，两者不可混淆。
 3. 使用既有凭据引用和当前执行环境。按上游要求配置认证；修改 app 名、模型、区域或保温会影响实际端点与费用，执行前核对目标与本次授权。脚本导入也可能创建 Modal 资源，不能将导入当作只读检查。
 4. 部署后核对真实回执与 `/v1/models` 的 checkpoint、温度及环境，按上游说明处理冷启动/重定向。验证认证、真实请求和模型输出；服务可用不证明业务效果或 Harness 等效性。状态未知先查原 app/job，不重复启动。
-5. 接入现有调用方时保持问题、候选与训练/评估口径一致，核对 URL、API key 引用和实际 schema。若任务是 Harness 变体，再读 [variant-binding.md](../kev-training/references/variant-binding.md)，交回 compute-variant-research 做独立两侧 Run；不把服务 URL 当作已装载或 end。
+5. 接入现有调用方时保持问题、候选与训练/评估口径一致，核对 URL、API key 引用和实际 schema。若任务是 Harness 变体，交给 [compute-variant-research](../compute-variant-research/SKILL.md)，提供 checkpoint、真实服务 schema、温度和验证回执，由其完成变体绑定与独立两侧 Run；不把服务 URL 当作已装载或 end。
 6. 停服只操作已确认的 app/endpoint。删除运行权重、Hub 仓库、共享 kev-hf-cache 或全部资源分别按本次明确范围办理，不把 `--everything` 当默认停服。读取实际结果，说明哪些资源仍保留。
 
 交付实际服务或操作结果、核对情况和剩余问题。只生成命令、上传成功、部署成功、服务验证与业务验收分别取证，不把未执行步骤称为完成。
 
 ## 固定官方来源
 
-完整文件、许可与原始来源说明见 [UPSTREAM.json](references/upstream/kev-deploy/UPSTREAM.json) 和 [UPSTREAM.md](references/upstream/kev-deploy/UPSTREAM.md)。包内相对布局保持不变；官方 `../../runs/...` 等包外链接按 [固定上游目录](https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/skills/kev-deploy) 解析，报告不在本地 Skill 包中。适配只维护在本入口或单独文件，不改官方原文、脚本或来源记录。
+完整文件、许可与原始来源说明见 [UPSTREAM.json](references/upstream/kev-deploy/UPSTREAM.json) 和 [UPSTREAM.md](references/upstream/kev-deploy/UPSTREAM.md)。包内相对布局保持不变；官方 `../../runs/...` 引用的三份报告按 [固定上游提交](https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/runs/modal-http-4b-h100) 原字节保存于 `references/runs/modal-http-4b-h100/`，供离线阅读；这些是上游测试证据，不是本平台的部署验收结果。适配只维护在本入口或单独文件，不改官方原文、脚本或来源记录。

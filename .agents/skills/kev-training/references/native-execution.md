@@ -4,7 +4,7 @@
 
 ## 入口与凭据
 
-从系统工作区上下文取 `program_root`、`asset_root`。CLI唯一源码是程序根的 `runtime/research/training-ssh.mts`，可用 Node 24 的 `--experimental-strip-types` 直接运行。用原生 `bash` 调用它；长期命令设置 `run_in_background:true`，保存真实 `jobId`，用 `job_output/job_list` 收集状态和输出。
+从系统工作区上下文取 `program_root`、`asset_root`。先核对当前程序版本是否提供 CLI 及其 `--help`；以下入口仅在实际可用且获授权时使用，不可用则停止依赖步骤。SSH CLI 位于程序根的 `runtime/research/training-ssh.mts`，可用 Node 24 的 `--experimental-strip-types` 直接运行。用原生 `bash` 调用它；长期命令设置 `run_in_background:true`，保存真实 `jobId`，用 `job_output/job_list` 收集状态和输出。
 
 连接读取数据根 `config/compute-training-servers.json` 中已登记的真实 `server_id`；没有连接先完成实际登记，不从示例拼ID。密码引用 `ref:training-server/<slug>` 对应数据根 `.local/credentials/training-servers/<slug>.json`。专用文件由授权的凭据配置过程准备，模型不读取或输出正文。密码文件合同为 `{schema_version:1,kind:"ssh_password",password:真实值}`；SSH key使用 `{schema_version:1,kind:"ssh_key",identity_file:实际绝对路径}`，也可在没有引用时沿用原生SSH agent。CLI内部用 `SSH_ASKPASS` 交付密码，不将密码放入argv、环境值或日志。
 
@@ -60,18 +60,11 @@ node --experimental-strip-types PROGRAM_ROOT/runtime/research/platform-replay-in
 node --experimental-strip-types PROGRAM_ROOT/runtime/research/platform-replay-input.mts batch --url URL --asset-root ROOT --run-id RUN_ID --replay-config CONFIG --out OUT
 ```
 
-采集器内部从专用admin文件登录，Cookie只保留在内存；不把账号或Cookie放入命令参数和证据。它顺序调用只读 `datasets/read`、`datasets/source`、`runs/trace`，批量时先用 `datasets/list(include_eligibility:false)` 取得真实ID，保留完整决策分片摘要、来源身份与原生行号/seq。输出单条 `input.json` 或批量 `inputs/NNNNNN/input.json`，可直接交付变体源码中的 `decision-replay-cli prepare/finish`；采集本身不生成Qwen回执、标签或训练结果，先前已发生业务调用的输入仍由prepare如实跳过。
+采集器内部从专用admin文件登录，Cookie只保留在内存；不把账号或Cookie放入命令参数和证据。它顺序调用只读 `datasets/read`、`datasets/source`、`runs/trace`，批量时先用 `datasets/list(include_eligibility:false)` 取得真实ID，保留完整决策分片摘要、来源身份与原生行号/seq。输出单条 `input.json` 或批量 `inputs/NNNNNN/input.json`，可交付当前变体实际实现的回放入口；采集本身不生成模型回执、标签或训练结果，先前已发生业务调用的输入仍由prepare如实跳过。
 
-`manifest.json` 区分平台原文件SHA与实际HTTP响应正文SHA。回执正文通过公共脱敏合同核对后才逐字保存；发现未脱敏秘密则阻断该正文保存，不另造脱敏投影冒充原HTTP。`partial` 保留已取得的安全回执，不表示完整输入，重试使用新输出目录。此过程不修改原Run；完成后仍需实际Qwen、编码器与复核阶段各自的回执。
+`manifest.json` 区分平台原文件SHA与实际HTTP响应正文SHA。回执正文通过公共脱敏合同核对后才逐字保存；发现未脱敏秘密则阻断该正文保存，不另造脱敏投影冒充原HTTP。`partial` 保留已取得的安全回执，不表示完整输入，重试使用新输出目录。此过程不修改原Run；完成后仍需实际模型、编码器与复核阶段各自的回执。
 
-当前首轮主路由回放按以下协议继续；其他决策点须有相应实现，不能冒充已覆盖：
-
-1. 从任务交接路径读取 `decision-replay-cli.ts` 及其源码清单，核对四项摘要。输入为 `{input:{readback,record_id,source_page,source_decision,trace_pages},config:{model,constructor,replay_source_sha256,native_tool_names,skill_loader_name?}}`；其中 `model` 保留实际 provider/model、repository、source_kind/source_url 与固定 revision，`constructor` 含 `state_constructor_sha256/questions_source_sha256/language_understanding_source_sha256`。目录工具名来自真实原生能力目录。
-2. 用 `node --experimental-strip-types SOURCE/decision-replay-cli.ts prepare INPUT.json` 取得 `ready`、完整 `request.payload` 和 `request.request_sha256`。`skipped` 保留原因，不发模型请求。采集器提供的完整前缀必须通过回放入口自身检查，不能把发生业务调用后的状态改成首轮。
-3. 按同一源码的 `QWEN_HTTP_GENERATION` 和 payload 生成实际 wire，通过原生 Job 与上述 SSH CLI 调用已固定 Qwen 服务。保存 wire 字节摘要、实际 HTTP 状态和原始响应、真实 id/model/usage。权重来源 revision 与 HTTP model alias 分别记录，不互相替换；不修写返回文本或复用不同请求的响应。
-4. 将真实回执组成 `{request_sha256,receipt:{record_mode:"recorded_model",execution_id,model,content,http_transport:{request_model,expected_response_model,response_model,response_id,http_status,usage?}}}`，`request_sha256` 使用 prepare 的值，另保留 wire 字节摘要。运行 `node --experimental-strip-types SOURCE/decision-replay-cli.ts finish INPUT.json BOUND_QWEN_RECEIPT.json`；`invalid_qwen` 保留失败，`unlabeled` 只表示生成了新 IR，尚无合格标签。
-5. 按下节读取新 IR 的完整 state/question 后逐题判断。旧平台题目、历史动作或标签不直接移植到新题；无法唯一作答时保留 ambiguous/invalid。完成原生证据最终化后，再按 `kev-trace-pipeline` 的 annotate/compile/split/audit 合同继续。
-
+回放实现以当前任务固定源码清单与实际 CLI 帮助为准，核对输入构造器、模型固定来源、请求和响应摘要。采集不替代真实模型调用；新 IR 的题目按当前完整 state/question 逐题复核，不直接移植历史动作或标签。失败和未覆盖的决策点分别保留，不声称已完成训练或业务等效。
 
 ## IR 功能复核与来源最终化
 
@@ -102,9 +95,9 @@ node --experimental-strip-types PROGRAM_ROOT/runtime/research/platform-asset-edi
 
 `PROGRAM_ROOT`、`ASSET_ROOT` 取当前受信工作区上下文，`PLATFORM_URL` 取数据根登记的平台基址，`AGENT_ID`、`EXPERIMENT_ID` 取平台实际回执，`SOURCE_MANIFEST`、`MANIFEST_SHA` 取冻结 stage 的真实清单与原字节 SHA，`OUTPUT_DIR` 是新目录；均按实际值替换，示例变量不是真实 ID。
 
-该 CLI 内部复用已登记平台 URL/工作区核对与专用 admin 认证，Cookie 与密码不进入模型参数或输出。它读取 UTF-8 文本 source manifest 与 `files[].path`/`sha256`（可选 `bytes`），固定 source manifest 原字节 SHA；当前 stage manifest 兼容 `agent` 字段。文本文件默认导入该 Candidate 的 `dsh/managed/compute-workflow/<source path>`；`files[].target_path` 可显式指定 Candidate 内相对目标路径（用于原 Guard、Preset、Profile 等四个集成文件），不允许越出 Candidate。二进制模型仍走既有 `training-ssh transfer --direction download` 真实 Job 回收，不使用文本导入。
+该 CLI 内部复用已登记平台 URL/工作区核对与专用 admin 认证，Cookie 与密码不进入模型参数或输出。它读取 UTF-8 文本 source manifest 与 `files[].path`/`sha256`（可选 `bytes`），固定 source manifest 原字节 SHA；当前 stage manifest 兼容 `agent` 字段。文本文件默认导入该 Candidate 的 `dsh/managed/compute-workflow/<source path>`；`files[].target_path` 可显式指定 Candidate 内相对目标路径（用于实际需要变更的 Guard、Preset、Profile 等集成文件），不允许越出 Candidate。二进制模型仍走既有 `training-ssh transfer --direction download` 真实 Job 回收，不使用文本导入。
 
-`files[].expected_sha256` 必须在生成完整目标正文时由 `edit/read` 取得并原样保留；允许 `null` 或 64 位小写 SHA，缺省/`null` 仅用于新建文件。实际 `edit/read` 与该基线不一致时拒写，不得重新读取最新 SHA 覆盖该基线；已同字节可只读跳过；写回执未知先 readback，不重发 apply。后续四个 integration 文件的 manifest 必须保留 `candidateIntegrationEdits` 结果中的 `expected_sha256`，11 个首次新源码默认 `null`。
+`files[].expected_sha256` 必须在生成完整目标正文时由 `edit/read` 取得并原样保留；允许 `null` 或 64 位小写 SHA，缺省/`null` 仅用于新建文件。实际 `edit/read` 与该基线不一致时拒写，不得重新读取最新 SHA 覆盖该基线；已同字节可只读跳过；写回执未知先 readback，不重发 apply。集成文件的 manifest 必须保留生成编辑时取得的 `expected_sha256`；首次新建文件使用 `null`，文件数量与路径以本次真实清单为准。
 
 实际保存严格走公开 `edit/read` 取 CAS → `edit/preview` → `edit/apply` → `edit/read` 回读 SHA，保持原字节，不手工抄写大源码。字节已相同只回读、不重复写；写回执未知先实际回读，不自动重发 apply；`readback_verified_after_unconfirmed_apply` 只表示期望字节已核到，不能冒称收到成功写回执。`--out` 须为新目录；`partial` 失败保留真实回执供恢复；stdout 只给路径、计数与摘要。导入完成不含构建、冻结或实际装载含义。
 

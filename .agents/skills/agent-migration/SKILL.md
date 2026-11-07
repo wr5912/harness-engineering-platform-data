@@ -11,7 +11,7 @@ description: 将本地、Git、归档或部分材料中的 DSH、OpenCode、Agen
 
 1. 用 `platform_agents describe` 读取 `migrations/inspect`，提供 `source`：`local` 目录、`git` 地址与 ref、`archive` 路径，或 `text` 材料。保留返回的 `source_id`、`fingerprint`、框架版本、入口及文件目录。Git 使用实际固定提交；无 Git 的材料使用内容摘要，不假定未提供文件不存在。
 2. 用 `migrations/read` 沿真实路径逐份读取指令、技能、工具、入口、模型与依赖声明，按 `offset` 续读。保留完整技能引用和脚本；二进制读取元信息即可，后续通过固定 `source_path` 和摘要复制。全程不执行来源脚本、安装 Hook 或整个 Agent Runtime。
-3. 明确创建新 Agent，或从指定 Agent 的固定普通 `EXP-` 父版创建新版本。已有 Agent 读取 `detail` 的可恢复来源；不能取最大编号代替用户指定版本，不能继承任何变体，也不能把 VAR 重新命名为 EXP 绕过限制。DSH 来源也要核对原身份。
+3. 明确创建新 Agent，或从指定 Agent 的固定可恢复父版创建新版本。已有 Agent 读取 `detail` 的可恢复来源并核对当前派生合同；不能取最大编号代替用户指定版本，也不能通过改名绕过当前继承限制。DSH 来源也要核对原身份。
 4. 缺失引用、未知框架版本、关键行为、无法访问的模型或项目目录，集中补问会改变结果的内容；已能完成的清点和草案继续办理。
 
 ## 逐项映射行为

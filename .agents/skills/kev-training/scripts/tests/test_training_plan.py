@@ -1,3 +1,4 @@
+import os
 """Synthetic handoff invariants. No user data, credentials, network or training."""
 from copy import deepcopy
 import argparse
@@ -11,10 +12,9 @@ import unittest
 from unittest.mock import patch
 
 SCRIPTS = Path(__file__).resolve().parents[1]
-SKILLS = SCRIPTS.parents[1]
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(0, str(SKILLS / "kev-trace-pipeline/scripts"))
-sys.path.insert(0, str(SKILLS / "kev-trace-pipeline/scripts/tests"))
+sys.path.insert(0, str(Path(os.environ["HARNESS_PROGRAM_ROOT"]) / "runtime/research/kev-data"))
+sys.path.insert(0, str(Path(os.environ["HARNESS_PROGRAM_ROOT"]) / "runtime/research/kev-data/tests"))
 import training_plan as planner
 from dataset import split_records
 from test_dataset import compile_ok, example
@@ -22,6 +22,14 @@ from snapshot_fixture import make_snapshot
 
 
 class TrainingPlanTests(unittest.TestCase):
+    def test_public_dependency_is_explicit_and_help_does_not_load_it(self):
+        with patch.dict(os.environ, {"HARNESS_PROGRAM_ROOT": ""}):
+            with self.assertRaisesRegex(ValueError, "HARNESS_PROGRAM_ROOT"):
+                planner.reporting()
+            with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as ended:
+                planner.main(["--help"])
+            self.assertEqual(ended.exception.code, 0)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
@@ -125,19 +133,46 @@ class TrainingPlanTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "training_recipe_command_mismatch"):
                     planner.training_recipe(changed)
 
-    def test_unsupported_recipe_and_independent_dtype_are_rejected(self):
+    def test_unsupported_recipe_and_conflicting_dtype_are_rejected(self):
         for recipe in ("cuda-fp16-lora", "cpu-fp32-lora", None, []):
             with self.subTest(recipe=recipe):
                 self.request["training"]["recipe"] = recipe
                 with self.assertRaisesRegex(ValueError, "unsupported_training_recipe"):
                     self.build()
-        self.request["training"] = {"dtype": "fp32"}
-        with self.assertRaisesRegex(ValueError, "unsupported_training_option"):
+        self.request["training"] = {"recipe": "cuda-bf16-lora", "dtype": "fp32"}
+        with self.assertRaisesRegex(ValueError, "training_recipe_dtype_mismatch"):
             self.build()
 
     def test_plan_only_cannot_be_promoted_to_training_preparation(self):
         self.request["intent"] = "plan_only"
         with self.assertRaisesRegex(ValueError, "plan_only"):
+            self.build()
+
+    def test_legacy_fp32_plan_keeps_its_precision(self):
+        self.request["training"]["dtype"] = "fp32"
+        plan = self.build()
+        plan["training"].pop("recipe")
+        self.assertEqual(planner.training_recipe(plan), "cuda-fp32-lora")
+        plan["commands"]["train"]["argv"].extend(["--dtype=bf16"])
+        with self.assertRaisesRegex(ValueError, "training_recipe_command_mismatch"):
+            planner.training_recipe(plan)
+
+    def test_precision_is_explicit_without_changing_default_or_weights(self):
+        args = self.build()["commands"]["train"]["argv"]
+        self.assertEqual(args[args.index("--dtype") + 1], "bf16")
+        self.request["training"]["dtype"] = "fp32"
+        card = self.build()["commands"]["train"]
+        self.assertEqual(card["argv"][card["argv"].index("--dtype") + 1], "fp32")
+        self.assertIn("CUDA/fp32/VRAM-checked", card["requires"])
+        self.assertEqual(card["argv"][card["argv"].index("--weights_dtype") + 1], "fp32")
+        self.request["training"]["dtype"] = "fp16"
+        with self.assertRaisesRegex(ValueError, "invalid_training_dtype"):
+            self.build()
+        self.request["training"]["dtype"] = "fp32"
+        config = planner.read_json(self.config); config["args"]["weights_dtype"] = "bf16"
+        planner.write_json(self.config, config)
+        self.request["checkpoint"]["training_config_sha256"] = planner.digest(self.config)
+        with self.assertRaisesRegex(ValueError, "fp32_checkpoint_weights"):
             self.build()
 
     def test_trace_sources_cannot_be_replaced_with_empty_run_ids(self):
@@ -196,7 +231,7 @@ class TrainingPlanTests(unittest.TestCase):
             self.build()
 
     def test_different_json_with_same_native_input_cannot_cross_partitions(self):
-        native = planner.load_module("synthetic_native_identity", SKILLS / "kev-trace-pipeline/scripts/native_input.py")
+        native = planner.load_module("synthetic_native_identity", planner.research_root() / "native_input.py")
         train = json.loads((self.data / "train.jsonl").read_text().splitlines()[0])
         path = self.data / "test.jsonl"
         rows = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
@@ -461,7 +496,7 @@ class TrainingPlanTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "credentials"):
             self.build()
 
-    def test_fp32_command_release_requires_the_same_encoding_recipe(self):
+    def test_fp32_command_release_checks_recipe_and_legacy_plan_binding(self):
         self.request["training"]["recipe"] = "cuda-fp32-lora"
         self.request["environment"]["env"] = {"HF_HUB_OFFLINE": "1", "UV_NO_SYNC": "1", "UV_PROJECT_ENVIRONMENT": str(self.root / "venv")}
         plan = self.build(); pp = self.root / "plan.json"; rp = self.root / "encoding.json"
@@ -485,6 +520,17 @@ class TrainingPlanTests(unittest.TestCase):
         self.assertEqual(result["training_recipe"], "cuda-fp32-lora")
         self.assertEqual(result["command"]["env"], self.request["environment"]["env"])
         self.assertIn("CUDA/fp32/VRAM/budget", result["remaining"][0])
+        plan["training"]["dtype"] = "fp32"
+        del plan["training"]["recipe"]
+        planner.write_json(pp, plan)
+        report["plan_sha256"] = planner.digest(pp)
+        del report["training_recipe"]
+        planner.write_json(rp, report)
+        self.assertEqual(planner.authorized_training_card(pp, rp)["training_recipe"], "cuda-fp32-lora")
+        report["training_recipe"] = "cuda-bf16-lora"
+        planner.write_json(rp, report)
+        with self.assertRaisesRegex(ValueError, "encoding_training_recipe_mismatch"):
+            planner.authorized_training_card(pp, rp)
         plan["commands"]["train"]["argv"][plan["commands"]["train"]["argv"].index("--dtype") + 1] = "bf16"
         planner.write_json(pp, plan)
         with self.assertRaisesRegex(ValueError, "encoding_report_plan_mismatch"):

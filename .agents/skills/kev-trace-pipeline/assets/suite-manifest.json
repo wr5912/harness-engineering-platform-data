@@ -21,22 +21,31 @@
     "inspection-v1",
     "cybersecurity-routing-v1"
   ],
-  "dataset_paths": ["trace-ir", "platform-v2", "legacy-native"],
-  "human_output": {"default": "Chinese summary and Markdown report", "machine_stdout": "--json", "training_records": "native KEV JSONL unchanged"},
+  "dataset_paths": [
+    "trace-ir",
+    "platform-v2",
+    "legacy-native"
+  ],
+  "human_output": {
+    "default": "Chinese summary and Markdown report",
+    "machine_stdout": "--json",
+    "training_records": "native KEV JSONL unchanged"
+  },
   "model_training_implemented": false,
   "runtime_recorder_implemented": false,
   "token_budget_checker_implemented": false,
-  "token_budget_checker_scope": "core data scripts do not tokenize; kev-training/check_encoding.py implements the actual native preflight",
+  "token_budget_checker_scope": "public kev-training/SKILL.md encoding handoff; data tools do not tokenize",
   "platform_integration": {
     "entry": "compute-variant-research",
     "ordinary_entry": "workspace-management",
     "training": "kev-training",
     "deployment": "kev-deploy",
     "official_references": {
-      "kev-finetune": "../kev-training/references/upstream/kev-finetune",
-      "kev-deploy": "../kev-deploy/references/upstream/kev-deploy"
+      "kev-finetune": "kev-training/SKILL.md",
+      "kev-deploy": "kev-deploy/SKILL.md"
     },
     "official_commit": "2074cc44256200bb37540103fa4572901faa10f3",
     "scope": "data-repository skills and offline utilities; no platform training executor"
-  }
+  },
+  "public_tool": "runtime/research/kev-data/README.md"
 }

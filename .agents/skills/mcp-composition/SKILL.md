@@ -1,25 +1,33 @@
 ---
 name: mcp-composition
-description: 通过平台 MCP 配置管理连接、组合草稿与固定发布版本，执行指定的只读检查、发布或调用，并核对实际运行结果。
+description: 开发和优化 MCP 工具组合编排，维护原生流程资产，通过平台管理连接、草稿与固定发布版本，分层验证执行效果并核对真实运行结果。
 ---
 
 # MCP 工具组合
 
-使用 `platform_mcp`。先判断用户要查看运行、dry 检查、编辑、发布还是实际调用，选择对应路径；后一步不因前一步失败而自动获得授权。写入和实际调用由 DSH 原生访问策略处理，按回执继续，不另等平台提案确认。业务操作与成功码以已启用扩展的真实描述为准。
+先按[固定流程的分工与组合必要性](references/development.md#先判断是否需要组合)划分 Skill、原始工具与组合，不把固定接口衔接留在模型循环，也不照搬旧包拆分。使用 `platform_mcp`。先判断用户要开发、查看运行、dry 检查、编辑、发布还是实际调用，选择对应路径；后一步不因前一步失败而自动获得授权。写入和实际调用由 DSH 原生访问策略处理，按回执继续，不另等平台提案确认。业务操作与成功码以已启用扩展的真实描述为准。
 
-连接及分组公开配置由数据根 `config/mcp-manager.json` 维护，分组 Token 和出站凭据位于本地忽略文件 `.local/credentials/mcp-manager.json`；草稿与发布快照由数据根 `config/mcp-compositions.json` 维护。页面与本技能使用同一配置读取和保存服务；本技能只提交非敏感配置修改，凭据通过 MCP 管理页面维护。修改前读取 `configuration` 回执中的 `revision`，保存冲突时重新读取并核对差异，不覆盖并行修改。不另存连接、凭据或编排副本。
+## 开发方法
+
+开发、优化流程或排查执行与画布问题时，按需读取[组合编排开发方法](references/development.md)，沿需求、原生资产、静态检查、官方运行时和实际使用验证推进。通过原生文件工具维护授权的数据资产；工作流登记、执行器和装载缺口交平台研发处理。普通运行查询无需加载开发资料。
+
+设计用户流程时，按[用例场景覆盖检查](../evaluation-review/SKILL.md#场景覆盖从用户当前知道什么开始)核对从咨询、发现对象到后续任务的衔接，复用当前真实查询、分析与原结果；输入完整时直接走必要步骤。方案引用 Agent 的 evaluation.md 中的 Case，不复制用例；能力缺口不虚构接口，不用本地业务台账或额外确认层代替上游合同。
+
+连接及分组公开配置由数据根 `mcp/manager.json` 维护，分组 Token 和出站凭据位于本地忽略文件 `mcp/.local/credentials/credentials.json`；草稿与发布快照由数据根 `mcp/compositions.json`，各组合定义位于 `mcp/compositions/<id>/composition.json` 维护。页面与本技能使用同一配置读取和保存服务；本技能只提交非敏感配置修改，凭据通过 MCP 管理页面维护。修改前读取 `configuration` 回执中的 `revision`，保存冲突时重新读取并核对差异，不覆盖并行修改。不另存连接、凭据或编排副本。
 
 ## 选择操作
 
 | 当前目标 | 先读取 | 下一步及完成条件 |
 |---|---|---|
+| 查看编排代码 | 所选已保存版本 | `compositionSource` 读取同一执行资产包的流程、节点组件及业务依赖；历史版本只读固定包，缺失时报告错误，不用当前源码替代 |
 | 查看已有运行 | `compositionRun {run_id}` | 必要时 `compositionArtifact {run_id,artifactId}`；报告实际阶段、业务校验、保存状态，不重新发现连接 |
 | 仅做 dry | `list` 的 revision、组合定义和 ID | `dryRunComposition {revision,compositionId,version,input}`；version 取 draft 或 published，检查不产生上游请求 |
-| 编辑组合 | `list`，确需接入新工具再读 `configuration` 和资源结构 | `saveCompositionDraft {revision,compositionId?,draft}`，保存成功后回读、再 dry |
+| 编辑组合 | `list`，确需接入新工具再读 `configuration` 和资源结构 | `saveCompositionDraft {revision,compositionId?,newId?,draft}`，保存成功后回读、再 dry |
 | 发布 | 所选草稿、当前 revision 与 dry 结果 | `publishComposition` 使用同一选择且 version 为 draft；执行成功后回读固定发布版本 |
 | 实际调用 | 已发布工具与实际输入 | `callPublishedComposition {toolName,input}` 执行所选固定发布版本；执行后回读每步和业务结果 |
+| 未发布草稿的智能体验收 | 实际联调实例、当前 revision 与草稿 dry 结果 | `bindCompositionDrafts {revision,instanceName,compositionIds}` 冻结草稿并绑定该实例实际来源；通过专用分组让该实例发现并调用。普通分组与发布状态不变；源码、连接或实例来源变化后重新核对并绑定，空数组解除绑定 |
 
-draft 直接复用 list.compositions 中的实际 draft 或 published 扁平字段，再修改所需部分。不要加 config/graph 包装；graphs 是只读视图，不是可保存草稿。字段名保持 revision、compositionId、version、input，不改为 catalogRevision、versionId、arguments。不创造执行器不支持的步骤。
+draft 直接复用 list.compositions 中的实际 draft 或 published 扁平字段，再修改所需部分。不要加 config/graph 包装；graphs 是只读视图，不是可保存草稿。参数以当前动作的 describe 合同为准，草稿、图和源码查询的版本选择方式不能混用。不创造执行器不支持的步骤。
 
 ## 连接与依赖
 
@@ -28,9 +36,26 @@ draft 直接复用 list.compositions 中的实际 draft 或 published 扁平字�
 - 父组合引用子组合的具体已发布版本。先发布子组合再选择父依赖；子组合重新发布不自动升级父组合。
 - 已发布工具出现在派生的“工具组合编排”服务，调用方保存分组后重新发现；草稿不对外暴露。本平台 v2 分组向下游公开 `mcp__<group.id>__<tool>`，中间段是稳定分组 ID，不是服务显示名；实际调用名称仍从发现结果取得，不自行拼接。直连或 v1 按各自实际合同核对。界面统一在“全部编排”展示状态，不另找样例按钮。
 
+## 画布与执行一致
+
+采用可执行的控制流程步骤作为统一粒度，遵循平台[组合执行与画布合同](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/02_系统架构与部署设计.md)。原生编排以本包 `flow.json` 为唯一可编辑流程定义，复用官方 Langflow/LFX 执行；画布直接读取同一份节点、边、端口、组件代码和位置，不从业务代码反推节点，也不另建展示 DSL。保留条件、并行与汇合；批量步骤的内部流程同样使用原生定义，子编排使用固定发布版本进入查看。发布冻结该定义及其代码、依赖，修改草稿不改变旧版。不得用一个不透明执行节点隐藏全部控制流程，也不把普通辅助函数机械拆成节点。分支、局部汇合和独立终态遵循[开发方法](references/development.md#已验证的经验与陷阱)，保留严格唯一性校验，不另维护简化版连线规则。
+
+## 衔接代码的执行质量
+
+生成或优化组合时，以结果正确、完整为前提，同时减少端到端耗时和可预见的失败；不能只凭代码结构声称“最优”。先核对真实接口、数据量与依赖关系，再决定衔接方式：
+
+- 固定流程由代码连续执行，模型只承担必要的语义判断；复用已解析的范围、已冻结输入和有效结果，避免重复发现、查询、转换与模型调用。
+- 有依赖的步骤按顺序执行；独立步骤优先采用有界并发，共享同一次运行的并发额度，保留稳定的结果顺序，不用无界并发挤压上游。遵循真实接口提供的批量与分页能力，不能以截断数据换取提速。
+- 校验接口输入和返回结构，设置适当超时与取消边界；仅对确认可安全重试的临时故障作有限重试。写入结果未知时先查原结果，不自动重放；单项失败应保留已完成结果并继续不依赖它的检查，明确失败、未知和未覆盖范围。
+- 使用相同输入核对优化前后的结果、请求及模型调用次数、端到端耗时和失败恢复；按实际风险覆盖空结果、分页、超时与部分失败。记录真实测试条件及未验证项，不为追求速度省略结果核对，不为此新增通用调度或治理平台。
+
+具体并发数、超时值、字段映射与实现入口以组合定义、源码和实际工具 Schema 为准，不在技能中重复维护。
+
 ## 失败与结果
 
-摘要冲突重新 list，合并所需变化后重做预览，不覆盖他人修改。dry 失败只修检查参数或说明缺口，不改为 executeComposition、callPublishedComposition、callTool、保存或发布来排障。dry 和发布都不证明上游业务成功。
+配置保存的 revision 冲突重新 list，合并所需变化后重做预览，不覆盖他人修改。执行摘要冲突先核对失败阶段及是否显式固定研究来源，按[组合执行合同](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/02_系统架构与部署设计.md)处理；不把平台或连接更新当作重新发布业务组合的理由，也不擅自更换固定研究来源。dry 失败只修检查参数或说明缺口，不改为 executeComposition、callPublishedComposition、callTool、保存或发布来排障。dry 和发布都不证明上游业务成功。
+
+排查业务输入前读取该实例来源的当前设定与对应 Case，不能把已约定的默认值判为缺参。外部 MCP 发现或调用失败只说明对应依赖的缺口，继续办理其他可用能力；保留服务、动作及错误，不把外部故障归为智能体整体无法启动。
 
 实际执行中断或回执未知时查已有 Run/操作 ID，不重发可能产生副作用的步骤；已完成阶段读取原结果，不重复采样。completed 不代表业务校验或外部保存通过。远端保存回执不证明本机有副本，也不证明下载已核实；只给真实返回的入口，不搜索文件系统替代产物。
 

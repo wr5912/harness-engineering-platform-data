@@ -20,6 +20,6 @@ description: 为 DSH Harness 设计有区分力的比较，通过平台评测与
 
 存在 Baseline Run 时用 `runs/compare {left,right}` 检查共同 Case、来源、模型、运行模式及外部条件。环境或输入不同的结果只支持描述性观察，不把差值归因为 Harness。没有真实对照时说明尚不能证明改进；未知费用、资源和采集缺口保持未知。
 
-评测证据齐备后，将实际 Run、观察、反例和限制返回原研究任务。需要保存观察或 Decision 时，按[观察与 Decision 保存合同](../harness-evolution/references/decision-update.md)更新并回读，不为查询字段加载演进技能或新建 Experiment。用户只要求查询时仅报告，不额外写 Decision。口径改变需重跑受影响比较，不改写历史 Run 或降标准。
+评测证据齐备后，将实际 Run、观察、反例和限制返回原研究任务。需要保存观察或 Decision 时，按[观察与 Decision 保存合同](../harness-evolution/SKILL.md#记录观察与结论)更新并回读，不为查询字段加载演进技能或新建 Experiment。用户只要求查询时仅报告，不额外写 Decision。口径改变需重跑受影响比较，不改写历史 Run 或降标准。
 
 页面 UI 验证、工具链校验、实际装载、业务效果分别说明。Mock 的范围、实际模型和外部依赖限制需要随结论保留。当前没有 Research Release 创建或发布入口，不以 Git 标签、文件存在或通过校验宣称发布完成。

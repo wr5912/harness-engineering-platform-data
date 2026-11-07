@@ -1,6 +1,6 @@
 # 原生 CUDA 接入
 
-本路径用于已授权的普通管理会话，将本地 checkpoint 接入当前 Harness 的严格编码预算和证明合同。官方 serving 参考继续维护上游用法；当前扩展的唯一源码是系统 `program_root` 下的 `runtime/research/kev-serving.mts`，生成的 Python 只作官方 `serve.app` 的同进程装载制品，不另行编辑。远端执行、状态、传输与端口转发沿用[原生执行交接](../../kev-training/references/native-execution.md)。
+本路径用于已授权的普通管理会话，将本地 checkpoint 接入当前 Harness 的严格编码预算和证明合同。官方 serving 参考继续维护上游用法；当前扩展的唯一源码是系统 `program_root` 下的 `runtime/research/kev-serving.mts`，生成的 Python 只作官方 `serve.app` 的同进程装载制品，不另行编辑。远端执行、状态、传输与端口转发沿用[原生执行交接](../../kev-training/SKILL.md#原生执行与平台回放取证)。
 
 ## 生成与启动
 

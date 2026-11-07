@@ -12,13 +12,13 @@
 
 ## 阶段和命令
 
-使用 `scripts/legacy_native.py`，标准库即可运行。不安装依赖，不联网，不加载 tokenizer，不训练。命令默认输出简短中文摘要，并写 `report.md`；需要完整机器输出时加 `--json`。所有输出目录必须是新目录，不能覆盖既有产物。实际执行时将以下占位路径替换为真实绝对路径，每次执行一条并阅读报告。
+使用 `<kev_data>/legacy_native.py`，标准库即可运行。不安装依赖，不联网，不加载 tokenizer，不训练。命令默认输出简短中文摘要，并写 `report.md`；需要完整机器输出时加 `--json`。所有输出目录必须是新目录，不能覆盖既有产物。实际执行时将以下占位路径替换为真实绝对路径，每次执行一条并阅读报告。
 
 ```bash
-python3 /absolute/kev-trace-pipeline/scripts/legacy_native.py inspect --input /absolute/data/native.jsonl --out /absolute/work/01-native-inspect
+python3 /absolute/program/runtime/research/kev-data/legacy_native.py inspect --input /absolute/data/native.jsonl --out /absolute/work/01-native-inspect
 ```
 
-检查复用固定版本 `.agents/skills/kev-training/references/upstream/kev-finetune/scripts/split_data.py::check_record`，另外拒绝重复 JSON 键、NaN、Infinity、数值溢出为 infinity、bool 概率权重及不合法 soft 总量。它不调用官方 `split()`。检查会生成 `reviews.todo.jsonl`；**所有题均为 `unreviewed`，`label` 和 `target` 均为空**。`original_label`、`original_target` 只是复核时的原始声明。旧 certainty、review_agent 字段和模型建议不会自动升级标签。
+检查复用固定版本 `<kev_data>/upstream/split_data.py::check_record`，另外拒绝重复 JSON 键、NaN、Infinity、数值溢出为 infinity、bool 概率权重及不合法 soft 总量。它不调用官方 `split()`。检查会生成 `reviews.todo.jsonl`；**所有题均为 `unreviewed`，`label` 和 `target` 均为空**。`original_label`、`original_target` 只是复核时的原始声明。旧 certainty、review_agent 字段和模型建议不会自动升级标签。
 
 另外直接复用 `dataset.py::_input_leaks` 的现有根字段检查：模型可见状态顶层出现 `gold_label`、`future_tool_result` 等保留监督/后续信息字段时，保留原文并隔离，不静默清洗。原生格式合法与训练输入合格分别报告。检查不匹配文本词语，不一概拒绝合法嵌套业务 `status`、`result` 等字段；其他语义泄漏仍须合同复核。
 
@@ -29,13 +29,13 @@ python3 /absolute/kev-trace-pipeline/scripts/legacy_native.py inspect --input /a
 由实际人员或有可核查独立判据的规则完成复核，保存为新文件 `reviewed.jsonl`。完成后执行：
 
 ```bash
-python3 /absolute/kev-trace-pipeline/scripts/legacy_native.py build --input /absolute/data/native.jsonl --reviews /absolute/work/reviewed.jsonl --out /absolute/work/02-native-build --seed 0 --fractions 0.7,0.1,0.1,0.1
+python3 /absolute/program/runtime/research/kev-data/legacy_native.py build --input /absolute/data/native.jsonl --reviews /absolute/work/reviewed.jsonl --out /absolute/work/02-native-build --seed 0 --fractions 0.7,0.1,0.1,0.1
 ```
 
 比例顺序固定为 **train,development,calibration,test**，四个值必须有限、正数、总和为 1。只导出每道题都为合法 `verified` 的完整记录。任何题未定，整行进入 `quarantine.jsonl`；不删掉未定题再把同一行包装成可训练记录。构建阻塞时仍保存源/复核快照及报告，但不写四分区文件。
 
 ```bash
-python3 /absolute/kev-trace-pipeline/scripts/legacy_native.py audit --dataset-dir /absolute/work/02-native-build --out /absolute/work/03-native-audit
+python3 /absolute/program/runtime/research/kev-data/legacy_native.py audit --dataset-dir /absolute/work/02-native-build --out /absolute/work/03-native-audit
 ```
 
 `audit --out` 可省略；它不修改数据目录。审计失败不能继续训练交接。检查命令在原生检查有错误时返回 1；`needs_review` 的正常检查返回 0，这不表示标签已通过。构建/审计只有通过时返回 0。

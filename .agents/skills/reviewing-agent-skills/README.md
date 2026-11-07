@@ -42,6 +42,7 @@ python3 -m unittest discover -s reviewing-agent-skills/tests -v
 - 输出保留 `findings`，并增加 `basis`、`source_url`、`coverage`、`runtime_extensions` 与 `overall_status`。
 - 总状态为 `FAIL`、`BLOCKED` 或 `REVIEW_REQUIRED`；静态检查不会自行宣布全部审查通过。`--fail-on-error` 在错误或阻塞时非零退出，零退出仍需完成内容/工整性与目标验证。
 - `coverage.metadata` 通过只说明本检查器已实现的元数据检查通过；资源正则、Markdown 简化扫描及有限深读有边界，未覆盖部分须人工核对。
+- 深读递归核对整个包的 Markdown 本地引用与符号链接，报告缺失文件、兄弟私有资源和越界链接；达到读取上限时标记受阻。脚本的动态导入、执行依赖和自然语言中的隐式路径仍需人工核对。
 - 检查器不分析集合数量、任务路由、主/子智能体分工或调用控制流；这些由审查者按架构专项取证，不用静态零命中代替。
 - 工整性、MCP 名称或危险命令的 `REVIEW` 是线索，要结合上下文判断；工具动作如 `assets/read-fixed` 不等于包内文件。
 - 缺依赖或解析器不支持当前表示时显式报告，不回退到正则后声称已验证。StrictYAML 的表示限制与 DSH 原生解析结果分开记录。

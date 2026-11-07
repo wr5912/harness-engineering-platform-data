@@ -16,7 +16,7 @@ import training_plan as planner
 class VendorReferenceTests(unittest.TestCase):
     def test_complete_packages_and_licenses_match_fixed_manifests(self):
         identities = planner.verify_vendor()
-        self.assertEqual(set(identities), {"kev-finetune", "kev-deploy"})
+        self.assertEqual(set(identities), {"kev-finetune"})
         for name, root in planner.VENDOR_ROOTS.items():
             with self.subTest(package=name):
                 manifest = json.loads((root / "UPSTREAM.json").read_text())

@@ -1,3 +1,4 @@
+import os
 """Real local CLI handoff on synthetic legacy records; no GPU or user data."""
 import json
 from pathlib import Path
@@ -9,7 +10,7 @@ import test_training_plan as training_fixtures
 import training_plan as planner
 import check_encoding as encoding
 
-CORE = Path(__file__).resolve().parents[3] / "kev-trace-pipeline/scripts"
+CORE = Path(os.environ["HARNESS_PROGRAM_ROOT"]) / "runtime/research/kev-data"
 sys.path.insert(0, str(CORE))
 sys.path.insert(0, str(CORE / "tests"))
 import legacy_native

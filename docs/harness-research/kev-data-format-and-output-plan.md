@@ -35,7 +35,7 @@
 
 ## 验证方法
 
-在 kev-trace-pipeline/scripts 与 kev-training/scripts 分别运行 `python3 -m unittest discover -s tests -v`。原生兼容检查使用与套件固定版本一致的 KEV_UPSTREAM_ROOT；缺少它时必须说明跳过，不称为已验证。新增脚本必须运行真实 CLI 验证成功与失败，不能只检查文档或字符串。
+在程序仓库 `runtime/research/kev-data` 与 kev-training/scripts 分别运行 `python3 -m unittest discover -s tests -v`，HARNESS_PROGRAM_ROOT 指向程序仓库。原生兼容检查使用与套件固定版本一致的 KEV_UPSTREAM_ROOT；缺少它时必须说明跳过，不称为已验证。新增脚本必须运行真实 CLI 验证成功与失败，不能只检查文档或字符串。
 
 旧文件只做只读检查和待复核材料生成。真实标签未完成复核前，不批量写 verified、不构建假合格数据、不训练。公开测试仅使用人工合成夹具；用户原始数据和轨迹不提交仓库。两份官方 Skill 的原始文件保持固定版本，适配在本套入口和独立脚本完成。
 

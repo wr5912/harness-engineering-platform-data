@@ -33,7 +33,7 @@ export 必须填原样回执对象，不能使用空对象。里面的 content �
 ## 执行和继续
 
 ```text
-python3 <core_dir>/scripts/platform_export.py MANIFEST.json --out NEW_DIR
+python3 <kev_data>/platform_export.py MANIFEST.json --out NEW_DIR
 ```
 
 输出四个原生 JSONL、split-manifest.json、platform-bridge-report.json。继续条件：报告 status=ready、ok=true，清单 status=ready；实际文件哈希与计数一致。失败非零退出并保留阻断报告，不自动修复复核状态或切分。
@@ -52,4 +52,4 @@ python3 <core_dir>/scripts/platform_export.py MANIFEST.json --out NEW_DIR
 
 ## 回放输入的实际平台取证
 
-需要将已保存记录及其完整决策来源交给变体回放程序时，普通管理会话使用程序仓库的只读 `platform-replay-input.mts`，按[平台回放取证](../../kev-training/references/native-execution.md#平台回放取证)保存真实HTTP回执、来源分片和原生前缀；不以本地handler调用或手工复制的JSON代替实际平台回执。该入口不导出训练标签，也不改变本页既有训练导出合同。
+需要将已保存记录及其完整决策来源交给变体回放程序时，普通管理会话使用程序仓库的只读 `platform-replay-input.mts`，按[平台回放取证](../../kev-training/SKILL.md#原生执行与平台回放取证)保存真实HTTP回执、来源分片和原生前缀；不以本地handler调用或手工复制的JSON代替实际平台回执。该入口不导出训练标签，也不改变本页既有训练导出合同。

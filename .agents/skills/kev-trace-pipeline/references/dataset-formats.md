@@ -30,7 +30,7 @@
 
 ## DSH 抽取 IR：先形成可复核的决策记录
 
-完整字段与规则以 `data-contract.md` 和 `scripts/dataset.py` 为准。下列字段是编译器检查的核心：
+完整字段与规则以 `data-contract.md` 和 `<kev_data>/dataset.py` 为准。下列字段是编译器检查的核心：
 
 | 字段组 | 必要内容 |
 |---|---|

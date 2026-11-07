@@ -11,23 +11,25 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 |---|---|
 | 算力任务按 `compute-variant-research` 判断为只读策划 | 留在该技能，交付计划；不执行本技能脚本 |
 | 算力任务按上述意图表判断为实施 | 沿用固定目标与已有状态，在真实工具和环境允许范围内继续本技能对应阶段 |
-| 固定 Run 抽样专项 | 完成 `decision-sample-extraction` 的保存与回读；按授权逐题复核后再交接 |
+| 固定 Run 抽样专项 | 完成 `decision-sample-extraction` 的保存与回读；按当前授权真实逐题复核后再交接；AI 委托复核仅为 functional_validation |
 | 已有 checkpoint，只需部署、验证服务、保温或停服 | 使用 `kev-deploy`；不要求重新准备训练数据或先训练 |
 | 已有 DSH trace，或待复核的本套 IR/原生 KEV 样本 | 当前作用域允许时交给 `kev-trace-pipeline`；不训练 |
 | 从 Jev/TypeSafe 调用、业务问题或已有标注表开始，选择官方 Modal 工作负载微调 | 读取 [Modal 工作负载路径](references/modal-workload.md)，只继续所需阶段；可先扫描、转换、规划或生成数据，不强制进入下述原生配方 |
 | 已复核四分区，但没有真实训练执行工具 | 整理下述交接材料，说明执行器缺口；不猜平台接口 |
-| 已选择原生训练配方且具备相应授权和真实环境 | 从下述首个未完成步骤继续；一次处理一个阶段 |
+| 已选择原生训练配方且具备相应授权和真实环境 | 从首个未完成步骤继续；已确认的固定命令连续执行，语义复核或异常时暂停 |
 
-普通管理任务通过18120管理助手实际注册的原生 `bash` 与 `job_output/job_list/job_kill` 执行授权阶段；浏览器侧终端是独立用户接口，不能当作模型工具。远端命令、状态、取消与逐文件回收使用程序仓库的 `runtime/research/training-ssh.mts`，准确调用和持久回执见[原生执行交接](references/native-execution.md)。Host重启后先按既有回执核对远端进程，不重发训练。服务器登记与SSH banner不证明认证、环境或KEV已运行；专项仍遵守原范围，凭据只由CLI内部按引用读取。
+训练执行使用实际可用的原生命令卡执行入口，由已授权的后台 Job 托管；调用、作业恢复、IR 复核与工件回收见[原生执行交接](references/native-execution.md)。先核对当前 `describe`、CLI 帮助与授权，再按已有状态继续，不猜平台训练调度接口。原生 shell 的存在不授权升级仅策划或固定 Run 抽样任务。训练服务器登记与 SSH banner 探测不证明真实认证、训练环境可用或 KEV 已运行；凭据使用既有引用。
 
 第 2–4 节是平台/轨迹数据的原生配方，不是官方 Modal 工作负载路径的必经前置。保持用户已选环境；从首个未完成阶段继续，不因切换入口重复生成数据、启动作业或部署。
 
 ## 2. 准备数据与模型身份
 
-1. 先按 `kev-trace-pipeline/references/dataset-formats.md` 区分材料：平台 v2 按 platform-export.md 转换，离线 IR 完成标注和分组审计，既有 KEV 文件按 legacy-native.md 复核、构建并审计。三种 dataset.kind 分别为 platform-v2、trace-ir、legacy-native。保留四份实际非空文件，不再运行官方 convert_data.py 或 split_data.py。
+沿用决策合同中的目标 Skill 版本、source_refs 和 evaluation_slices；核对固定版本的渐进可见性和规范分支实际覆盖。训练与服务使用同一版本的状态和候选构造器，只投影当时可见内容。缺少规范覆盖或历史版本时列明范围；更换 Skill 后核对受影响职责，不沿用旧版本通过结论。
+
+1. 未准备好的输入交给 [数据准备公开入口](https://github.com/wr5912/harness-engineering-platform-data/blob/main/.agents/skills/kev-trace-pipeline/SKILL.md#数据准备与审计交接)；接收平台 v2 转换回执、已复核 IR 或原生 KEV 四分区及其分组审计，不读取对方私有资料。三种 dataset.kind 分别为 platform-v2、trace-ir、legacy-native。保留四份实际非空文件，不再运行官方 convert_data.py 或 split_data.py。
 2. 用真实 agent/父 Experiment/固定 git ref 绑定目标。轨迹和平台数据填写真实 source_run_ids；旧表格或既有 JSONL 确实没有 Run 时，legacy-native 允许空数组，来源留在导入材料中，不能补造 Run。界面的 `provider/model` 是运行路由；从实际可训练 checkpoint 的固定版本读取训练元数据，不直接将该路由拼成权重地址。
 3. 从固定 checkpoint 获取 training_config.json，记录来源与 SHA-256。准备 `assets/training-request.example.json` 所列字段；示例占位值不能直接提交。`init_from` 保留固定 Hub 来源身份；需要从已下载目录执行时，按 [训练交接合同](references/training-run.md#请求合同) 提供可选 `checkpoint.local_snapshot`，以固定仓库元数据及摘要绑定实际目录，不手改 argv。路径指向执行训练的同一环境；路径或内容改变后重新准备计划并做编码检查。
-4. 当前脚本支持原生 KEV LoRA 的 `cuda-bf16-lora`（默认）和 `cuda-fp32-lora` 两种 recipe。无原生 BF16 的 CUDA GPU 可显式选择 FP32；实际显存和训练可行性仍需核对。全量权重、其他后端、提高上下文预算或混入公共 replay 属于独立 recipe，需要实际验证，不能临场改参数绕过检查。
+4. 当前脚本支持原生 KEV LoRA 的 `cuda-bf16-lora`（默认）和 `cuda-fp32-lora` 两种 recipe。无原生 BF16 的 CUDA GPU 可显式选择 FP32；实际显存和训练可行性仍需核对。全量权重、其他后端、提高上下文预算或混入公共 replay 属于独立 recipe，需要实际验证，不能临场改参数绕过检查。 既有 `training.dtype=bf16/fp32` 请求继续兼容并映射到同精度配方；同时指定 recipe 时两者必须一致。
 
 ## 3. 准备 → 编码 → 取训练命令
 
@@ -45,7 +47,7 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 
 ## 4. 逐阶段执行与核对
 
-执行前读取 `references/training-run.md`；需要校准时读 `references/calibration.md`。只复制计划当前 command card 的 cwd、argv、env、unset_env；检查 requires，不自行拼未支持参数。计划器不启动作业。
+执行前读取 `references/training-run.md`；需要校准时读 `references/calibration.md`。将计划当前 command card 原样交给执行器，检查 requires，不自行拼 SSH 命令或未支持参数。计划器不启动作业。输入摘要与成功回执一致时复用已有结果；下载、训练或构建成功后不因换入口重做。依赖已满足的固定命令在同一个原生后台 Job 中按成功顺序执行，不为每个成功步骤再次请求模型判断；校准策略、冻结和最终测试的实际前提仍须核对。
 
 - **训练**：只用 train.jsonl；四项候选增删增强显式为 0，保留选项洗牌。记录实际作业或进程身份、退出状态、日志、checkpoint 文件与摘要。连接、命令生成或上传成功都不是训练完成。
 - **开发与校准**：development 用于迭代，calibration 用于拟合；报告与写入 checkpoint 温度是不同动作。检查实际拒收数、有效题数和来源组。未成功前不进入依赖步骤。
@@ -60,3 +62,15 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 官方 `kev-finetune` 全包位于 [references/upstream/kev-finetune](references/upstream/kev-finetune/SKILL.md)；官方部署全包由本地 [kev-deploy](../kev-deploy/SKILL.md) 入口管理。两包原文、脚本、许可与 UPSTREAM.json 保持完整，嵌套 SKILL.md 仅作参考。先读本阶段适配说明，再读所需上游部分；不连续执行全部示例。脚本路径从实际包位置解析，官方命令不从当前会话 cwd 猜位置。两脚本 runtime pin 与本套原生训练 pin 的区别见 `references/training-run.md`。
 
 交付先说用户关心的当前结果；按需要说明数据、编码、训练、校准、服务绑定和完整比较中哪些已完成、哪些未做。不要固定逐项倾倒内部状态。存在必要行动时给出下一步；技术身份和明细保留在可查报告。模型行为验收方法见 `references/model-evaluation.md`，不能把静态测试说成 GPT-5.5 已实测通过。
+
+## 已有微调运行的服务交接
+
+接收 kev-deploy 提供的已有 run/checkpoint、目标环境与明确授权的部署、验证或停服动作；仅按包内 [官方部署说明](references/upstream/kev-finetune/references/deploy.md) 和同包脚本处理该服务，不重新训练或扩大清理范围。返回 app/端点、checkpoint、实际验证回执与未完成项，交回 kev-deploy 继续调用方接入；结果未知先查询原 app。
+
+## 原生执行与平台回放取证
+
+接受已授权的命令卡、固定运行对象与服务端连接身份，或已有来源与回放输入的只读取证任务；按本包[原生执行合同](references/native-execution.md)执行并返回实际回执路径、来源摘要及工件。调用方消费回执，不读取本技能私有脚本。状态不明时查询原作业，不重派命令；不新增训练、不替调用方采纳变体。
+
+## 公开研究工具依赖
+
+离线方案和编码回执使用 [kev-data 公开合同](https://github.com/wr5912/harness-engineering-platform/blob/main/runtime/research/kev-data/README.md) 的数据复核、原生输入身份与中文报告函数。HARNESS_PROGRAM_ROOT 必须来自平台 context 的 program_root；数据和训练技能均不导入彼此私有脚本。缺失工具时停止准备，不跳过数据复核。部署由 kev-deploy 的公开入口独立负责，训练准备不再要求安装该技能的私有上游包。

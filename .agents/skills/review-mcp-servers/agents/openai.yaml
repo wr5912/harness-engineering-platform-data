@@ -1,0 +1,13 @@
+interface:
+  display_name: MCP 服务器审查
+  short_description: 审查 MCP 与 OpenAPI 转换描述、分组目录及调用契约，定位来源与最小整改
+  default_prompt: 请用 $review-mcp-servers 审查这个 MCP 服务器，给出有证据的发现、最小整改和复验方法。
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
