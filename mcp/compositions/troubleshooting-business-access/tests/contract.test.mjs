@@ -192,6 +192,11 @@ test('branchResult 原样包裹各分支输出；summary 严格拒绝漏项、�
 // 只检查同一原生资产的静态节点/端口/闭包，不实现调度器或执行另一套图。
 const code = node => node.data.node.template.code?.value ?? ''
 const outputs = node => node.data.node.outputs.map(output => output.name)
+const expectedConditionLabels = {
+  'identity-gate': { go: '对象已确认', blocked: '对象未确认' },
+  'item-gate': { source_state: '源SOC状态', target_state: '目标SOC状态', source_alerts: '源关联告警', target_alerts: '目标关联告警', path: '配置路径', tcp: 'TCP结果' },
+  'tcp-gate': { OPEN: 'TCP已连接', REFUSED: '连接被拒绝', TIMEOUT: '连接超时', UNKNOWN: '连接结果未知' },
+}
 const callbacks = node => [...code(node).matchAll(/\bcomponent\(['"]([^'"]+)['"]/g)].map(match => match[1])
 const callbackNode = (graph, name) => {
   const matches = graph.nodes.filter(node => callbacks(node).includes(name))
@@ -221,6 +226,10 @@ function nativeGraph(document) {
     assert.notEqual(node.data.type, 'HepChild')
     assert.ok(code(node), `${node.id} 缺少包内原生组件代码`)
     assert.ok(node.data.node.template && Array.isArray(node.data.node.outputs))
+    if (node.data.node.metadata?.kind === 'condition' || node.data.node.outputs.some(output => output.group_outputs === true)) {
+      assert.ok(Object.hasOwn(expectedConditionLabels, node.id), `条件 ${node.id} 缺少准确中文标签回归`)
+      assert.deepEqual(Object.fromEntries(node.data.node.outputs.map(output => [output.name, output.display_name])), expectedConditionLabels[node.id], `${node.id} 必须按真实端口映射准确中文分支标签`)
+    }
     assert.equal(Object.hasOwn(node.data.node.template, 'composition_id'), false, '不通过隐藏模板引用另一组合')
     // 研发核实：ParameterHandler会跳过show缺失/false的非code字段；静态存在value不等于被装载。
     for (const [name, field] of Object.entries(node.data.node.template)) {
@@ -265,6 +274,7 @@ test('根图只由 Input→resolve→identity gate→blocked 或 HepBatch→summ
   const gates = root.nodes.filter(node => node !== inputs[0] && node !== resolveNode && node !== blocked && node !== batch && node !== summary)
   assert.equal(root.nodes.length, 6)
   assert.equal(gates.length, 1)
+  assert.equal(batch.data.node.display_name, '连接证据检查')
   const gate = gates[0]
   condition(gate, ['go', 'blocked'])
   assert.match(code(gate), /selected\s*=\s*['"]go['"]\s+if\s+payload\(self\.value\)\.get\(['"]ready['"]\)\s+is\s+True\s+else\s+['"]blocked['"]/)
