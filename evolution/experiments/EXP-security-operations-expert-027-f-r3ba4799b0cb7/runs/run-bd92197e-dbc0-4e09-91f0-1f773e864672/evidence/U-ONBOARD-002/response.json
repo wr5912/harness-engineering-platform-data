@@ -1,0 +1,69 @@
+{
+  "inputs": [
+    "请列出我在本会话上传的资产表格附件。如果没有就说明没有，不要探测，也不要导入任何资产。"
+  ],
+  "assistant_texts": [
+    "本会话目前**没有**上传过任何资产表格附件（会话附件清单为空）。\n\n因此本轮没有可读取的 Excel，也未做任何探测或资产导入。如果你之后上传 `.xlsx` 表格，我可以再列出并读取它，生成待导入清单（仍需你确认后才会导入）。"
+  ],
+  "session_id": "session-bc24c9e7-8ff0-4610-bfc8-de169707447c",
+  "turns": [
+    {
+      "assistant_text": "本会话目前**没有**上传过任何资产表格附件（会话附件清单为空）。\n\n因此本轮没有可读取的 Excel，也未做任何探测或资产导入。如果你之后上传 `.xlsx` 表格，我可以再列出并读取它，生成待导入清单（仍需你确认后才会导入）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "asset_onboarding",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "000e2f4f-c959-4445-9730-33a3accd7add"
+    }
+  ]
+}

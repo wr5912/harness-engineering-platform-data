@@ -1,0 +1,79 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测 Session 通过已选 XX 设备 Mock 服务的 lookup_host 工具按 hostIp=192.0.2.99 发起真实查询，回执 is_error=false 且返回 found:false、hosts 为空的正常空结果，随后助手提示“当前 IP 无对应主机设备”并结束；未生成虚构主机或草案、未发起执行确认、未调用写入接口，也未转其他服务执行；空结果来自正常回执而非查询失败，满足全部要求。",
+    "requirements": [
+      {
+        "requirement": "通过已选设备服务按目标IP真实查询",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"mock\":true,\"found\":false,\"total\":0,\"hosts\":[]}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "当前固定模拟数据对该IP返回正常空结果，提示“当前 IP 无对应主机设备”并结束",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"mock\":true,\"found\":false,\"total\":0,\"hosts\":[]}",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 0,
+            "quote": "当前 IP 无对应主机设备。\n\n查询的开发模拟环境未找到 IP 为 192.0.2.99 的主机，因此没有可展示的重启草案，也未下发任何模拟指令。请核对目标 IP 后再试。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "不生成虚构主机或草案，不发起执行确认，不调用设备控制写入接口，不转其他服务执行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "当前 IP 无对应主机设备。\n\n查询的开发模拟环境未找到 IP 为 192.0.2.99 的主机，因此没有可展示的重启草案，也未下发任何模拟指令。请核对目标 IP 后再试。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "查询接口失败不能代替正常空结果通过本用例",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"mock\":true,\"found\":false,\"total\":0,\"hosts\":[]}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-aeb18cc0-b50b-453a-9f4e-044e0dc4ee55",
+    "workspace_id": "873ccd66-7e26-4d40-89dd-440d148fd161",
+    "session_title": "评审 U-EMG-012",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

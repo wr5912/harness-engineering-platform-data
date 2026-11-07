@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-027",
+  "transport": "api",
+  "expected_behavior": "1. 仅对指定资产执行一次巡检，读取同次运行至报告就绪；保留实际范围、时间及正常、异常、未知、失败和未覆盖情况。\n2. 交付真实非空.html报告及可用预览、下载入口，内容来自同次巡检原HTML，不能只给Markdown或拼造URL。文件名、类型、字节数及内容摘要与实际保存文件一致。\n3. 第二轮复用原结果或已生成文件，不新启动巡检、不扩大范围。报告生成或下载不代表全部检查正常；没有实际报告产物不能判通过。",
+  "session_id": "session-cb73ad74-efcf-4312-8614-6cabb19a63bf",
+  "workspace_id": "72305b63-8174-4543-bd37-59aec8812cb1",
+  "session_title": "评测 U-INS-027",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-a8b4a980-a27d-4dce-9230-16b78c8525f4",
+    "workspace_id": "72305b63-8174-4543-bd37-59aec8812cb1",
+    "session_title": "评审 U-INS-027",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-ONBOARD-006",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答基于本会话真实工具回执完成只读核验：通过 list_mcp_resource_templates/list_mcp_resources 实测 asset-management 资源服务器在当前作用域不可用（原生 is_error=true），并列举了 emergency-action、inspection-compositions、policy-configuration 的真实模板目录与不可用标记；同时用 asset_onboarding 只读 action:attachments 的成功回执（attachments 为空、import_authorized=false）区分了本地附件能力、后端分组装载与业务通过，明确指出资源模板缺口且未声称 SOC 接入完成。工具序列仅含 skill 读取、资源目录列举和只读 attachments 查询，未出现 discover/preview/commit、设备新增、发现纳管或跨组底层 HTTP 调用。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-ONBOARD-006"
+}

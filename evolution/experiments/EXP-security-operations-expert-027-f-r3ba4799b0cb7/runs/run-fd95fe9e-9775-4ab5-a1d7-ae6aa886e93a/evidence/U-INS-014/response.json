@@ -1,0 +1,68 @@
+{
+  "inputs": [
+    "对资产标识 3617609 执行一次设备在线状态巡检。"
+  ],
+  "assistant_texts": [
+    "## 巡检结论\n\n资产 **3617609**（`172.16.200.11`，主机名 `200.11防火墙`）在线状态巡检已完成，判定为 **正常（在线）**，无异常、无未知、无失败项。\n\n- 运行标识：`run-a4eb0fe5-be90-47b9-9426-f5a44882135c`（状态检查，执行完成）\n- 冻结范围：仅资产 3617609，共 1 项检查；结果计数 正常 1、异常 0、未知 0、不适用 0、失败 0\n\n## 关键事实\n\n| 项目 | 结果 |\n|---|---|\n| 在线状态 | online |\n| 判定依据 | REPORTED（SOC 报告在线，信号来源限定） |\n| 最后上报 / 最后探测 | 2026-11-06 09:01:07（探测状态 reachable） |\n| 判定时间窗口 | 15 分钟，判定时间 2026-11-06 09:05:02 |\n| 支持在线的信号 | 数据采集（DATA_RECEIVED，当前有效至 09:16:07）；探测/采集确认 reachable（当前有效至 09:16:07） |\n| 不支持在线的信号 | ARP 观测于 08:43:22，已过期（EXPIRED）；Agent 心跳未观测到（NOT_OBSERVED） |\n\n## 证据缺口与未知项\n\n- Agent 心跳来源为“未观测”，采集心跳适用性为 **UNKNOWN**（无已验证心跳源），这属于证据缺口，不等于异常也不等于正常。\n- 状态同步结论为 **UNKNOWN**（无关联状态事件）；资产行更新时间仅为记录刷新，不构成状态观测。\n- 自动探测标记为“符合资格”，但 `executionConfirmed=false`，即本次未确认执行主动探测；结论基于 SOC 已有事实。\n\n## 报告与后续\n\n同次运行已生成报告产物：`inspection-report.html`（报告）、`inspection-details.json`（明细）。回执中未附带可直接访问的下载地址，如需报告文件可再为您读取该运行的报告产物。\n\n以上建议动作（如补接心跳源、复核 ARP 过期项）尚未执行。"
+  ],
+  "session_id": "session-89317da0-6b8d-426c-9f77-ae55481fdada",
+  "turns": [
+    {
+      "assistant_text": "## 巡检结论\n\n资产 **3617609**（`172.16.200.11`，主机名 `200.11防火墙`）在线状态巡检已完成，判定为 **正常（在线）**，无异常、无未知、无失败项。\n\n- 运行标识：`run-a4eb0fe5-be90-47b9-9426-f5a44882135c`（状态检查，执行完成）\n- 冻结范围：仅资产 3617609，共 1 项检查；结果计数 正常 1、异常 0、未知 0、不适用 0、失败 0\n\n## 关键事实\n\n| 项目 | 结果 |\n|---|---|\n| 在线状态 | online |\n| 判定依据 | REPORTED（SOC 报告在线，信号来源限定） |\n| 最后上报 / 最后探测 | 2026-11-06 09:01:07（探测状态 reachable） |\n| 判定时间窗口 | 15 分钟，判定时间 2026-11-06 09:05:02 |\n| 支持在线的信号 | 数据采集（DATA_RECEIVED，当前有效至 09:16:07）；探测/采集确认 reachable（当前有效至 09:16:07） |\n| 不支持在线的信号 | ARP 观测于 08:43:22，已过期（EXPIRED）；Agent 心跳未观测到（NOT_OBSERVED） |\n\n## 证据缺口与未知项\n\n- Agent 心跳来源为“未观测”，采集心跳适用性为 **UNKNOWN**（无已验证心跳源），这属于证据缺口，不等于异常也不等于正常。\n- 状态同步结论为 **UNKNOWN**（无关联状态事件）；资产行更新时间仅为记录刷新，不构成状态观测。\n- 自动探测标记为“符合资格”，但 `executionConfirmed=false`，即本次未确认执行主动探测；结论基于 SOC 已有事实。\n\n## 报告与后续\n\n同次运行已生成报告产物：`inspection-report.html`（报告）、`inspection-details.json`（明细）。回执中未附带可直接访问的下载地址，如需报告文件可再为您读取该运行的报告产物。\n\n以上建议动作（如补接心跳源、复核 ARP 过期项）尚未执行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ec5a9df3-9db9-4a8b-8bc2-bb22223277bb"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "第一轮确为纯预览，未发起任何启动调用；但第二轮的执行调用在入口处被拒（is_error=true，返回“本轮未明确执行巡检，不能启动运行”），未产生 run_id、检查摘要与同次报告，未满足“同轮执行一次并交付同次真实报告”；第三轮既没有可续查的原运行，也未交付原报告；全例真实运行记录为零次新运行，与“仅一次新运行”的预期不符。",
+    "requirements": [
+      {
+        "requirement": "第一轮只预览，无启动尝试或新运行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "第二轮同轮执行一次，完成后默认交付同次真实报告，范围、对象和结果与本次运行一致",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 1
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "第三轮只续查原运行或交付原报告，不创建第二次运行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "以真实调用和运行记录核对，全例仅一次新运行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 6
+          },
+          {
+            "index": 1
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-f79237aa-b33f-4406-b615-7358ed08154c",
+    "workspace_id": "5bf6fca8-421f-41f1-b1c9-f9ca0eaaf0dd",
+    "session_title": "评审 U-INS-022",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

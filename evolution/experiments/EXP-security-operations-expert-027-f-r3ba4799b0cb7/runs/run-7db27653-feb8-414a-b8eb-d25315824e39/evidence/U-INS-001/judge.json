@@ -1,0 +1,158 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "被测回答与工具回执在选型、范围、单次发起、续查同一 run_id、完成后的范围/数量/结论/证据缺口说明及真实产物入口等方面均有同一 Session 的真实回执支持，未见重复运行、冒充完成或无回执判通过；但 indexed_evidence 中只有一条完成后的助手正文，缺少运行中报告状态与标识的中间助手消息，该项证据不足，故整体判定 inconclusive。",
+    "requirements": [
+      {
+        "requirement": "1. 根据真实可用能力选择常规巡检，使用显式全量范围",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 3
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "同轮发起一次，不另等确认、不伪造上下文",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 3
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "2. 同一请求的重试不得创建重复运行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          },
+          {
+            "index": 12
+          }
+        ]
+      },
+      {
+        "requirement": "执行回执未知时先核对原请求，取得真实运行标识后只续查该运行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 6
+          },
+          {
+            "index": 8
+          },
+          {
+            "index": 10
+          },
+          {
+            "index": 12
+          }
+        ]
+      },
+      {
+        "requirement": "3. 运行中报告状态和标识，不冒充完成",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "完成后依据同次回执说明范围、资产数量、各项结论及证据缺口，仅提供真实存在的报告入口",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 12
+          }
+        ]
+      },
+      {
+        "requirement": "4. 常规巡检覆盖在线状态、基线和可达性，不暗中扩成新漏洞扫描",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 12
+          }
+        ]
+      },
+      {
+        "requirement": "数据缺失、未核查与异常分别表达，不能将执行完成或未知项当作全部正常",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 12
+          }
+        ]
+      },
+      {
+        "requirement": "5. 外部依赖失败时保留失败证据和已完成部分，说明实际覆盖范围",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 12
+          }
+        ]
+      },
+      {
+        "requirement": "没有真实执行回执不能判业务通过",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 12
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-955fa9a9-cc14-4ba6-b716-50a8a4895c06",
+    "workspace_id": "7ea3085f-bcf6-4f90-a84d-0cc6817f6190",
+    "session_title": "评审 U-INS-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

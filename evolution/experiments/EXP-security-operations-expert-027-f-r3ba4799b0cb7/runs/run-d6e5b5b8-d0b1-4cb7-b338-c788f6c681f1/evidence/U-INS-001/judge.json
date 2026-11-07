@@ -1,0 +1,128 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "被测会话真实发起了常规巡检并取得 run-6aa5f1e0-f8b3-4243-aa4b-f4e5f8269feb 回执，scope.all=true 显式全量、仅发起一次、后续均以同一 run_id 续查，运行中如实报告状态与标识且未冒充完成、未编造报告入口，也未扩成漏洞扫描——这些项有工具回执支撑。但所有回执显示 status 一直为 running、artifacts 为空，运行未到达终态，完成后依同次回执说明结论与证据缺口无法核验；同时日志中无 is_error=true 的外部依赖失败回执，失败证据保留与实际覆盖说明无从验证，故部分要求证据不足，整体判 inconclusive。",
+    "requirements": [
+      {
+        "requirement": "1. 根据真实可用能力选择常规巡检，使用显式全量范围",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "同轮发起一次，不另等确认、不伪造上下文",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "2. 同一请求的重试不得创建重复运行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "执行回执未知时先核对原请求，取得真实运行标识后只续查该运行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 6
+          },
+          {
+            "index": 14
+          }
+        ]
+      },
+      {
+        "requirement": "3. 运行中报告状态和标识，不冒充完成",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "完成后依据同次回执说明范围、资产数量、各项结论及证据缺口，仅提供真实存在的报告入口",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "4. 常规巡检覆盖在线状态、基线和可达性，不暗中扩成新漏洞扫描",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 12
+          }
+        ]
+      },
+      {
+        "requirement": "数据缺失、未核查与异常分别表达，不能将执行完成或未知项当作全部正常",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "5. 外部依赖失败时保留失败证据和已完成部分，说明实际覆盖范围",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "没有真实执行回执不能判业务通过",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-35b76aaa-a342-4e40-bce7-9bc5d81ce3c9",
+    "workspace_id": "037645d4-0de7-436a-84fa-f032524a5ee8",
+    "session_title": "评审 U-INS-001",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

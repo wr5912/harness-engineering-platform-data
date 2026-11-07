@@ -1,0 +1,86 @@
+{
+  "response": {
+    "verdict": "inconclusive",
+    "reason": "被测回答在同轮只发起了一次 inspection_deep（回执 run-f104c46b-3665-4e5f-9aad-d0b106d2435e，范围冻结为资产 3617609），未见额外的常规或漏洞单项启动，且明确把四项结果标为未知、拒绝把无漏洞数据解读为无漏洞，这三点有同 Session 工具回执支撑。但三次 get_composition_run 回执均显示 status=accepted、nodes/progress/artifacts 为空，运行尚未完成：既没有可按实际运行区分的正常/异常/失败结果，也未说明任何不支持或未覆盖的检查，报告产物入口不存在、只能给出 run 标识。因此关键要求（按实际运行给出四类判定及未覆盖说明、提供报告入口）证据不足，整体判为 inconclusive。",
+    "requirements": [
+      {
+        "requirement": "同轮启动一次深度巡检，四类检查使用同一范围快照",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "不额外独立启动常规或漏洞单项",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          }
+        ]
+      },
+      {
+        "requirement": "依据实际运行区分正常、异常、失败和未知，说明不支持或未覆盖的检查",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 8
+          }
+        ]
+      },
+      {
+        "requirement": "不能把没有漏洞数据解释成没有漏洞",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "提供真实运行与报告入口",
+        "status": "unknown",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 10
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-fe28dff1-1adb-422c-b2b5-6d9d13a8cda4",
+    "workspace_id": "5bf6fca8-421f-41f1-b1c9-f9ca0eaaf0dd",
+    "session_title": "评审 U-INS-015",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

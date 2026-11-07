@@ -1,0 +1,143 @@
+{
+  "observed_at": "2026-11-07T02:00:01.021Z",
+  "sessionId": "session-c6b22f3c-a791-48c4-b90d-977c73b57539",
+  "running": true,
+  "asOfSeq": 1832,
+  "receipts": [
+    {
+      "seq": 1683,
+      "time": 1794016184111,
+      "action": "configuration",
+      "state": "completed",
+      "ok": true,
+      "revision": "c9acc7c5883764e820e3f8de83da013b0f5b6ffdf0eb8d22414f39e704717714"
+    },
+    {
+      "seq": 1708,
+      "time": 1794016214965,
+      "action": "saveConfiguration",
+      "state": "completed",
+      "proposal_id": "5b9ee0b8-645a-4647-b4a0-6203fd93a9f6",
+      "ok": true,
+      "revision": "6f8b542b7817efa9e128d4caf89cd4114c5b36aca27b38c44bb6203270673791"
+    },
+    {
+      "seq": 1713,
+      "time": 1794016271137,
+      "action": "configuration",
+      "state": "completed",
+      "ok": true,
+      "revision": "6f8b542b7817efa9e128d4caf89cd4114c5b36aca27b38c44bb6203270673791"
+    },
+    {
+      "seq": 1721,
+      "time": 1794016272167,
+      "action": "test",
+      "state": "completed",
+      "ok": true,
+      "tools": [
+        "update_resp_playbooks_by_playbook_id",
+        "delete_resp_playbooks_by_playbook_id",
+        "update_resp_playbooks_status",
+        "update_resp_action_defs_by_action_key",
+        "delete_resp_action_defs_by_action_key",
+        "create_resp_playbooks",
+        "validate_resp_playbooks",
+        "create_resp_playbooks_preflight",
+        "create_resp_playbooks_attachments",
+        "create_resp_playbooks_preflight_draft",
+        "create_maintenance_param_cleanup",
+        "create_maintenance_deadkey_remap",
+        "cancel_resp_instances",
+        "create_resp_instances_manual",
+        "execute_resp_agent_actions",
+        "create_from_countermeasures",
+        "create_resp_action_defs",
+        "create_maintenance_fold_bindings",
+        "get_resp_playbooks_recommendation_draft",
+        "get_playbooks_recommendation_context",
+        "get_resp_playbooks_recommend",
+        "get_resp_instances",
+        "get_resp_instances_running",
+        "get_resp_instances_by_incident_topology",
+        "get_resp_agent_actions_executions",
+        "get_resp_actions_recommend",
+        "get_resp_actions_executions",
+        "get_actions_executions_device_evidence",
+        "get_resp_actions_exec_points",
+        "get_resp_actions_device_agents",
+        "delete_resp_playbooks_attachments_by_id"
+      ]
+    },
+    {
+      "seq": 1723,
+      "time": 1794016273052,
+      "action": "test",
+      "state": "completed",
+      "ok": true,
+      "tools": [
+        "inspection_status",
+        "inspection_baseline",
+        "inspection_vulnerabilities",
+        "inspection_reachability",
+        "inspection_routine",
+        "inspection_deep",
+        "policy_change",
+        "emergency_action",
+        "get_composition_run",
+        "get_composition_artifact",
+        "get_composition_details"
+      ]
+    },
+    {
+      "seq": 1783,
+      "time": 1794016387735,
+      "action": "readResource",
+      "state": "failed",
+      "ok": false
+    },
+    {
+      "seq": 1785,
+      "time": 1794016388254,
+      "action": "readResource",
+      "state": "completed",
+      "ok": true
+    },
+    {
+      "seq": 1787,
+      "time": 1794016389900,
+      "action": "readResource",
+      "state": "completed",
+      "ok": true
+    },
+    {
+      "seq": 1792,
+      "time": 1794016465945,
+      "action": "resourceTemplates",
+      "state": "completed",
+      "ok": true,
+      "resourceTemplateCount": 86
+    },
+    {
+      "seq": 1794,
+      "time": 1794016466170,
+      "action": "readResource",
+      "state": "failed",
+      "ok": false
+    },
+    {
+      "seq": 1796,
+      "time": 1794016466321,
+      "action": "readResource",
+      "state": "failed",
+      "ok": false
+    },
+    {
+      "seq": 1801,
+      "time": 1794016518871,
+      "action": "readResource",
+      "state": "failed",
+      "ok": false
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "inputs": [
+    "本次已选定XX设备开发模拟服务。帮我重启 192.0.2.250。"
+  ],
+  "assistant_texts": [
+    "查询失败：本次模拟设备查询返回失败（`QUERY_FAILED`）。这**不表示** 192.0.2.250 没有对应主机设备，只是查询未能取得结果。\n\n因此本轮未生成重启草案，也未下发任何模拟指令。\n\n可行的下一步：\n- 请稍后重试一次查询（同一目标 IP，我可重新发起）；\n- 若持续失败，说明当前模拟服务查询链路存在故障，需要先排查该服务，再继续重启流程。\n\n是否现在重试查询 192.0.2.250？"
+  ],
+  "session_id": "session-d18f3ebb-3c47-4e56-ab36-f3b41daae043",
+  "turns": [
+    {
+      "assistant_text": "查询失败：本次模拟设备查询返回失败（`QUERY_FAILED`）。这**不表示** 192.0.2.250 没有对应主机设备，只是查询未能取得结果。\n\n因此本轮未生成重启草案，也未下发任何模拟指令。\n\n可行的下一步：\n- 请稍后重试一次查询（同一目标 IP，我可重新发起）；\n- 若持续失败，说明当前模拟服务查询链路存在故障，需要先排查该服务，再继续重启流程。\n\n是否现在重试查询 192.0.2.250？",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "ask_user_question",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__xx-device-mock__lookup_host",
+        "mcp__xx-device-mock__send_command",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "9a21587b-98b0-425f-8611-e187cc7511e2"
+    }
+  ]
+}

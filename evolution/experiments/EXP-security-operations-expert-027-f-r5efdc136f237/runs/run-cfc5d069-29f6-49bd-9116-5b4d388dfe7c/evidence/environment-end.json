@@ -1,0 +1,112 @@
+{
+  "observed_at": "2026-11-07T02:40:39.070Z",
+  "instance": {
+    "name": "policy-response-acceptance-027-r5efdc136f237",
+    "source_id": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
+    "asset_status": {
+      "changed_files": [],
+      "checked_at": "2026-11-07T02:40:34.007Z",
+      "current_digest": "sha256:49be2b93964182f0d38cc85c6ff92a88ca67e897c013acb2fc81ff419a553b4f",
+      "generation_digest": "sha256:c594e5aee9c1dc20b2163b30ca9a1d600400c3d3cd6460f674a8e21827b14f48",
+      "last_attempt": {
+        "at": "2026-11-07T02:30:19.124Z",
+        "message": "实际加载已核验",
+        "status": "verified"
+      },
+      "loaded": {
+        "configuration_digest": "sha256:31da4bcffb94b93280f9df85add1e8cc7bf9c215f8d519cc7dd32306da2bdd68",
+        "container_id": "dcd58972f2b0888631260660f89913ac15befa07949c63fd9eef3ffab3cc6aab",
+        "digest": "sha256:49be2b93964182f0d38cc85c6ff92a88ca67e897c013acb2fc81ff419a553b4f",
+        "files_digest": "sha256:869250585af4d8092dfed86900fc40d9f803bc1af6e7220b4ee3d9628cbac538",
+        "loaded_at": "2026-11-07T02:30:19.124Z",
+        "ok": true,
+        "pid": 7,
+        "preset_id": "security-operations-expert",
+        "source_id": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
+        "started_at": "2026-11-07T02:30:12.060859457Z",
+        "verification": "runtime-observer"
+      },
+      "reason": "运行代次与加载回执一致",
+      "status": "current"
+    }
+  },
+  "dependencies": [
+    {
+      "id": "ai-soc-correlate",
+      "specUrl": "http://172.16.138.223:18085/v3/api-docs/mcp",
+      "enabled": true
+    },
+    {
+      "id": "ai-soc-graph",
+      "specUrl": "http://172.16.138.223:18088/v3/api-docs/mcp",
+      "enabled": true
+    },
+    {
+      "id": "ai-soc-ingest",
+      "specUrl": "http://172.16.138.223:18081/v3/api-docs/mcp",
+      "enabled": true
+    },
+    {
+      "id": "ai-soc-response",
+      "specUrl": "http://172.16.138.223:18083/v3/api-docs/mcp",
+      "enabled": true
+    }
+  ],
+  "compositions": [
+    {
+      "id": "policy-change",
+      "publishedVersionId": "d1e7e76495b0633a899cbf30d413ba6099ee27d98dbc55c4ea7e1d5abbf4b300",
+      "published": {
+        "toolName": "policy_change",
+        "title": "策略变更",
+        "description": "策略变更固定流程：发现合同、真实预览、保存原任务、提交及按原任务查询；stop控制停止位置",
+        "connectionId": "platform-compositions",
+        "readonly": false,
+        "implementation": "686bf9851a896365451a3a743f7c6bac5c40355adb2325ac63d22c44b9ec6a1b",
+        "workflow": "policy-change",
+        "connections": {
+          "ingest": "ai-soc-ingest"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "3993ddafecf4194017441e8b7cf7021a06f909a29f632c6bb53f0a842ccf13fe",
+        "publishedAt": "2026-11-07T01:23:30.509Z"
+      }
+    },
+    {
+      "id": "emergency-action",
+      "publishedVersionId": "43a03bc99cd871342d1d377c4ea1c38684e2851bb8d7b21d6129f881b98f8ef0",
+      "published": {
+        "toolName": "emergency_action",
+        "title": "应急动作",
+        "description": "应急动作固定流程：发现动作及执行点、核对参数、真实预览、按授权停止位置处理并查询原请求",
+        "connectionId": "platform-compositions",
+        "readonly": false,
+        "implementation": "313220c3770f7602f6214dc2dee24b1183330bd09c4684e5a3c343c8ec1294fd",
+        "workflow": "emergency-action",
+        "connections": {
+          "ingest": "ai-soc-ingest",
+          "response": "ai-soc-response"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "a3d63fdf68e40eedc06941cdce4f08f8e3e5b39049b6abd5bfda8cf433dd8d20",
+        "publishedAt": "2026-11-07T01:25:52.758Z"
+      }
+    }
+  ],
+  "group": {
+    "id": "policy-response-acceptance",
+    "members": [
+      {
+        "serverId": "platform-compositions",
+        "names": [
+          "policy_change",
+          "emergency_action"
+        ],
+        "resourceUris": [],
+        "resourceTemplates": []
+      }
+    ]
+  }
+}

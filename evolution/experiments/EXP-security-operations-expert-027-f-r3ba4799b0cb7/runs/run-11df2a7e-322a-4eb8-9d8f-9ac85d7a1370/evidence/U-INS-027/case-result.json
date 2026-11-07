@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-027",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：第一轮对指定资产 3617609 仅启动一次常规巡检（run-39951a1f-0b95-49b1-bdce-e09ddd013a55），回执从 accepted 续查至 completed，范围冻结为 1 台资产并保留了状态/基线/可达性三类检查的正常、异常、未知、失败计数（1 正常、7 未知、0 异常、0 失败），业务汇总为 incomplete 未称全部正常。第二轮仅用同一 run_id 重新导出已有 HTML 产物，未新启动巡检、未扩大范围，且两次导出 SHA-256 与字节数一致。交付了真实非空 .html 文件（22,730 字节，text/html，含 file_path、filename、content_type、bytes、sha256，内容来自同次巡检原 HTML 产物），并给出预览/下载入口说明，未拼造 URL、未以 Markdown 代替报告，且明确声明报告生成不代表巡检全量正常。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-027"
+}

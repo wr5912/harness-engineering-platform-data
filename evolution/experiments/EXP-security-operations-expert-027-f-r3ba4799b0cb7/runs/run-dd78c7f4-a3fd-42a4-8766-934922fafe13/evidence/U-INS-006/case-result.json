@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-006",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答先加载 security-inspection 并核对巡检范围字段可接受的类型，确认 A-001 是无法被解析为 IP、网段 CIDR、数字资产 ID、资产类型、网络层级或部门的资产标识文字；inspection-compositions 的资源与资源模板列表均为空，也未提供可将 A-001 映射为实际对象的通道。因此未启动任何巡检运行，未用 all=true 等全量范围代替，也未编造 run_id 或执行结果，而是明确说明这是能力/信息缺口并向用户澄清补充 IP、数字 ID 或筛选条件。由于无法唯一解析，「按真实对象执行并核对范围」的前提条件未触发，不执行是正确行为，三项要求均满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-006"
+}

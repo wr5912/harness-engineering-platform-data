@@ -1,0 +1,68 @@
+{
+  "inputs": [
+    "请立即执行一次常规巡检，覆盖当前巡检服务的全部资产。"
+  ],
+  "assistant_texts": [
+    "常规巡检已执行完毕，结果如下。\n\n## 巡检结论\n\n- **运行标识**：`run-55f58e73-def9-41dc-a097-54d83795b7a9`（常规巡检，执行状态 completed，业务结果 incomplete）\n- **冻结范围**：全部资产，共 **104 项**，冻结时间 2026-11-06T02:55:29Z；读取的是 SOC 已有事实，未做主动探测\n- **执行耗时**：约 113 秒，无失败节点\n\n### 三类检查摘要\n\n| 检查项 | 检查数 | 正常 | 异常 | 未知 | 失败 |\n|---|---|---|---|---|---|\n| 在线状态 | 104 | 83 | **17** | 4 | 0 |\n| 基线合规 | 104 | 9 | 0 | **95** | 0 |\n| 网络可达性 | 131 | 0 | 0 | **131** | 0 |\n\n### 异常资产（状态检查，17 项，均为 SOC 报告离线）\n\n- 华为交换机2 192.168.99.1、防火墙虚拟机 172.16.1.10、设备-1-195 172.16.1.195、攻击终端 172.16.1.155\n- 瑞禾S500主机 172.16.138.215 / 172.16.138.218、服务器---202 172.16.138.202、SK-20260710LYUE 172.16.138.190、Windows-主机-138-209 172.16.138.209\n- EDR Agent 10.10.10.10、EDR-Agent 172.16.2.103、EDR Agent 172.16.2.104、版本服务器 172.16.2.100、wishclamAV 172.16.2.114\n- DESKTOP-U8GL6JB 172.16.6.3、Windows-1-152 172.16.1.152、设备-240-254 10.254.240.254\n\n报告仅记录 SOC 在其状态时间窗口内报告离线，**不据此推断故障原因**。\n\n### 证据缺口（未知，不代表正常）\n\n- **状态未知 4 项**：漏洞靶机 172.16.2.170、win10-new（无有效地址）、雷池WAF安全软件个人版 192.168.3.6、V1-X 192.168.3.6——缺少有效状态证据或返回状态与证据冲突。\n- **基线未知 95 项**：多数为 SOC 未给出可判定的基线结论或当前未分配基线模板，不能判为通过，也不能判为不适用。\n- **可达性未知 131 项**：全部为未知，主要原因包括 NAT 快照证据缺失（如 OPNsense 设备 `/OPNsense/Firewall/Filter/onetoone/rule` 采集段未标记，相关采集绑定最近状态为 error）、路径缺少一致的可达性证据、个别规则选择器含 `any` 无法解析为 IP。路径计算不证明实际业务连通。\n\n### 报告产物（同一 run_id）\n\n- 巡检报告：`inspection-report.html`（产物入口 `report`）\n- 检查明细：`inspection-details.json`（产物入口 `details`）\n\n如需逐资产明细，可按该运行继续读取分页明细，无需重新巡检。以上整改建议（核对拓扑/路由/采集绑定、补充基线模板与状态证据）**均尚未执行**。"
+  ],
+  "session_id": "session-bb4bd373-7e90-4d95-9bc6-898661d6da7a",
+  "turns": [
+    {
+      "assistant_text": "常规巡检已执行完毕，结果如下。\n\n## 巡检结论\n\n- **运行标识**：`run-55f58e73-def9-41dc-a097-54d83795b7a9`（常规巡检，执行状态 completed，业务结果 incomplete）\n- **冻结范围**：全部资产，共 **104 项**，冻结时间 2026-11-06T02:55:29Z；读取的是 SOC 已有事实，未做主动探测\n- **执行耗时**：约 113 秒，无失败节点\n\n### 三类检查摘要\n\n| 检查项 | 检查数 | 正常 | 异常 | 未知 | 失败 |\n|---|---|---|---|---|---|\n| 在线状态 | 104 | 83 | **17** | 4 | 0 |\n| 基线合规 | 104 | 9 | 0 | **95** | 0 |\n| 网络可达性 | 131 | 0 | 0 | **131** | 0 |\n\n### 异常资产（状态检查，17 项，均为 SOC 报告离线）\n\n- 华为交换机2 192.168.99.1、防火墙虚拟机 172.16.1.10、设备-1-195 172.16.1.195、攻击终端 172.16.1.155\n- 瑞禾S500主机 172.16.138.215 / 172.16.138.218、服务器---202 172.16.138.202、SK-20260710LYUE 172.16.138.190、Windows-主机-138-209 172.16.138.209\n- EDR Agent 10.10.10.10、EDR-Agent 172.16.2.103、EDR Agent 172.16.2.104、版本服务器 172.16.2.100、wishclamAV 172.16.2.114\n- DESKTOP-U8GL6JB 172.16.6.3、Windows-1-152 172.16.1.152、设备-240-254 10.254.240.254\n\n报告仅记录 SOC 在其状态时间窗口内报告离线，**不据此推断故障原因**。\n\n### 证据缺口（未知，不代表正常）\n\n- **状态未知 4 项**：漏洞靶机 172.16.2.170、win10-new（无有效地址）、雷池WAF安全软件个人版 192.168.3.6、V1-X 192.168.3.6——缺少有效状态证据或返回状态与证据冲突。\n- **基线未知 95 项**：多数为 SOC 未给出可判定的基线结论或当前未分配基线模板，不能判为通过，也不能判为不适用。\n- **可达性未知 131 项**：全部为未知，主要原因包括 NAT 快照证据缺失（如 OPNsense 设备 `/OPNsense/Firewall/Filter/onetoone/rule` 采集段未标记，相关采集绑定最近状态为 error）、路径缺少一致的可达性证据、个别规则选择器含 `any` 无法解析为 IP。路径计算不证明实际业务连通。\n\n### 报告产物（同一 run_id）\n\n- 巡检报告：`inspection-report.html`（产物入口 `report`）\n- 检查明细：`inspection-details.json`（产物入口 `details`）\n\n如需逐资产明细，可按该运行继续读取分页明细，无需重新巡检。以上整改建议（核对拓扑/路由/采集绑定、补充基线模板与状态证据）**均尚未执行**。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b27159e7-abaf-4a9b-b4d5-281638d3dc96"
+    }
+  ]
+}

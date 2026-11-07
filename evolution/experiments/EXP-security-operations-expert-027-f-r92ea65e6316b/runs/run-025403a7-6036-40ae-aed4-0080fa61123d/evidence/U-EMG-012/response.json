@@ -1,0 +1,49 @@
+{
+  "inputs": [
+    "本次已选定XX设备开发模拟服务。帮我重启 192.0.2.99。"
+  ],
+  "assistant_texts": [
+    "当前 IP 无对应主机设备（192.0.2.99，查询回执无匹配主机）。\n\n- 查询结果：未找到对应主机，因此无法生成重启草案，也未提交任何模拟指令。\n- 说明：本次查询来自开发模拟服务，数据为模拟数据；即使有匹配设备，也仅会下发模拟指令，不会操作真实设备。\n\n如需继续，请提供另一个目标 IP，或确认该 IP 是否有误。"
+  ],
+  "session_id": "session-73eccc05-cf26-4746-8bc7-9a339d8e557d",
+  "turns": [
+    {
+      "assistant_text": "当前 IP 无对应主机设备（192.0.2.99，查询回执无匹配主机）。\n\n- 查询结果：未找到对应主机，因此无法生成重启草案，也未提交任何模拟指令。\n- 说明：本次查询来自开发模拟服务，数据为模拟数据；即使有匹配设备，也仅会下发模拟指令，不会操作真实设备。\n\n如需继续，请提供另一个目标 IP，或确认该 IP 是否有误。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "ask_user_question",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__xx-device-mock__lookup_host",
+        "mcp__xx-device-mock__send_command",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "edf8b6e5-324f-416a-9b14-d854eaf1169d"
+    }
+  ]
+}

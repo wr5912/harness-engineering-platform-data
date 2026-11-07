@@ -1,0 +1,68 @@
+{
+  "inputs": [
+    "执行一次常规巡检。"
+  ],
+  "assistant_texts": [
+    "已加载巡检能力。本轮可执行**常规巡检**（`inspection_routine`，复用固定子组合，共享资产快照与请求额度），但巡检必须有明确资产范围，不能默认全部资产。\n\n请补充本次巡检范围，以下任一即可（可组合，多字段取交集）：\n\n- **资产编号**：如 `[1001, 1002]`\n- **IP 或网段**：如 `[\"172.16.1.10\"]` 或 CIDR `[\"172.16.1.0/24\"]`\n- **资产类型 / 网络层级 / 安全层级 / 部门**：给出对应标识列表\n- **明确要求全部资产**：回复“全部资产”，我会按 `all: true` 执行\n\n范围给全后我将同轮直接启动，不需二次确认；巡检仅读取 SOC 已有事实，不进行主动扫描、修复或处置。"
+  ],
+  "session_id": "session-ec31738a-876d-4c22-a2d8-1388e0bec143",
+  "turns": [
+    {
+      "assistant_text": "已加载巡检能力。本轮可执行**常规巡检**（`inspection_routine`，复用固定子组合，共享资产快照与请求额度），但巡检必须有明确资产范围，不能默认全部资产。\n\n请补充本次巡检范围，以下任一即可（可组合，多字段取交集）：\n\n- **资产编号**：如 `[1001, 1002]`\n- **IP 或网段**：如 `[\"172.16.1.10\"]` 或 CIDR `[\"172.16.1.0/24\"]`\n- **资产类型 / 网络层级 / 安全层级 / 部门**：给出对应标识列表\n- **明确要求全部资产**：回复“全部资产”，我会按 `all: true` 执行\n\n范围给全后我将同轮直接启动，不需二次确认；巡检仅读取 SOC 已有事实，不进行主动扫描、修复或处置。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "9b038c12-8f7b-4804-ab12-15a64ec21c30"
+    }
+  ]
+}

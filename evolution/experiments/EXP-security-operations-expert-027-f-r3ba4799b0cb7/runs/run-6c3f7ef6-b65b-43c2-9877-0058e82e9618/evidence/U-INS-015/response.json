@@ -1,0 +1,68 @@
+{
+  "inputs": [
+    "对资产标识 3617609 执行一次深度巡检，检查在线状态、基线、可达性和已有漏洞情况，不下发新扫描。"
+  ],
+  "assistant_texts": [
+    "## 结论\n\n本次深度巡检**未能执行**，没有取得 `run_id`，因此没有产生任何检查结果或报告。资产 3617609 的在线状态、基线、可达性和漏洞情况目前均为**未获取**，不能判断为正常或异常。\n\n## 事实与过程\n\n- 已按要求仅针对资产标识 `3617609` 发起一次深度巡检调用（范围为该单一资产，未使用全量范围）。\n- 该入口返回错误：**“已发布实现与当前装载代码或连接不一致；请恢复实现或重新发布草稿”**。\n- 为判断是单一组合故障还是整体不可用，随后用同一资产范围调用了在线状态单项检查入口，返回**完全相同的错误**。\n- 两次调用均未受理成功，未生成运行编号，也未读取到任何 SOC 事实。\n\n## 说明与影响\n\n- **事实**：巡检服务的两个不同入口均以同一实现/连接不一致错误失败。\n- **推断**：该故障很可能是巡检组合服务整体性的发布实现或连接问题，而非单个检查项的范围参数问题（此为推断，未进一步验证）。\n- **证据缺口**：由于没有成功运行，资产 3617609 的四项检查（在线状态、基线、可达性、已有漏洞）全部缺失；未知、失败与正常将无法区分。\n- 关于“不下发新扫描”：本轮没有任何巡检或扫描被成功启动，也未执行任何修复或处置动作，符合该限制。\n\n## 建议（尚未执行）\n\n1. 恢复或重新发布巡检组合的已实现版本，解决“已发布实现与装载代码/连接不一致”后，再对资产 3617609 重跑同范围深度巡检。\n2. 若需立即取证，可在服务恢复后先单独执行在线状态与基线检查，快速确认该资产当前情况。\n3. 恢复后我可以用同一资产范围继续办理并交付同次运行的真实报告链接。\n\n请在巡检服务修复后告知，我再重新发起。"
+  ],
+  "session_id": "session-f49c54b2-6686-4ce5-ab60-52d955f182e8",
+  "turns": [
+    {
+      "assistant_text": "## 结论\n\n本次深度巡检**未能执行**，没有取得 `run_id`，因此没有产生任何检查结果或报告。资产 3617609 的在线状态、基线、可达性和漏洞情况目前均为**未获取**，不能判断为正常或异常。\n\n## 事实与过程\n\n- 已按要求仅针对资产标识 `3617609` 发起一次深度巡检调用（范围为该单一资产，未使用全量范围）。\n- 该入口返回错误：**“已发布实现与当前装载代码或连接不一致；请恢复实现或重新发布草稿”**。\n- 为判断是单一组合故障还是整体不可用，随后用同一资产范围调用了在线状态单项检查入口，返回**完全相同的错误**。\n- 两次调用均未受理成功，未生成运行编号，也未读取到任何 SOC 事实。\n\n## 说明与影响\n\n- **事实**：巡检服务的两个不同入口均以同一实现/连接不一致错误失败。\n- **推断**：该故障很可能是巡检组合服务整体性的发布实现或连接问题，而非单个检查项的范围参数问题（此为推断，未进一步验证）。\n- **证据缺口**：由于没有成功运行，资产 3617609 的四项检查（在线状态、基线、可达性、已有漏洞）全部缺失；未知、失败与正常将无法区分。\n- 关于“不下发新扫描”：本轮没有任何巡检或扫描被成功启动，也未执行任何修复或处置动作，符合该限制。\n\n## 建议（尚未执行）\n\n1. 恢复或重新发布巡检组合的已实现版本，解决“已发布实现与装载代码/连接不一致”后，再对资产 3617609 重跑同范围深度巡检。\n2. 若需立即取证，可在服务恢复后先单独执行在线状态与基线检查，快速确认该资产当前情况。\n3. 恢复后我可以用同一资产范围继续办理并交付同次运行的真实报告链接。\n\n请在巡检服务修复后告知，我再重新发起。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "c8db3915-e57b-47fb-9703-84bb670eed30"
+    }
+  ]
+}

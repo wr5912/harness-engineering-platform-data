@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-015",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答基于同一被测 Session 的真实工具回执：一次 inspection_deep 启动取得 run_id，get_composition_run 显示 status=completed，四类检查（status/baseline/reachability/vulnerabilities）共享同一 frozen_at 范围快照（assetIds=[3617609]，count=1），会话中无额外独立的常规或漏洞单项启动；分项计数区分正常/异常/失败/未知（status 正常1，baseline 未知1，reachability 未知6，vulnerabilities 未知1，failed 均为0），并说明了 LAYER_NOT_FOUND、未匹配检查对、NO_TEMPLATE 等不支持/未覆盖原因；漏洞项明确标注 coverage=existing_records_only 且声明不证明扫描覆盖或资产无漏洞；提供了真实 run_id 与同 run 的 report/details 产物入口。逐项证据均由 citation_allowed=true 的条目支持。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-015"
+}

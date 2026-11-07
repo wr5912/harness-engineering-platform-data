@@ -1,0 +1,64 @@
+{
+  "schema_version": "4.0",
+  "run_id": "run-dd78c7f4-a3fd-42a4-8766-934922fafe13",
+  "trial_count": 24,
+  "execution_status_counts": {
+    "completed": 21,
+    "error": 3,
+    "skipped": 0
+  },
+  "machine_trial_verdict_counts": {
+    "passed": 11,
+    "failed": 5,
+    "inconclusive": 8
+  },
+  "machine_overall_verdict": "failed",
+  "review_status": "failed",
+  "reviewed_case_count": 0,
+  "reviewed_case_verdict_counts": null,
+  "reviewed_overall_verdict": null,
+  "effective_verdict": "inconclusive",
+  "source_verification": {
+    "status": "changed",
+    "reason": "source-changed",
+    "checks": [
+      {
+        "component": "candidate",
+        "status": "changed",
+        "expected_sha256": "95a388e71784f94afbc5a7c942da33585219bed20072499b209a7f6129addf30",
+        "actual_sha256": "835fed71abf65bd1abc0fbb1768c01f3e2c2741bc2324484de887c1c7febd8f8"
+      },
+      {
+        "component": "workspace",
+        "status": "changed",
+        "expected_sha256": "b8d7d3962feeaac30266bd5ec1c5e2329b7bf1b55a2e7061a36799ebd40ed187",
+        "actual_sha256": "0806e89ce023e18ea67a7a8862f7f9c40e67e944e426edebcc90d3dd16bcd249"
+      },
+      {
+        "component": "presets",
+        "status": "matched",
+        "expected_sha256": "236ca64e0c1729deeec47e5a4b88b5161037892cbec4365fd5a4079f19f02f95",
+        "actual_sha256": "236ca64e0c1729deeec47e5a4b88b5161037892cbec4365fd5a4079f19f02f95"
+      },
+      {
+        "component": "managed",
+        "status": "changed",
+        "expected_sha256": "92dbf1e4cb225a8f97a28c7e53154b8e1e5d815121fcc7534e5817a141b876b1",
+        "actual_sha256": "c6b5c28357e4e8a4e9347c2bca2507f0fa76f72e9c23e2f56a46107f0bcd67aa"
+      },
+      {
+        "component": "evaluation_implementation",
+        "status": "matched",
+        "expected_sha256": "b33a3e975bd9bdbde95c1fc7136a331f1344e4b7ae9e635458cc26d73fe915a5",
+        "actual_sha256": "b33a3e975bd9bdbde95c1fc7136a331f1344e4b7ae9e635458cc26d73fe915a5"
+      }
+    ]
+  },
+  "source_diagnosis": {
+    "status": "incomplete",
+    "conclusion": "inconclusive",
+    "reason": "源码诊断未完成（evidence）：harness-lock-digest-mismatch；未核实范围保持未知。",
+    "required_parts": 0,
+    "read_parts": 0
+  }
+}

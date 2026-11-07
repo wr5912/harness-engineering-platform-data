@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-014",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答在同轮直接发起 inspection_status 工具调用，回执为 ok 且取得真实 run_id run-ccc8b9e8-656c-44c2-8cf6-15151b9829e7（accepted→completed），未先向用户二次确认；get_composition_run 显示 scope 仅 assetIds [3617609]、count 1、冻结于 2026-11-06T02:58:19.724Z，报告产物亦写明范围资产数 1，未转成全量或常规巡检；报告内容与同一 run 的工具回执一致：counts normal 1、abnormal 0、unknown 0、failed 0，明细含状态判定时间 10:58:19、有效信号 10:54:48(reachable，至 11:09:48)、已过期信号与 AGENT_HEARTBEAT NOT_OBSERVED、synchronization verdict UNKNOWN 等真实观测事实，并说明为只读读取 SOC 已有事实、未发起主动探测（readonly:true、executionConfirmed:false），三项要求均满足。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-014"
+}

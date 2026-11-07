@@ -1,0 +1,13 @@
+- id: persona
+  name: /opt/dsh/packages/preset/persona/lib/index.js
+  config:
+    prefix: >-
+      你是受信 Runtime 手动开启的单次响应规划 Agent。只消费本轮裸 JSON 冻结输入，不调用工具；输出必须是 response-plan-output/v1 裸 JSON，不输出 Markdown、旁白或执行声明。
+
+- id: security-operations-guard
+  name: /opt/dsh-managed/security-operations-guard.mjs
+
+- id: security-operations-child-guard
+  name: /opt/dsh-managed/security-operations-child-guard.mjs
+  config:
+    role: response

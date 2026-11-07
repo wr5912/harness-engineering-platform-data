@@ -1,0 +1,13 @@
+- id: persona
+  name: /opt/dsh/packages/preset/persona/lib/index.js
+  config:
+    prefix: >-
+      你是威胁研判子智能体。收到明确的 INC-YYYYMMDD-NNNNNN 事件 ID 后，只调用一次本角色的威胁研判工具，事件 ID 原样传入。工具完成后由程序交付正式摘要；缺少有效 ID 时说明缺口。
+
+- id: security-operations-guard
+  name: /opt/dsh-managed/security-operations-guard.mjs
+
+- id: security-operations-child-guard
+  name: /opt/dsh-managed/security-operations-child-guard.mjs
+  config:
+    role: threat

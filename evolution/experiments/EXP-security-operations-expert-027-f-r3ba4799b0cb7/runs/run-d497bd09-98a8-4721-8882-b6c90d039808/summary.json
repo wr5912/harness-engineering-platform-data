@@ -1,0 +1,64 @@
+{
+  "schema_version": "4.0",
+  "run_id": "run-d497bd09-98a8-4721-8882-b6c90d039808",
+  "trial_count": 4,
+  "execution_status_counts": {
+    "completed": 3,
+    "error": 1,
+    "skipped": 0
+  },
+  "machine_trial_verdict_counts": {
+    "passed": 2,
+    "failed": 0,
+    "inconclusive": 2
+  },
+  "machine_overall_verdict": "inconclusive",
+  "review_status": "failed",
+  "reviewed_case_count": 0,
+  "reviewed_case_verdict_counts": null,
+  "reviewed_overall_verdict": null,
+  "effective_verdict": "inconclusive",
+  "source_verification": {
+    "status": "changed",
+    "reason": "source-changed",
+    "checks": [
+      {
+        "component": "candidate",
+        "status": "changed",
+        "expected_sha256": "23d58d2b66170c966222b0783911a0226bafbf3eee093f43f9f982be55ee6534",
+        "actual_sha256": "835fed71abf65bd1abc0fbb1768c01f3e2c2741bc2324484de887c1c7febd8f8"
+      },
+      {
+        "component": "workspace",
+        "status": "changed",
+        "expected_sha256": "0230743a3d16d1a367793d8ede45e9505a47113b2839c3ba63deb0d85ed7399d",
+        "actual_sha256": "0806e89ce023e18ea67a7a8862f7f9c40e67e944e426edebcc90d3dd16bcd249"
+      },
+      {
+        "component": "presets",
+        "status": "matched",
+        "expected_sha256": "236ca64e0c1729deeec47e5a4b88b5161037892cbec4365fd5a4079f19f02f95",
+        "actual_sha256": "236ca64e0c1729deeec47e5a4b88b5161037892cbec4365fd5a4079f19f02f95"
+      },
+      {
+        "component": "managed",
+        "status": "matched",
+        "expected_sha256": "c6b5c28357e4e8a4e9347c2bca2507f0fa76f72e9c23e2f56a46107f0bcd67aa",
+        "actual_sha256": "c6b5c28357e4e8a4e9347c2bca2507f0fa76f72e9c23e2f56a46107f0bcd67aa"
+      },
+      {
+        "component": "evaluation_implementation",
+        "status": "matched",
+        "expected_sha256": "b33a3e975bd9bdbde95c1fc7136a331f1344e4b7ae9e635458cc26d73fe915a5",
+        "actual_sha256": "b33a3e975bd9bdbde95c1fc7136a331f1344e4b7ae9e635458cc26d73fe915a5"
+      }
+    ]
+  },
+  "source_diagnosis": {
+    "status": "incomplete",
+    "conclusion": "inconclusive",
+    "reason": "源码诊断未完成（evidence）：harness-lock-digest-mismatch；未核实范围保持未知。",
+    "required_parts": 0,
+    "read_parts": 0
+  }
+}

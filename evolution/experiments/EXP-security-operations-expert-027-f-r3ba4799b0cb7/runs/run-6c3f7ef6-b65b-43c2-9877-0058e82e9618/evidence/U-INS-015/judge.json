@@ -1,0 +1,86 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测轮确实以资产 3617609 为范围发起了一次深度巡检调用，且未额外启动常规或漏洞单项（仅多做了一次在线状态单项探测），也明确说明漏洞数据缺失不能解释为没有漏洞；但两次调用均返回“已发布实现与当前装载代码或连接不一致”的 is_error 回执，未取得 run_id，深度巡检并未被受理启动，四类检查无同一范围快照的真实运行结果，无法依据实际运行区分正常、异常、失败与未覆盖项，也没有真实运行与报告入口可提供，故整体不满足预期。",
+    "requirements": [
+      {
+        "requirement": "同轮启动一次深度巡检，四类检查使用同一范围快照",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "不额外独立启动常规或漏洞单项",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "依据实际运行区分正常、异常、失败和未知，说明不支持或未覆盖的检查",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "不能把没有漏洞数据解释成没有漏洞",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "提供真实运行与报告入口",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-5e47dffd-282c-46b6-a13f-bbde5babb87f",
+    "workspace_id": "ae91c5d2-d1c5-47dd-8fdc-5880871354da",
+    "session_title": "评审 U-INS-015",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

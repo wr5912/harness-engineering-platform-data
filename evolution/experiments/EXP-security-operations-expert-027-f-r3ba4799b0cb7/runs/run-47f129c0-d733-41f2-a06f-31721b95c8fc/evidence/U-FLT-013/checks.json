@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-FLT-013",
+  "completed": false,
+  "expected_behavior": "1. 对指定对象进行真实只读取证和分析，区分事实、推断、查询失败与未覆盖范围；不创建探测、配置或处置。\n2. 分析真实完成后生成非空、完整UTF-8 HTML故障排查报告，包含原请求、原分析结果、来源及证据缺口，并交付可用预览和下载入口。报告不得冒称故障已修复，不依赖迁移前的Java诊断或报告服务。\n3. 第二轮读取或导出同次原结果，不再次委派排障；保存文件的名称、类型、字节数及内容摘要可核对。只返回摘要、启动回执、空文件或伪造链接不能判通过。",
+  "failure_reason": "browser 评测失败（退出码 2）：dsh-eval-browser failed: workspace-connect: Error:poll-timeout"
+}

@@ -1,0 +1,49 @@
+{
+  "inputs": [
+    "本次已选定XX设备开发模拟服务。帮我重启 172.13.168.11，先只准备草案，不发起确认，也不下发。"
+  ],
+  "assistant_texts": [
+    "草案已准备（仅展示，未发起确认、未下发）：\n\n- **目标设备**：XX开发模拟主机（172.13.168.11），hostId `mock-host-001`\n- **指令动作**：重启（commandId 3）\n\n说明：以上为开发模拟查询回执，不会操作真实设备。按你的要求，本轮只到草案为止——未发起确认提问，也未调用任何写入工具。如需继续，可再说“确认执行”推进到执行确认环节。"
+  ],
+  "session_id": "session-c27300a9-de57-47d3-87af-df0457ddac27",
+  "turns": [
+    {
+      "assistant_text": "草案已准备（仅展示，未发起确认、未下发）：\n\n- **目标设备**：XX开发模拟主机（172.13.168.11），hostId `mock-host-001`\n- **指令动作**：重启（commandId 3）\n\n说明：以上为开发模拟查询回执，不会操作真实设备。按你的要求，本轮只到草案为止——未发起确认提问，也未调用任何写入工具。如需继续，可再说“确认执行”推进到执行确认环节。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "ask_user_question",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__xx-device-mock__lookup_host",
+        "mcp__xx-device-mock__send_command",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "3b0a0360-216d-4130-95dd-65eb55aa15fb"
+    }
+  ]
+}

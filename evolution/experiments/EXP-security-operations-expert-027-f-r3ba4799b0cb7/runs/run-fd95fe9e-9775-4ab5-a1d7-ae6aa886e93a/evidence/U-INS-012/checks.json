@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-012",
+  "transport": "api",
+  "expected_behavior": "参数完整时同轮执行，并按本次真实运行标识查询，保留成功执行回执，不额外索要确认。没有真实执行回执不判业务通过，依赖拒绝时说明缺口。",
+  "session_id": "session-81edc42f-b603-420b-972e-3b1bd6db9d09",
+  "workspace_id": "04451499-41de-4594-9231-399c4bb2bf14",
+  "session_title": "评测 U-INS-012",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-2776ef21-d619-404c-9d0c-49b7173ba240",
+    "workspace_id": "04451499-41de-4594-9231-399c4bb2bf14",
+    "session_title": "评审 U-INS-012",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  },
+  "trace_available": true
+}

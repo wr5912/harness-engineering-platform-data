@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-021",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：前两轮回答（index 0、1）均明确处于预览状态，未启动任何巡检运行，且证据序列中前两轮无任何巡检启动工具回执，满足只预览、无启动尝试或新运行；第三轮唯一一次 inspection_status 启动回执 scope 仅为 172.16.2.170（index 6），完成回执显示同一 run_id、冻结范围 count=1、assetIds=[3617468]，无旧设备 172.16.2.114、无追加确认（index 2、8）；完成后的回答与同次运行回执中的产物 inspection-report.html、inspection-details.json 属于同一 run_id，范围、对象（172.16.2.170 单资产）与结果（unknown=1、incomplete）一致，满足同次真实报告交付要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-021"
+}

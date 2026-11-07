@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-INS-005",
+  "transport": "api",
+  "expected_behavior": "1. 核对实际设备在线状态能力与原生 Schedule 可用性。不可用时说明能力缺口，不承诺自动执行。\n2. 创建每隔 10 分钟执行一次的本会话提醒，保存用户要求的全量范围和业务输入；核对真实回执的标识、周期规则及下次到期时间，明确尚未执行。\n3. 到期消息须可追溯到已登记的真实提醒和到期授权；每次按原全量范围取得当时的资产快照，不将上次展开后的设备列表固定为范围。多条提醒保留各自的标识和到期时间。\n4. 同一到期重试不得产生重复巡检；取得实际运行标识后只续查原运行，核对范围、资产数量与证据完整性。\n5. 需要真实到期消息及巡检回执才证明自动执行；仅创建或投递成功只证明对应阶段。历史 Run 按冻结口径保留。",
+  "session_id": "session-9985381f-e221-4ef1-9dba-47660004c435",
+  "workspace_id": "5bf6fca8-421f-41f1-b1c9-f9ca0eaaf0dd",
+  "session_title": "评测 U-INS-005",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "security-operations-expert",
+    "status": "ready"
+  },
+  "session_preset": "security-operations-expert",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "trace_format": "dsh-session-export-envelope-v1",
+  "root_session_log": "session.v4.jsonl",
+  "guard": {
+    "declared": "/opt/dsh-managed/security-operations-guard.mjs",
+    "status": "unknown",
+    "reason": "Runtime Session API 未提供可核验的 Guard 激活信息；Preset 和 Workspace 匹配不能替代插件激活证据。"
+  },
+  "completed": true,
+  "judge": {
+    "session_id": "session-baba82e3-adcc-4ebb-a28d-ae86cc6bed98",
+    "unavailable_reason": "task-tree-wait-timeout",
+    "failure_stage": "judge-trace-export",
+    "last_successful_step": "prompt-accepted",
+    "rpc_method": null,
+    "http_status": null,
+    "error_code": null,
+    "request_id": "e6856574-c213-4b42-9d8c-782e4cca73a5"
+  },
+  "trace_available": true
+}

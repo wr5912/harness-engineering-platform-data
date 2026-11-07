@@ -1,0 +1,86 @@
+schema_version: '1.0'
+experiment_id: EXP-security-operations-expert-027-m-reab20c48f610
+agent_id: security-operations-expert
+baseline_ref: git:7b9c0bef6c175fd1c482006538c95ea6fc9bdcaf
+parent_experiment_id: EXP-security-operations-expert-025-r3f8a8b3da3f1
+parent_ref: git:7b9c0bef6c175fd1c482006538c95ea6fc9bdcaf
+status: active
+asset_builds:
+  dsh/managed/inspection-preparation-runtime.ts:
+    schema_version: 1
+    entry_path: dsh/managed/inspection-preparation-runtime.ts
+    output_path: dsh/managed/inspection-preparation-runtime.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 61aa7c1b2fe86d51b10607fe37c29d191e9ed00d925f19361a1d72d1bb2e80cd
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/inspection-preparation-runtime.ts
+        sha256: 37487d38d9b577946a025e3076473ad9f67482fa0b68bcbc8281ea57b9f2c357
+    source_sha256: 48aba702a31012af7370ad1e341a3ecbcd2c0d00eef623e096f652ff215b7748
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
+    platform_sources_sha256: af539f1f3eb7a2bc3cfd4456124f15cff8e65abf4333aea55e756823d4b36d3d
+    source_inputs_version: 1
+    runtime_imports:
+      - node:crypto
+      - node:fs/promises
+      - node:os
+      - node:path
+    build_digest: df9de40bface38c551f57db66f08fcc55936cd4dad5b8a3527816e6cf18810af
+    esm_sha256: 0cb0ccc7e99f1dafd3bd6a656f69deab692bc90a14dee18378784856a2f156c7
+    candidate_sha256: 3c548d574e1675e586c37e6c28d1586015af920826bdc3e66924ab4a1b96cc90
+  dsh/managed/threat-analysis/mcp-group-bridge.ts:
+    schema_version: 1
+    entry_path: dsh/managed/threat-analysis/mcp-group-bridge.ts
+    output_path: dsh/managed/threat-analysis/mcp-group-bridge.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 61aa7c1b2fe86d51b10607fe37c29d191e9ed00d925f19361a1d72d1bb2e80cd
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/threat-analysis/mcp-group-bridge.ts
+        sha256: d36fe4092dfc298001dc1990b7c43f9c87cd19f9f9574a330d64b0e52de5ae54
+    source_sha256: b354f0b907958bd16721eab8c51547dc7e03e29e2328cc4d2914965ee755270a
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
+    platform_sources_sha256: af539f1f3eb7a2bc3cfd4456124f15cff8e65abf4333aea55e756823d4b36d3d
+    source_inputs_version: 1
+    runtime_imports:
+      - node:crypto
+      - node:http
+      - node:module
+    build_digest: 723b04c6cb05c47f954f76b7a779e437e14f349fbf8ad1bf0e9cebae19c4d366
+    esm_sha256: 3eae3be807d160f57ba363160baad0d7aec5c76cbff381e620a69617dd381538
+    candidate_sha256: eaba9410e7d872f31c25e9f0d15bf96d985fd34ab65a2542ddc16e0ac6562cf0
+  dsh/managed/diagnosis-runtime.ts:
+    schema_version: 1
+    entry_path: dsh/managed/diagnosis-runtime.ts
+    output_path: dsh/managed/diagnosis-runtime.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 61aa7c1b2fe86d51b10607fe37c29d191e9ed00d925f19361a1d72d1bb2e80cd
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/diagnosis-runtime.ts
+        sha256: 0ad184bba729dc6bfe4a07e916d0398f5cafe16f4f260e24705b9bc2e268758e
+    source_sha256: d90bd984f74ea77ebf1ab0bc933b3030dd39daea20cc52ddfc53d9991308b94c
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
+    platform_sources_sha256: af539f1f3eb7a2bc3cfd4456124f15cff8e65abf4333aea55e756823d4b36d3d
+    source_inputs_version: 1
+    runtime_imports:
+      - node:crypto
+      - node:fs/promises
+      - node:os
+      - node:path
+    build_digest: 8871d83ee99ab5daedb06c1f0e2c1734ffe87f4034f55bcdabaac584722e3a5b
+    esm_sha256: f2f4403a3d0f197d0082ded38a9e44c2cd57600da4236df2478ed9c2d59aceb7
+    candidate_sha256: 1b1c8f6b880c17c7ae6e9ba951aa1d5ef13ed84474a4fa48912683fa04caf56b
+outcome: inconclusive

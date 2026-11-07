@@ -1,0 +1,68 @@
+{
+  "inputs": [
+    "执行巡检会影响业务吗？"
+  ],
+  "assistant_texts": [
+    "**结论：一般不会影响业务。** 这是基于巡检工作方式的判断——\n\n**事实依据**\n- 巡检组合读取的是 SOC 中**已有的事实和记录**（资产、策略、状态、漏洞等已有数据），不进行主动扫描、端口探测、登录或发包。\n- 巡检不包含修复、配置变更或响应处置动作，因此不会改动任何设备配置，也不触断业务连接。\n\n**因此可以明确**\n- ✅ 不主动向业务系统发流量，不影响业务连通性\n- ✅ 不修改策略、不隔离、不封禁，无变更风险\n- ✅ 属于只读取证类操作\n\n**需要说明的边界**\n- 巡检过程中若 SOC 数据量大，可能消耗一定的查询额度/接口负载，但这属于后台查询开销，不作用于业务流量。\n- 巡检结果中的\"未知/失败/不适用\"仅代表数据缺口，不代表业务异常；反过来也不会因为巡检而改变业务状态。\n\n**尚未执行**：本轮只是影响咨询，我没有启动任何巡检。如果你确认要执行，请告诉我**巡检类型**（在线状态/基线/漏洞/可达性/常规/全面）和**资产范围**（全部资产，或指定编号/IP/网段/部门等），我再按你的范围发起同轮执行。"
+  ],
+  "session_id": "session-85357d98-2789-43e2-9209-5e02c6ad3008",
+  "turns": [
+    {
+      "assistant_text": "**结论：一般不会影响业务。** 这是基于巡检工作方式的判断——\n\n**事实依据**\n- 巡检组合读取的是 SOC 中**已有的事实和记录**（资产、策略、状态、漏洞等已有数据），不进行主动扫描、端口探测、登录或发包。\n- 巡检不包含修复、配置变更或响应处置动作，因此不会改动任何设备配置，也不触断业务连接。\n\n**因此可以明确**\n- ✅ 不主动向业务系统发流量，不影响业务连通性\n- ✅ 不修改策略、不隔离、不封禁，无变更风险\n- ✅ 属于只读取证类操作\n\n**需要说明的边界**\n- 巡检过程中若 SOC 数据量大，可能消耗一定的查询额度/接口负载，但这属于后台查询开销，不作用于业务流量。\n- 巡检结果中的\"未知/失败/不适用\"仅代表数据缺口，不代表业务异常；反过来也不会因为巡检而改变业务状态。\n\n**尚未执行**：本轮只是影响咨询，我没有启动任何巡检。如果你确认要执行，请告诉我**巡检类型**（在线状态/基线/漏洞/可达性/常规/全面）和**资产范围**（全部资产，或指定编号/IP/网段/部门等），我再按你的范围发起同轮执行。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "01c12271-1763-4199-a81c-b008b48a24c7"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "inputs": [
+    "对资产标识 3617609 执行一次设备在线状态巡检。"
+  ],
+  "assistant_texts": [
+    "## 巡检结论\n\n**资产 3617609 在线状态：正常（在线）**\n\n| 项目 | 结果 |\n|---|---|\n| 运行 ID | `run-ccc8b9e8-656c-44c2-8cf6-15151b9829e7` |\n| 巡检组合 | 状态检查（inspection-status），执行状态 `completed` |\n| 冻结范围 | 资产 1 项（assetIds: 3617609），冻结于 2026-11-06T02:58:19Z |\n| 检查项统计 | 正常 1、异常 0、未知 0、不适用 0、失败 0 |\n\n**对象与证据**\n\n- 对象：`200.11防火墙`（172.16.200.11，资产 3617609）\n- 结论：正常 —— SOC 在其状态时间窗口内报告在线\n- 关键事实（SOC 已有事实，非本轮主动扫描）：\n  - 状态判定时间 2026-11-06T10:58:19（SOC 数据库本地时间），判定依据为探测信号（PROBED），状态窗口 15 分钟\n  - 当前有效信号：探测/采集确认 `reachable`，观测于 10:54:48，有效期至 11:09:48 —— 支持“在线”\n  - 已过期信号：采集数据 10:30:02、ARP 观测 10:40:31，均已超出有效期，不支持当前在线判定\n  - 代理心跳：无已验证心跳源（`NO_VERIFIED_HEARTBEAT_SOURCE`），属证据缺口，不影响本次“在线”结论\n  - 同步性核对结论为 `UNKNOWN`（无关联状态事件），故 lastSeen 记录仅表示源记录刷新，不等于状态同步\n\n**报告产物（同一 run_id）**\n\n- `inspection-report.html`（巡检报告，5351 字节）\n- `inspection-details.json`（明细，3104 字节）\n\n说明：本次为读取 SOC 已有事实的只读巡检，未做主动探测、修复或处置；后续如需周期性巡检可另行创建定时任务（尚未执行）。"
+  ],
+  "session_id": "session-75d2705b-1ef5-4290-a002-7706108f3d9b",
+  "turns": [
+    {
+      "assistant_text": "## 巡检结论\n\n**资产 3617609 在线状态：正常（在线）**\n\n| 项目 | 结果 |\n|---|---|\n| 运行 ID | `run-ccc8b9e8-656c-44c2-8cf6-15151b9829e7` |\n| 巡检组合 | 状态检查（inspection-status），执行状态 `completed` |\n| 冻结范围 | 资产 1 项（assetIds: 3617609），冻结于 2026-11-06T02:58:19Z |\n| 检查项统计 | 正常 1、异常 0、未知 0、不适用 0、失败 0 |\n\n**对象与证据**\n\n- 对象：`200.11防火墙`（172.16.200.11，资产 3617609）\n- 结论：正常 —— SOC 在其状态时间窗口内报告在线\n- 关键事实（SOC 已有事实，非本轮主动扫描）：\n  - 状态判定时间 2026-11-06T10:58:19（SOC 数据库本地时间），判定依据为探测信号（PROBED），状态窗口 15 分钟\n  - 当前有效信号：探测/采集确认 `reachable`，观测于 10:54:48，有效期至 11:09:48 —— 支持“在线”\n  - 已过期信号：采集数据 10:30:02、ARP 观测 10:40:31，均已超出有效期，不支持当前在线判定\n  - 代理心跳：无已验证心跳源（`NO_VERIFIED_HEARTBEAT_SOURCE`），属证据缺口，不影响本次“在线”结论\n  - 同步性核对结论为 `UNKNOWN`（无关联状态事件），故 lastSeen 记录仅表示源记录刷新，不等于状态同步\n\n**报告产物（同一 run_id）**\n\n- `inspection-report.html`（巡检报告，5351 字节）\n- `inspection-details.json`（明细，3104 字节）\n\n说明：本次为读取 SOC 已有事实的只读巡检，未做主动探测、修复或处置；后续如需周期性巡检可另行创建定时任务（尚未执行）。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "28c0eeb4-94be-4373-872c-ed655ff99fce"
+    }
+  ]
+}

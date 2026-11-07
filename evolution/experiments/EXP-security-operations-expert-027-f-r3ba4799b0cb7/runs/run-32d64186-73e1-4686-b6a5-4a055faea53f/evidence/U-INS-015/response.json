@@ -1,0 +1,68 @@
+{
+  "inputs": [
+    "对资产标识 3617609 执行一次深度巡检，检查在线状态、基线、可达性和已有漏洞情况，不下发新扫描。"
+  ],
+  "assistant_texts": [
+    "深度巡检已完成（只读取 SOC 已有事实，未下发任何新扫描）。整体执行结束，但结果完整性为 `incomplete`：仅在线状态一项得出结论，其余三项均为未知。\n\n## 基本信息\n- 运行号：`run-c6110cf7-4ea7-42e1-b216-58ae7fe95f5b`（全面巡检/深度巡检）\n- 冻结范围：资产 `3617609` 共 1 项，冻结时间 2026-11-06 03:00:23 UTC\n- 执行状态：completed，耗时约 2.4 秒，5 次数据请求、最大并发 2\n\n## 检查结果\n\n**1. 在线状态 —— 正常（1/1 正常）**\n- 资产：`3617609` / `172.16.200.11` /「200.11防火墙」\n- SOC 在其 15 分钟状态窗口内报告在线：采集数据已收到、探测结果 `reachable`、ARP 已观测，三项信号均为 CURRENT；最近观测 2026-11-06 11:00:02（数据库本地时间）。\n- 证据缺口：Agent 心跳未观测（无已验证心跳源）；状态同步判定为 UNKNOWN；自动探测虽标记为“符合条件”，但 `executionConfirmed=false`，本轮并未发起主动探测。\n\n**2. 基线 —— 未知（1/1 未知）**\n- 该资产当前未分配基线模板（`NO_TEMPLATE`），无检查项，既不能判为通过，也不能判为不适用。\n- 附注：读取为就绪性检查，两次读取不构成事务快照，模板内容版本未核实。\n\n**3. 可达性 —— 未知（6 条规则全部未知）**\n- 规则 1「DMZ 不得直达核心层」、规则 3「DMZ 不得直达数据库类资产」：源选择器问题 `LAYER_NOT_FOUND`（dmz 层未找到），当前无法解释。\n- 规则 2「接入层不得直达核心层」、4「测试禁止」、5「测试允许」、6「测试图层」：冻结范围内未匹配到完整检查对，未核查。\n- 本轮没有任何一条可达性规则被实际验证，未知不代表合规或违规。\n\n**4. 已有漏洞 —— 未知（1/1 未知）**\n- 未返回任何漏洞观测记录（资产 `3617609` 记录 0 条，子资产 `3617610` 记录 0 条），覆盖方式为 `existing_records_only`。\n- 明确不证明“已扫描覆盖”“未修复数量为 0”或“资产无漏洞”。建议核对漏洞数据来源、扫描覆盖及受影响软件的当前处置状态（此建议尚未执行）。\n\n## 报告产物（同一运行）\n- `inspection-report.html`（24,761 字节）\n- `inspection-details.json`（16,322 字节，本次结论即取自该明细）\n\n需要的话我可以按同一运行号读取 HTML 报告内容交付。"
+  ],
+  "session_id": "session-c640273e-f020-46ac-912e-145c107919b7",
+  "turns": [
+    {
+      "assistant_text": "深度巡检已完成（只读取 SOC 已有事实，未下发任何新扫描）。整体执行结束，但结果完整性为 `incomplete`：仅在线状态一项得出结论，其余三项均为未知。\n\n## 基本信息\n- 运行号：`run-c6110cf7-4ea7-42e1-b216-58ae7fe95f5b`（全面巡检/深度巡检）\n- 冻结范围：资产 `3617609` 共 1 项，冻结时间 2026-11-06 03:00:23 UTC\n- 执行状态：completed，耗时约 2.4 秒，5 次数据请求、最大并发 2\n\n## 检查结果\n\n**1. 在线状态 —— 正常（1/1 正常）**\n- 资产：`3617609` / `172.16.200.11` /「200.11防火墙」\n- SOC 在其 15 分钟状态窗口内报告在线：采集数据已收到、探测结果 `reachable`、ARP 已观测，三项信号均为 CURRENT；最近观测 2026-11-06 11:00:02（数据库本地时间）。\n- 证据缺口：Agent 心跳未观测（无已验证心跳源）；状态同步判定为 UNKNOWN；自动探测虽标记为“符合条件”，但 `executionConfirmed=false`，本轮并未发起主动探测。\n\n**2. 基线 —— 未知（1/1 未知）**\n- 该资产当前未分配基线模板（`NO_TEMPLATE`），无检查项，既不能判为通过，也不能判为不适用。\n- 附注：读取为就绪性检查，两次读取不构成事务快照，模板内容版本未核实。\n\n**3. 可达性 —— 未知（6 条规则全部未知）**\n- 规则 1「DMZ 不得直达核心层」、规则 3「DMZ 不得直达数据库类资产」：源选择器问题 `LAYER_NOT_FOUND`（dmz 层未找到），当前无法解释。\n- 规则 2「接入层不得直达核心层」、4「测试禁止」、5「测试允许」、6「测试图层」：冻结范围内未匹配到完整检查对，未核查。\n- 本轮没有任何一条可达性规则被实际验证，未知不代表合规或违规。\n\n**4. 已有漏洞 —— 未知（1/1 未知）**\n- 未返回任何漏洞观测记录（资产 `3617609` 记录 0 条，子资产 `3617610` 记录 0 条），覆盖方式为 `existing_records_only`。\n- 明确不证明“已扫描覆盖”“未修复数量为 0”或“资产无漏洞”。建议核对漏洞数据来源、扫描覆盖及受影响软件的当前处置状态（此建议尚未执行）。\n\n## 报告产物（同一运行）\n- `inspection-report.html`（24,761 字节）\n- `inspection-details.json`（16,322 字节，本次结论即取自该明细）\n\n需要的话我可以按同一运行号读取 HTML 报告内容交付。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "b46360c7-dd36-45a9-a6d3-dacf60228c1b"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-015",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测会话同轮仅发起一次 inspection_deep 深度巡检并取得真实 run_id，四类检查（status/baseline/reachability/vulnerabilities）在同一冻结范围快照 frozen_at=2026-11-06T03:00:23.465Z、count=1 下执行；证据集中未出现任何独立的常规或漏洞单项启动调用。回答依据 get_composition_run 与 details 明细逐项给出正常（在线状态 1/1）、未知（基线 1/1、可达性 6/6、漏洞 1/1）并说明执行状态与未覆盖原因，未出现失败/异常项与计数一致；漏洞为 0 条记录时明确声明不证明扫描覆盖、未修复为 0 或资产无漏洞；提供了真实运行号与同次返回的 inspection-report.html、inspection-details.json 产物入口。各项均有 citation_allowed=true 的同 Session 工具回执或回答原文支持。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-015"
+}

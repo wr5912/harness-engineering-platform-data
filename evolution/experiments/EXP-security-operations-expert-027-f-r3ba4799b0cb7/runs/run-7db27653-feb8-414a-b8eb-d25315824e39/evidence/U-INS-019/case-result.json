@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-019",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：被测 Session 两次以 scope.all=true 调用 inspection_reachability，原生回执均为 is_error=true（错误“本轮未明确执行巡检，不能启动运行”），未取得 run_id，也未读取到任何当前启用规则的真实数据，因此没有源目的、期望通断、路径及策略证据可供核查，更无不符合预期/未取得结论的区分结果；规则范围仅停留在计划口径、从未与实际规则配置核对，也不存在可交付的同次报告，回答本身也如实承认无运行编号、无检查摘要与报告产物。三项预期要求均未被真实工具数据支持，故判定失败。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-019"
+}

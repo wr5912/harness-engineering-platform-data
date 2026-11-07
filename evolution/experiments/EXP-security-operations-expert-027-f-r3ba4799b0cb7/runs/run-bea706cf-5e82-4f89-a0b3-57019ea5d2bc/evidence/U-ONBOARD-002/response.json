@@ -1,0 +1,69 @@
+{
+  "inputs": [
+    "请列出我在本会话上传的资产表格附件。如果没有就说明没有，不要探测，也不要导入任何资产。"
+  ],
+  "assistant_texts": [
+    "本会话当前没有上传任何资产表格附件（附件列表为空）。\n\n因此没有可读取或预览的表格。我没有进行任何探测，也没有导入任何资产。如果您稍后上传 `.xlsx` 资产表，我可以再为您列出并读取。"
+  ],
+  "session_id": "session-70f478a2-f5a8-47b9-afa3-06f0406c6412",
+  "turns": [
+    {
+      "assistant_text": "本会话当前没有上传任何资产表格附件（附件列表为空）。\n\n因此没有可读取或预览的表格。我没有进行任何探测，也没有导入任何资产。如果您稍后上传 `.xlsx` 资产表，我可以再为您列出并读取。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "asset_onboarding",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "ef99b726-cf10-4318-a5ed-726e75edec0e"
+    }
+  ]
+}

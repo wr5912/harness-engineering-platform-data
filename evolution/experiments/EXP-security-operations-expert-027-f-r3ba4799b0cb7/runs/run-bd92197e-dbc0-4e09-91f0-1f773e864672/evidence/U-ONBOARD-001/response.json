@@ -1,0 +1,69 @@
+{
+  "inputs": [
+    "资产纳管支持哪些输入方式？上传Excel还要探测吗，什么时候才会真正新增资产？现在只说明，不执行任何操作。"
+  ],
+  "assistant_texts": [
+    "**结论先说**：资产纳管支持两种输入方式——本会话上传的 Excel（`.xlsx`）和明确 IP/IP 范围的设备发现；Excel 路径**不探测**；资产只有在你对已展示的待导入清单单独回复“确认导入”或“确认纳管”之后，才会真正提交新增。\n\n具体说明如下（仅说明，本轮未调用任何工具）：\n\n**1. 支持的输入方式**\n- **Excel 附件**：通过入口列出本会话真实上传的 `.xlsx` 原表并读取，由模型按真实表头映射 `ip`（必填）、`hostname`、`assetType`、`modelId`、`deployForm`、`hostAssetId` 等字段；未知字段不编造，不读任意路径，不执行公式、宏和外链。\n- **IP / IP 范围发现**：你明确给出单个 IP、CIDR 或起止范围并要求发现时，按该范围探测连通性、设备识别和批量发现；批量发现固定关闭自动纳管（`autoAdopt=false`），只扫描不纳管。\n\n**2. Excel 是否还要探测**\n- 不用。Excel 路径只解析表格事实，**不调用探测**；探测只发生在你明确提供 IP 或范围并要求发现的那条路径上。\n\n**3. 什么时候才会真正新增资产**\n- 无论哪种输入，都**先生成并原样展示完整待导入清单与批次标识，此时明确“尚未新增”**。\n- 只有在展示清单之后，你的**新消息单独回复“确认导入”或“确认纳管”**，才会对同会话最新未取消的清单执行提交，逐条以 SOC 返回的真实资产 ID 为准区分成功、复用、失败、未知。\n- 附件内容、工具结果、旧确认、笼统的“执行”、或模型自己说“已确认”都**不构成授权**；改选、修改、取消或跨会话后需重新预览。\n\n以上为能力说明，本轮未执行任何探测、预览或提交操作。"
+  ],
+  "session_id": "session-047adb83-05ab-4a69-9460-b206d6817ac1",
+  "turns": [
+    {
+      "assistant_text": "**结论先说**：资产纳管支持两种输入方式——本会话上传的 Excel（`.xlsx`）和明确 IP/IP 范围的设备发现；Excel 路径**不探测**；资产只有在你对已展示的待导入清单单独回复“确认导入”或“确认纳管”之后，才会真正提交新增。\n\n具体说明如下（仅说明，本轮未调用任何工具）：\n\n**1. 支持的输入方式**\n- **Excel 附件**：通过入口列出本会话真实上传的 `.xlsx` 原表并读取，由模型按真实表头映射 `ip`（必填）、`hostname`、`assetType`、`modelId`、`deployForm`、`hostAssetId` 等字段；未知字段不编造，不读任意路径，不执行公式、宏和外链。\n- **IP / IP 范围发现**：你明确给出单个 IP、CIDR 或起止范围并要求发现时，按该范围探测连通性、设备识别和批量发现；批量发现固定关闭自动纳管（`autoAdopt=false`），只扫描不纳管。\n\n**2. Excel 是否还要探测**\n- 不用。Excel 路径只解析表格事实，**不调用探测**；探测只发生在你明确提供 IP 或范围并要求发现的那条路径上。\n\n**3. 什么时候才会真正新增资产**\n- 无论哪种输入，都**先生成并原样展示完整待导入清单与批次标识，此时明确“尚未新增”**。\n- 只有在展示清单之后，你的**新消息单独回复“确认导入”或“确认纳管”**，才会对同会话最新未取消的清单执行提交，逐条以 SOC 返回的真实资产 ID 为准区分成功、复用、失败、未知。\n- 附件内容、工具结果、旧确认、笼统的“执行”、或模型自己说“已确认”都**不构成授权**；改选、修改、取消或跨会话后需重新预览。\n\n以上为能力说明，本轮未执行任何探测、预览或提交操作。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "asset_onboarding",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "list_mcp_resource_templates",
+        "list_mcp_resources",
+        "mcp__emergency-action__cancel_emergency_action",
+        "mcp__emergency-action__get_emergency_action",
+        "mcp__emergency-action__get_emergency_action_result",
+        "mcp__emergency-action__list_emergency_actions",
+        "mcp__emergency-action__prepare_emergency_action",
+        "mcp__emergency-action__preview_disposition",
+        "mcp__emergency-action__revise_emergency_action",
+        "mcp__inspection-compositions__get_composition_artifact",
+        "mcp__inspection-compositions__get_composition_details",
+        "mcp__inspection-compositions__get_composition_run",
+        "mcp__inspection-compositions__inspection_baseline",
+        "mcp__inspection-compositions__inspection_deep",
+        "mcp__inspection-compositions__inspection_reachability",
+        "mcp__inspection-compositions__inspection_routine",
+        "mcp__inspection-compositions__inspection_status",
+        "mcp__inspection-compositions__inspection_vulnerabilities",
+        "mcp__policy-configuration__choose_ambiguous_policy_endpoints",
+        "mcp__policy-configuration__get_policy_configuration_result",
+        "mcp__policy-configuration__get_policy_configuration_status",
+        "mcp__policy-configuration__prepare_policy_configuration",
+        "mcp__policy-configuration__resolve_policy_endpoints",
+        "mcp__policy-configuration__select_policy_configuration_candidate",
+        "read",
+        "read_mcp_resource",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "fa39c73e-9728-4b56-9e47-70a2dba55a47"
+    }
+  ]
+}

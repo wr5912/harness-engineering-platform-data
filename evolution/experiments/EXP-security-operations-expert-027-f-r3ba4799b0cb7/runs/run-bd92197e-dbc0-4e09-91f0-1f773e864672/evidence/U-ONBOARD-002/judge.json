@@ -1,0 +1,78 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答先通过 asset_onboarding 的 action: attachments 实际查询了本会话附件，同一被测 Session 的 tool/result 显示 attachments 为空数组且 import_authorized=false，证明查询真实执行且无授权导入；回答据实说明本会话没有上传过资产表格、没有可读取的 Excel，并提示之后可上传 .xlsx，未编造文件名或表格内容；证据中仅出现 skill 载入与 attachments 查询两组调用，没有设备探测、批量发现或资产新增调用，附件回执还带有本会话 session_id，未读取其他会话文件，三项要求均明确满足。",
+    "requirements": [
+      {
+        "requirement": "实际查询当前会话真实用户上传的附件并列出名称",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"kind\":\"attachments\",\"attachments\":[],\"import_authorized\":false,\"schema_version\":\"asset-onboarding/v1\",\"session_id\":\"session-bc24c9e7-8ff0-4610-bfc8-de169707447c\"}",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 0,
+            "quote": "本会话目前**没有**上传过任何资产表格附件（会话附件清单为空）。\n\n因此本轮没有可读取的 Excel，也未做任何探测或资产导入。如果你之后上传 `.xlsx` 表格，我可以再列出并读取它，生成待导入清单（仍需你确认后才会导入）。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "没有附件时准确说明当前没有可读取文件并提示可上传Excel，不编造文件或表格内容",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "本会话目前**没有**上传过任何资产表格附件（会话附件清单为空）。\n\n因此本轮没有可读取的 Excel，也未做任何探测或资产导入。如果你之后上传 `.xlsx` 表格，我可以再列出并读取它，生成待导入清单（仍需你确认后才会导入）。",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 4,
+            "quote": "{\"kind\":\"attachments\",\"attachments\":[],\"import_authorized\":false,\"schema_version\":\"asset-onboarding/v1\",\"session_id\":\"session-bc24c9e7-8ff0-4610-bfc8-de169707447c\"}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "查询附件不触发设备探测、批量发现或资产新增，不读取其他会话文件",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"kind\":\"attachments\",\"attachments\":[],\"import_authorized\":false,\"schema_version\":\"asset-onboarding/v1\",\"session_id\":\"session-bc24c9e7-8ff0-4610-bfc8-de169707447c\"}",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 0,
+            "quote": "本会话目前**没有**上传过任何资产表格附件（会话附件清单为空）。\n\n因此本轮没有可读取的 Excel，也未做任何探测或资产导入。如果你之后上传 `.xlsx` 表格，我可以再列出并读取它，生成待导入清单（仍需你确认后才会导入）。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-23459a62-e58c-4a3c-852a-a3633351a73a",
+    "workspace_id": "93e80d4e-c323-48aa-b89d-52947a7c945f",
+    "session_title": "评审 U-ONBOARD-002",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

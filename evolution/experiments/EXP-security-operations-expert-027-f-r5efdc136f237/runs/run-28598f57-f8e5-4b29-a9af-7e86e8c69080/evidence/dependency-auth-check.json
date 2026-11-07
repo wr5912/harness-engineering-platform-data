@@ -1,0 +1,42 @@
+{
+  "observed_at": "2026-11-07T01:58:26.282885+00:00",
+  "scope": "Safe credential configuration presence check; no secrets or credential digests stored. Does not establish the upstream 401 root cause.",
+  "servers": [
+    {
+      "id": "ai-soc-correlate",
+      "spec_url": "http://172.16.138.223:18085/v3/api-docs/mcp",
+      "auth_type": "credential",
+      "auth_header": "X-API-Key",
+      "api_key_present": false,
+      "login_password_present": false,
+      "configured_credentials_match_git_head": true
+    },
+    {
+      "id": "ai-soc-graph",
+      "spec_url": "http://172.16.138.223:18088/v3/api-docs/mcp",
+      "auth_type": "credential",
+      "auth_header": "X-API-Key",
+      "api_key_present": false,
+      "login_password_present": false,
+      "configured_credentials_match_git_head": true
+    },
+    {
+      "id": "ai-soc-ingest",
+      "spec_url": "http://172.16.138.223:18081/v3/api-docs/mcp",
+      "auth_type": "credential",
+      "auth_header": "X-API-Key",
+      "api_key_present": false,
+      "login_password_present": false,
+      "configured_credentials_match_git_head": true
+    },
+    {
+      "id": "ai-soc-response",
+      "spec_url": "http://172.16.138.223:18083/v3/api-docs/mcp",
+      "auth_type": "credential",
+      "auth_header": "X-API-Key",
+      "api_key_present": false,
+      "login_password_present": false,
+      "configured_credentials_match_git_head": true
+    }
+  ]
+}

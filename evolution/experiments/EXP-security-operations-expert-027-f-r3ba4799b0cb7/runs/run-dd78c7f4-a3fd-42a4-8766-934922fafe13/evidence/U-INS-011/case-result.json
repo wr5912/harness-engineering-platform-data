@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-011",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：工具轨迹仅见一次 skill 加载调用及其回执（index 1、2），没有出现任何巡检组合启动调用，也没有 run_id、报告或产物回执；被测回答明确声明本轮未执行、无 run_id、无报告，并基于已装载的漏洞检查能力做只读预览。预览内容与 skill 回执一致：读取 SOC 已有漏洞事实、非主动探测，未宣称下发新扫描，也未连带声称读取基线或其他未列出的检查项；范围未提供时如实列为缺失并只补问范围、保留未知，未默认全部资产。逐项证据均可由 citation_allowed=true 的索引支撑。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-011"
+}

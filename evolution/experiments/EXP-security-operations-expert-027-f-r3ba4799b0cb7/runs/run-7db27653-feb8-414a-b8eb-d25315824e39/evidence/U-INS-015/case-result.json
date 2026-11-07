@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-015",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测会话同轮仅调用一次 inspection_deep（assetIds 3617609），返回真实 run_id 并经 get_composition_run 确认为 completed，四类检查（status/baseline/reachability/vulnerabilities）共享同一 frozen_at=2026-11-06T13:28:07.178Z、count=1 的范围快照，未见额外独立启动常规或漏洞单项；回答按实际 counts 区分正常 1、异常 0、失败 0、未知 8，并说明基线 NO_TEMPLATE、可达性 LAYER_NOT_FOUND 与未匹配检查对等未覆盖原因；漏洞项明确表述为未知、coverage=existing_records_only，未把 0 条记录解释为无漏洞；同时提供真实 run_id 与同次产物 inspection-report.html、inspection-details.json 入口。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-015"
+}

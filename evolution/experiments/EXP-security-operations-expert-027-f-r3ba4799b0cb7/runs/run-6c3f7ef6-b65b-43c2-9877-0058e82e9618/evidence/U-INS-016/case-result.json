@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-016",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：第一轮助手仅索取巡检范围且未发起任何运行（index 0）；第二轮收到明确资产标识后沿用同一次在线状态巡检请求，直接以 assetIds=[3617609] 调用巡检工具，未扩大范围，也未在执行前要求第三轮确认（index 1、index 5）；结果核对完全依据同 Session 真实工具回执——原生 is_error 为真、返回实现不一致错误、未取得真实 run_id，助手如实报告无可判定结果且未编造运行、摘要或报告，符合按真实运行核对结果的要求（index 5、index 1）。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-016"
+}

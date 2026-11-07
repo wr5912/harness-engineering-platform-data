@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-022",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：三轮行为与运行记录一致：第一轮回复仅为预览方案并明示未启动任何巡检，索引证据中仅有的 skill 只读加载后唯一一次 inspection_status 启动调用发生在第二轮确认执行之后；第二轮同轮执行一次取得 run-0a80c99e-6671-43ee-a472-92cda79ba427（accepted 后 completed），随后通过同 run_id 的 get_composition_run、get_composition_details、get_composition_artifact 读取同次范围（ips 172.16.2.114，冻结 1 台）、对象（wishclamAV/172.16.2.114）、结果（正常0/异常1/未知0/不适用0/失败0，SOC 报告离线）与报告产物，助手交付内容与工具回执逐项吻合且未扩大范围；第三轮仅对同一 run_id 续查（status 仍 completed、结果无变化）并交付原报告内容，未出现第二次启动调用。全部工具回执 is_error 为 false，全例证据中只出现一个新 run_id，符合仅一次新运行的要求。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-022"
+}

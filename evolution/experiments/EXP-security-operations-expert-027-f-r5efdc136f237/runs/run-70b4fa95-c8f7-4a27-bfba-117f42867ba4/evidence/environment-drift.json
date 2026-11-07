@@ -1,0 +1,39 @@
+{
+  "observed_at": "2026-11-07T01:42:40.775035+00:00",
+  "configuration_mtime": "2026-11-07T01:40:18.955245+00:00",
+  "configuration_source": "mcp/manager.json",
+  "servers": [
+    {
+      "id": "ai-soc-correlate",
+      "specUrl": "http://172.16.138.232:18085/v3/api-docs/mcp",
+      "enabled": true
+    },
+    {
+      "id": "ai-soc-graph",
+      "specUrl": "http://172.16.138.232:18088/v3/api-docs/mcp",
+      "enabled": true
+    },
+    {
+      "id": "ai-soc-ingest",
+      "specUrl": "http://172.16.138.232:18081/v3/api-docs/mcp",
+      "enabled": true
+    },
+    {
+      "id": "ai-soc-response",
+      "specUrl": "http://172.16.138.223:18083/v3/api-docs/mcp",
+      "enabled": true
+    }
+  ],
+  "observed_drift": {
+    "published_policy_implementation": "686bf9851a896365451a3a743f7c6bac5c40355adb2325ac63d22c44b9ec6a1b",
+    "later_policy_implementation": "1ff13bd5ec6d638afc3fa05ffa751bd19f6b3f559153a4a7ee0a016ff5b63ec6",
+    "published_emergency_implementation": "313220c3770f7602f6214dc2dee24b1183330bd09c4684e5a3c343c8ec1294fd",
+    "later_emergency_implementation": "e5432c7701ecec1f04deaa3bd4b5252bcf614a071c14dfad728846a98dfd0fe2"
+  },
+  "evidence_refs": [
+    "U-POL-020.json",
+    "U-POL-021.json",
+    "U-EMG-009.json"
+  ],
+  "limitation": "同一 Run 内依赖连接目标发生变化；发布版本 ID 相同不能证明依赖实现摘要相同。未覆盖当前配置；先前端点由真实会话资源发现及依赖摘要佐证。"
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-014",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：同轮内直接调用 inspection_status 并取得 ok 回执，无需二次确认；回执与运行查询均显示 scope 仅含 assetIds [3617609]、count 1，未转为全量或常规巡检；回答基于同一 Session 的 get_composition_run 与 get_composition_details 真实数据，报告了在线状态、判定时间与各信号时间、Agent 心跳 NOT_OBSERVED 及同步 UNKNOWN 等未知项，并明确 executionConfirmed=false 未发起主动扫描。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-014"
+}

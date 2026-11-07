@@ -1,0 +1,56 @@
+schema_version: "1.0"
+agent:
+  id: "security-operations-expert"
+  name: "网络安全运营专家"
+  language: "zh-CN"
+  lifecycle_status: "experiment"
+  runtime_family: "dsh"
+  load_mode: "container-only"
+  notes: "分支，周杨"
+capabilities:
+  migrated_for_research:
+    - "threat.analyze"
+    - "threat.analyze-pending-scheduled"
+    - "response.intake"
+    - "response.plan"
+    - "fault.read-evidence"
+    - "fault.diagnosis-run"
+    - "fault.diagnosis-result"
+    - "inspection.capabilities"
+    - "inspection.run"
+    - "inspection.result"
+    - "inspection.report-details"
+    - "inspection.schedule-reminder"
+    - "policy.raw-preview-and-draft"
+    - "policy.batch-changes"
+    - "emergency.raw-actions"
+    - "emergency.query-by-request-id"
+  unavailable_in_current_contract:
+    - "inspection.task-create"
+    - "soc.investigate"
+    - "knowledge.search"
+    - "policy.decide"
+loadable_assets:
+  workspace: "dsh/workspace"
+  preset_root: "dsh/presets"
+  managed_root: "dsh/managed"
+  preset_id: "security-operations-expert"
+  preset_file: "security-operations-expert/agent.cordis.yml"
+  profile_patch: "dsh/managed/security-operations-expert.patch.yml"
+  guard: "security-operations-guard.mjs"
+  profile_manifest: "dsh/managed/web-profile.package.json"
+credential_environment_keys:
+  - "DEEPSEEK_API_KEY"
+  - "SEC_OPS_MCP_TOKEN"
+  - "LOCAL_LLM_BASE_URL"
+  - "LOCAL_LLM_API_KEY"
+  - "XIAOMI_TOKEN_PLAN_CN_API_KEY"
+  - "LOCAL_API_KEY"
+security:
+  authoring_change_activation: "host-reviewed-new-container-and-session"
+  user_text_is_authority: false
+  mcp_startup_failure: "per-capability-unavailable-on-startup-failure"
+  external_service_enforcement_required: true
+  model_can_write_managed_plane: false
+provenance:
+  archive_manifest: "../../../history/imports/security-operations-expert-2026-09-15/source-manifest.json"

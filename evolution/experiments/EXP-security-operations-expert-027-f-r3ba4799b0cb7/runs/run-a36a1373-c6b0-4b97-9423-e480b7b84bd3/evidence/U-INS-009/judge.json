@@ -1,0 +1,110 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测会话未能发起常规巡检：工具回执显示 list_mcp_resources 未知工具、get_composition_run 因未列入显式工具集合被拒绝，全程无任何启动调用、无 scope.all=true 的实际传参，也未产生任何真实受理回执或 run_id，因此无法基于同次运行交付报告，正常/异常/失败/未知的分类结果也就无从表达。回答如实说明了未执行、无 run_id、无报告且未以其他字段冒充业务通过，也未进行扫描、修复或处置，这部分属实，但核心执行与交付要求明确未满足。",
+    "requirements": [
+      {
+        "requirement": "按常规巡检默认全量设定，实际传入 scope.all=true，同轮发起一次，不追问范围、不追加确认",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "依据真实受理回执取得业务运行标识，只续查同一次运行",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "运行中如实说明进度，完成后基于同次结果交付真实报告，范围和资产数量以当次回执为准",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "巡检只读 SOC 已有事实，不主动扫描、修复或处置",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 2
+          }
+        ]
+      },
+      {
+        "requirement": "正常、异常、失败和未知分别表达",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "根据实际调用及受理、运行、结果和报告证据判断",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 4
+          },
+          {
+            "index": 6
+          }
+        ]
+      },
+      {
+        "requirement": "没有真实回执或依赖失败时如实说明，不以 dry、HTTP 200、提交成功或 completed 字段代替业务通过",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0
+          },
+          {
+            "index": 6
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-787b866c-9f41-4ed0-a063-2d98a8da2fe1",
+    "workspace_id": "5910280e-d74e-4fca-9f57-de2777daeb0f",
+    "session_title": "评审 U-INS-009",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

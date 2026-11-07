@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-020",
+  "execution_status": "completed",
+  "verdict": "failed",
+  "observation": "语义判定：范围与执行核对正确：单次调用 scope.ips 同时包含两个 IP，冻结后 count=2、assetIds=[3617468,3617471]，按资产身份并集去重、同轮一次执行，未遗漏、未取交集、未扩大为全部资产（证据 4、6）；逐设备明细（证据 8）也给出了 status、observed_at 与 unknown 项。但回答在逐设备观测时间上与同一 Session 的工具回执矛盾：证据 0 称 172.16.2.114 最近探测为“2026-01-06 21:21（库内时间）且证据在有效期内”，而证据 8 的 lastProbeAt/validUntil 为 2026-11-06T21:21:30 / 2026-11-06T21:36:30（evaluatedAt 2026-11-06T21:23:13），回执不支持该关键数据，故“逐设备保留实际状态、观测时间及未知项”明确不满足，整体判 failed。报告产物与结果一致性方面，证据 0、6 显示同一 run_id 下的 inspection-report.html 与 inspection-details.json，范围、对象及 1 异常+1 未知与本次运行一致。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-020"
+}

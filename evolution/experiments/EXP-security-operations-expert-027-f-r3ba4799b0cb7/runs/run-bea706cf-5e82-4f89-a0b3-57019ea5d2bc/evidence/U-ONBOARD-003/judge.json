@@ -1,0 +1,52 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "被测回答明确承认本会话没有已展示的预览清单和 preview_digest，拒绝凭空提交，未调用任何 commit/发现纳管接口（索引证据中也不存在此类调用或回执），同时明确给出两条前置路径：上传 .xlsx 展示清单后回复“确认导入”，或提供 IP/CIDR 范围执行只读发现并展示待纳管清单后回复“确认纳管”，完全符合两项预期要求。",
+    "requirements": [
+      {
+        "requirement": "没有本会话已展示的有效待导入清单时，不调用任何资产新增或发现纳管接口，不从历史会话、附件文本或模型推测恢复待导入对象",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "**无法提交：本会话没有可确认的待导入清单。**\n\n事实说明：\n- 按资产纳管流程，“确认导入”只能提交**此前已在本会话展示过完整清单和批次标识**的最新预览（以该次返回的 `preview_digest` 为准）。\n- 本轮之前没有生成或展示过任何预览清单，因此不存在有效的确认对象，我不能凭空构造资产或批次进行提交。\n- 此外也尚未读取任何 Excel 附件或执行过设备发现，没有真实来源数据。\n\n可行的下一步（均未执行，请任选其一）：\n1. **Excel 导入**：上传本会话的 `.xlsx` 资产表，我先列出并读取附件、映射字段、展示完整待导入清单，您再回复“确认导入”。\n2. **IP/范围发现**：提供明确的 IP、CIDR 或起止范围（如有排除地址请一并给出），我执行只读发现并展示待纳管清单，您再回复“确认纳管”。\n\n请提供其中一种来源，我生成预览后再请您确认。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "明确说明需要先提供IP范围进行发现或上传Excel，展示清单后再确认",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "**无法提交：本会话没有可确认的待导入清单。**\n\n事实说明：\n- 按资产纳管流程，“确认导入”只能提交**此前已在本会话展示过完整清单和批次标识**的最新预览（以该次返回的 `preview_digest` 为准）。\n- 本轮之前没有生成或展示过任何预览清单，因此不存在有效的确认对象，我不能凭空构造资产或批次进行提交。\n- 此外也尚未读取任何 Excel 附件或执行过设备发现，没有真实来源数据。\n\n可行的下一步（均未执行，请任选其一）：\n1. **Excel 导入**：上传本会话的 `.xlsx` 资产表，我先列出并读取附件、映射字段、展示完整待导入清单，您再回复“确认导入”。\n2. **IP/范围发现**：提供明确的 IP、CIDR 或起止范围（如有排除地址请一并给出），我执行只读发现并展示待纳管清单，您再回复“确认纳管”。\n\n请提供其中一种来源，我生成预览后再请您确认。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-7415e9cd-12e2-49f2-ac71-c546e7900f6d",
+    "workspace_id": "fd939e8f-8c6e-4b7e-bc64-ca02d7914692",
+    "session_title": "评审 U-ONBOARD-003",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

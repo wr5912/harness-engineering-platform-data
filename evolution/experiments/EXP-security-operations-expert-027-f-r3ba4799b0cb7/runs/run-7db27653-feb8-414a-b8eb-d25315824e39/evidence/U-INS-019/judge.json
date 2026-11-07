@@ -1,0 +1,65 @@
+{
+  "response": {
+    "verdict": "failed",
+    "reason": "被测 Session 两次以 scope.all=true 调用 inspection_reachability，原生回执均为 is_error=true（错误“本轮未明确执行巡检，不能启动运行”），未取得 run_id，也未读取到任何当前启用规则的真实数据，因此没有源目的、期望通断、路径及策略证据可供核查，更无不符合预期/未取得结论的区分结果；规则范围仅停留在计划口径、从未与实际规则配置核对，也不存在可交付的同次报告，回答本身也如实承认无运行编号、无检查摘要与报告产物。三项预期要求均未被真实工具数据支持，故判定失败。",
+    "requirements": [
+      {
+        "requirement": "同轮按当前配置的全部适用规则执行一次业务互联专项检查，依据真实规则核查源目的、期望通断、路径及策略证据，区分不符合预期和未取得结论",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 10
+          }
+        ]
+      },
+      {
+        "requirement": "规则范围与设备范围分别核对，不把路径分析冒充现场探测或实际应用连通",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 4
+          },
+          {
+            "index": 0
+          }
+        ]
+      },
+      {
+        "requirement": "完成后默认交付同次真实报告，范围、对象和结果与本次运行一致",
+        "status": "failed",
+        "evidence": [
+          {
+            "index": 10
+          },
+          {
+            "index": 0
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "session_id": "session-e5118b6d-ba16-4918-87bc-eccb48010631",
+    "workspace_id": "7ea3085f-bcf6-4f90-a84d-0cc6817f6190",
+    "session_title": "评审 U-INS-019",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

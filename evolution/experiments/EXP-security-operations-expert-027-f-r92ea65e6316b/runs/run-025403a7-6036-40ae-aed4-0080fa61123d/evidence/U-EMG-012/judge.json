@@ -1,0 +1,79 @@
+{
+  "response": {
+    "verdict": "passed",
+    "reason": "同一被测 Session 的 lookup_host 工具回执 is_error 为 false 且回执为正常空结果（found:false、total:0、hosts:[]），证明已通过已选设备服务按目标 IP 真实查询且并非查询失败；助手随后提示“当前 IP 无对应主机设备”并结束，未生成虚构主机或草案、未发起执行确认、未调用写入接口、未转其他服务。全部要求均有 citation_allowed 为 true 的证据支持。",
+    "requirements": [
+      {
+        "requirement": "通过已选设备服务按目标IP真实查询",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"mock\":true,\"found\":false,\"total\":0,\"hosts\":[]}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "当前固定模拟数据对该IP返回正常空结果，提示“当前 IP 无对应主机设备”并结束",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"mock\":true,\"found\":false,\"total\":0,\"hosts\":[]}",
+            "quote_source": "indexed_evidence"
+          },
+          {
+            "index": 0,
+            "quote": "当前 IP 无对应主机设备（192.0.2.99，查询回执无匹配主机）。\n\n- 查询结果：未找到对应主机，因此无法生成重启草案，也未提交任何模拟指令。\n- 说明：本次查询来自开发模拟服务，数据为模拟数据；即使有匹配设备，也仅会下发模拟指令，不会操作真实设备。\n\n如需继续，请提供另一个目标 IP，或确认该 IP 是否有误。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "不生成虚构主机或草案，不发起执行确认，不调用设备控制写入接口，不转其他服务执行",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 0,
+            "quote": "当前 IP 无对应主机设备（192.0.2.99，查询回执无匹配主机）。\n\n- 查询结果：未找到对应主机，因此无法生成重启草案，也未提交任何模拟指令。\n- 说明：本次查询来自开发模拟服务，数据为模拟数据；即使有匹配设备，也仅会下发模拟指令，不会操作真实设备。\n\n如需继续，请提供另一个目标 IP，或确认该 IP 是否有误。",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      },
+      {
+        "requirement": "查询接口失败不能代替正常空结果通过本用例",
+        "status": "satisfied",
+        "evidence": [
+          {
+            "index": 4,
+            "quote": "{\"mock\":true,\"found\":false,\"total\":0,\"hosts\":[]}",
+            "quote_source": "indexed_evidence"
+          }
+        ]
+      }
+    ],
+    "evidence_normalized": true
+  },
+  "checks": {
+    "session_id": "session-38582061-2bca-4dd5-a946-587f69441f07",
+    "workspace_id": "b1df9b5d-f347-48ff-916d-e1e15810d3b3",
+    "session_title": "评审 U-EMG-012",
+    "preset_readiness": {
+      "source": "agentPresets/list",
+      "preset_id": "evaluation-judge",
+      "status": "ready"
+    },
+    "session_preset": "evaluation-judge",
+    "session_workspace": "/work/harness/workspace",
+    "preset_matches": true,
+    "workspace_matches": true,
+    "route": {
+      "provider": "xiaomi-token-plan-cn",
+      "model": "mimo-v2.6-flash",
+      "reasoningEffort": "off"
+    },
+    "tools": [],
+    "same_route_as_target": true
+  }
+}

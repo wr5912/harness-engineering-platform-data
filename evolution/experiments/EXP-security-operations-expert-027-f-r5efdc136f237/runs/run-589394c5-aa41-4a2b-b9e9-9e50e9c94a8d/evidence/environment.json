@@ -1,0 +1,57 @@
+{
+  "instance": {
+    "observed_at": "2026-11-06T12:50:15.707Z",
+    "name": "policy-response-acceptance-027-r5efdc136f237",
+    "source_id": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
+    "port": 18504,
+    "asset_status": {
+      "changed_files": [],
+      "checked_at": "2026-11-06T12:50:14.321Z",
+      "current_digest": "sha256:6f141ae49903d1c7e5dcb0e0b9f22a6fb6193f7a3356dbce2aba48db44ef50c0",
+      "generation_digest": "sha256:28ce38bdafa09cdf7654aa4e3fd38a9bda1f046dbb09592c7c1f2c23dadaf761",
+      "last_attempt": {
+        "at": "2026-11-06T12:50:00.073Z",
+        "message": "实际加载已核验",
+        "status": "verified"
+      },
+      "loaded": {
+        "configuration_digest": "sha256:31da4bcffb94b93280f9df85add1e8cc7bf9c215f8d519cc7dd32306da2bdd68",
+        "container_id": "16e4b7e6a7c1a99910652095d4f1bc1df9d5a461146976f54bbc0edd2efcd903",
+        "digest": "sha256:6f141ae49903d1c7e5dcb0e0b9f22a6fb6193f7a3356dbce2aba48db44ef50c0",
+        "files_digest": "sha256:a127c58d6ba4d689a0c991d5de4b82ad7f09b7819e180d9823ea3464eef1620e",
+        "loaded_at": "2026-11-06T12:50:00.073Z",
+        "ok": true,
+        "pid": 7,
+        "preset_id": "security-operations-expert",
+        "source_id": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
+        "started_at": "2026-11-06T12:49:52.424501936Z",
+        "verification": "runtime-observer"
+      },
+      "reason": "运行代次与加载回执一致",
+      "status": "current"
+    }
+  },
+  "draft_binding": {
+    "instanceId": "policy-response-acceptance-027-r5efdc136f237",
+    "sourceDigest": "sha256:84bf31e014e7bca15e195d9e6c24b6ec692d33a352db52369fce245906c635ad",
+    "compositions": [
+      {
+        "id": "policy-change",
+        "implementation": null,
+        "flowDigest": "3993ddafecf4194017441e8b7cf7021a06f909a29f632c6bb53f0a842ccf13fe"
+      },
+      {
+        "id": "emergency-action",
+        "implementation": null,
+        "flowDigest": "a3d63fdf68e40eedc06941cdce4f08f8e3e5b39049b6abd5bfda8cf433dd8d20"
+      }
+    ]
+  },
+  "platform_update_receipts": [
+    "17f63d69-0f0f-4501-8a13-e7f0f8d2fee0",
+    "510a9bda-ecfe-4070-b539-77d5f98bf66f"
+  ],
+  "drafts_published": false,
+  "harness_edit_proposal": "ecb12757-f926-48b4-aa25-468a8cce68b5",
+  "instance_reload_proposal": "9d503fe8-4389-4b06-9a37-016f4b0e57ff"
+}

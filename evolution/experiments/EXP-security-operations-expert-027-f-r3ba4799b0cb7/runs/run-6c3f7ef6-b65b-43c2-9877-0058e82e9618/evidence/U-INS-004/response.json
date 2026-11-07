@@ -1,0 +1,43 @@
+{
+  "inputs": [
+    "帮我创建巡检任务。"
+  ],
+  "assistant_texts": [
+    "可以，我来帮你创建周期巡检任务。目前还缺少必要信息，先补两项：\n\n1. **巡检范围**：全部资产，还是指定的编号、IP、网段、设备类型、层级或部门？\n2. **执行周期**：例如“每天 09:00”“每隔 30 分钟”“每周一 09:00”等（请说明具体时间或间隔）。\n\n补充后我会创建绑定本会话的周期任务，并核对返回的任务标识、周期和下次执行时间；创建成功仅代表任务已建立，尚未实际执行巡检。"
+  ],
+  "session_id": "session-b86b2fcf-bf0d-464c-8b3a-71b68402bdc9",
+  "turns": [
+    {
+      "assistant_text": "可以，我来帮你创建周期巡检任务。目前还缺少必要信息，先补两项：\n\n1. **巡检范围**：全部资产，还是指定的编号、IP、网段、设备类型、层级或部门？\n2. **执行周期**：例如“每天 09:00”“每隔 30 分钟”“每周一 09:00”等（请说明具体时间或间隔）。\n\n补充后我会创建绑定本会话的周期任务，并核对返回的任务标识、周期和下次执行时间；创建成功仅代表任务已建立，尚未实际执行巡检。",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "6398a562-c306-4c1c-b718-3354ef5f42b1"
+    }
+  ]
+}

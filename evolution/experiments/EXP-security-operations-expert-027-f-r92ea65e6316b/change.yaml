@@ -1,0 +1,33 @@
+schema_version: '1.0'
+experiment_id: EXP-security-operations-expert-027-f-r92ea65e6316b
+agent_id: security-operations-expert
+baseline_ref: git:4cf265bc0ad94e29f7d9a8195c553223912dc0be
+parent_experiment_id: EXP-security-operations-expert-027-m-reab20c48f610
+parent_ref: git:4cf265bc0ad94e29f7d9a8195c553223912dc0be
+status: active
+asset_builds:
+  dsh/managed/threat-analysis/mcp-group-bridge.ts:
+    schema_version: 1
+    entry_path: dsh/managed/threat-analysis/mcp-group-bridge.ts
+    output_path: dsh/managed/threat-analysis/mcp-group-bridge.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: 61aa7c1b2fe86d51b10607fe37c29d191e9ed00d925f19361a1d72d1bb2e80cd
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/threat-analysis/mcp-group-bridge.ts
+        sha256: 5c43ce3aed3293ef2d863de18ecce382f4b31afa62e3b0b3504852609a365d56
+    source_sha256: 0839aff78189d2f84553c0c869b32a53c783d2f66b74317f531b94de6cf762b7
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
+    platform_sources_sha256: af539f1f3eb7a2bc3cfd4456124f15cff8e65abf4333aea55e756823d4b36d3d
+    source_inputs_version: 1
+    runtime_imports:
+      - node:crypto
+      - node:http
+      - node:module
+    build_digest: 17211831bdedcab3caff2e8a39019edd8158da8319fca65bb17fddc1f2216b10
+    esm_sha256: 81ebca736a3f8091eaec6d2dacdbe83aa829b428808a4d24019675ae33fba066
+    candidate_sha256: fb0ee7372771935071640320062e4e3baeb87c66d68f022fffdddda07a501dac

@@ -1,0 +1,13 @@
+- id: persona
+  name: /opt/dsh/packages/preset/persona/lib/index.js
+  config:
+    prefix: >-
+      你是只读故障取证子 Agent。仅按当前工具目录调用必需的授权 SOC 查询能力，区分事实、推断和证据缺口，不执行处置、不创建运行、不读写文件，也不补造结果。
+
+- id: security-operations-guard
+  name: /opt/dsh-managed/security-operations-guard.mjs
+
+- id: security-operations-child-guard
+  name: /opt/dsh-managed/security-operations-child-guard.mjs
+  config:
+    role: fault

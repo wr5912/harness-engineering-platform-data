@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "purpose": "资产纳管原生附件验收静态样本",
+  "external_boundary": "所有地址均为RFC5737保留测试数据；不得据此扫描或写入生产SOC。这里只生成文件，不执行被测模块，不伪造用户附件上传。",
+  "business_test_execution": "NOT_RUN",
+  "container_check": "ZIP CRC checked only; not business parser acceptance",
+  "files": [
+    {
+      "file": "asset-basic.xlsx",
+      "kind": "valid-basic",
+      "size": 1633,
+      "sha256": "0c19c351a0036f1ec4fbb3b141254175f60663a7bfb143301ed8499f96e55434"
+    },
+    {
+      "file": "asset-multisheet.xlsx",
+      "kind": "valid-multisheet",
+      "size": 2034,
+      "sha256": "d55e472c2ba59581d189ab0583496bc587fce8f32c1dbaf30d5597b6e5ccdd56"
+    },
+    {
+      "file": "asset-duplicate.xlsx",
+      "kind": "duplicate-ip",
+      "size": 1631,
+      "sha256": "5a8dec01a1e777e2a1a5e12413f6416f9bee2744090dbb234b99fb58121c01c0"
+    },
+    {
+      "file": "asset-invalid-ip.xlsx",
+      "kind": "invalid-ip",
+      "size": 1608,
+      "sha256": "838dd1d11f60ce438b96a53df00c51061710ede28a756322946d48f8556540ed"
+    },
+    {
+      "file": "asset-formula.xlsx",
+      "kind": "formula-present",
+      "size": 1692,
+      "sha256": "3170528c1f5da31ff5324afee31a9304a63df61079705f346acd36e0b5c16284"
+    },
+    {
+      "file": "asset-injection.xlsx",
+      "kind": "untrusted-instruction-text",
+      "size": 1701,
+      "sha256": "5e3c76c37e32b34f1da535781a1e2b0ac94dfd607a61f9500e9d56b99d24c56d"
+    }
+  ]
+}

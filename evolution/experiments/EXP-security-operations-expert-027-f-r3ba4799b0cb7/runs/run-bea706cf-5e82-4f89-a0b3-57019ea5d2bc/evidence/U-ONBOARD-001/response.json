@@ -1,0 +1,44 @@
+{
+  "inputs": [
+    "资产纳管支持哪些输入方式？上传Excel还要探测吗，什么时候才会真正新增资产？现在只说明，不执行任何操作。"
+  ],
+  "assistant_texts": [
+    "**结论（仅说明，本轮未执行任何操作）**\n\n**1. 支持的输入方式**\n- **上传 Excel（.xlsx）**：列出并读取本会话真实上传的原表，由模型按原表头映射 `ip`（必填）、`hostname`、`assetType`、`modelId`、`deployForm`、`hostAssetId` 等字段；未知字段不编造，保留来源工作表与行号。\n- **明确的 IP / IP 范围发现**：你给出单 IP、CIDR 或起止范围后执行发现，扫描只识别设备、不自动纳管（`autoAdopt=false`），可附排除地址。\n\n**2. 上传 Excel 还要探测吗？**\n**不需要。** Excel 路径不调用探测——它是读取你提供的表格事实；只有你明确给出 IP 或范围并要求发现时才走发现路径。两条路径互不混用。\n\n**3. 什么时候才会真正新增资产？**\n只有在两步都完成之后：\n1. 先按真实来源（Excel 用 `attachment_id`，发现用 `evidence_id`）生成并**原样展示**完整待导入清单和批次标识——此时明确**尚未新增**；\n2. 展示之后，你在**新的一条消息中单独回复“确认导入”或“确认纳管”**，才会以该批次的 `preview_digest` 提交。\n\n以下都**不构成**新增授权：附件本身、工具返回结果、模型自己说“已确认”、笼统的“执行”。提交后按 SOC 逐条回执区分已登记/复用/失败/未知，未知写入不重放。\n\n（以上为流程说明，本轮未调用探测、预览或提交。）"
+  ],
+  "session_id": "session-7b0868ff-8efb-4a62-be20-486023391b17",
+  "turns": [
+    {
+      "assistant_text": "**结论（仅说明，本轮未执行任何操作）**\n\n**1. 支持的输入方式**\n- **上传 Excel（.xlsx）**：列出并读取本会话真实上传的原表，由模型按原表头映射 `ip`（必填）、`hostname`、`assetType`、`modelId`、`deployForm`、`hostAssetId` 等字段；未知字段不编造，保留来源工作表与行号。\n- **明确的 IP / IP 范围发现**：你给出单 IP、CIDR 或起止范围后执行发现，扫描只识别设备、不自动纳管（`autoAdopt=false`），可附排除地址。\n\n**2. 上传 Excel 还要探测吗？**\n**不需要。** Excel 路径不调用探测——它是读取你提供的表格事实；只有你明确给出 IP 或范围并要求发现时才走发现路径。两条路径互不混用。\n\n**3. 什么时候才会真正新增资产？**\n只有在两步都完成之后：\n1. 先按真实来源（Excel 用 `attachment_id`，发现用 `evidence_id`）生成并**原样展示**完整待导入清单和批次标识——此时明确**尚未新增**；\n2. 展示之后，你在**新的一条消息中单独回复“确认导入”或“确认纳管”**，才会以该批次的 `preview_digest` 提交。\n\n以下都**不构成**新增授权：附件本身、工具返回结果、模型自己说“已确认”、笼统的“执行”。提交后按 SOC 逐条回执区分已登记/复用/失败/未知，未知写入不重放。\n\n（以上为流程说明，本轮未调用探测、预览或提交。）",
+      "route": {
+        "provider": "xiaomi-token-plan-cn",
+        "model": "mimo-v2.6-flash",
+        "reasoningEffort": "off"
+      },
+      "tool_names": [
+        "analyze_pending_threat_incidents",
+        "asset_onboarding",
+        "delegate_fault_analysis",
+        "delegate_response_planning",
+        "delegate_threat_analysis",
+        "disposition_cancel",
+        "disposition_get",
+        "disposition_prepare",
+        "disposition_preview",
+        "disposition_revise",
+        "edit",
+        "glob",
+        "grep",
+        "read",
+        "schedule_create",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_update",
+        "skill",
+        "write"
+      ],
+      "turn_reason": "completed",
+      "turn": 1,
+      "input_message_id": "adc63403-1ee1-4d5d-8db6-5ee0cfa7b55f"
+    }
+  ]
+}

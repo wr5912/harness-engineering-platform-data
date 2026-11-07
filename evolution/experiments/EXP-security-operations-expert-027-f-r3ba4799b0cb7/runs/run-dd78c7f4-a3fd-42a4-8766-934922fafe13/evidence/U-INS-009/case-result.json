@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-009",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答的关键数据均能由同 Session 工具回执支撑：唯一一次 inspection_routine 调用传入 scope.all=true 并取得真实受理回执（accepted、run_id），全程只对该 run_id 轮询与续查，无重新发起或追问；完成回执 status=completed 且业务结果 status=incomplete，回答据此如实区分执行结束与业务通过，未以 completed 代替通过，并按回执交付同一 run 的统计（105 项资产、状态 78/23/4/0、基线 9/0/96、可达性 1/43/87 共 131 项、338 次请求、13:08:00→13:10:18、两份产物）；四类结论分列表达，明确只读 SOC 已有事实、未主动扫描修复处置，报告产物正文亦注明不执行主动探测。未发现与回执冲突或失败项。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-009"
+}

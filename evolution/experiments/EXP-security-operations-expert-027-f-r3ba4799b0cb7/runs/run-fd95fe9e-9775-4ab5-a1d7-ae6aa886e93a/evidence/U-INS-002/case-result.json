@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-002",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：被测回答依据本轮真实工具回执作答：MCP 资源发现三次均返回 ToolNotFoundError/UNKNOWN_TOOL（目录读取失败），并如实引用 security-inspection Skill 文本中的六类巡检类别且明确标注其非实时目录回执、不编造具体巡检项；全部工具调用仅为 skill 读取、glob、grep 与资源发现探测，无任何启动巡检动作；工具发现记录（Skill 回执与三次 unknown tool 错误）即可证明目录来源，未额外要求专用目录工具。四项要求均有同 Session 的 citation_allowed=true 证据支持。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-002"
+}
