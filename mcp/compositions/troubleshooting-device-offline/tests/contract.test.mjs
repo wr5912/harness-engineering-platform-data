@@ -328,6 +328,15 @@ function inspectGraph(graph, workflow, label, stats) {
       continue
     }
     if (definition.metadata.kind === 'condition') {
+      const expectedLabels = {
+        ResolutionGate: [['ready', '对象已确认'], ['blocked', '对象未确认']],
+        OfflineItemGate: [['soc-state', '状态证据'], ['alerts', '关联告警'], ['management', '管理观察']],
+        ObservationGate: [['reply', '本次已响应'], ['no_reply', '无回复'], ['unknown', '响应未核实']],
+        BindingGate: [['bound', '唯一绑定'], ['none', '绑定缺口']],
+        CollectionItemGate: [['run-state', '采集运行'], ['config', '采集配置'], ['heartbeat', '原始心跳'], ['synchronization', '状态同步']],
+      }[node.data.type]
+      assert.ok(expectedLabels, `${label}/${node.id}条件类型必须有明确业务标签合同`)
+      assert.deepEqual(definition.outputs.map(output => [output.name, output.display_name]), expectedLabels, `${label}/${node.id}所有条件端口须保留准确业务标签`)
       assert.ok(definition.outputs.length >= 2 && definition.outputs.every(output => output.group_outputs === true))
       assert.match(code, /group_outputs=True/)
       assert.match(code, /selected=payload\(self\.value\)\['(?:branch|item)'\]/)
