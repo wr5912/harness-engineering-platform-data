@@ -1,0 +1,1777 @@
+{
+  "name": "policy-change",
+  "metadata": {
+    "hep": {
+      "typescript": "src/index.ts"
+    }
+  },
+  "data": {
+    "nodes": [
+      {
+        "id": "input",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "id": "input",
+          "type": "HepInput",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "运行输入",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "输入",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {},
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "resolve",
+        "position": {
+          "x": 340,
+          "y": 0
+        },
+        "data": {
+          "id": "resolve",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"resolve\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "核对设备与参数合同",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "preview",
+        "position": {
+          "x": 680,
+          "y": 0
+        },
+        "data": {
+          "id": "preview",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"preview\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "并行生成真实预览",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "preview-stop",
+        "position": {
+          "x": 1020,
+          "y": 0
+        },
+        "data": {
+          "id": "preview-stop",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"go\",display_name=\"预览通过并继续？\",method=\"route_go\",group_outputs=True),Output(name=\"stop\",display_name=\"预览通过并继续？\",method=\"route_stop\",group_outputs=True)]\n async def route_go(self)->Data:\n  value=payload(self.value)\n  selected='go' if value.get('proceed') else 'stop'\n  excluded=[name for name in ('go', 'stop') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_stop(self)->Data:\n  value=payload(self.value)\n  selected='go' if value.get('proceed') else 'stop'\n  excluded=[name for name in ('go', 'stop') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "预览通过并继续？",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "go",
+                "display_name": "预览通过并继续？",
+                "method": "route_go",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "stop",
+                "display_name": "预览通过并继续？",
+                "method": "route_stop",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "condition"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "draft",
+        "position": {
+          "x": 1360,
+          "y": 0
+        },
+        "data": {
+          "id": "draft",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"draft\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "建立或恢复 AISOC 原任务",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "draft-stop",
+        "position": {
+          "x": 0,
+          "y": 260
+        },
+        "data": {
+          "id": "draft-stop",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"go\",display_name=\"继续提交？\",method=\"route_go\",group_outputs=True),Output(name=\"stop\",display_name=\"继续提交？\",method=\"route_stop\",group_outputs=True)]\n async def route_go(self)->Data:\n  value=payload(self.value)\n  selected='go' if value.get('proceed') else 'stop'\n  excluded=[name for name in ('go', 'stop') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_stop(self)->Data:\n  value=payload(self.value)\n  selected='go' if value.get('proceed') else 'stop'\n  excluded=[name for name in ('go', 'stop') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "继续提交？",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "go",
+                "display_name": "继续提交？",
+                "method": "route_go",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "stop",
+                "display_name": "继续提交？",
+                "method": "route_stop",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "condition"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "submit",
+        "position": {
+          "x": 340,
+          "y": 260
+        },
+        "data": {
+          "id": "submit",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"submit\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "预检并提交原任务",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "approval",
+        "position": {
+          "x": 680,
+          "y": 260
+        },
+        "data": {
+          "id": "approval",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"approval\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "核对真实审批状态",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "execute-stop",
+        "position": {
+          "x": 1020,
+          "y": 260
+        },
+        "data": {
+          "id": "execute-stop",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"go\",display_name=\"已批准或已有执行结果？\",method=\"route_go\",group_outputs=True),Output(name=\"stop\",display_name=\"已批准或已有执行结果？\",method=\"route_stop\",group_outputs=True)]\n async def route_go(self)->Data:\n  value=payload(self.value)\n  selected='go' if value.get('proceed') else 'stop'\n  excluded=[name for name in ('go', 'stop') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_stop(self)->Data:\n  value=payload(self.value)\n  selected='go' if value.get('proceed') else 'stop'\n  excluded=[name for name in ('go', 'stop') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "已批准或已有执行结果？",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "go",
+                "display_name": "已批准或已有执行结果？",
+                "method": "route_go",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "stop",
+                "display_name": "已批准或已有执行结果？",
+                "method": "route_stop",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "condition"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "execute",
+        "position": {
+          "x": 1360,
+          "y": 260
+        },
+        "data": {
+          "id": "execute",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"execute\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "执行一次；未知不重放",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "observe",
+        "position": {
+          "x": 0,
+          "y": 520
+        },
+        "data": {
+          "id": "observe",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"observe\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "按原任务核对结果",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "result",
+        "position": {
+          "x": 340,
+          "y": 520
+        },
+        "data": {
+          "id": "result",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": true,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=True,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"result\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "返回事实与恢复入口",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": true
+          }
+        }
+      },
+      {
+        "id": "preview-result",
+        "position": {
+          "x": 680,
+          "y": 520
+        },
+        "data": {
+          "id": "preview-result",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"result\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "返回预览与阻塞原因",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": true
+          }
+        }
+      },
+      {
+        "id": "draft-result",
+        "position": {
+          "x": 1020,
+          "y": 520
+        },
+        "data": {
+          "id": "draft-result",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"result\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "返回草稿或创建状态",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": true
+          }
+        }
+      },
+      {
+        "id": "waiting-result",
+        "position": {
+          "x": 1360,
+          "y": 520
+        },
+        "data": {
+          "id": "waiting-result",
+          "type": "TestComponent",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, payload, current_run, callback\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nimport asyncio\nclass TestComponent(HepComponent):\n inputs=[DataInput(name=\"value\",is_list=False,required=True)]\n outputs=[Output(name=\"result\",method=\"build\")]\n async def build(self)->Data:\n  from hep_lfx import component\n  value=self.value[0] if isinstance(self.value,list) else self.value\n  return Data(data=await component(\"result\",payload(value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "返回审批状态与恢复入口",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "result",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "action"
+            },
+            "tool_mode": false,
+            "is_output": true
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "input",
+        "target": "resolve",
+        "data": {
+          "sourceHandle": {
+            "id": "input",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "resolve",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "resolve",
+        "target": "preview",
+        "data": {
+          "sourceHandle": {
+            "id": "resolve",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "preview",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "preview",
+        "target": "preview-stop",
+        "data": {
+          "sourceHandle": {
+            "id": "preview",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "preview-stop",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "preview-stop",
+        "target": "draft",
+        "data": {
+          "sourceHandle": {
+            "id": "preview-stop",
+            "name": "go",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "draft",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "preview-stop",
+        "target": "preview-result",
+        "data": {
+          "sourceHandle": {
+            "id": "preview-stop",
+            "name": "stop",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "preview-result",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "draft",
+        "target": "draft-stop",
+        "data": {
+          "sourceHandle": {
+            "id": "draft",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "draft-stop",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "draft-stop",
+        "target": "submit",
+        "data": {
+          "sourceHandle": {
+            "id": "draft-stop",
+            "name": "go",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "submit",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "draft-stop",
+        "target": "draft-result",
+        "data": {
+          "sourceHandle": {
+            "id": "draft-stop",
+            "name": "stop",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "draft-result",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "submit",
+        "target": "approval",
+        "data": {
+          "sourceHandle": {
+            "id": "submit",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "approval",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "approval",
+        "target": "execute-stop",
+        "data": {
+          "sourceHandle": {
+            "id": "approval",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "execute-stop",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "execute-stop",
+        "target": "execute",
+        "data": {
+          "sourceHandle": {
+            "id": "execute-stop",
+            "name": "go",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "execute",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "execute-stop",
+        "target": "waiting-result",
+        "data": {
+          "sourceHandle": {
+            "id": "execute-stop",
+            "name": "stop",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "waiting-result",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "execute",
+        "target": "observe",
+        "data": {
+          "sourceHandle": {
+            "id": "execute",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "observe",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "source": "observe",
+        "target": "result",
+        "data": {
+          "sourceHandle": {
+            "id": "observe",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "result",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      }
+    ]
+  }
+}

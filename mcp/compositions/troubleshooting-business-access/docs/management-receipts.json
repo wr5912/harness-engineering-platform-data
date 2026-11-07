@@ -1,0 +1,119 @@
+{
+  "record_kind": "本包真实管理保存与dry回执",
+  "session_id": "session-917d55d5-4f2c-4fbd-8442-7d88549ab2f3",
+  "composition_id": "troubleshooting-business-access",
+  "tool_name": "diagnose_business_access",
+  "source_scope": "本会话公开platform_mcp返回的选定字段；完整工具消息保留在会话，不是新运行或已发布版本。",
+  "registration_contract": {
+    "build_entry": "mcp/build.mjs",
+    "discovery": "readCompositions读取目录配置的workflow，再由构建生成@mcp/workflows并导入各包src/index.ts的create；无需硬编码新ID。",
+    "root_index_written_by": "saveCompositionDraft",
+    "generic_executor_added": false
+  },
+  "operations": [
+    {
+      "action": "list",
+      "phase": "本次新包写入前的目录读取",
+      "state": "failed",
+      "result": {"ok": false, "error": {"code": "mcp_failed", "message": "子组合已发布版本不存在，请选择具体版本", "details": {}}},
+      "resolution": "后续目录读取已成功；未修改旧组合或恢复并行文件来排障。"
+    },
+    {
+      "action": "list",
+      "phase": "保存前重新读取目录",
+      "state": "completed",
+      "result_excerpt": {"ok": true, "revision": "62365899a7b426e0293652d7bb9afadc2e1d80450f010d94dd78e413a1d73bd0"}
+    },
+    {
+      "action": "saveCompositionDraft",
+      "proposal_id": "2dfa6a9f-3c87-4c5a-b787-1a3a8e98fbfc",
+      "input": {
+        "revision": "62365899a7b426e0293652d7bb9afadc2e1d80450f010d94dd78e413a1d73bd0",
+        "newId": "troubleshooting-business-access",
+        "draft": {"toolName": "diagnose_business_access", "title": "业务访问故障排查", "description": "对唯一源、目标和精确协议端口并行读取SOC状态、关联告警与配置路径；逐项保存事实后释放本分支后继。当前草稿不执行主动TCP、应用请求或修复，缺原子明确unknown/unavailable，未知不判正常。", "connectionId": "platform-compositions", "kind": "workflow", "workflow": "troubleshooting-business-access", "engine": "lfx", "readonly": true, "connections": {"master": "ai-soc-master", "detect": "ai-soc-detect", "graph": "ai-soc-graph"}}
+      },
+      "state": "completed",
+      "result_excerpt": {"ok": true, "composition_id": "troubleshooting-business-access", "revision": "e0ff82d15f600e170c2a251d9345dd709e9550e9aa4014b139375b27c555f88e", "draft_saved": true, "published": false}
+    },
+    {
+      "action": "dryRunComposition",
+      "input": {"revision": "e0ff82d15f600e170c2a251d9345dd709e9550e9aa4014b139375b27c555f88e", "compositionId": "troubleshooting-business-access", "version": "draft", "input": {"source": {"ip": "172.16.138.226", "assetId": 3617426}, "target": {"ip": "172.16.200.11", "assetId": 3617609}, "protocol": "tcp", "port": 443, "from": "2026-11-07T00:00:00Z", "to": "2026-11-07T03:00:00Z"}},
+      "state": "failed",
+      "result": {"ok": false, "error": {"code": "mcp_failed", "message": "工作流尚未装载：troubleshooting-business-access", "details": {}}},
+      "upstream_requests_executed": false,
+      "interpretation": "已保存草稿；dry未通过，失败于当前管理扩展未装载新工作流，不是声明新ID必须硬编码。构建与装载检查交研发，不用实际执行绕过dry。"
+    },
+    {
+      "action": "compositionSource",
+      "input": {"selection": {"id": "troubleshooting-business-access", "version": "draft"}},
+      "state": "completed",
+      "result_excerpt": {"ok": true, "identity": "composition:troubleshooting-business-access:693ddf9eda68b060ad3bbd9b377107dd573d1cf2d455eb4b93c56e911d541555", "flow": {"path": "flow.json", "bytes": 66079, "sha256": "6f27da653eb544957c74c80ac2b773ee1fa318e239ada7df7c1638bffd93cb3b"}, "component_count": 25, "execution_module": {"path": "execution.js", "bytes": 25470, "sha256": "517add142fd1e634994a4ccc39120b1f0414f511d276b594a28ddb96fb8cb9a3"}},
+      "interpretation": "平台已实际读取同一原生flow、桥接组件和业务依赖；不等于官方运行时执行、代码检查或目标实例装载通过。"
+    },
+    {
+      "action": "compositionSource",
+      "phase": "补齐本包Run.scope对象引用后再次回读当前草稿源码",
+      "input": {"selection": {"id": "troubleshooting-business-access", "version": "draft"}},
+      "state": "completed",
+      "result_excerpt": {"ok": true, "identity": "composition:troubleshooting-business-access:9a55abd5f92d11eeb3918e650f05690cbf1b8f1e47012c6902cf828560ebdb7e", "flow": {"path": "flow.json", "bytes": 66079, "sha256": "6f27da653eb544957c74c80ac2b773ee1fa318e239ada7df7c1638bffd93cb3b"}, "component_count": 25, "execution_module": {"path": "execution.js", "bytes": 25778, "sha256": "60c451bdbe9ef1c52da12af059bb24cdf39dcf292d796330180bdfd041d84812"}},
+      "interpretation": "流程定义未变，TS资产完善后由公开源码工具实际回读。仍未构建装载到管理工作流；此前dry的未装载失败不是本次源码通过验收的依据。"
+    }
+  ],
+  "followup_after_mcp_list_fix": {
+    "draft_state": "公开list回读与原保存一致；本包定义未变，未重复保存已成功草稿",
+    "source_identity_confirmed": "composition:troubleshooting-business-access:9a55abd5f92d11eeb3918e650f05690cbf1b8f1e47012c6902cf828560ebdb7e",
+    "revision_conflict": {"action": "dryRunComposition", "submitted_revision": "d78f60dd5c7635c6e381e5921c5d7e74f7914cd511526d4959ac487491571ebc", "state": "failed", "result": {"ok": false, "error": {"code": "mcp_failed", "message": "编排目录已变化，请刷新后重试；当前草稿未覆盖", "details": {}}}},
+    "refreshed_list": {"action": "list", "state": "completed", "ok": true, "revision": "e1ef82f5205173c67c50835685dd2c237801cbf2390664065cec239ce5e890b8", "target_workflow_loaded": false},
+    "dry": {
+      "action": "dryRunComposition",
+      "input": {"revision": "e1ef82f5205173c67c50835685dd2c237801cbf2390664065cec239ce5e890b8", "compositionId": "troubleshooting-business-access", "version": "draft", "input": {"source": {"ip": "172.16.138.226", "assetId": 3617426}, "target": {"ip": "172.16.200.11", "assetId": 3617609}, "protocol": "tcp", "port": 443, "from": "2026-11-07T00:00:00Z", "to": "2026-11-07T03:00:00Z"}},
+      "state": "failed",
+      "result": {"ok": false, "error": {"code": "mcp_failed", "message": "工作流尚未装载：troubleshooting-business-access", "details": {}}},
+      "upstream_requests_executed": false
+    },
+    "baseline_status": "用户说明旧故障报告基线尚未有效执行；本条不读取或修改Candidate、不重载、不启动评测，不将历史Run当作本次迁移基线",
+    "handoff": "保留已保存包与自包含索引，等待研发构建并装载管理侧动态工作流后再做dry；不绕过工具改目录登记"
+  },
+  "native_batch_handoff": {
+    "action": "saveCompositionDraft",
+    "proposal_id": "c92dca27-6543-4970-b7c4-40a97628c4b5",
+    "input": {"revision": "2ad094b15b4862ef0dda4c6dd343e5757fcb7988623638af283b5e3f9d63523b", "compositionId": "troubleshooting-business-access", "draft": {"toolName": "diagnose_business_access", "title": "业务访问故障排查", "description": "对唯一源、目标和精确协议端口，以既有HepBatch包内body分别取证SOC状态、告警、配置路径与TCP缺口；组件返回前记录事实。批次调度与即时后继尚待研发验证；不主动探测、不修复，未知不判正常。", "connectionId": "platform-compositions", "kind": "workflow", "workflow": "troubleshooting-business-access", "engine": "lfx", "readonly": true, "connections": {"master": "ai-soc-master", "detect": "ai-soc-detect", "graph": "ai-soc-graph"}}},
+    "state": "completed",
+    "result_excerpt": {"ok": true, "revision": "26191b2cc462ab0e415e5d25bdcdc3ab95d9862d097bebf80342a238b19ffcf7", "draft_saved": true, "published": false},
+    "current_assets": {"flow": "flow.json", "components": "src/index.ts", "contract": "docs/contract.md", "tests": "tests/contract.test.mjs", "test_instructions": "tests/README.md"},
+    "implementation_state": "根图身份条件后复用既有HepBatch；包内body按冻结item选择独立分支终态，TCP四出口有实际后继，summary严格核对结果顺序；未新建执行器或改平台源码",
+    "test_command": "HARNESS_PROGRAM_ROOT=<实际程序根> node --test mcp/compositions/troubleshooting-business-access/tests/contract.test.mjs",
+    "tests_executed": false,
+    "dry_executed_this_stage": false,
+    "build_executed": false,
+    "real_soc_acceptance": false,
+    "runtime_limit": "HepBatch改造仅为本版候选最小适配，未宣称验证真实并行、即时后继推进或progress落盘可见性；旧外部SOC模拟边界官方LFX探针不是真实业务验收",
+    "historical_operations_do_not_describe_current_implementation": true,
+    "handoff": "本包TS、原生流程及合同测试已停止写入；研发统一运行合同测试、构建并通知实际装载后继续验证。当前不改Candidate/evaluation，不bind/publish或主动探测。"
+  },
+  "template_visibility_fix": {
+    "source": "用户转述研发真实定位：官方ParameterHandler在非code字段not field.get(show)时跳过常量；真正to_frontend_node的body仍为NestedDict/NestedDictInput，缺少show:true才导致None",
+    "reported_before_fix": {"access_contracts": "研发反馈旧版10项通过，非本会话执行", "native_root": "失败：TypeError: flow JSON must be a JSON object, got NoneType", "standalone_body": "研发反馈Graph.from_payload(body)与run_graph(body)成功；不证明根图装配"},
+    "changes": ["checks的body/items_key/concurrency补show:true，保留原类型和值", "核对并补齐全部非code输入show；无额外业务常量字段", "合同测试新增递归可见性及批次常量装载前提断言，未运行", "运行JSON删除runtime_validation，HTML和缺口事实移除开发进度；验证状态只留文档/证据"],
+    "save": {"action": "saveCompositionDraft", "proposal_id": "75c90d0f-4d56-42bf-a7e3-a794040092a8", "compositionId": "troubleshooting-business-access", "input_revision": "903296c86e7b96fa246c869007747aef7da39562211e7f727acfdb79a199f747", "state": "completed", "result_excerpt": {"ok": true, "revision": "efb2083e42cbaee1f0cf9dbca2d29ff9ca8fbc4b8a87d1133d895698860f9d73", "published": false}},
+    "runtime_modified": false,
+    "tests_or_probe_executed_this_session": false,
+    "dry_executed": false,
+    "native_root_retest": "等待研发对本轮show修复及报告调整执行真实nativeprobe，不声称修复后运行通过",
+    "handoff": "本包已公开保存；源码、流程、测试与说明停止写入，交研发复测。未改Candidate/evaluation、未bind/publish或主动探测"
+  },
+  "visible_bundle_isolation_experiment": {
+    "source": "/tmp/hep-troubleshooting-native-visible-experiment-result.json",
+    "provenance": "研发经用户提供隔离条件；本会话只读结果选定字段，未执行该探针",
+    "experiment_scope": "官方LFX，仅对冻结bundle的内存副本补HepBatch常量show:true；外部SOC为模拟边界，不是正式源文件运行或真实业务验收",
+    "file_observation": {"id": "troubleshooting-business-access", "ok": true, "calls": 7, "result_status": "incomplete", "independent_successor": {"node": "root/checks[5]/tcp-unknown", "at": 8849.001717, "slow_alert_node": "root/checks[3]/target-alerts", "slow_alert_at": 9822.934066}},
+    "reported_advance_ms": 974,
+    "formal_source_verified_passed": false,
+    "formal_asset_state": "已回读正式checks的body/items_key/concurrency均show:true，类型不变；回归断言及运行输出标签清理已在正式文件，本轮仅清理流程展示描述并合并证据",
+    "save": {"action": "saveCompositionDraft", "proposal_id": "46ad2106-f834-4afa-a6a7-d884cbe64969", "compositionId": "troubleshooting-business-access", "input_revision": "3b73063d82557c00baac61d37078a94e30ff78b1d7f39e05e2be08812992c72b", "state": "completed", "result_excerpt": {"ok": true, "revision": "3b73063d82557c00baac61d37078a94e30ff78b1d7f39e05e2be08812992c72b", "published": false}},
+    "revision_scope": "目录配置字段未变，目录revision保持不变；此revision及保存成功都不代替正式源码/官方引擎复验",
+    "handoff": "已停止资产写入，等待研发对正式源文件复验；未启动验证或触碰Candidate/evaluation/迁移前基线Run，未bind/publish或主动探测"
+  },
+  "not_performed": ["发布", "实例草稿绑定", "Candidate或Case修改", "主动TCP/ICMP/HTTP或扫描", "旧诊断服务调用", "业务实例重启/重载", "新评测实例或迁移基线创建", "手动构建或运行代码检查"],
+  "development_handoff": "研发按现有动态包构建/装载管理侧业务扩展并检查本包代码和原生LFX分支。然后沿当前已保存草稿回读新revision，再复做dry；不硬编码新ID，不自动发布或启动业务执行。"
+}

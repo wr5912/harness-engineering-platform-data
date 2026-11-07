@@ -1,0 +1,244 @@
+{
+  "id": "inspection-routine",
+  "versions": [
+    {
+      "versionId": "38aef92e5912dfd2547bb3a28b9415a49d4397ad6fee146e55d6c31a7a538543",
+      "publishedAt": "2026-11-05T13:50:46.809Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "d4dbd6a27130eea9d26059f3e0bebd3d13570784880c9818c46f37910cc3c2bd",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "composite",
+        "steps": [
+          {
+            "id": "status",
+            "compositionId": "inspection-status",
+            "versionId": "8d8e872c1571243ae16dc097941817e37ecdeed655420bb0180b2ac550f4c623",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          },
+          {
+            "id": "baseline",
+            "compositionId": "inspection-baseline",
+            "versionId": "ca3b431dc01aabee7b09597693106eb01ae6b3d068f67758f67890c04622cce1",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          },
+          {
+            "id": "reachability",
+            "compositionId": "inspection-reachability",
+            "versionId": "e3963d6020c9e2f34011e59b126b99b8e129459be2247f43f46dd85ef995dcb6",
+            "inputMap": {
+              "scope": "$input.scope",
+              "reachability": "$input.reachability"
+            }
+          }
+        ]
+      },
+      "implementationDigest": "d4dbd6a27130eea9d26059f3e0bebd3d13570784880c9818c46f37910cc3c2bd"
+    },
+    {
+      "versionId": "bbffc71de46ea75254462d6e6a9752dde77a4fb93ceaea4f63baaad0d2740a44",
+      "publishedAt": "2026-11-05T13:58:31.026Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "294fdd22d0722af11bfbf103cf93e3d274d564a4b8176f042884310a08aab7e3",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "composite",
+        "steps": [
+          {
+            "id": "status",
+            "compositionId": "inspection-status",
+            "versionId": "0dd214f50eaf49b6c9b4c978a8f150107c54785433be0ca76465ec1092838064",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          },
+          {
+            "id": "baseline",
+            "compositionId": "inspection-baseline",
+            "versionId": "477d6bde719a2ffbc7c1a926b4a424a3179675ad5282aec926738ca0cf87ea2b",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          },
+          {
+            "id": "reachability",
+            "compositionId": "inspection-reachability",
+            "versionId": "990acfbca8650a50778f93005c529513787f3e460612e5fc0f9476ea63fa809b",
+            "inputMap": {
+              "scope": "$input.scope",
+              "reachability": "$input.reachability"
+            }
+          }
+        ]
+      },
+      "implementationDigest": "294fdd22d0722af11bfbf103cf93e3d274d564a4b8176f042884310a08aab7e3"
+    },
+    {
+      "versionId": "1fa6327e5920bd6fe69ba73e18ff9183b574f35a63b53f021dd96465c0758d67",
+      "publishedAt": "2026-11-06T00:54:51.704Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "60ee4a718737ab61929cbf7a65992d7b979239f8aa2f212e5d754c6f39052964",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "composite",
+        "steps": [
+          {
+            "id": "status",
+            "compositionId": "inspection-status",
+            "versionId": "b14d17a24de87ef7049ce6c4c38ad75a43f775d84e410b69fad334f3b6c2d315",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          },
+          {
+            "id": "baseline",
+            "compositionId": "inspection-baseline",
+            "versionId": "44486c60852cbd097fb96e7ab45c7cc6696e1f21c9fac3dbad360944cbb57b76",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          },
+          {
+            "id": "reachability",
+            "compositionId": "inspection-reachability",
+            "versionId": "f1449982e9491c95e76453b5eb2719ed91d9dad7c7296b0741abc26ff422d7df",
+            "inputMap": {
+              "scope": "$input.scope",
+              "reachability": "$input.reachability"
+            }
+          }
+        ]
+      },
+      "implementationDigest": "60ee4a718737ab61929cbf7a65992d7b979239f8aa2f212e5d754c6f39052964"
+    },
+    {
+      "versionId": "28ea50664379e1c17539d3300c6648c146a6db9194d41bcd8dec5ae7465cb6c5",
+      "publishedAt": "2026-11-06T02:42:09.589Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "c41e3328e78404be5d46aa7cbf2ffa19e6592e38a9c14562bb779731f46385bc",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "d18a5bbaf7732c70b353f6877d1e25524cec7d349b1f4eed9f91cdf7e675e356"
+      },
+      "implementationDigest": "c41e3328e78404be5d46aa7cbf2ffa19e6592e38a9c14562bb779731f46385bc"
+    },
+    {
+      "versionId": "1bf774cbd79a8db4c956319e89e4340f21bd3f5c8f3d601943acbbed0fcc86cc",
+      "publishedAt": "2026-11-06T02:47:23.196Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "0d196de4a22a5c874f673d55c0c1b22378d44f02d8c828a2b47a7c1ef7abc1a7",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "b23e1b6a2026d6af553be3d12bf2edb7cec277546563a47f397f1d7ab774ad61"
+      },
+      "implementationDigest": "0d196de4a22a5c874f673d55c0c1b22378d44f02d8c828a2b47a7c1ef7abc1a7"
+    },
+    {
+      "versionId": "791a73615fd8994407a87ce64790780f88dbf415fecc883f9eae8877b47fc7d0",
+      "publishedAt": "2026-11-06T12:58:23.620Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "76aece70b3d94efcc2cab4471de51596274ba2b1c230eee83baef13fa6766007",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "9cea748479e80f1c1d08eab10f5e8a40f0d54a081a8a530794d0e8d90f77b89d"
+      },
+      "implementationDigest": "76aece70b3d94efcc2cab4471de51596274ba2b1c230eee83baef13fa6766007"
+    },
+    {
+      "versionId": "06bf7342d95b21c1986c08a64c3baaa3f30bbc9cff91726b74aaf4ba6a6c58c4",
+      "publishedAt": "2026-11-07T03:27:13.413Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "76aece70b3d94efcc2cab4471de51596274ba2b1c230eee83baef13fa6766007",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "e10af163dd61c433400fcc516bf7b5c5d77c8b8cb088c42571b98707c06ff6e2"
+      }
+    }
+  ],
+  "published": {
+    "toolName": "inspection_routine",
+    "title": "常规巡检",
+    "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+    "connectionId": "platform-compositions",
+    "implementation": "76aece70b3d94efcc2cab4471de51596274ba2b1c230eee83baef13fa6766007",
+    "workflow": "inspection-routine",
+    "connections": {
+      "master": "ai-soc-master",
+      "ingest": "ai-soc-ingest",
+      "graph": "ai-soc-graph"
+    },
+    "kind": "workflow",
+    "engine": "lfx",
+    "flowDigest": "e10af163dd61c433400fcc516bf7b5c5d77c8b8cb088c42571b98707c06ff6e2",
+    "publishedAt": "2026-11-07T03:27:13.413Z"
+  },
+  "publishedVersionId": "06bf7342d95b21c1986c08a64c3baaa3f30bbc9cff91726b74aaf4ba6a6c58c4"
+}

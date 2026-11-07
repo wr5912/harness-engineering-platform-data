@@ -1,0 +1,3523 @@
+{
+  "data": {
+    "nodes": [
+      {
+        "id": "input",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 24
+        },
+        "data": {
+          "id": "input",
+          "type": "HepInput",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "运行输入",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "输入",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "scope",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 148
+        },
+        "data": {
+          "id": "scope",
+          "type": "HepScope",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "value",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepScope(HepComponent):\n display_name='核对冻结范围与规则'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"scope\",payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "核对冻结范围与规则",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "mode",
+        "type": "genericNode",
+        "position": {
+          "x": 336,
+          "y": 272
+        },
+        "data": {
+          "id": "mode",
+          "type": "HepMode",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "输入",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepMode(HepComponent):\n display_name='选择检查目标来源'\n inputs=[DataInput(name=\"value\",display_name=\"输入\",required=True)]\n outputs=[Output(name='explicit',display_name='指定检查对',method='route_explicit',group_outputs=True),Output(name='rulesError',display_name='规则读取失败',method='route_rulesError',group_outputs=True),Output(name='noRules',display_name='没有启用规则',method='route_noRules',group_outputs=True),Output(name='rules',display_name='按启用规则',method='route_rules',group_outputs=True)]\n async def route_explicit(self)->Data:\n  value=payload(self.value)\n  selected=(await component(\"mode\",value,self._id))[\"mode\"]\n  for name in ['explicit', 'rulesError', 'noRules', 'rules']:\n   if name!=selected:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,[name for name in ['explicit', 'rulesError', 'noRules', 'rules'] if name!=selected])\n  return Data(data=value)\n async def route_rulesError(self)->Data:\n  value=payload(self.value)\n  selected=(await component(\"mode\",value,self._id))[\"mode\"]\n  for name in ['explicit', 'rulesError', 'noRules', 'rules']:\n   if name!=selected:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,[name for name in ['explicit', 'rulesError', 'noRules', 'rules'] if name!=selected])\n  return Data(data=value)\n async def route_noRules(self)->Data:\n  value=payload(self.value)\n  selected=(await component(\"mode\",value,self._id))[\"mode\"]\n  for name in ['explicit', 'rulesError', 'noRules', 'rules']:\n   if name!=selected:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,[name for name in ['explicit', 'rulesError', 'noRules', 'rules'] if name!=selected])\n  return Data(data=value)\n async def route_rules(self)->Data:\n  value=payload(self.value)\n  selected=(await component(\"mode\",value,self._id))[\"mode\"]\n  for name in ['explicit', 'rulesError', 'noRules', 'rules']:\n   if name!=selected:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,[name for name in ['explicit', 'rulesError', 'noRules', 'rules'] if name!=selected])\n  return Data(data=value)\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "选择检查目标来源",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "explicit",
+                "display_name": "指定检查对",
+                "method": "route_explicit",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "rulesError",
+                "display_name": "规则读取失败",
+                "method": "route_rulesError",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "noRules",
+                "display_name": "没有启用规则",
+                "method": "route_noRules",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              },
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "rules",
+                "display_name": "按启用规则",
+                "method": "route_rules",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": true,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "condition"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "explicit",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 396
+        },
+        "data": {
+          "id": "explicit",
+          "type": "HepExplicit",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "value",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepExplicit(HepComponent):\n display_name='生成明确检查对'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"explicit\",payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "生成明确检查对",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "pairs-explicit",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 520
+        },
+        "data": {
+          "id": "pairs-explicit",
+          "type": "HepBatch",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "输入",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "body": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "body",
+                "value": {
+                  "data": {
+                    "nodes": [
+                      {
+                        "id": "input",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 24
+                        },
+                        "data": {
+                          "id": "input",
+                          "type": "HepInput",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "运行输入",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "输入",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "scope"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "path",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 148
+                        },
+                        "data": {
+                          "id": "path",
+                          "type": "HepPath",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepPath(HepComponent):\n display_name='读取计算路径'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"path\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "读取计算路径",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "call"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "evidence",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 272
+                        },
+                        "data": {
+                          "id": "evidence",
+                          "type": "HepEvidence",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepEvidence(HepComponent):\n display_name='核对路径与必经节点证据'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"evidence\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "核对路径与必经节点证据",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "condition"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "need-acl",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 396
+                        },
+                        "data": {
+                          "id": "need-acl",
+                          "type": "HepNeedAcl",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "输入",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepNeedAcl(HepComponent):\n display_name='是否需要逐跳策略'\n inputs=[DataInput(name=\"value\",display_name=\"输入\",required=True)]\n outputs=[Output(name='acl',display_name='需要逐跳策略',method='route_acl',group_outputs=True),Output(name='direct',display_name='直接形成结论',method='route_direct',group_outputs=True)]\n async def route_acl(self)->Data:\n  value=payload(self.value)\n  selected=\"acl\" if value.get(\"devices\") else \"direct\"\n  for name in ['acl', 'direct']:\n   if name!=selected:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,[name for name in ['acl', 'direct'] if name!=selected])\n  return Data(data=value)\n async def route_direct(self)->Data:\n  value=payload(self.value)\n  selected=\"acl\" if value.get(\"devices\") else \"direct\"\n  for name in ['acl', 'direct']:\n   if name!=selected:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,[name for name in ['acl', 'direct'] if name!=selected])\n  return Data(data=value)\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "是否需要逐跳策略",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "acl",
+                                "display_name": "需要逐跳策略",
+                                "method": "route_acl",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": true,
+                                "tool_mode": true
+                              },
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "direct",
+                                "display_name": "直接形成结论",
+                                "method": "route_direct",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": true,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "condition"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "direct",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 520
+                        },
+                        "data": {
+                          "id": "direct",
+                          "type": "HepDirect",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepDirect(HepComponent):\n display_name='保留无需逐跳策略的结论'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=payload(self.value))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "保留无需逐跳策略的结论",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "call"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "acl",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 336,
+                          "y": 520
+                        },
+                        "data": {
+                          "id": "acl",
+                          "type": "HepAcl",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepAcl(HepComponent):\n display_name='读取并核对逐跳 ACL'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"acl\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "读取并核对逐跳 ACL",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "call"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "selected-path",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 644
+                        },
+                        "data": {
+                          "id": "selected-path",
+                          "type": "HepMerge",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": true,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "选中的分支",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepMerge(HepComponent):\n display_name='汇合选中的路径'\n inputs=[DataInput(name=\"value\",display_name=\"选中的分支\",is_list=True,required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n def build(self)->Data:\n  if len(self.value)!=1:raise ValueError(\"互斥分支必须且只能返回一个结果\")\n  return self.value[0]\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "汇合选中的路径",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "aggregate"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "conclusion",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 768
+                        },
+                        "data": {
+                          "id": "conclusion",
+                          "type": "HepConclusion",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepConclusion(HepComponent):\n display_name='形成检查对结论'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"assess\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "形成检查对结论",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "aggregate"
+                            },
+                            "tool_mode": false,
+                            "is_output": true
+                          }
+                        }
+                      }
+                    ],
+                    "edges": [
+                      {
+                        "id": "input-result-path-value",
+                        "source": "input",
+                        "target": "path",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "input",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "path",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "path-result-evidence-value",
+                        "source": "path",
+                        "target": "evidence",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "path",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "evidence",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "evidence-result-need-acl-value",
+                        "source": "evidence",
+                        "target": "need-acl",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "evidence",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "need-acl",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "need-acl-acl-acl-value",
+                        "source": "need-acl",
+                        "target": "acl",
+                        "sourceHandle": "acl",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "need-acl",
+                            "name": "acl",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "acl",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "need-acl-direct-direct-value",
+                        "source": "need-acl",
+                        "target": "direct",
+                        "sourceHandle": "direct",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "need-acl",
+                            "name": "direct",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "direct",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "direct-result-selected-path-value",
+                        "source": "direct",
+                        "target": "selected-path",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "direct",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "selected-path",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "acl-result-selected-path-value",
+                        "source": "acl",
+                        "target": "selected-path",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "acl",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "selected-path",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "selected-path-result-conclusion-value",
+                        "source": "selected-path",
+                        "target": "conclusion",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "selected-path",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "conclusion",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "name": "巡检组件流程"
+                },
+                "display_name": "原生流程体",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "NestedDict",
+                "_input_type": "NestedDictInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepBatch as BaseComponent\nclass HepBatch(BaseComponent):\n pass\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "concurrency": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "concurrency",
+                "value": 8,
+                "display_name": "并发数",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": true,
+                "type": "int",
+                "_input_type": "IntInput"
+              },
+              "items_key": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "items_key",
+                "value": "items",
+                "display_name": "列表字段",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "str",
+                "_input_type": "StrInput"
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "逐检查对核查路径与策略",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "batch"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "rules",
+        "type": "genericNode",
+        "position": {
+          "x": 336,
+          "y": 396
+        },
+        "data": {
+          "id": "rules",
+          "type": "HepRules",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "value",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepRules(HepComponent):\n display_name='按规则生成检查对'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"rules\",payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "按规则生成检查对",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "pairs-rules",
+        "type": "genericNode",
+        "position": {
+          "x": 336,
+          "y": 520
+        },
+        "data": {
+          "id": "pairs-rules",
+          "type": "HepBatch",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "输入",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "body": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "body",
+                "value": {
+                  "data": {
+                    "nodes": [
+                      {
+                        "id": "input",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 24
+                        },
+                        "data": {
+                          "id": "input",
+                          "type": "HepInput",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "运行输入",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "输入",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "scope"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "path",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 148
+                        },
+                        "data": {
+                          "id": "path",
+                          "type": "HepPath",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepPath(HepComponent):\n display_name='读取计算路径'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"path\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "读取计算路径",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "call"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "evidence",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 272
+                        },
+                        "data": {
+                          "id": "evidence",
+                          "type": "HepEvidence",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepEvidence(HepComponent):\n display_name='核对路径与必经节点证据'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"evidence\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "核对路径与必经节点证据",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "condition"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "need-acl",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 396
+                        },
+                        "data": {
+                          "id": "need-acl",
+                          "type": "HepNeedAcl",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "输入",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepNeedAcl(HepComponent):\n display_name='是否需要逐跳策略'\n inputs=[DataInput(name=\"value\",display_name=\"输入\",required=True)]\n outputs=[Output(name='acl',display_name='需要逐跳策略',method='route_acl',group_outputs=True),Output(name='direct',display_name='直接形成结论',method='route_direct',group_outputs=True)]\n async def route_acl(self)->Data:\n  value=payload(self.value)\n  selected=\"acl\" if value.get(\"devices\") else \"direct\"\n  for name in ['acl', 'direct']:\n   if name!=selected:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,[name for name in ['acl', 'direct'] if name!=selected])\n  return Data(data=value)\n async def route_direct(self)->Data:\n  value=payload(self.value)\n  selected=\"acl\" if value.get(\"devices\") else \"direct\"\n  for name in ['acl', 'direct']:\n   if name!=selected:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,[name for name in ['acl', 'direct'] if name!=selected])\n  return Data(data=value)\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "是否需要逐跳策略",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "acl",
+                                "display_name": "需要逐跳策略",
+                                "method": "route_acl",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": true,
+                                "tool_mode": true
+                              },
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "direct",
+                                "display_name": "直接形成结论",
+                                "method": "route_direct",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": true,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "condition"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "direct",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 520
+                        },
+                        "data": {
+                          "id": "direct",
+                          "type": "HepDirect",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepDirect(HepComponent):\n display_name='保留无需逐跳策略的结论'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=payload(self.value))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "保留无需逐跳策略的结论",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "call"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "acl",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 336,
+                          "y": 520
+                        },
+                        "data": {
+                          "id": "acl",
+                          "type": "HepAcl",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepAcl(HepComponent):\n display_name='读取并核对逐跳 ACL'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"acl\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "读取并核对逐跳 ACL",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "call"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "selected-path",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 644
+                        },
+                        "data": {
+                          "id": "selected-path",
+                          "type": "HepMerge",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": true,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "选中的分支",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepMerge(HepComponent):\n display_name='汇合选中的路径'\n inputs=[DataInput(name=\"value\",display_name=\"选中的分支\",is_list=True,required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n def build(self)->Data:\n  if len(self.value)!=1:raise ValueError(\"互斥分支必须且只能返回一个结果\")\n  return self.value[0]\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "汇合选中的路径",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "aggregate"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "conclusion",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 768
+                        },
+                        "data": {
+                          "id": "conclusion",
+                          "type": "HepConclusion",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepConclusion(HepComponent):\n display_name='形成检查对结论'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"assess\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "形成检查对结论",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "aggregate"
+                            },
+                            "tool_mode": false,
+                            "is_output": true
+                          }
+                        }
+                      }
+                    ],
+                    "edges": [
+                      {
+                        "id": "input-result-path-value",
+                        "source": "input",
+                        "target": "path",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "input",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "path",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "path-result-evidence-value",
+                        "source": "path",
+                        "target": "evidence",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "path",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "evidence",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "evidence-result-need-acl-value",
+                        "source": "evidence",
+                        "target": "need-acl",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "evidence",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "need-acl",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "need-acl-acl-acl-value",
+                        "source": "need-acl",
+                        "target": "acl",
+                        "sourceHandle": "acl",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "need-acl",
+                            "name": "acl",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "acl",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "need-acl-direct-direct-value",
+                        "source": "need-acl",
+                        "target": "direct",
+                        "sourceHandle": "direct",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "need-acl",
+                            "name": "direct",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "direct",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "direct-result-selected-path-value",
+                        "source": "direct",
+                        "target": "selected-path",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "direct",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "selected-path",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "acl-result-selected-path-value",
+                        "source": "acl",
+                        "target": "selected-path",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "acl",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "selected-path",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "selected-path-result-conclusion-value",
+                        "source": "selected-path",
+                        "target": "conclusion",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "selected-path",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "conclusion",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "name": "巡检组件流程"
+                },
+                "display_name": "原生流程体",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "NestedDict",
+                "_input_type": "NestedDictInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepBatch as BaseComponent\nclass HepBatch(BaseComponent):\n pass\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "concurrency": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "concurrency",
+                "value": 8,
+                "display_name": "并发数",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": true,
+                "type": "int",
+                "_input_type": "IntInput"
+              },
+              "items_key": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "items_key",
+                "value": "items",
+                "display_name": "列表字段",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "str",
+                "_input_type": "StrInput"
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "逐检查对核查路径与策略",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "batch"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "rulesError",
+        "type": "genericNode",
+        "position": {
+          "x": 648,
+          "y": 396
+        },
+        "data": {
+          "id": "rulesError",
+          "type": "HepRuleserror",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "value",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepRuleserror(HepComponent):\n display_name='保留规则读取失败'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"rulesError\",payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "保留规则读取失败",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "noRules",
+        "type": "genericNode",
+        "position": {
+          "x": 960,
+          "y": 396
+        },
+        "data": {
+          "id": "noRules",
+          "type": "HepNorules",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "value",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepNorules(HepComponent):\n display_name='记录缺少检查规则'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"noRules\",payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "记录缺少检查规则",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "selected-result",
+        "type": "genericNode",
+        "position": {
+          "x": 336,
+          "y": 768
+        },
+        "data": {
+          "id": "selected-result",
+          "type": "HepMerge",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": true,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "选中的分支",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepMerge(HepComponent):\n display_name='汇合选中的核查结果'\n inputs=[DataInput(name=\"value\",display_name=\"选中的分支\",is_list=True,required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n def build(self)->Data:\n  if len(self.value)!=1:raise ValueError(\"互斥分支必须且只能返回一个结果\")\n  return self.value[0]\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "汇合选中的核查结果",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "aggregate"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "summary",
+        "type": "genericNode",
+        "position": {
+          "x": 336,
+          "y": 892
+        },
+        "data": {
+          "id": "summary",
+          "type": "HepSummary",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "value",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepSummary(HepComponent):\n display_name='汇总可达性检查'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"summary\",payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "汇总可达性检查",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "aggregate"
+            },
+            "tool_mode": false,
+            "is_output": true
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "input-result-scope-value",
+        "source": "input",
+        "target": "scope",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "input",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "scope",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "scope-result-mode-value",
+        "source": "scope",
+        "target": "mode",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "scope",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "mode",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "mode-explicit-explicit-value",
+        "source": "mode",
+        "target": "explicit",
+        "sourceHandle": "explicit",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "mode",
+            "name": "explicit",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "explicit",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "explicit-result-pairs-explicit-value",
+        "source": "explicit",
+        "target": "pairs-explicit",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "explicit",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "pairs-explicit",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "pairs-explicit-result-selected-result-value",
+        "source": "pairs-explicit",
+        "target": "selected-result",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "pairs-explicit",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "selected-result",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "mode-rules-rules-value",
+        "source": "mode",
+        "target": "rules",
+        "sourceHandle": "rules",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "mode",
+            "name": "rules",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "rules",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "rules-result-pairs-rules-value",
+        "source": "rules",
+        "target": "pairs-rules",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "rules",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "pairs-rules",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "pairs-rules-result-selected-result-value",
+        "source": "pairs-rules",
+        "target": "selected-result",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "pairs-rules",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "selected-result",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "mode-rulesError-rulesError-value",
+        "source": "mode",
+        "target": "rulesError",
+        "sourceHandle": "rulesError",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "mode",
+            "name": "rulesError",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "rulesError",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "rulesError-result-selected-result-value",
+        "source": "rulesError",
+        "target": "selected-result",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "rulesError",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "selected-result",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "mode-noRules-noRules-value",
+        "source": "mode",
+        "target": "noRules",
+        "sourceHandle": "noRules",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "mode",
+            "name": "noRules",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "noRules",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "noRules-result-selected-result-value",
+        "source": "noRules",
+        "target": "selected-result",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "noRules",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "selected-result",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "selected-result-result-summary-value",
+        "source": "selected-result",
+        "target": "summary",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "selected-result",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "summary",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      }
+    ]
+  },
+  "name": "巡检组件流程",
+  "metadata": {
+    "hep": {
+      "typescript": "src/index.ts"
+    }
+  }
+}

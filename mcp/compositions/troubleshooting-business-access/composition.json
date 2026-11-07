@@ -1,0 +1,18 @@
+{
+  "id": "troubleshooting-business-access",
+  "draft": {
+    "toolName": "diagnose_business_access",
+    "title": "业务访问故障排查",
+    "description": "按唯一源、目标、精确协议端口及绝对时间窗口读取SOC状态、固定快照告警与配置路径，保留来源和未知缺口；报告按同次Run读取原HTML。不主动探测、配置写入或修复，不以未知判断正常。",
+    "connectionId": "platform-compositions",
+    "readonly": true,
+    "workflow": "troubleshooting-business-access",
+    "connections": {
+      "master": "ai-soc-master",
+      "detect": "ai-soc-detect",
+      "graph": "ai-soc-graph"
+    },
+    "kind": "workflow",
+    "engine": "lfx"
+  }
+}

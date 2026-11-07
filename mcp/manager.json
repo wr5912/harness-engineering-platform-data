@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 1,
+  "servers": [
+    {
+      "id": "policy-configuration",
+      "description": "",
+      "specUrl": "http://172.16.138.232:26000/api/v1/policy-configurations/openapi.json",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "enabled": true,
+      "tools": {
+        "mode": "all",
+        "names": []
+      },
+      "serverName": "policy-configuration"
+    },
+    {
+      "id": "emergency-action",
+      "description": "",
+      "specUrl": "http://127.0.0.1:26100/api/v1/emergency/openapi.json",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "enabled": true,
+      "tools": {
+        "mode": "all",
+        "names": []
+      },
+      "serverName": "emergency-action"
+    },
+    {
+      "id": "sec-ops",
+      "serverName": "sec-ops",
+      "description": "",
+      "enabled": true,
+      "url": "http://172.16.138.228:50500/mcp/security-operations-expert",
+      "headers": [],
+      "tools": {
+        "mode": "selected",
+        "names": [
+          "search_graph_assets",
+          "get_graph_resolve_ip_host",
+          "get_soc_asset_by_asset_id",
+          "list_soc_asset",
+          "get_soc_asset_biz_systems",
+          "get_soc_asset_vulnerabilities",
+          "get_ingest_devices_by_asset_by_asset_id",
+          "get_graph_node_detail",
+          "get_graph_path_query",
+          "get_reachability_path_by_ip",
+          "get_graph_flow_host_pair_ports",
+          "get_reachability_cross_signal",
+          "get_graph_compliance_violations",
+          "get_graph_coverage",
+          "get_event_by_id"
+        ]
+      }
+    },
+    {
+      "id": "ai-soc-correlate",
+      "description": "SOC 关联分析服务：事件研判与处置、关联和推理规则、威胁情报、IOC、KEV 及 ATT&CK 技术管理",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18085/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-detect",
+      "description": "SOC 检测服务:SIGMA 编译预检、操作符元数据、检测规则、告警查询、白名单",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18084/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-event",
+      "description": "SOC 安全事件查询服务：事件检索、精确计数、字段聚合、字段能力及 ECS 标签查询",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:8083/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-graph",
+      "description": "SOC 安全图谱服务：拓扑建模、可达性和攻击路径分析、暴露风险、合规检测及图数据投影",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18088/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-ingest",
+      "description": "SOC 数据采集与策略运营服务：设备和插件管理、数据标准化、基线核查、策略分析迁移与下发",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18081/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-master",
+      "description": "SOC 基础主数据服务：资产、业务系统、设备型号、网络图层及动作下发模板管理",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18087/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "report-write",
+      "description": "用于威胁研判报告写入",
+      "enabled": true,
+      "url": "http://172.16.138.232:26000/mcp/persistence",
+      "headers": [],
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-response",
+      "description": "",
+      "specUrl": "http://172.16.138.223:18083/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "loginUrl": "",
+      "loginTokenPath": "data.token",
+      "enabled": true,
+      "tools": {
+        "mode": "all",
+        "names": []
+      },
+      "serverName": "ai-soc-response"
+    },
+    {
+      "id": "policy-departments",
+      "serverName": "policy-departments",
+      "description": "部门候选、计划与多明细策略任务；独立于单点策略分组",
+      "enabled": true,
+      "specUrl": "http://127.0.0.1:26113/api/v1/policy-departments/openapi.json",
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    },
+    {
+      "id": "ai-soc-framework",
+      "serverName": "ai-soc-framework",
+      "description": "SOC 流程审批：按原实例查询待办、读取任务并办理明确授权的审批",
+      "enabled": true,
+      "specUrl": "http://172.16.138.223:18080/v3/api-docs/mcp",
+      "authType": "credential",
+      "authHeader": "X-API-Key",
+      "tools": {
+        "mode": "all",
+        "names": []
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "threat-analysis-runtime",
+      "members": [
+        {
+          "serverId": "ai-soc-correlate",
+          "names": [
+            "get_correlate_incident_judge_pending",
+            "create_incident_judgement_claim",
+            "update_incident_judgement_result",
+            "create_correlate_incident_judgement_fail",
+            "get_correlate_threat_intel",
+            "get_correlate_intel_check",
+            "get_correlate_incident_rule_hits",
+            "get_correlate_rule_fields"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18085/correlate/incident/{incidentId}",
+            "http://172.16.138.223:18085/correlate/reasoning/rules/{ruleId}",
+            "http://172.16.138.223:18085/correlate/rule/{ruleId}",
+            "http://172.16.138.223:18085/correlate/reasoning/rules/{ruleId}/definition",
+            "http://172.16.138.223:18085/correlate/incident/{incidentId}/evidence/{ref}",
+            "http://172.16.138.223:18085/correlate/incident/{incidentId}/rule-hits/{hitId}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-event",
+          "names": [
+            "search_event"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        },
+        {
+          "serverId": "ai-soc-graph",
+          "names": [
+            "get_graph_lm_login_sequence",
+            "get_graph_flow_host_pair_ports"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18088/graph/enrich/topology/{assetId}",
+            "http://172.16.138.223:18088/graph/identity/asset/{assetId}/accounts"
+          ]
+        },
+        {
+          "serverId": "report-write",
+          "names": [
+            "save_persistence_result"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        },
+        {
+          "serverId": "ai-soc-detect",
+          "names": [],
+          "resourceUris": [
+            "http://172.16.138.223:18084/detect/whitelist/list",
+            "http://172.16.138.223:18084/detect/operators"
+          ],
+          "resourceTemplates": [
+            "http://172.16.138.223:18084/detect/alert/{alertId}",
+            "http://172.16.138.223:18084/detect/rule/{ruleId}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-ingest",
+          "names": [],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18081/admin/ingest/devices/by-asset/{assetId}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-master",
+          "names": [],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18087/soc/asset/{assetId}",
+            "http://172.16.138.223:18087/soc/asset/{assetId}/importance",
+            "http://172.16.138.223:18087/soc/asset/{assetId}/biz-systems"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "policy-configuration",
+      "members": [
+        {
+          "serverId": "policy-configuration",
+          "names": [
+            "prepare_policy_configuration",
+            "resolve_policy_endpoints",
+            "choose_ambiguous_policy_endpoints",
+            "select_policy_configuration_candidate",
+            "decide_policy_configuration",
+            "confirm_policy_configuration",
+            "list_policy_departments",
+            "preview_policy_department_targets",
+            "resolve_policy_department_destination",
+            "preview_policy_department_plan",
+            "prepare_policy_department_draft",
+            "prepare_policy_department_task",
+            "get_policy_configuration_status",
+            "get_policy_configuration_result"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://127.0.0.1:26113/api/v1/policy-configurations/{operationId}/result",
+            "http://127.0.0.1:26113/api/v1/policy-configurations/{operationId}",
+            "http://127.0.0.1:26113/api/v1/policy-departments/plans/{planId}",
+            "http://127.0.0.1:26113/api/v1/policy-departments/tasks/{taskId}",
+            "http://127.0.0.1:26113/api/v1/policy-departments/drafts/{operationId}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "emergency-action",
+      "members": [
+        {
+          "serverId": "emergency-action",
+          "names": [
+            "prepare_emergency_action",
+            "revise_emergency_action",
+            "list_emergency_actions",
+            "cancel_emergency_action",
+            "preview_disposition",
+            "get_emergency_action",
+            "get_emergency_action_result"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        },
+        {
+          "serverId": "ai-soc-correlate",
+          "names": [],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18085/correlate/reasoning/rules/{ruleId}",
+            "http://172.16.138.223:18085/correlate/incident/{incidentId}",
+            "http://172.16.138.223:18085/correlate/incident/{incidentId}/judgements",
+            "http://172.16.138.223:18085/correlate/incident/judgement/{judgementId}/report"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soc-readonly",
+      "members": [
+        {
+          "serverId": "ai-soc-response",
+          "names": [
+            "get_resp_actions_device_agents"
+          ],
+          "resourceUris": [
+            "http://172.16.138.223:18083/resp/action-defs"
+          ],
+          "resourceTemplates": [
+            "http://172.16.138.223:18083/resp/actions/{actionKey}/target-candidates"
+          ]
+        },
+        {
+          "serverId": "ai-soc-graph",
+          "names": [
+            "search_graph_assets",
+            "get_graph_resolve_ip_host",
+            "get_graph_path_query"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        },
+        {
+          "serverId": "ai-soc-master",
+          "names": [
+            "get_soc_asset_by_asset_id",
+            "list_soc_asset",
+            "get_soc_asset_vulnerabilities"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18087/soc/asset/{assetId}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-ingest",
+          "names": [
+            "get_admin_baseline_report_latest"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18081/admin/ingest/devices/by-asset/{assetId}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inspection-compositions",
+      "members": [
+        {
+          "serverId": "platform-compositions",
+          "names": [
+            "inspection_baseline",
+            "inspection_vulnerabilities",
+            "inspection_reachability",
+            "inspection_routine",
+            "inspection_deep",
+            "get_composition_run",
+            "get_composition_artifact",
+            "get_composition_details"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "asset-management",
+      "members": [
+        {
+          "serverId": "ai-soc-master",
+          "names": [
+            "create_soc_asset_probe",
+            "create_soc_discovery_identify",
+            "create_soc_discovery_tasks",
+            "start_soc_discovery_tasks",
+            "create_soc_discovery_tasks_adopt",
+            "create_soc_asset"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18087/soc/discovery/tasks/{taskId}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "policy-response",
+      "members": [
+        {
+          "serverId": "ai-soc-ingest",
+          "names": [
+            "preview_admin_dispatch_task",
+            "create_admin_dispatch_task",
+            "precheck_admin_dispatch_task",
+            "submit_admin_dispatch_task",
+            "execute_admin_dispatch_task",
+            "rollback_admin_dispatch_task"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18081/admin/ingest/dispatch/dispatchable-devices{?configKind,operation}",
+            "http://172.16.138.223:18081/admin/dispatch/task/policy-configs{?deviceId,configKind,operation}",
+            "http://172.16.138.223:18081/admin/dispatch/task/input-fields{?deviceId,configKind,operation,policyConfigKey}",
+            "http://172.16.138.223:18081/admin/dispatch/task/{id}",
+            "http://172.16.138.223:18081/admin/dispatch/task{?status,name,operator,createTimeBegin,createTimeEnd,pageNum,pageSize}",
+            "http://172.16.138.223:18081/admin/dispatch/task/{id}/tracking",
+            "http://172.16.138.223:18081/admin/dispatch/task/{id}/dry-run",
+            "http://172.16.138.223:18081/admin/dispatch/task/by-workflow/{instanceId}/tracking"
+          ]
+        },
+        {
+          "serverId": "ai-soc-response",
+          "names": [
+            "execute_resp_agent_actions"
+          ],
+          "resourceUris": [
+            "http://172.16.138.223:18083/resp/action-defs"
+          ],
+          "resourceTemplates": [
+            "http://172.16.138.223:18083/resp/action-defs/{actionKey}",
+            "http://172.16.138.223:18083/resp/actions/{actionKey}/target-candidates",
+            "http://172.16.138.223:18083/resp/actions/device-agents{?deviceId}",
+            "http://172.16.138.223:18083/resp/agent/actions/executions{?requestId}",
+            "http://172.16.138.223:18083/resp/actions/executions{?pageNum,pageSize,incidentId}",
+            "http://172.16.138.223:18083/resp/actions/executions/{id}",
+            "http://172.16.138.223:18083/resp/actions/by-workflow/{instanceId}/tracking",
+            "http://172.16.138.223:18083/resp/actions/recommend{?incidentId}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-graph",
+          "names": [
+            "search_graph_assets",
+            "get_graph_resolve_ip_host"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18088/graph/assets/search{?q,limit,assetTypes}",
+            "http://172.16.138.223:18088/graph/resolve/ip-host{?ip}"
+          ]
+        },
+        {
+          "serverId": "ai-soc-correlate",
+          "names": [],
+          "resourceUris": [],
+          "resourceTemplates": [
+            "http://172.16.138.223:18085/correlate/incident{?status,severity,incidentType,minConfidence,maxConfidence,createdFrom,createdTo,orderBy,source,judgeStatus,judgeVerdict,judgeValidationStatus,pageNum,pageSize}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "policy-response-acceptance",
+      "members": [
+        {
+          "serverId": "platform-compositions",
+          "names": [
+            "policy_change",
+            "emergency_action"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        }
+      ]
+    },
+    {
+      "id": "troubleshooting-compositions",
+      "members": [
+        {
+          "serverId": "platform-compositions",
+          "names": [
+            "diagnose_business_access",
+            "diagnose_device_offline",
+            "get_composition_run",
+            "get_composition_artifact",
+            "get_composition_details"
+          ],
+          "resourceUris": [],
+          "resourceTemplates": []
+        }
+      ]
+    }
+  ]
+}

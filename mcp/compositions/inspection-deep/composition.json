@@ -1,0 +1,220 @@
+{
+  "id": "inspection-deep",
+  "versions": [
+    {
+      "versionId": "0e4827c8704a297ca7ce35c659653f35270044bf38909114b0488141a277dfbd",
+      "publishedAt": "2026-11-05T13:50:52.954Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "3f3e2dc89dbce8cdec694c0f0e539017d05698dd442cbb97ec343c8f3bedf352",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "composite",
+        "steps": [
+          {
+            "id": "routine",
+            "compositionId": "inspection-routine",
+            "versionId": "38aef92e5912dfd2547bb3a28b9415a49d4397ad6fee146e55d6c31a7a538543",
+            "inputMap": {
+              "scope": "$input.scope",
+              "reachability": "$input.reachability"
+            }
+          },
+          {
+            "id": "vulnerabilities",
+            "compositionId": "inspection-vulnerabilities",
+            "versionId": "80e850b93b237376cb1325d26a7f3ae63259687e803c9c713d70945f89783ce4",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          }
+        ]
+      },
+      "implementationDigest": "3f3e2dc89dbce8cdec694c0f0e539017d05698dd442cbb97ec343c8f3bedf352"
+    },
+    {
+      "versionId": "c4435f89fadff6ddb6d59bf830db6fa9a694f5088a5561f88e0442256953aaa7",
+      "publishedAt": "2026-11-05T13:58:37.524Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "0b6cbd5749366aa4b624469f583c11e364bb40be9c6f3475b520cf65211bbc5b",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "composite",
+        "steps": [
+          {
+            "id": "routine",
+            "compositionId": "inspection-routine",
+            "versionId": "bbffc71de46ea75254462d6e6a9752dde77a4fb93ceaea4f63baaad0d2740a44",
+            "inputMap": {
+              "scope": "$input.scope",
+              "reachability": "$input.reachability"
+            }
+          },
+          {
+            "id": "vulnerabilities",
+            "compositionId": "inspection-vulnerabilities",
+            "versionId": "44b1b940edf1b1a7d54df0d9cfe703dd2e5ab8a46fd0d48498ab1be9b5a401c9",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          }
+        ]
+      },
+      "implementationDigest": "0b6cbd5749366aa4b624469f583c11e364bb40be9c6f3475b520cf65211bbc5b"
+    },
+    {
+      "versionId": "04ae48619fbd556a66447099d21594958c69c41e8ce635ae00915a152951d857",
+      "publishedAt": "2026-11-06T00:54:55.009Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "d6e69b004a2809e3b6a1639a329bdf6281d6a68d8fbb194846ad0757fca3d81b",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "composite",
+        "steps": [
+          {
+            "id": "routine",
+            "compositionId": "inspection-routine",
+            "versionId": "1fa6327e5920bd6fe69ba73e18ff9183b574f35a63b53f021dd96465c0758d67",
+            "inputMap": {
+              "scope": "$input.scope",
+              "reachability": "$input.reachability"
+            }
+          },
+          {
+            "id": "vulnerabilities",
+            "compositionId": "inspection-vulnerabilities",
+            "versionId": "9bddc9fd8060ff95b44b7e1b9adc4b498d267d8c5c9ad1a5f23af5d5848c6f40",
+            "inputMap": {
+              "scope": "$input.scope"
+            }
+          }
+        ]
+      },
+      "implementationDigest": "d6e69b004a2809e3b6a1639a329bdf6281d6a68d8fbb194846ad0757fca3d81b"
+    },
+    {
+      "versionId": "cede39fa994d957e10922ad063b8e47b1210b2b8af977bb5ec7e0b60d9462356",
+      "publishedAt": "2026-11-06T02:42:21.733Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "c085d61f1ed36c2eedc00c73f2fb65c1fed7a2ff676ad4ecf08f9fead5faf085",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "60a34eb52736e75570b63b96f83a162a4933084b91d2331a91ce4b4caf18c56f"
+      },
+      "implementationDigest": "c085d61f1ed36c2eedc00c73f2fb65c1fed7a2ff676ad4ecf08f9fead5faf085"
+    },
+    {
+      "versionId": "fcfe4f5af18889eac699e1e44cb7802ad47e7917ca77e86f4e737385e45d9be9",
+      "publishedAt": "2026-11-06T02:47:35.865Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "df3e8b5dbfc1c160cf6b758326d295543f7a74d88ef16a8ed9f6fa22e8b5af95",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "af7b97d875fe802ed5b462fe64f03e65f04ab4b6ff2ef68c4a7c86c6c326a4fd"
+      },
+      "implementationDigest": "df3e8b5dbfc1c160cf6b758326d295543f7a74d88ef16a8ed9f6fa22e8b5af95"
+    },
+    {
+      "versionId": "34a98b1cb120b0543af24fd7557c03f167ec1ead18994ad6bc08caad897d3dc0",
+      "publishedAt": "2026-11-06T12:58:27.990Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "e64b73f8dda26136ba9c2e774fe2e42ac74afb5e17f449b204d18532fae671dd",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "833568f130b4ac976887439b195006e8dc71607eae41653971320061d469d581"
+      },
+      "implementationDigest": "e64b73f8dda26136ba9c2e774fe2e42ac74afb5e17f449b204d18532fae671dd"
+    },
+    {
+      "versionId": "9c4007b5c98793c841a86f768bdf45d2184b712d7235f9631c18e18dcab484b6",
+      "publishedAt": "2026-11-07T03:27:13.449Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "e64b73f8dda26136ba9c2e774fe2e42ac74afb5e17f449b204d18532fae671dd",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "76c28144c683e95fb29e22eb4d5a9e08f5ae7f3b6d0a1892d16b1886ce33520b"
+      }
+    }
+  ],
+  "published": {
+    "toolName": "inspection_deep",
+    "title": "全面巡检",
+    "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+    "connectionId": "platform-compositions",
+    "implementation": "e64b73f8dda26136ba9c2e774fe2e42ac74afb5e17f449b204d18532fae671dd",
+    "workflow": "inspection-deep",
+    "connections": {
+      "master": "ai-soc-master",
+      "ingest": "ai-soc-ingest",
+      "graph": "ai-soc-graph"
+    },
+    "kind": "workflow",
+    "engine": "lfx",
+    "flowDigest": "76c28144c683e95fb29e22eb4d5a9e08f5ae7f3b6d0a1892d16b1886ce33520b",
+    "publishedAt": "2026-11-07T03:27:13.449Z"
+  },
+  "publishedVersionId": "9c4007b5c98793c841a86f768bdf45d2184b712d7235f9631c18e18dcab484b6"
+}

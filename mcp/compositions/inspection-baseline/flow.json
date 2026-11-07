@@ -1,0 +1,1071 @@
+{
+  "data": {
+    "nodes": [
+      {
+        "id": "input",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 24
+        },
+        "data": {
+          "id": "input",
+          "type": "HepInput",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "运行输入",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "输入",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "scope",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 148
+        },
+        "data": {
+          "id": "scope",
+          "type": "HepScope",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "value",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepScope(HepComponent):\n display_name='核对冻结资产范围'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"scope\",payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "核对冻结资产范围",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "assets",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 272
+        },
+        "data": {
+          "id": "assets",
+          "type": "HepBatch",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "输入",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "body": {
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "body",
+                "value": {
+                  "data": {
+                    "nodes": [
+                      {
+                        "id": "input",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 24
+                        },
+                        "data": {
+                          "id": "input",
+                          "type": "HepInput",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "运行输入",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "输入",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "scope"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "report",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 148
+                        },
+                        "data": {
+                          "id": "report",
+                          "type": "HepReport",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepReport(HepComponent):\n display_name='读取基线报告'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"report\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "读取基线报告",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "call"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "readiness",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 336,
+                          "y": 148
+                        },
+                        "data": {
+                          "id": "readiness",
+                          "type": "HepReadiness",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepReadiness(HepComponent):\n display_name='读取基线就绪信息'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"readiness\",payload(self.value),self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "读取基线就绪信息",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "call"
+                            },
+                            "tool_mode": false,
+                            "is_output": false
+                          }
+                        }
+                      },
+                      {
+                        "id": "assess",
+                        "type": "genericNode",
+                        "position": {
+                          "x": 24,
+                          "y": 272
+                        },
+                        "data": {
+                          "id": "assess",
+                          "type": "HepAssess",
+                          "node": {
+                            "template": {
+                              "_type": "Component",
+                              "readiness": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "readiness",
+                                "value": "",
+                                "display_name": "readiness",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "report": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "report",
+                                "value": "",
+                                "display_name": "report",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "value": {
+                                "tool_mode": false,
+                                "trace_as_metadata": true,
+                                "list": false,
+                                "list_add_label": "Add More",
+                                "trace_as_input": true,
+                                "override_skip": false,
+                                "required": true,
+                                "placeholder": "",
+                                "show": true,
+                                "name": "value",
+                                "value": "",
+                                "display_name": "value",
+                                "advanced": false,
+                                "api_editable": false,
+                                "input_types": [
+                                  "Data",
+                                  "JSON"
+                                ],
+                                "dynamic": false,
+                                "info": "",
+                                "title_case": false,
+                                "track_in_telemetry": false,
+                                "type": "other",
+                                "_input_type": "JSONInput"
+                              },
+                              "code": {
+                                "type": "code",
+                                "required": true,
+                                "placeholder": "",
+                                "list": false,
+                                "show": true,
+                                "multiline": true,
+                                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepAssess(HepComponent):\n display_name='核对报告与适用依据'\n inputs=[DataInput(name='value', display_name='value', required=True),DataInput(name='report', display_name='report', required=True),DataInput(name='readiness', display_name='readiness', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"assess\",{**payload(self.value),\"report\":payload(self.report),\"readiness\":payload(self.readiness)},self._id))\n",
+                                "fileTypes": [],
+                                "file_path": "",
+                                "password": false,
+                                "name": "code",
+                                "advanced": true,
+                                "api_editable": false,
+                                "dynamic": true,
+                                "info": "",
+                                "load_from_db": false,
+                                "title_case": false
+                              }
+                            },
+                            "base_classes": [
+                              "JSON"
+                            ],
+                            "display_name": "核对报告与适用依据",
+                            "documentation": "",
+                            "minimized": false,
+                            "custom_fields": {},
+                            "output_types": [],
+                            "pinned": false,
+                            "conditional_paths": [],
+                            "frozen": false,
+                            "outputs": [
+                              {
+                                "types": [
+                                  "JSON"
+                                ],
+                                "selected": "JSON",
+                                "name": "result",
+                                "display_name": "结果",
+                                "method": "build",
+                                "value": "__UNDEFINED__",
+                                "cache": true,
+                                "allows_loop": false,
+                                "group_outputs": false,
+                                "tool_mode": true
+                              }
+                            ],
+                            "field_order": [],
+                            "beta": false,
+                            "legacy": false,
+                            "edited": false,
+                            "metadata": {
+                              "kind": "aggregate"
+                            },
+                            "tool_mode": false,
+                            "is_output": true
+                          }
+                        }
+                      }
+                    ],
+                    "edges": [
+                      {
+                        "id": "input-result-report-value",
+                        "source": "input",
+                        "target": "report",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "input",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "report",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "input-result-readiness-value",
+                        "source": "input",
+                        "target": "readiness",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "input",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "readiness",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "input-result-assess-value",
+                        "source": "input",
+                        "target": "assess",
+                        "sourceHandle": "result",
+                        "targetHandle": "value",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "input",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "assess",
+                            "fieldName": "value",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "report-result-assess-report",
+                        "source": "report",
+                        "target": "assess",
+                        "sourceHandle": "result",
+                        "targetHandle": "report",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "report",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "assess",
+                            "fieldName": "report",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      },
+                      {
+                        "id": "readiness-result-assess-readiness",
+                        "source": "readiness",
+                        "target": "assess",
+                        "sourceHandle": "result",
+                        "targetHandle": "readiness",
+                        "data": {
+                          "sourceHandle": {
+                            "id": "readiness",
+                            "name": "result",
+                            "dataType": "Data",
+                            "output_types": [
+                              "Data"
+                            ]
+                          },
+                          "targetHandle": {
+                            "id": "assess",
+                            "fieldName": "readiness",
+                            "inputTypes": [
+                              "Data"
+                            ],
+                            "type": "DataInput"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "name": "巡检组件流程"
+                },
+                "display_name": "原生流程体",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "NestedDict",
+                "_input_type": "NestedDictInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepBatch as BaseComponent\nclass HepBatch(BaseComponent):\n pass\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              },
+              "concurrency": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "concurrency",
+                "value": 8,
+                "display_name": "并发数",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": true,
+                "type": "int",
+                "_input_type": "IntInput"
+              },
+              "items_key": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "load_from_db": false,
+                "list": false,
+                "list_add_label": "Add More",
+                "override_skip": false,
+                "required": false,
+                "placeholder": "",
+                "show": true,
+                "name": "items_key",
+                "value": "items",
+                "display_name": "列表字段",
+                "advanced": false,
+                "api_editable": false,
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "str",
+                "_input_type": "StrInput"
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "逐资产核对基线",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "batch"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "summary",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 396
+        },
+        "data": {
+          "id": "summary",
+          "type": "HepSummary",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "value",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepSummary(HepComponent):\n display_name='汇总基线检查'\n inputs=[DataInput(name='value', display_name='value', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"summary\",payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "汇总基线检查",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "aggregate"
+            },
+            "tool_mode": false,
+            "is_output": true
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "input-result-scope-value",
+        "source": "input",
+        "target": "scope",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "input",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "scope",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "scope-result-assets-value",
+        "source": "scope",
+        "target": "assets",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "scope",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "assets",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "assets-result-summary-value",
+        "source": "assets",
+        "target": "summary",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "assets",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "summary",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      }
+    ]
+  },
+  "name": "巡检组件流程",
+  "metadata": {
+    "hep": {
+      "typescript": "src/index.ts"
+    }
+  }
+}

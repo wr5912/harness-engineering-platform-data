@@ -1,0 +1,19 @@
+{
+  "id": "troubleshooting-device-offline",
+  "draft": {
+    "toolName": "diagnose_device_offline",
+    "title": "设备不在线排查",
+    "description": "唯一定位并冻结设备与绝对时间窗口后读取SOC状态、固定快照告警及管理观察；仅本次真实管理响应后核采集适用性、绑定及采集证据。报告按同次Run读取原HTML；分页不完整和缺原子保持未知，不主动探测、配置写入或修复。",
+    "connectionId": "platform-compositions",
+    "readonly": true,
+    "workflow": "troubleshooting-device-offline",
+    "connections": {
+      "master": "ai-soc-master",
+      "ingest": "ai-soc-ingest",
+      "detect": "ai-soc-detect",
+      "graph": "ai-soc-graph"
+    },
+    "kind": "workflow",
+    "engine": "lfx"
+  }
+}
