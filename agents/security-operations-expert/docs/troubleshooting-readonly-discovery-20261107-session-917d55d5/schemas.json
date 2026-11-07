@@ -1,0 +1,120 @@
+{
+  "record_kind": "第一阶段必要Schema取证摘录",
+  "agent_id": "security-operations-expert",
+  "experiment_id": "EXP-security-operations-expert-027-f-r3ba4799b0cb7",
+  "instance_name": "inspection-027-schedule-acceptance",
+  "source_session_id": "session-917d55d5-4f2c-4fbd-8442-7d88549ab2f3",
+  "source_observation_window_utc": ["2026-11-07T03:09:02.953Z", "2026-11-07T03:15:49.634Z"],
+  "scope": "从本会话已取得的真实MCP目录和回执整理；本轮没有重新发现或调用外部服务。inputSchemaExcerpt只摘录已核字段和约束，不是完整上游Schema，不用于平台配置或执行时校验。未包含字段不能解释为上游不支持；当前工具定义仍以上游实际发现为准。",
+  "receipts_file": "receipts.json",
+  "operations": [
+    {
+      "serverId": "ai-soc-master",
+      "name": "list_soc_asset",
+      "httpOperation": {"method": "GET", "path": "/soc/asset/list"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"pageNum": {"type": "integer", "default": 1}, "pageSize": {"type": "integer", "default": 20}, "ip": {"type": "string", "description": "IP 模糊匹配"}, "hostname": {"type": "string", "description": "主机名模糊匹配"}, "keyword": {"type": "string", "description": "名称、主副IP、型号、厂商模糊匹配，唯一键/数字ID精确匹配(OR)"}}},
+      "business_receipts": ["R03", "R04"],
+      "verification": "已按两个限定IP真实查询，各total=1；不是全库唯一性或所有筛选能力验收",
+      "usage_boundary": "上游IP过滤为模糊匹配，仍须精确核对目标IP和返回total，读全分页后判断唯一；不能把第一页首条当唯一对象。"
+    },
+    {
+      "serverId": "ai-soc-ingest",
+      "name": "get_ingest_devices_by_asset_by_asset_id",
+      "httpOperation": {"method": "GET", "path": "/admin/ingest/devices/by-asset/{assetId}"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"assetId": {"type": "integer"}}, "required": ["assetId"], "additionalProperties": false},
+      "business_receipts": ["R04"],
+      "verification": "两个资产均已真实回查，分别返回空列表和唯一已关联设备",
+      "usage_boundary": "设备业务ID取本回执deviceId，不用assetId替代，也不根据名称猜测。"
+    },
+    {
+      "serverId": "ai-soc-master",
+      "name": "get_soc_asset_collection_capability",
+      "httpOperation": {"method": "GET", "path": "/soc/asset/{assetId}/collection-capability"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"assetId": {"type": "integer"}}, "required": ["assetId"], "additionalProperties": false},
+      "business_receipts": ["R04"],
+      "verification": "资产3617609实查modelId=null、groups=[]",
+      "usage_boundary": "空目录只说明来源未提供适用能力，不证明设备物理不适用或已损坏。"
+    },
+    {
+      "serverId": "ai-soc-ingest",
+      "name": "get_admin_ingest_devices_run_state",
+      "httpOperation": {"method": "GET", "path": "/admin/ingest/devices/{deviceId}/run-state"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"deviceId": {"type": "string"}}, "required": ["deviceId"], "additionalProperties": false},
+      "business_receipts": ["R04"],
+      "verification": "已按真实关联的dev-71fb60c9bc57查询，data=[]",
+      "usage_boundary": "无运行态不能解释为任务正常；运行态也不代替原始心跳或管理侧真实响应。"
+    },
+    {
+      "serverId": "ai-soc-ingest",
+      "name": "get_admin_ingest_devices_plugin_configs",
+      "httpOperation": {"method": "GET", "path": "/admin/ingest/devices/{deviceId}/plugin-configs"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"deviceId": {"type": "string"}}, "required": ["deviceId"], "additionalProperties": false},
+      "business_receipts": ["R04"],
+      "verification": "已按真实关联的dev-71fb60c9bc57查询，data=[]",
+      "usage_boundary": "只取本对象必要非敏感绑定事实；本次未读取凭据，空配置不等于配置校验通过。"
+    },
+    {
+      "serverId": "ai-soc-detect",
+      "name": "list_detect_alert",
+      "httpOperation": {"method": "GET", "path": "/detect/alert/list"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"req": {"type": "object", "properties": {"pageNum": {"type": "integer"}, "pageSize": {"type": "integer"}, "snapshotId": {"type": "string"}, "windowSeconds": {"type": "integer"}, "keyword": {"type": "string"}, "from": {"type": "string"}, "to": {"type": "string"}, "severity": {"type": "array", "items": {"type": "string"}}, "ruleId": {"type": "string"}, "sourceIp": {"type": "string"}, "assetId": {"type": "string"}, "source": {"type": "string"}, "alertCategory": {"type": "string"}}}}, "required": ["req"]},
+      "business_receipts": ["R05"],
+      "verification": "资产3617609近24小时实查totalGroups=0、totalAlerts=0、truncated=false；非空多页尚未实测",
+      "usage_boundary": "目录说明pageNum从1开始、pageSize为1至100组；windowSeconds仅支持1小时/24小时/7天/30天并与from/to互斥。翻页及组内成员必须复用首页snapshotId，不以截断换速度。"
+    },
+    {
+      "serverId": "ai-soc-detect",
+      "name": "get_detect_alert_group_members",
+      "httpOperation": {"method": "GET", "path": "/detect/alert/group-members"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"req": {"type": "object", "properties": {"pageNum": {"type": "integer"}, "pageSize": {"type": "integer"}, "snapshotId": {"type": "string"}, "assetId": {"type": "string"}, "from": {"type": "string"}, "to": {"type": "string"}, "windowSeconds": {"type": "integer"}, "groupKey": {"type": "string"}, "cursor": {"type": "string"}}}}, "required": ["req"]},
+      "business_receipts": [],
+      "verification": "仅真实目录Schema已发现；本次告警快照无组，没有调用或验证非空成员分页",
+      "usage_boundary": "只用于实际返回组的成员续读；groupKey、snapshotId、cursor来自原回执，不猜值。"
+    },
+    {
+      "serverId": "ai-soc-graph",
+      "name": "get_graph_path_query",
+      "httpOperation": {"method": "GET", "path": "/graph/path/query"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"srcIp": {"type": "string"}, "dstIp": {"type": "string"}, "port": {"type": "integer"}, "protocol": {"type": "string"}}, "required": ["srcIp", "dstIp"]},
+      "business_receipts": ["R06"],
+      "verification": "完整连接参数真实只读查询，返回UNKNOWN/NO_DATA、nat_snapshot_pending、portEvaluated=false",
+      "usage_boundary": "流程明确传入已确认port/protocol。COLLECTED_CONFIGURATION只说明配置模型，reachable=false不能覆盖UNKNOWN或冒充本次源端实测。"
+    },
+    {
+      "serverId": "ai-soc-master",
+      "name": "get_soc_asset_port_evidence",
+      "httpOperation": {"method": "GET", "path": "/soc/asset/port-evidence"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"ip": {"type": "string"}, "port": {"type": "integer"}, "protocol": {"type": "string", "default": "tcp"}}, "required": ["ip", "port"], "additionalProperties": false},
+      "business_receipts": ["R09"],
+      "verification": "172.16.200.11 TCP443实查NO_RECORD",
+      "usage_boundary": "只能说明已有证据未命中，不证明当前未监听或端口关闭。"
+    },
+    {
+      "serverId": "ai-soc-response",
+      "name": "diagnose-source-tcp",
+      "operation_kind": "动作定义，不是同名独立MCP工具",
+      "definition_uri": "http://172.16.138.223:18083/resp/action-defs/diagnose-source-tcp",
+      "inputSchema": {"$ref": "receipts.json#/receipts/6/value/inputSchema"},
+      "outputSchema": {"$ref": "receipts.json#/receipts/6/value/outputSchema"},
+      "business_receipts": ["R07", "R08"],
+      "verification": "定义v4、候选及型号7启用SSH实现v5已真实读取；没有执行回执",
+      "usage_boundary": "必填sourceIp/targetIp/port，IPv4、端口1至65535、additionalProperties=false；sourceIp必须属于所选源执行设备。描述称当前停用却enabled=true、agentExecutable=true，冲突未消解，不列为已验证执行能力。"
+    },
+    {
+      "serverId": "ai-soc-response",
+      "name": "get_resp_agent_actions_executions",
+      "httpOperation": {"method": "GET", "path": "/resp/agent/actions/executions"},
+      "inputSchemaExcerpt": {"type": "object", "properties": {"requestId": {"type": "string"}}, "required": ["requestId"]},
+      "business_receipts": [],
+      "verification": "仅真实目录Schema已发现；本会话未提交动作，未猜requestId查询",
+      "usage_boundary": "后续未知写回执先查原requestId，不自动重放。"
+    }
+  ],
+  "instance_reuse_update": {
+    "source": "本条用户转述研发进度",
+    "field": "instance_name",
+    "implementation_status": "已实现，正在验证",
+    "verification_in_this_session": "未重新describe或启动评测；本条不把研发进度冒充已验证装载或迁移基线",
+    "prior_contract_observation": "receipts.json 的 R13 保留上一阶段describe未声明实例字段的历史观察，不覆盖原回执。"
+  }
+}

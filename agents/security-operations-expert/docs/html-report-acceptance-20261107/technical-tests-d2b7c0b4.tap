@@ -1,0 +1,1063 @@
+TAP version 13
+# Subtest: HTTP 无 global.crypto：真实 SHA-256 回退经按钮与 Node crypto 对照
+    # Subtest: abc
+    ok 1 - abc
+      ---
+      duration_ms: 20.121456
+      type: 'test'
+      ...
+    # Subtest: 中文 UTF-8
+    ok 2 - 中文 UTF-8
+      ---
+      duration_ms: 6.320985
+      type: 'test'
+      ...
+    # Subtest: 55 字节填充边界
+    ok 3 - 55 字节填充边界
+      ---
+      duration_ms: 5.269615
+      type: 'test'
+      ...
+    # Subtest: 56 字节填充边界
+    ok 4 - 56 字节填充边界
+      ---
+      duration_ms: 4.833647
+      type: 'test'
+      ...
+    # Subtest: 64 字节填充边界
+    ok 5 - 64 字节填充边界
+      ---
+      duration_ms: 7.976262
+      type: 'test'
+      ...
+    # Subtest: 65 字节填充边界
+    ok 6 - 65 字节填充边界
+      ---
+      duration_ms: 5.291745
+      type: 'test'
+      ...
+    # Subtest: 随机 4096 字节
+    ok 7 - 随机 4096 字节
+      ---
+      duration_ms: 10.547418
+      type: 'test'
+      ...
+    # Subtest: 随机 65536 字节
+    ok 8 - 随机 65536 字节
+      ---
+      duration_ms: 17.754627
+      type: 'test'
+      ...
+    # Subtest: 随机 131073 字节
+    ok 9 - 随机 131073 字节
+      ---
+      duration_ms: 26.868775
+      type: 'test'
+      ...
+    1..9
+ok 1 - HTTP 无 global.crypto：真实 SHA-256 回退经按钮与 Node crypto 对照
+  ---
+  duration_ms: 110.231009
+  type: 'test'
+  ...
+# Subtest: WebCrypto 分支使用真实 Node WebCrypto SHA-256
+ok 2 - WebCrypto 分支使用真实 Node WebCrypto SHA-256
+  ---
+  duration_ms: 7.206711
+  type: 'test'
+  ...
+# Subtest: SHA、长度、eof、offset、路径不符合回执时不创建 Blob 或下载
+    # Subtest: 坏 SHA
+    ok 1 - 坏 SHA
+      ---
+      duration_ms: 4.347751
+      type: 'test'
+      ...
+    # Subtest: 截断
+    ok 2 - 截断
+      ---
+      duration_ms: 3.475691
+      type: 'test'
+      ...
+    # Subtest: 未到 eof
+    ok 3 - 未到 eof
+      ---
+      duration_ms: 3.135824
+      type: 'test'
+      ...
+    # Subtest: 错误 bytes
+    ok 4 - 错误 bytes
+      ---
+      duration_ms: 3.028867
+      type: 'test'
+      ...
+    # Subtest: 非零 offset
+    ok 5 - 非零 offset
+      ---
+      duration_ms: 2.596795
+      type: 'test'
+      ...
+    # Subtest: 错误 path
+    ok 6 - 错误 path
+      ---
+      duration_ms: 3.016253
+      type: 'test'
+      ...
+    1..6
+ok 3 - SHA、长度、eof、offset、路径不符合回执时不创建 Blob 或下载
+  ---
+  duration_ms: 21.643051
+  type: 'test'
+  ...
+# Subtest: 错误或不属于当前调用/会话的结果不提供下载按钮、不读文件
+    # Subtest: isError
+    ok 1 - isError
+      ---
+      duration_ms: 3.87114
+      type: 'test'
+      ...
+    # Subtest: error 字段
+    ok 2 - error 字段
+      ---
+      duration_ms: 2.453014
+      type: 'test'
+      ...
+    # Subtest: 跨 session 回执
+    ok 3 - 跨 session 回执
+      ---
+      duration_ms: 3.159432
+      type: 'test'
+      ...
+    # Subtest: props session 不同
+    ok 4 - props session 不同
+      ---
+      duration_ms: 3.13578
+      type: 'test'
+      ...
+    # Subtest: Session 已移除
+    ok 5 - Session 已移除
+      ---
+      duration_ms: 3.820675
+      type: 'test'
+      ...
+    # Subtest: callId 不同
+    ok 6 - callId 不同
+      ---
+      duration_ms: 3.112653
+      type: 'test'
+      ...
+    # Subtest: toolName 不同
+    ok 7 - toolName 不同
+      ---
+      duration_ms: 2.632373
+      type: 'test'
+      ...
+    # Subtest: block name 不同
+    ok 8 - block name 不同
+      ---
+      duration_ms: 3.237729
+      type: 'test'
+      ...
+    # Subtest: 非 tool-result
+    ok 9 - 非 tool-result
+      ---
+      duration_ms: 3.090879
+      type: 'test'
+      ...
+    # Subtest: 非 result 阶段
+    ok 10 - 非 result 阶段
+      ---
+      duration_ms: 3.368727
+      type: 'test'
+      ...
+    # Subtest: meta 与 text 不同
+    ok 11 - meta 与 text 不同
+      ---
+      duration_ms: 9.665899
+      type: 'test'
+      ...
+    1..11
+ok 4 - 错误或不属于当前调用/会话的结果不提供下载按钮、不读文件
+  ---
+  duration_ms: 44.92734
+  type: 'test'
+  ...
+# Subtest: 同一回执可再次下载：每次只读文件，替换旧 URL，卸载 revoke
+ok 5 - 同一回执可再次下载：每次只读文件，替换旧 URL，卸载 revoke
+  ---
+  duration_ms: 4.203067
+  type: 'test'
+  ...
+# Subtest: 读取期间重复点击不并发读取；卸载 abort，晚到结果不得下载
+ok 6 - 读取期间重复点击不并发读取；卸载 abort，晚到结果不得下载
+  ---
+  duration_ms: 2.736701
+  type: 'test'
+  ...
+# Subtest: 回执 key 变化执行 cleanup：abort 旧读取，拒绝晚到旧结果
+ok 7 - 回执 key 变化执行 cleanup：abort 旧读取，拒绝晚到旧结果
+  ---
+  duration_ms: 3.067515
+  type: 'test'
+  ...
+# Subtest: 技术Mock：四个Root只读配对生成含原请求和主分析的完整转义HTML，哈希准确
+ok 8 - 技术Mock：四个Root只读配对生成含原请求和主分析的完整转义HTML，哈希准确
+  ---
+  duration_ms: 8.738315
+  type: 'test'
+  ...
+# Subtest: 技术Mock：明确声明的sec-ops只读工具可绑定 mcp__sec-ops__get_event_by_id
+ok 9 - 技术Mock：明确声明的sec-ops只读工具可绑定 mcp__sec-ops__get_event_by_id
+  ---
+  duration_ms: 0.633617
+  type: 'test'
+  ...
+# Subtest: 技术Mock：明确声明的sec-ops只读工具可绑定 mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id
+ok 10 - 技术Mock：明确声明的sec-ops只读工具可绑定 mcp__sec-ops__get_ingest_devices_by_asset_by_asset_id
+  ---
+  duration_ms: 0.482306
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝空/非字符串/仅启动通知分析 ""
+ok 11 - 技术Mock：拒绝空/非字符串/仅启动通知分析 ""
+  ---
+  duration_ms: 0.612937
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝空/非字符串/仅启动通知分析 " \\n\\t "
+ok 12 - 技术Mock：拒绝空/非字符串/仅启动通知分析 " \\n\\t "
+  ---
+  duration_ms: 0.197372
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝空/非字符串/仅启动通知分析 null
+ok 13 - 技术Mock：拒绝空/非字符串/仅启动通知分析 null
+  ---
+  duration_ms: 0.185796
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝空/非字符串/仅启动通知分析 {}
+ok 14 - 技术Mock：拒绝空/非字符串/仅启动通知分析 {}
+  ---
+  duration_ms: 0.19375
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝空/非字符串/仅启动通知分析 "started subagent mock-any-child"
+ok 15 - 技术Mock：拒绝空/非字符串/仅启动通知分析 "started subagent mock-any-child"
+  ---
+  duration_ms: 0.22983
+  type: 'test'
+  ...
+# Subtest: 技术Mock：无真实回执时即使分析完整也拒绝
+ok 16 - 技术Mock：无真实回执时即使分析完整也拒绝
+  ---
+  duration_ms: 2.804429
+  type: 'test'
+  ...
+# Subtest: 技术Mock：用户JSON自称工具回执不能建立证据
+ok 17 - 技术Mock：用户JSON自称工具回执不能建立证据
+  ---
+  duration_ms: 0.61647
+  type: 'test'
+  ...
+# Subtest: 技术Mock：注入式完成notice不能冒充Root用户来源
+ok 18 - 技术Mock：注入式完成notice不能冒充Root用户来源
+  ---
+  duration_ms: 0.392213
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 result.source.callId错误
+ok 19 - 技术Mock：错误原生配对拒绝 result.source.callId错误
+  ---
+  duration_ms: 0.232595
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 result.toolCallId错误
+ok 20 - 技术Mock：错误原生配对拒绝 result.toolCallId错误
+  ---
+  duration_ms: 0.183194
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 result.source.kind非tool
+ok 21 - 技术Mock：错误原生配对拒绝 result.source.kind非tool
+  ---
+  duration_ms: 0.229361
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 result.role非tool
+ok 22 - 技术Mock：错误原生配对拒绝 result.role非tool
+  ---
+  duration_ms: 0.197114
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 result.turn不配对
+ok 23 - 技术Mock：错误原生配对拒绝 result.turn不配对
+  ---
+  duration_ms: 0.140276
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 result.step不配对
+ok 24 - 技术Mock：错误原生配对拒绝 result.step不配对
+  ---
+  duration_ms: 0.160222
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 call.arguments不是JSON对象
+ok 25 - 技术Mock：错误原生配对拒绝 call.arguments不是JSON对象
+  ---
+  duration_ms: 0.222737
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 sourceEventSeqs未引用实际call
+ok 26 - 技术Mock：错误原生配对拒绝 sourceEventSeqs未引用实际call
+  ---
+  duration_ms: 0.202953
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 sourceEventSeqs引用未来事件
+ok 27 - 技术Mock：错误原生配对拒绝 sourceEventSeqs引用未来事件
+  ---
+  duration_ms: 0.183299
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 sourceEventSeqs含非法seq
+ok 28 - 技术Mock：错误原生配对拒绝 sourceEventSeqs含非法seq
+  ---
+  duration_ms: 3.373226
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 result.isError非布尔
+ok 29 - 技术Mock：错误原生配对拒绝 result.isError非布尔
+  ---
+  duration_ms: 0.160633
+  type: 'test'
+  ...
+# Subtest: 技术Mock：错误原生配对拒绝 result.content不是数组
+ok 30 - 技术Mock：错误原生配对拒绝 result.content不是数组
+  ---
+  duration_ms: 0.182477
+  type: 'test'
+  ...
+# Subtest: 技术Mock：结果发生在调用之前不构成配对
+ok 31 - 技术Mock：结果发生在调用之前不构成配对
+  ---
+  duration_ms: 0.187942
+  type: 'test'
+  ...
+# Subtest: 技术Mock：重复callId调用或重复结果都拒绝绑定
+ok 32 - 技术Mock：重复callId调用或重复结果都拒绝绑定
+  ---
+  duration_ms: 0.286111
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝未知/空/重复/非法显式evidence集合 []
+ok 33 - 技术Mock：拒绝未知/空/重复/非法显式evidence集合 []
+  ---
+  duration_ms: 0.231273
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝未知/空/重复/非法显式evidence集合 ["mock-unknown"]
+ok 34 - 技术Mock：拒绝未知/空/重复/非法显式evidence集合 ["mock-unknown"]
+  ---
+  duration_ms: 0.254525
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝未知/空/重复/非法显式evidence集合 ["mock-read-1","mock-read-1"]
+ok 35 - 技术Mock：拒绝未知/空/重复/非法显式evidence集合 ["mock-read-1","mock-read-1"]
+  ---
+  duration_ms: 0.126373
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝未知/空/重复/非法显式evidence集合 ["mock-read-1","mock-unknown"]
+ok 36 - 技术Mock：拒绝未知/空/重复/非法显式evidence集合 ["mock-read-1","mock-unknown"]
+  ---
+  duration_ms: 0.252141
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝未知/空/重复/非法显式evidence集合 [null]
+ok 37 - 技术Mock：拒绝未知/空/重复/非法显式evidence集合 [null]
+  ---
+  duration_ms: 0.128622
+  type: 'test'
+  ...
+# Subtest: 技术Mock：拒绝未知/空/重复/非法显式evidence集合 "mock-read-1"
+ok 38 - 技术Mock：拒绝未知/空/重复/非法显式evidence集合 "mock-read-1"
+  ---
+  duration_ms: 0.097488
+  type: 'test'
+  ...
+# Subtest: 技术Mock：其他组或未声明get_名字不自动成为证据 mcp__asset-management__get_asset_status
+ok 39 - 技术Mock：其他组或未声明get_名字不自动成为证据 mcp__asset-management__get_asset_status
+  ---
+  duration_ms: 0.260473
+  type: 'test'
+  ...
+# Subtest: 技术Mock：其他组或未声明get_名字不自动成为证据 mcp__untrusted-group__get_asset_status
+ok 40 - 技术Mock：其他组或未声明get_名字不自动成为证据 mcp__untrusted-group__get_asset_status
+  ---
+  duration_ms: 0.096193
+  type: 'test'
+  ...
+# Subtest: 技术Mock：其他组或未声明get_名字不自动成为证据 mcp__sec-ops__get_unknown_read
+ok 41 - 技术Mock：其他组或未声明get_名字不自动成为证据 mcp__sec-ops__get_unknown_read
+  ---
+  duration_ms: 0.085187
+  type: 'test'
+  ...
+# Subtest: 技术Mock：其他组或未声明get_名字不自动成为证据 mcp__sec-ops__get_event_by_id_forged
+ok 42 - 技术Mock：其他组或未声明get_名字不自动成为证据 mcp__sec-ops__get_event_by_id_forged
+  ---
+  duration_ms: 0.086643
+  type: 'test'
+  ...
+# Subtest: 技术Mock：其他组或未声明get_名字不自动成为证据 get_event_by_id
+ok 43 - 技术Mock：其他组或未声明get_名字不自动成为证据 get_event_by_id
+  ---
+  duration_ms: 0.083366
+  type: 'test'
+  ...
+# Subtest: 技术Mock：显式canonical解析器可绑定已核准别名，未知别名不能自行绑定
+ok 44 - 技术Mock：显式canonical解析器可绑定已核准别名，未知别名不能自行绑定
+  ---
+  duration_ms: 0.49041
+  type: 'test'
+  ...
+# Subtest: 技术Mock：Fork继承前缀中的证据不属于当前Root
+ok 45 - 技术Mock：Fork继承前缀中的证据不属于当前Root
+  ---
+  duration_ms: 0.184863
+  type: 'test'
+  ...
+# Subtest: 技术Mock：无序或重复事件seq不能作为原生日志
+ok 46 - 技术Mock：无序或重复事件seq不能作为原生日志
+  ---
+  duration_ms: 0.231549
+  type: 'test'
+  ...
+# Subtest: 技术Mock：原生isError如实保留为失败/已尝试，不伪记成功
+ok 47 - 技术Mock：原生isError如实保留为失败/已尝试，不伪记成功
+  ---
+  duration_ms: 0.374344
+  type: 'test'
+  ...
+# Subtest: 技术Mock：原生data.error如实保留为失败/已尝试，不伪记成功
+ok 48 - 技术Mock：原生data.error如实保留为失败/已尝试，不伪记成功
+  ---
+  duration_ms: 0.382991
+  type: 'test'
+  ...
+# Subtest: 技术Mock：结果isError如实保留为失败/已尝试，不伪记成功
+ok 49 - 技术Mock：结果isError如实保留为失败/已尝试，不伪记成功
+  ---
+  duration_ms: 0.308153
+  type: 'test'
+  ...
+# Subtest: 技术Mock：结果ok=false如实保留为失败/已尝试，不伪记成功
+ok 50 - 技术Mock：结果ok=false如实保留为失败/已尝试，不伪记成功
+  ---
+  duration_ms: 0.287952
+  type: 'test'
+  ...
+# Subtest: 技术Mock：业务非200如实保留为失败/已尝试，不伪记成功
+ok 51 - 技术Mock：业务非200如实保留为失败/已尝试，不伪记成功
+  ---
+  duration_ms: 0.377977
+  type: 'test'
+  ...
+# Subtest: 技术Mock：structuredContent失败如实保留为失败/已尝试，不伪记成功
+ok 52 - 技术Mock：structuredContent失败如实保留为失败/已尝试，不伪记成功
+  ---
+  duration_ms: 0.315238
+  type: 'test'
+  ...
+# Subtest: 技术Mock：MCP文本包装失败如实保留为失败/已尝试，不伪记成功
+ok 53 - 技术Mock：MCP文本包装失败如实保留为失败/已尝试，不伪记成功
+  ---
+  duration_ms: 0.390516
+  type: 'test'
+  ...
+# Subtest: 技术Mock：默认取最近实际取证用户批次，不被下载请求或notice混淆
+ok 54 - 技术Mock：默认取最近实际取证用户批次，不被下载请求或notice混淆
+  ---
+  duration_ms: 0.391093
+  type: 'test'
+  ...
+# Subtest: 技术Mock：跨真实用户批次显式引用时保留各自请求与准确哈希
+ok 55 - 技术Mock：跨真实用户批次显式引用时保留各自请求与准确哈希
+  ---
+  duration_ms: 0.463612
+  type: 'test'
+  ...
+# Subtest: 技术Mock：旧child完成后Root新增只读证据，默认拒绝旧child而显式仍可选原文
+ok 56 - 技术Mock：旧child完成后Root新增只读证据，默认拒绝旧child而显式仍可选原文
+  ---
+  duration_ms: 1.451523
+  type: 'test'
+  ...
+# Subtest: 技术Mock：旧child之后失败的Root查询同样是更新证据而非可忽略成功前提
+ok 57 - 技术Mock：旧child之后失败的Root查询同样是更新证据而非可忽略成功前提
+  ---
+  duration_ms: 0.379903
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同child重复完成不压过真正较新的child完成
+ok 58 - 技术Mock：同child重复完成不压过真正较新的child完成
+  ---
+  duration_ms: 0.322528
+  type: 'test'
+  ...
+# Subtest: 技术Mock：真实export形状配对可按attachment复用且保留HTML字节/SHA/MIME/filename
+ok 59 - 技术Mock：真实export形状配对可按attachment复用且保留HTML字节/SHA/MIME/filename
+  ---
+  duration_ms: 2.372222
+  type: 'test'
+  ...
+# Subtest: 技术Mock：SHA十六进制大小写可归一化但attachment身份仍准确
+ok 60 - 技术Mock：SHA十六进制大小写可归一化但attachment身份仍准确
+  ---
+  duration_ms: 0.851739
+  type: 'test'
+  ...
+# Subtest: 技术Mock：无meta时完整原生export正文仍可复用；inspection按kind独立
+ok 61 - 技术Mock：无meta时完整原生export正文仍可复用；inspection按kind独立
+  ---
+  duration_ms: 1.040637
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 schema
+ok 62 - 技术Mock：保存记录拒绝不匹配/非法 schema
+  ---
+  duration_ms: 0.602221
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 session
+ok 63 - 技术Mock：保存记录拒绝不匹配/非法 session
+  ---
+  duration_ms: 0.465493
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 kind
+ok 64 - 技术Mock：保存记录拒绝不匹配/非法 kind
+  ---
+  duration_ms: 0.523427
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 attachment空
+ok 65 - 技术Mock：保存记录拒绝不匹配/非法 attachment空
+  ---
+  duration_ms: 0.522828
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 attachment非法空白
+ok 66 - 技术Mock：保存记录拒绝不匹配/非法 attachment非法空白
+  ---
+  duration_ms: 0.541233
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 source Root不匹配
+ok 67 - 技术Mock：保存记录拒绝不匹配/非法 source Root不匹配
+  ---
+  duration_ms: 0.48677
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 source缺失
+ok 68 - 技术Mock：保存记录拒绝不匹配/非法 source缺失
+  ---
+  duration_ms: 0.441161
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 SHA格式错误
+ok 69 - 技术Mock：保存记录拒绝不匹配/非法 SHA格式错误
+  ---
+  duration_ms: 0.447079
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 SHA长度错误
+ok 70 - 技术Mock：保存记录拒绝不匹配/非法 SHA长度错误
+  ---
+  duration_ms: 0.471393
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 attachment与SHA不一致
+ok 71 - 技术Mock：保存记录拒绝不匹配/非法 attachment与SHA不一致
+  ---
+  duration_ms: 0.648312
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 合法SHA与原attachment不一致
+ok 72 - 技术Mock：保存记录拒绝不匹配/非法 合法SHA与原attachment不一致
+  ---
+  duration_ms: 0.562839
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 bytes为零
+ok 73 - 技术Mock：保存记录拒绝不匹配/非法 bytes为零
+  ---
+  duration_ms: 0.421075
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 bytes为负
+ok 74 - 技术Mock：保存记录拒绝不匹配/非法 bytes为负
+  ---
+  duration_ms: 0.502861
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 bytes非整数
+ok 75 - 技术Mock：保存记录拒绝不匹配/非法 bytes非整数
+  ---
+  duration_ms: 0.482103
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 bytes不安全整数
+ok 76 - 技术Mock：保存记录拒绝不匹配/非法 bytes不安全整数
+  ---
+  duration_ms: 0.48909
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 MIME非HTML
+ok 77 - 技术Mock：保存记录拒绝不匹配/非法 MIME非HTML
+  ---
+  duration_ms: 0.461233
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 MIME非字符串
+ok 78 - 技术Mock：保存记录拒绝不匹配/非法 MIME非字符串
+  ---
+  duration_ms: 0.437903
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 filename非HTML
+ok 79 - 技术Mock：保存记录拒绝不匹配/非法 filename非HTML
+  ---
+  duration_ms: 0.411307
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 filename目录穿越
+ok 80 - 技术Mock：保存记录拒绝不匹配/非法 filename目录穿越
+  ---
+  duration_ms: 0.422471
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 filename反斜杠
+ok 81 - 技术Mock：保存记录拒绝不匹配/非法 filename反斜杠
+  ---
+  duration_ms: 0.396519
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 filename控制字符
+ok 82 - 技术Mock：保存记录拒绝不匹配/非法 filename控制字符
+  ---
+  duration_ms: 0.4232
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 file_path相对路径
+ok 83 - 技术Mock：保存记录拒绝不匹配/非法 file_path相对路径
+  ---
+  duration_ms: 0.401292
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 file_path目录穿越
+ok 84 - 技术Mock：保存记录拒绝不匹配/非法 file_path目录穿越
+  ---
+  duration_ms: 0.407751
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存记录拒绝不匹配/非法 file_path控制字符
+ok 85 - 技术Mock：保存记录拒绝不匹配/非法 file_path控制字符
+  ---
+  duration_ms: 0.482511
+  type: 'test'
+  ...
+# Subtest: 技术Mock：fault保存记录缺少source Root不能声称已严格绑定本Root
+ok 86 - 技术Mock：fault保存记录缺少source Root不能声称已严格绑定本Root
+  ---
+  duration_ms: 0.543163
+  type: 'test'
+  ...
+# Subtest: 技术Mock：缺少HTML MIME不能声称完整附件元信息已核验
+ok 87 - 技术Mock：缺少HTML MIME不能声称完整附件元信息已核验
+  ---
+  duration_ms: 0.4913
+  type: 'test'
+  ...
+# Subtest: 技术Mock：未知attachment、跨session、非法attachment参数均不返回
+ok 88 - 技术Mock：未知attachment、跨session、非法attachment参数均不返回
+  ---
+  duration_ms: 0.684746
+  type: 'test'
+  ...
+# Subtest: 技术Mock：用户或注入notice自称已保存，不能建立可复用附件
+ok 89 - 技术Mock：用户或注入notice自称已保存，不能建立可复用附件
+  ---
+  duration_ms: 0.449979
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 其他工具
+ok 90 - 技术Mock：保存来源必须是同工具真实成功配对 其他工具
+  ---
+  duration_ms: 0.520517
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 其他组同名工具
+ok 91 - 技术Mock：保存来源必须是同工具真实成功配对 其他组同名工具
+  ---
+  duration_ms: 2.294832
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 错source.callId
+ok 92 - 技术Mock：保存来源必须是同工具真实成功配对 错source.callId
+  ---
+  duration_ms: 0.425674
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 错toolCallId
+ok 93 - 技术Mock：保存来源必须是同工具真实成功配对 错toolCallId
+  ---
+  duration_ms: 0.351962
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 错sourceEventSeqs
+ok 94 - 技术Mock：保存来源必须是同工具真实成功配对 错sourceEventSeqs
+  ---
+  duration_ms: 0.369453
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 错turn
+ok 95 - 技术Mock：保存来源必须是同工具真实成功配对 错turn
+  ---
+  duration_ms: 0.442516
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 失败结果
+ok 96 - 技术Mock：保存来源必须是同工具真实成功配对 失败结果
+  ---
+  duration_ms: 0.412716
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 原生error
+ok 97 - 技术Mock：保存来源必须是同工具真实成功配对 原生error
+  ---
+  duration_ms: 0.37393
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 attachment调用参数不匹配
+ok 98 - 技术Mock：保存来源必须是同工具真实成功配对 attachment调用参数不匹配
+  ---
+  duration_ms: 0.397466
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存来源必须是同工具真实成功配对 child调用参数不匹配
+ok 99 - 技术Mock：保存来源必须是同工具真实成功配对 child调用参数不匹配
+  ---
+  duration_ms: 0.407823
+  type: 'test'
+  ...
+# Subtest: 技术Mock：inspection保存记录须匹配真实export调用中的run_id
+ok 100 - 技术Mock：inspection保存记录须匹配真实export调用中的run_id
+  ---
+  duration_ms: 0.463838
+  type: 'test'
+  ...
+# Subtest: 技术Mock：重复export调用或结果不作为唯一成功保存来源
+ok 101 - 技术Mock：重复export调用或结果不作为唯一成功保存来源
+  ---
+  duration_ms: 0.443878
+  type: 'test'
+  ...
+# Subtest: 技术Mock：Fork继承前缀中的旧附件不能跨当前Root复用
+ok 102 - 技术Mock：Fork继承前缀中的旧附件不能跨当前Root复用
+  ---
+  duration_ms: 0.401036
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同一成功回执的meta/body身份冲突拒绝 attachment_id
+ok 103 - 技术Mock：同一成功回执的meta/body身份冲突拒绝 attachment_id
+  ---
+  duration_ms: 0.702323
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同一成功回执的meta/body身份冲突拒绝 file_path
+ok 104 - 技术Mock：同一成功回执的meta/body身份冲突拒绝 file_path
+  ---
+  duration_ms: 0.385376
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同一成功回执的meta/body身份冲突拒绝 filename
+ok 105 - 技术Mock：同一成功回执的meta/body身份冲突拒绝 filename
+  ---
+  duration_ms: 0.498615
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同一成功回执的meta/body身份冲突拒绝 bytes
+ok 106 - 技术Mock：同一成功回执的meta/body身份冲突拒绝 bytes
+  ---
+  duration_ms: 0.634591
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同一成功回执的meta/body身份冲突拒绝 sha256
+ok 107 - 技术Mock：同一成功回执的meta/body身份冲突拒绝 sha256
+  ---
+  duration_ms: 0.433462
+  type: 'test'
+  ...
+# Subtest: 技术Mock：meta/body的HTML MIME声明冲突不能静默忽略
+ok 108 - 技术Mock：meta/body的HTML MIME声明冲突不能静默忽略
+  ---
+  duration_ms: 0.536227
+  type: 'test'
+  ...
+# Subtest: 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 非法bytes
+ok 109 - 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 非法bytes
+  ---
+  duration_ms: 0.477465
+  type: 'test'
+  ...
+# Subtest: 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 非法SHA
+ok 110 - 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 非法SHA
+  ---
+  duration_ms: 0.561729
+  type: 'test'
+  ...
+# Subtest: 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 非HTML MIME
+ok 111 - 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 非HTML MIME
+  ---
+  duration_ms: 0.492149
+  type: 'test'
+  ...
+# Subtest: 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 其他session
+ok 112 - 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 其他session
+  ---
+  duration_ms: 0.412101
+  type: 'test'
+  ...
+# Subtest: 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 其他source Root
+ok 113 - 技术Mock：明确body字段冲突不能因body先invalid被合法meta掩盖 其他source Root
+  ---
+  duration_ms: 0.470627
+  type: 'test'
+  ...
+# Subtest: 技术Mock：正文缺字段/裁剪但无明确冲突时可用完整合法meta
+ok 114 - 技术Mock：正文缺字段/裁剪但无明确冲突时可用完整合法meta
+  ---
+  duration_ms: 1.287549
+  type: 'test'
+  ...
+# Subtest: 技术Mock：明确无效的权威meta不能由合法body降级覆盖
+ok 115 - 技术Mock：明确无效的权威meta不能由合法body降级覆盖
+  ---
+  duration_ms: 0.444639
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同attachment多次成功回执的元信息冲突拒绝 file_path
+ok 116 - 技术Mock：同attachment多次成功回执的元信息冲突拒绝 file_path
+  ---
+  duration_ms: 0.892475
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同attachment多次成功回执的元信息冲突拒绝 filename
+ok 117 - 技术Mock：同attachment多次成功回执的元信息冲突拒绝 filename
+  ---
+  duration_ms: 0.637702
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同attachment多次成功回执的元信息冲突拒绝 bytes
+ok 118 - 技术Mock：同attachment多次成功回执的元信息冲突拒绝 bytes
+  ---
+  duration_ms: 0.99643
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同attachment不合法后续回执不覆盖合法记录 sha256
+ok 119 - 技术Mock：同attachment不合法后续回执不覆盖合法记录 sha256
+  ---
+  duration_ms: 1.053976
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同attachment不合法后续回执不覆盖合法记录 content_type
+ok 120 - 技术Mock：同attachment不合法后续回执不覆盖合法记录 content_type
+  ---
+  duration_ms: 0.981913
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存后Root新只读回执设置has_new_source
+ok 121 - 技术Mock：保存后Root新只读回执设置has_new_source
+  ---
+  duration_ms: 0.620092
+  type: 'test'
+  ...
+# Subtest: 技术Mock：保存后失败的Root取证同样设置has_new_source
+ok 122 - 技术Mock：保存后失败的Root取证同样设置has_new_source
+  ---
+  duration_ms: 0.587023
+  type: 'test'
+  ...
+# Subtest: 技术Mock：证据晚于报告正文来源、早于首次保存仍判定为新来源
+ok 123 - 技术Mock：证据晚于报告正文来源、早于首次保存仍判定为新来源
+  ---
+  duration_ms: 0.659246
+  type: 'test'
+  ...
+# Subtest: 技术Mock：新的fault委派尚未完成也使旧报告不再被称为无新来源
+ok 124 - 技术Mock：新的fault委派尚未完成也使旧报告不再被称为无新来源
+  ---
+  duration_ms: 0.807197
+  type: 'test'
+  ...
+# Subtest: 技术Mock：已有真实委派在保存后真正首次完成设置has_new_source
+ok 125 - 技术Mock：已有真实委派在保存后真正首次完成设置has_new_source
+  ---
+  duration_ms: 0.817427
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同child重复完成或无绑定notice不是新报告来源
+ok 126 - 技术Mock：同child重复完成或无绑定notice不是新报告来源
+  ---
+  duration_ms: 0.792073
+  type: 'test'
+  ...
+# Subtest: 技术Mock：同attachment重复交付不产生新来源，也不把旧来源洗成最新
+ok 127 - 技术Mock：同attachment重复交付不产生新来源，也不把旧来源洗成最新
+  ---
+  duration_ms: 1.082843
+  type: 'test'
+  ...
+# Subtest: 技术Mock：重复交付不得通过篡改同一旧HTML的source截止洗掉保存前的新证据
+ok 128 - 技术Mock：重复交付不得通过篡改同一旧HTML的source截止洗掉保存前的新证据
+  ---
+  duration_ms: 2.184054
+  type: 'test'
+  ...
+# Subtest: 技术Mock：当前未知MCP别名保守设置has_new_source，但不能成为主报告合法证据
+ok 129 - 技术Mock：当前未知MCP别名保守设置has_new_source，但不能成为主报告合法证据
+  ---
+  duration_ms: 0.682201
+  type: 'test'
+  ...
+# Subtest: 技术Mock：用户伪造JSON和已知无关get_工具不制造新合法fault来源
+ok 130 - 技术Mock：用户伪造JSON和已知无关get_工具不制造新合法fault来源
+  ---
+  duration_ms: 0.593901
+  type: 'test'
+  ...
+# Subtest: 技术Mock：inspection新真实查询与未知MCP别名都保守阻止静默复用
+ok 131 - 技术Mock：inspection新真实查询与未知MCP别名都保守阻止静默复用
+  ---
+  duration_ms: 0.650256
+  type: 'test'
+  ...
+# Subtest: 巡检：选择器只绑定真实原运行及流程，不把展示文本当终态
+ok 132 - 巡检：选择器只绑定真实原运行及流程，不把展示文本当终态
+  ---
+  duration_ms: 3.412344
+  type: 'test'
+  ...
+# Subtest: 巡检：仅查询他人run不能建立本会话来源
+ok 133 - 巡检：仅查询他人run不能建立本会话来源
+  ---
+  duration_ms: 0.566301
+  type: 'test'
+  ...
+# Subtest: 巡检：canonical完整回执允许incomplete业务结果，原HTML字节不变
+ok 134 - 巡检：canonical完整回执允许incomplete业务结果，原HTML字节不变
+  ---
+  duration_ms: 4.801011
+  type: 'test'
+  ...
+# Subtest: 巡检：运行中、失败、缺失报告仍在运行时canonical边界拒绝
+ok 135 - 巡检：运行中、失败、缺失报告仍在运行时canonical边界拒绝
+  ---
+  duration_ms: 2.212878
+  type: 'test'
+  ...
+# Subtest: 巡检：伪造启动回执callId及指定外部run被拒
+ok 136 - 巡检：伪造启动回执callId及指定外部run被拒
+  ---
+  duration_ms: 0.746085
+  type: 'test'
+  ...
+# Subtest: 巡检：重复启动callId不作为唯一成功回执
+ok 137 - 巡检：重复启动callId不作为唯一成功回执
+  ---
+  duration_ms: 0.405864
+  type: 'test'
+  ...
+# Subtest: 巡检：裁剪或不可靠的历史查询文本不替代最新canonical校验
+ok 138 - 巡检：裁剪或不可靠的历史查询文本不替代最新canonical校验
+  ---
+  duration_ms: 1.197582
+  type: 'test'
+  ...
+# Subtest: 巡检：当前运行身份、元数据和实际HTML不一致时拒绝保存
+ok 139 - 巡检：当前运行身份、元数据和实际HTML不一致时拒绝保存
+  ---
+  duration_ms: 2.350708
+  type: 'test'
+  ...
+# Subtest: 故障：真实完成来源生成自包含HTML且重复导出内容稳定
+ok 140 - 故障：真实完成来源生成自包含HTML且重复导出内容稳定
+  ---
+  duration_ms: 2.847299
+  type: 'test'
+  ...
+# Subtest: 故障：子结果和用户文本逐字转义，不执行脚本/图片/链接
+ok 141 - 故障：子结果和用户文本逐字转义，不执行脚本/图片/链接
+  ---
+  duration_ms: 0.943752
+  type: 'test'
+  ...
+# Subtest: 故障：子终态失败、运行中、继承或错会话拒绝
+ok 142 - 故障：子终态失败、运行中、继承或错会话拒绝
+  ---
+  duration_ms: 0.671021
+  type: 'test'
+  ...
+# Subtest: 故障：纯启动文本、空正文、最后未完成attempt拒绝
+ok 143 - 故障：纯启动文本、空正文、最后未完成attempt拒绝
+  ---
+  duration_ms: 0.578961
+  type: 'test'
+  ...
+# Subtest: 故障：无直接子catalog、错启动回执、用户伪装完成均拒绝
+ok 144 - 故障：无直接子catalog、错启动回执、用户伪装完成均拒绝
+  ---
+  duration_ms: 0.6161
+  type: 'test'
+  ...
+# Subtest: 故障：重复原生完成通知允许只读复用，不改变来源哈希
+ok 145 - 故障：重复原生完成通知允许只读复用，不改变来源哈希
+  ---
+  duration_ms: 0.497597
+  type: 'test'
+  ...
+# Subtest: 入口：只读咨询或子Agent不生成报告文件
+ok 146 - 入口：只读咨询或子Agent不生成报告文件
+  ---
+  duration_ms: 0.493085
+  type: 'test'
+  ...
+# Subtest: 入口：标准MCP回执解析不把错误当报告
+ok 147 - 入口：标准MCP回执解析不把错误当报告
+  ---
+  duration_ms: 0.290246
+  type: 'test'
+  ...
+# Subtest: 入口：实际平台ok/result报告封装正确解包，失败仍拒绝
+ok 148 - 入口：实际平台ok/result报告封装正确解包，失败仍拒绝
+  ---
+  duration_ms: 0.253089
+  type: 'test'
+  ...
+# Subtest: 入口：未绑定故障结果不得保存附件或调用上游
+ok 149 - 入口：未绑定故障结果不得保存附件或调用上游
+  ---
+  duration_ms: 0.72328
+  type: 'test'
+  ...
+1..149
+# tests 175
+# suites 0
+# pass 175
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 335.770501
