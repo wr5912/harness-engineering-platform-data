@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { readFile, readdir, realpath } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
@@ -21,7 +22,7 @@ const message = `</td><script>alert("message")</script>&'message`
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
 const input = () => ({ source: { ip: '192.0.2.10', assetId: 10 }, target: { ip: '192.0.2.20', assetId: 20 }, protocol: 'tcp', port: 443, from: '2026-11-01T00:00:00Z', to: '2026-11-01T01:00:00Z' })
 
-function fixture({ failState = false, ambiguous = false } = {}) {
+function fixture({ failState = false, ambiguous = false, request = input(), assetPage } = {}) {
   const events = [], requests = [], signal = new AbortController().signal
   const assets = [
     { assetId: 10, ip: '192.0.2.10', hostname, online: 'online', stateEvidence: { signals: [] } },
@@ -37,8 +38,8 @@ function fixture({ failState = false, ambiguous = false } = {}) {
       case 'list_soc_asset': {
         assert.equal(connection, config.connections.master)
         const matches = assets.filter(asset => asset.ip === args.ip)
-        if (ambiguous && args.ip === assets[0].ip) matches.push({ ...assets[0], assetId: 11 })
-        return { code: 200, rows: matches, total: matches.length }
+        if (ambiguous && matches.length) matches.unshift({ ...matches[0], assetId: matches[0].assetId + 1 })
+        return assetPage ? assetPage(args, matches) : { code: 200, rows: matches, total: matches.length }
       }
       case 'get_soc_asset_by_asset_id':
         assert.equal(connection, config.connections.master)
@@ -59,7 +60,7 @@ function fixture({ failState = false, ambiguous = false } = {}) {
   }
   soc.fingerprint = connection => `mock-fingerprint:${connection}`
   const workflow = create(soc)
-  const shared = workflow.prepare(input(), config, signal)
+  const shared = workflow.prepare(request, config, signal)
   const context = nodeId => ({ runId: 'mock-contract-run', nodeId, signal, shared,
     progress(value) { events.push({ type: 'progress', nodeId, value: structuredClone(value) }) },
     async call(call) { callDepth++; try { return await call() } finally { callDepth-- } },
@@ -86,6 +87,10 @@ async function readonlyRun(options) {
   return { ...state, results, report }
 }
 
+test('原生启动先返回accepted，详细事实留在Run，避免大回执裁剪后丢失来源', () => {
+  assert.notEqual(create(async () => { throw new Error('启动合同不调用SOC') }).responseMode, 'complete')
+})
+
 test('固定冻结六项；resolve 不接受 caller 扩大分支或资产范围', async () => {
   assert.equal(Object.isFrozen(branchItems), true)
   assert.deepEqual([...branchItems], expectedBranches)
@@ -102,9 +107,79 @@ test('固定冻结六项；resolve 不接受 caller 扩大分支或资产范围'
   const next = fixture()
   assert.deepEqual((await next.invoke('resolve', request, 'resolve')).items, expectedBranches)
   assert.deepEqual([...branchItems], expectedBranches)
-  const blocked = fixture({ ambiguous: true })
-  assert.equal((await blocked.invoke('resolve', input(), 'resolve')).ready, false)
-  assert.equal(blocked.requests.length, 1, '身份失败后不继续目标或其他取证')
+})
+
+test('resolve 完整分页后按 IP+明确ID 唯一筛选；同IP多记录不取首条、不提前结束', async () => {
+  for (const matchFirst of [false, true]) {
+    const state = fixture({ ambiguous: true, assetPage(args, matches) {
+      const padding = Array.from({ length: 99 }, (_, index) => ({ ...matches[0], assetId: 1000 + index }))
+      const candidates = matchFirst ? [matches[1], ...padding, matches[0]] : [...padding, ...matches]
+      return { code: 200, rows: candidates.slice((args.pageNum - 1) * args.pageSize, args.pageNum * args.pageSize), total: candidates.length }
+    } })
+    assert.deepEqual(await state.invoke('resolve', input(), 'resolve'), { ready: true, items: expectedBranches })
+    assert.deepEqual(state.requests.map(({ args }) => [args.ip, args.pageNum]), [
+      [input().source.ip, 1], [input().source.ip, 2], [input().target.ip, 1], [input().target.ip, 2],
+    ])
+    assert.ok(state.requests.every(({ operation, args }) => operation === 'list_soc_asset' && args.pageSize === 100 && args.includeUnits === true))
+    assert.equal(state.shared.assets.source.assetId, input().source.assetId)
+    assert.equal(state.shared.assets.target.assetId, input().target.assetId)
+    assert.deepEqual(state.shared.scope.source, input().source)
+    assert.deepEqual(state.shared.scope.target, input().target)
+    assert.equal(state.shared.facts.resolve.status, 'observed')
+    assert.equal(state.shared.facts.resolve.raw_receipt_refs.length, 4)
+  }
+})
+
+test('resolve 未提供ID且同IP多记录时阻断，不继续后续取证', async () => {
+  for (const which of ['source', 'target']) {
+    const request = input()
+    delete request[which].assetId
+    const state = fixture({ ambiguous: true, request })
+    assert.deepEqual(await state.invoke('resolve', request, 'resolve'), { ready: false, items: [] })
+    assert.equal(state.requests.length, which === 'source' ? 1 : 2)
+    assert.ok(state.requests.every(({ operation }) => operation === 'list_soc_asset'))
+    assert.deepEqual(state.shared.assets, {})
+    assert.equal(state.shared.facts.resolve.status, 'unknown')
+  }
+})
+
+test('resolve 错误ID、错误IP或ID与IP不匹配均阻断，不按单一字段回退', async () => {
+  for (const which of ['source', 'target']) {
+    const endpoint = input()[which], other = input()[which === 'source' ? 'target' : 'source']
+    for (const invalid of [{ ...endpoint, assetId: 999 }, { ...endpoint, ip: '203.0.113.99' }, { ...endpoint, assetId: other.assetId }]) {
+      const request = { ...input(), [which]: invalid }, state = fixture({ ambiguous: true, request })
+      assert.deepEqual(await state.invoke('resolve', request, 'resolve'), { ready: false, items: [] })
+      assert.equal(state.requests.length, which === 'source' ? 1 : 2)
+      assert.ok(state.requests.every(({ operation }) => operation === 'list_soc_asset'))
+      assert.deepEqual(state.shared.assets, {})
+      assert.equal(state.shared.facts.resolve.status, 'unknown')
+      assert.match(state.shared.facts.resolve.message, /不能唯一精确匹配已确认IP\/ID/)
+    }
+  }
+})
+
+test('resolve 即使已有明确ID命中也拒绝分页总数异常、重复ID、无效ID及漏页', async t => {
+  const asset = input().source, other = { ...asset, assetId: 11 }
+  const cases = [
+    ['总数缺失', [{ rows: [asset] }], /分页总数缺失或变化/],
+    ['总数变化', [{ rows: [asset], total: 2 }, { rows: [other], total: 3 }], /分页总数缺失或变化/],
+    ['重复ID', [{ rows: [asset], total: 2 }, { rows: [asset], total: 2 }], /无效或重复ID/],
+    ['无效ID', [{ rows: [asset, { ...other, assetId: 0 }], total: 2 }], /无效或重复ID/],
+    ['漏页', [{ rows: [asset], total: 2 }, { rows: [], total: 2 }], /资产分页不完整/],
+    ['超出总数', [{ rows: [asset, other], total: 1 }], /资产分页不完整/],
+  ]
+  for (const [name, pages, message] of cases) await t.test(name, async () => {
+    const state = fixture({ assetPage(args) {
+      assert.equal(args.ip, asset.ip, '分页校验失败后不得继续解析目标')
+      assert.ok(args.pageNum <= pages.length, '不得读取未声明的Mock页')
+      return { code: 200, ...pages[args.pageNum - 1] }
+    } })
+    assert.deepEqual(await state.invoke('resolve', input(), 'resolve'), { ready: false, items: [] })
+    assert.equal(state.requests.length, pages.length)
+    assert.deepEqual(state.shared.assets, {})
+    assert.equal(state.shared.facts.resolve.status, 'unknown')
+    assert.match(state.shared.facts.resolve.message, message)
+  })
 })
 
 test('prepare 仅校验并初始化；caller 深改及 shared.input 修改均不污染 requested', async () => {
@@ -358,12 +433,13 @@ test('body 六项真实条件各走独立终态；TCP 四出口有实际后继�
 test('入口编译依赖、原生 TS 入口和包内 Markdown 引用闭包，不读取兄弟组合私有文件', async () => {
   const canonicalRoot = await realpath(packageRoot)
   const sharedApi = await realpath(join(packageRoot, '../../src/action-api.ts'))
+  const sharedReports = new Set(await Promise.all(['common.ts', 'troubleshooting.ts'].map(name => realpath(join(packageRoot, '../../src/reports', name)))))
   const inside = path => { const part = relative(canonicalRoot, path); return part === '' || part !== '..' && !part.startsWith('../') && !isAbsolute(part) }
   assert.equal(flow.metadata.hep.typescript, 'src/index.ts')
   assert.ok(inside(await realpath(join(packageRoot, flow.metadata.hep.typescript))))
   for (const dependency of Object.keys(compiled.metafile.inputs)) {
     const path = await realpath(resolve(packageRoot, dependency))
-    assert.ok(inside(path) || path === sharedApi, `不允许未声明的包外编译依赖：${dependency}`)
+    assert.ok(inside(path) || path === sharedApi || sharedReports.has(path), `不允许未声明的包外编译依赖：${dependency}`)
   }
   async function checkLinks(directory) {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -387,7 +463,7 @@ test('入口编译依赖、原生 TS 入口和包内 Markdown 引用闭包，不
   await checkLinks(packageRoot)
 })
 
-test('HTML 正文含对象/状态/证据/缺口/下一步；raw JSON 收在 details 且恶意源文本被转义', async () => {
+test('HTML 保留对象/状态/证据/缺口/后续建议；安全投影折叠，源文本无法执行', async () => {
   const { workflow, report } = await readonlyRun({ failState: true })
   const artifacts = workflow.artifacts(report)
   const html = artifacts.find(artifact => artifact.id === 'report')
@@ -395,7 +471,8 @@ test('HTML 正文含对象/状态/证据/缺口/下一步；raw JSON 收在 deta
   assert.match(html.contentType, /^text\/html/)
   assert.deepEqual(JSON.parse(details.body), JSON.parse(JSON.stringify(report)))
   const folds = [...html.body.matchAll(/<details\b[^>]*>[\s\S]*?<\/details>/gi)].map(match => match[0])
-  assert.ok(folds.some(fold => fold.includes(escapeHtml(JSON.stringify(report, null, 2)))), '完整 raw JSON 必须放在折叠 details 中')
+  assert.ok(folds.some(fold => fold.includes('本次完整安全投影') && fold.includes(escapeHtml(report.run_id))), '完整安全投影保留原Run并折叠展示')
+  for (const item of report.items) assert.ok(folds.some(fold => fold.includes(escapeHtml(item.check))), `安全投影不能漏项：${item.check}`)
   const visible = html.body.replace(/<details\b[^>]*>[\s\S]*?<\/details>/gi, '')
   assert.equal(Object.hasOwn(report, 'runtime_validation'), false, '业务运行结果不能硬编码开发验证进度')
   assert.doesNotMatch(visible, /尚待研发|研发运行验证|Graph\.arun|async_start|调度限制/)
@@ -406,5 +483,9 @@ test('HTML 正文含对象/状态/证据/缺口/下一步；raw JSON 收在 deta
   assert.ok(visible.includes(escapeHtml(message)), '事实 message 必须转义后在正文可见')
   assert.equal(html.body.includes(hostname), false)
   assert.equal(html.body.includes(message), false)
-  assert.doesNotMatch(html.body, /<script\b|<img\b/i)
+  assert.doesNotMatch(html.body, /<img\b|<svg\b|<script>alert/i)
+  const scripts = [...html.body.matchAll(/<script>([\s\S]*?)<\/script>/g)]
+  assert.equal(scripts.length, 1, '仅允许报告固定离线交互脚本')
+  const digest = createHash('sha256').update(scripts[0][1]).digest('base64')
+  assert.ok(html.body.includes(`script-src 'sha256-${digest}'`), '固定脚本必须受匹配的CSP摘要约束')
 })

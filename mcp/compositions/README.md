@@ -9,5 +9,7 @@
 - [可达性检查](inspection-reachability/docs/README.md)
 - [策略变更](policy-change/docs/README.md)
 - [应急动作](emergency-action/docs/README.md)
+- [XX设备固定指令（真实接口接入骨架，未发布）](<xx-device-command/docs/README.md>)
+- [XX设备策略模板（真实接口接入骨架，未发布）](<xx-device-policy/docs/README.md>)
 - [业务访问故障排查（原生批次草稿，待验证）](<troubleshooting-business-access/docs/README.md>)
 - [设备不在线排查（原生批次草稿，待验证）](<troubleshooting-device-offline/docs/README.md>)

@@ -1,0 +1,32 @@
+{
+  "status": "not-configured",
+  "connectionAlias": "xxDevice",
+  "serverId": null,
+  "operations": {
+    "readPolicyTemplate": null,
+    "writePolicyTemplate": null
+  },
+  "expectedLogicalContracts": {
+    "readPolicyTemplate": {
+      "parameters": {"hostip": "string"},
+      "result": {
+        "hostid": "string",
+        "hostip": "string",
+        "设备控制": "object",
+        "login": "object",
+        "net": "object"
+      }
+    },
+    "writePolicyTemplate": {
+      "parameters": {
+        "hostid": "string",
+        "hostip": "string",
+        "设备控制": "object",
+        "login": "object",
+        "net": "object"
+      },
+      "result": "由真实服务提供；组合不把stop、确认字段或平台run_id传入"
+    }
+  },
+  "handoff": "等待内网提供真实serverId、工具名、输入输出Schema、鉴权和错误合同后填写；未配置时组合必须明确停止，不回退本地Mock。"
+}

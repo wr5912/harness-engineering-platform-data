@@ -1,0 +1,20 @@
+{
+  "status": "not-configured",
+  "connectionAlias": "xxDevice",
+  "serverId": null,
+  "operations": {
+    "lookupHost": null,
+    "sendCommand": null
+  },
+  "expectedLogicalContracts": {
+    "lookupHost": {
+      "parameters": {"hostIp": "string"},
+      "result": {"hostid": "string", "hostip": "string"}
+    },
+    "sendCommand": {
+      "parameters": {"hostid": "string", "hostip": "string", "commandid": "string"},
+      "result": "由真实服务提供；组合不把stop、确认字段或平台run_id传入"
+    }
+  },
+  "handoff": "等待内网提供真实serverId、工具名、输入输出Schema、鉴权和错误合同后填写；未配置时组合必须明确停止，不回退本地Mock。"
+}

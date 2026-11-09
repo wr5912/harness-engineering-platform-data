@@ -164,7 +164,7 @@ test('同次运行复用准备和相同 GET；单接口失败保留另一接口�
   assert.equal(count, 3)
   assert.equal(first.items[0].status, 'failed')
   assert.equal(first.items[0].facts.report.run, null)
-  assert.equal(first.items[0].facts.readiness.error, 'offline')
+  assert.equal(first.items[0].facts.readiness.error, 'ingest/get_admin_baseline_readiness assetId=1：offline')
   const reports = baseline.artifacts(first)
   assert.deepEqual(reports.map(item => item.id), ['report', 'details'])
   assert.equal(JSON.parse(reports[1].body).items.length, 1)
@@ -294,6 +294,26 @@ test('SOC 衔接按发现结果调用工具、资源和模板，资源正文进�
 })
 
 
+test('MCP调度400保留脱敏回执、调度状态与资产定位，不冒称上游HTTP400', async () => {
+  const soc = createSoc(async request => {
+    if (request.action === 'test') return { status: 200, value: { tools: [{ name: 'list_soc_asset', inputSchema: { properties: { pageNum: { type: 'integer' }, pageSize: { type: 'integer' }, includeUnits: { type: 'boolean' } } } }, { name: 'get_soc_asset_registration_children', inputSchema: { properties: { assetId: { type: 'integer' }, page: { type: 'integer' } } } }], resourceTemplates: { resourceTemplates: [{ name: 'get_soc_asset_vulnerabilities', uriTemplate: 'http://fixture/assets/{assetId}/vulnerabilities', inputSchema: { type: 'object', properties: { assetId: { type: 'integer' } } } }] } } }
+    if (request.action === 'callTool' && request.toolName === 'list_soc_asset') return { status: 200, value: { code: 200, rows: [asset], total: 1 } }
+    if (request.action === 'callTool') return { status: 200, value: { code: 200, data: { total: 0, records: [] } } }
+    return { status: 400, value: { error: '上游连接失败 secret=fixture-secret' } }
+  }, () => [{ id: 'ai-soc-master', specUrl: 'http://fixture/openapi.json' }])
+  const workflow = modules.vulnerabilities.create((connection, operation, args, signal) => soc(connection, operation, args, signal)), testConfig = { connections: { master: 'ai-soc-master' } }
+  const prepared = await workflow.prepare({ scope: { all: true } }, testConfig, signal)
+  const result = await workflow.execute({ scope: { all: true } }, testConfig, context(prepared))
+  const error = result.items[0].errors.find(value => value.includes('get_soc_asset_vulnerabilities'))
+  assert.equal(result.items[0].status, 'failed')
+  assert.match(error, /ai-soc-master\/get_soc_asset_vulnerabilities assetId=1/)
+  assert.match(error, /MCP调度状态=400/)
+  assert.match(error, /调度回执错误=/)
+  assert.match(error, /已隐藏/)
+  assert.doesNotMatch(error, /fixture-secret/)
+  assert.doesNotMatch(error, /上游HTTP400/)
+})
+
 test('运行中连接变化拒绝重准备；保持同一次资产范围', async () => {
   let fingerprint = 'initial', inventories = 0
   const soc = Object.assign(async () => { inventories++; return inventory() }, { fingerprint: () => fingerprint })
@@ -338,6 +358,34 @@ test('漏洞同一标识保留每个来源的软件版本和处置记录，顺�
   assert.equal(findings.length, 1)
   assert.deepEqual(findings[0].sourceAssetIds, [1, 2])
   assert.deepEqual(findings[0].observations.map(item => [item.sourceAssetId, item.record.version, item.record.recommendation]), [[1, '1', 'fix-1'], [2, '2', 'fix-2']])
+})
+
+test('漏洞多宿主乱序嵌套批次保持归属，合法子资产汇总且失败不串行', async () => {
+  const parents = [10, 20], children = { 10: [11, 12], 20: [21, 22] }
+  const assets = [10, 11, 12, 20, 21, 22].map(assetId => ({ assetId, ip: `10.0.0.${assetId}`,
+    ...([11, 12].includes(assetId) ? { hostAssetId: 10 } : [21, 22].includes(assetId) ? { hostAssetId: 20 } : {}) }))
+  const soc = async (_connection, operation, args) => {
+    if (operation === 'list_soc_asset') return { code: 200, rows: assets, total: assets.length }
+    if (operation === 'get_soc_asset_registration_children') return { code: 200,
+      data: { total: (children[args.assetId] ?? []).length, records: assets.filter(item => (children[args.assetId] ?? []).includes(item.assetId)) } }
+    assert.equal(operation, 'get_soc_asset_vulnerabilities')
+    await new Promise(resolve => setTimeout(resolve, (23 - args.assetId) * 2))
+    return [10, 11].includes(args.assetId) ? { code: 500, message: 'fixture-business-error' }
+      : { code: 200, data: [{ cveId: 'CVE-' + args.assetId, sourceMarker: args.assetId }] }
+  }
+  const workflow = modules.vulnerabilities.create(soc), input = { scope: { all: true } }, prepared = await workflow.prepare(input, config, signal)
+  const result = await workflow.execute(input, config, context(prepared))
+  assert.deepEqual(result.items.map(item => item.assetId), assets.map(item => item.assetId))
+  for (const item of result.items) {
+    const allowed = new Set([item.assetId, ...(children[item.assetId] ?? [])])
+    assert.ok(item.sources.every(source => allowed.has(source.assetId)), JSON.stringify(item))
+    assert.ok(item.findings.every(finding => finding.observations.every(observation => allowed.has(observation.sourceAssetId)
+      && observation.record.sourceMarker === observation.sourceAssetId)))
+    assert.ok(item.errors.every(error => [...allowed].some(id => error.startsWith(`资产 ${id}：`))))
+  }
+  const first = result.items.find(item => item.assetId === parents[0]), second = result.items.find(item => item.assetId === parents[1])
+  assert.equal(first.status, 'failed'); assert.deepEqual(first.sources.map(source => source.assetId), [12])
+  assert.deepEqual(second.sources.map(source => source.assetId), [20, 21, 22]); assert.deepEqual(second.errors, [])
 })
 
 test('禁止可达规则遇到 NAT 即使路径不可达也保持未知', async () => {

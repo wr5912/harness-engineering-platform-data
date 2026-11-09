@@ -1,5 +1,6 @@
 import { isIP } from 'node:net'
 import { unpack, rows, type Soc } from '../../../src/action-api.ts'
+import { renderTroubleshootingReport } from '../../../src/reports/troubleshooting.ts'
 
 type Value = Record<string, any>
 export const branchItems = Object.freeze(['source-state', 'target-state', 'source-alerts', 'target-alerts', 'path', 'tcp'] as const)
@@ -42,23 +43,11 @@ function report(input: Value, context: Context, terminal: string) {
     recovery: '按原run_id查询已完成节点与原HTML，不重新诊断；本包不提交外部写请求。' }
 }
 function artifacts(result: Value) {
-  const escape = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!)
-  const labels: Record<string, string> = { observed: '已取得证据', unknown: '未知', unavailable: '未执行：能力不可用', failed: '查询失败', partial: '部分完成', incomplete: '证据不完整' }
-  const names: Record<string, string> = { 'unique-endpoints': '对象定位', 'source-soc-state': '源SOC状态', 'target-soc-state': '目标SOC状态', 'source-alerts': '源关联告警', 'target-alerts': '目标关联告警', 'configuration-path': '配置路径模型', 'current-source-tcp': '当前源端TCP', 'application-response': '应用响应', 'target-current-listener': '当前监听', 'target-service': '服务与关联日志', 'current-source-route': '源路由', 'current-destination-observation': '目标当前观察', 'tcp-followup-not-executed': 'TCP后继检查缺口' }
-  const input = result.input ?? {}, scope = result.scope ?? {}, source = scope.source ?? input.source ?? {}, target = scope.target ?? input.target ?? {}
-  const items: Value[] = Array.isArray(result.items) ? result.items : []
-  const evidence = (item: Value) => item.message ?? item.reason ?? item.error ?? (item.online !== undefined ? `SOC原状态：${item.online}，不代表业务正常` : '已有证据保留在本次明细中')
-  const pending = items.filter(item => ['unknown', 'unavailable', 'failed', 'partial'].includes(item.status))
-  const body = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>业务访问故障排查报告</title><style>body{font:16px/1.65 system-ui;color:#20242c;max-width:1120px;margin:2rem auto;padding:0 1rem}table{border-collapse:collapse;width:100%}td,th{text-align:left;vertical-align:top;border-bottom:1px solid #ddd;padding:.65rem}pre{white-space:pre-wrap;overflow-wrap:anywhere}.notice{padding:.8rem;background:#fff4da}details{margin-top:1rem}</style></head><body>
-<h1>业务访问故障排查报告</h1><p class="notice">状态：${escape(labels[result.status] ?? result.status)}。${escape(result.message)}</p>
-<h2>排查对象</h2><p>源：${escape(source.ip ?? '未唯一定位')}（资产 ${escape(source.assetId ?? '未核实')}） → 目标：${escape(target.ip ?? '未唯一定位')}（资产 ${escape(target.assetId ?? '未核实')}）</p><p>连接：${escape(input.protocol)} / ${escape(input.port)}；查询窗口：${escape(input.from)} 至 ${escape(input.to)}</p><p>原运行：${escape(result.run_id)}</p>
-<h2>已得证据与状态</h2><table><thead><tr><th>检查</th><th>状态</th><th>已得证据／说明</th><th>记录时间</th></tr></thead><tbody>${items.map(item => `<tr><td>${escape(names[item.check] ?? item.check)}</td><td>${escape(labels[item.status] ?? item.status)}</td><td>${escape(evidence(item))}</td><td>${escape(item.recorded_at ?? '未提供')}<br>非源观测时间</td></tr>`).join('') || '<tr><td colspan="4">尚无已保存检查事实</td></tr>'}</tbody></table>
-<h2>证据缺口</h2><ul>${pending.map(item => `<li>${escape(names[item.check] ?? item.check)}：${escape(evidence(item))}</li>`).join('') || '<li>没有额外缺口记录；不等于所有检查正常。</li>'}</ul>
-<h2>下一步</h2><ol><li>沿原对象、连接与本次运行补充缺少的源端、应用、服务或路径证据，不扩大范围或自动修复。</li><li>核对源观测时间与时区；不把查询时间或旧SOC探测当本次实测。</li><li>按原运行核对未完成检查与已有回执；补证保持同一源、目标和连接，不据未知结果判断根因。</li></ol>
-<details><summary>展开原始回执、完整事实与技术标识</summary><pre>${escape(JSON.stringify(result, null, 2))}</pre></details><p>查看原报告不重新诊断；未执行扫描、配置下发、设备重启或Java旧服务。</p></body></html>`
+  const body = renderTroubleshootingReport(result)
   return [{ id: 'report', filename: 'business-access-report.html', contentType: 'text/html; charset=utf-8', body },
     { id: 'details', filename: 'business-access-details.json', contentType: 'application/json', body: JSON.stringify(result, null, 2) }]
 }
+
 export function create(soc: Soc) {
   async function read(alias: string, operation: string, args: Value, config: Value, context: Context, receipts: Value[]) {
     const serverId = config.connections[alias], started_at = new Date().toISOString()
@@ -94,8 +83,8 @@ export function create(soc: Soc) {
       if (candidates.size > total || !page.length && candidates.size < total) throw new Error('资产分页不完整')
       if (candidates.size === total) break
     }
-    const matches = [...candidates.values()].filter(asset => asset.ip === request.ip)
-    if (matches.length !== 1 || request.assetId !== undefined && matches[0].assetId !== request.assetId) throw new Error(`资产不能唯一精确匹配已确认IP/ID：${request.ip}`)
+    const matches = [...candidates.values()].filter(asset => asset.ip === request.ip && (request.assetId === undefined || asset.assetId === request.assetId))
+    if (matches.length !== 1) throw new Error(`资产不能唯一精确匹配已确认IP/ID：${request.ip}`)
     return matches[0]
   }
   async function status(which: 'source' | 'target', config: Value, context: Context) {
@@ -186,7 +175,7 @@ export function create(soc: Soc) {
   }
   const finish = (name: string) => (_input: Value, _config: Value, context: Context) => report(context.shared.input, context, name)
   return {
-    inputSchema, responseMode: 'complete' as const,
+    inputSchema,
     connections: (config: Value) => [...new Set<string>(Object.values(config.connections))],
     prepare(input: Value, config: Value) {
       if (!isIP(input.source?.ip ?? '') || !isIP(input.target?.ip ?? '') || !['tcp', 'udp'].includes(input.protocol) || !Number.isSafeInteger(input.port) || input.port < 1 || input.port > 65535) throw new Error('必须提供已确认的源/目标IP、协议和单个端口；缺DNS不猜IP')

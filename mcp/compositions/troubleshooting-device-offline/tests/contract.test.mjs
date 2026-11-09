@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
@@ -47,6 +48,10 @@ async function readAlerts(options) {
   const result = await fixture.workflow.components.alerts({}, config, fixture.ctx)
   return { ...fixture, result }
 }
+
+test('原生启动先返回accepted，详细事实留在Run，避免大回执裁剪后丢失来源', () => {
+  assert.notEqual(create(async () => { throw new Error('启动合同不调用SOC') }).responseMode, 'complete')
+})
 
 test('用户重复alertId跨页复现：保留两条及两原页，但绝不能complete', async () => {
   const { result, calls, events } = await readAlerts({ memberPages: [
@@ -374,23 +379,25 @@ test('HepBatch/body原生静态闭包、真实item条件及独立终态；不代
   assert.deepEqual(body.data.nodes.find(node => node.id === 'item-gate').data.node.outputs.map(output => output.name), ['soc-state', 'alerts', 'management'])
   assert.deepEqual(localBody.data.nodes.find(node => node.id === 'item-gate').data.node.outputs.map(output => output.name), ['run-state', 'config', 'heartbeat', 'synchronization'])
   assert.match(source, /COLLECTION_ITEMS = Object\.freeze\(\['run-state', 'config', 'heartbeat', 'synchronization'\]\)/)
-  const permitted = new Set([resolve(root, 'src/index.ts'), resolve(root, '../../src/action-api.ts')])
+  const permitted = new Set([resolve(root, 'src/index.ts'), resolve(root, '../../src/action-api.ts'), resolve(root, '../../src/reports/common.ts'), resolve(root, '../../src/reports/troubleshooting.ts')])
   for (const input of Object.keys(built.metafile.inputs)) assert.ok(permitted.has(resolve(input)), `越过包内/显式公共依赖闭包：${relative(root, resolve(input))}`)
 })
 
-test('HTML保留对象、状态、证据表、缺口、下一步及details折叠JSON，全部转义', () => {
+test('HTML保留对象、状态、证据表、缺口、后续建议及折叠安全投影，源文本无法执行', () => {
   const workflow = create(async () => { throw new Error('渲染不调用SOC') })
   const result = { kind: 'device-offline', run_id: '<script>run</script>', status: 'incomplete', input: { ...originalInput(), asset: { ip: '<img src=x onerror=evil()>' } },
     items: [{ check: 'alerts', status: 'unknown', totalGroups: 0, totalAlerts: 2, groups: [], members: [{ alertId: 'a' }], complete: false, error: '<b>原错</b>', gaps: ['<svg onload=evil()>'] }],
     next_check: '<script>next</script>' }
   const artifacts = workflow.artifacts(result), html = artifacts.find(artifact => artifact.id === 'report').body
-  for (const heading of ['排查对象', '已得证据与各项状态', '证据缺口', '下一步']) assert.ok(html.includes(heading))
+  for (const heading of ['本次真实对象与范围', '本次已存事实证据', '已保存缺口与适用边界', '已存下一步']) assert.ok(html.includes(heading))
   assert.match(html, /<table>/)
-  assert.match(html, /声明告警条数：2/)
-  assert.match(html, /实际已收组／成员：0／1/)
-  assert.match(html, /<details><summary>.*<\/summary><pre>/s)
-  assert.equal((html.match(/<pre>/g) ?? []).length, 1)
-  assert.doesNotMatch(html, /<script>|<img |<svg |<b>原错/)
+  assert.match(html, /不是完整原始响应|不是未裁剪上游响应/, 'HTML必须说明安全投影边界')
+  assert.match(html, /<details\b[^>]*>[\s\S]*本次完整安全投影[\s\S]*<pre>/)
+  assert.ok(html.includes('&quot;totalAlerts&quot;: 2'), '安全投影保留实际已存告警计数')
+  assert.doesNotMatch(html, /<script>run|<script>next|<img |<svg |<b>原错/)
+  const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]
+  assert.equal(scripts.length, 1)
+  assert.ok(html.includes(`script-src 'sha256-${createHash('sha256').update(scripts[0][1]).digest('base64')}'`))
   assert.match(html, /&lt;img src=x onerror=evil\(\)&gt;/)
   assert.match(html, /&lt;b&gt;原错&lt;\/b&gt;/)
   assert.doesNotMatch(html, /候选最小适配|尚未经研发|Graph\.arun|async_start|调度限制/, '业务报告不包含开发进度标签')

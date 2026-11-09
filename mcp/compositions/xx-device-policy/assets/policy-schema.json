@@ -1,0 +1,45 @@
+{
+  "title": "XX 设备策略字段与取值",
+  "identityFields": ["hostid", "hostip"],
+  "maps": {
+    "设备控制": {
+      "description": "设备控制字段；所有取值均为字符串。",
+      "fields": {
+        "蓝牙设备": { "type": "string", "values": { "1": "启用", "2": "禁用" } },
+        "串口": { "type": "string", "values": { "1": "启用", "2": "禁用" } },
+        "无线网卡": { "type": "string", "values": { "1": "启用", "2": "禁用" } },
+        "打印设备": { "type": "string", "values": { "1": "启用", "2": "禁用" } },
+        "光驱": { "type": "string", "values": { "1": "启用", "2": "禁用", "3": "只读" } },
+        "USB存储设备": { "type": "string", "values": { "1": "启用", "2": "禁用", "3": "只读" } }
+      }
+    },
+    "login": {
+      "description": "仅维护已确认字段及取值；字段含义与时间单位未提供，不作推断，保留 osuer 原拼写。",
+      "fields": {
+        "alogin": { "type": "string", "values": ["0", "1"] },
+        "oscreenoff": { "type": "string", "values": ["0", "5", "10", "30", "-1"] },
+        "ltype": { "type": "string", "values": ["0", "1", "2", "3"] },
+        "man": { "type": "string", "values": ["0", "1"] },
+        "finger": { "type": "string", "values": ["0", "1"] },
+        "sm": { "type": "string", "values": ["0", "1"] },
+        "trust": { "type": "string", "values": ["0", "1"] },
+        "osuer": { "type": "string", "values": ["0", "1"] }
+      }
+    },
+    "net": {
+      "description": "网络策略字段；地址、CIDR、端口及规则名作为字符串原样保留，不额外规范化，保留 proctocol 原拼写。",
+      "fields": {
+        "rulename": { "type": "string", "description": "规则名称，例如阻断；按用户录入字符串原样保留。" },
+        "control": { "type": "string", "values": { "0": "禁用", "1": "启用" } },
+        "index": { "type": "string", "description": "规则排序编号。", "values": ["1", "2", "3", "4"] },
+        "action": { "type": "string", "values": { "deny": "阻断", "allow": "允许" } },
+        "proctocol": { "type": "string", "description": "协议；保留proctocol原拼写。", "values": ["ip", "tcp", "udp", "icmp"] },
+        "sourceip": { "type": "string", "description": "源IP或CIDR，例179.16.1.1或179.16.1.1/24；原样保留。" },
+        "sourceport": { "type": "string", "description": "本地端口；单端口、逗号分隔及a-b范围，例80,1-20；原样保留。" },
+        "targetip": { "type": "string", "description": "目标IP，例12.1.1.3；原样保留。" },
+        "targetport": { "type": "string", "description": "目标端口；单端口、逗号分隔及a-b范围，例80,1-20；原样保留。" },
+        "reserved": { "type": "string", "values": { "0": "进", "1": "出", "2": "双向" } }
+      }
+    }
+  }
+}

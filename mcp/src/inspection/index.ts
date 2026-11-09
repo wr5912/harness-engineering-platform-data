@@ -1,4 +1,6 @@
 import { BlockList, isIP } from 'node:net'
+import { renderInspectionReport } from '../reports/inspection.ts'
+import { safeProjection } from '../reports/common.ts'
 import type { CompositionWorkflow, WorkflowContext } from '@harness-platform/mcp/extension'
 
 
@@ -30,8 +32,18 @@ export function decode(value: any): any {
     const text = (value.content ?? value.contents).filter((item: any) => typeof item.text === 'string').map((item: any) => item.text).join('\n')
     try { value = JSON.parse(text) } catch { throw new Error('上游未返回可解析的结构化数据') }
   }
-  if (!value || typeof value !== 'object' || value.code !== undefined && ![0, 200].includes(value.code)) throw new Error(`上游业务请求失败：${value?.code ?? 'invalid-response'}`)
+  if (!value || typeof value !== 'object' || value.code !== undefined && ![0, 200].includes(value.code)) throw new Error(`上游业务响应失败（业务码=${value?.code ?? 'invalid-response'}；上游HTTP状态未提供）`)
   return value
+}
+function publicErrorText(value: any): string {
+  const projected: any = safeProjection({ error: value })
+  const text = projected?.error
+  if (typeof text === 'string') return text.slice(0, 1000)
+  if (text === undefined) return ''
+  try { return JSON.stringify(text).slice(0, 1000) } catch { return '[错误信息无法安全展开]' }
+}
+function publicReceiptError(error: any): string {
+  return publicErrorText(error?.receipt?.error)
 }
 export function rows(value: any): any[] {
   const result = value.rows ?? value.data?.rows ?? value.data?.records ?? value.data?.list ?? value.data
@@ -46,7 +58,21 @@ export function cidrMatch(ip: string, cidr: string) {
 }
 export function tools(soc: Soc) {
   async function request(connection: string, operation: string, args: Record<string, any>, signal: AbortSignal, context?: RequestContext) {
-    const invoke = async () => { signal.throwIfAborted(); return decode(await soc(connection, operation, args, AbortSignal.any([signal, AbortSignal.timeout(30_000)]), context?.shared?.connection_fingerprints?.[connection])) }
+    const invoke = async () => {
+      signal.throwIfAborted()
+      try { return decode(await soc(connection, operation, args, AbortSignal.any([signal, AbortSignal.timeout(30_000)]), context?.shared?.connection_fingerprints?.[connection])) }
+      catch (error: any) {
+        signal.throwIfAborted()
+        const asset = Number.isSafeInteger(args.assetId) ? ` assetId=${args.assetId}` : ''
+        const type = typeof error.cause?.name === 'string' && error.cause.name !== 'Error' ? `；底层类型=${publicErrorText(error.cause.name)}` : ''
+        const code = typeof error.cause?.code === 'string' ? `；cause=${publicErrorText(error.cause.code)}` : ''
+        const status = Number.isInteger(error.status) ? `；MCP调度状态=${error.status}` : ''
+        const message = publicErrorText(error.message) || '未提供错误消息'
+        const receipt = publicReceiptError(error)
+        const receiptText = receipt && receipt !== message ? `；调度回执错误=${receipt}` : ''
+        throw new Error(`${connection}/${operation}${asset}：${message}${type}${code}${status}${receiptText}`, { cause: error })
+      }
+    }
     // GET 仅对明确的瞬时网络失败重试一次，业务错误保留原结果。
     const attempt = () => context ? context.call(invoke) : invoke()
     const call = async () => { try { return await attempt() } catch (error: any) { if (!signal.aborted && /ECONNRESET|ETIMEDOUT|fetch failed/.test(error.message)) return attempt(); throw error } }
@@ -133,12 +159,11 @@ export function summary(kind: string, items: any[], context: WorkflowContext) {
     counts: Object.fromEntries(['normal', 'abnormal', 'unknown', 'not_applicable', 'failed'].map(status => [status, items.filter(item => item.status === status).length])), items }
 }
 export function artifacts(result: Record<string, any>) {
-  const escape = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!)
-  const labels: Record<string, string> = { normal: '正常', abnormal: '异常', unknown: '未知', not_applicable: '不适用', failed: '失败' }
-  const sections = result.checks ?? { [result.kind ?? 'inspection']: result }
-  const body = `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>巡检报告</title><style>body{font:16px/1.6 system-ui;max-width:1120px;margin:32px auto;padding:0 20px;color:#20242c}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;border-bottom:1px solid #ddd;padding:10px}pre{white-space:pre-wrap;overflow-wrap:anywhere}h2{margin-top:32px}</style><h1>巡检报告</h1><p>冻结时间：${escape(result.scope?.frozen_at)}；范围资产数：${escape(result.scope?.count)}；执行状态：${escape(result.status)}</p><p>未知与未返回数据不表示正常。检查基于已有 SOC 事实，不执行主动探测。</p>${Object.entries(sections).map(([name, section]: [string, any]) => `<h2>${escape(name)}</h2><p>${escape(Object.entries(section.counts ?? {}).map(([key, count]) => `${labels[key] ?? key} ${count}`).join('，'))}</p><table><thead><tr><th>对象</th><th>结论</th><th>说明与建议</th></tr></thead><tbody>${(section.items ?? [section]).map((item: any) => `<tr><td>${escape(item.hostname ?? item.ruleName ?? item.assetId ?? item.srcIp ?? name)} ${escape(item.ip ?? item.dstIp ?? '')}</td><td>${escape(labels[item.status] ?? item.status)}</td><td>${escape(item.message ?? item.error)}<br>${escape(item.recommendation)}</td></tr>`).join('')}</tbody></table>`).join('')}<details><summary>完整归档事实</summary><pre>${escape(JSON.stringify(result, null, 2))}</pre></details></html>`
-  return [{ id: 'report', filename: 'inspection-report.html', contentType: 'text/html; charset=utf-8', body }, { id: 'details', filename: 'inspection-details.json', contentType: 'application/json', body: JSON.stringify(result, null, 2) }]
+  const body = renderInspectionReport(result)
+  return [{ id: 'report', filename: 'inspection-report.html', contentType: 'text/html; charset=utf-8', body },
+    { id: 'details', filename: 'inspection-details.json', contentType: 'application/json', body: JSON.stringify(result, null, 2) }]
 }
+
 export function base(soc: Soc, withRules = false): Pick<CompositionWorkflow, 'inputSchema' | 'connections' | 'prepare' | 'artifacts'> {
   return { inputSchema, connections: config => [...new Set(Object.values(config.connections ?? {}))], prepare: (input, config, signal, context) => tools(soc).prepare(input, config, signal, withRules, context), artifacts }
 }

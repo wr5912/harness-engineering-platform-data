@@ -240,5 +240,19 @@
     "flowDigest": "e10af163dd61c433400fcc516bf7b5c5d77c8b8cb088c42571b98707c06ff6e2",
     "publishedAt": "2026-11-07T03:27:13.413Z"
   },
-  "publishedVersionId": "06bf7342d95b21c1986c08a64c3baaa3f30bbc9cff91726b74aaf4ba6a6c58c4"
+  "publishedVersionId": "06bf7342d95b21c1986c08a64c3baaa3f30bbc9cff91726b74aaf4ba6a6c58c4",
+  "draft": {
+    "toolName": "inspection_routine",
+    "title": "常规巡检",
+    "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+    "connectionId": "platform-compositions",
+    "workflow": "inspection-routine",
+    "connections": {
+      "master": "ai-soc-master",
+      "ingest": "ai-soc-ingest",
+      "graph": "ai-soc-graph"
+    },
+    "kind": "workflow",
+    "engine": "lfx"
+  }
 }

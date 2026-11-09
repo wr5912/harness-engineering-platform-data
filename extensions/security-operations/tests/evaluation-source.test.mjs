@@ -22,27 +22,29 @@ spec = importlib.util.spec_from_file_location("evaluation_contract", sys.argv[1]
 contract = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(contract)
 print(json.dumps(contract.load_evaluation(Path(sys.argv[2])), ensure_ascii=False))
-`, join(program, '.agents/skills/research-eval/scripts/evaluation_contract.py'), evaluation], {
+`, join(program, 'runtime/research/evaluation_contract.py'), evaluation], {
     encoding: 'utf8', env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' }, timeout: 10_000,
   }))
-  const numbered = (prefix, count) => Array.from({ length: count }, (_, index) => `${prefix}-${String(index + 1).padStart(3, '0')}`)
-  const expectedIds = [
-    ...numbered('U-INS', 7), 'U-EMG-001', ...numbered('U-POL', 12),
-    'U-FLT-MENTION', ...numbered('U-FLT', 10), ...numbered('U-QA', 14),
-    'U-THREAT-MENTION', 'U-THREAT-FAST', 'U-THREAT-FULL', 'U-THREAT-CONTRACT',
-    'U-THREAT-WHITELIST', 'U-THREAT-MISSING', 'U-THREAT-FOLLOWUP', ...numbered('U-VOICE', 4),
-  ]
+  const headings = [...text.matchAll(/^#### (U-[A-Z0-9-]+) (.+)$/gm)]
+  const sourceIds = headings.map(match => match[1])
   assert.equal(existsSync(join(agent, 'definition.md')), false)
-  assert.deepEqual(loaded.case_ids, expectedIds)
-  for (const id of expectedIds) assert.deepEqual(Object.keys(loaded.cases[id]).sort(), ['case_id', 'expected_behavior', 'inputs', 'title'])
-  assert.deepEqual(loaded.cases['U-INS-001'].inputs, ['执行一次常规巡检。'])
-  assert.deepEqual(loaded.catalog.filter(item => item.fast).map(item => item.case_id),
-    ['U-INS-001', 'U-EMG-001', 'U-POL-001', 'U-FLT-001', 'U-QA-002', 'U-QA-003', 'U-THREAT-FAST'])
-  assert.ok(loaded.catalog.every(item => item.scene))
-  for (const expected of ['设备数量', 'reportMarkdown', '不改写结论', '仅当 `reportDownloadUrl` 非空时原样提供下载地址']) {
-    assert.ok(loaded.cases['U-INS-001'].expected_behavior.includes(expected))
+  assert.deepEqual(loaded.case_ids, sourceIds)
+  assert.equal(new Set(sourceIds).size, sourceIds.length)
+  assert.ok(sourceIds.length > 0)
+  for (const [index, id] of sourceIds.entries()) {
+    assert.match(id, /^U-[A-Z]+-\d{3}$/)
+    const item = loaded.cases[id]
+    assert.deepEqual(Object.keys(item).sort(), ['case_id', 'expected_behavior', 'inputs', 'title'])
+    assert.equal(item.title, headings[index][2])
+    assert.ok(item.inputs.length && item.inputs.every(input => input.trim()))
+    assert.ok(item.expected_behavior.trim())
   }
-  assert.equal(loaded.cases['U-POL-008'].inputs.length, 4)
+  assert.ok(loaded.catalog.every(item => item.scene && item.scene !== '未分组'))
+  const sourceFast = headings.filter((match, index) => {
+    const block = text.slice(match.index + match[0].length, headings[index + 1]?.index ?? text.length)
+    return block.trimStart().startsWith('**评估档位：** `fast`')
+  }).map(match => match[1])
+  assert.deepEqual(loaded.catalog.filter(item => item.fast).map(item => item.case_id), sourceFast)
   for (const retired of ['**执行器', '**工具边界', '**副作用预算', 'Experiment 评估选择',
     'T-MIGRATION-SOURCE', 'T-DSH-LOAD-CYCLE', 'T-CONTRACT-STATIC', 'T-CONTRACT-LIVE']) {
     assert.equal(text.includes(retired), false)

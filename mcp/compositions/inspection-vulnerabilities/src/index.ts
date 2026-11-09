@@ -29,17 +29,21 @@ export function create(soc: Soc) {
       return { ...value, asset, items: [...targets.values()], errors }
     },
     observations: async (value: any, config: any, context: any) => {
-      const assetId = value.item.assetId
+      const assetId = value.item.assetId, hostAssetId = value.item.hostAssetId
       try {
         const records = rows(await api.request(config.connections.master, 'get_soc_asset_vulnerabilities', { assetId }, context.signal, context))
         if (records.some(record => !record || typeof record !== 'object' || Array.isArray(record))) throw new Error('漏洞明细不是对象')
-        return { assetId, observed_at: new Date().toISOString(), records }
-      } catch (error: any) { context.signal.throwIfAborted(); return { assetId, error: error.message } }
+        return { assetId, ...(hostAssetId === undefined ? {} : { hostAssetId }), observed_at: new Date().toISOString(), records }
+      } catch (error: any) { context.signal.throwIfAborted(); return { assetId, ...(hostAssetId === undefined ? {} : { hostAssetId }), error: error.message } }
     },
     assess: (value: any) => {
       const errors = [...value.errors], sources: any[] = [], observations = new Map<string, any>()
       for (const source of value.items) {
-        if (source.error) { errors.push(`资产 ${source.assetId}：${source.error}`); continue }
+        if (source.assetId !== value.asset.assetId && source.hostAssetId !== value.asset.assetId) {
+          errors.push(`来源归属不一致：资产 ${value.asset.assetId} 未绑定来源 ${source.assetId}；不纳入该来源观测`)
+          continue
+        }
+        if (source.error) { errors.push(`资产 ${source.assetId}：${source.assetId === value.asset.assetId ? '' : `（宿主 ${source.hostAssetId}）`}${source.error}`); continue }
         sources.push({ ...source, records: source.records.length })
         for (const record of source.records) {
           const identity = record.id ?? record.vulnerabilityId ?? record.cveId ?? JSON.stringify(Object.fromEntries(Object.entries(record).sort(([a], [b]) => a.localeCompare(b))))

@@ -98,6 +98,18 @@
     "revision_scope": "目录配置未变，所以revision不变；不能用目录revision或内存隔离实验代替正式资产复验",
     "handoff": "已停止资产写入，等待研发对正式源文件复验；未启动验证或触碰Candidate/evaluation/迁移前基线Run，未bind/publish或主动探测"
   },
+  "formal_source_controlled_probe": {
+    "actor": "研发执行；本管理会话只读证据",
+    "source": "/home/cmp/work/harness-engineering-platform/platform/plugin/test/evidence/troubleshooting-compositions-20261107/native-lfx-controlled.json",
+    "scope": "正式flow与TS无内存补丁，仅SOC外部边界为Mock，官方LFX根执行",
+    "summary": {"ok": true, "calls": 5, "facts": 6, "advance_ms_rounded": 984, "result_status": "incomplete", "active_checks_executed": false},
+    "contract_result": {"source": "/tmp/hep-troubleshooting-device-offline-contract-final.tap", "passed": 34, "total": 34, "failed": 0},
+    "current_change": "仅五种条件outputs中文标签与两批节点业务显示名及递归标签断言；端口name/method、执行代码、连接、body执行结构和类型/show保持不变",
+    "current_label_assertions_executed": false,
+    "real_soc_business_acceptance": false,
+    "real_management_response_collection_chain_verified": false,
+    "raw_evidence_is_not_a_runtime_or_test_dependency": true
+  },
   "not_performed": ["发布", "实例草稿绑定", "Candidate或Case修改", "主动TCP/ICMP/HTTP或扫描", "旧诊断服务调用", "业务实例重启/重载", "新评测实例或迁移基线创建", "手动构建或运行代码检查"],
   "development_handoff": "研发按既有动态包构建和装载管理扩展，检查本包TS及原生LFX条件、并行、局部汇合与唯一终态。之后回读新revision再做dry，不重建其他评测实例、不自动发布。"
 }

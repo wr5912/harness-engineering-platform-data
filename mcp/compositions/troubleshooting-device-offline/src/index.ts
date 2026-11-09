@@ -1,5 +1,6 @@
 import { isIP } from 'node:net'
 import { unpack, rows, type Soc } from '../../../src/action-api.ts'
+import { renderTroubleshootingReport } from '../../../src/reports/troubleshooting.ts'
 
 type Value = Record<string, any>
 type Context = { runId: string; nodeId: string; signal: AbortSignal; shared: Value; progress(value: Value): void; call<T>(call: () => Promise<T>): Promise<T> }
@@ -204,7 +205,7 @@ export function create(soc: Soc) {
     } catch (error: any) { businessFailure(context, error); return store(context, 'configuration-path', 'failed', { ...errorFields(error), gaps: ['路径查询失败不等于无路径'] }, receipts) }
   }
   return {
-    responseMode: 'complete' as const, inputSchema,
+     inputSchema,
     connections: (config: Value) => [...new Set<string>(Object.values(config.connections))],
     prepare(input: Value, config: Value) {
       input = structuredClone(input)
@@ -346,33 +347,9 @@ export function create(soc: Soc) {
       },
     },
     artifacts(result: Value) {
-      const escape = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!)
-      const labels: Record<string, string> = { observed: '已取得证据', unknown: '未知', unavailable: '未执行：能力不可用', failed: '查询失败', partial: '部分完成', incomplete: '证据不完整', completed: '检查完成（非故障恢复）' }
-      const names: Record<string, string> = { resolve: '对象定位', 'soc-state': 'SOC状态依据', alerts: '关联告警', 'management-observation': '管理侧观察', 'configuration-path': '配置路径', 'collection-capability': '采集适用性', 'collection-binding': '采集绑定', 'collection-run-state': '采集运行态', 'collection-config': '采集配置', 'raw-heartbeat': '原始心跳', 'state-synchronization': '状态同步', 'unknown-management': '管理观察缺口', 'unanswered-observation': '无响应边界' }
-      const items: Value[] = Array.isArray(result.items) ? result.items : []
-      const scope = result.scope ?? {}, input = result.input ?? {}, asset = scope.asset ?? input.asset ?? {}, observer = scope.observer ?? input.observer
-      const summary = (item: Value) => {
-        if (item.check === 'resolve') return `设备精确匹配数：${item.exact_matches?.asset ?? '未知'}；观察源精确匹配数：${item.exact_matches?.observer ?? '未指定'}`
-        if (item.check === 'soc-state') return `SOC原状态：${item.reported_state ?? '未返回'}；依据：${item.onlineBasis ?? '未返回'}。这不是本次管理响应或设备健康结论。`
-        if (item.check === 'alerts') return `快照声明告警组：${Number.isSafeInteger(item.totalGroups) ? item.totalGroups : '未知'}；声明告警条数：${Number.isSafeInteger(item.totalAlerts) ? item.totalAlerts : '未知'}；实际已收组／成员：${Array.isArray(item.groups) ? item.groups.length : '未知'}／${Array.isArray(item.members) ? item.members.length : '未知'}；完整性：${item.complete === true ? '固定快照已核对' : '不完整'}${item.error ? `；原错误：${item.error}` : ''}。不完整数量不作完整告警结论。`
-        if (item.check === 'collection-capability') return `来源声明的能力组：${item.collection_capability?.groups?.length ?? '未知'}；空目录不等于设备不可采。`
-        if (item.check === 'collection-binding') return `已返回采集设备候选：${Array.isArray(item.devices) ? item.devices.length : '未知'}；不等于采集正常。`
-        if (item.check === 'configuration-path') return `配置模型结论：${item.evidence?.verdict ?? item.evidence?.diagnosis?.verdict ?? '未知'}；只解释已有IP对模型，不证明实际响应或断电。`
-        if (item.error) return String(item.error)
-        if (item.executed === false) return '本项未执行；未将缺失结果解释为正常。'
-        if (Array.isArray(item.evidence)) return `已返回记录：${item.evidence.length}条；其时效及适用性仍须核对。`
-        return item.message ?? item.reason ?? '本项事实与原始来源已保留，详见下方可展开明细。'
-      }
-      const gaps = items.flatMap(item => (Array.isArray(item.gaps) ? item.gaps : ['unknown', 'unavailable', 'failed', 'partial'].includes(item.status) ? [item.error ?? item.message ?? '本项证据不足'] : []).map((reason: any) => ({ check: names[item.check] ?? item.check, reason: String(reason) })))
-      const checks = items.map(item => `<tr><td>${escape(names[item.check] ?? item.check)}</td><td>${escape(labels[item.status] ?? item.status)}</td><td>${escape(summary(item))}</td><td>${escape(item.recorded_at ?? '未提供')}<br><small>仅为记录时间；源观测及未知时区保留在详情</small></td></tr>`).join('')
-      const body = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>设备不在线排查报告</title><style>body{font:16px/1.65 system-ui;color:#20242c;max-width:1120px;margin:2rem auto;padding:0 1rem}table{border-collapse:collapse;width:100%}td,th{text-align:left;vertical-align:top;border-bottom:1px solid #ddd;padding:.65rem}dt{font-weight:600}dd{margin:0 0 .7rem}pre{white-space:pre-wrap;overflow-wrap:anywhere}.notice{padding:.8rem;background:#fff4da}small{color:#586174}details{margin-top:1rem}</style></head><body>
-<h1>设备不在线排查报告</h1><p class="notice">当前状态：${escape(labels[result.status] ?? result.status)}。无响应不判断断电，SOC在线不代表设备正常；未实施修复或主动探测。</p>
-<h2>排查对象</h2><dl><dt>设备</dt><dd>${escape(asset.ip ?? '未唯一定位')} · 资产 ${escape(asset.assetId ?? '未核实')}</dd><dt>已有配置路径观察源</dt><dd>${escape(observer?.ip ?? '未指定；不猜源地址')}</dd><dt>查询窗口</dt><dd>${escape(input.from)} 至 ${escape(input.to)}</dd><dt>原运行</dt><dd>${escape(result.run_id)}</dd></dl>
-<h2>已得证据与各项状态</h2><p>已保存 ${items.length} 项检查记录；“未知”“未执行”和“查询失败”均不视为正常。</p><table><thead><tr><th>检查</th><th>状态</th><th>已得证据／说明</th><th>记录时间</th></tr></thead><tbody>${checks || '<tr><td colspan="4">尚无已保存检查事实</td></tr>'}</tbody></table>
-<h2>证据缺口</h2><ul>${gaps.map(gap => `<li><strong>${escape(gap.check)}</strong>：${escape(gap.reason)}</li>`).join('') || '<li>未记录额外缺口；这不代表所有检查已经完成。</li>'}</ul>
-<h2>下一步</h2><ol><li>${escape(result.next_check ?? '沿本对象和原运行补充缺失证据，不自动重跑。')}</li><li>核实来源时区、原始心跳及状态同步；不把查询时间或资产更新时间当源观测时间。</li><li>核对管理观察与采集绑定证据；没有本次真实响应时，不以SOC标签或无回复推断设备电源状态。</li></ol>
-<details><summary>展开原始回执、完整事实与技术标识</summary><pre>${escape(JSON.stringify(result, null, 2))}</pre></details><p><small>本报告记录已有证据和缺口，不表示故障已修复；查看原报告不会启动新诊断。</small></p></body></html>`
-      return [{ id: 'report', filename: 'device-offline-report.html', contentType: 'text/html; charset=utf-8', body }, { id: 'details', filename: 'device-offline-details.json', contentType: 'application/json', body: JSON.stringify(result, null, 2) }]
+      const body = renderTroubleshootingReport(result)
+      return [{ id: 'report', filename: 'device-offline-report.html', contentType: 'text/html; charset=utf-8', body },
+        { id: 'details', filename: 'device-offline-details.json', contentType: 'application/json', body: JSON.stringify(result, null, 2) }]
     },
   }
 }

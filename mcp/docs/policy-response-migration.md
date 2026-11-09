@@ -15,6 +15,6 @@
 
 通过平台管理助手保存、回读及发现新分组，在指定版本的隔离实例验收。保留既有实例的 HOME、会话、端口、模型与标准镜像；已有 HOME 覆盖连接时不把重载回执当作新连接生效，以实际工具调用核对。具体实例与结果见该 Experiment 的 [observations.md](../../evolution/experiments/EXP-security-operations-expert-027-f-r5efdc136f237/evaluation/observations.md)。
 
-当前指定验收使用 Agent [evaluation.md](../../agents/security-operations-expert/evaluation.md) 的 `U-POL-020`～`U-POL-022`、`U-EMG-007`～`U-EMG-010`；目标、授权及结束位置以冻结到该次 Run 的输入为准。历史草稿示例不作为本轮写入授权。只读查询、真实预览、任务创建、下发及原号回读分别取证；异常路径用外部接口边界隔离测试，不能冒充真实设备效果。
+后续验收从 Agent 当前核心集的[策略配置](../../agents/security-operations-expert/evaluation.md#策略配置)与[独立应急指令](../../agents/security-operations-expert/evaluation.md#独立应急指令)中选择本次涉及的用例，不沿用已移除的编号范围；已完成 Run 仍按各自冻结的编号与口径阅读。目标、授权及结束位置以冻结到该次 Run 的输入为准。历史草稿示例不作为本轮写入授权。只读查询、真实预览、任务创建、下发及原号回读分别取证；异常路径用外部接口边界隔离测试，不能冒充真实设备效果。
 
 审批仅在原 SOC 任务实际要求时进入，外部连接和能力缺口以本轮回执为准，不虚构审批或绕过凭据。历史[交接记录](policy-response-handoff.md)只保留旧过程证据，不作为当前执行步骤。
