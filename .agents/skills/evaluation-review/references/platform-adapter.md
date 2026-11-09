@@ -1,10 +1,12 @@
 # Harness 用例格式
 
-格式依据 2026-11-02 已核验的仓库版本；编号及改号操作按办理时核对的平台合同执行。后续涉及平台行为变化时重新核对。
+格式由平台[评测解析器](https://github.com/wr5912/harness-engineering-platform/blob/main/runtime/research/evaluation_contract.py)读取；编号及改号操作按办理时核对的平台合同执行。
 
 ## 四部分结构
 
 内容口径遵循[评测口径与输入](../../../../docs/harness-research/evaluation-and-evidence.md#口径与输入)，本文件只维护格式及平台适配。
+
+场景使用二级标题 `## 场景`，用例使用四级标题 `#### U-XXX-001 名称`。不要用三级标题划分场景或预期；说明可用段落、列表或普通四级标题。代码围栏中的标题与字段作为字面示例保留。保存后用真实解析结果核对完整输入、档位、预期及异常分支，不能只比较用例数量。
 
 1. 用例标题：按[用例编号与授权改号](#用例编号与授权改号)写一个合法编号与业务名称，不附加其他用例编号。
 2. 评估档位可选：只有纳入快速集合时写“**评估档位：** `fast`”，放在标题后第一个非空行。改写默认保留原值；未标记时省略，不写 full。
@@ -30,7 +32,7 @@
 
 排序不改变业务语义，直接使用共享用例服务，不生成整份 evaluation.md。先用 `cases/list {experiment_id}` 取得当前 `sha256`、场景及完整 Case ID；只在需要判断分组时读取目标用例。沿用户指定顺序稳定排列各组，组内保留原顺序。例如巡检按“查询巡检项 → 创建周期任务 → 常规巡检 → 深度巡检 → 专项巡检”排列；有不明确归属时先核对目标用例。
 
-用 `{experiment_id,scene,case_ids,expected_sha256}` 调用 `cases/reorder-preview`，核对完整前后 ID 顺序，再将同一参数交给 `cases/reorder`，最后 `cases/list` 回读。`case_ids` 必须是该场景现有用例的完整、无重复排列；不改号、不改标题、输入、预期、fast、注释或其他场景。当前顺序已满足时直接报告，无需写入。摘要冲突先回读并保留并行修改后重新预览；未知回执先查询实际顺序，不盲目重复写入。只改一个用例的文字使用 `cases/read`、`cases/update-preview`、`cases/update`，不重写整份文件。
+用 `{experiment_id,scene,case_ids,expected_sha256}` 调用 `cases/reorder-preview`，核对完整前后 ID 顺序，再将同一参数交给 `cases/reorder`，最后 `cases/list` 回读。`case_ids` 必须是该场景现有用例的完整、无重复排列；不改号、不改标题、输入、预期、fast、注释或其他场景。当前顺序已满足时直接报告，无需写入。摘要冲突先回读并保留并行修改后重新预览；未知回执先查询实际顺序，不盲目重复写入。只改一个用例的文字使用 `cases/read`、`cases/update`，不重写整份文件。
 
 ## 保持兼容
 
@@ -49,3 +51,11 @@
 - [用例解析器](https://github.com/wr5912/harness-engineering-platform/blob/dd43b3d82250fddce2f89469df2e8ff1f349868b/runtime/research/evaluation_contract.py)
 - [评测页面](https://github.com/wr5912/harness-engineering-platform/blob/dd43b3d82250fddce2f89469df2e8ff1f349868b/platform/plugin/src/evaluation/client.tsx)
 - [Case 选择逻辑](https://github.com/wr5912/harness-engineering-platform/blob/dd43b3d82250fddce2f89469df2e8ff1f349868b/runtime/adapters/dsh-container/dsh-eval)
+
+## 授权精简与执行前置
+
+先完整使用本技能的整套审查方法，核对所选 Case 的独有要求、用户停点和直接引用。合并使用 `cases/read`、`cases/update`，删除使用 `cases/delete {experiment_id,case_id,expected_sha256}`，至少保留一例；没有独立的 delete-preview 或 update-preview 动作，不编造调用。每次保存后回读最新摘要和剩余清单；大量联动改写可沿已有 `edit/read`、`edit/preview`、`edit/apply` 对共用 evaluation.md 提交完整文本，仍须通过同一解析、编号和摘要校验，不绕过工具直接覆盖。
+
+多轮输入只定义顺序，不是可执行的用户模拟器。候选选择须等待上轮真实结果，附件须实际上传；不能以输入里的文件名模拟上传，也不能自行替换占位变量。原生到期、浏览器交互及声音按其实际观察判断。现有执行器不能完成时记录未覆盖，用原生交互及既有 Run 记录保存实际对话和证据，不改 DSH 会话或追加评测 Hook。
+
+删减当前用例不删除历史 Run，不将旧通过率或估算耗时作为新口径收益。仅有静态校验和技能审查时，就只报告这两层结果。

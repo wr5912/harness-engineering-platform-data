@@ -20,7 +20,7 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 
 ## 日常操作
 
-新增、修改或审查 `evaluation.md` 用例时，读取 `evaluation-review` 的[场景覆盖检查](../evaluation-review/SKILL.md#场景覆盖从用户当前知道什么开始)，核对咨询、发现对象与后续任务的衔接；保存与回读仍使用下列用例操作，比较期间保持口径不变。所有当前用例操作（包括新增、修改及用户明确授权的非语义改号）必须严格遵循[用例编号与授权改号](../evaluation-review/SKILL.md#用例写入交接)，编号详细规则仅在该处维护；保存前后逐条核对完整标题，不能只核对主编号而遗漏名称中的第二套编号。
+新增、修改、审查或精简 `evaluation.md` 用例时，完整读取 [evaluation-review](../evaluation-review/SKILL.md)，先核对整套的真实入口、独有覆盖、冗余、执行前置及成本，再办理单条；新建前比较所属场景，避免只换措辞或参数继续堆例；保存与回读仍使用下列用例操作，比较期间保持口径不变。所有当前用例操作（包括新增、修改及用户明确授权的非语义改号）必须严格遵循[用例编号与授权改号](../evaluation-review/SKILL.md#交付前反查与写入交接)，该公开入口引用唯一的编号详细规则；保存前后逐条核对完整标题，不能只核对主编号而遗漏名称中的第二套编号。
 
 按所需操作选择一条，不依次执行整张表。写入由 DSH 原生访问策略处理，待批准、取消或失败不视为已执行；成功后按实际返回 ID 回读，不另等平台提案确认。
 
@@ -34,6 +34,7 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 | 编辑资产 | 先确定是非语义整理或已授权独立 Candidate 的续作；改变已有版本业务行为先按 `harness-evolution` 派生。目标确定后 `edit/read` 得到内容和摘要，`edit/preview` 后 `edit/apply`，每项为 `{path,content,expected_sha256}` | 提交完整文本并回读；新文件须先 `edit/read` 确认不存在，再使用 `expected_sha256:null` |
 | 修改用例 | `cases/read` 后 `cases/update {experiment_id,case_id,title,inputs,expected_behavior,fast,expected_sha256}` | 回读该 Case，比较期间不改口径 |
 | 新增用例 | `cases/create-context` 取模板与所选场景的编号建议，按上述编号规则办理；必要时 `cases/from-run {experiment_id,run_id,case_id}` 取冻结输入，再 `cases/create-preview` 与 `cases/create` | 回读新增 Case；预期由需求确定，不将失败输出改成标准答案 |
+| 授权精简和删除 | 先 `cases/list` 与必要的 `cases/read` 核对独有要求及当前直接引用；合并内容用 `cases/read`、`cases/update`，删除用 `cases/delete`，每次提交当前 `expected_sha256` | 只在用户明确授权的范围内办理，先迁移有效独有要求，再删除冗余；回读剩余清单、档位及引用，不改历史 Run，不另建扩展用例库 |
 | 授权改号 | 按上述编号规则，`cases/renumber-preview` 核对映射后 `cases/renumber`，提交 `{experiment_id,expected_sha256,renames:[{from,to}]}`，不传整份文件 | 仅限用户明确授权的非语义改号；回读当前编号与直接引用，历史记录冻结 |
 
 目录、二进制、截断内容及不支持的删除或重命名不能用空文件冒充完成。校验失败时按回执修正后重新预览、重试，禁止转用原生文件写入绕过平台校验。回执未知先查询实际状态，摘要冲突重新读取；无法完整处理时停在具体缺口。
@@ -44,4 +45,4 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 
 涉及 MCP/API 时先按 `mcp-composition` 办理实际连接与编排。工具成功、Mock 成功、研究结论和生产使用分别说明；本技能不提供程序开发、任意 Git、Research Release 或长期自主调度入口。
 
-仅调整 Case 顺序时直接按[场景内排序合同](../evaluation-review/SKILL.md#用例写入交接)办理，只提交 Case ID 顺序与当前摘要，不重写正文。
+仅调整 Case 顺序时直接按[场景内排序合同](../evaluation-review/SKILL.md#交付前反查与写入交接)办理，只提交 Case ID 顺序与当前摘要，不重写正文。

@@ -1,6 +1,6 @@
 ---
 name: workspace-management
-description: 定位平台管理任务的工作区、目标和当前状态，澄清必要业务需求并选择对应技能；用于新建、迁移、修改或优化任务的分流和基本用法咨询，不切换成被管理业务角色。
+description: 定位平台管理任务的工作区、目标和当前状态，澄清必要业务需求并选择对应技能；用于新建、迁移、修改或优化任务的分流、基本用法咨询及指定范围的数据工作区体检与整理，不切换成被管理业务角色。
 ---
 
 # 管理独立工作区
@@ -26,11 +26,12 @@ description: 定位平台管理任务的工作区、目标和当前状态，澄�
 
 | 用户要得到什么 | 使用的 Skill |
 |---|---|
+| 体检或整理指定范围的数据工作区资料 | 本技能的[资料体检与整理方法](references/document-maintenance.md) |
 | 构建或改进任务型智能体，并交付实例与产物 | `task-builder` |
 | 创建角色与业务 Case，或在已有授权目标内整理特性、维护用例和实例 | `agent-maintenance` |
 | 从既有版本改变 Harness 业务行为，并形成研究结论 | `harness-evolution` |
 | 融合同一智能体的多个固定来源 | `harness-experiment-fusion` |
-| 审查或优化 evaluation.md 的用例、预期和判定证据 | `evaluation-review` |
+| 审查、精简或去重 evaluation.md，核对真实用户任务、预期、判定证据与评测成本 | `evaluation-review` |
 | 执行评测、比较结果 | `research-eval` |
 | 研究算力变体、生成或比较变体 | `compute-variant-research` |
 | 接入或编排 MCP 工具、查看组合运行 | `mcp-composition` |
