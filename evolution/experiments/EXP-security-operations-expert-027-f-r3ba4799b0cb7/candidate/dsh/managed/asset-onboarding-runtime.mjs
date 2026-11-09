@@ -908,81 +908,121 @@ function previewAssets(identity, args) {
   const markdown = [`\u5F85\u5BFC\u5165\u8BBE\u5907 ${assets.length} \u6761 \xB7 \u6279\u6B21 ${preview_digest.slice(0, 12)}`, "|\u5E8F\u53F7|IP|\u4E3B\u673A\u540D|\u8D44\u4EA7\u7C7B\u578B|\u578B\u53F7ID|\u90E8\u7F72\u5F62\u6001|\u5BBF\u4E3BID|", "|---|---|---|---|---|---|---|", ...assets.map((asset, index) => `|${index + 1}|${cell(asset.ip)}|${cell(asset.hostname)}|${cell(asset.assetType)}|${cell(asset.modelId)}|${cell(asset.deployForm)}|${cell(asset.hostAssetId)}|`)].join("\n");
   return { kind: "preview", preview_digest, preview_user_message_id: identity.messageId, assets, source: args.source, route, taskId: source.taskId ?? null, markdown, saved: false };
 }
-function nativeMcpName(serverName, rawName) {
-  const joined = `mcp__${serverName}__${rawName}`;
-  const normalized = joined.replace(/[^A-Za-z0-9_-]/g, "_");
-  if (joined === normalized && normalized.length <= 64) return normalized;
-  const suffix = createHash2("sha256").update(`${serverName}\0${rawName}`).digest("hex").slice(0, 12);
-  return `${normalized.slice(0, 51)}_${suffix}`;
-}
-function resolveAssetTools(ctx, operation, agent) {
-  const memberId = "ai-soc-master";
-  const rawNames = [operation, `${memberId.replaceAll("_", "_0")}__${operation}`, `mcp__${memberId}__${operation}`, `mcp__${GROUP_ID}__${operation}`];
-  const candidates = rawNames.map((raw) => nativeMcpName(GROUP_ID, raw));
-  if (typeof ctx.mcpSessionManager?.resolveTool === "function") {
-    for (const raw of rawNames) {
-      const registered = ctx.mcpSessionManager.resolveTool(GROUP_ID, raw);
-      if (typeof registered === "string") candidates.push(registered);
-    }
-  }
-  return [...new Set(candidates)].filter((name2) => !!ctx.tools.get(name2, agent));
-}
-function apply(ctx) {
-  const locks = /* @__PURE__ */ new Map();
-  ctx.tools.guard((exec) => exec.name.startsWith(`mcp__${GROUP_ID}__`) || operations.some((operation) => resolveAssetTools(ctx, operation, exec.agent).includes(exec.name)) || exec.name === "read_mcp_resource" && exec.arguments?.server === GROUP_ID ? "\u8BF7\u4F7F\u7528\u8D44\u4EA7\u7EB3\u7BA1\u9AD8\u5C42\u5165\u53E3\uFF1B\u5E95\u5C42\u63A5\u53E3\u4E0D\u80FD\u7ED5\u8FC7\u6E05\u5355\u4E0E\u771F\u5B9E\u7528\u6237\u786E\u8BA4" : void 0);
-  const lookup = (operation, exec) => {
-    const actual = resolveAssetTools(ctx, operation, exec.agent);
-    if (actual.length === 0) throw new Error(`\u8D44\u4EA7\u7EB3\u7BA1\u63A5\u53E3\u5019\u9009\u672A\u5339\u914D\u5F53\u524D\u4F1A\u8BDD\u6CE8\u518C\uFF1A${operation}\uFF1B\u9884\u671F\u547D\u540D\u7A7A\u95F4=${GROUP_ID}\uFF0C\u672A\u53D1\u9001SOC\u8BF7\u6C42\uFF0C\u4E0D\u8868\u793A\u76EE\u6807\u79BB\u7EBF\u6216SOC\u65E0\u6570\u636E`);
-    if (actual.length > 1) throw new Error(`\u8D44\u4EA7\u7EB3\u7BA1\u63A5\u53E3\u5B58\u5728${actual.length}\u4E2A\u53EF\u89C1\u6CE8\u518C\uFF0C\u9700\u660E\u786E\u63A5\u7EBF\uFF1A${operation}\uFF1B${actual.join("\u3001")}\uFF1B\u672A\u53D1\u9001SOC\u8BF7\u6C42`);
-    return ctx.tools.get(actual[0], exec.agent);
+var GROUP_TARGET = "io.deepseek.dsh/mcp-group-target";
+var GROUP_OWNER = "io.deepseek.dsh/mcp-group-tool";
+var TASK_QUERY = "get_soc_discovery_tasks_by_task_id";
+var bindingError = (code) => Object.assign(new Error(`\u8D44\u4EA7\u7EC4\u63A5\u7EBF\u672A\u5C31\u7EEA\uFF1A${code}\uFF1B\u672A\u53D1\u9001SOC\u4E1A\u52A1\u8BF7\u6C42\uFF0C\u4E0D\u8868\u793A\u8BBE\u5907\u79BB\u7EBF\u6216SOC\u65E0\u6570\u636E`), { code });
+function createAssetGroupBackend(ctx) {
+  const pending = /* @__PURE__ */ new WeakMap();
+  const identity = (exec) => {
+    mainIdentity(exec);
+    if (!exec.agent?.session?.id || typeof exec.callId !== "string" || !exec.callId) throw bindingError("ASSET_NATIVE_CONTEXT_MISSING");
   };
-  const call = async (operation, args, exec) => {
-    let tool;
+  const supported = () => typeof ctx.mcpSessionManager?.listGroupTools === "function" && typeof ctx.mcpSessionManager?.callGroupTool === "function";
+  const catalog = async (exec) => {
+    identity(exec);
+    if (!supported()) throw bindingError("ASSET_GROUP_API_UNAVAILABLE");
+    if (!pending.has(exec)) pending.set(exec, (async () => {
+      const value2 = await ctx.mcpSessionManager.listGroupTools(GROUP_ID, 2);
+      identity(exec);
+      const target = value2?._meta?.[GROUP_TARGET];
+      if (!Array.isArray(value2?.tools) || value2.nextCursor || value2?._meta?.["io.deepseek.dsh/mcp-group-discovery"]?.unavailable?.length || target?.version !== 2 || typeof target.digest !== "string" || !/^[a-f0-9]{64}$/u.test(target.digest)) throw bindingError("ASSET_GROUP_CATALOG_INVALID");
+      return { tools: value2.tools, meta: { [GROUP_TARGET]: { digest: target.digest, version: 2 } } };
+    })());
+    const value = await pending.get(exec);
+    identity(exec);
+    return value;
+  };
+  const matches = (directory, operation) => directory.tools.filter((tool) => tool.name === operation);
+  const verified = (tool, operation) => {
+    const owner = tool?._meta?.[GROUP_OWNER];
+    return owner?.serverId === "ai-soc-master" && owner.sourceName === operation && owner.kind === (operation === TASK_QUERY ? "template" : "tool");
+  };
+  const taskContract = (tool) => {
+    const uri = tool?._meta?.[GROUP_OWNER]?.sourceUri, schema = tool?.inputSchema;
+    const property = schema?.properties?.taskId;
+    const type = ["integer", "number", "string"].includes(property?.type) ? property.type : property?.oneOf?.some((item) => item.type === "string") ? "string" : void 0;
+    if (!verified(tool, TASK_QUERY) || typeof uri !== "string" || !/\/soc\/discovery\/tasks\/\{taskId\}$/u.test(uri) || /[{}]/u.test(uri.replace("{taskId}", "")) || schema?.type !== "object" || !Array.isArray(schema.required) || schema.required.length !== 1 || schema.required[0] !== "taskId" || !type) throw bindingError("ASSET_TASK_TEMPLATE_INVALID");
+    return { uri, type };
+  };
+  const lookup = async (operation, exec) => {
+    if (![...operations, TASK_QUERY].includes(operation)) throw bindingError("ASSET_OPERATION_OUT_OF_SCOPE");
+    const directory = await catalog(exec), rows = matches(directory, operation);
+    if (rows.length !== 1 || !verified(rows[0], operation)) throw bindingError("ASSET_GROUP_BINDING_NOT_UNIQUE");
+    if (operation === TASK_QUERY) taskContract(rows[0]);
+    return { tool: rows[0], meta: directory.meta };
+  };
+  const dispatch = async (operation, args, exec) => {
+    let binding;
     try {
-      mainIdentity(exec);
-      tool = lookup(operation, exec);
+      identity(exec);
+      binding = await lookup(operation, exec);
+      identity(exec);
     } catch (error) {
       error.notSent = true;
       throw error;
     }
-    return unpack(await tool.execute(args, exec));
+    return ctx.mcpSessionManager.callGroupTool(GROUP_ID, 2, binding.tool.name, args, binding.meta, exec);
   };
-  const resourceValue = (result) => {
-    if (result?.isError) throw new Error("\u8D44\u4EA7\u5206\u7EC4\u8D44\u6E90\u8BF7\u6C42\u5931\u8D25");
-    let value = result?.value ?? result?.structuredContent ?? result;
-    for (let depth = 0; depth < 4; depth++) {
-      if (Array.isArray(value?.resourceTemplates) || Array.isArray(value?.contents)) return value;
-      if (value?.structuredContent !== void 0) {
-        value = value.structuredContent;
-        continue;
+  return {
+    lookup,
+    call: async (operation, args, exec) => {
+      if (!operations.includes(operation)) throw bindingError("ASSET_OPERATION_OUT_OF_SCOPE");
+      return unpack(await dispatch(operation, args, exec));
+    },
+    resource: async (taskId, exec) => {
+      if (!positive(taskId)) throw bindingError("ASSET_TASK_ID_INVALID");
+      const binding = await lookup(TASK_QUERY, exec), { uri, type } = taskContract(binding.tool);
+      const result = await dispatch(TASK_QUERY, { taskId: type === "string" ? String(taskId) : taskId }, exec);
+      if (result?.isError) throw new Error("\u8D44\u4EA7\u5206\u7EC4\u8D44\u6E90\u8BF7\u6C42\u5931\u8D25");
+      const value = result?.structuredContent;
+      const proxy = `mcp-group:/${GROUP_ID}/ai-soc-master/t/${Buffer.from(uri).toString("base64url")}`;
+      const entries = value?.contents?.filter((item) => [proxy, `${proxy}?taskId=${encodeURIComponent(String(taskId))}`].includes(item.uri) && typeof item.text === "string");
+      if (!Array.isArray(entries) || entries.length !== 1) throw new Error("\u53D1\u73B0\u4EFB\u52A1\u56DE\u6267\u4E0E\u5DF2\u7ED1\u5B9A\u8D44\u6E90URI\u4E0D\u5339\u914D\uFF0C\u4E0D\u80FD\u636E\u5C55\u793A\u5360\u4F4D\u6216\u7A7A\u6570\u7EC4\u5224\u5B8C\u6210");
+      return unpack({ value: JSON.parse(entries[0].text) });
+    },
+    status: async (exec) => {
+      let directory, error = null;
+      try {
+        directory = await catalog(exec);
+      } catch (failure) {
+        error = typeof failure.code === "string" && /^ASSET_[A-Z_]+$/u.test(failure.code) ? failure.code : "ASSET_GROUP_DIRECTORY_UNAVAILABLE";
       }
-      const raw = value?.content?.find((item) => item.type === "text")?.text;
-      if (!raw) break;
-      value = JSON.parse(raw);
+      const interfaces = operations.map((operation) => {
+        const rows = directory ? matches(directory, operation) : [];
+        return { operation, registered_count: rows.length, registered_names: rows.map((tool) => tool.name), source_verified: rows.length === 1 && verified(rows[0], operation) };
+      });
+      const templates = directory ? matches(directory, TASK_QUERY) : [];
+      let templateReady = false;
+      if (templates.length === 1) try {
+        taskContract(templates[0]);
+        templateReady = true;
+      } catch {
+        error ??= "ASSET_TASK_TEMPLATE_INVALID";
+      }
+      const interfacesLoaded = interfaces.every((item) => item.source_verified);
+      return {
+        configured: null,
+        configuration_check_supported: false,
+        expected_namespace: GROUP_ID,
+        expected_member: "ai-soc-master",
+        transport: "group-v2-public-service",
+        group_api_supported: supported(),
+        local_tool_registration_required: false,
+        interfaces,
+        interfaces_loaded: interfacesLoaded,
+        task_query_resource: templateReady ? "loaded" : directory ? "missing_or_ambiguous" : "unavailable",
+        task_query_template_count: directory ? templates.length : null,
+        binding_error: error,
+        tooling_ready: interfacesLoaded && templateReady
+      };
     }
-    throw new Error("\u8D44\u6E90\u56DE\u6267\u7F3A\u5C11\u53EF\u6838\u5B9E\u7684\u76EE\u5F55\u6216\u5185\u5BB9");
   };
-  const taskQueryTemplates = async (exec) => {
-    mainIdentity(exec);
-    const catalog = ctx.tools.get("list_mcp_resource_templates", exec.agent);
-    if (!catalog) throw new Error("MCP\u8D44\u6E90\u53D1\u73B0\u5165\u53E3\u4E0D\u53EF\u7528");
-    const directory = resourceValue(await catalog.execute({ server: GROUP_ID }, exec));
-    if (directory.nextCursor) throw new Error("\u8D44\u6E90\u76EE\u5F55\u5C1A\u672A\u5B8C\u6574\u8BFB\u53D6\uFF0C\u4E0D\u80FD\u731C\u6D4B\u4EFB\u52A1\u67E5\u8BE2\u5730\u5740");
-    return directory.resourceTemplates.filter((item) => item.name === "get_soc_discovery_tasks_by_task_id" && typeof item.uriTemplate === "string" && /\{\??taskId\}/.test(item.uriTemplate));
-  };
-  const resource = async (taskId, exec) => {
-    const candidates = await taskQueryTemplates(exec);
-    const reader = ctx.tools.get("read_mcp_resource", exec.agent);
-    if (!reader) throw new Error("MCP\u8D44\u6E90\u8BFB\u53D6\u5165\u53E3\u4E0D\u53EF\u7528");
-    if (candidates.length !== 1) throw new Error("\u8D44\u4EA7\u5206\u7EC4\u672A\u8FD4\u56DE\u552F\u4E00\u7684\u4EFB\u52A1\u67E5\u8BE2\u6A21\u677F");
-    const uri = candidates[0].uriTemplate.replace("{?taskId}", `?taskId=${encodeURIComponent(String(taskId))}`).replace("{taskId}", encodeURIComponent(String(taskId)));
-    if (/[{}]/.test(uri)) throw new Error("\u4EFB\u52A1\u67E5\u8BE2\u6A21\u677F\u542B\u672A\u6838\u5B9E\u53C2\u6570\uFF0C\u4E0D\u80FD\u8BFB\u53D6");
-    mainIdentity(exec);
-    const value = resourceValue(await reader.execute({ server: GROUP_ID, uri }, exec));
-    const entries = value.contents.filter((item) => item.uri === uri && typeof item.text === "string");
-    if (entries.length !== 1) throw new Error("\u53D1\u73B0\u4EFB\u52A1\u56DE\u6267\u4E0E\u539F\u8D44\u6E90URI\u4E0D\u5339\u914D");
-    return unpack({ value: JSON.parse(entries[0].text) });
-  };
+}
+function apply(ctx) {
+  const locks = /* @__PURE__ */ new Map();
+  ctx.tools.guard((exec) => exec.name.startsWith(`mcp__${GROUP_ID}__`) || exec.name === "read_mcp_resource" && exec.arguments?.server === GROUP_ID ? "\u8BF7\u4F7F\u7528\u8D44\u4EA7\u7EB3\u7BA1\u9AD8\u5C42\u5165\u53E3\uFF1B\u5E95\u5C42\u63A5\u53E3\u4E0D\u80FD\u7ED5\u8FC7\u6E05\u5355\u4E0E\u771F\u5B9E\u7528\u6237\u786E\u8BA4" : void 0);
+  const { lookup, call, resource, status } = createAssetGroupBackend(ctx);
   const perform = async (args, exec) => {
     const identity = mainIdentity(exec);
     const respond = (value) => {
@@ -994,20 +1034,16 @@ function apply(ctx) {
       throw new Error("\u5B8C\u6574\u6E05\u5355\u8D85\u8FC7\u8F93\u51FA\u9884\u7B97\uFF0C\u5C1A\u672A\u751F\u6210\u53EF\u786E\u8BA4\u7684\u9884\u89C8\uFF1B\u8BF7\u62C6\u5206\u8F93\u5165\uFF0C\u4E0D\u5BFC\u5165\u672A\u5C55\u793A\u90E8\u5206");
     };
     if (args.action === "status") {
-      const interfaces = operations.map((operation) => {
-        const registeredNames = resolveAssetTools(ctx, operation, exec.agent);
-        return { operation, registered_count: registeredNames.length, registered_names: registeredNames };
+      const backend = await status(exec);
+      return respond({
+        kind: "status",
+        local_entry_loaded: true,
+        evidence_scope: "current_session_group_v2_directory_only",
+        backend,
+        business_verification: "not_performed",
+        registration_performed: false,
+        message: backend.tooling_ready ? "\u672C\u4F1A\u8BDD\u8D44\u4EA7\u7EC4v2\u516D\u52A8\u4F5C\u53CA\u4EFB\u52A1\u6A21\u677F\u5DF2\u552F\u4E00\u7ED1\u5B9A\uFF1B\u672A\u5411\u6A21\u578B\u6CE8\u518C\u5E95\u5C42\u5DE5\u5177\u3002\u8FD9\u4EC5\u662F\u53D7\u7BA1\u76EE\u5F55/\u8C03\u7528\u8DEF\u5F84\u8BC1\u636E\uFF0C\u672A\u9A8C\u8BC1SOC\u4E1A\u52A1\u6216\u53D1\u73B0\u3001\u767B\u8BB0\u95ED\u73AF\uFF0C\u672A\u63A2\u6D4B\u3001\u672A\u65B0\u589E\u3002" : "\u672C\u5730\u5165\u53E3\u5DF2\u52A0\u8F7D\uFF0C\u4F46\u53D7\u7BA1\u7EC4v2\u63D0\u4F9B\u8005\u6216\u7CBE\u786E\u6765\u6E90\u7ED1\u5B9A\u672A\u5C31\u7EEA\uFF1B\u8BF7\u6309binding_error\u6838\u63A5\u7EBF\uFF0C\u4E0D\u8868\u793A\u8BBE\u5907\u79BB\u7EBF\u6216SOC\u65E0\u6570\u636E\u3002\u672A\u63A2\u6D4B\u3001\u672A\u65B0\u589E\u3002"
       });
-      const interfacesLoaded = interfaces.every((item) => item.registered_count === 1);
-      let templateCount = null;
-      let resourceStatus = "unavailable";
-      try {
-        templateCount = (await taskQueryTemplates(exec)).length;
-        resourceStatus = templateCount === 1 ? "loaded" : "missing_or_ambiguous";
-      } catch {
-      }
-      const toolingReady = interfacesLoaded && resourceStatus === "loaded";
-      return respond({ kind: "status", local_entry_loaded: true, evidence_scope: "current_session_tooling_only", backend: { configured: null, configuration_check_supported: false, expected_namespace: GROUP_ID, expected_member: "ai-soc-master", interfaces, interfaces_loaded: interfacesLoaded, task_query_resource: resourceStatus, task_query_template_count: templateCount, tooling_ready: toolingReady }, business_verification: "not_performed", registration_performed: false, message: toolingReady ? "\u672C\u4F1A\u8BDD\u516D\u9879\u7CBE\u786E\u6CE8\u518C\u53CA\u4EFB\u52A1\u67E5\u8BE2\u6A21\u677F\u53EF\u89C1\uFF1B\u8FD9\u4EC5\u662F\u76EE\u5F55\u63A5\u7EBF\u8BC1\u636E\uFF0C\u672A\u9A8C\u8BC1SOC\u4E1A\u52A1\u6743\u9650\u6216\u53D1\u73B0\u3001\u767B\u8BB0\u95ED\u73AF\uFF0C\u4E5F\u672A\u6267\u884C\u63A2\u6D4B\u6216\u65B0\u589E\u3002" : "\u672C\u5730\u5165\u53E3\u5DF2\u52A0\u8F7D\uFF0C\u4F46\u58F0\u660E\u7684\u63A5\u53E3\u5019\u9009\u672A\u552F\u4E00\u5339\u914D\u6216\u4EFB\u52A1\u67E5\u8BE2\u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u5C1A\u4E0D\u80FD\u5BA3\u79F0\u540E\u7AEF\u5C31\u7EEA\uFF1B\u4E0D\u8868\u793A\u76EE\u6807\u79BB\u7EBF\u3001SOC\u65E0\u6570\u636E\u6216\u914D\u7F6E\u4E00\u5B9A\u4E0D\u5B58\u5728\u3002\u672A\u63A2\u6D4B\u3001\u672A\u65B0\u589E\u3002" });
     }
     if (args.action === "read_excel" && typeof args.attachment_id !== "string") throw new Error("\u8BF7\u5148\u5217\u51FA\u771F\u5B9E\u9644\u4EF6\uFF0C\u518D\u4F20\u5165\u8981\u89E3\u6790\u7684attachment_id");
     if (["attachments", "read_excel"].includes(args.action)) return respond({ ...await readAssetWorkbook(ctx, exec, args.action === "read_excel" ? args.attachment_id : void 0), backend_connection_checked: false, group_id_is_connection_proof: false });
@@ -1021,8 +1057,8 @@ function apply(ctx) {
       if (denied || !/(探测|发现|识别|扫描)/u.test(identity.request)) throw new Error("\u6CA1\u6709\u672C\u8F6E\u660E\u786E\u63A2\u6D4B\u6388\u6743\uFF0C\u54A8\u8BE2\u548CExcel\u5BFC\u5165\u4E0D\u542F\u52A8\u626B\u63CF");
       const { range, excluded } = validateDiscoveryRanges(identity.request, args.ranges, args.excluded_ranges);
       const single = !excluded && range.count === 1 && isIP(range.ranges) === 4;
-      lookup(single ? "create_soc_asset_probe" : "create_soc_discovery_tasks", exec);
-      lookup(single ? "create_soc_discovery_identify" : "start_soc_discovery_tasks", exec);
+      await lookup(single ? "create_soc_asset_probe" : "create_soc_discovery_tasks", exec);
+      await lookup(single ? "create_soc_discovery_identify" : "start_soc_discovery_tasks", exec);
       const directory2 = join(STATE_ROOT, hash([GROUP_ID, identity.sessionId]));
       await mkdir(directory2, { recursive: true, mode: 448 });
       const path2 = join(directory2, `discovery-${hash([identity.messageId, range.ranges, excluded])}.json`);
@@ -1073,7 +1109,7 @@ function apply(ctx) {
     if (args.action === "cancel") return respond({ kind: "cancelled", saved: false, message: "\u5DF2\u53D6\u6D88\uFF0C\u4E0D\u65B0\u589E\u8D44\u4EA7\uFF0C\u65E7\u786E\u8BA4\u5931\u6548" });
     if (args.action !== "commit") throw new Error("\u672A\u77E5\u8D44\u4EA7\u7EB3\u7BA1\u52A8\u4F5C");
     const preview = priorPreview(identity, args.preview_digest);
-    lookup(preview.route === "adopt" ? "create_soc_discovery_tasks_adopt" : "create_soc_asset", exec);
+    await lookup(preview.route === "adopt" ? "create_soc_discovery_tasks_adopt" : "create_soc_asset", exec);
     const directory = join(STATE_ROOT, hash([GROUP_ID, identity.sessionId])), path = join(directory, `${preview.preview_digest}.json`);
     await mkdir(directory, { recursive: true, mode: 448 });
     let previous;
@@ -1185,6 +1221,7 @@ export {
   GROUP_ID,
   TOOL_NAME,
   apply,
+  createAssetGroupBackend,
   history,
   inject,
   mainIdentity,
@@ -1193,7 +1230,6 @@ export {
   normalizeRange,
   previewAssets,
   priorPreview,
-  resolveAssetTools,
   unpack,
   validateDiscoveryRanges
 };

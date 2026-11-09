@@ -7,6 +7,7 @@ const GROUP = 'asset-management', MEMBER = 'ai-soc-master'
 const TARGET = 'io.deepseek.dsh/mcp-group-target', OWNER = 'io.deepseek.dsh/mcp-group-tool'
 const QUERY = 'get_soc_discovery_tasks_by_task_id'
 const URI = 'http://172.16.138.223:18087/soc/discovery/tasks/{taskId}'
+const PROXY = `mcp-group:/${GROUP}/${MEMBER}/t/${Buffer.from(URI).toString('base64url')}`
 const OPS = ['create_soc_asset_probe', 'create_soc_discovery_identify', 'create_soc_discovery_tasks', 'start_soc_discovery_tasks', 'create_soc_discovery_tasks_adopt', 'create_soc_asset']
 const clone = value => structuredClone(value)
 function catalog() {
@@ -138,7 +139,7 @@ test('任务模板沿目录schema传数字/字符串，解析真正资源正文�
       assert.deepEqual(args, { taskId: stringId ? '7' : 7 })
       assert.deepEqual(meta, { [TARGET]: { digest: 'a'.repeat(64), version: 2 } })
       assert.equal(execution, e)
-      return { content: [{ type: 'text', text: '展示占位不是业务数据' }], structuredContent: { contents: [{ uri: URI, text: JSON.stringify({ code: 200, data: { taskId: 7, findings: [] } }) }] } }
+      return { content: [{ type: 'text', text: '展示占位不是业务数据' }], structuredContent: { contents: [{ uri: stringId ? `${PROXY}?taskId=7` : PROXY, text: JSON.stringify({ code: 200, data: { taskId: 7, findings: [] } }) }] } }
     }
     assert.deepEqual(await runtime.createAssetGroupBackend(f.ctx).resource(7, e), { taskId: 7, findings: [] })
   }
@@ -154,6 +155,22 @@ test('任务模板错误来源/URI/额外必填参数或资源回执错URI均拒
   const f = fixture()
   f.manager.callGroupTool = async () => ({ structuredContent: { contents: [{ uri: `${URI}/wrong`, text: '{"code":200,"data":{}}' }] } })
   await assert.rejects(runtime.createAssetGroupBackend(f.ctx).resource(7, exec()))
+})
+
+test('组资源代理URI不得串组、串成员、串模板或串任务，也不接上游HTTP URI', async () => {
+  for (const uri of [PROXY.replace('/asset-management/', '/other-group/'), PROXY.replace('/ai-soc-master/', '/other-member/'), PROXY.replace('/t/', '/r/'),
+    `${PROXY}?taskId=8`, `${PROXY}?taskId=7&taskId=7`, `${PROXY}#fake`, URI, URI.replace('{taskId}', '7'),
+    `mcp-group:/${GROUP}/${MEMBER}/t/${Buffer.from(URI.replace('/soc/discovery/', '/soc/other/')).toString('base64url')}`]) {
+    const f = fixture()
+    f.manager.callGroupTool = async () => ({ structuredContent: { contents: [{ uri, text: '{"code":200,"data":{}}' }] } })
+    await assert.rejects(runtime.createAssetGroupBackend(f.ctx).resource(7, exec()), /资源URI/)
+  }
+})
+
+test('原始任务回执字段与缺项原样保留，不由组适配器推断完成', async () => {
+  const f = fixture(), facts = { taskId: 7, status: 'RUNNING', totalTargets: 254, scanned: 0, alive: null, candidates: [], errors: ['识别证据未提供'], extra: { providerField: '原值' } }
+  f.manager.callGroupTool = async () => ({ structuredContent: { contents: [{ uri: PROXY, text: JSON.stringify({ code: 200, data: facts }) }] } })
+  assert.deepEqual(await runtime.createAssetGroupBackend(f.ctx).resource(7, exec()), facts)
 })
 
 test('主/子作用域、无原生callId和取消隔离发生在目录/后端之前', async () => {

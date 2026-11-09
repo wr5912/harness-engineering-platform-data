@@ -9,6 +9,20 @@ const ids = text => [...new Set(text.match(/INC-\d{8}-\d{6}/g) ?? [])]
 export const textOnly = content => Array.isArray(content) && content.length > 0
   && content.every(b => b?.type === 'text' && typeof b.text === 'string')
   ? content.map(b => b.text).join('') : undefined
+
+export function batchResultMarkdown(results) {
+  const items = Array.isArray(results) ? results : []
+  const sections = items.map(item => {
+    const incidentId = typeof item?.incidentId === 'string' ? item.incidentId : '未识别事件'
+    const body = typeof item?.markdown === 'string' && item.markdown.trim()
+      ? item.markdown.trim() : `研判结果未能交付：${item?.error || '结果结构或来源校验失败。'}`
+    return `### 事件 ${incidentId}\n\n${body}`
+  })
+  if (items.length === 1 && typeof items[0]?.markdown === 'string' && items[0].markdown.trim()) {
+    return items[0].markdown.trim()
+  }
+  return ['### 批量威胁事件研判结果', '', ...sections].join('\n\n')
+}
 const argsOf = event => typeof event?.data?.arguments === 'string' ? parse(event.data.arguments) : undefined
 const realUser = event => event?.type === 'user/message' && event.data?.source?.kind === 'user'
 const settled = event => event?.type === 'user/message' && event.data?.source?.kind === 'subagent-settled'
@@ -72,14 +86,100 @@ export function latestCompletion(events) {
   return settled(event) ? event : undefined
 }
 
+const batchSizePattern = /(?:前|前面)\s*(?:三|3)\s*(?:个|条|项)|(?:批量|批次)\s*(?:三|3)\s*(?:个|条|项)/u
+
+function orderedIncidentIds(value, output = []) {
+  if (typeof value === 'string') {
+    for (const id of value.match(/INC-\d{8}-\d{6}/g) ?? []) output.push(id)
+    return output
+  }
+  if (Array.isArray(value)) {
+    for (const item of value) orderedIncidentIds(item, output)
+    return output
+  }
+  if (object(value)) {
+    for (const [key, item] of Object.entries(value)) {
+      if (['incidentId', 'incident_id', 'unified_event_id', 'event_id', 'id'].includes(key)) {
+        orderedIncidentIds(item, output)
+      } else if (typeof item === 'string' && item.includes('INC-')) {
+        orderedIncidentIds(item, output)
+      } else if (Array.isArray(item) || object(item)) {
+        orderedIncidentIds(item, output)
+      }
+    }
+  }
+  return output
+}
+
+function uniqueIncidentIds(values) {
+  return [...new Set(values.filter(id => /^INC-\d{8}-\d{6}$/.test(id)))]
+}
+
+function resultIncidentIds(event) {
+  const message = event?.data?.message
+  return orderedIncidentIds(message?.content ?? message ?? event?.data)
+}
+
+function requestedBatchSize(text) {
+  if (typeof text !== 'string') return undefined
+  if (batchSizePattern.test(text)) return 3
+  const match = text.match(/(?:批量|批次|研判)\s*(\d+)\s*(?:个|条|项|事件)/u)
+  const size = match ? Number(match[1]) : undefined
+  return Number.isSafeInteger(size) && size > 1 ? size : undefined
+}
+
+function promptIncidentId(call) {
+  const prompt = argsOf(call)?.prompt
+  const promptIds = ids(typeof prompt === 'string' ? prompt : '')
+  return promptIds.length === 1 ? promptIds[0] : undefined
+}
+
+function batchCandidateIds(events, user) {
+  const text = textOnly(user?.data?.content) ?? ''
+  const direct = ids(text)
+  if (direct.length > 1) return direct
+  const previousUser = events.findLast(event => realUser(event) && event.seq < user.seq)
+  const queryIds = events
+    .filter(event => event.type === 'tool/result'
+      && event.seq > (previousUser?.seq ?? -Infinity) && event.seq < user.seq)
+    .flatMap(resultIncidentIds)
+  return uniqueIncidentIds(queryIds)
+}
+
+function validateBatchBinding({ events, user, delegations }) {
+  const text = textOnly(user?.data?.content) ?? ''
+  const direct = ids(text)
+  const requested = requestedBatchSize(text)
+  const selected = delegations.map(promptIncidentId)
+  if (selected.some(id => !id)) return stop('BATCH_DELEGATE_ID_REQUIRED', '批量委派缺少唯一事件 ID，停止自动接续。')
+  if (new Set(selected).size !== selected.length) return stop('BATCH_DELEGATE_NOT_UNIQUE', '批量委派包含重复事件 ID，停止自动接续。')
+  if (requested !== undefined && selected.length !== requested) {
+    return stop('BATCH_SIZE_MISMATCH', `用户要求处理 ${requested} 个事件，但实际委派了 ${selected.length} 个。`)
+  }
+  if (direct.length > 1) {
+    if (direct.length !== selected.length || direct.some((id, index) => id !== selected[index])) {
+      return stop('BATCH_USER_BINDING_MISMATCH', '批量委派事件与用户明确给出的顺序或数量不一致。')
+    }
+    return { kind: 'batch', incidentIds: selected, userMessageId: user.data.id, userSeq: user.seq }
+  }
+  const candidates = batchCandidateIds(events, user)
+  const expected = candidates.slice(0, selected.length)
+  if (expected.length !== selected.length || expected.some((id, index) => id !== selected[index])) {
+    return stop('BATCH_CANDIDATE_BINDING_MISMATCH', '批量委派未绑定到上一轮真实查询返回的候选事件。')
+  }
+  return { kind: 'batch', incidentIds: selected, candidateIds: candidates,
+    userMessageId: user.data.id, userSeq: user.seq }
+}
+
 /** 读子会话前的门禁。allowProgress 仅控制器内部使用，不是模型工具参数。 */
 export function validateCompletionEvent({ parentId, parentEvents: events, turn, boundToolCallId,
-  allowProgress = false, requirePreparation = true }) {
+  allowProgress = false, requirePreparation = true, allowBatch = false, noticeOverride }) {
   if (!parentId || !Array.isArray(events) || events.some((e, i) => !Number.isSafeInteger(e.seq)
     || i > 0 && e.seq <= events[i - 1].seq)) return stop('RAW_PARENT_LOG_REQUIRED', '父原始事件缺失或次序不可信。')
   const start = events.findLast(e => e.type === 'turn/start')
-  const notice = latestCompletion(events)
-  if (start?.data?.turn !== turn || !notice || notice.seq <= start.seq || notice.data.role !== 'user') {
+  const notice = noticeOverride ?? latestCompletion(events)
+  if (start?.data?.turn !== turn || !notice || notice.seq <= start.seq || notice.data.role !== 'user'
+    || !settled(notice)) {
     return stop('NATIVE_SETTLED_REQUIRED', '当前输入不是本轮原生子任务完成通知。')
   }
   if (!allowProgress && !boundToolCallId && events.some(e => e.seq > notice.seq
@@ -107,24 +207,33 @@ export function validateCompletionEvent({ parentId, parentEvents: events, turn, 
   }
   const user = events.findLast(e => realUser(e) && e.seq < call.seq)
   const intent = validateUserIntent(user)
-  if (requirePreparation && intent.kind !== 'authorized') return intent
+  if (allowBatch && requirePreparation) return stop('BATCH_PREPARATION_UNSUPPORTED', '批量研判本轮只交付独立结果，不自动准备处置。')
+  if (requirePreparation && !allowBatch && intent.kind !== 'authorized') return intent
   const userIds = ids(textOnly(user?.data?.content) ?? '')
-  if (!realUser(user) || userIds.length !== 1 || !user.data.id) return stop('USER_SOURCE_REQUIRED', '缺少可与委派绑定的唯一真实用户事件。')
-  // 控制器可以只读交付已有研判，但不能因此取得准备授权；runtime 始终 requirePreparation。
-  const authorization = intent.kind === 'authorized' ? intent : { incidentId: userIds[0],
-    userMessageId: user.data.id, userSeq: user.seq, preparationStop: intent }
-  // 单事件原始请求只允许一次威胁委派；不同子 ID 也不能把同一授权准备两遍。
+  if (!realUser(user) || !user.data.id) return stop('USER_SOURCE_REQUIRED', '缺少可与委派绑定的唯一真实用户事件。')
+  // 批量研判只交付独立结果，不取得处置准备授权；事件身份以每个委派 prompt 为准。
   const delegations = events.filter(e => e.type === 'tool/call' && e.seq > user.seq
     && e.data?.name === 'delegate_threat_analysis')
-  if (delegations.length !== 1 || delegations[0].data.callId !== call.data.callId) {
-    return stop('DELEGATION_NOT_UNIQUE', '同一用户请求存在多个研判委派，停止自动处置并核对来源。')
+  if ((!allowBatch && (delegations.length !== 1 || delegations[0].data.callId !== call.data.callId))
+    || (allowBatch && (delegations.length < 2 || !delegations.some(item => item.data.callId === call.data.callId)))) {
+    return stop('DELEGATION_NOT_UNIQUE', allowBatch
+      ? '批量研判委派数量或当前子任务身份无法核对。'
+      : '同一用户请求存在多个研判委派，停止自动处置并核对来源。')
   }
+  const promptIds = ids(typeof argsOf(call)?.prompt === 'string' ? argsOf(call).prompt : '')
+  if (promptIds.length !== 1) return stop('DELEGATE_INCIDENT_MISMATCH', '委派缺少唯一事件 ID。')
+  const batch = allowBatch ? validateBatchBinding({ events, user, delegations }) : undefined
+  if (batch?.kind === 'stop') return batch
+  const authorization = allowBatch
+    ? { incidentId: promptIds[0], userMessageId: user.data.id, userSeq: user.seq, batch,
+      preparationStop: continuationStop('BATCH_DELIVERY_ONLY', '批量研判只交付结果，不自动准备处置。') }
+    : intent.kind === 'authorized' ? intent : { incidentId: userIds[0],
+      userMessageId: user.data.id, userSeq: user.seq, preparationStop: intent }
   if (events.some(e => realUser(e) && e.seq > user.seq || e.type === 'agent/inbox/spliced' && e.seq > user.seq
     && e.data?.inserted?.some(message => message.source?.kind === 'user'))) {
     return stop('USER_INTENT_SUPERSEDED', '用户有更新请求，旧授权失效。')
   }
-  const promptIds = ids(typeof argsOf(call)?.prompt === 'string' ? argsOf(call).prompt : '')
-  if (promptIds.length !== 1 || promptIds[0] !== authorization.incidentId) return stop('DELEGATE_INCIDENT_MISMATCH', '委派事件与用户请求不一致。')
+  if (promptIds[0] !== authorization.incidentId) return stop('DELEGATE_INCIDENT_MISMATCH', '委派事件与用户请求不一致。')
   if (!allowProgress && events.some(e => e.seq > call.seq && e.type === 'tool/call'
     && e.data?.name === 'disposition_prepare' && e.data.callId !== boundToolCallId)) {
     return stop('PREPARE_ALREADY_ATTEMPTED', '该委派已有准备尝试，不重新发起写调用。')

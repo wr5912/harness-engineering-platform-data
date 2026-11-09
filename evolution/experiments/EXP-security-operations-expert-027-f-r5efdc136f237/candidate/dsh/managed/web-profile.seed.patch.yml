@@ -24,6 +24,15 @@
           names:
           - policy_change
           - emergency_action
+      - id: xx-device-acceptance
+        serverName: xx-device-acceptance
+        description: XX指令与三Map模板的专属Mock组合验收
+        enabled: true
+        url: http://172.16.138.228:18120/hep/mcp/groups/xx-device-acceptance/v2
+        headers: []
+        tools:
+          mode: all
+          names: []
       - id: ai-soc-correlate
         serverName: ai-soc-correlate
         description: SOC 关联/研判读取（应急处置资源）

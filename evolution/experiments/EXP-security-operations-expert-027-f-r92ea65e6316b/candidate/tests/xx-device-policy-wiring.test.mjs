@@ -17,8 +17,9 @@ test('策略接线：另两个模板工具，固定指令及旧SOC路线保留',
 })
 
 test('基础流程：读取、修改草案、原生确认后只传五字段，不实现后台处理', () => {
-  for (const field of ['hostid', 'hostip', 'map1', 'map2', 'map3']) assert.ok(skill.includes(`\`${field}\``))
-  for (const phrase of ['本次读取的字符串', '其余map为 `{}`', '确认之前不能调用写工具', '本次草案五字段原样', '模拟下发成功']) assert.ok(skill.includes(phrase))
+  for (const field of ['hostid', 'hostip', '设备控制', 'login', 'net']) assert.ok(skill.includes(`\`${field}\``))
+  for (const phrase of ['本次读取的字符串', '其余Map为 `{}`', '确认之前不能调用写工具', '本次草案五字段原样', '模拟下发成功', 'osuer、proctocol', '不猜每个编号的业务含义或时间单位']) assert.ok(skill.includes(phrase))
+  assert.ok(!skill.includes('`map1`'))
   assert.ok(skill.includes('不处理并发、模板版本、后台新建模板或应用设备'))
 })
 

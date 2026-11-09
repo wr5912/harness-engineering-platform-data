@@ -8,6 +8,12 @@
 
 实现入口为 [策略 Skill](candidate/dsh/workspace/.agents/skills/policy-configuration/SKILL.md)和[应急 Skill](candidate/dsh/workspace/.agents/skills/emergency-action/SKILL.md)；调用顺序与边界见 [共同交互设计](../../../mcp/docs/policy-response-interaction-design.md)。参数和实现事实不在本文重复维护。
 
+## 本轮变更假设
+
+- 直接按 SOC 实时 `input-fields` 生成 JSON，不新增一套模型前置校验；用正确的数组、snake_case 字段和设备映射 canonical 值减少格式误报。
+- 能力目录只作为候选来源；按 `assetId` 读取已有在线/可达状态证据，离线不推荐，多候选不按列表顺序自动选择。
+- 所有选择框、候选说明和会话标题使用中文；内部工具名、枚举和字段标识保持原样。
+
 ## 验证
 
 先核对实时工具 Schema 与实际装载，再用真实多轮任务检查未知对象的发现、选择、预览、草稿回读和取消。静态检查、分组发现、实例装载和业务通过分别记录；没有同口径对照时不宣称性能收益。旧失败及本轮证据见 [研究观察](evaluation/observations.md)。

@@ -47,8 +47,11 @@ parent_direct_tools:
     - schedule_list
     - schedule_delete
     - schedule_update
+  native_questions:
+    - ask_user_question
   mcp:
-    # 实际原始工具名单与角色检查只维护在 Guard 的 TOOL_ROUTES.policyResponse。
+    # 主会话普通MCP按真实绑定目录和DSH原生权限装载，不在此维护新增工具名单。
+    # 以下保留已有SOC专用合同索引及巡检/诊断入口；子角色与禁止接口仍有独立边界。
     policy-response:
       source: security-operations-guard.mjs#TOOL_ROUTES.policyResponse
     inspection:

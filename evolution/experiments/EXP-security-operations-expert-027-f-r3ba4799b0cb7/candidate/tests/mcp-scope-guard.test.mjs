@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { readFile } from 'node:fs/promises'
 import { apply, createSecurityOperationsGuard } from '../dsh/managed/security-operations-guard.mjs'
 import { apply as applyChildGuard } from '../dsh/managed/security-operations-child-guard.mjs'
 
@@ -8,6 +9,22 @@ const troubleshootingRaw = [
   'get_composition_run', 'get_composition_artifact', 'get_composition_details',
 ]
 const troubleshooting = troubleshootingRaw.map(raw => `mcp__troubleshooting-compositions__${raw}`)
+
+test('新实例故障连接引用完整平台分组及公开原名，不恢复旧Java连接', async () => {
+  const seed = await readFile(new URL('../dsh/managed/web-profile.seed.patch.yml', import.meta.url), 'utf8')
+  const block = seed.match(/^      - id: troubleshooting-compositions\n[\s\S]*?(?=^      - id:|^      groups:)/mu)?.[0]
+  assert.ok(block)
+  assert.match(block, /^        serverName: troubleshooting-compositions$/mu)
+  const inspection = seed.match(/^      - id: inspection-compositions\n[\s\S]*?^        url: (\S+)$/mu)?.[1]
+  const endpoint = block.match(/^        url: (\S+)$/mu)?.[1]
+  assert.ok(inspection)
+  assert.equal(endpoint, inspection.replace(/\/inspection-compositions\/v2$/u, '/troubleshooting-compositions/v2'))
+  const names = block.split('          names:\n')[1].trim().split('\n').map(line => line.trim().replace(/^- /u, ''))
+  assert.deepEqual(names, troubleshootingRaw)
+  assert.doesNotMatch(block, /mcp__/u)
+  assert.doesNotMatch(seed, /^      - id: troubleshooting$/mu)
+  assert.doesNotMatch(seed, /\/mcp\/troubleshooting(?:\s|$)/u)
+})
 
 test('业务 Guard 在实际pre-step按 Agent 作用域识别 Web MCP 工具，且按当前目录刷新', async () => {
   const resources = ['list_mcp_resources', 'list_mcp_resource_templates', 'read_mcp_resource']

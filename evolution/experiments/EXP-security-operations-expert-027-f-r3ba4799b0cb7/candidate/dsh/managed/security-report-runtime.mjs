@@ -62,7 +62,7 @@ function successfulPairs(events, includeErrors = false) {
   }
   return pairs;
 }
-function inspectionValue(message) {
+function inspectionValue(message, startToolName, parentId) {
   let value = parseObject(textOnly(message.content));
   for (let depth = 0; object(value) && depth < 6; depth++) {
     if (value.isError === true || value.ok !== void 0 && value.ok !== true) return void 0;
@@ -80,6 +80,10 @@ function inspectionValue(message) {
       continue;
     }
     if (identifier(value.run_id)) return value;
+    const workflow = startToolName && troubleshootingTools.get(startToolName);
+    if (workflow && value.ok === true && value.graph_execution?.complete === true && value.version?.definition?.kind === "workflow" && value.version.definition.workflow === workflow && value.version.definition.toolName === startToolName.slice(startToolName.lastIndexOf("__") + 2) && safeResourceId(value.result?.run_id) && value.result.isError !== true && value.result.ok !== false && [value, value.result].every((item) => (item.composition_id === void 0 || item.composition_id === workflow) && (item.workflow === void 0 || item.workflow === workflow)) && matchesParent(parentId, value, value.result)) {
+      return { ...value.result, composition_id: workflow, workflow, status: "accepted" };
+    }
     if (object(value.result)) {
       value = value.result;
       continue;
@@ -176,7 +180,7 @@ function selectTroubleshootingRun(parentId, input, runId, canonicalName = (name2
   }
   const origins = /* @__PURE__ */ new Map();
   for (const pair2 of pairs) {
-    const value2 = inspectionValue(pair2.receipt.data.message);
+    const value2 = inspectionValue(pair2.receipt.data.message, canonicalName(pair2.call.data.name), parentId);
     if (!value2 || !safeResourceId(value2.run_id)) continue;
     const workflow2 = troubleshootingTools.get(canonicalName(pair2.call.data.name));
     const previous = origins.get(value2.run_id);
@@ -185,11 +189,11 @@ function selectTroubleshootingRun(parentId, input, runId, canonicalName = (name2
     }
     origins.set(value2.run_id, { workflow: workflow2, callId: pair2.call.data.callId });
   }
-  const explicit = runId !== void 0 ? pairs.filter((pair2) => inspectionValue(pair2.receipt.data.message)?.run_id === runId) : void 0;
+  const explicit = runId !== void 0 ? pairs.filter((pair2) => inspectionValue(pair2.receipt.data.message, canonicalName(pair2.call.data.name), parentId)?.run_id === runId) : void 0;
   if (explicit && explicit.length !== 1) fail("\u6307\u5B9A\u6545\u969C\u8FD0\u884C\u6CA1\u6709\u672C\u4F1A\u8BDD\u552F\u4E00\u771F\u5B9E\u542F\u52A8\u6765\u6E90\uFF0C\u4E0D\u80FD\u4F7F\u7528\u5916\u90E8\u3001\u51B2\u7A81\u6216inspection\u8FD0\u884C\u3002");
   const latest = explicit ? explicit[0].call : attempts.at(-1), matching = pairs.filter((pair2) => pair2.call === latest);
   if (matching.length !== 1) fail("\u6240\u9009\u6545\u969C\u7EC4\u5408\u8C03\u7528\u5C1A\u65E0\u552F\u4E00\u3001\u540Cturn/step\u7684\u5B8C\u6574\u56DE\u6267\uFF0C\u72B6\u6001\u672A\u77E5\uFF0C\u4E0D\u80FD\u56DE\u9000\u65E7\u62A5\u544A\u3002");
-  const pair = matching[0], value = inspectionValue(pair.receipt.data.message);
+  const pair = matching[0], value = inspectionValue(pair.receipt.data.message, canonicalName(pair.call.data.name), parentId);
   const toolName = canonicalName(latest.data.name), workflow = troubleshootingTools.get(toolName);
   const request = requestBefore(events, latest.seq);
   if (pair.isError || !value || receiptFailed(pair)) fail("\u6240\u9009\u6545\u969C\u7EC4\u5408\u542F\u52A8\u5931\u8D25\u6216\u56DE\u6267\u5DF2\u88C1\u526A\uFF0C\u4E0D\u80FD\u56DE\u9000\u65E7\u62A5\u544A\u3002");
@@ -531,7 +535,7 @@ function isOpaqueMcp(name2) {
   const knownGroups = ["soc-readonly", "sec-ops", "inspection-compositions", "troubleshooting-compositions", "policy-configuration", "emergency-action", "asset-management"];
   return !knownGroups.some((group) => name2.startsWith(`mcp__${group}__`));
 }
-function hasNewTroubleshootingSource(events, cutoff, canonicalName) {
+function hasNewTroubleshootingSource(events, cutoff, canonicalName, validatedThrough = cutoff) {
   if (events.some((event) => {
     if (event.seq <= cutoff) return false;
     if (event.type === "tool/call" && troubleshootingTools.has(canonicalName(event.data.name))) return true;
@@ -541,6 +545,7 @@ function hasNewTroubleshootingSource(events, cutoff, canonicalName) {
     if (pair.receipt.seq <= cutoff) continue;
     const name2 = canonicalName(pair.call.data.name);
     if (troubleshootingTools.has(name2)) return true;
+    if (pair.receipt.seq <= validatedThrough) continue;
     if (name2 === "mcp__troubleshooting-compositions__get_composition_run") {
       const value = inspectionValue(pair.receipt.data.message);
       if (pair.isError || !value || value.status !== "completed") return true;
@@ -593,7 +598,13 @@ function selectSavedSecurityReport(parentId, input, kind, attachmentId, canonica
       } catch {
         continue;
       }
-      if (binding && pair.args.attachment_id !== void 0 && hasNewTroubleshootingSource(events.filter((event) => event.seq < pair.call.seq), binding.start_result_seq, canonicalName)) continue;
+      const priorExport = records.find((item) => item.value.attachment_id === value2.attachment_id);
+      if (binding && pair.args.attachment_id !== void 0 && hasNewTroubleshootingSource(
+        events.filter((event) => event.seq < pair.call.seq),
+        binding.start_result_seq,
+        canonicalName,
+        priorExport?.receipt_seq ?? binding.start_result_seq
+      )) continue;
       if (!binding || Object.entries(binding).some(([key, item]) => !sameJson(item, value2.source[key])) || value2.filename !== value2.source.original_filename || value2.bytes !== value2.source.original_bytes || value2.sha256.toLowerCase() !== value2.source.original_sha256 || !object(value2.source.artifact_metadata) || value2.source.artifact_metadata.id !== value2.source.artifact_id || value2.source.artifact_metadata.filename !== value2.filename || value2.source.artifact_metadata.bytes !== value2.bytes || value2.source.artifact_metadata.contentType !== value2.source.original_content_type) continue;
       const { source_sha256, ...sourceBase } = value2.source;
       if (source_sha256 !== hash(JSON.stringify(sourceBase))) continue;
@@ -623,7 +634,7 @@ function selectSavedSecurityReport(parentId, input, kind, attachmentId, canonica
     if (integer(sourceSeq)) cutoff = Math.min(cutoff, sourceSeq);
   }
   const value = Object.fromEntries(savedPublicFields.filter((key) => Object.hasOwn(selected.value, key) && (!["generated_at", "message"].includes(key) || typeof selected.value[key] === "string")).map((key) => [key, selected.value[key]]));
-  const newTroubleshooting = kind === "fault" && hasNewTroubleshootingSource(events, cutoff, canonicalName);
+  const newTroubleshooting = kind === "fault" && hasNewTroubleshootingSource(events, cutoff, canonicalName, original.receipt_seq);
   return {
     value,
     receipt_seq: selected.receipt_seq,
@@ -666,11 +677,11 @@ function requireReportRequest(exec) {
   const user = events.findLast((event) => event?.type === "user/message" && event.data?.source?.kind === "user");
   const content = user?.data?.content;
   const text = typeof content === "string" ? content : Array.isArray(content) ? content.filter((part) => part?.type === "text").map((part) => part.text).join("") : "";
-  const requested = /(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)[\s\S]{0,40}(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:生成|导出|下载|保存|给我|给出|出具|发我|发给我)|(?:执行|开始|运行)[\s\S]{0,20}巡检/iu.test(text);
+  const requested = /(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:生成|导出|下载|保存|给我|给出|出具|发我|发给我)|(?:执行|开始|运行)[\s\S]{0,20}巡检/iu.test(text);
   const inquiryOnly = /^\s*(?:(?:(?:请问|请(?:介绍|说明|解释))\s*)?(?:如何|怎么|怎样)[\s\S]*(?:报告|HTML)|(?:请问\s*)?(?:本次|这次)?(?:完整|巡检)?(?:报告|HTML)\s*(?:如何|怎么|怎样)[\s\S]*|请(?:介绍|说明|解释)[\s\S]{0,20}(?:报告|HTML)[\s\S]{0,20}(?:步骤|方法|用途|格式|内容))[\s\S]*$/iu.test(text);
   const declined = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[\s\S]{0,8}(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上|报告|HTML)/iu.test(text);
-  const downloadExisting = /(?:下载|导出)[\s\S]{0,40}(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:下载|导出)/iu.test(text) && /(?:刚才|上次|先前|此前|已有|已(?:生成|导出|保存)|原(?:有|始)?(?:的)?(?:HTML|报告|文件)|同一(?:份|个)?)/iu.test(text);
-  const declinedCreation = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[^，。！？；;,\n]{0,8}生成/iu.test(text);
+  const downloadExisting = /(?:下载|导出)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:下载|导出)/iu.test(text) && /(?:刚才|上次|先前|此前|已有|已(?:生成|导出|保存)|原(?:有|始)?(?:的)?(?:HTML|报告|文件)|同一(?:份|个)?)/iu.test(text);
+  const declinedCreation = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[^，。！？；;,\n]{0,8}(?:生成|重建|重绘)/iu.test(text);
   const declinedTransfer = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[^，。！？；;,\n]{0,8}(?:下载|导出|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)/iu.test(text);
   const reuseOnly = downloadExisting && declinedCreation && !declinedTransfer;
   if (!user?.data?.id || !requested || inquiryOnly || declinedTransfer || declined && !reuseOnly) {

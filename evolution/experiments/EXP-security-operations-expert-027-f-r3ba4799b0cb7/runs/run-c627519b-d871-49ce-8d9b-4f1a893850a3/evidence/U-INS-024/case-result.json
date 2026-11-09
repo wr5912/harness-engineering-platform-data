@@ -1,0 +1,7 @@
+{
+  "case_id": "U-INS-024",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：第一轮通过真实 skill 目录（index 4、6）与 SOC 只读资产查询（index 7-22，含 pageSize=100 单页取回 total=94 的 index 10）给出 5 项检查项、按类型核对一致的设备计数（35/29/28/1/1=94）与真实代表设备、状态评估时间与时基及分页边界，全程只读、未启动运行；第二轮沿列表首台 assetId 3617612（1.1.1.1）以 scope.assetIds=[3617612] 单台发起一次 inspection_routine（index 23、24），未索要已知 ID、未扩为全部、未新增漏洞扫描，随后用同一 run_id 的 get_composition_run 与 get_composition_details 取回真实结果（index 26、28、30）：状态正常 1、基线未知 1（NO_TEMPLATE）、可达性未知 6（规则 1/3 LAYER_NOT_FOUND、规则 2/4/5/6 未核查），逐类保留；启动回执为 accepted 且带 run_id 后仅对该 run_id 续查（index 24→26），无重复创建，仅一次启动调用；交付了冻结范围、运行标识、各项结论、证据缺口与同次 artifacts 报告条目（inspection-report.html 22485 字节，index 26），并如实标注整体验收 incomplete、未冒称全部正常（index 1）；第三轮仅基于同次回执解释并排序（P1-P4），明确区分规则失效、数据缺失（无基线模板）与范围性未核查，声明未做任何修改、未重新巡检（index 2），结论均可由 index 26、28、30 的同次工具记录支撑。export_security_report 失败（index 32）未被声称成功。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-INS-024"
+}

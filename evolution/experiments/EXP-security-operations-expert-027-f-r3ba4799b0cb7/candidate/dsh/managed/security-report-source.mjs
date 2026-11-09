@@ -67,7 +67,7 @@ function successfulPairs(events, includeErrors = false) {
   return pairs
 }
 
-function inspectionValue(message) {
+function inspectionValue(message, startToolName, parentId) {
   let value = parseObject(textOnly(message.content))
   for (let depth = 0; object(value) && depth < 6; depth++) {
     if (value.isError === true || value.ok !== undefined && value.ok !== true) return undefined
@@ -79,6 +79,18 @@ function inspectionValue(message) {
     }
     // 先认外层 Run，绝不把它的 result.status（业务完整性）当执行状态。
     if (identifier(value.run_id)) return value
+    // 同步回执只建立运行归属；业务完整性不作执行终态，导出仍读取 canonical Run。
+    const workflow = startToolName && troubleshootingTools.get(startToolName)
+    if (workflow && value.ok === true && value.graph_execution?.complete === true
+      && value.version?.definition?.kind === 'workflow'
+      && value.version.definition.workflow === workflow
+      && value.version.definition.toolName === startToolName.slice(startToolName.lastIndexOf('__') + 2)
+      && safeResourceId(value.result?.run_id) && value.result.isError !== true && value.result.ok !== false
+      && [value, value.result].every(item => (item.composition_id === undefined || item.composition_id === workflow)
+        && (item.workflow === undefined || item.workflow === workflow))
+      && matchesParent(parentId, value, value.result)) {
+      return { ...value.result, composition_id: workflow, workflow, status: 'accepted' }
+    }
     if (object(value.result)) { value = value.result; continue }
     if (object(value.run)) { value = value.run; continue }
     return undefined
@@ -177,7 +189,7 @@ export function selectTroubleshootingRun(parentId, input, runId, canonicalName =
   }
   const origins = new Map()
   for (const pair of pairs) {
-    const value = inspectionValue(pair.receipt.data.message)
+    const value = inspectionValue(pair.receipt.data.message, canonicalName(pair.call.data.name), parentId)
     if (!value || !safeResourceId(value.run_id)) continue
     const workflow = troubleshootingTools.get(canonicalName(pair.call.data.name))
     const previous = origins.get(value.run_id)
@@ -186,11 +198,11 @@ export function selectTroubleshootingRun(parentId, input, runId, canonicalName =
     }
     origins.set(value.run_id, { workflow, callId: pair.call.data.callId })
   }
-  const explicit = runId !== undefined ? pairs.filter(pair => inspectionValue(pair.receipt.data.message)?.run_id === runId) : undefined
+  const explicit = runId !== undefined ? pairs.filter(pair => inspectionValue(pair.receipt.data.message, canonicalName(pair.call.data.name), parentId)?.run_id === runId) : undefined
   if (explicit && explicit.length !== 1) fail('指定故障运行没有本会话唯一真实启动来源，不能使用外部、冲突或inspection运行。')
   const latest = explicit ? explicit[0].call : attempts.at(-1), matching = pairs.filter(pair => pair.call === latest)
   if (matching.length !== 1) fail('所选故障组合调用尚无唯一、同turn/step的完整回执，状态未知，不能回退旧报告。')
-  const pair = matching[0], value = inspectionValue(pair.receipt.data.message)
+  const pair = matching[0], value = inspectionValue(pair.receipt.data.message, canonicalName(pair.call.data.name), parentId)
   const toolName = canonicalName(latest.data.name), workflow = troubleshootingTools.get(toolName)
   const request = requestBefore(events, latest.seq)
   if (pair.isError || !value || receiptFailed(pair)) fail('所选故障组合启动失败或回执已裁剪，不能回退旧报告。')
@@ -559,7 +571,7 @@ function isOpaqueMcp(name) {
   return !knownGroups.some(group => name.startsWith(`mcp__${group}__`))
 }
 
-function hasNewTroubleshootingSource(events, cutoff, canonicalName) {
+function hasNewTroubleshootingSource(events, cutoff, canonicalName, validatedThrough = cutoff) {
   if (events.some(event => {
     if (event.seq <= cutoff) return false
     if (event.type === 'tool/call' && troubleshootingTools.has(canonicalName(event.data.name))) return true
@@ -569,6 +581,8 @@ function hasNewTroubleshootingSource(events, cutoff, canonicalName) {
     if (pair.receipt.seq <= cutoff) continue
     const name = canonicalName(pair.call.data.name)
     if (troubleshootingTools.has(name)) return true
+    // 首次成功导出已核对终态和原始HTML；此前的中间轮询不再使附件失效。
+    if (pair.receipt.seq <= validatedThrough) continue
     if (name === 'mcp__troubleshooting-compositions__get_composition_run') {
       const value = inspectionValue(pair.receipt.data.message)
       if (pair.isError || !value || value.status !== 'completed') return true
@@ -626,8 +640,10 @@ export function selectSavedSecurityReport(parentId, input, kind, attachmentId, c
       let binding
       try { binding = selectTroubleshootingRun(parentId, events.filter(event => event.seq < pair.call.seq), value.source.run_id, canonicalName) }
       catch { continue }
+      const priorExport = records.find(item => item.value.attachment_id === value.attachment_id)
       if (binding && pair.args.attachment_id !== undefined
-        && hasNewTroubleshootingSource(events.filter(event => event.seq < pair.call.seq), binding.start_result_seq, canonicalName)) continue
+        && hasNewTroubleshootingSource(events.filter(event => event.seq < pair.call.seq), binding.start_result_seq,
+          canonicalName, priorExport?.receipt_seq ?? binding.start_result_seq)) continue
       if (!binding || Object.entries(binding).some(([key, item]) => !sameJson(item, value.source[key]))
         || value.filename !== value.source.original_filename || value.bytes !== value.source.original_bytes
         || value.sha256.toLowerCase() !== value.source.original_sha256
@@ -667,7 +683,7 @@ export function selectSavedSecurityReport(parentId, input, kind, attachmentId, c
   const value = Object.fromEntries(savedPublicFields.filter(key => Object.hasOwn(selected.value, key)
     && (!['generated_at', 'message'].includes(key) || typeof selected.value[key] === 'string'))
     .map(key => [key, selected.value[key]]))
-  const newTroubleshooting = kind === 'fault' && hasNewTroubleshootingSource(events, cutoff, canonicalName)
+  const newTroubleshooting = kind === 'fault' && hasNewTroubleshootingSource(events, cutoff, canonicalName, original.receipt_seq)
   return { value, receipt_seq: selected.receipt_seq, has_new_troubleshooting_source: newTroubleshooting,
     has_new_source: hasNewReportSource(parentId, events, kind, cutoff, canonicalName, newTroubleshooting) }
 }

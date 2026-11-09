@@ -233,78 +233,106 @@ export function previewAssets(identity: any, args: any) {
   return { kind: 'preview', preview_digest, preview_user_message_id: identity.messageId, assets, source: args.source, route, taskId: source.taskId ?? null, markdown, saved: false }
 }
 
-/** 锁定DSH公开命名合同：哈希身份是serverName、NUL、rawName，不反拆已有哈希。 */
-function nativeMcpName(serverName: string, rawName: string) {
-  const joined = `mcp__${serverName}__${rawName}`
-  const normalized = joined.replace(/[^A-Za-z0-9_-]/g, '_')
-  if (joined === normalized && normalized.length <= 64) return normalized
-  const suffix = createHash('sha256').update(`${serverName}\0${rawName}`).digest('hex').slice(0, 12)
-  return `${normalized.slice(0, 51)}_${suffix}`
-}
-/** 仅授权组及SOC Master的已声明协议身份；命中还必须是本次Agent真实可见的注册。 */
-export function resolveAssetTools(ctx: any, operation: string, agent?: any): string[] {
-  const memberId = 'ai-soc-master'
-  const rawNames = [operation, `${memberId.replaceAll('_', '_0')}__${operation}`, `mcp__${memberId}__${operation}`, `mcp__${GROUP_ID}__${operation}`]
-  const candidates = rawNames.map(raw => nativeMcpName(GROUP_ID, raw))
-  // 旧管理器只解析自己的直连servers；不能把它当独立MCP客户端的唯一目录。
-  if (typeof ctx.mcpSessionManager?.resolveTool === 'function') {
-    for (const raw of rawNames) {
-      const registered = ctx.mcpSessionManager.resolveTool(GROUP_ID, raw)
-      if (typeof registered === 'string') candidates.push(registered)
-    }
+const GROUP_TARGET = 'io.deepseek.dsh/mcp-group-target'
+const GROUP_OWNER = 'io.deepseek.dsh/mcp-group-tool'
+const TASK_QUERY = 'get_soc_discovery_tasks_by_task_id'
+const bindingError = (code: string) => Object.assign(new Error(`资产组接线未就绪：${code}；未发送SOC业务请求，不表示设备离线或SOC无数据`), { code })
+
+/** 复用现有公开组v2合同，不注册底层工具、不猜本地命名、不读取认证或跨作用域取工具。 */
+export function createAssetGroupBackend(ctx: any) {
+  const pending = new WeakMap<object, Promise<any>>()
+  const identity = (exec: any) => {
+    mainIdentity(exec)
+    if (!exec.agent?.session?.id || typeof exec.callId !== 'string' || !exec.callId) throw bindingError('ASSET_NATIVE_CONTEXT_MISSING')
   }
-  return [...new Set(candidates)].filter(name => !!ctx.tools.get(name, agent))
+  const supported = () => typeof ctx.mcpSessionManager?.listGroupTools === 'function' && typeof ctx.mcpSessionManager?.callGroupTool === 'function'
+  const catalog = async (exec: any) => {
+    identity(exec)
+    if (!supported()) throw bindingError('ASSET_GROUP_API_UNAVAILABLE')
+    if (!pending.has(exec)) pending.set(exec, (async () => {
+      const value = await ctx.mcpSessionManager.listGroupTools(GROUP_ID, 2)
+      identity(exec)
+      const target = value?._meta?.[GROUP_TARGET]
+      if (!Array.isArray(value?.tools) || value.nextCursor || value?._meta?.['io.deepseek.dsh/mcp-group-discovery']?.unavailable?.length
+        || target?.version !== 2 || typeof target.digest !== 'string' || !/^[a-f0-9]{64}$/u.test(target.digest)) throw bindingError('ASSET_GROUP_CATALOG_INVALID')
+      return { tools: value.tools, meta: { [GROUP_TARGET]: { digest: target.digest, version: 2 } } }
+    })())
+    const value = await pending.get(exec)
+    identity(exec)
+    return value
+  }
+  const matches = (directory: any, operation: string) => directory.tools.filter((tool: any) => tool.name === operation)
+  const verified = (tool: any, operation: string) => {
+    const owner = tool?._meta?.[GROUP_OWNER]
+    return owner?.serverId === 'ai-soc-master' && owner.sourceName === operation && owner.kind === (operation === TASK_QUERY ? 'template' : 'tool')
+  }
+  const taskContract = (tool: any) => {
+    const uri = tool?._meta?.[GROUP_OWNER]?.sourceUri, schema = tool?.inputSchema
+    const property = schema?.properties?.taskId
+    const type = ['integer', 'number', 'string'].includes(property?.type) ? property.type
+      : property?.oneOf?.some((item: any) => item.type === 'string') ? 'string' : undefined
+    if (!verified(tool, TASK_QUERY) || typeof uri !== 'string' || !/\/soc\/discovery\/tasks\/\{taskId\}$/u.test(uri)
+      || /[{}]/u.test(uri.replace('{taskId}', '')) || schema?.type !== 'object' || !Array.isArray(schema.required)
+      || schema.required.length !== 1 || schema.required[0] !== 'taskId' || !type) throw bindingError('ASSET_TASK_TEMPLATE_INVALID')
+    return { uri, type }
+  }
+  const lookup = async (operation: string, exec: any) => {
+    if (![...operations, TASK_QUERY].includes(operation)) throw bindingError('ASSET_OPERATION_OUT_OF_SCOPE')
+    const directory = await catalog(exec), rows = matches(directory, operation)
+    if (rows.length !== 1 || !verified(rows[0], operation)) throw bindingError('ASSET_GROUP_BINDING_NOT_UNIQUE')
+    if (operation === TASK_QUERY) taskContract(rows[0])
+    return { tool: rows[0], meta: directory.meta }
+  }
+  const dispatch = async (operation: string, args: any, exec: any) => {
+    let binding
+    try { identity(exec); binding = await lookup(operation, exec); identity(exec) }
+    catch (error: any) { error.notSent = true; throw error }
+    // 现有服务内部保持目标摘要、原生Session/callId、叶子许可及取消信号，不重新发现或自动重发。
+    return ctx.mcpSessionManager.callGroupTool(GROUP_ID, 2, binding.tool.name, args, binding.meta, exec)
+  }
+  return {
+    lookup,
+    call: async (operation: string, args: any, exec: any) => {
+      if (!operations.includes(operation)) throw bindingError('ASSET_OPERATION_OUT_OF_SCOPE')
+      return unpack(await dispatch(operation, args, exec))
+    },
+    resource: async (taskId: number, exec: any) => {
+      if (!positive(taskId)) throw bindingError('ASSET_TASK_ID_INVALID')
+      const binding = await lookup(TASK_QUERY, exec), { uri, type } = taskContract(binding.tool)
+      const result = await dispatch(TASK_QUERY, { taskId: type === 'string' ? String(taskId) : taskId }, exec)
+      if (result?.isError) throw new Error('资产分组资源请求失败')
+      const value = result?.structuredContent
+      // 公开组资源合同保留代理URI，不把上游HTTP URI当组资源回执。
+      const proxy = `mcp-group:/${GROUP_ID}/ai-soc-master/t/${Buffer.from(uri).toString('base64url')}`
+      const entries = value?.contents?.filter((item: any) => [proxy, `${proxy}?taskId=${encodeURIComponent(String(taskId))}`].includes(item.uri) && typeof item.text === 'string')
+      if (!Array.isArray(entries) || entries.length !== 1) throw new Error('发现任务回执与已绑定资源URI不匹配，不能据展示占位或空数组判完成')
+      return unpack({ value: JSON.parse(entries[0].text) })
+    },
+    status: async (exec: any) => {
+      let directory: any, error: string | null = null
+      try { directory = await catalog(exec) }
+      catch (failure: any) { error = typeof failure.code === 'string' && /^ASSET_[A-Z_]+$/u.test(failure.code) ? failure.code : 'ASSET_GROUP_DIRECTORY_UNAVAILABLE' }
+      const interfaces = operations.map(operation => {
+        const rows = directory ? matches(directory, operation) : []
+        return { operation, registered_count: rows.length, registered_names: rows.map((tool: any) => tool.name), source_verified: rows.length === 1 && verified(rows[0], operation) }
+      })
+      const templates = directory ? matches(directory, TASK_QUERY) : []
+      let templateReady = false
+      if (templates.length === 1) try { taskContract(templates[0]); templateReady = true } catch { error ??= 'ASSET_TASK_TEMPLATE_INVALID' }
+      const interfacesLoaded = interfaces.every(item => item.source_verified)
+      return { configured: null, configuration_check_supported: false, expected_namespace: GROUP_ID, expected_member: 'ai-soc-master',
+        transport: 'group-v2-public-service', group_api_supported: supported(), local_tool_registration_required: false,
+        interfaces, interfaces_loaded: interfacesLoaded, task_query_resource: templateReady ? 'loaded' : directory ? 'missing_or_ambiguous' : 'unavailable',
+        task_query_template_count: directory ? templates.length : null, binding_error: error, tooling_ready: interfacesLoaded && templateReady }
+    },
+  }
 }
 
 export function apply(ctx: any) {
   const locks = new Map<string, Promise<any>>()
   // 原生高层工具拥有固定流程。底层SOC工具不对模型开放，内部仍沿既有MCP连接，不新增HTTP代理。
-  ctx.tools.guard((exec: any) => exec.name.startsWith(`mcp__${GROUP_ID}__`) || operations.some(operation => resolveAssetTools(ctx, operation, exec.agent).includes(exec.name)) || exec.name === 'read_mcp_resource' && exec.arguments?.server === GROUP_ID ? '请使用资产纳管高层入口；底层接口不能绕过清单与真实用户确认' : undefined)
-  const lookup = (operation: string, exec: any) => {
-    const actual = resolveAssetTools(ctx, operation, exec.agent)
-    if (actual.length === 0) throw new Error(`资产纳管接口候选未匹配当前会话注册：${operation}；预期命名空间=${GROUP_ID}，未发送SOC请求，不表示目标离线或SOC无数据`)
-    if (actual.length > 1) throw new Error(`资产纳管接口存在${actual.length}个可见注册，需明确接线：${operation}；${actual.join('、')}；未发送SOC请求`)
-    return ctx.tools.get(actual[0], exec.agent)
-  }
-  const call = async (operation: string, args: any, exec: any) => {
-    let tool
-    try { mainIdentity(exec); tool = lookup(operation, exec) }
-    catch (error: any) { error.notSent = true; throw error }
-    return unpack(await tool.execute(args, exec))
-  }
-  const resourceValue = (result: any): any => {
-    if (result?.isError) throw new Error('资产分组资源请求失败')
-    let value = result?.value ?? result?.structuredContent ?? result
-    for (let depth = 0; depth < 4; depth++) {
-      if (Array.isArray(value?.resourceTemplates) || Array.isArray(value?.contents)) return value
-      if (value?.structuredContent !== undefined) { value = value.structuredContent; continue }
-      const raw = value?.content?.find((item: any) => item.type === 'text')?.text
-      if (!raw) break
-      value = JSON.parse(raw)
-    }
-    throw new Error('资源回执缺少可核实的目录或内容')
-  }
-  const taskQueryTemplates = async (exec: any) => {
-    mainIdentity(exec)
-    const catalog = ctx.tools.get('list_mcp_resource_templates', exec.agent)
-    if (!catalog) throw new Error('MCP资源发现入口不可用')
-    const directory = resourceValue(await catalog.execute({ server: GROUP_ID }, exec))
-    if (directory.nextCursor) throw new Error('资源目录尚未完整读取，不能猜测任务查询地址')
-    return directory.resourceTemplates.filter((item: any) => item.name === 'get_soc_discovery_tasks_by_task_id' && typeof item.uriTemplate === 'string' && /\{\??taskId\}/.test(item.uriTemplate))
-  }
-  const resource = async (taskId: number, exec: any) => {
-    const candidates = await taskQueryTemplates(exec)
-    const reader = ctx.tools.get('read_mcp_resource', exec.agent)
-    if (!reader) throw new Error('MCP资源读取入口不可用')
-    if (candidates.length !== 1) throw new Error('资产分组未返回唯一的任务查询模板')
-    const uri = candidates[0].uriTemplate.replace('{?taskId}', `?taskId=${encodeURIComponent(String(taskId))}`).replace('{taskId}', encodeURIComponent(String(taskId)))
-    if (/[{}]/.test(uri)) throw new Error('任务查询模板含未核实参数，不能读取')
-    mainIdentity(exec)
-    const value = resourceValue(await reader.execute({ server: GROUP_ID, uri }, exec))
-    const entries = value.contents.filter((item: any) => item.uri === uri && typeof item.text === 'string')
-    if (entries.length !== 1) throw new Error('发现任务回执与原资源URI不匹配')
-    return unpack({ value: JSON.parse(entries[0].text) })
-  }
+  ctx.tools.guard((exec: any) => exec.name.startsWith(`mcp__${GROUP_ID}__`) || exec.name === 'read_mcp_resource' && exec.arguments?.server === GROUP_ID ? '请使用资产纳管高层入口；底层接口不能绕过清单与真实用户确认' : undefined)
+  const { lookup, call, resource, status } = createAssetGroupBackend(ctx)
   const perform = async (args: any, exec: any) => {
     const identity = mainIdentity(exec)
     const respond = (value: any) => {
@@ -316,20 +344,10 @@ export function apply(ctx: any) {
       throw new Error('完整清单超过输出预算，尚未生成可确认的预览；请拆分输入，不导入未展示部分')
     }
     if (args.action === 'status') {
-      // 不读取私配置；旧管理器的servers不代表独立客户端，不能用其false否定本会话来源。
-      const interfaces = operations.map(operation => {
-        const registeredNames = resolveAssetTools(ctx, operation, exec.agent)
-        return { operation, registered_count: registeredNames.length, registered_names: registeredNames }
-      })
-      const interfacesLoaded = interfaces.every(item => item.registered_count === 1)
-      let templateCount: number | null = null
-      let resourceStatus = 'unavailable'
-      try {
-        templateCount = (await taskQueryTemplates(exec)).length
-        resourceStatus = templateCount === 1 ? 'loaded' : 'missing_or_ambiguous'
-      } catch { /* 当前目录不可用；不把它解释成目标离线或SOC无数据。 */ }
-      const toolingReady = interfacesLoaded && resourceStatus === 'loaded'
-      return respond({ kind: 'status', local_entry_loaded: true, evidence_scope: 'current_session_tooling_only', backend: { configured: null, configuration_check_supported: false, expected_namespace: GROUP_ID, expected_member: 'ai-soc-master', interfaces, interfaces_loaded: interfacesLoaded, task_query_resource: resourceStatus, task_query_template_count: templateCount, tooling_ready: toolingReady }, business_verification: 'not_performed', registration_performed: false, message: toolingReady ? '本会话六项精确注册及任务查询模板可见；这仅是目录接线证据，未验证SOC业务权限或发现、登记闭环，也未执行探测或新增。' : '本地入口已加载，但声明的接口候选未唯一匹配或任务查询目录不可用，尚不能宣称后端就绪；不表示目标离线、SOC无数据或配置一定不存在。未探测、未新增。' })
+      const backend = await status(exec)
+      return respond({ kind: 'status', local_entry_loaded: true, evidence_scope: 'current_session_group_v2_directory_only', backend,
+        business_verification: 'not_performed', registration_performed: false,
+        message: backend.tooling_ready ? '本会话资产组v2六动作及任务模板已唯一绑定；未向模型注册底层工具。这仅是受管目录/调用路径证据，未验证SOC业务或发现、登记闭环，未探测、未新增。' : '本地入口已加载，但受管组v2提供者或精确来源绑定未就绪；请按binding_error核接线，不表示设备离线或SOC无数据。未探测、未新增。' })
     }
     if (args.action === 'read_excel' && typeof args.attachment_id !== 'string') throw new Error('请先列出真实附件，再传入要解析的attachment_id')
     if (['attachments', 'read_excel'].includes(args.action)) return respond({ ...await readAssetWorkbook(ctx, exec, args.action === 'read_excel' ? args.attachment_id : undefined), backend_connection_checked: false, group_id_is_connection_proof: false })
@@ -343,8 +361,8 @@ export function apply(ctx: any) {
       if (denied || !/(探测|发现|识别|扫描)/u.test(identity.request)) throw new Error('没有本轮明确探测授权，咨询和Excel导入不启动扫描')
       const { range, excluded } = validateDiscoveryRanges(identity.request, args.ranges, args.excluded_ranges)
       const single = !excluded && range.count === 1 && isIP(range.ranges) === 4
-      lookup(single ? 'create_soc_asset_probe' : 'create_soc_discovery_tasks', exec)
-      lookup(single ? 'create_soc_discovery_identify' : 'start_soc_discovery_tasks', exec)
+      await lookup(single ? 'create_soc_asset_probe' : 'create_soc_discovery_tasks', exec)
+      await lookup(single ? 'create_soc_discovery_identify' : 'start_soc_discovery_tasks', exec)
       const directory = join(STATE_ROOT, hash([GROUP_ID, identity.sessionId]))
       await mkdir(directory, { recursive: true, mode: 0o700 })
       const path = join(directory, `discovery-${hash([identity.messageId, range.ranges, excluded])}.json`)
@@ -352,6 +370,7 @@ export function apply(ctx: any) {
       try { existing = JSON.parse(await readFile(path, 'utf8')) } catch (error: any) { if (error.code !== 'ENOENT') throw error }
       if (existing) return respond({ ...existing, replayed: true, hint: '本轮已发送发现请求，不重复创建或扫描；有taskId仅查询原任务' })
       const state: any = { kind: 'discovery', evidence_id: hash([identity.sessionId, identity.messageId, range.ranges, excluded]), ranges: range.ranges, excluded_ranges: excluded, autoAdopt: false, saved: false, state: 'pending' }
+      let phase = single ? 'create_soc_asset_probe' : 'create_soc_discovery_tasks'
       await writeFile(path, JSON.stringify(state), { flag: 'wx', mode: 0o600 })
       try {
         if (single) {
@@ -359,7 +378,8 @@ export function apply(ctx: any) {
           state.facts.connectivity = await call('create_soc_asset_probe', { ip: range.ranges, mode: 'hybrid' }, exec)
           if (state.facts.connectivity === null) throw new Error('SOC缺少连通性检查结果')
           await writeFile(path, JSON.stringify(state), { mode: 0o600 })
-          state.facts.identification = await call('create_soc_discovery_identify', { ip: range.ranges }, exec)
+          phase = 'create_soc_discovery_identify'
+           state.facts.identification = await call('create_soc_discovery_identify', { ip: range.ranges }, exec)
           if (state.facts.identification === null) throw new Error('SOC缺少设备识别结果')
           state.state = 'completed'
         } else {
@@ -370,11 +390,12 @@ export function apply(ctx: any) {
           state.facts = { prepared }
           if (!positive(state.taskId) || typeof previewHash !== 'string' || !previewHash) throw new Error('SOC缺少可核实taskId和previewHash，未启动扫描且不能猜测标识重发')
           await writeFile(path, JSON.stringify(state), { mode: 0o600 })
-          state.facts.started = await call('start_soc_discovery_tasks', { taskId: state.taskId, body: { previewHash } }, exec)
+          phase = 'start_soc_discovery_tasks'
+           state.facts.started = await call('start_soc_discovery_tasks', { taskId: state.taskId, body: { previewHash } }, exec)
           state.state = 'accepted'
         }
         state.evidence_complete = true
-      } catch (error: any) { state.state = error.businessFailure ? 'failed' : 'unknown'; state.reason = error.message; state.evidence_complete = false }
+      } catch (error: any) { state.state = error.businessFailure ? 'failed' : 'unknown'; state.reason = `${phase}：${error.message}`; state.evidence_complete = false }
       await writeFile(path, JSON.stringify(state), { mode: 0o600 })
       return respond(state)
     }
@@ -387,7 +408,7 @@ export function apply(ctx: any) {
     if (args.action === 'cancel') return respond({ kind: 'cancelled', saved: false, message: '已取消，不新增资产，旧确认失效' })
     if (args.action !== 'commit') throw new Error('未知资产纳管动作')
     const preview = priorPreview(identity, args.preview_digest)
-    lookup(preview.route === 'adopt' ? 'create_soc_discovery_tasks_adopt' : 'create_soc_asset', exec)
+    await lookup(preview.route === 'adopt' ? 'create_soc_discovery_tasks_adopt' : 'create_soc_asset', exec)
     const directory = join(STATE_ROOT, hash([GROUP_ID, identity.sessionId])), path = join(directory, `${preview.preview_digest}.json`)
     await mkdir(directory, { recursive: true, mode: 0o700 })
     let previous

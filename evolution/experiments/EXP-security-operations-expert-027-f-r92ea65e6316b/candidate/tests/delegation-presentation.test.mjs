@@ -26,6 +26,24 @@ test('启动回执提供中文角色与任务，聊天正文不暴露内部会�
   assert.equal(deliveryMarkdown(events, 1), delegationReceipt('delegate_threat_analysis', content, args).markdown)
 })
 
+test('同一轮多个委派启动回执全部进入启动摘要', () => {
+  const batchEvents = ids => ids.flatMap((incidentId, index) => {
+    const callId = `batch-call-${index}`
+    return [
+      { type: 'tool/call', data: { name: 'delegate_threat_analysis', callId,
+        arguments: JSON.stringify({ description: `研判威胁事件 ${incidentId}` }) } },
+      { type: 'tool/result', data: { turn: 2, message: { role: 'tool', toolCallId: callId,
+        content: [{ type: 'text', text: `started subagent child-${index}` }], isError: false } } },
+    ]
+  })
+  const markdown = deliveryMarkdown(batchEvents([
+    'INC-20261107-000008', 'INC-20261028-000021', 'INC-20261028-000012',
+  ]), 2)
+  assert.match(markdown, /INC-20261107-000008/)
+  assert.match(markdown, /INC-20261028-000021/)
+  assert.match(markdown, /INC-20261028-000012/)
+})
+
 test('缺少参数不丢启动状态，其他结果和失败不会误报启动', () => {
   assert.equal(delegationReceipt('delegate_threat_analysis', content, '{')?.task, undefined)
   assert.equal(delegationReceipt('another_tool', content, args), undefined)

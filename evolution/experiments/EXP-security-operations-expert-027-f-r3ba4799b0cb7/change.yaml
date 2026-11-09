@@ -17,7 +17,7 @@ asset_builds:
     dependencies_sha256: null
     source_files:
       - path: dsh/managed/asset-onboarding-runtime.ts
-        sha256: f98b3b00f79cb02784edb3dcf9c74a018fe1863b32dccae81e2c81a32dfc023d
+        sha256: fdb2c5c91222d2d502e86712c76a8a6f4987cd5198b0f97c7a07961d7e4a6dc5
       - path: dsh/managed/asset-workbook.d.mts
         sha256: f175806339ea7125e3b559c363a604293c820c2a4f6b40954ebd29ded9eaaf3f
       - path: dsh/managed/asset-workbook.mjs
@@ -28,7 +28,7 @@ asset_builds:
         sha256: 1ca7f90ec93e6bd0634cc8d03bc869fff9c077ea19311f25ff071ddf99bc5fb3
       - path: dsh/managed/attachment-reader/zip-reader.mjs
         sha256: f8142165ac9dfda80d052151a09de762156dc37178e982c8742439caf4218dff
-    source_sha256: cbf0c147d63c0b2dbec1c699c23b4b8e8446281ad8c67b11f902757fb19940df
+    source_sha256: f59ef6fcfd6458411e8d11429ee63326dc84e61ddb52f9658545ad549d6824a7
     platform_sources:
       - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
         sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
@@ -40,9 +40,9 @@ asset_builds:
       - node:fs/promises
       - node:path
       - node:zlib
-    build_digest: 7bfeca45e5e861d7203be498c15856340a4f75b4fcbd775b67397e8a9e503c4e
-    esm_sha256: d349ddd705a88e82496c3a8cb91c52443a56e60744b1fd33ad33f31f147d6a2c
-    candidate_sha256: d67242507ab73693353cadc3c5d0fdabda1d2d2bcd1d02bd16bb8b937433a496
+    build_digest: 84a603be7749ff5766c643c9aba429218eb775f4d73cb4e4e0ba1205faecd397
+    esm_sha256: ccb404e92ae333a3cdf8bb6269d495a0323f0685dcc589b4af56deafd71b570c
+    candidate_sha256: 152dece55eb14ee0b03a1250afc9948bc5469b9a7fddcc6e697548887dea9883
   dsh/managed/security-report-runtime.ts:
     schema_version: 1
     entry_path: dsh/managed/security-report-runtime.ts
@@ -54,12 +54,12 @@ asset_builds:
     dependencies_sha256: null
     source_files:
       - path: dsh/managed/security-report-runtime.ts
-        sha256: 731b5bb13679a42b3fd09ca78a1a0693a6e66946686c1cb7d0ad691fcd9239f6
+        sha256: 18d5a9e9e1b885e2610bfeb74ea28b60e440638765ecbc6d748aec2fcfc862bf
       - path: dsh/managed/security-report-source.d.mts
         sha256: e0e7c831647c9d3dcc050d52ff7cac8ea66d02d09d507a95f04e65321105a86c
       - path: dsh/managed/security-report-source.mjs
-        sha256: 40daacb1af53693a15bb36e7b07d5d86838966bc0d7380de4026b0161190f288
-    source_sha256: 376631f18a610eeafee69785e0911d1414fbaf33678105341c54bb7daecc1e9e
+        sha256: 92fa4d8ea2e296ead2f0f46b10d62c206d2d0a4a2b450e5c3aaf5b10ce037639
+    source_sha256: 94a474d04261ab17b95359ec2bfb0c11e45618c35a211b3a06ce30ae9e3c922e
     platform_sources:
       - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
         sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
@@ -67,7 +67,60 @@ asset_builds:
     source_inputs_version: 1
     runtime_imports:
       - node:crypto
-    build_digest: 2157aa0462aea6f5da13c4c2fdd10b86549b7b46fb2ab590768aeb7ff60e3131
-    esm_sha256: c358d85820ee8f2df7a80d39c871c2096a35ddb6b847d585aa2e5ebef2086161
-    candidate_sha256: f40f562fb50f442da822e02ca74d05f094f99c7a4be87248a58c241c968a0008
+    build_digest: 01d12f980ef2ba590fe591acd989af7e0dde54a59a596dedc7c171a2a112fa7f
+    esm_sha256: 6d5ee643e92c843a57188e3e8b8a6ee37deb99ea9b669890c7472cc0b797830e
+    candidate_sha256: 2a9df148f7774e187d46ca4cb0eab29c5930311593ee855e08427aa42728d90d
+  dsh/managed/mcp-manager/index.ts:
+    schema_version: 1
+    entry_path: dsh/managed/mcp-manager/index.ts
+    output_path: dsh/managed/mcp-manager/index.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: bc5f36eb3e9ab14dd711dec75e1d5a4a92d6dd278ad4652baaaaaff090b9183b
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/mcp-manager/connection.ts
+        sha256: 09d66d933a12a12d500c606ce9744e10348a48eb732cf77ae56a68012098adf3
+      - path: dsh/managed/mcp-manager/index.ts
+        sha256: e05ce72e8addc48ed7e92fe0adb96a46e9713f7447dd5c8fdf54991abb9f5462
+      - path: dsh/managed/mcp-manager/openapi.ts
+        sha256: 7af7dab8d039fb2d536e359130dd8f46191a2424a04a3e89fe88baf177b91c31
+    source_sha256: 8edcc40372d8c022e52f21be1328de95be265bab65647f511f49fdf67901acd6
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
+    platform_sources_sha256: af539f1f3eb7a2bc3cfd4456124f15cff8e65abf4333aea55e756823d4b36d3d
+    source_inputs_version: 1
+    runtime_imports:
+      - node:crypto
+      - node:module
+    build_digest: 2c24f227bf9601fb45394576535a20491e622483114816187a64209b99abb668
+    esm_sha256: 9fc04c6d961e23cb12ca5521e6e2bdd94aad183ac431df4a6dfbea81d580481a
+    candidate_sha256: 66a4697cf1ac2116f2e57d846b0ab2d42ceda62d9ced960ab772acb6386dd5bf
+  dsh/managed/mcp-manager/openapi.ts:
+    schema_version: 1
+    entry_path: dsh/managed/mcp-manager/openapi.ts
+    output_path: dsh/managed/mcp-manager/openapi.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: bc5f36eb3e9ab14dd711dec75e1d5a4a92d6dd278ad4652baaaaaff090b9183b
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/mcp-manager/connection.ts
+        sha256: 09d66d933a12a12d500c606ce9744e10348a48eb732cf77ae56a68012098adf3
+      - path: dsh/managed/mcp-manager/openapi.ts
+        sha256: 7af7dab8d039fb2d536e359130dd8f46191a2424a04a3e89fe88baf177b91c31
+    source_sha256: 7986f4a23fde4a23f78902e6abf25cb32b280e29c8009c7c4ebf9276a09a67b0
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
+    platform_sources_sha256: af539f1f3eb7a2bc3cfd4456124f15cff8e65abf4333aea55e756823d4b36d3d
+    source_inputs_version: 1
+    runtime_imports:
+      - node:crypto
+    build_digest: 368c8775501734b7715e0d5f4a6e4dbfca2f63bef2f69b8cbc83fddfb8faba1f
+    esm_sha256: 7e9e243104a73ca64de2ffae353d982afc33121f5f6d974ed3b8c47065448f63
+    candidate_sha256: 6bc22b65b54d30daf919b5987ef7f170fc9e60e177f2710c286011fd19350e55
 outcome: continue

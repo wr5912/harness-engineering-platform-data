@@ -37,12 +37,12 @@ export function requireReportRequest(exec: any) {
   const content = user?.data?.content
   const text = typeof content === 'string' ? content : Array.isArray(content)
     ? content.filter((part: any) => part?.type === 'text').map((part: any) => part.text).join('') : ''
-  const requested = /(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)[\s\S]{0,40}(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:生成|导出|下载|保存|给我|给出|出具|发我|发给我)|(?:执行|开始|运行)[\s\S]{0,20}巡检/iu.test(text)
+  const requested = /(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:生成|导出|下载|保存|给我|给出|出具|发我|发给我)|(?:执行|开始|运行)[\s\S]{0,20}巡检/iu.test(text)
   const inquiryOnly = /^\s*(?:(?:(?:请问|请(?:介绍|说明|解释))\s*)?(?:如何|怎么|怎样)[\s\S]*(?:报告|HTML)|(?:请问\s*)?(?:本次|这次)?(?:完整|巡检)?(?:报告|HTML)\s*(?:如何|怎么|怎样)[\s\S]*|请(?:介绍|说明|解释)[\s\S]{0,20}(?:报告|HTML)[\s\S]{0,20}(?:步骤|方法|用途|格式|内容))[\s\S]*$/iu.test(text)
   const declined = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[\s\S]{0,8}(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上|报告|HTML)/iu.test(text)
-  const downloadExisting = /(?:下载|导出)[\s\S]{0,40}(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:下载|导出)/iu.test(text)
+  const downloadExisting = /(?:下载|导出)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:下载|导出)/iu.test(text)
     && /(?:刚才|上次|先前|此前|已有|已(?:生成|导出|保存)|原(?:有|始)?(?:的)?(?:HTML|报告|文件)|同一(?:份|个)?)/iu.test(text)
-  const declinedCreation = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[^，。！？；;,\n]{0,8}生成/iu.test(text)
+  const declinedCreation = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[^，。！？；;,\n]{0,8}(?:生成|重建|重绘)/iu.test(text)
   const declinedTransfer = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[^，。！？；;,\n]{0,8}(?:下载|导出|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)/iu.test(text)
   const reuseOnly = downloadExisting && declinedCreation && !declinedTransfer
   if (!user?.data?.id || !requested || inquiryOnly || declinedTransfer || declined && !reuseOnly) {

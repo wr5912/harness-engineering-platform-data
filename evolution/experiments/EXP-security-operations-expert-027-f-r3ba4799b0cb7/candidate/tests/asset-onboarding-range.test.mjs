@@ -11,8 +11,8 @@ const STOP = 'MOCK_BINDING_STOP_BEFORE_IO'
 function fixture(text, { past = [], queued = false, aborted = false } = {}) {
   let tool, lookups = 0
   const ctx = {
-    mcpSessionManager: { resolveTool: () => undefined },
-    tools: { guard() {}, register(value) { tool = value }, get() { lookups++; throw new Error(STOP) } },
+    mcpSessionManager: { async listGroupTools() { lookups++; throw new Error(STOP) }, async callGroupTool() { assert.fail('范围回归不得派发业务') } },
+    tools: { guard() {}, register(value) { tool = value }, get() { assert.fail('不得回退本地原始工具注册') } },
   }
   runtime.apply(ctx)
   const user = (id, value) => ({ type: 'user/message', data: { id, source: { kind: 'user' }, content: [{ type: 'text', text: value }] } })
@@ -151,6 +151,12 @@ test('只发现不入库及发现并明确排除仍保留授权，不新增确�
   await stoppedBeforeIo(`只发现${A}，不入库`, { ranges: A })
   await stoppedBeforeIo(`只发现${A}，不要入库`, { ranges: A })
   await stoppedBeforeIo(`发现${A}至${B}且明确排除172.16.228.10，不入库`, { ranges: RANGE, excluded_ranges: '172.16.228.10' })
+})
+
+test('本轮138新授权可等价通过，不能借此把旧228授权替换成138', async () => {
+  const start = '172.16.138.1', end = '172.16.138.254'
+  await stoppedBeforeIo(`对${start}到${end}执行真实发现，先不入库`, { ranges: `${start}-${end}` })
+  await rejectedBeforeLookup(`对${A}到${B}执行真实发现，先不入库`, { ranges: `${start}-${end}` })
 })
 
 test('4096上限、非法IPv4、倒置与CIDR对齐仍保持', () => {

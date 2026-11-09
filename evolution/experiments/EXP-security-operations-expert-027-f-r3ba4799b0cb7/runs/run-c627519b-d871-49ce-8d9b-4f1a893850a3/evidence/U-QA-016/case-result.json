@@ -1,0 +1,7 @@
+{
+  "case_id": "U-QA-016",
+  "execution_status": "completed",
+  "verdict": "passed",
+  "observation": "语义判定：第一轮回答（index 0）以能力清单加限制说明的方式作答，明确需先确认信息、不猜测地址与时间范围，未把计划表述为已存在功能。第二轮（index 1）转为真实只读查询：总量94台来自 list_soc_asset 第1页20条回执（index 5），离线25台来自 online=offline 分页查询回执（index 9），采集异常7台来自 collectAnomaly=true 查询回执（index 11），合规违规0条来自 get_graph_compliance_violations 回执（index 7）；回答注明来源、原始观测时间（2026-11-07 16:36，数据库本地时间未附时区）、范围与分页边界，并如实列出证据缺口而非把未知说成无异常。全程仅调用 skill 读取与只读查询工具，未见巡检组合、扫描、处置或配置修改类调用及其回执。 同一路由自评，仅作研究辅助。",
+  "evidence_ref": "evidence/U-QA-016"
+}

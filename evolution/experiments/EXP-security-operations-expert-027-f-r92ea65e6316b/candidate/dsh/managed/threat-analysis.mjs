@@ -9,7 +9,7 @@ import { join } from 'node:path'
 import { startMcpGroupBridge } from './threat-analysis/mcp-group-bridge.mjs'
 import { delegationReceipt } from './security-operations-ui/delegation.js'
 import { classifyRecommendation } from './disposition-runtime/index.mjs'
-import { latestCompletion, validateCompletionEvent, continuationPlan, continuationStop, textOnly } from './continuation-helper.mjs'
+import { latestCompletion, validateCompletionEvent, continuationPlan, continuationStop, textOnly, batchResultMarkdown } from './continuation-helper.mjs'
 import { peekOperationDelivery, discardEmergencyInteraction, emergencyDraftMarkdown } from './operation-result-delivery.mjs'
 import { draftFromExecution } from './emergency-confirmation-runtime.mjs'
 
@@ -190,8 +190,59 @@ export function apply(ctx, config = {}, dependencies = {}) {
       continuations.delete(agent.id); pending.delete(agent.id); automation.delete(agent.id)
       return [deliveryProvider, automationProvider, resumeProvider].includes(config.provider) ? resumeModel() : config
     }
+    if (incomingNotices.length && purposes.every(purpose => purpose === 'threat')) {
+      // 批量研判只交付本次新完成的子会话；每个子会话独立通过原始调用/回执门禁。
+      const settledEvents = projected.filter(event => event.type === 'user/message'
+        && event.data?.source?.kind === 'subagent-settled'
+        && incomingNotices.some(message => message.id === event.data.id))
+      const firstNoticeSeq = Math.min(...settledEvents.map(event => event.seq))
+      const batchUser = projected.findLast(event => event.type === 'user/message'
+        && event.data?.source?.kind === 'user' && event.seq < firstNoticeSeq)
+      const batchCalls = projected.filter(event => event.type === 'tool/call'
+        && event.data?.name === 'delegate_threat_analysis'
+        && event.seq > (batchUser?.seq ?? -Infinity) && event.seq < firstNoticeSeq)
+      if (batchCalls.length > 1) {
+        const results = []
+        for (const noticeForChild of settledEvents) {
+          const childId = noticeForChild.data?.source?.senderSessionId
+          const receipt = projected.find(event => event.type === 'tool/result'
+            && event.data?.message?.isError === false
+            && textOnly(event.data.message.content)?.startsWith('started subagent ')
+            && textOnly(event.data.message.content) === `started subagent ${childId}`)
+          const call = receipt && batchCalls.find(item => item.data.callId === receipt.data.message.toolCallId)
+          let prompt = {}
+          try { prompt = typeof call?.data?.arguments === 'string' ? JSON.parse(call.data.arguments) : {} } catch { prompt = {} }
+          const incidentId = typeof prompt?.prompt === 'string'
+            ? prompt.prompt.match(/INC-\d{8}-\d{6}/)?.[0] : undefined
+          let plan
+          if (!receipt || !call || !childId) {
+            plan = continuationStop('BATCH_CHILD_BINDING_FAILED', '子会话启动回执与完成通知无法配对。')
+          } else {
+            const gate = validateCompletionEvent({ parentId: agent.session.id, parentEvents: projected, turn,
+              allowProgress: true, requirePreparation: false, allowBatch: true, noticeOverride: noticeForChild })
+            if (gate.kind !== 'read-child') plan = gate
+            else {
+              try {
+                const snapshot = await ctx.sessionQuery.readSession(gate.childId)
+                signal.throwIfAborted()
+                plan = validateChildResult(gate, snapshot)
+              } catch {
+                signal.throwIfAborted()
+                plan = continuationStop('CHILD_READ_FAILED', '无法读取该子会话的原始研判结果。')
+              }
+            }
+          }
+          results.push({ incidentId, markdown: plan?.kind === 'preview-only' ? plan.markdown : undefined,
+            error: plan?.message ?? '结果结构或来源校验失败。' })
+        }
+        if (results.length) {
+          pending.set(agent.id, batchResultMarkdown(results))
+          return { provider: deliveryProvider, model: 'fixed-summary' }
+        }
+      }
+    }
     if (incomingNotices.length > 1) return stopHere('COMPLETION_BATCH_AMBIGUOUS',
-      '本步有多个子任务完成通知，无法唯一承接本次威胁研判；停止自动准备，请核对来源与已有操作，不重试、确认或下发。')
+      '本步包含无法全部绑定到威胁研判的多个完成通知，停止自动续办；请核对来源，不重试、确认或下发。')
     // 只使用真实已有 turn/start，不伪造轮次事件；仅威胁/未知完成通知需要本分支门禁。
     if (incomingNotices.length && (!currentStart || currentStart.data?.turn !== turn)) {
       return stopHere('TURN_START_UNVERIFIED', '本轮原生开始记录尚未可核对，停止自动处置准备。')
@@ -717,8 +768,18 @@ export function deliveryMarkdown(events, turn) {
   if (block.isError) return undefined
   if (call?.data.name !== 'delegate_threat_analysis') return undefined
   if (!block.content?.every(item => item.type === 'text')) return undefined
-  return delegationReceipt(call.data.name, block.content, call.data.arguments)?.markdown
-    ?? (block.content.map(item => item.text).join('') || undefined)
+  const delegationResults = events.filter(event => event.type === 'tool/result'
+    && event.data.turn === turn && event.data.message?.isError === false)
+    .map(event => {
+      const message = event.data.message
+      const delegateCall = events.findLast(item => item.type === 'tool/call'
+        && item.data.callId === message.toolCallId && item.data.name === 'delegate_threat_analysis')
+      return delegateCall && message.content?.every(item => item.type === 'text')
+        ? delegationReceipt(delegateCall.data.name, message.content, delegateCall.data.arguments)
+        : undefined
+    }).filter(Boolean)
+  return delegationResults.map(item => item.markdown).join('\n\n')
+    || (block.content.map(item => item.text).join('') || undefined)
 }
 
 export async function inferFrozen(ctx, route, payload, signal) {

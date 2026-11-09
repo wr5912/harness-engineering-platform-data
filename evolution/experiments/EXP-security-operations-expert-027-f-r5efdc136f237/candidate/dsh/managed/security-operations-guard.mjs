@@ -331,6 +331,7 @@ export function createSecurityOperationsGuard(options = {}) {
   const environment = options.environment ?? process.env
   const canonicalName = options.canonicalName ?? (name => name)
   const trustedRuntime = options.trustedRuntime ?? (() => false)
+  const registeredMcp = options.registeredMcp ?? (() => false)
   const mode = environment.DSH_HARNESS_MODE === 'authoring' ? 'authoring' : 'verification'
   const responseInputs = new WeakMap()
   const beginTurn = () => {}
@@ -352,6 +353,11 @@ export function createSecurityOperationsGuard(options = {}) {
         if (mode !== 'authoring') return '验证或 Release 模式中的 Harness 为只读'
         if (paths.length === 0) return '写操作缺少可验证的 workspace 路径'
       }
+      return undefined
+    }
+
+    if (tool === 'ask_user_question') {
+      if (depth !== 0) return '原生用户提问仅由主 Agent 发起'
       return undefined
     }
 
@@ -412,7 +418,12 @@ export function createSecurityOperationsGuard(options = {}) {
       return undefined
     }
 
-    if (tool.startsWith('mcp__')) return '未列入当前角色授权集合的 MCP 工具被拒绝'
+    // 根会话普通MCP能力由真实绑定目录和DSH原生权限决定；不另维护新来源工具名名单。
+    // 上面的旧SOC禁止接口及专用子角色边界仍优先判定。
+    if (tool.startsWith('mcp__')) {
+      if (depth === 0 && registeredMcp(exec)) return undefined
+      return '未列入本角色真实注册目录，或不属于当前子角色的MCP工具被拒绝'
+    }
     return '未列入 security-operations-expert 显式工具集合的能力被拒绝'
   }
 
@@ -448,13 +459,19 @@ export function apply(ctx) {
     const sourceId = canonical.slice(5, split)
     ;(sources[sourceId] ??= []).push(canonical.slice(split + 2))
   }
-  const canonicalName = name => canonicalToolName(ctx.mcpSessionManager, name, sources)
+  const canonicalName = name => {
+    const canonical = canonicalToolName(ctx.mcpSessionManager, name, sources)
+    // 保留未知来源的原生名字，由下面的实际注册目录核对；旧别名仍先规范化。
+    return canonical === '__unbound_mcp_tool__' && typeof name === 'string' && name.startsWith('mcp__') ? name : canonical
+  }
   const actualName = canonical => {
     if (!canonical.startsWith('mcp__')) return canonical
     const split = canonical.indexOf('__', 5)
     return ctx.mcpSessionManager?.resolveTool?.(canonical.slice(5, split), canonical.slice(split + 2))
   }
-  const guard = createSecurityOperationsGuard({ canonicalName, trustedRuntime: (exec, domain) => {
+  const guard = createSecurityOperationsGuard({ canonicalName,
+    registeredMcp: exec => Boolean(ctx.tools.get(exec.name, exec.agent)),
+    trustedRuntime: (exec, domain) => {
     const tool = ctx.tools.get(exec.name, exec.agent)
     return tool?.[Symbol.for(`security-operations.${domain}.runtime`)] === true
   } })
@@ -473,11 +490,15 @@ export function apply(ctx) {
     return false
   }
   const restrictAgent = agent => {
-    const allow = visibleToolsForDepth(delegationDepth(agent))
-      .map(actualName).filter(tool => tool && ctx.tools.get(tool, agent) !== undefined)
+    const root = delegationDepth(agent) === 0
+    const selected = root
+      ? [...PERMANENTLY_DENIED, ...TOOL_ROUTES.faultAnalysis, ...TOOL_ROUTES.threatAnalysis]
+      : visibleToolsForDepth(delegationDepth(agent))
+    const tools = selected.map(actualName).filter(tool => tool && ctx.tools.get(tool, agent) !== undefined)
     try {
-      // SDK restriction 仍归 agent.ctx 生命周期管理，不使用额外权限或通用 deny 兜底。
-      agent.ctx.tools.restrict({ allow })
+      // 主会话不以固定allow冻结新增绑定；仅保留已有禁用和子角色专属边界。
+      // 子角色仍按原职责集合收紧，生命周期继续归DSH原生SDK管理。
+      agent.ctx.tools.restrict(root ? { deny: tools } : { allow: tools })
     } catch (error) {
       // 可见不等于可限制：global/祖先工具可收紧，自身层工具可能令整次 restrict 失败。
       // 失败不能标记完成，后续 step 仍须重试；逐调用拒绝门禁保持独立生效。

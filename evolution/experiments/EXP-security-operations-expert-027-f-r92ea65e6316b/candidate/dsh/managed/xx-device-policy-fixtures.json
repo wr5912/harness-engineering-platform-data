@@ -3,9 +3,36 @@
     {
       "hostid": "mock-policy-host-001",
       "hostip": "172.163.12.1",
-      "map1": { "wireless": "2" },
-      "map2": { "option2": "2" },
-      "map3": { "option3": "2" }
+      "设备控制": {
+        "蓝牙设备": "2",
+        "光驱": "2",
+        "串口": "2",
+        "无线网卡": "2",
+        "打印设备": "2",
+        "USB存储设备": "2"
+      },
+      "login": {
+        "alogin": "0",
+        "oscreenoff": "0",
+        "ltype": "0",
+        "man": "0",
+        "finger": "0",
+        "sm": "0",
+        "trust": "0",
+        "osuer": "0"
+      },
+      "net": {
+        "rulename": "阻断",
+        "control": "0",
+        "index": "1",
+        "action": "deny",
+        "proctocol": "tcp",
+        "sourceip": "179.16.1.1/24",
+        "sourceport": "80,1-20",
+        "targetip": "12.1.1.3",
+        "targetport": "80,1-20",
+        "reserved": "2"
+      }
     }
   ]
 }

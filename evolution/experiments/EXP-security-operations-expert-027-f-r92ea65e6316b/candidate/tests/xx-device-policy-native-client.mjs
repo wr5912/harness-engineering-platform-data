@@ -28,8 +28,15 @@ assert.equal(reply.custom, undefined, 'This basic test accepts only the native c
 const confirms = reply.selected[0] === '确认执行'
 const expectedIp = required('DSH_NATIVE_EXPECTED_IP')
 assert.equal(expectedIp, '172.163.12.1', 'Use the dedicated Mock policy target')
-const expectedWireless = process.env.DSH_NATIVE_EXPECTED_WIRELESS ?? '1'
-assert.equal(expectedWireless, '1', 'This basic policy test enables wireless with the string value 1')
+const policyMaps = ['设备控制', 'login', 'net']
+const assertStringMap = (value, description) => {
+  assert.ok(value !== null && typeof value === 'object' && !Array.isArray(value), `${description} must be an object`)
+  assert.ok(Object.values(value).every(item => typeof item === 'string'), `${description} values must all be strings`)
+}
+const expectedPatch = JSON.parse(required('DSH_NATIVE_EXPECTED_PATCH'))
+assert.ok(expectedPatch !== null && typeof expectedPatch === 'object' && !Array.isArray(expectedPatch), 'DSH_NATIVE_EXPECTED_PATCH must be an object')
+assert.deepEqual(Object.keys(expectedPatch).sort(), [...policyMaps].sort(), 'DSH_NATIVE_EXPECTED_PATCH must contain exactly the three policy Maps')
+for (const name of policyMaps) assertStringMap(expectedPatch[name], `DSH_NATIVE_EXPECTED_PATCH.${name}`)
 const timeoutMs = Number(process.env.DSH_NATIVE_TIMEOUT_MS ?? '120000')
 assert.ok(Number.isSafeInteger(timeoutMs) && timeoutMs >= 1000 && timeoutMs <= 300000)
 const outputDir = resolve(required('DSH_NATIVE_OUTPUT_DIR'))
@@ -86,6 +93,7 @@ const writeTool = 'mcp__xx-policy-mock__write_policy_template'
 const callsFor = name => events.filter(event => event.type === 'tool/call' && event.data.name === name)
 const observed = () => ({
   mock: true,
+  expectedPatch,
   nativeQuestionCount: questionCount,
   mockReadCount: callsFor(readTool).length,
   mockWriteCount: callsFor(writeTool).length,
@@ -102,15 +110,16 @@ const findPolicy = () => {
   if (!result) return
   assert.equal(result.data.message.isError, false)
   const data = jsonMessage(result.data.message)
-  assert.deepEqual(data, {
-    mock: true,
-    found: true,
-    hostid: 'mock-policy-host-001',
-    hostip: expectedIp,
-    map1: { wireless: '2' },
-    map2: { option2: '2' },
-    map3: { option3: '2' },
-  }, 'Require the actual dedicated Mock policy read receipt')
+  assert.equal(data.mock, true, 'Require the actual dedicated Mock policy read receipt')
+  assert.equal(data.found, true)
+  assert.equal(data.hostid, 'mock-policy-host-001')
+  assert.equal(data.hostip, expectedIp)
+  for (const name of policyMaps) {
+    assertStringMap(data[name], `Actual read ${name}`)
+    for (const field of Object.keys(expectedPatch[name])) {
+      assert.ok(Object.hasOwn(data[name], field), `Patch field ${name}.${field} must exist in this session's actual read`)
+    }
+  }
   return data
 }
 try {
@@ -227,13 +236,17 @@ try {
   assert.equal(callsFor(readTool).length, 1)
   const policy = findPolicy()
   assert.ok(policy)
+  const readCall = callsFor(readTool)[0]
+  const readResult = events.find(event => event.type === 'tool/result' && event.data.message.toolCallId === readCall.data.callId)
+  assert.ok(readResult && readCall.seq < readResult.seq, 'Require the actual read result after its call')
   const askCalls = callsFor('ask_user_question')
   assert.equal(askCalls.length, 1)
-  assert.ok(callsFor(readTool)[0].seq < askCalls[0].seq, 'Read the policy before the native ask')
-  const drafts = events.filter(event => event.type === 'assistant/message' && event.seq < askCalls[0].seq && event.data.message.content.some(block => block.type === 'text' && block.text.trim()))
-  assert.ok(drafts.length > 0, 'Require an ordinary assistant draft from the actual session before the native ask')
+  assert.ok(readResult.seq < askCalls[0].seq, 'Read the policy before the native ask')
+  const drafts = events.filter(event => event.type === 'assistant/message' && event.seq > readResult.seq && event.seq < askCalls[0].seq && event.data.message.content.some(block => block.type === 'text' && block.text.trim()))
+  assert.ok(drafts.length > 0, 'Require an ordinary assistant draft from the actual session after the read result and before the native ask')
   const askResult = events.find(event => event.type === 'tool/result' && event.data.message.toolCallId === askCalls[0].data.callId)
   assert.ok(askResult, 'Require the actual native tool result, not only the client reply')
+  assert.ok(askCalls[0].seq < askResult.seq, 'Require the structured native answer after the ask')
   assert.equal(askResult.data.message.isError, false)
   assert.deepEqual(jsonMessage(askResult.data.message), questionEvidence[0].answer)
   const writes = callsFor(writeTool)
@@ -243,12 +256,11 @@ try {
     assert.deepEqual(JSON.parse(writes[0].data.arguments), {
       hostid: policy.hostid,
       hostip: policy.hostip,
-      map1: { wireless: expectedWireless },
-      map2: {},
-      map3: {},
+      ...expectedPatch,
     }, 'Require exactly five fields and use host identity from the actual read receipt')
     const result = events.find(event => event.type === 'tool/result' && event.data.message.toolCallId === writes[0].data.callId)
     assert.ok(result)
+    assert.ok(writes[0].seq < result.seq, 'Require the success receipt after the write')
     assert.equal(result.data.message.isError, false)
     assert.deepEqual(jsonMessage(result.data.message), { mock: true, success: true, message: '模拟下发成功' })
   }

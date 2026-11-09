@@ -3,26 +3,24 @@ import test from 'node:test'
 import { apply, createSecurityOperationsGuard } from '../dsh/managed/security-operations-guard.mjs'
 import { apply as applyChildGuard } from '../dsh/managed/security-operations-child-guard.mjs'
 
-test('业务 Guard 在实际pre-step按 Agent 作用域识别 Web MCP 工具，且只冻结一次', async () => {
+test('主会话使用原生deny保留新绑定，子角色仍按原allow收紧且只限制一次', async () => {
   const resources = ['list_mcp_resources', 'list_mcp_resource_templates', 'read_mcp_resource']
-  const tools = new Set([...resources, 'mcp__inspection__list_executable_inspections', 'mcp__troubleshooting__list_troubleshooting_playbooks', 'mcp__sec-ops__get_event_by_id'])
+  const tools = new Set([...resources, 'bash', 'ask_user_question', 'mcp__xx-bound__new_tool', 'mcp__sec-ops__get_event_by_id'])
   let preStep
   apply({
     mcpSessionManager: { resolveTool: (source, raw) => `mcp__${source}__${raw}` },
     on(event, callback) { if (event === 'agent/pre-step') preStep = callback },
-    tools: {
-      guard() {},
-      get(name, agent) { return agent && tools.has(name) ? {} : undefined },
-    },
+    tools: { guard() {}, get(name, agent) { return agent && tools.has(name) ? {} : undefined } },
   })
-  for (const [depth, expected] of [
-    [0, [...resources, 'mcp__inspection__list_executable_inspections', 'mcp__troubleshooting__list_troubleshooting_playbooks']],
-    [1, [...resources, 'mcp__sec-ops__get_event_by_id']],
-  ]) {
-    let allowed, restrictions = 0
-    const agent = { session: { header: { delegationDepth: depth } }, ctx: { tools: { restrict({ allow }) { allowed = allow; restrictions++ } } } }
+  for (const depth of [0, 1]) {
+    let restriction, restrictions = 0
+    const agent = { session: { header: { delegationDepth: depth } }, ctx: { tools: { restrict(value) { restriction = value; restrictions++ } } } }
     await preStep({ agent, messages: [], step: 1 }, async () => ({ kind: 'enter' }))
-    assert.deepEqual(allowed, expected)
+    if (depth === 0) {
+      assert.deepEqual(restriction, { deny: ['bash', 'mcp__sec-ops__get_event_by_id'] })
+    } else {
+      assert.deepEqual(restriction, { allow: [...resources, 'mcp__sec-ops__get_event_by_id'] })
+    }
     await preStep({ agent, messages: [], step: 2 }, async () => ({ kind: 'enter' }))
     assert.equal(restrictions, 1)
   }
@@ -72,33 +70,24 @@ test('原生作用域restrict不可用时保留逐调用Guard边界', async () =
   assert.ok(decide({ name: 'mcp__policy-configuration__confirm_policy_configuration', agent, arguments: {} }))
 })
 
-test('首次挂载推迟restrict仍冻结本轮DENY；挂载完成和后续ALLOW轮次不丢失或沿用旧约束', async () => {
-  let preStep, decide, resolverReady = false
-  const resolver = 'mcp__policy-configuration__resolve_policy_endpoints'
-  const agent = { session: { header: { delegationDepth: 0 }, snapshotEvents: () => [] }, ctx: { tools: { restrict() {} } } }
+test('新增MCP按当次真实注册目录可用，不需要改固定工具名；子角色和旧禁止入口仍拒绝', async () => {
+  let preStep, decide
+  const registered = new Set()
+  const tool = 'mcp__xx-bound__new_tool'
+  const agent = { session: { header: { delegationDepth: 0 } }, ctx: { tools: { restrict(value) { assert.ok(value.deny); assert.equal(value.allow, undefined) } } } }
   apply({
     mcpSessionManager: { resolveTool: (source, raw) => `mcp__${source}__${raw}` },
     on(event, callback) { if (event === 'agent/pre-step') preStep = callback },
-    tools: { get: name => name === resolver && !resolverReady ? undefined : {}, guard: callback => { decide = callback } },
+    tools: { get: name => registered.has(name) ? {} : undefined, guard: callback => { decide = callback } },
     logger: { warn() {} },
   })
-  const step = (number, text) => preStep({ agent, step: number, messages: [{ source: { kind: 'user' }, content: [{ type: 'text', text }] }] }, async () => ({ kind: 'enter' }))
-  let requestId = 'basic-request-1'
-  const args = action => ({ body: { contract_version: 'workbench-policy-endpoint-resolution/v1', request_id: requestId, operation: 'ADD', action,
-    source_query: 'basic-source', destination_query: 'basic-destination', protocol: 'TCP', destination_port: 443 } })
-  const allowed = action => decide({ name: resolver, agent, arguments: args(action) })
-  await step(1, '新增策略，阻断基础主机到基础服务的TCP 443访问')
-  assert.equal(decide({ name: 'skill', agent, arguments: { name: 'policy-configuration' } }), undefined)
-  assert.match(allowed('ALLOW'), /阻断/)
-  assert.equal(allowed('DENY'), undefined)
-  resolverReady = true
-  await step(2, '新增策略，阻断基础主机到基础服务的TCP 443访问')
-  assert.match(allowed('ALLOW'), /阻断/)
-  assert.equal(allowed('DENY'), undefined)
-  await step(1, '新增策略，允许基础主机到基础服务的TCP 443访问')
-  requestId = 'basic-request-2'
-  assert.match(allowed('DENY'), /允许/)
-  assert.equal(allowed('ALLOW'), undefined)
+  await preStep({ agent, step: 1, messages: [] }, async () => ({ kind: 'enter' }))
+  assert.match(decide({ name: tool, agent, arguments: {} }), /未列入/)
+  registered.add(tool)
+  assert.equal(decide({ name: tool, agent, arguments: {} }), undefined)
+  assert.equal(decide({ name: 'ask_user_question', agent, arguments: {} }), undefined)
+  assert.match(decide({ name: tool, agent: { session: { header: { delegationDepth: 1 } } }, arguments: {} }), /子角色/)
+  registered.add('mcp__policy-configuration__confirm_policy_configuration')
+  assert.match(decide({ name: 'mcp__policy-configuration__confirm_policy_configuration', agent, arguments: {} }), /永久禁用/)
   assert.ok(decide({ name: 'mcp__unknown__write', agent, arguments: {} }))
-  assert.ok(decide({ name: 'mcp__policy-configuration__confirm_policy_configuration', agent, arguments: {} }))
 })
