@@ -156,6 +156,49 @@ for (const raw of ['diagnose_business_access', 'diagnose_device_offline']) {
   })
 }
 
+function synchronousEvents(raw = 'diagnose_business_access', mutate = value => value, wrapped = false) {
+  const value = mutate({ ok: true, version: { definition: {
+    kind: 'workflow', workflow: workflowFor(raw), toolName: raw,
+  } }, result: { run_id: RUN, status: 'incomplete' }, receipts: [], graph_execution: { complete: true } })
+  return [user(), ...pair(10, 'mock-sync-start', toolName(raw), { target: 'mock-only' },
+    wrapped ? { structuredContent: value } : value)]
+}
+
+for (const raw of ['diagnose_business_access', 'diagnose_device_offline']) {
+  test(`同步故障回执：${raw}从原定义绑定Run，业务incomplete仍读取canonical终态和原HTML`, async () => {
+    for (const wrapped of [false, true]) {
+      const events = synchronousEvents(raw, value => value, wrapped)
+      const binding = bindingFor(events, RUN)
+      assert.equal(binding.workflow, workflowFor(raw))
+      const harness = runtime({ events, raw })
+      const value = await harness.export({ kind: 'fault', run_id: RUN })
+      assert.equal(value.sha256, sha(HTML)); assert.equal(harness.calls.length, 2)
+      assert.deepEqual(harness.saves[0].data, Buffer.from(HTML, 'utf8'))
+      const failed = runtime({ events, raw, state: { ...canonicalRun(raw), status: 'failed' } })
+      await assert.rejects(() => failed.export(), /尚未成功完成/)
+      assert.equal(failed.calls.length, 1); assert.equal(failed.saves.length, 0)
+    }
+  })
+}
+
+for (const [label, mutate] of [
+  ['缺少完成标记', value => { delete value.graph_execution.complete }],
+  ['错误定义类型', value => { value.version.definition.kind = 'direct' }],
+  ['错误定义流程', value => { value.version.definition.workflow = 'inspection-routine' }],
+  ['错误定义工具', value => { value.version.definition.toolName = 'diagnose_device_offline' }],
+  ['错误外层流程', value => { value.workflow = 'inspection-routine' }],
+  ['错误业务归属', value => { value.result.composition_id = 'inspection-routine' }],
+  ['跨会话外层', value => { value.session_id = 'mock-foreign-root' }],
+  ['跨会话内层', value => { value.result.parent_session_id = 'mock-foreign-root' }],
+  ['错误业务回执', value => { value.result.isError = true }],
+  ['失败业务封装', value => { value.result.ok = false }],
+]) {
+  test(`同步故障回执：${label}拒绝，不能以定义伪装来源或回退旧报告`, () => {
+    const events = synchronousEvents('diagnose_business_access', value => { mutate(value); return value })
+    assert.throws(() => bindingFor(events, RUN), /故障|来源/)
+  })
+}
+
 test('新故障来源：实际resolveTool别名映射，不重复拼namespace；旧日志展示裁剪不替代canonical', async () => {
   const harness = runtime({ aliases: true })
   harness.events[1].data.name = harness.resolve(GROUP, 'diagnose_business_access')
@@ -387,6 +430,40 @@ for (const legacy of [false, true]) {
   }
 }
 
+test('异步报告复用：首次成功导出前的轮询与读取失败已被原始HTML校验覆盖', async () => {
+  for (const status of ['running', 'unknown', 'failed', 'artifact-error']) {
+    const fixture = savedFixture()
+    const query = pair(14, 'mock-original-poll', toolName(status === 'artifact-error' ? 'get_composition_artifact' : 'get_composition_run'),
+      { run_id: RUN }, { ...canonicalRun(), status })
+    if (status === 'artifact-error') query[1].data.message.isError = true
+    const events = [...fixture.events.slice(0, 3), ...query, ...fixture.events.slice(3)]
+    for (const redelivery of [false, true]) {
+      const current = redelivery ? [...events, ...exportPair(30, fixture.value, { attachment_id: fixture.value.attachment_id })] : events
+      assert.equal(selectSavedSecurityReport(ROOT, current, 'fault').has_new_source, false)
+      for (const attachment_id of [undefined, fixture.value.attachment_id]) {
+        const harness = runtime({ events: current })
+        const value = await harness.export({ kind: 'fault', ...(attachment_id ? { attachment_id } : {}) })
+        assert.equal(value.sha256, fixture.value.sha256)
+        assert.equal(harness.calls.length, 0); assert.equal(harness.saves.length, 0)
+      }
+    }
+  }
+})
+
+test('异步报告复用：后续再交付不能清除首次导出之后的未知轮询', () => {
+  const fixture = savedFixture()
+  const query = pair(30, 'mock-later-poll', toolName('get_composition_run'), { run_id: RUN }, { ...canonicalRun(), status: 'unknown' })
+  const events = [...fixture.events, ...query, ...exportPair(40, fixture.value, { attachment_id: fixture.value.attachment_id })]
+  const selected = selectSavedSecurityReport(ROOT, events, 'fault')
+  assert.equal(selected.receipt_seq, 21); assert.equal(selected.has_new_source, true)
+})
+
+test('异步报告复用：首次导出前开始的其他诊断仍属于新来源', () => {
+  const fixture = savedFixture()
+  const events = [...fixture.events.slice(0, 3), ...started('diagnose_device_offline', 14, LATER_RUN), ...fixture.events.slice(3)]
+  assert.equal(selectSavedSecurityReport(ROOT, events, 'fault').has_new_source, true)
+})
+
 test('附件新来源失效：后续get_run failed/unknown，及失败artifact读取不能掩盖为无新来源', () => {
   const fixture = savedFixture()
   for (const value of [{ ...canonicalRun(), status: 'failed' }, { ...canonicalRun(), status: 'unknown' }, 'truncated']) {
@@ -549,10 +626,15 @@ function requestExec(request) {
 }
 
 test('下载意图：明确下载已有文件且禁止生成时仅标reuseOnly，普通否定/咨询仍拒绝', () => {
-  for (const request of [REUSE_REQUEST, '不要生成新报告，只下载刚才的HTML报告。', '导出上次已保存的HTML，不要重新生成报告。']) {
+  for (const request of [REUSE_REQUEST, '不要生成新报告，只下载刚才的HTML报告。', '导出上次已保存的HTML，不要重新生成报告。',
+    `请再次下载本次修正输入后故障Run ${RUN} 的同一份原始HTML报告。仅取回该Run原报告；不要新建诊断、不要查询SOC、不要换Run、不要重建报告。`,
+    '再次下载上次的原始HTML报告，不要重绘报告。']) {
     assert.equal(requireReportRequest(requestExec(request)).reuseOnly, true)
   }
   assert.equal(requireReportRequest(requestExec('只读排查并生成HTML报告。')).reuseOnly, false)
+  for (const request of [`请下载 Run ${RUN} 的原始故障HTML报告。`, `请导出 Run ${RUN} 的故障报告。`]) {
+    assert.equal(requireReportRequest(requestExec(request)).reuseOnly, false)
+  }
   for (const request of ['不要生成HTML报告。', '请生成HTML报告，但不要生成报告。',
     '不要下载刚才原HTML。', '不要导出刚才原HTML。',
     '下载刚才原HTML，不要重新生成报告，也不要导出。',

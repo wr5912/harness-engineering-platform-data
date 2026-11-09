@@ -1,10 +1,216 @@
 # 53105人工验收故障与发布冻结协调
 
-当前协调状态：用户已明确“冻结已解除，待在途任务结束后继续真实验收”。以下暂停、冻结及改由用户发起的安排保留为当时记录，不作为当前发布禁令；由巡检维护会话核对在途任务结束后继续验收，未解决问题仍按原回执跟进。
+当前协调状态：用户已要求根会话持续推进统一真实业务复验；资产会话本轮仅只读核查ASSET-HV-02有效分组装配并接续交接。Candidate及共用evaluation.md仍冻结，不恢复旧目标/子任务，不构建、装载、代发扫描或入库；53105超时及在途巡检Run由根在安全巡检会话核对，不重发或重载打断。保留并行修改、HOME、会话、Run、模型与端口，历史暂停/解除安排均按各阶段记录解释。
 
 对象：网络安全运营专家，EXP-security-operations-expert-027-f-r3ba4799b0cb7（陈飞）；现有实例 inspection-027-schedule-acceptance。业务入口为用户指定的53105聊天入口。本文记录本批人工验收与本管理会话操作，不替代原会话、原运行或平台审计。
 
-## ASSET-HV-02：19:13新status补证与只读来源核对
+## R6两IP专项补证：数据失败；400为MCP调度状态，原HTTP/业务码未留存
+
+- 原`run-aadee099-5c71-4bea-88c4-a7e34b018a1a`已公开只读回读：`completed`，业务`incomplete`，2 failed；冻结10:39:21.636Z，范围恰为3617468/172.16.2.170和3617471/172.16.2.114，10:40:29.643Z结束。固定漏洞版本`475681fc4867f7f4db38ede402caa66441e78a3c1bf986753d334ed656c1e4e2`，implementation=`243c0ec9bcfaf31728b84f8f574a491490904ed94c3e1a1ae8d74ab905f2fbd0`。指标requests=4、peak_concurrency=2，不把逻辑请求计数冒充4份HTTP回执。
+- 根已实际原生下载70949字节HTML，SHA256=`55471f258d7483d6c3f6e08249c5cfe69d0132576d9e59be82bf1441d5b3498c`。范围、执行结束、聊天交付及下载分别保留正证；findings/sources均空且两项failed，不表示漏洞消失、无漏洞或数据查询成功，也不覆盖R3曾取得60/43条的历史。没有调用扫描下发接口。
+- 已从原Run读取root两行：各自保留`接口调用失败：ai-soc-master/get_soc_asset_registration_children（400）`以及`资产 {assetId}：接口调用失败：ai-soc-master/get_soc_asset_vulnerabilities（400）`。本轮没有重新发SOC请求来替代历史证据。
+
+### 输入契约与路径映射核对
+
+复用R7调查已取得的公开MCP目录，不再次请求业务接口：
+
+| 操作 | 本批目录输入 | 固定组件应生成参数（非原HTTP抓包） | 具体HTTP路径 |
+| --- | --- | --- | --- |
+| get_soc_asset_registration_children | assetId必填integer；page可选integer、默认1；目录同时存在工具与资源模板 | 分别`{assetId:3617468,page:1}`、`{assetId:3617471,page:1}` | GET `http://172.16.138.223:18087/soc/asset/registration/{assetId}/children?page=1` |
+| get_soc_asset_vulnerabilities | assetId必填integer | 分别`{assetId:3617468}`、`{assetId:3617471}` | GET `http://172.16.138.223:18087/soc/asset/{assetId}/vulnerabilities` |
+
+未发现上述参数与当前已取得目录存在明显类型/必填字段矛盾。固定连接为`master=ai-soc-master`。原始逐调用参数、实际展开URI、当时发现目录与原HTTP响应没有单独保存，不能用当前契约补作历史HTTP证据。连接适配器优先选择工具，否则回退资源/模板，不能仅凭当前目录认定R6当时必走某一个表面或擅自改类型、改操作名。
+
+### 400的确切层级及留存缺口
+
+1. 包装字符串直接来自[createSoc](</home/cmp/harness-engineering-platform-data/mcp/src/soc.ts#L41-L47>)：只有`dispatch`的`reply.status>=400`才生成该“接口调用失败…（400）”，并把`reply.value`附到异常的receipt。故可确认**MCP调度返回400**，不是已证实SOC HTTP400或业务code400。
+2. [平台复用的dispatch桥](</home/cmp/work/harness-engineering-platform/platform/plugin/build.mjs#L58-L74>)会把捕获异常统一返回`status:400,value:{error:原message}`；原管理分支亦有参数校验400。[公开提供者](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L859-L885>)的工具/资源正常分支返回调度200。资源上游非2xx会先抛`Resource 读取失败：HTTP ...`，再可能被调度包装为400；超时、规格/模板处理或本地异常也可成为相同400。**包装码不能区分这些原因。**
+3. 固定漏洞组件只把异常message保存到行错误，未保留receipt、HTTP状态、业务码、cause或请求关联；这就是已确定的信息丢失点。原子错误未留存，本轮不能把原400还原为某个具体底层异常。
+4. 节点时间显示children和observations分别约31秒；[连接适配器](</home/cmp/harness-engineering-platform-data/mcp/src/soc.ts#L45-L46>)给dispatch设30秒，平台桥把该期限用于来源请求。时间接近支持检查超时链，但不足以判定本次必为超时，更不能把R7的20秒创建超时与R6合并为同一已确诊故障。
+
+### 若实施新修复：先采用的最小范围（本轮未改源码/未装载）
+
+第一步仅限`mcp/src/soc.ts`及现有`mcp/tests/test.mjs`：沿既有错误出口保留原`reply.value.error`/receipt中的脱敏异常，明确“调度状态”与“上游HTTP/业务码是否已取得”，附现有connection、operation、目标assetId；不新增API/权限/依赖/公开入参，不改原历史Run。离线回归区分：调度400包裹超时、资源HTTP非2xx被包装、业务code失败、工具isError及正常数据，并核对两项参数/URI映射。
+
+只有原错误本身仍缺阶段时，第二步才评估现有组/OpenAPI错误链的脱敏phase与已有HTTP/request-id透传，保持现公共状态规则；不通过增时、改参数类型、换接口或关闭校验掩盖原因。先给出具体diff与检查，再由根确认空闲装载窗口；保留CF成果、原报告及所有关系证据。
+
+## R7真实复验：ASSET-HV-02技术接线已加载，创建调用超时且SOC受理未知
+
+R7优先于下文“待根复验”：原会话`session-156acd06-4963-4d31-828d-8e0d33c0a3b7`10:33:31Z请求172.16.138.1–254仅发现、不入库。真实`asset_onboarding`回执`kind=discovery`、`evidence_id=bba8db139bd81e7fd2aeebb6b6fc5ba6a0af8c5ce1cb1910ab8ba2c17a107438`、`state=unknown`、`reason=The operation was aborted due to timeout`、`evidence_complete=false`、`saved=false`、`autoAdopt=false`，无taskId。没有再次创建，本轮业务未通过；技术接线/类型/Mock通过不能替代SOC任务受理。
+
+### 已有链路与阶段定位（只读，无create/start重发）
+
+- 原生完整事件seq154：10:33:39.886Z，`call_2c98c1e643344ee6bf83edb4`，实参`{"action":"discover","ranges":"172.16.138.1-172.16.138.254"}`；seq156于10:34:00.542Z返回上述unknown，工具调用耗时20.656秒，根所述整轮74秒另含模型/交互时间。
+- [实际源码](</home/cmp/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/asset-onboarding-runtime.ts#L359-L397>)在写pending及进入创建try之前已完成create/start两项lookup，故初始组目录预检查已过。其后仅await`create_soc_discovery_tasks`；本地[journal原字节](</home/cmp/harness-engineering-platform-data/.local/instances/inspection-027-schedule-acceptance/dsh-home/asset-onboarding/9787cc62002f56fc73cfdfe4f3981fa93d3d308e56760afd2c92fff2017176ad/discovery-b40310e99178cee53e9edaf3bbd9a6d644d029e7a084a09c92c2766cca3dcbd2.json>)与工具回执一致，连taskId/null及facts.prepared字段都没有。可确定创建调用没有向高层返回可解析prepared，客户端未进入后续start或任务资源查询；不能据此断言组调用内部未尝试POST，或SOC没有创建任务。
+- 本地evidence_id是原会话/消息/范围的hash，不是SOC受理号；`saved=false`指未纳管保存，不等于本地journal不存在。已有实现本来会在成功取得taskId及previewHash后、start之前写入中间状态；本轮没有可恢复的taskId，不能伪造或补写。
+- seq159的实际后续实参仅`{"action":"query"}`，`call_242c207f69e346bab3c5961c`；seq161本地拒绝“只能查询本会话已受理的发现任务”。该次没有task_id，没有执行SOC GET，不是SOC查询失败或“任务不存在”证明。
+- 现有[OpenAPI请求信号](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/openapi.ts#L8-L10>)默认20秒，规范发现及业务请求均可能用该边界。20.656秒与此吻合，但没有阶段化底层回执，不能只凭耗时把超时唯一归为SOC POST；外层高层工具timeout是120秒，本轮不是该外层超时。组调用还可能在内部重新解析来源/规格，原日志未区分。
+- 已检索既有平台服务日志中的evidence/call/时间窗及公开实例日志；无可归属请求栈、HTTP/业务码或SOC关联号，实例日志仅启动/模型目录。未新增日志即不反证当时未请求。
+
+### 现有只读任务核查与SOC配合清单
+
+本方仅用公开目录核对接口（未执行创建）：`ai-soc-master`的`create_soc_discovery_tasks`为**POST http://172.16.138.223:18087/soc/discovery/tasks**；本轮高层意图为`includedRanges=172.16.138.1-172.16.138.254, autoAdopt=false`，排除范围为空。工具输入提供这些字段，不新增认证/公开参数。原生callId仅为本地关联，未证明已透传到SOC。
+
+目录现有只读资源`get_soc_discovery_tasks_mine`为**GET http://172.16.138.223:18087/soc/discovery/tasks/mine?bucket=active&page=1**。本方只读调用得到`mcp_operation_failed / The operation was aborted due to timeout`，details为空，没有HTTP状态、业务码或列表；不能称返回空列表，也不能据当前身份列表证明原请求不存在。现有按ID查询为`GET /soc/discovery/tasks/{taskId}`，因没有已核ID未猜测调用，没有新建、start、探测或入库。
+
+请SOC维护方以**2026-11-07T10:33:39.886–10:34:00.542Z**、上述POST路径、已配置平台调用身份、范围及`autoAdopt=false`核对接入/应用/持久化日志：①是否收到原请求及原request/trace关联；②是否已持久化任务，若是提供真实taskId、创建时间、状态及原HTTP/业务响应；③是否仅响应超时/丢失，还是规范解析、鉴权、创建事务或依赖异常；④现有任务GET返回同次目标/已扫/成功/失败/候选计数及终态。若确认未创建，须给原异常和可证实无落库边界，再由根决定是否另行授权新请求；unknown期间不重发。现在只可判为**创建调用链超时且受理未知**，尚不能确诊SOC实现缺陷或平台连接缺陷，更不能标HTTP500。
+
+### 已确定的平台最小补强范围（未擅自实施/装载）
+
+1. 在既有资产运行时journal/回执记录操作级阶段、原native callId、原操作与目标引用，区分目录预检查、create调用中、已获taskId、start调用中及查询；只保存已得到的中间事实，不新增API/权限/依赖/公开入参，不用阶段名冒充SOC已收到。保留当前pending防重发及start前持久化。
+2. 现有组/OpenAPI错误链保留脱敏phase、已有HTTP/业务码、已有request-id及底层cause；凭据/完整认证头不入日志。没有收到响应就明确码未知，不以增大20秒超时或关闭校验替代根因。
+3. 若未来已在本会话journal真实保存taskId但原工具回执被中断，查询恢复可核对该原journal，而非仅依赖模型看到的历史tool/result；不得放开为任意taskId。此为恢复缺口建议，**不能据此为本轮补造受理**。查到原任务后仅恢复同次查询，不自动start。
+
+R5原报告问答及CF工作线保持；本轮只读追查，不构建/重载、改报告或触及巡检别名/发布规则。原生R7证据、journal及上述只读失败保留，等待根/SOC同次关联回执。
+
+## ASSET-HV-02最新：10:26仅027已受管加载，原138发现待根真实复验
+
+根10:17:39Z核实前次6da回执后，本方重新公开detail/preview确认`6da9deb8…53332c`为current/verified、无维护在途、报告差异为空，才推进本次唯一实例应用；不沿用旧running状态。没有修改CF巡检别名/发布规则，没有部署232/52或切换共享HEP。
+
+- 本批程序仍为既有[管理包装](</home/cmp/work/harness-engineering-platform/platform/plugin/src/mcp/manager.ts>)、[业务装配](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/business.ts>)及[包装回归](</home/cmp/work/harness-engineering-platform/platform/plugin/test/business-mcp-overlay.test.mjs>)、[装配回归](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/test_business.mjs>)。保留官方原生提供者在`currentServer`先检查旧目标的并行一行修复；本方只在测试夹具补正常控制通道心跳，生产2秒期限、isError、零请求及停用断言不改。**最新源码MCP3/3、装配23/23、类型及空白检查均exit0**；此前2/1及原始失败保留为历史，不覆盖日志。[本次精确diff](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/asset02-ready/source.diff>)、[文件SHA](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/asset02-ready/source-sha256.json>)、[检查回执摘要](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/asset02-ready/checks.json>)。
+- 现有程序制品已含依赖解析；本次直接复用，不重新构建程序或MCP数据扩展。实际observer加载`/opt/harness-platform/lib/mcp-manager.js` SHA=`27995ea90173f595a4c9d3eaee6633904b0f499c3ca171acbd09158bb3b834bf`、business薄入口SHA=`22a323505ed6fd630d7a110f0319a9477f6ecbf9ea2a916997df1c113253c63e`。不凭函数名冒充已加载，以上来自本次真实加载清单。
+- Candidate仅向[既有seed](</home/cmp/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/web-profile.seed.patch.yml>)追加明确组引用；连接/凭据仍取平台原`ai-soc-master`，不增加raw成员客户端。原字节SHA=`d46b154f3420f69a29145bb6a2fb65bb7a5b4766176f8425fe35c6a7cc48353c`，新实际字节SHA=`fecae8597ca42ad3ec03b391cf012de29cc8ab3666f2da2732063d12a04e0ca6`；[原字节](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/candidate-seed.before.yml>)已保留。真实六动作/一模板经依赖解析后通过同一原生schema（exit0、网络请求0）；孤立未解析声明仍按原校验拒绝，不恢复旧包装下的无效种子。
+- 追加后公开preview唯一变化为seed，计划摘要f25a45c6…；实际受管reload内部重算并核验，最终以**`loaded=current=sha256:11945c0ebb824528732190185efdaf4ae10b069bf86cf737c101eeb0cb361633`**为准，不能把预览摘要当已加载。`loaded_at=2026-11-07T10:26:42.924Z`，容器`ce1e49cb07465da159483bd60102b8d99a6aee1c4e424b7ce03900a8f2b7e2b8`、启动10:26:32.995347927Z，10:31:21Z公开detail仍current/verified、changed_files=[]。操作回执`48bf45bb-4e8c-439e-a25f-f304460495db`；原HOME/会话/模型/计划/18502与53105保留，只替换027业务容器。
+- 已回读生成的有效组声明：`asset-management`唯一成员`ai-soc-master`，仅`create_soc_asset_probe`、`create_soc_discovery_identify`、`create_soc_discovery_tasks`、`start_soc_discovery_tasks`、`create_soc_discovery_tasks_adopt`、`create_soc_asset`及原任务模板`http://172.16.138.223:18087/soc/discovery/tasks/{taskId}`；resourceUris为空，原应急组保留，新增raw成员客户端0。这里是**实际生成装配选择**，不是模型会话已发现七项或SOC已完成的替代证据。
+- reload后business source=`sha256:bc96cf04686f70b73cd6dfa3b5ca14d47856a482d9304dd871fb89f206d5413a`。已用既有公开`bindCompositionDrafts`仅重绑两故障草稿，回执`f1d7c839-bd27-4209-af23-977dd0d7175b`；回读确认完整config及implementationDigest与[应用前原字节](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/asset02-ready/pre-apply-fault-binding.json>)完全相同，仅sourceDigest更新。仍为`diagnose_business_access`/`4bae33c08fee8c2fdcfcda9f92016811476fd43016bb5c30af7839d690ee36af`、`diagnose_device_offline`/`f6e23faef0d0813d8684af6e060e55a0646b3cc94152a4c03df025d29f90a180`，未发布、未加入常规巡检同名草稿。[脱敏实际应用回执](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/asset02-ready/applied-receipt.json>)。
+
+**交还根原156业务会话复验**：本方未创建/开始/查询SOC发现任务、未入库。请根仅在原授权172.16.138.1–254范围发现，保留真实taskId、创建/开始/查询回执、目标/已扫/成功/失败/候选计数；目录错误、受理、终态及业务完成分别判断，未知写入不换号重发。入库继续禁止。发现未通过前不发送飞书完成通知。
+
+INS14已核固定漏洞子版本支持合法宿主/直接子资产聚合，多宿主乱序官方LFX回归1/1、exit0；尚无证据把不同sourceAssetId定为并发污染或SOC串数据。其后本方在[mcp漏洞源码](</home/cmp/harness-engineering-platform-data/mcp/compositions/inspection-vulnerabilities/src/index.ts>)、[共享读取源码](</home/cmp/harness-engineering-platform-data/mcp/src/inspection/index.ts>)保留了未收口的来源证据/错误定位小改，以及[对应回归](</home/cmp/harness-engineering-platform-data/mcp/tests/test.mjs>)；不计为本次已验证资产修复，不在本次构建/发布，后续单独收口，不能无声夹带。原字节位于[INS14快照指纹](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/ins-hv-14-before/sha256.json>)，保留他方新中文报告模板及既有R5下载证据。
+
+## 2026-11-07只读收口：INS-HV-13阶段对照、程序四文件及未解释失败
+
+本节为最新阶段事实；下文07:25、06:30等记录按历史时点保留。本批后续未修改seed、权限、公共契约或流程源，未构建激活、重载、重发SOC、启动Evaluation或恢复旧目标/子任务。仅按根授权补本文及仓库外隔离复现。
+
+### INS-HV-13：09:19旧会话目录缺失，不等于最终装载后的当前目录缺失
+
+- **原问题与原始错误**：原深度会话`session-0d6ea58e-9cfa-44a4-beab-aa5c64012edc`在09:19:23Z提交全设备深度请求。已只读核对完整原生串联压缩事件：会话为`agentPreset=security-operations-expert`、`delegationDepth=0`；09:19:27.808Z的`request/header` seq322有139项工具，但没有任何组合工具或MCP资源通用工具。seq323新增4项为直连`ai-soc-correlate`，移除30项为巡检8项、应急11项、策略8项及资源通用3项。不是“新增两故障组合并只移除深度”。
+- seq326/331/336分别返回`ToolNotFoundError / UNKNOWN_TOOL`：`unknown tool "mcp__inspection-compositions__inspection_deep"`、`unknown tool "mcp__inspection-compositions__get_composition_run"`、`unknown tool "list_mcp_resources"`。该轮没有新runId、未到SOC；与08:13旧深度TaskGroup失败分开，不以无Run解释为SOC零结果。
+- **明确的新对照**：根已核原始MCP accepted：最终装载后新会话`session-ebff85f6-f45d-4af1-8191-2b815d8686d3`于09:30:39.378Z通过同名`mcp__inspection-compositions__inspection_deep`受理`run-d4eb2c99-ad5f-4786-b13c-e60c13faf889`，冻结105台；versionId=`9c4007b5c98793c841a86f768bdf45d2184b712d7235f9631c18e18dcab484b6`，implementation=`91eb787f73cd4ba47a7b70036bc383a4bfc5c2e6103619a104904a1e08736cb9`。这是根的真实受理证据，不是本方代验，也不证明完成或报告交付。
+- 本方09:43:35Z公开detail确认：`loaded=current=sha256:40c70d3701fbf095eb9d92baeff6b54f772b2ba597b86c886b314a78c5b7ef4e`、`current/verified`、`changed_files=[]`；装载09:24:07.175Z，容器`07f957d3f706…`。因此09:19故障发生在这次最终装载之前。09:11:28的`e01e3655…`代次与最终40c70d37代次不能混用。新装载与新会话同时变化，尚无同代对照把原因单独归为缓存、绑定或目录重建。
+- **配置/命名只读对照**：生成业务Patch仍声明`inspection-compositions`和`troubleshooting-compositions`两客户端；已保存巡检组仍选择五执行`inspection_routine/deep/vulnerabilities/baseline/reachability`及三查询`get_composition_run/artifact/details`。两故障草稿绑定存在；本次后续观测中实例生成binding、网关和草稿绑定曾同为`sha256:81b68aff653c951a68d6090fb8451def381ac39ff3a40c833fee975095fe719e`，这是业务来源摘要，不能冒充loaded摘要或回填09:19当时值。早读草稿曾为a600254d…，说明维护阶段发生过切换，不能仅凭现在一致反证当时一致。[巡检Skill](</home/cmp/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/workspace/.agents/skills/security-inspection/SKILL.md>)所用工具名未发现与上述正式名不符。
+- **影响、处理方及闭环**：保留为旧会话/装载阶段的本地工具暴露故障，根与既有公共MCP接线维护方接续；不能认定故障绑定覆盖巡检，也不能认定当前目录必然丢失。现不提出额外配置或权限修改。若同代再次复现，最小排查范围为现有公共分组客户端发现/挂载与会话作用域生命周期；[原生挂载入口](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L998-L1063>)异步发现失败仅输出通用装载警告，尚缺具体serverId/底层cause。先取既有失败回执再决定最小修改，不新增预检工具、不全局暴露、不覆盖流程源。闭环须证明同代既有常规、深度、漏洞、基线、可达及两故障场景可同时暴露且互不覆盖；当前仅深度新会话入口受理有新正证。状态专项退役争议仍为INS09，不用常规替代。
+- 受理后SSE断线、正文半句停止及根仅点原生立即重连继续归PLAT01；不重发启动。根正在追踪上述唯一新深度，本方不查询接管或新增业务。
+
+### ASSET-HV-02程序四文件：精确交付与并行变化
+
+本批已保存[manager.ts](</home/cmp/work/harness-engineering-platform/platform/plugin/src/mcp/manager.ts>)、[business.ts](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/business.ts>)、[业务MCP回归](</home/cmp/work/harness-engineering-platform/platform/plugin/test/business-mcp-overlay.test.mjs>)、[业务装配回归](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/test_business.mjs>)；通用程序无资产组名硬编码。声明依赖解析后再交同一原生schema校验，平台选择取交集，内部成员不新增为主/子底层客户端，原已保留设置不覆盖。[精确本次diff](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/final-source.diff>)相对接手原字节生成，保留此前并行增量；[已测文件SHA](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/final-source-sha256.json>)与[原字节回退指纹](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/before-sha256.json>)定位同目录before/镜像。回退前核对当前摘要，仅反向本次diff，不整文件覆盖后续他方修改。
+
+- 装配23通过/0失败，exit0；资产消费者19通过/0失败，exit0；类型`tsc --noEmit`及diff检查exit0。
+- 已测源码MCP为2通过/1失败，exit1，见[原日志](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/final-source-tests-v2.log>)。通过含声明解析后的真实原生schema、内存六动作＋一模板、缺组/成员、取消、未知Session和不新增主子客户端；不是SOC完成。
+- 两程序源SHA分别`41b29986dc8c730b42112b8ca0d3b704d0fc5c1f3f54294ec6b3082eb5f15c68`、`9d87bfa138c90f1e3a448dce1a0c2c3a92401d3f518292890603a7f3f73d0947`；装配测试为`db3722fa8e1ffb3e5037e3398521e716fbc514bc752997ff8006187b4cc4cb2a`。MCP测试已测快照为`83fad3042e862ba714476a5e59d343c9ea18a1bdd7041fc209a484424cd9fe8b`，后续只读见他方改为`838ddfdb919c31566b7b555c43c637545b56282aa7832de64c1e44a2c3c432b9`（移除可选基线入口，并加入另一拒绝文案匹配）；全部保留，不能把原2/1结果自动算作现文件通过。见[并行观察指纹](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/impact-current-source-sha256.json>)。
+- seed回改有根独立UI回执，已停写且不重加。最后只读原字节SHA为`d46b154f3420f69a29145bb6a2fb65bb7a5b4766176f8425fe35c6a7cc48353c`。[引用建议diff](</home/cmp/work/harness-engineering-platform/.local/asset-hv-02-provider-projection-20261107/source-reference.proposed.diff>)未应用，只能与新包装先解析依赖的接线同批核对；孤立旧段缺成员连接，原生校验确实非法，不能单独部署或降低校验。
+
+### 旧Session断言：历史失败与此次隔离返回分别保留
+
+原输入：`session-A`已装载固定Candidate工具名`mcp__candidate-name__echo`；平台把同一source的specUrl从fixture的`/a/openapi.json`改为`/b/openapi.json`并更新fixture凭据，再用旧agent、原callId和signal执行echo。原line276预期顶层`oldCall.isError === true`，随后预期错误包含“目标已变化/已停用”、HTTP账本为空。历史运行实际断言为`false !== true`，当时未捕获完整oldCall，不据此断言已放行，也不能用后续复现抹除；修改前源码也有失败记录。
+
+本次只在仓库外复制夹具、保留上述原断言并输出回执，得到`{"isError":true,"error":{"message":"MCP 当前连接或工具范围已变化"},"content":[{"type":"text","text":"Error: MCP 当前连接或工具范围已变化"}]}`，`calls=[]`；exit1停在原错误文案正则而非line276。本次确为拒绝、没有触达新目标。最小建议仅在既有维护方确认当前真实契约后兼容该拒绝文案，同时保留isError和零请求断言；本方不修改权限/公共契约，也不把历史false失败宣布解决。[仓库外原日志](</tmp/asset-hv-02-session-audit-ry176rmu/result.log>)。
+
+### 可达失败Run：执行阶段及底层原因仍有留存缺口
+
+原`run-b2b8ac7a-f7d6-47fd-bae0-c628c0943080`、accepted执行号`call-df1201232b2d57c7bfe8f4a704c6db538b8a52963a502cff9d76cc9a3afba562`，07:58:41.561–43.681Z失败。保留根原查询：冻结105、root明细total=0、只有`fetch failed`、无endpoint/cause/HTTP/trace及报告。只读既有平台服务日志检索该Run、call及时间窗未命中；目标公开容器日志仅启动/模型目录信息，未提供可归属的底层异常。当前日志不能反证当时没有请求或异常，也不能从另一TaskGroup失败类推此Run。
+
+[既有LFX桥](</home/cmp/work/harness-engineering-platform/platform/plugin/src/mcp/lfx-runtime.ts#L88-L114>)存在运行登记、上传、工作流流式执行及回调等多个网络边界，回调错误也仅保留message。静态路径不足以把这个`fetch failed`唯一归到内部LFX、回调或具体SOC接口；失败阶段只能确定为已受理后的执行失败，精确阶段、脱敏底层cause和责任接口仍未知。不以静态ai-soc连接标注推断SOC缺陷，不重发或新增业务。
+
+### 受管程序影响与在途边界
+
+- [受管update激活规则](</home/cmp/work/harness-engineering-platform/platform/deploy/update.mts#L300-L320>)仅纯client制品走HMR、纯sdk-worker走下次SDK；本批服务端manager制品不属这两类，应用需要`managed-restart`，涉及共享HEP管理进程，不能承诺对其他管理会话/实例控制零影响。只读dry-run不构建不应用；此前预览句柄在执行器恢复后不可查询，未取得完整busy清单，不能宣称全局空闲。
+- 业务容器只读挂载[共享程序插件目录](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/business.ts#L261-L268>)。仅目标实例reload不必主动重启其它业务容器，但共享程序制品替换并非目标实例私有；其它实例后续新Session/重载可能读取新制品，需唯一研发核对正常路径，不能称影响只限027。
+- 本方所有可查询本地检查/审计job已终态，无本方构建/装载/业务在途；这不等于其他维护会话或全局业务空闲。根已明确唯一新深度Run在追踪，当前不激活或重载。原生轨迹完整审计为exit2（54边界、62项审计错误，含selected_tool_not_in_header及未支持事件/内容块），仅逐条核实上述请求目录和工具错误，不宣称整条轨迹审计通过。
+
+## ASSET-HV-02接续：07:25已加载，23:52真实失败为有效分组缺项
+
+根会话提供：2026-11-06 23:52 America/Los_Angeles，原session-156acd06-4963-4d31-828d-8e0d33c0a3b7新发138.1–254只发现不入库，真实discover报“MCP 分组不存在”。新status为binding_error=ASSET_GROUP_DIRECTORY_UNAVAILABLE、transport=group-v2-public-service、group_api_supported=true、local_tool_registration_required=false；六项0、模板unavailable，无SOC请求/taskId。私有v2路径已经实际生效，失败点移到有效provider找不到组，不是SOC扫描0结果，57项Mock通过不能代替这一新业务失败。
+
+本方公开实例只读复核（2026-11-07T07:57:48.089Z）：current_digest=loaded.digest=sha256:4430dde3cfc518a720f953c54cea58d3f6a040899d13ad78b203f670c7fa494e、status=current、changed_files=[]，loaded_at=07:25:29.192Z。确认本轮不再是旧06:30资产TS不一致的unknown；后者保留为历史，不能套用到本次。
+
+### 现行源码、生成模块与有效投影：仍缺，不是只待激活
+
+- 本轮重新读取[manager.ts:81–87](</home/cmp/work/harness-engineering-platform/platform/plugin/src/mcp/manager.ts#L81-L87>)：businessRuntime分支仅重写servers，groups仍继承suppliedConfig；只有非业务分支才取store.view().value.groups。[已生成模块:6611–6618](</home/cmp/work/harness-engineering-platform/platform/plugin/lib/mcp-manager.js#L6611-L6618>)完全同态。当前已审源码和生成物均尚无该groups投影修复，不能答“已修只需激活”。
+- 只读检索[实例生成Patch非敏感选择键](</home/cmp/harness-engineering-platform-data/.local/instances/inspection-027-schedule-acceptance/business.patch.yml#L75-L193>)（未读HOME、认证值或headers）：business-mcp-manager.config.servers仍8项，无id=ai-soc-master，也无asset-management客户端；config.groups只有id=emergency-action，无id=asset-management。与23:52真实错误及此前共享装配核对相符。此文件仅为现有生成投影的观测，不是可手改的事实源。
+- 真正传参落点为[renderBusinessInstance:174–190](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/business.ts#L174-L190>)读取既有manager.config，再在[223–225](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/business.ts#L223-L225>)禁用原manager、交给createBusinessRuntimePatch生成business-mcp-manager。只更新Candidate私有适配或重编提供者，均不会自动把平台保存的组投影进suppliedConfig.groups。组方法本身在current.groups找id，不存在即抛错，见[公开提供者:746–748](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L746-L748>)。
+
+### 给唯一研发的最小修复入口与受管操作
+
+1. 在上述**现有业务装配/管理包装**修复选择性投影，不另造wrapper、不改冻结Candidate/生成Patch/HOME。应使有效business-mcp-manager的groups包含原已保存asset-management及唯一成员ai-soc-master（names仅既有6动作，resourceTemplates仅原任务模板，resourceUris不新增）；对应成员连接也须在受管组调用可用，引用原平台ai-soc-master配置/凭据。不能只补groups后仍缺成员，也不能把平台全部groups/106工具/49模板全量投给业务或子助手。原生Session/callId/信号、目标摘要、原权限和主助手范围保持；不新增认证/API/依赖或SOC许可。
+2. 当前已核平台工具没有“仅改此运行实例有效groups”的独立入口。tasks/assembly-preview/apply的configuration_edits会写目标Candidate，不用于越过冻结；mcp/saveConfiguration只改平台全局配置并自动重载，平台已有6+1组不缺，重存它不能修suppliedConfig投影。本方不调用这些写操作。
+3. 研发先修并通过其既有程序模块构建/装配检查，再由唯一协调方待在途任务安全收口后使用现有instances生命周期入口：`platform_instances run {name:'inspection-027-schedule-acceptance', operation:'reload'}`。原生工具内部预览并核摘要、保留HOME/会话/模型/端口；这是**代码与投影修复后的激活**，不是直接重载相同代码能修复。现巡检执行中，绝不由本方调用，也不要求根重发扫描。
+4. 交付最小非敏感回执：最终provider入口；有效groups中的asset-management/member/names/template选择；成员连接来源引用（无认证值）；修复模块/新投影摘要与加载回执。先核组目录唯一6+1、主/子隔离及原会话绑定，再由根原156重试业务，未到SOC前不判扫描为空。这里只给原许可内必要范围，不以“新增目录”要求重复审批。
+
+### 实际交接定位，不猜统一研发会话
+
+本文共享提供者/巡检维护的既有登记父会话为**session-6a79ab7e-f558-4cc5-b45d-7cc2e4c52975**（原生ID依据下方冻结记录）。它是可定位的安全巡检共享协调入口；本轮目标仍security-operations-expert / EXP-security-operations-expert-027-f-r3ba4799b0cb7 / inspection-027-schedule-acceptance。**平台程序“统一研发”的独立会话ID没有实际元数据，仍未知，不能把上述维护父会话自动冒充程序研发会话。**请根在已使用的安全巡检会话将本节转交其实际研发接收方，并由该方回执定位。当前工具不能跨独立管理会话直接发送，未冒称已投递；无需新建研发会话/子任务。本方本轮只补此事实交接，不做程序/Candidate写入或业务执行。
+
+## 统一验收暂停交接（此前阶段记录）
+
+本轮仅补此暂停交接，不再改Candidate/evaluation或运行检查。实际修改为下节4项资产私有文件（运行TS、组级测试、范围测试、Skill）及本文；最终指纹仍以下节表为准。没有本会话未完成的写入、构建、重载或业务任务；两个本地检查后台job均已完成且输出已收集，全部8个本会话子助手inactive。无需取消任何他方任务，不对并行文件回退或恢复覆盖。此前已撤回未交付的新证据投影，现无额外恢复项。
+
+用户转研发从真实容器逐文件核对：06:30重载expected3952个文件中，唯一不一致是`/opt/dsh-managed/asset-onboarding-runtime.ts`；计划摘要（按原称）886277d3fbbc084bceeb816dc2957307e8c02610fea685994232cee0025be8b7，运行字节SHA256=fdb2c5c91222d2d502e86712c76a8a6f4987cd5198b0f97c7a07961d7e4a6dc5，因此实际加载回执unknown。此为用户提供的研发核对证据，本方未重复进入容器/重载/调整校验；不把该计划摘要冒称整个Candidate或实例加载摘要，也不因TS运行字节相同就声称对应MJS已加载新接线。
+
+本方已完成57项本地Mock，不代表真实SOC或纳管验收。共享完整v2提供者、最终生成MJS/类型检查、冻结后的加载回执、138范围真实发现及后续新确认登记仍由原协调/业务入口核验；原始任务完成性和预览门槛风险仍按下节未验项保留，12条Excel类型字典待核不扩展。完成此条交接后停写暂停，等待统一验收新指令。
+
+## ASSET-HV-02最终私有交接：源码与相关Mock就绪，待安全巡检统一构建/装载
+
+### 本轮证据与当前目标
+
+根会话仅从HEP MCP管理界面发现目录，未保存配置/执行业务工具：ai-soc-master为106工具/13资源/49模板，既有asset-management仍6工具+1模板。已核真实目录合同：create_soc_discovery_tasks对应POST /soc/discovery/tasks；start_soc_discovery_tasks对应POST /soc/discovery/tasks/{taskId}/start；查询模板为http://172.16.138.223:18087/soc/discovery/tasks/{taskId}。这是223有接口目录的证据，不是53105会话注册/调用已就绪或SOC实际扫描成功。
+
+R3原156会话21:57旧228请求在本地resolver拒绝、六项0、无SOC请求/taskId；根会话后又补本轮138请求亦为相同本地未匹配，未给新请求精确时刻，不混成21:57同一次。后续真实正向目标现为172.16.138.1–254，先完整候选、不入库/不改已有资产；所有真实测试仍根会话从原53105/156业务入口发起。本方未代发扫描、发现、入库或SOC业务重查，也未取得任何可引用的138真实taskId。只读核目录未发现可按范围检索的既有任务列表合同，且尚无已知任务ID可读详情；不据此宣称历史任务不存在、不造ID，待根会话新业务回执。
+
+### 最终资产私有文件与SHA256
+
+| 文件 | 当前源码交付及SHA256 |
+| --- | --- |
+| [asset-onboarding-runtime.ts:236–350](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/asset-onboarding-runtime.ts#L236-L350>) | 删除四前缀/旧直连resolver及原始SDK工具注册求交，使用createAssetGroupBackend；fdb2c5c91222d2d502e86712c76a8a6f4987cd5198b0f97c7a07961d7e4a6dc5 |
+| [asset-onboarding-group.test.mjs](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/asset-onboarding-group.test.mjs>) | 新增组级Mock及真实代理URI合同检查；ec0e1e8668b014c0691e40f9737e44fa9a3100dccdddbe9115b087362d2d6522 |
+| [asset-onboarding-range.test.mjs](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/asset-onboarding-range.test.mjs>) | 保留原20项范围/否定，新增138授权隔离；Mock截停点改为首次组目录读取，仍早于日记/派发；bc7f5f7d9aa1a7fa3a90fb8b93cfde1a023fb60655e93ae8d062b9f17df2a27b |
+| [资产Skill](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/workspace/.agents/skills/asset-onboarding/SKILL.md#L13-L22>) | 状态明确为组v2绑定、与原始模型工具注册及SOC业务成功分开；不由200/空数组推完成或离线；55f796c1bb3c604073e1500f1dd1ffd25ca9005d3fd4db49969b107d90147837 |
+
+既有附件getter/解析器未重修：[asset-workbook.mjs](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/asset-workbook.mjs>)仍c444943009f00168b1f715d39ef738b892d95cd80f75e056b602be4522f7f8b3。本方未改任何共享report/runtime/guard/manager、允许清单、Profile/MCP配置、认证、依赖或SOC环境；不把并行故障报告文件计入资产成果。
+
+### 私有适配的精确落点及本地结果
+
+- 六动作与1模板仅按组v2原名、ai-soc-master、kind/sourceName/sourceUri唯一绑定；不依赖ctx.tools.get/resolveTool，不猜前缀、不跨组、不回退HTTP或读Token。状态保留原计数字段并新增来源已核标识/transport/可脱敏停点，evidence_scope明确为组目录而非本地工具注册；缺旧provider方法时为ASSET_GROUP_API_UNAVAILABLE，绝不说SOC没接口。
+- 每次原生工具执行只冻结一次已核v2目录目标摘要，调用公开callGroupTool原样携带原生exec（Session/callId/signal）；等待目录后重验取消。发现/提交的异步lookup均已await，发生在mkdir/日记之前；不新增底层模型工具或子助手许可。读取并核对原允许清单资产6项，未写共享清单；主/子隔离本地负例通过。
+- 模板沿真实inputSchema传integer/number或string taskId。只接受公开组资源代理URI `mcp-group:/asset-management/ai-soc-master/t/<base64url(已核sourceUri)>`及同taskId的合法query形态；拒错组/成员/kind/来源/任务、重复query、hash及裸上游HTTP URI。仅解析structuredContent.contents[].text，保留原始业务字段及缺项，不把展示占位当正文。
+- 先复现R3：无原始SDK注册但Mock已有公开组目录时，旧status的tooling_ready=false，1项失败/退出1。首版组+范围37/37绿后，审查发现Mock错用了源URI；改为真实组代理URI再次复现模板读取失败1项/退出1，再按公开合同修复。不能用首轮37绿代替模板真实合同检查。
+- 最终命令 `node --test tests/asset-onboarding-group.test.mjs tests/asset-onboarding-range.test.mjs tests/asset-workbook.test.mjs`：**57/57通过，0失败、0跳过**（组19、范围21、附件17）；组+范围40/40。两项新测试MJS的node --check通过。Node原生TS内存去类型，未构建/编译MJS，未发网络或写业务日记。原生ESM类型警告保留，未改宿主package.json。TypeScript受控类型检查仍交统一构建方。
+- 用户要求收口后，尚未交付的managed_evidence/observations投影已撤回，当前源码无该新结构。真实任务字段仍按原facts完整返回，字典无回执项待核，不新增通用任务状态映射或OpenOcta/新探测能力。
+
+### 生成物、装载与未验项（不能混作通过）
+
+最新只读指纹：[生成asset-onboarding-runtime.mjs](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/asset-onboarding-runtime.mjs>)为d349ddd705a88e82496c3a8cb91c52443a56e60744b1fd33ad33f31f147d6a2c，已由并行过程较5a75…变化，本方没有构建/手改。读取确认其包含HV04范围/否定修复，但仍有旧resolveAssetTools、不含createAssetGroupBackend/ASSET_GROUP_API_UNAVAILABLE或最终代理URI逻辑，**不是本节ASSET02最终源码的生成物**；安全巡检须以本节TS新指纹统一重新构建。
+
+2026-11-07T06:41:49.795Z公开实例回执为status=unknown，最近尝试06:30:49.156148Z尚未核验；保留最近成功加载仍04:44:29.150Z、loaded.digest=sha256:34f40765b559e213ba194bee5cd170861c89a20d186a785f6902b3c4cc68f79c。当前投影547adf0646e764c6c16418596a25d1e646c95ccdd409ee9dcfbff9bf2402b810，与最后成功回执不同且含资产MJS/TS/Skill及并行文件差异；不把旧成功回执当当前代次已加载。本方未再次装载。
+
+**尚未闭环而不计本地通过的部分**：实际共享提供者完整v2、受控类型检查/新MJS、当前代次装载、138真实任务创建/启动/查询及SOC登记均待唯一协调方/根业务回执。审查另提示既有单IP非null结果即completed、query完整来源门槛与未终态结果的风险；本批接线不发明SOC终态字段/枚举或新公开投影，该任务完成性/预览门槛未被本批57项证明。真实任务回执到达后须据真实合同最小核对，不能凭200、空数组、部分findings判完成或直接放入完整待纳管清单。当前真实验收仅发现、不入库；不宣称整体纳管可发布或已通过。
+
+**交接结论**：资产私有接线源码与相关Mock已就绪；共享依赖仍按下一节由安全巡检唯一实施并统一构建/装载。核本节最终四文件指纹，避免使用旧37项/旧TS/现有MJS当最终制品。装载和来源就绪后，根会话从原156发起138真实发现与同任务查询；发现失败只返回本会话修复，不新增扫描/登记授权。原会话、12条新Excel及旧附件/失败均保留。
+
+## 安全巡检共享交接：MCP提供者组v2版本对齐（资产私有部分已就绪）
+
+用户R3新证据：原156会话21:57对旧228范围discover被本地create_soc_discovery_tasks候选未匹配拒绝，紧接新status仍六项0/任务目录不可用，无taskId、无SOC请求、无入库；不得说成SOC发现为空。最新后续正向发现/只读诊断范围改为172.16.138.1–254，替代228；原历史记录不改。所有真实测试仍由根会话从53105原业务聊天发起。本会话只改资产私有实现/相关测试；共享MCP提供者、Guard、report及实际构建/装载均归唯一安全巡检会话。
+
+### 已核共享合同与缺口
+
+- 当前候选[Manager服务TS:518–526](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/index.ts#L518-L526>)仅currentGroup/resolveTool；[现MJS:555–568](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/index.mjs#L555-L568>)另有sourceStatus，TS/MJS也不完全一致。候选旧v2摘要缺naming字段、工具仍成员前缀、无现行来源meta/模板转工具；不能仅加两个同名方法外壳。
+- 既有公开完整合同在[程序Manager:763–789](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L763-L789>)：`listGroupTools('asset-management',2)`返回`{tools,_meta}`；`callGroupTool('asset-management',2,tool.name,args,meta,exec)`。资产高层内部复用，不注册六项底层工具给模型/子助手、不绕全局get/HTTP，不读currentGroup.token。
+- [v2绑定:323–397](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L323-L397>)公布原name；`tool._meta['io.deepseek.dsh/mcp-group-tool']={serverId,kind,sourceName,sourceUri?}`。资产6动作只按原名、ai-soc-master、kind=tool唯一绑定；所选get_soc_discovery_tasks_by_task_id须kind=template、同成员/原名及真实sourceUri。冲突/离线目录不猜别名或跨源取代。
+- [摘要:275–301](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L275-L301>)及[核对:612–619](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L612-L619>)：目录`_meta['io.deepseek.dsh/mcp-group-target']={digest,version:2}`，digest包含现有`naming:'group-boundary-v1'`、组/成员、启用、去敏端点和选择；调用原样绑定该摘要，第2参仍2。调用入口/叶子前/返回后均核配置未漂移，禁止失败自动换摘要重发。
+- [模板包装:520–555](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L520-L555>)：模板作为只读工具，参数遵循目录inputSchema；原生MCP模板taskId通常string，OpenAPI按其integer/string schema，不加uri/body新包装。返回structuredContent.contents[].text才是真正文。上游OpenAPI内部可保留原模板URI，但[组资源包装:589–609](</home/cmp/work/harness-engineering-platform/plugins/mcp-manager/index.ts#L589-L609>)会将公开回包URI统一改为mcp-group代理URI，资产端必须按组/成员/t/已核sourceUri严格核对，不能只接上游HTTP URI；不把展示占位或HTTP200当结果正确。
+- exec必须原样传原生工具execute对象：group v2现有withToolContext要求`exec.agent.session.id`和`exec.callId`，并用`exec.signal`贯穿派发/资源读取；不得伪造身份meta。目录listGroupTools只有2个参数，不接受exec/signal；资产侧等待后重验取消。正常示例见[fixed-composition:83–90](</home/cmp/work/harness-engineering-platform/platform/plugin/src/workflows/fixed-composition.ts#L83-L90>)。
+
+### 最小共享实施/构建范围（安全巡检实施，本方不写）
+
+1. 对齐既有MCP提供者完整v2目录/摘要/资源与模板包装/调用/上下文，保留原currentGroup/resolveTool以及当前sourceStatus消费者兼容；不新增公共API、权限、认证、依赖或组选择，不全局新增客户端到所有子预设。候选旧Manager入口仍由其默认Profile声明引用，不能只更新程序产物却继续加载旧候选模块。
+2. 普通EXP受管构建合同已核：`platform_agents assets/build-preview`参数experiment_id/entry_path，执行assets/build使用其返回候选/预览摘要，不执行来源package scripts。本方不调用预览或构建。需由安全巡检先确认入口使用完整现行已审源及依赖闭包，不能直接把旧候选index.ts再编一次冒称升级；已核[Candidate构建映射:95–114](</home/cmp/work/harness-engineering-platform/platform/plugin/src/agents/asset-build.ts#L95-L114>)只把所选Candidate TS变同名MJS，[源码边界:101–110](</home/cmp/work/harness-engineering-platform/platform/plugin/src/agents/asset-build-core.ts#L101-L110>)禁止未固定外部源码，故不能直接跨目录import程序插件充当补丁。完整现行程序模块已有[构建器:16–80、127–128](</home/cmp/work/harness-engineering-platform/platform/plugin/build.mjs#L16-L128>)：managerSources收集当前plugins/mcp-manager/index.ts、openapi.ts及相对依赖，生成src/mcp/manager.ts并产出lib/mcp-manager.js（沿既有harness-mcp-manager-server原生依赖）。未核到该程序bundle自动替换Candidate的节点。独立source-runtime的standalone-*虽复用同一完整managerSources，现有投影只处理旧fixedComposition接缝，不升级候选管理器。安全巡检应先对齐Candidate实际引用的index/openapi/connection必需闭包并保留sourceStatus兼容，再受管build-preview/build；或者走另经核实的现有整体runtime装载路线。不能把lib/mcp-manager.js或独立导出冒称已自动替换候选，亦不创Shell编译命令。
+3. 影响项限Manager源码/实际受管模块及确需的提供者装配引用；资产私有消费方由本会话适配，report/inspection等旧直接消费者只做必要兼容回归，不计入本方资产成果。Guard/允许清单只核现有资产身份及隔离，不扩允许集。
+4. 相关回归：六动作+1模板原名/成员/kind/URI唯一匹配、冲突/缺失/不可用、摘要v1/v2及漂移拒绝、模板数字/字符串和正文包装、根Session/callId/取消、主/子隔离、原直连resolveTool/sourceStatus及现有巡检/报告消费者不回归。由唯一安全巡检在资产私有适配齐后一次统一类型检查/构建/装载并给真实observer回执。
+
+本会话没有跨独立管理会话直接投递能力；此处为即时共享交接，不冒称已送达安全巡检。请根会话转交本节，资产私有适配不等待消息串行。另已收到原f0c27975业务附件新增12条多类型Excel真实完整解析，未探测/未入库；本轮无类型编码字典回执，仅记待核，不扩字典工作、不判SOC缺口。
+
+## ASSET-HV-02：19:13新status补证与只读来源核对（R2历史证据）
 
 **新证据归属**：用户从真实session-156acd06-4963-4d31-828d-8e0d33c0a3b7于19:13一次新status取得，非18:55旧失败；原对话完整值保留。本轮只读定位，仅补本交接记录；不改候选/权限/共享配置、不build/装载、不读HOME/Token、不新调用业务或替用户重放。HV04范围第一阶段已先完成；用户续授权的必要否定回归现已收口为20项Mock通过，当前指纹与具体交接见后文，不等待接线研究、不重复修getter。
 
@@ -375,3 +581,60 @@ HOME、会话数据、端口、模型和网关保留，但不能把保留数据�
 用户先要求等待资产业务窗口，后明确21:57原156会话discover止于本地注册查找、无SOC请求/taskId/扫描/入库，窗口已结束。该失败只按用户新证据保留，不反写成SOC拒绝。根会话随后授权继续受管构建与离线检查，但要求最终装载等待资产6项操作及1模板最小主助手接线交接。本方已先给准备回执并完成上述两项构建，未对实例发起新装载、未保存共享配置、未重放任何真实业务。
 
 待资产接线交接齐备，只核该来源绑定及最新源码/生成物，不扩大报告研究；前置满足后一次定向装载并回读current/loaded一致，再由根会话在53105原业务会话发起真实六类与下载。多IP去重新run-a0173fcf-ebde-4bdf-a4f3-a109c0425992的2台/9209字节真实下载、CIDR新run-c386826e-9adb-486d-a856-414b86f09e2f的8台/32359字节真实下载，以及深度原运行completed复核均按用户回执保留，不计为本补丁装载后的验证。
+
+## 共享提供者与最终资产源码构建结果（现已暂停，待统一验收；未装载）
+
+本节为安全巡检按根会话直接续授权完成的实际结果。只维护本候选；未运行程序package scripts、未安装依赖、未保存共享MCP配置、未改认证/允许集或SOC环境，未发起新的实例重载/真实业务。前述58/85/20阶段均保留时点，不冒称最终资产接线已生效。
+
+### 完整公开组v2来源与本地兼容
+
+完整公开index/openapi/connection三源迁入候选自包含闭包，不跨目录import程序源码。读取的上游工作文件SHA依次为16af07203fe4f0a72d4d17b17fd43b4d18b060c4f3e390b6d53e7cecf30e407d、d819b7e967ae763dbb7952523e3d894ad4171d47e311d07e105dd666aa2f5692、09d66d933a12a12d500c606ce9744e10348a48eb732cf77ae56a68012098adf3；这是读取快照，不冒称固定Git提交。
+
+本地仅保必要兼容：源码引用openapi.ts避免误混旧MJS；保snapshot/publicToolName/listAll导出、原Runtime anchor开关、sourceStatus原配置布尔语义；无withToolContext时按真实活跃Agent注册可见性resolve及清理，不塞no-op上下文；OpenAPI保原HTTP状态meta；新v1/v2摘要/来源/typed模板/取消/凭据就绪及业务header不降级主体保留。Strict Managed检查曾报隐式any，已仅补回调类型不放宽编译配置。真实SDK兼容测试另证v1健康成员隔离会回归，已在v1目录分支保留单成员失败隔离（取消仍抛），未删除该断言。
+
+### 最终受管构建快照
+
+- [提供者index源码](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/index.ts>) SHA=cf23516fad250cb42b4add3271666ae07a5fb9bb4488d81fff3420dd8d63ef83；[index产物](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/index.mjs>) SHA=bbbf77f95e6166151b7f51461555b10943e212286bb895d2512820236bb6fe0b；受管build回执e457300e-30f9-4b79-aa03-6f5af7137b3b（前次313b96e6为补v1隔离前快照，不再作为最终产物）。
+- [OpenAPI源码](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/openapi.ts>) SHA=7af7dab8d039fb2d536e359130dd8f46191a2424a04a3e89fe88baf177b91c31；[OpenAPI产物](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/openapi.mjs>) SHA=7e9e243104a73ca64de2ffae353d982afc33121f5f6d974ed3b8c47065448f63；受管build回执c17acf1c-7a9a-4fa4-a326-4f0f68bde5ab。connection源码与上游逐字节相同，已入两个受管闭包。
+- [最终资产TS](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/asset-onboarding-runtime.ts>) SHA=fdb2c5c91222d2d502e86712c76a8a6f4987cd5198b0f97c7a07961d7e4a6dc5；[最终资产MJS](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/asset-onboarding-runtime.mjs>) SHA=ccb404e92ae333a3cdf8bb6269d495a0323f0685dcc589b4af56deafd71b570c；受管build回执c3029ba6-389f-4fee-a642-d69848fae36b。d349旧产物仅含上一阶段范围修复，不冒充此最终组消费方。
+
+### 实际技术检查（不等于SOC业务结果）
+
+1. [新提供者回归](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/mcp-group-v2-provider.test.mjs>)先在旧MJS复现3项方法不存在失败；最终4/4通过，包括实际受管提供者+实际受管资产适配器的同任务模板正文闭环。所有fetch固定内存fixture.invalid响应，无真实网络/SOC/FS业务。闭环首次因Mock头缺原生必需字段、其次因Mock业务回执缺code失败，按真实结构补Mock，不放宽实现。
+2. [既有资源回归](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/mcp-resources.test.mjs>)明确选OpenAPI/分页/分组/resolve/真实MCP资源6项，6/6通过。v2按现行公开组边界原名及资源转只读工具迁移断言，增加来源meta与离线成员标识检查；v1原名前缀及健康成员隔离断言保留。仅localhost临时SDK fixture，未接SOC；未跑其无关自动化路由用例。
+3. 最终资产组19+范围21+附件17共57/57本地Mock由本方复核通过，原Node类型警告保留；报告85/85在提供者升级后复核通过。并行报告300项通过仍按前述受管快照解释。
+4. 初次Host测试anchor缺@modelcontextprotocol/server导致导入前失败，未伪称v2业务失败；复用Host现有公开Node依赖路径后才执行上述断言，无安装或新增依赖。Host Mock不证明目标运行时的真实装配。
+
+### 最后一个确证装配缺口
+
+本方只读提取目标实例生成的business.patch.yml非敏感id/name/inject及groups/servers选择字段（不读HOME、不输出headers/token）。该现有装配禁用了mcp-session-manager，实际插入business-mcp-manager=/opt/harness-platform/business/mcp-manager.js、inject businessRuntime。给它的servers为原有八个来源，**没有ai-soc-master/asset-management；groups只有emergency-action，没有asset-management**。故不能把平台已保存6+1目录、候选新方法或Mock闭环，等同目标真实provider已获得此组。
+
+研发本次只读核对与本会话子任务60249e53-9fc9-4920-9897-b64346a7171f的结论一致：[business.ts:135–150](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/business.ts#L135-L150>)定位原manager，[实际禁用/替换:180–186](</home/cmp/work/harness-engineering-platform/runtime/adapters/dsh-container/business.ts#L180-L186>)禁用Candidate manager并传原配置给/opt/harness-platform/business/mcp-manager.js；[管理包装businessRuntime分支:81–87](</home/cmp/work/harness-engineering-platform/platform/plugin/src/mcp/manager.ts#L81-L87>)仅覆盖servers，保留suppliedConfig.groups，不自动追加平台全部组。子任务明确：三源能受管构建与实际业务provider取得asset-management是两件事；种子也不能单独冒称保留HOME后的有效Profile。结合上文实际生成Patch的非敏感配置，现有资产组装配缺口已确证；新私有listGroupTools(asset-management)不能凭编译通过或4项内存闭环推定目标实例可用。未新增第二份平台wrapper或no-op context；共同平台根因整改、构建与唯一最终装载由研发承担。本方不手改HOME或生成Patch、不新增凭据/HTTP代理/全局子助手客户端。尚需通过既有受管装配入口，将平台已保存asset-management六动作+1模板投影到该实例有效provider配置并给非敏感回执（最终入口、group/member选择、来源引用）；此项闭合前不盲重载或声称本地未注册已治愈。源码/生成物与技术结果已经可交，不再扩展报告研究。
+
+### 本会话统一验收冻结交接
+
+根会话现已直接要求“完成当前修改后暂停，统一验收”。本方必要源码、受管产物和上述检查已收口；此后仅补本交接，不继续写Candidate或共用evaluation.md，不发起新构建、重载、评测或业务。自动目标已按本次直接请求暂停（revision13、phase=paused、activation=disarmed），不是完成或回退；待统一验收另行指令，不凭本节旧装载计划自行恢复。
+
+本批实际改动文件（均保留其中他方并行内容；生成物只由受管构建生成）：
+
+- 报告源码/类型：[运行TS](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-runtime.ts>)、[来源解析MJS](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-source.mjs>)、[来源声明](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-source.d.mts>)；[受管报告MJS](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-runtime.mjs>)；[报告回归](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/security-report-runtime.test.mjs>)。本方只负责INS01/08和省略run_id兼容，保留并行故障/排查交付逻辑，不把整文件他方成果计为本方。
+- 提供者：[index.ts](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/index.ts>)、[openapi.ts](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/openapi.ts>)、新增[connection.ts](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/connection.ts>)；受管[index.mjs](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/index.mjs>)及[openapi.mjs](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/mcp-manager/openapi.mjs>)；[资源兼容回归](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/mcp-resources.test.mjs>)及新增[提供者闭环回归](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/mcp-group-v2-provider.test.mjs>)。
+- 资产仅由本方受管重编[最终MJS](<../../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/asset-onboarding-runtime.mjs>)；最终私有TS、组/范围/附件测试、资产Skill归资产方，不计为本方源码修改。本方复核了其57项。
+- 文档只补本文对应报告/提供者/冻结交接；本轮未新增共用evaluation.md写入，未修改共享Guard、允许集、模型、端口、网关或运行配置。
+
+在途核对：本次再次只读确认background jobs为空，全部后代只有以下8个直接子助手，均inactive，无运行中后代。本方自动目标仍revision13、paused/disarmed，没有恢复；无本方未完成写入、构建、重载或业务动作，无需强杀/取消他方任务。全部修改及HOME、会话、Run、报告、模型、端口和53105网关原样保留，无回退或覆盖恢复项。
+
+供冻结核对的原生子任务地址（session ID，不伪造未返回的Web深链）：父会话session-6a79ab7e-f558-4cc5-b45d-7cc2e4c52975。以下会话原生仍可再次投递继续，但当前授权已暂停，本方不会再派发；inactive不等于技术撤销其底层文件权限，不把它们说成正在写入。
+
+| 子任务session ID | 原任务 | 当前状态 |
+| --- | --- | --- |
+| 60249e53-9fc9-4920-9897-b64346a7171f | 公开SDK/提供者源码适配及装配审查，曾受托写3份TS，现已交接停写 | inactive |
+| f76ae821-15ac-4560-b045-9587b1de28cc | 重排巡检用例顺序（历史委派） | inactive |
+| 8661ebef-5189-457e-8871-520290d235c5 | 后半巡检边界核对 | inactive |
+| ee3aee34-6742-41a2-825d-884bb75deec9 | 前半巡检用例核对 | inactive |
+| 75ff75de-d687-4ca1-971b-a7a5375e6a54 | 执行范围覆盖核对 | inactive |
+| 2f8961dd-ae27-4f95-ab08-11a1e9c285b5 | 报告异常边界核对 | inactive |
+| 110c50d8-72b7-45d6-a979-8fa861114ea9 | 候选既有报告交付机制审查 | inactive |
+| f60f275d-14e0-40af-9f6b-6b217973078d | 官方原生产物交付合同核对 | inactive |
+
+未验证边界：上节实际provider组投影缺项保留；没有本批新current==loaded真实回执，06:30 observer挂载计划不一致仍未通过，不以Mock/旧成功加载替代。最终平台激活、冻结后统一重载/评测归研发协调，本方不重复执行。根会话提供的故障迁移两包44合同、正式LFX边界及图浏览器通过按其原证据保留，不冒称本方重验；子Guard既有威胁单次断言28/29的失败保留，不改口径或重跑洗掉。

@@ -1,0 +1,519 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'none'; style-src 'unsafe-inline'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="referrer" content="no-referrer"><title>网络安全巡检报告 · 全量打印版</title><style>
+:root{--bg:#f3f6fb;--paper:#fff;--line:#e2e9f2;--ink:#1b2d46;--muted:#667c96;--blue:#2468ce;--navy:#102d50;--red:#b12839;--orange:#925c0a;--green:#117751}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid #2468ce;outline-offset:3px}header.mast{background:var(--navy);color:#fff;padding:18px max(22px,calc((100vw - 1436px)/2));display:flex;align-items:center;justify-content:space-between;gap:18px}header.mast strong{font-size:18px}header.mast span{font-size:12px;color:#b8cbe0}.wrap,.shell{max-width:1480px;margin:22px auto 60px;padding:0 22px}.report-inspection{max-width:1420px}.card,.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px 24px;box-shadow:0 3px 14px #1a2d4d0b;margin-bottom:18px;min-width:0}.card.overview,.overview{background:linear-gradient(115deg,#fff,#f5f9ff)}h1{font-size:27px;margin:0 0 8px;line-height:1.4}h2{font-size:19px;margin:0 0 14px}h3{font-size:15px;margin:0 0 9px}h4{font-size:14px;margin:12px 0 7px}p{margin:8px 0;overflow-wrap:anywhere}a{color:var(--blue)}.row,.panel-head,.page-title{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.page-title{align-items:flex-start}.page-title>div{min-width:0}.muted,.note,.sub,.thin,.tiny,small{color:var(--muted)}.tiny,.note,.sub,.thin,small{font-size:12px;overflow-wrap:anywhere}.report-meta{font-size:12px;color:var(--muted);margin-top:12px;overflow-wrap:anywhere}.grid,.cols,.detail-grid,.metrics,.kpis{display:grid;gap:16px;min-width:0}.cols,.grid.two,.grid.half,.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metrics{grid-template-columns:repeat(6,minmax(0,1fr));margin:18px 0}.report-inspection .metrics,.kpis{grid-template-columns:repeat(5,minmax(0,1fr))}.metric,.kpi{border:1px solid var(--line);border-radius:10px;padding:16px;background:white;min-width:0}.metric b,.metric strong,.kpi strong{display:block;font-size:29px;font-weight:750;line-height:1.3;overflow-wrap:anywhere}.metric span,.kpi label{display:block;font-size:13px;margin:7px 0 5px}.metric small,.kpi small{display:block;line-height:1.5}.pill,.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:3px 9px;white-space:normal}.danger,.pill.danger,.tag.red{background:#fce8ea;color:var(--red)}.warning,.warn,.pill.warning,.pill.warn,.tag.orange{background:#fff2dc;color:var(--orange)}.normal,.good,.pill.normal,.pill.good,.tag.green{background:#e1f5ec;color:var(--green)}.neutral,.pill.neutral,.tag.gray{background:#edf1f6;color:#65768d}.info,.blue,.tag.blue{background:#eaf1ff;color:#225eac}.metric .danger,.metric .warning,.metric .normal,.kpi .danger,.kpi .warning,.kpi .normal{background:none}.headline,.intro,.notice,.important,.warn-box,.alert{padding:15px 18px;border:1px solid #dbe7f9;border-radius:9px;background:#f1f6ff;margin:14px 0}.warn-box,.alert{background:#fff8e9;border-color:#f0e1be}.summary-key{display:flex;gap:10px 22px;align-items:center;flex-wrap:wrap}.summary-key>b{font-size:20px}.tone-danger{color:var(--red)}.tone-warning{color:var(--orange)}.tone-normal{color:var(--green)}.tone-neutral{color:var(--muted)}.pane,.evidence-summary,.priority{border:1px solid var(--line);border-radius:9px;padding:16px;margin-bottom:12px;min-width:0}.priority{display:flex;gap:14px;align-items:flex-start}.priority-index{min-width:30px;min-height:30px;border-radius:8px;display:grid;place-items:center;background:#edf1f6}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:12px 13px;overflow-wrap:anywhere}th{background:#f4f7fb;color:#536981;font-size:12px}tbody tr.selected{background:#edf4ff}.clickrow{cursor:pointer}.clickrow:hover{background:#f5f9ff}.tabs,.filters,.report-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.tabs{border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:20px}.tab,.filter-chip,.btn,.action{border:1px solid #cbd9e9;border-radius:8px;background:#fff;color:#29496d;padding:9px 13px;min-height:38px}.tab.active,.filter-chip.active,.primary{background:var(--navy);border-color:var(--navy);color:#fff}.btn.primary,.action.primary{background:var(--blue);border-color:var(--blue)}.link{border:0;background:none;color:var(--blue);padding:5px 0;min-height:34px;text-align:left}.filters input{border:1px solid #cbd9e9;border-radius:8px;padding:10px;min-width:220px;max-width:100%}.report-actions{justify-content:flex-end;margin-bottom:14px}.action-error,.print-failure{color:var(--red);font-size:12px}.empty{padding:18px;color:var(--muted);border:1px dashed #cbd7e7;border-radius:8px;background:#f8fafe}.detail{margin-top:16px}.detail h3{scroll-margin-top:20px}.kv{display:grid;grid-template-columns:minmax(115px,1fr) minmax(0,3fr);gap:7px 12px;margin:0}.kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:anywhere}pre,.evidence,.code{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;background:#122641;color:#dbe7fa;border-radius:8px;padding:15px;max-height:500px;overflow:auto;margin:10px 0}.appendix summary{cursor:pointer;font-weight:700;padding:8px 0}.coverage-row+.coverage-row{margin-top:15px;padding-top:15px;border-top:1px solid var(--line)}.coverage-title{display:flex;justify-content:space-between;gap:12px;font-size:12px}.coverage-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:8px 0}.coverage-track{height:8px;border-radius:8px;background:#eaf0f7;display:block;overflow:hidden}.coverage-track i{display:block;height:100%;background:#8997ab}.tone-normal .coverage-track i{background:#14916a}.tone-danger .coverage-track i{background:#d23a48}.tone-warning .coverage-track i{background:#d97706}.path-nodes{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.path-node{padding:12px 16px;border:1px solid var(--line);background:#f5f8fc;border-radius:9px;min-width:145px}.foot{font-size:11px;color:var(--muted);display:flex;gap:15px;justify-content:space-between;flex-wrap:wrap;margin-top:20px;overflow-wrap:anywhere}.source-boundary{margin-top:20px;color:var(--muted);font-size:12px}.judgment{border:1px solid var(--line);border-radius:9px;padding:10px 14px;margin:10px 0}.value-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cause-choice{width:100%;text-align:left;margin:6px 0}.cause-choice.active{border-color:var(--blue);background:#f1f6ff}dialog{width:min(850px,94vw);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:22px;color:var(--ink);background:#fff}dialog::backdrop{background:#10233e80}.dialog-head{display:flex;justify-content:space-between;gap:15px;align-items:center;position:sticky;top:0;background:white}.dialog-head h2{margin:0}[hidden]{display:none!important}
+@media(max-width:1050px){.report-inspection .metrics,.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:1000px){.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.cols,.grid.two,.grid.half,.detail-grid{grid-template-columns:minmax(0,1fr)}}@media(max-width:650px){.wrap,.shell{padding:0 12px;margin-top:12px}.card,.panel{padding:16px}.metrics,.report-inspection .metrics,.kpis,.coverage-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.metric b,.metric strong,.kpi strong{font-size:24px}h1{font-size:23px}.tabs .tab{flex:1 1 45%}.filters input{width:100%;min-width:0}.kv{grid-template-columns:1fr}.value-grid{grid-template-columns:1fr}.mast span{display:none}}
+@page{size:A4;margin:14mm 12mm 15mm}@media print{body{background:#fff;font-size:11px}.mast,.no-print,button,.report-actions,dialog{display:none!important}.wrap,.shell{max-width:none;width:100%;margin:0;padding:0}.card,.panel,.pane{border:0;box-shadow:none;border-radius:0;padding:0;margin:0 0 16px}.cols,.grid.two,.grid.half,.detail-grid,.value-grid{display:block}.metrics,.report-inspection .metrics,.kpis{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.metric,.kpi{padding:9px}.metric b,.metric strong,.kpi strong{font-size:19px}.table-wrap{overflow:visible}table{font-size:10px;table-layout:fixed}thead{display:table-header-group}tr{break-inside:avoid}h1,h2,h3,h4{break-after:avoid}pre,.evidence,.code{max-height:none!important;overflow:visible!important;background:#f1f3f7!important;color:#172b45!important;border:1px solid #d7dfeb;font-size:9px;white-space:pre-wrap!important;overflow-wrap:anywhere!important}.source-boundary,.foot{font-size:9px}}
+
+body{background:#fff}.wrap{max-width:1100px}.card,.panel{box-shadow:none}pre{max-height:none;overflow:visible}</style></head><body><main class="wrap report-inspection" data-report-kind="inspection" data-template-version="security-report-reference/1"><h1>网络安全巡检报告 · 全量打印版</h1><p class="muted">常规巡检 · 发现异常或已有漏洞观测 · 全部安全内容，不受页签或筛选影响</p><p class="report-meta">原运行：STYLE-DEMO-NOT-A-BUSINESS-RUN · 生成时间：2026-01-02T03:01:00Z · 人工复核：未记录</p><section class="card"><h2>报告身份、范围与时间</h2><p class="note"><strong>来源说明：</strong>离线格式测试样例：合成资料，未查询SOC、未执行新的业务运行，不作为现场巡检或故障结论。</p><dl class="grid two"><div><dt>巡检类型</dt><dd>常规巡检</dd></div><div><dt>报告 / 运行标识</dt><dd>STYLE-DEMO-NOT-A-BUSINESS-RUN</dd></div><div><dt>范围冻结时间</dt><dd>2026-01-02T03:00:00Z</dd></div><div><dt>报告生成时间</dt><dd>2026-01-02T03:01:00Z</dd></div><div><dt>冻结资产数</dt><dd>3 台</dd></div><div><dt>范围条件</dt><dd>资产 ID：1001、1002、1003</dd></div></dl><p>时间保持来源原值；条目的 observed_at 是本次读取时间，不等于 SOC 事实观测时间。没有统一执行窗口或人工复核记录时，不自行补写。</p></section><section class="card"><h2>30 秒速读</h2><p><strong class="danger">发现异常或已有漏洞观测</strong>；当前关注 10 条，其中 1 条为展示层显式揭示的缺口。</p><dl class="grid two"><div><dt>执行状态（外层 Run）</dt><dd><span class="pill neutral">未提供外层执行回执</span></dd></div><div><dt>源检查结果状态（非外层执行）</dt><dd><span class="pill warning">部分完成</span></dd></div><div><dt>结果完整性（展示核对）</dt><dd><span class="pill warning">有未完成、未知或覆盖缺口</span></dd></div><div><dt>业务结论（已有事实）</dt><dd><span class="pill danger">发现异常或已有漏洞观测</span></dd></div></dl><p>执行完成不等于业务通过；异常与未知、失败或覆盖缺口可以同时存在。报告只整理已保存 SOC 事实，不执行主动探测、不自动判断根因或业务影响。</p></section><section class="card"><h2>关键指标 · 分母与限制</h2><div class="metrics"><article class="metric"><h3>设备在线率</h3><strong class="danger">33.3%</strong><p>明确在线 1 台；明确离线 1 台；未知、冲突或不适用 1 台；无法关联 0 条。分母为冻结范围 3 台，其中 0 台没有可识别结果。未知与缺失不当作在线。</p></article><article class="metric"><h3>已确认异常设备</h3><strong class="danger">1 台</strong><p>按稳定资产 ID / IP 跨检查去重；已有未知 / 失败记录的设备 2 台，可与异常重叠；另有 0 条异常或观测无法关联资产。未返回设备另见覆盖缺口；汇总数缺少明细支撑时不补造设备。业务路径端点不自动算作异常设备，名称不作唯一标识。</p></article><article class="metric"><h3>漏洞观测记录</h3><strong class="danger">1 条观测</strong><p>按设备关联的已有观测去重；关联已有观测的设备 1 台；0 条观测没有可展示安全标识，保留条目、不强行合并。0 条设备结果未完整取得。观测不等于当前未修复漏洞；空返回不证明扫描覆盖或无漏洞，未提供严重度则不分级。</p></article><article class="metric"><h3>基线明确结论内通过率</h3><strong class="danger">50%</strong><p>1 / 2 台具有单一明确结论的设备通过；明确不通过 1 台；未知、失败或冲突 1 台；不适用 0 台；未关联 0 条；冻结范围覆盖差额 0 台。缺失、不适用和未关联记录不进分母；不是全量设备通过率。模板版本与报告时效未核实。</p></article><article class="metric"><h3>业务规则</h3><strong class="warning">3 条规则</strong><p>按稳定规则 ID 去重；含未知或失败的规则 1 条；已存不同地址 / 端口 / 协议目标 1 组。无规则与读取失败保留在明细，不按名称合并。仅核对 SOC 计算路径与策略，未实测应用响应。</p></article></div></section><div class="cols"><section class="card"><h2>当班关注</h2><p>按检查维度与已存顺序整理，不作业务影响或优先级排序。当前输入未提供责任人、业务影响和处置优先级，不代填。</p><ul><li><strong>设备在线状态</strong>：正常 1；发现异常 1；未知 1；不适用 0；失败 0；未发现明细结构缺口，但仍须结合适用限制。</li><li><strong>基线核查</strong>：正常 1；发现异常 1；未知 1；不适用 0；失败 0；未发现明细结构缺口，但仍须结合适用限制。</li><li><strong>漏洞观测</strong>：正常 0；发现异常 1；未知 1；不适用 0；失败 0；1 项覆盖 / 来源缺口。</li><li><strong>配置关系与业务规则核查</strong>：正常 0；发现异常 1；未知 1；不适用 1；失败 0；未发现明细结构缺口，但仍须结合适用限制。</li></ul><p>“正常”对象以覆盖汇总和完整安全附录为主；异常、未知、失败、不适用与覆盖缺口均可在后续清单逐条查看。</p></section><section class="card"><h2>巡检覆盖与结果分布</h2><div class="table-wrap"><table><caption>按已保存条目统计；来源计数单独列示，不用汇总数补造明细</caption><thead><tr><th scope="col">检查维度 / 执行</th><th scope="col">明细分布</th><th scope="col">稳定身份覆盖</th><th scope="col">来源声明 / 缺口</th></tr></thead><tbody><tr><td>设备在线状态<br><span class="pill warning">部分完成</span></td><td>已存 3 条<br>正常 1；发现异常 1；未知 1；不适用 0；失败 0</td><td>3 台可识别资产；0 条未关联<br></td><td>正常 1；发现异常 1；未知 1；不适用 0；失败 0<br>未发现数量结构差异；未知及适用限制仍见结果</td></tr><tr><td>基线核查<br><span class="pill warning">部分完成</span></td><td>已存 3 条<br>正常 1；发现异常 1；未知 1；不适用 0；失败 0</td><td>3 台可识别资产；0 条未关联<br></td><td>正常 1；发现异常 1；未知 1；不适用 0；失败 0<br>未发现数量结构差异；未知及适用限制仍见结果</td></tr><tr><td>漏洞观测<br><span class="pill warning">部分完成</span></td><td>已存 2 条<br>正常 0；发现异常 1；未知 1；不适用 0；失败 0</td><td>2 台可识别资产；0 条未关联<br></td><td>正常 0；发现异常 1；未知 1；不适用 0；失败 0<br>冻结范围 3 台，该项可按稳定身份关联 2 台；数量差异不由未关联记录或名称推测补齐。</td></tr><tr><td>配置关系与业务规则核查<br><span class="pill warning">部分完成</span></td><td>已存 3 条<br>正常 0；发现异常 1；未知 1；不适用 1；失败 0</td><td>业务按规则 / 地址对统计，不用资产数充当规则分母<br></td><td>正常 0；发现异常 1；未知 1；不适用 1；失败 0<br>未发现数量结构差异；未知及适用限制仍见结果</td></tr></tbody></table></div><p>设备按稳定 assetId / IP 关联；同一设备可同时异常和未完成。重名设备不合并；不同稳定 ID 共用 IP 时不合并 ID。分布为条目计数，与跨维度去重设备数不是同一分母。</p></section></div><section class="card"><h2>基线模板与覆盖依据</h2><p>只列本次已存字段，不用当前模板配置或参考报告补齐；模板名称、模板内容版本与原报告核查时间在当前归一化合同中未提供。两次接口读取不构成事务快照。</p><div class="table-wrap"><table><caption>全部已保存基线设备结果，含正常、未知、失败与不适用</caption><thead><tr><th scope="col">设备 / 地址</th><th scope="col">模板 / 报告主体</th><th scope="col">明确结论 / 覆盖依据</th><th scope="col">时间与限制</th></tr></thead><tbody><tr><td>示例业务节点甲<br>资产 ID 1001 · 192.0.2.10</td><td>就绪模板 ID：101<br>报告模板 ID：101<br>报告主体资产 ID：1001<br>模板内容版本：未核实</td><td><span class="pill normal">正常</span><br>通过标志（原值）：1<br>适用项 / 模板成员：3 / 3<br>范围匹配（原值）：true<br>覆盖原因：APPLICABLE_ITEMS_PRESENT<br>未检查原因：未提供<br>样例明确核查结论通过</td><td>本次读取：2026-01-02T02:55:00Z<br>原报告核查时间：当前结果未提供<br>模板版本、报告时效及读取一致性未核实</td></tr><tr><td>示例接入节点乙<br>资产 ID 1002 · 192.0.2.20</td><td>就绪模板 ID：101<br>报告模板 ID：101<br>报告主体资产 ID：1002<br>模板内容版本：未核实</td><td><span class="pill danger">发现异常</span><br>通过标志（原值）：0<br>适用项 / 模板成员：3 / 3<br>范围匹配（原值）：true<br>覆盖原因：APPLICABLE_ITEMS_PRESENT<br>未检查原因：未提供<br>样例明确核查结论未通过</td><td>本次读取：2026-01-02T02:55:00Z<br>原报告核查时间：当前结果未提供<br>模板版本、报告时效及读取一致性未核实</td></tr><tr><td>示例设备丙<br>资产 ID 1003 · 192.0.2.30</td><td>就绪模板 ID：未提供<br>报告模板 ID：未提供<br>报告主体资产 ID：未提供<br>模板内容版本：未核实</td><td><span class="pill neutral">未知</span><br>通过标志（原值）：未提供<br>适用项 / 模板成员：未提供 / 未提供<br>范围匹配（原值）：未提供<br>覆盖原因：未分配模板<br>未检查原因：未提供<br>未返回本次核查报告，不能计为通过</td><td>本次读取：2026-01-02T02:55:00Z<br>原报告核查时间：当前结果未提供<br>模板版本、报告时效及读取一致性未核实</td></tr></tbody></table></div></section><section class="card"><h2>全量检查明细 · 独立打印</h2><p>以下按完整列表生成，包含正常、异常、未知、失败、不适用与派生缺口，不依赖页面当前搜索或选中状态。</p><div class="table-wrap"><table><caption>完整检查明细，包含正常结果及所有派生覆盖缺口</caption><thead><tr><th scope="col">维度 / 对象</th><th scope="col">结果与证据摘要</th><th scope="col">影响 / 责任 / 优先级</th><th scope="col">状态</th></tr></thead><tbody><tr><td><span class="pill neutral">设备</span> 示例业务节点甲<br>资产 ID 1001 · 192.0.2.10<br>设备在线状态</td><td>样例上报状态在线；不是当前现场状态</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill normal">正常</span></td></tr><tr><td><span class="pill neutral">设备</span> 示例接入节点乙<br>资产 ID 1002 · 192.0.2.20<br>设备在线状态</td><td>样例已保存离线标记；原因未确定</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill danger">发现异常</span></td></tr><tr><td><span class="pill neutral">设备</span> 示例设备丙<br>资产 ID 1003 · 192.0.2.30<br>设备在线状态</td><td>没有足够状态证据，保留未知</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill neutral">未知</span></td></tr><tr><td><span class="pill neutral">基线</span> 示例业务节点甲<br>资产 ID 1001 · 192.0.2.10<br>基线核查</td><td>样例明确核查结论通过</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill normal">正常</span></td></tr><tr><td><span class="pill neutral">基线</span> 示例接入节点乙<br>资产 ID 1002 · 192.0.2.20<br>基线核查</td><td>样例明确核查结论未通过</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill danger">发现异常</span></td></tr><tr><td><span class="pill neutral">基线</span> 示例设备丙<br>资产 ID 1003 · 192.0.2.30<br>基线核查</td><td>未返回本次核查报告，不能计为通过</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill neutral">未知</span></td></tr><tr><td><span class="pill neutral">漏洞</span> 示例接入节点乙<br>资产 ID 1002 · 192.0.2.20<br>漏洞观测</td><td>有一条样例关联漏洞记录</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill danger">发现异常</span></td></tr><tr><td><span class="pill neutral">漏洞</span> 示例业务节点甲<br>资产 ID 1001 · 192.0.2.10<br>漏洞观测</td><td>样例查询未返回关联记录；不代表现场没有漏洞</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill neutral">未知</span></td></tr><tr><td><span class="pill neutral">漏洞</span> 漏洞观测 · 覆盖与明细缺口<br>派生缺口说明，不是新增资产或检查事实<br>漏洞观测</td><td>展示层覆盖缺口（非原始检查对象）：
+来源检查结果状态：部分完成
+冻结范围 3 台，该项可按稳定身份关联 2 台；数量差异不由未关联记录或名称推测补齐。<br><strong>此条是由范围 / 明细核对揭示的缺口，不是新增上游结论。</strong></td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill neutral">覆盖缺口</span></td></tr><tr><td><span class="pill neutral">业务</span> 样例业务分区规则<br>规则 ID RULE-DEMO-A · 192.0.2.10 → 192.0.2.20 · tcp · 端口 443<br>配置关系与业务规则核查</td><td>已存模型结论不符合样例规则；不是主动连通性验证</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill danger">发现异常</span></td></tr><tr><td><span class="pill neutral">业务</span> 样例证据缺口规则<br>规则 ID RULE-DEMO-B<br>配置关系与业务规则核查</td><td>样例缺少完整路径证据，不能判断</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill neutral">未知</span></td></tr><tr><td><span class="pill neutral">业务</span> 样例不适用规则<br>规则 ID RULE-DEMO-C<br>配置关系与业务规则核查</td><td>已存适用性结论为不适用，不作正常计数</td><td>业务影响未提供<br>责任人未提供<br>处置优先级未提供</td><td><span class="pill neutral">不适用</span></td></tr></tbody></table></div></section><section class="card"><h3>证据详情 · 示例业务节点甲 <span class="pill normal">正常</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>设备在线状态</dd></div><div><dt>稳定身份 / 地址</dt><dd>资产 ID 1001 · 192.0.2.10</dd></div><div><dt>本次读取时间</dt><dd>2026-01-02T02:55:00Z</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>2026-01-02T02:55:00Z / UTC</dd></div></dl><p>样例上报状态在线；不是当前现场状态</p><p>按 SOC 提供的状态证据展示；未知、过期或冲突不能当作在线，也不自动推断离线根因。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;assetId&quot;: 1001,
+  &quot;ip&quot;: &quot;192.0.2.10&quot;,
+  &quot;hostname&quot;: &quot;示例业务节点甲&quot;,
+  &quot;status&quot;: &quot;normal&quot;,
+  &quot;message&quot;: &quot;样例上报状态在线；不是当前现场状态&quot;,
+  &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+  &quot;facts&quot;: {
+    &quot;online&quot;: &quot;online&quot;,
+    &quot;onlineBasis&quot;: &quot;REPORTED&quot;,
+    &quot;stateEvidence&quot;: {
+      &quot;online&quot;: &quot;online&quot;,
+      &quot;timeBasis&quot;: &quot;UTC&quot;,
+      &quot;evaluatedAt&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+      &quot;signals&quot;: [
+        {
+          &quot;validity&quot;: &quot;CURRENT&quot;,
+          &quot;supportsOnline&quot;: true,
+          &quot;observedAt&quot;: &quot;2026-01-02T02:54:00Z&quot;
+        }
+      ]
+    }
+  }
+}</pre></section><section class="card"><h3>证据详情 · 示例接入节点乙 <span class="pill danger">发现异常</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>设备在线状态</dd></div><div><dt>稳定身份 / 地址</dt><dd>资产 ID 1002 · 192.0.2.20</dd></div><div><dt>本次读取时间</dt><dd>2026-01-02T02:55:00Z</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>样例已保存离线标记；原因未确定</p><p>按 SOC 提供的状态证据展示；未知、过期或冲突不能当作在线，也不自动推断离线根因。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;assetId&quot;: 1002,
+  &quot;ip&quot;: &quot;192.0.2.20&quot;,
+  &quot;hostname&quot;: &quot;示例接入节点乙&quot;,
+  &quot;status&quot;: &quot;abnormal&quot;,
+  &quot;message&quot;: &quot;样例已保存离线标记；原因未确定&quot;,
+  &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+  &quot;facts&quot;: {
+    &quot;online&quot;: &quot;offline&quot;
+  }
+}</pre></section><section class="card"><h3>证据详情 · 示例设备丙 <span class="pill neutral">未知</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>设备在线状态</dd></div><div><dt>稳定身份 / 地址</dt><dd>资产 ID 1003 · 192.0.2.30</dd></div><div><dt>本次读取时间</dt><dd>2026-01-02T02:55:00Z</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>没有足够状态证据，保留未知</p><p>按 SOC 提供的状态证据展示；未知、过期或冲突不能当作在线，也不自动推断离线根因。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;assetId&quot;: 1003,
+  &quot;ip&quot;: &quot;192.0.2.30&quot;,
+  &quot;hostname&quot;: &quot;示例设备丙&quot;,
+  &quot;status&quot;: &quot;unknown&quot;,
+  &quot;message&quot;: &quot;没有足够状态证据，保留未知&quot;,
+  &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+  &quot;facts&quot;: {}
+}</pre></section><section class="card"><h3>证据详情 · 示例业务节点甲 <span class="pill normal">正常</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>基线核查</dd></div><div><dt>稳定身份 / 地址</dt><dd>资产 ID 1001 · 192.0.2.10</dd></div><div><dt>本次读取时间</dt><dd>2026-01-02T02:55:00Z</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>样例明确核查结论通过</p><p>读取报告标志不证明模板内容版本与报告时效；未返回模板或报告不能视为通过、不适用。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;assetId&quot;: 1001,
+  &quot;ip&quot;: &quot;192.0.2.10&quot;,
+  &quot;hostname&quot;: &quot;示例业务节点甲&quot;,
+  &quot;status&quot;: &quot;normal&quot;,
+  &quot;message&quot;: &quot;样例明确核查结论通过&quot;,
+  &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+  &quot;facts&quot;: {
+    &quot;report&quot;: {
+      &quot;assetId&quot;: 1001,
+      &quot;templateId&quot;: 101,
+      &quot;run&quot;: {
+        &quot;assetId&quot;: 1001,
+        &quot;templateId&quot;: 101,
+        &quot;passFlag&quot;: &quot;1&quot;
+      }
+    },
+    &quot;readiness&quot;: {
+      &quot;assetId&quot;: 1001,
+      &quot;templateId&quot;: 101,
+      &quot;assetType&quot;: &quot;host&quot;,
+      &quot;templateScopeMatched&quot;: true,
+      &quot;memberCount&quot;: 3,
+      &quot;applicableCount&quot;: 3,
+      &quot;coverageReason&quot;: &quot;APPLICABLE_ITEMS_PRESENT&quot;,
+      &quot;items&quot;: [
+        {
+          &quot;itemId&quot;: 1,
+          &quot;applicable&quot;: true,
+          &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+        },
+        {
+          &quot;itemId&quot;: 2,
+          &quot;applicable&quot;: true,
+          &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+        },
+        {
+          &quot;itemId&quot;: 3,
+          &quot;applicable&quot;: true,
+          &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+        }
+      ]
+    }
+  }
+}</pre></section><section class="card"><h3>证据详情 · 示例接入节点乙 <span class="pill danger">发现异常</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>基线核查</dd></div><div><dt>稳定身份 / 地址</dt><dd>资产 ID 1002 · 192.0.2.20</dd></div><div><dt>本次读取时间</dt><dd>2026-01-02T02:55:00Z</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>样例明确核查结论未通过</p><p>读取报告标志不证明模板内容版本与报告时效；未返回模板或报告不能视为通过、不适用。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;assetId&quot;: 1002,
+  &quot;ip&quot;: &quot;192.0.2.20&quot;,
+  &quot;hostname&quot;: &quot;示例接入节点乙&quot;,
+  &quot;status&quot;: &quot;abnormal&quot;,
+  &quot;message&quot;: &quot;样例明确核查结论未通过&quot;,
+  &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+  &quot;facts&quot;: {
+    &quot;report&quot;: {
+      &quot;assetId&quot;: 1002,
+      &quot;templateId&quot;: 101,
+      &quot;run&quot;: {
+        &quot;assetId&quot;: 1002,
+        &quot;templateId&quot;: 101,
+        &quot;passFlag&quot;: &quot;0&quot;
+      }
+    },
+    &quot;readiness&quot;: {
+      &quot;assetId&quot;: 1002,
+      &quot;templateId&quot;: 101,
+      &quot;assetType&quot;: &quot;host&quot;,
+      &quot;templateScopeMatched&quot;: true,
+      &quot;memberCount&quot;: 3,
+      &quot;applicableCount&quot;: 3,
+      &quot;coverageReason&quot;: &quot;APPLICABLE_ITEMS_PRESENT&quot;,
+      &quot;items&quot;: [
+        {
+          &quot;itemId&quot;: 1,
+          &quot;applicable&quot;: true,
+          &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+        },
+        {
+          &quot;itemId&quot;: 2,
+          &quot;applicable&quot;: true,
+          &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+        },
+        {
+          &quot;itemId&quot;: 3,
+          &quot;applicable&quot;: true,
+          &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+        }
+      ]
+    }
+  }
+}</pre></section><section class="card"><h3>证据详情 · 示例设备丙 <span class="pill neutral">未知</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>基线核查</dd></div><div><dt>稳定身份 / 地址</dt><dd>资产 ID 1003 · 192.0.2.30</dd></div><div><dt>本次读取时间</dt><dd>2026-01-02T02:55:00Z</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>未返回本次核查报告，不能计为通过</p><p>读取报告标志不证明模板内容版本与报告时效；未返回模板或报告不能视为通过、不适用。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;assetId&quot;: 1003,
+  &quot;ip&quot;: &quot;192.0.2.30&quot;,
+  &quot;hostname&quot;: &quot;示例设备丙&quot;,
+  &quot;status&quot;: &quot;unknown&quot;,
+  &quot;message&quot;: &quot;未返回本次核查报告，不能计为通过&quot;,
+  &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+  &quot;facts&quot;: {
+    &quot;readiness&quot;: {
+      &quot;assetId&quot;: 1003,
+      &quot;templateId&quot;: null,
+      &quot;coverageReason&quot;: &quot;未分配模板&quot;
+    }
+  }
+}</pre></section><section class="card"><h3>证据详情 · 示例接入节点乙 <span class="pill danger">发现异常</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>漏洞观测</dd></div><div><dt>稳定身份 / 地址</dt><dd>资产 ID 1002 · 192.0.2.20</dd></div><div><dt>本次读取时间</dt><dd>2026-01-02T02:55:00Z</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>有一条样例关联漏洞记录</p><p>只代表已有漏洞观测，不证明扫描覆盖、当前未修复数量或资产无漏洞。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;assetId&quot;: 1002,
+  &quot;ip&quot;: &quot;192.0.2.20&quot;,
+  &quot;hostname&quot;: &quot;示例接入节点乙&quot;,
+  &quot;status&quot;: &quot;abnormal&quot;,
+  &quot;message&quot;: &quot;有一条样例关联漏洞记录&quot;,
+  &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+  &quot;coverage&quot;: &quot;existing_records_only&quot;,
+  &quot;facts&quot;: {},
+  &quot;errors&quot;: [],
+  &quot;findings&quot;: [
+    {
+      &quot;identity&quot;: &quot;VULN-DEMO-01&quot;,
+      &quot;observations&quot;: [
+        {
+          &quot;sourceAssetId&quot;: 1002,
+          &quot;record&quot;: {
+            &quot;id&quot;: &quot;VULN-DEMO-01&quot;,
+            &quot;vulnerabilityId&quot;: &quot;VULN-DEMO-01&quot;,
+            &quot;cveId&quot;: &quot;DEMO-CVE&quot;
+          }
+        }
+      ]
+    }
+  ],
+  &quot;sources&quot;: [
+    {
+      &quot;assetId&quot;: 1002,
+      &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+      &quot;records&quot;: 1
+    }
+  ]
+}</pre></section><section class="card"><h3>证据详情 · 示例业务节点甲 <span class="pill neutral">未知</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>漏洞观测</dd></div><div><dt>稳定身份 / 地址</dt><dd>资产 ID 1001 · 192.0.2.10</dd></div><div><dt>本次读取时间</dt><dd>2026-01-02T02:55:00Z</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>样例查询未返回关联记录；不代表现场没有漏洞</p><p>只代表已有漏洞观测，不证明扫描覆盖、当前未修复数量或资产无漏洞。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;assetId&quot;: 1001,
+  &quot;ip&quot;: &quot;192.0.2.10&quot;,
+  &quot;hostname&quot;: &quot;示例业务节点甲&quot;,
+  &quot;status&quot;: &quot;unknown&quot;,
+  &quot;message&quot;: &quot;样例查询未返回关联记录；不代表现场没有漏洞&quot;,
+  &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+  &quot;facts&quot;: {},
+  &quot;findings&quot;: []
+}</pre></section><section class="card"><h3>证据详情 · 漏洞观测 · 覆盖与明细缺口 <span class="pill neutral">覆盖缺口</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>漏洞观测</dd></div><div><dt>稳定身份 / 地址</dt><dd>派生缺口说明，不是新增资产或检查事实</dd></div><div><dt>本次读取时间</dt><dd>未提供</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>展示层覆盖缺口（非原始检查对象）：
+来源检查结果状态：部分完成
+冻结范围 3 台，该项可按稳定身份关联 2 台；数量差异不由未关联记录或名称推测补齐。</p><p>只代表已有漏洞观测，不证明扫描覆盖、当前未修复数量或资产无漏洞。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下仅为展示层缺口说明，不伪装为来源检查条目。</p><pre>{
+  &quot;status&quot;: &quot;unknown&quot;,
+  &quot;message&quot;: &quot;展示层覆盖缺口（非原始检查对象）：\n来源检查结果状态：部分完成\n冻结范围 3 台，该项可按稳定身份关联 2 台；数量差异不由未关联记录或名称推测补齐。&quot;
+}</pre></section><section class="card"><h3>证据详情 · 样例业务分区规则 <span class="pill danger">发现异常</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>配置关系与业务规则核查</dd></div><div><dt>稳定身份 / 地址</dt><dd>规则 ID RULE-DEMO-A · 192.0.2.10 → 192.0.2.20 · tcp · 端口 443</dd></div><div><dt>本次读取时间</dt><dd>未提供</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>已存模型结论不符合样例规则；不是主动连通性验证</p><p>计算路径、策略结果与业务应用实际响应是不同证据；未执行主动探测。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;ruleId&quot;: &quot;RULE-DEMO-A&quot;,
+  &quot;ruleName&quot;: &quot;样例业务分区规则&quot;,
+  &quot;srcIp&quot;: &quot;192.0.2.10&quot;,
+  &quot;dstIp&quot;: &quot;192.0.2.20&quot;,
+  &quot;port&quot;: 443,
+  &quot;protocol&quot;: &quot;tcp&quot;,
+  &quot;status&quot;: &quot;abnormal&quot;,
+  &quot;message&quot;: &quot;已存模型结论不符合样例规则；不是主动连通性验证&quot;,
+  &quot;facts&quot;: {
+    &quot;path&quot;: {
+      &quot;reachable&quot;: false,
+      &quot;verdict&quot;: &quot;DENY&quot;,
+      &quot;reason&quot;: &quot;样例配置模型结论&quot;
+    }
+  }
+}</pre></section><section class="card"><h3>证据详情 · 样例证据缺口规则 <span class="pill neutral">未知</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>配置关系与业务规则核查</dd></div><div><dt>稳定身份 / 地址</dt><dd>规则 ID RULE-DEMO-B</dd></div><div><dt>本次读取时间</dt><dd>未提供</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>样例缺少完整路径证据，不能判断</p><p>计算路径、策略结果与业务应用实际响应是不同证据；未执行主动探测。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;ruleId&quot;: &quot;RULE-DEMO-B&quot;,
+  &quot;ruleName&quot;: &quot;样例证据缺口规则&quot;,
+  &quot;status&quot;: &quot;unknown&quot;,
+  &quot;message&quot;: &quot;样例缺少完整路径证据，不能判断&quot;
+}</pre></section><section class="card"><h3>证据详情 · 样例不适用规则 <span class="pill neutral">不适用</span></h3><dl class="grid two"><div><dt>检查维度</dt><dd>配置关系与业务规则核查</dd></div><div><dt>稳定身份 / 地址</dt><dd>规则 ID RULE-DEMO-C</dd></div><div><dt>本次读取时间</dt><dd>未提供</dd></div><div><dt>上游观测时间</dt><dd>当前结果未提供独立上游观测时间；逐信号 observedAt 见安全证据</dd></div><div><dt>SOC 状态评估时间 / 时间基准</dt><dd>未提供 / 未提供</dd></div></dl><p>已存适用性结论为不适用，不作正常计数</p><p>计算路径、策略结果与业务应用实际响应是不同证据；未执行主动探测。</p><p>未提供针对性处置建议；不据结果说明自动判断根因。</p><p>业务影响、责任人和优先级未提供。以下为完整的已知字段安全投影，不是完整原始响应；未知 / 敏感字段不输出。</p><pre>{
+  &quot;ruleId&quot;: &quot;RULE-DEMO-C&quot;,
+  &quot;ruleName&quot;: &quot;样例不适用规则&quot;,
+  &quot;status&quot;: &quot;not_applicable&quot;,
+  &quot;message&quot;: &quot;已存适用性结论为不适用，不作正常计数&quot;
+}</pre></section><section class="card"><h2>建议 · 未执行</h2><p>以下仅整理来源建议或给出复核方向，不代表已执行整改、已验证根因或已分派责任。</p><p>当前结果没有提供针对性建议；不自动编造修复措施。</p><p><strong>整理建议，未执行：</strong>先核对来源缺口、范围身份与证据时效，再在相同授权范围内复查；异常结论与未完成项分别处理。未记录责任人、优先级或业务影响时，应由有权人员补充，而不是由渲染器推测。</p></section><section class="card"><h2>来源缺口与适用边界</h2><ul><li>漏洞观测：冻结范围 3 台，该项可按稳定身份关联 2 台；数量差异不由未关联记录或名称推测补齐。</li></ul><ul><li>未知 4 条、失败 0 条仍保留；缺失和未检查不作为零或正常。</li><li>不适用仅采用来源明确结论，不由空模板、空报告或无规则推断。</li><li>未执行主动探测；没有报告时效、模板版本、扫描覆盖、业务实际响应或人工复核证据时，均保持未核实。</li><li>安全投影会排除未知与敏感字段；安全附录不替代受控保存的原始事实，不能据未显示字段认定其不存在。</li></ul></section><section class="card"><h2>安全附录 · 全部已存条目</h2><p>保留全部已存条目（含正常项）及已知事实字段，不截断列表；派生覆盖缺口另列在明细与缺口章节。未知原始 response、凭据、请求头与 raw 字段不进入屏幕、打印或附录。本页不会运行输入脚本或调用外部网络。</p><pre>{
+  &quot;kind&quot;: &quot;routine&quot;,
+  &quot;status&quot;: &quot;incomplete&quot;,
+  &quot;run_id&quot;: &quot;STYLE-DEMO-NOT-A-BUSINESS-RUN&quot;,
+  &quot;generated_at&quot;: &quot;2026-01-02T03:01:00Z&quot;,
+  &quot;message&quot;: &quot;离线格式测试样例：合成资料，未查询SOC、未执行新的业务运行，不作为现场巡检或故障结论。&quot;,
+  &quot;scope&quot;: {
+    &quot;frozen_at&quot;: &quot;2026-01-02T03:00:00Z&quot;,
+    &quot;count&quot;: 3,
+    &quot;requested&quot;: {
+      &quot;assetIds&quot;: [
+        1001,
+        1002,
+        1003
+      ]
+    }
+  },
+  &quot;checks&quot;: [
+    {
+      &quot;name&quot;: &quot;status&quot;,
+      &quot;kind&quot;: &quot;status&quot;,
+      &quot;status&quot;: &quot;incomplete&quot;,
+      &quot;counts&quot;: {
+        &quot;normal&quot;: 1,
+        &quot;abnormal&quot;: 1,
+        &quot;unknown&quot;: 1,
+        &quot;not_applicable&quot;: 0,
+        &quot;failed&quot;: 0
+      },
+      &quot;items&quot;: [
+        {
+          &quot;assetId&quot;: 1001,
+          &quot;ip&quot;: &quot;192.0.2.10&quot;,
+          &quot;hostname&quot;: &quot;示例业务节点甲&quot;,
+          &quot;status&quot;: &quot;normal&quot;,
+          &quot;message&quot;: &quot;样例上报状态在线；不是当前现场状态&quot;,
+          &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+          &quot;facts&quot;: {
+            &quot;online&quot;: &quot;online&quot;,
+            &quot;onlineBasis&quot;: &quot;REPORTED&quot;,
+            &quot;stateEvidence&quot;: {
+              &quot;online&quot;: &quot;online&quot;,
+              &quot;timeBasis&quot;: &quot;UTC&quot;,
+              &quot;evaluatedAt&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+              &quot;signals&quot;: [
+                {
+                  &quot;validity&quot;: &quot;CURRENT&quot;,
+                  &quot;supportsOnline&quot;: true,
+                  &quot;observedAt&quot;: &quot;2026-01-02T02:54:00Z&quot;
+                }
+              ]
+            }
+          }
+        },
+        {
+          &quot;assetId&quot;: 1002,
+          &quot;ip&quot;: &quot;192.0.2.20&quot;,
+          &quot;hostname&quot;: &quot;示例接入节点乙&quot;,
+          &quot;status&quot;: &quot;abnormal&quot;,
+          &quot;message&quot;: &quot;样例已保存离线标记；原因未确定&quot;,
+          &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+          &quot;facts&quot;: {
+            &quot;online&quot;: &quot;offline&quot;
+          }
+        },
+        {
+          &quot;assetId&quot;: 1003,
+          &quot;ip&quot;: &quot;192.0.2.30&quot;,
+          &quot;hostname&quot;: &quot;示例设备丙&quot;,
+          &quot;status&quot;: &quot;unknown&quot;,
+          &quot;message&quot;: &quot;没有足够状态证据，保留未知&quot;,
+          &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+          &quot;facts&quot;: {}
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;baseline&quot;,
+      &quot;kind&quot;: &quot;baseline&quot;,
+      &quot;status&quot;: &quot;incomplete&quot;,
+      &quot;counts&quot;: {
+        &quot;normal&quot;: 1,
+        &quot;abnormal&quot;: 1,
+        &quot;unknown&quot;: 1,
+        &quot;not_applicable&quot;: 0,
+        &quot;failed&quot;: 0
+      },
+      &quot;items&quot;: [
+        {
+          &quot;assetId&quot;: 1001,
+          &quot;ip&quot;: &quot;192.0.2.10&quot;,
+          &quot;hostname&quot;: &quot;示例业务节点甲&quot;,
+          &quot;status&quot;: &quot;normal&quot;,
+          &quot;message&quot;: &quot;样例明确核查结论通过&quot;,
+          &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+          &quot;facts&quot;: {
+            &quot;report&quot;: {
+              &quot;assetId&quot;: 1001,
+              &quot;templateId&quot;: 101,
+              &quot;run&quot;: {
+                &quot;assetId&quot;: 1001,
+                &quot;templateId&quot;: 101,
+                &quot;passFlag&quot;: &quot;1&quot;
+              }
+            },
+            &quot;readiness&quot;: {
+              &quot;assetId&quot;: 1001,
+              &quot;templateId&quot;: 101,
+              &quot;assetType&quot;: &quot;host&quot;,
+              &quot;templateScopeMatched&quot;: true,
+              &quot;memberCount&quot;: 3,
+              &quot;applicableCount&quot;: 3,
+              &quot;coverageReason&quot;: &quot;APPLICABLE_ITEMS_PRESENT&quot;,
+              &quot;items&quot;: [
+                {
+                  &quot;itemId&quot;: 1,
+                  &quot;applicable&quot;: true,
+                  &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+                },
+                {
+                  &quot;itemId&quot;: 2,
+                  &quot;applicable&quot;: true,
+                  &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+                },
+                {
+                  &quot;itemId&quot;: 3,
+                  &quot;applicable&quot;: true,
+                  &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+                }
+              ]
+            }
+          }
+        },
+        {
+          &quot;assetId&quot;: 1002,
+          &quot;ip&quot;: &quot;192.0.2.20&quot;,
+          &quot;hostname&quot;: &quot;示例接入节点乙&quot;,
+          &quot;status&quot;: &quot;abnormal&quot;,
+          &quot;message&quot;: &quot;样例明确核查结论未通过&quot;,
+          &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+          &quot;facts&quot;: {
+            &quot;report&quot;: {
+              &quot;assetId&quot;: 1002,
+              &quot;templateId&quot;: 101,
+              &quot;run&quot;: {
+                &quot;assetId&quot;: 1002,
+                &quot;templateId&quot;: 101,
+                &quot;passFlag&quot;: &quot;0&quot;
+              }
+            },
+            &quot;readiness&quot;: {
+              &quot;assetId&quot;: 1002,
+              &quot;templateId&quot;: 101,
+              &quot;assetType&quot;: &quot;host&quot;,
+              &quot;templateScopeMatched&quot;: true,
+              &quot;memberCount&quot;: 3,
+              &quot;applicableCount&quot;: 3,
+              &quot;coverageReason&quot;: &quot;APPLICABLE_ITEMS_PRESENT&quot;,
+              &quot;items&quot;: [
+                {
+                  &quot;itemId&quot;: 1,
+                  &quot;applicable&quot;: true,
+                  &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+                },
+                {
+                  &quot;itemId&quot;: 2,
+                  &quot;applicable&quot;: true,
+                  &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+                },
+                {
+                  &quot;itemId&quot;: 3,
+                  &quot;applicable&quot;: true,
+                  &quot;applicabilityReason&quot;: &quot;MATCHED&quot;
+                }
+              ]
+            }
+          }
+        },
+        {
+          &quot;assetId&quot;: 1003,
+          &quot;ip&quot;: &quot;192.0.2.30&quot;,
+          &quot;hostname&quot;: &quot;示例设备丙&quot;,
+          &quot;status&quot;: &quot;unknown&quot;,
+          &quot;message&quot;: &quot;未返回本次核查报告，不能计为通过&quot;,
+          &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+          &quot;facts&quot;: {
+            &quot;readiness&quot;: {
+              &quot;assetId&quot;: 1003,
+              &quot;templateId&quot;: null,
+              &quot;coverageReason&quot;: &quot;未分配模板&quot;
+            }
+          }
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;vulnerabilities&quot;,
+      &quot;kind&quot;: &quot;vulnerabilities&quot;,
+      &quot;status&quot;: &quot;incomplete&quot;,
+      &quot;counts&quot;: {
+        &quot;normal&quot;: 0,
+        &quot;abnormal&quot;: 1,
+        &quot;unknown&quot;: 1,
+        &quot;not_applicable&quot;: 0,
+        &quot;failed&quot;: 0
+      },
+      &quot;items&quot;: [
+        {
+          &quot;assetId&quot;: 1002,
+          &quot;ip&quot;: &quot;192.0.2.20&quot;,
+          &quot;hostname&quot;: &quot;示例接入节点乙&quot;,
+          &quot;status&quot;: &quot;abnormal&quot;,
+          &quot;message&quot;: &quot;有一条样例关联漏洞记录&quot;,
+          &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+          &quot;coverage&quot;: &quot;existing_records_only&quot;,
+          &quot;facts&quot;: {},
+          &quot;errors&quot;: [],
+          &quot;findings&quot;: [
+            {
+              &quot;identity&quot;: &quot;VULN-DEMO-01&quot;,
+              &quot;observations&quot;: [
+                {
+                  &quot;sourceAssetId&quot;: 1002,
+                  &quot;record&quot;: {
+                    &quot;id&quot;: &quot;VULN-DEMO-01&quot;,
+                    &quot;vulnerabilityId&quot;: &quot;VULN-DEMO-01&quot;,
+                    &quot;cveId&quot;: &quot;DEMO-CVE&quot;
+                  }
+                }
+              ]
+            }
+          ],
+          &quot;sources&quot;: [
+            {
+              &quot;assetId&quot;: 1002,
+              &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+              &quot;records&quot;: 1
+            }
+          ]
+        },
+        {
+          &quot;assetId&quot;: 1001,
+          &quot;ip&quot;: &quot;192.0.2.10&quot;,
+          &quot;hostname&quot;: &quot;示例业务节点甲&quot;,
+          &quot;status&quot;: &quot;unknown&quot;,
+          &quot;message&quot;: &quot;样例查询未返回关联记录；不代表现场没有漏洞&quot;,
+          &quot;observed_at&quot;: &quot;2026-01-02T02:55:00Z&quot;,
+          &quot;facts&quot;: {},
+          &quot;findings&quot;: []
+        }
+      ]
+    },
+    {
+      &quot;name&quot;: &quot;reachability&quot;,
+      &quot;kind&quot;: &quot;reachability&quot;,
+      &quot;status&quot;: &quot;incomplete&quot;,
+      &quot;counts&quot;: {
+        &quot;normal&quot;: 0,
+        &quot;abnormal&quot;: 1,
+        &quot;unknown&quot;: 1,
+        &quot;not_applicable&quot;: 1,
+        &quot;failed&quot;: 0
+      },
+      &quot;items&quot;: [
+        {
+          &quot;ruleId&quot;: &quot;RULE-DEMO-A&quot;,
+          &quot;ruleName&quot;: &quot;样例业务分区规则&quot;,
+          &quot;srcIp&quot;: &quot;192.0.2.10&quot;,
+          &quot;dstIp&quot;: &quot;192.0.2.20&quot;,
+          &quot;port&quot;: 443,
+          &quot;protocol&quot;: &quot;tcp&quot;,
+          &quot;status&quot;: &quot;abnormal&quot;,
+          &quot;message&quot;: &quot;已存模型结论不符合样例规则；不是主动连通性验证&quot;,
+          &quot;facts&quot;: {
+            &quot;path&quot;: {
+              &quot;reachable&quot;: false,
+              &quot;verdict&quot;: &quot;DENY&quot;,
+              &quot;reason&quot;: &quot;样例配置模型结论&quot;
+            }
+          }
+        },
+        {
+          &quot;ruleId&quot;: &quot;RULE-DEMO-B&quot;,
+          &quot;ruleName&quot;: &quot;样例证据缺口规则&quot;,
+          &quot;status&quot;: &quot;unknown&quot;,
+          &quot;message&quot;: &quot;样例缺少完整路径证据，不能判断&quot;
+        },
+        {
+          &quot;ruleId&quot;: &quot;RULE-DEMO-C&quot;,
+          &quot;ruleName&quot;: &quot;样例不适用规则&quot;,
+          &quot;status&quot;: &quot;not_applicable&quot;,
+          &quot;message&quot;: &quot;已存适用性结论为不适用，不作正常计数&quot;
+        }
+      ]
+    }
+  ]
+}</pre></section><p class="source-boundary">本文仅公开声明的业务字段与安全投影，不是完整上游原始响应；源观测时间、响应时间与执行时间分别记录。未知不表示正常，支持线索不等于确认根因，报告生成不等于故障已修复或业务恢复。</p><footer class="foot"><span>安全展示投影 SHA-256：ced4a07a8b0cdbf57bee047db69c68ac196676a6bb14e6f698614255b4be4965</span><span>仅呈现本次已保存结果 · 未记录不等于不存在</span></footer></main></body></html>

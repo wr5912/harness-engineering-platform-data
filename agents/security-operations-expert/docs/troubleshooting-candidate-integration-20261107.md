@@ -1,55 +1,43 @@
-# 故障只读编排 Candidate 接入与研发交接
+# 故障只读编排接入与验收
 
-目标为 `EXP-security-operations-expert-027-f-r3ba4799b0cb7`，保留 `inspection-027-schedule-acceptance`。本轮只维护该 Candidate、共用用例和必要 MCP 分组；不改 DSH、不另建报告系统。源码与配置保存不等于实际装载或业务通过。
+将业务访问异常和设备不在线排查迁移到 MCP 原生 LFX 组合，替换旧 Java 诊断入口。当前来源为 `EXP-security-operations-expert-027-f-r3ba4799b0cb7`，验证实例为 `inspection-027-schedule-acceptance`；两组合保持草稿，通过实例绑定使用，没有发布为正式工具或 Research Release。
 
-## 来源与证据边界
+## 使用入口与执行合同
 
-- [迁移前基线报告](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-baad80f3-fc6d-4e4a-ab92-428a1f1f34d9/report.md>)：U-FLT-013/014 机器结果 2/2 passed，封存来源 matched；未请求独立证据复核。封存 Candidate SHA 为 `916dc2c32d68ea1f5298cd78266606e60094796dfd5e6ccfdb5a0c1de9985df9`，封存 evaluation_sha256 为 `9cdfa1fcd08933e66106b5ffccd4badeba6537ecf33ba4c675d544e43a3afd91`。旧 Run 和冻结输入保持原样，不用它证明本轮新接入通过。
-- 两包正式 show 修正与隔离实验各自见[访问包回执](<../../../mcp/compositions/troubleshooting-business-access/docs/management-receipts.json>)、[离线包回执](<../../../mcp/compositions/troubleshooting-device-offline/docs/management-receipts.json>)。本轮回读确认根批次及 offline 嵌套批次均保留官方类型和 `show:true`；未改引擎。研发的 974/984ms 是冻结 bundle 内存副本隔离实验，不是正式资产或业务实例运行通过。离线 34/34 是研发反馈，不覆盖本轮新增代码与断言。
-- 既有[报告基础技术证据](<html-report-acceptance-20261107/report-acceptance.md>)按其冻结阶段解释；历史技术测试不充当本轮结果。运行报告不带开发进度或硬编码 runtime_validation。
+主助手依据 [fault-analysis Skill](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/workspace/.agents/skills/fault-analysis/SKILL.md)选择 [业务访问排查](../../../mcp/compositions/troubleshooting-business-access/docs/README.md)或[设备不在线排查](../../../mcp/compositions/troubleshooting-device-offline/docs/README.md)。简单事实查询保留原路线；缺少对象、观察设备或明确时间窗口时先澄清，不启动排查。公开连接名为 `troubleshooting-compositions`，发布原始工具名，由 DSH 添加一次命名空间。
 
-## 本轮变更路径
+输入按本次授权冻结，资产 ID 与 IP 同时核对，重复 IP 不能串用资产。工具异步返回真实 Run，后续通过公开查询读取进度和原产物。事实在节点完成后先持久化，再推进后继；固定步骤由 LFX 和 HepBatch 执行，助手负责语义判断和异常说明。查询超时、空数据、来源时区未知和能力缺失分别保留。
 
-所有业务 Case 仍只维护在 [evaluation.md](<../evaluation.md>)；本说明不复制用例输入和预期。
+仅调用现有 SOC 只读接口；不主动执行 TCP、HTTP、ICMP、配置变更或修复。当前管理响应、实时监听、DNS、HTTP/TLS、路由等原子不足时，结果保持 `incomplete`，不把 SOC 在线或流程执行完成当作故障已定位。
 
-| 分组 | 实际文件 |
-| --- | --- |
-| 接入能力声明 | [harness.yaml](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/harness.yaml>) |
-| 主助手行为 | [业务 AGENTS.md](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/workspace/AGENTS.md>)、[fault-analysis Skill](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/workspace/.agents/skills/fault-analysis/SKILL.md>) |
-| 原角色接线 | [主 Preset](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/presets/security-operations-expert/agent.cordis.yml>)、[故障子 Preset](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/presets/security-operations-fault-analysis/agent.cordis.yml>) |
-| 权限边界 | [Guard](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-operations-guard.mjs>)、[角色矩阵](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/role-tool-matrix.yaml>) |
-| 原报告入口及来源 | [security-report-runtime.ts](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-runtime.ts>)、[security-report-source.mjs](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-source.mjs>)、[security-report-source.d.mts](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-source.d.mts>) |
-| Guard 技术回归 | [根 Guard 测试](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/security-operations-guard.test.mjs>)、[MCP 作用域测试](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/mcp-scope-guard.test.mjs>)、[子 Guard 测试](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/tests/security-operations-child-guard.test.mjs>) |
-| 新报告来源回归 | [troubleshooting 报告测试](<../tests/security-report-troubleshooting.test.mjs>)；既有[入口/巡检测试](<../tests/security-report.test.mjs>)、[主助手/legacy 测试](<../tests/security-report-main.test.mjs>)和[客户端测试](<../tests/security-report-client.test.mjs>)保留为兼容回归，未因新功能放宽旧断言 |
-| 共用业务验收 | [evaluation.md](<../evaluation.md>)仅追加 U-FLT-015/016/017，保留原用例及 U-FLT-014 空会话拒绝；三个新增用例均未设置 fast |
-| 研究假设与入口 | [hypothesis.md](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/hypothesis.md>)、[智能体索引](<../README.md>)及本文 |
-| 管理侧 MCP 定义 | [manager.json](<../../../mcp/manager.json>)的新分组、[访问包定义](<../../../mcp/compositions/troubleshooting-business-access/composition.json>)、[离线包定义](<../../../mcp/compositions/troubleshooting-device-offline/composition.json>)均由公开工具保存，不手写凭据或实例 HOME |
-| 正式包既有根因修正（本轮回读保留） | [访问流程](<../../../mcp/compositions/troubleshooting-business-access/flow.json#L11>)、[离线两层流程](<../../../mcp/compositions/troubleshooting-device-offline/flow.json#L10-L25>)；[访问回归源码](<../../../mcp/compositions/troubleshooting-business-access/tests/contract.test.mjs>)、[离线回归源码](<../../../mcp/compositions/troubleshooting-device-offline/tests/contract.test.mjs>)保留可见元数据断言，未运行 |
-| 历史来源索引适用说明 | [迁移前入口](<troubleshooting-readonly-discovery-20261107-session-917d55d5/README.md>)、[报告基础入口](<html-report-acceptance-20261107/report-acceptance.md>)明确不代表本轮源码状态 |
+## 原始报告
 
-## 报告接入合同
+[报告入口](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-runtime.ts)和[来源解析](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-source.mjs)只接受本主会话真实绑定的原 Run。新流程运行中、失败、未知或来源冲突时拒绝导出，不回退旧分析。历史同步启动回执仍须与原工具、流程、会话及规范 Run 查询一致；新调用使用异步 Run，避免大回执被原生对话裁剪后丢失来源。
 
-主助手只对完整访问异常或设备不在线问题创建两类只读编排 Run；简单已有事实查询保持原路线。源目/设备、端口与带时区的绝对窗口沿真实输入冻结，缺项询问，未知启动不重放；故障子角色仍不创建 Run。新分组权限不包含主动探测、配置写入、处置或旧 Java 诊断。
+保存原 HTML 的 filename、UTF-8 字节和 SHA-256，经既有原生附件扩展预览、下载，不让模型重绘。重复下载复用同一原附件，不重新查询 SOC 或执行诊断。无新编排活动时保留既有 legacy 分析报告；空会话拒绝造报告。巡检原报告保持独立兼容。用户下载指令按句子识别，完整 Run 编号不会因固定字符窗口被误拒。
 
-新 fault 报告必须从本 Root 会话原生成功调用回执绑定 troubleshooting 原 Run，查其当前外层完成状态及唯一原 HTML。默认跟随最新尝试；显式 run_id 仍须属于本会话真实绑定的原编排，不能借外部或 inspection 标识，也不能把指定较早结果称为最新。失败、进行中、未知、来源冲突或原产物校验失败均不能自动回退 legacy。
+用户后续提供的两份参考已落实为[生成端新版格式与离线验证](report-format-update-20261107.md)；不重绘已保存原 HTML。该样式任务没有重载、发布或改实例草稿绑定，不能将样例与离线浏览器结果当作当前实例新报告验收。
 
-原 get_run/get_artifact 能力对应的公开工具原名为 get_composition_run/get_composition_artifact；只使用当前真实目录解析的身份，不重复添加 namespace。原 HTML 不套模板、不由模型重绘；filename、字节数和摘要与原产物一致。实际接口未提供服务端 SHA 时，明确摘要来自原 UTF-8 body 计算，不冒称服务器提供。重复下载只复用真实 attachment_id/原文件，不查 SOC、不重新执行或生成；本会话新编排来源须使默认旧附件失效。inspection 保持独立兼容；fault 完全无新编排来源时才使用 legacy 子结果和主助手补证导出，空会话不能造旧报告。
+## 构建交接与验证状态
 
-原生 Client 下载扩展不改，沿用既有文件、MIME、会话和摘要校验。源码/类型声明不替代 [security-report-runtime.mjs](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/candidate/dsh/managed/security-report-runtime.mjs>) 的受控构建；未手写编译物或 [change.yaml](<../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/change.yaml>) 的构建回执。
+平台更新通过项目 `platform/dsh-deploy` 完成；用户授权后中断在途管理会话并快速恢复，未修改 DSH 源码。实例通过公开生命周期工具定向重载，保留 HOME、Session、模型、端口和计划，并核对当前来源与真实装载回执；每次来源更新后重新绑定草稿，保存文件不作为运行生效证据。
 
-## 管理保存回执
+- 两包当前合同测试共 **56/56** 通过；报告及入口兼容回归 **400/400** 通过。Mock 只替换外部 SOC，不能证明真实业务结论。
+- 官方 LFX 使用正式 flow/TS、仅替换外部 SOC 边界，两根流程执行通过；真实画布覆盖条件标签、批次与嵌套展开及返回。原始证据保存在程序工作区 `platform/plugin/test/evidence/troubleshooting-compositions-20261107/`。
+- 管理助手公开 dry 两草稿均完成、零上游请求；真实 SOC 两类 Run 均执行完成并生成原 HTML，运行中节点事实可经公开接口读取。业务结果均保留缺口，未宣称故障修复或根因成立。
+- 巡检、legacy 及两类新故障报告均在真实原生会话完成预览、两次下载；原 HTML 字节摘要一致、页面异常为零。异步报告重复取回只调用导出，新增 SOC 查询与诊断启动均为零。
+- 完整业务接入回归最终为平台 **204/204**、容器适配 **23/23** 通过；此前短租约与网关时序失败保留为历史观察。独立威胁子会话断言失败仍未解决，不将本次技术通过外推为该业务通过。
 
-- 新分组配置：公开 saveConfiguration，proposal `af805a21-f50c-470a-a3a1-478574a0d556`；输入 revision `f1fe835c6ef05da164abf64437b2a4f14ef1f32f3963ae2d7790f9e858edf3f8`，返回并回读 revision `453de6785b123978cafa7e1b623945ccbc1f8ad6457ba2c08230eebf9d0ac8b7`。只增加 troubleshooting-compositions，成员来自 platform-compositions，工具仅保存公开原名；其他组未覆盖。
-- 共用 Case：公开 create-preview/create 后保存 U-FLT-015/016/017，proposal 依次为 `9359b627-b1af-42e1-9fe4-1d37a5d195f8`、`16bc0dea-d064-4d7f-9b24-a308f1d6e5b8`、`2476c8a2-b788-4bd3-8ff7-e00b373dcf7d`；本线程最后 Case 保存回执的内容 SHA-256 为 `5bc3bfbdf5cfd4713c397f4ab33d89517c0106fa138bca965d992a9a619663de`，不是一次新评测结果；后续并行改动以当前文件与研发冻结来源为准。
-- 本轮两包均公开 saveCompositionDraft 成功：访问 proposal `1be8277a-add1-45cf-8fb7-7387553bc481`，目录 revision 由 `3b73063d82557c00baac61d37078a94e30ff78b1d7f39e05e2be08812992c72b` 更新至 `17b1583f769119b3cf5b69e014dfb3085d66f29133450f6d11687fe51bb19b6f`；离线 proposal `39f88437-1e39-4ba7-b514-40d0562c4c4d`，返回最终目录 revision `48aefd0e50cd802e9ae79776eccc256950431f83118aafed1c8b6b42c7b7def7`。描述只保留冻结输入、只读边界和同次原HTML，不发布或绑定。目录 revision 不代替源码构建与正式引擎复验。
-- 本管理任务及两个子线程已停止 Candidate、evaluation 和包文件写入。新建重复 Guard 测试已删除，必要断言只留原 Candidate 技术测试；无测试后台任务。
+## Evaluation 与研究结论
 
-## 未验证边界与研发交接
+Case 的唯一来源是[共用 evaluation.md](../evaluation.md)。本轮核心集为 U-FLT-012、U-FLT-016、U-FLT-017、U-INS-024、U-QA-016，各 Case 内保持原多轮顺序；原报告重复下载另核对新增 SOC 调用为零。
 
-本轮不执行测试、源码构建、官方 LFX 探针、评测、绑定、发布、Git 或部署，不操作指定实例的重载；不对 SOC/设备配置写入。公开回读原有 R11 Run/Artifact 仅核对查询接口形状，不当作新功能测试。分组保存不证明两诊断工具已在业务实例可调用；最后公开观察仍为 pending_reload。
+[迁移前基线](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-baad80f3-fc6d-4e4a-ab92-428a1f1f34d9/report.md)仅解释自身冻结来源。首轮统一验收 [run-c627519b-d871-49ce-8d9b-4f1a893850a3](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-c627519b-d871-49ce-8d9b-4f1a893850a3/report.md)为 failed，且并行资产变化使封存来源不匹配；保留其真实失败，不覆盖成后续结果。其后 [run-99282789-7ff3-435e-b6dd-403eb12b9caf](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-99282789-7ff3-435e-b6dd-403eb12b9caf/report.md) 因同一 Candidate 被并行修改、实例重载而出现五项错误，来源不匹配，保留失败。
 
-共享报告文件同时出现非本任务的 inspection 多 Run 选择器及意图词表增量，已原样保留，没有回退或声称由本任务引入；本线程新增 fault 来源与原附件复用边界与其共存，未统一构建验证。收到并发文件变更拒绝时，子线程重新读取后只做本任务的局部替换。研发冻结时须包括这些并行差异，不把旧编译物当作本轮源码。
+稳定来源后的 [run-ea5f30b0-19ac-408e-b72d-4beabb28d4c1](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-ea5f30b0-19ac-408e-b72d-4beabb28d4c1/report.md) 来源核对相符：四项执行完成、一项错误；同一路由自评为两项通过、一项失败、两项结论不足。巡检与缺参澄清/取消通过；咨询转查询遗漏用户可见分页范围；离线候选发现反复扩大查询并超过等待期限；业务访问未取得真实连接前置而转用离线诊断，不能据报告导出成功判为访问正向通过。以上失败与原判断保留。
 
-正式源文件官方引擎复验、节点事实真实先落盘可见性、受管报告构建、平台激活、定向实例重载、草稿绑定及新 Session 业务验收均交研发。真实管理响应和主动原子缺失时，应按原事实输出 incomplete，不能据根流程执行完成宣称业务通过。
+最终统一验收由管理助手在稳定来源后分五个独立 Run 完成，五项 `source_verification` 均为 `matched`：[U-FLT-012 / run-f074c620-03fc-493f-839f-71613498cd72](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-f074c620-03fc-493f-839f-71613498cd72/report.md) 因 `evaluation-interrupted` 取消并判为 `inconclusive`，[U-FLT-016 / run-0602631c-d836-43fe-9549-4ca5cd9a5928](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-0602631c-d836-43fe-9549-4ca5cd9a5928/report.md) 因执行错误判为 `inconclusive`；[U-FLT-017 / run-3b429607-ccad-42e7-b8ac-fa99f4e78996](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-3b429607-ccad-42e7-b8ac-fa99f4e78996/report.md)、[U-INS-024 / run-0199035d-4293-4a8b-9e02-58b26c45aedd](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-0199035d-4293-4a8b-9e02-58b26c45aedd/report.md)、[U-QA-016 / run-b6b4d547-bede-423c-a9dc-ed79aa593634](../../../evolution/experiments/EXP-security-operations-expert-027-f-r3ba4799b0cb7/runs/run-b6b4d547-bede-423c-a9dc-ed79aa593634/report.md) 完成且通过。整体 Decision 仍为 `continue`，两项真实失败保留，不改写为通过。
 
-待统一运行的技术回归包括上述新报告来源及原报告三份测试、两包合同、相关 Guard 测试。已有子 Guard 的 threat 单次断言与当前实现存在静态不一致，本轮保留无关代码/标准，不据此宣称全量测试通过；研发若运行全量应分开归因。业务用例及必要 inspection/legacy/主助手补证/原生下载回归只引用共用用例源，不在本文另造用例或执行结果。
+最终 Run 使用的是验收开始时读取为 `current/verified` 的实例装载回执；随后并行任务继续修改同一 Candidate，最新实例状态已变为 `pending_reload`，因此早先回执只证明采集时的装载状态，不延伸为当前状态。本轮不因该并行漂移再次重载或重跑最终 Evaluation。
+
+当前 Decision 保持 `continue`：迁移技术路径可用，真实外部证据缺口与语义业务验收分别判断。

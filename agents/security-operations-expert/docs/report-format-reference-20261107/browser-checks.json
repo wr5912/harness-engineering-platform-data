@@ -1,0 +1,655 @@
+{
+  "schema_version": 1,
+  "kind": "synthetic-offline-browser-checks",
+  "agent_id": "security-operations-expert",
+  "experiment_context": "EXP-security-operations-expert-027-f-r3ba4799b0cb7",
+  "started_at": "2026-11-07T09:34:16.506Z",
+  "completed_at": "2026-11-07T09:34:39.256Z",
+  "status": "passed",
+  "boundary": "仅用固定合成 fixtures 调用当前生产纯 render 接口，真实 Chrome 打开新生成本地 HTML；不是业务 Run，不证明实例装载、SOC 状态、诊断正确、修复或恢复。未打开用户附件或平台页面。",
+  "source_sha256": {
+    "mcp/src/reports/common.ts": "809546ffb8093e4925b9361676003729018939df5592a6ff17ed43fd58344fd3",
+    "mcp/src/reports/inspection.ts": "604f5cf7a647f4ac9603a8df1bfecf3764b566adb8524135458c890284579b5f",
+    "mcp/src/reports/troubleshooting.ts": "4affce562aa88acfcc0fb783f8d5054c7a2a48f28eaa6b3abf6c8166537c1224",
+    "agents/security-operations-expert/tests/security-report-reference-fixtures.mjs": "d884174f1dd3385de432d4746205361812ceb50d26bc11253d92310bda5fe00e",
+    "agents/security-operations-expert/tests/security-report-reference-browser.mjs": "08072e6bde34e86902219d868d1cc8f153421807e735b6a651f6b2585c8177c2"
+  },
+  "checks": [
+    {
+      "report": "inspection",
+      "viewport": "desktop",
+      "name": "初始视口无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 711,
+      "detail": {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "desktop",
+      "name": "生产CSP、离线合成标识与单一标题",
+      "status": "passed",
+      "elapsed_ms": 103,
+      "detail": {
+        "synthetic_disclaimer_visible": true,
+        "h1_count": 1,
+        "csp_not_bypassed": true
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "desktop",
+      "name": "巡检KPI、基线原值与组合筛选",
+      "status": "passed",
+      "elapsed_ms": 321,
+      "detail": {
+        "outer_run_execution": "未提供外层执行回执",
+        "source_check_result": "部分完成",
+        "vulnerability_metric": "1 条观测",
+        "baseline_pass_flags": {
+          "192.0.2.10": "1",
+          "192.0.2.20": "0"
+        },
+        "device_matches": 1,
+        "baseline_matches": 1
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "desktop",
+      "name": "巡检零匹配不当作通过",
+      "status": "passed",
+      "elapsed_ms": 33
+    },
+    {
+      "report": "inspection",
+      "viewport": "desktop",
+      "name": "巡检Enter与空格聚焦对应证据",
+      "status": "passed",
+      "elapsed_ms": 226
+    },
+    {
+      "report": "inspection",
+      "viewport": "desktop",
+      "name": "交互后无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 4,
+      "detail": {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "desktop",
+      "name": "独立打印全量展开与opener隔离",
+      "status": "passed",
+      "elapsed_ms": 514,
+      "detail": {
+        "source_entries": 11,
+        "printed_rows": 12,
+        "opener_null": true,
+        "retained_zero_match_filter": true
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "初始视口无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 56,
+      "detail": {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "生产CSP、离线合成标识与单一标题",
+      "status": "passed",
+      "elapsed_ms": 65,
+      "detail": {
+        "synthetic_disclaimer_visible": true,
+        "h1_count": 1,
+        "csp_not_bypassed": true
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "故障四页签点击与ARIA",
+      "status": "passed",
+      "elapsed_ms": 385
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "故障页签左右与HomeEnd",
+      "status": "passed",
+      "elapsed_ms": 167
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "原因选择上下与HomeEnd或真实缺失空态",
+      "status": "passed",
+      "elapsed_ms": 196,
+      "detail": {
+        "causes": 2
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "证据dialog精确记录与关闭恢复焦点",
+      "status": "passed",
+      "elapsed_ms": 231
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "过程证据入口与焦点恢复",
+      "status": "passed",
+      "elapsed_ms": 188
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "交互后无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 2,
+      "detail": {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "desktop",
+      "name": "独立打印全量展开与opener隔离",
+      "status": "passed",
+      "elapsed_ms": 527,
+      "detail": {
+        "chapters": [
+          "1. 现象",
+          "2. 链路",
+          "3. 过程",
+          "4. 处置恢复",
+          "5. 完整判断依据",
+          "6. 完整安全证据",
+          "7. 缺口边界",
+          "8. 安全来源附录"
+        ],
+        "evidence_entries": 3,
+        "causes": 2,
+        "opener_null": true,
+        "retained_closure_tab": true
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "初始视口无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 267,
+      "detail": {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "生产CSP、离线合成标识与单一标题",
+      "status": "passed",
+      "elapsed_ms": 40,
+      "detail": {
+        "synthetic_disclaimer_visible": true,
+        "h1_count": 1,
+        "csp_not_bypassed": true
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "故障四页签点击与ARIA",
+      "status": "passed",
+      "elapsed_ms": 320
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "故障页签左右与HomeEnd",
+      "status": "passed",
+      "elapsed_ms": 148
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "原因选择上下与HomeEnd或真实缺失空态",
+      "status": "passed",
+      "elapsed_ms": 6,
+      "detail": {
+        "causes": 0,
+        "boundary": "没有结构化原因，不伪造原因选择器"
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "证据dialog精确记录与关闭恢复焦点",
+      "status": "passed",
+      "elapsed_ms": 338
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "过程证据入口与焦点恢复",
+      "status": "passed",
+      "elapsed_ms": 175
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "交互后无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 2,
+      "detail": {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "desktop",
+      "name": "独立打印全量展开与opener隔离",
+      "status": "passed",
+      "elapsed_ms": 768,
+      "detail": {
+        "chapters": [
+          "1. 现象",
+          "2. 链路",
+          "3. 过程",
+          "4. 处置恢复",
+          "5. 完整判断依据",
+          "6. 完整安全证据",
+          "7. 缺口边界",
+          "8. 安全来源附录"
+        ],
+        "evidence_entries": 2,
+        "causes": 0,
+        "opener_null": true,
+        "retained_closure_tab": true
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "mobile",
+      "name": "初始视口无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 157,
+      "detail": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "mobile",
+      "name": "生产CSP、离线合成标识与单一标题",
+      "status": "passed",
+      "elapsed_ms": 47,
+      "detail": {
+        "synthetic_disclaimer_visible": true,
+        "h1_count": 1,
+        "csp_not_bypassed": true
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "mobile",
+      "name": "巡检KPI、基线原值与组合筛选",
+      "status": "passed",
+      "elapsed_ms": 393,
+      "detail": {
+        "outer_run_execution": "未提供外层执行回执",
+        "source_check_result": "部分完成",
+        "vulnerability_metric": "1 条观测",
+        "baseline_pass_flags": {
+          "192.0.2.10": "1",
+          "192.0.2.20": "0"
+        },
+        "device_matches": 1,
+        "baseline_matches": 1
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "mobile",
+      "name": "巡检零匹配不当作通过",
+      "status": "passed",
+      "elapsed_ms": 23
+    },
+    {
+      "report": "inspection",
+      "viewport": "mobile",
+      "name": "巡检Enter与空格聚焦对应证据",
+      "status": "passed",
+      "elapsed_ms": 363
+    },
+    {
+      "report": "inspection",
+      "viewport": "mobile",
+      "name": "交互后无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 1,
+      "detail": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      }
+    },
+    {
+      "report": "inspection",
+      "viewport": "mobile",
+      "name": "独立打印全量展开与opener隔离",
+      "status": "passed",
+      "elapsed_ms": 1261,
+      "detail": {
+        "source_entries": 11,
+        "printed_rows": 12,
+        "opener_null": true,
+        "retained_zero_match_filter": true
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "初始视口无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 22,
+      "detail": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "生产CSP、离线合成标识与单一标题",
+      "status": "passed",
+      "elapsed_ms": 72,
+      "detail": {
+        "synthetic_disclaimer_visible": true,
+        "h1_count": 1,
+        "csp_not_bypassed": true
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "故障四页签点击与ARIA",
+      "status": "passed",
+      "elapsed_ms": 369
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "故障页签左右与HomeEnd",
+      "status": "passed",
+      "elapsed_ms": 145
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "原因选择上下与HomeEnd或真实缺失空态",
+      "status": "passed",
+      "elapsed_ms": 122,
+      "detail": {
+        "causes": 2
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "证据dialog精确记录与关闭恢复焦点",
+      "status": "passed",
+      "elapsed_ms": 174
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "过程证据入口与焦点恢复",
+      "status": "passed",
+      "elapsed_ms": 203
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "交互后无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 2,
+      "detail": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      }
+    },
+    {
+      "report": "fault",
+      "viewport": "mobile",
+      "name": "独立打印全量展开与opener隔离",
+      "status": "passed",
+      "elapsed_ms": 443,
+      "detail": {
+        "chapters": [
+          "1. 现象",
+          "2. 链路",
+          "3. 过程",
+          "4. 处置恢复",
+          "5. 完整判断依据",
+          "6. 完整安全证据",
+          "7. 缺口边界",
+          "8. 安全来源附录"
+        ],
+        "evidence_entries": 3,
+        "causes": 2,
+        "opener_null": true,
+        "retained_closure_tab": true
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "初始视口无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 96,
+      "detail": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "生产CSP、离线合成标识与单一标题",
+      "status": "passed",
+      "elapsed_ms": 42,
+      "detail": {
+        "synthetic_disclaimer_visible": true,
+        "h1_count": 1,
+        "csp_not_bypassed": true
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "故障四页签点击与ARIA",
+      "status": "passed",
+      "elapsed_ms": 228
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "故障页签左右与HomeEnd",
+      "status": "passed",
+      "elapsed_ms": 119
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "原因选择上下与HomeEnd或真实缺失空态",
+      "status": "passed",
+      "elapsed_ms": 5,
+      "detail": {
+        "causes": 0,
+        "boundary": "没有结构化原因，不伪造原因选择器"
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "证据dialog精确记录与关闭恢复焦点",
+      "status": "passed",
+      "elapsed_ms": 183
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "过程证据入口与焦点恢复",
+      "status": "passed",
+      "elapsed_ms": 180
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "交互后无整页横向溢出",
+      "status": "passed",
+      "elapsed_ms": 1,
+      "detail": {
+        "viewport": 390,
+        "document": 390,
+        "body": 390
+      }
+    },
+    {
+      "report": "device-offline",
+      "viewport": "mobile",
+      "name": "独立打印全量展开与opener隔离",
+      "status": "passed",
+      "elapsed_ms": 346,
+      "detail": {
+        "chapters": [
+          "1. 现象",
+          "2. 链路",
+          "3. 过程",
+          "4. 处置恢复",
+          "5. 完整判断依据",
+          "6. 完整安全证据",
+          "7. 缺口边界",
+          "8. 安全来源附录"
+        ],
+        "evidence_entries": 2,
+        "causes": 0,
+        "opener_null": true,
+        "retained_closure_tab": true
+      }
+    },
+    {
+      "report": "all",
+      "viewport": "all",
+      "name": "无HTTP外链或越界file请求",
+      "status": "passed",
+      "elapsed_ms": 0
+    },
+    {
+      "report": "all",
+      "viewport": "all",
+      "name": "无JS或CSP错误",
+      "status": "passed",
+      "elapsed_ms": 0
+    },
+    {
+      "report": "all",
+      "viewport": "all",
+      "name": "测试期间生产源码与fixtures未漂移",
+      "status": "passed",
+      "elapsed_ms": 3
+    }
+  ],
+  "runtime_errors": [],
+  "blocked_requests": [],
+  "http_requests": [],
+  "request_failures": [],
+  "artifacts": [
+    "inspection-format-preview.html",
+    "inspection-print-preview.html",
+    "troubleshooting-format-preview.html",
+    "troubleshooting-print-preview.html",
+    "device-offline-format-preview.html",
+    "device-offline-print-preview.html",
+    "technical-boundaries.md",
+    "inspection-desktop.png",
+    "fault-desktop.png",
+    "inspection-mobile.png",
+    "fault-mobile.png"
+  ],
+  "browser": {
+    "executable": "/usr/bin/google-chrome",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "bypass_csp": false,
+    "screenshots": {
+      "desktop": "full-page",
+      "mobile": "viewport-390x844"
+    },
+    "version": "149.0.7827.155"
+  },
+  "inspection_provenance": {
+    "input_sha256": "8c626335d7f0c1d68b13aa0cf6247ebb891b6573ae77139895492e2072b3f3e8",
+    "html_sha256": "186d411fe6f126d8ce5a04759b0436ee5a268e5430bb063076c6b66f7186cedb",
+    "print_sha256": "54b0259a0c46b486aaef3e8e959395d23bbd89628e7a92b79aa84bb9eeae4a9e",
+    "offline_note_present": true
+  },
+  "fault_provenance": {
+    "input_sha256": "b3c4d5921af50e1590b162f1753037e59fc02861956fcabae9656c409eaeac8d",
+    "html_sha256": "0ce49fe1f74f7fa6792b180f64fcb3607aa32bde96adcb0f427bed5b9e2ae213",
+    "print_sha256": "ce185fee8c80603939818dce7488fb2bd6a0ca2cbcec8fff4fc77321bb17db6d",
+    "offline_note_present": true
+  },
+  "device-offline_provenance": {
+    "input_sha256": "fa30688c4911fd81e0cc2db235e68998fa828c527ccbebffdd19dfdab464390a",
+    "html_sha256": "3edf86fe6d671db41c338073f92df4cc1acda9a2fe53b47c3c6e7b19dd33cc57",
+    "print_sha256": "2e23200bc5b6a153fd4d6d01cce67f98e0937cdee58f771606032853b913afd0",
+    "offline_note_present": true
+  },
+  "summary": {
+    "passed": 53,
+    "failed": 0,
+    "runtime_errors": 0,
+    "blocked_requests": 0,
+    "http_requests": 0,
+    "request_failures": 0
+  },
+  "technical_only": true
+}
