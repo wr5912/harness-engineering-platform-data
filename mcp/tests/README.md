@@ -4,6 +4,8 @@
 
 - [构建与巡检回归](test.mjs)
 - [策略与应急流程及恢复回归](policy-response.test.mjs)
+- [巡检运维报告模型](inspection-operations.offline.test.mjs)
+- [同源聊天与HTML产物合同](inspection-chat-artifact.offline.test.mjs)
 
 `bindings/` 保存指定实例的冻结草稿联调回执，由平台管理动作维护。
 

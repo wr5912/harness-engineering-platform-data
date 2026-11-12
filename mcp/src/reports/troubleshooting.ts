@@ -110,7 +110,8 @@ function renderScope(report: Value): string {
   return `<section class="pane"><h3>本次真实对象与范围</h3><dl class="kv">${objectRows}${pair('协议', input.protocol)}${pair('端口', input.port)}${pair('查询窗口起点（非源观测）', input.from)}${pair('查询窗口终点（非源观测）', input.to)}${pair('范围冻结时间（非源观测）', scope.frozen_at)}${pair('原运行', report.run_id)}</dl><p class="tiny muted">请求对象与已存范围分别列示；scope 可在对象定位前保存，仅有范围字段不证明已唯一解析，核实依据见对象定位事实。不扩大到 NAT 候选、其他源或其他端口。</p><h4>已存报告保存路径</h4>${present(savedPath) ? `<p>${e(text(savedPath))}</p>` : empty('未记录报告保存路径；不从运行编号、附件名或检查节点路径推测。')}</section>`
 }
 function boundaries(report: Value): string {
-  const active = report.active_checks_executed === false ? '明确记录：本次未执行主动检查。' : report.active_checks_executed === true ? '已存字段声明执行过主动检查；具体范围与结果只以对应已存证据为准。' : '是否执行主动检查：未记录。'
+  const probes = report.active_checks_executed ?? report.active_probes_executed
+  const active = probes === false ? '明确记录：本次未执行主动检查（只读）。' : probes === true ? '已存字段声明执行过主动检查；具体范围与结果只以对应已存证据为准。' : '是否执行主动检查：未记录。'
   return `<section class="pane"><h3>诊断边界</h3><p>${e(text(report.message, '未保存独立诊断总结；本报告不生成新结论。'))}</p><p class="alert warn">支持条件不是确认根因；未知不是反驳。SOC 在线不代表业务正常，无响应不直接判断断电，配置模型不代表本次实际响应。</p><p>${e(active)}</p><p class="tiny muted">只整理当前已保存结果，不发起查询、重新诊断、主动探测或修复；未保存恢复验收记录时不显示恢复通过。</p></section>`
 }
 function businessPaths(report: Value): string {
@@ -187,6 +188,50 @@ function printChapter(number: number, title: string, content: string): string {
   return `<section class="card print-chapter"><h2>${e(`${number}. ${title}`)}</h2>${content}</section>`
 }
 
+/** 首屏七项：一分钟内判断发生什么、影响哪里、根因到哪一步、现在做什么。 */
+function firstScreen(report: Value): string {
+  const c = asObject(report.unified_conclusion)
+  if (!Object.keys(c).length) return `<section class="card"><h2>首屏结论</h2>${empty('本报告未包含统一结论对象；请按后续事实与缺口章节阅读，不据此认定根因。')}</section>`
+  const root = asObject(c.rootCause), impact = asObject(c.impactLevel), scope = asObject(c.impactScope)
+  const primary = asObject(c.primaryRecommendation), escalation = asObject(c.escalation)
+  const card = (no: number, label: string, body: string) => `<article class="pane"><h3>${e(no + '. ' + label)}</h3>${body}</article>`
+  return `<section class="card overview" id="first-screen"><div class="row"><h2>首屏结论</h2>${badge(text(c.stopStatusCode, 'UNKNOWN'))}</div>
+    <p class="headline">${e(text(c.incidentSummary, '未保存故障概况'))}</p>
+    <div class="cols">
+      ${card(1, '当前状态', `<p><b>${e(text(c.currentStatus, 'UNKNOWN(未知)'))}</b></p><p class="tiny muted">停止状态：${e(text(c.stopStatus, '—'))}</p>`)}
+      ${card(2, '影响等级', `<p><b>${e(text(impact.label, '—'))}</b></p><p class="tiny muted">依据：影响范围=${e(text(impact.basis?.scope, '—'))}，业务重要性=${impact.basis?.businessCritical === true ? '高' : '未确认'}，持续时间=${impact.basis?.durationHours == null ? '未知' : e(impact.basis.durationHours + ' 小时')}。与本条根因置信度分开。</p>`)}
+      ${card(3, '故障概况', `<p>${e(text(c.incidentSummary, '未保存'))}</p>`)}
+      ${card(4, '影响范围', `<p>${e(text(scope.text, '未确认影响范围'))}</p><p class="tiny muted">${e(text(scope.boundary, '边界未声明'))}</p>`)}
+      ${card(5, '当前根因判断', `<p><b>${e(text(root.title, '根因尚未确认'))}</b> ${badge(text(root.statusCode, 'UNKNOWN'))}</p><p class="tiny muted">支持事实 ${Array.isArray(root.supportingFacts) ? root.supportingFacts.length : 0} 项 · 反驳事实 ${Array.isArray(root.contradictingFacts) ? root.contradictingFacts.length : 0} 项 · 缺口 ${Array.isArray(root.gaps) ? root.gaps.length : 0} 项。${e(text(root.note, ''))}</p>`)}
+      ${card(6, '首要建议', `<p><b>${e(text(primary.title, '未保存建议'))}</b>（${e(text(primary.category, '—'))}）</p><p class="tiny muted">责任方：${e(text(primary.owner, '—'))} · 状态：${e(text(primary.stateLabel, '—'))}<br>前置：${e((primary.prerequisites ?? []).join('；') || '—')}<br>授权：${e(text(primary.authorization, '—'))}<br>完成标准：${e(text(primary.completionCriteria, '—'))}<br>复验：${e(text(primary.verificationMethod, '—'))}</p>`)}
+      ${card(7, '升级条件', `<p>${escalation.required === true ? `需要升级：${e(text(escalation.to, '二线'))}` : '当前无需升级'}</p><p class="tiny muted">触发：${e(text(escalation.trigger, '—'))}<br>条件：${e((escalation.conditions ?? []).join('；') || '—')}</p>`)}
+    </div>
+    <p class="tiny muted">根因状态非 CONFIRMED 时不使用“已确认根因”表述；无记录不写作未监听，旁路不作为源端实测，检查完成不等于根因确认。</p></section>`
+}
+
+/** 第二层：两端状态、连通、监听/防火墙、路径策略、日志告警、旁路佐证、时间窗、候选状态。 */
+function layers2(report: Value): string {
+  const c = asObject(report.unified_conclusion)
+  const evidence = records(report.items)
+  const rows = evidence.map(item => `<tr><td>${e(checkName(item))}</td><td>${badge(item.status)}</td><td>${e(text(item.execution_status, 'unknown'))}</td><td>${e(text(item.observed_at, '未取得可核观测时间'))}</td><td>${e(text(item.source_query_window?.scope ?? '—'))}</td></tr>`).join('')
+  const side = records(report.side_channels)
+  const sideBlock = side.length
+    ? side.map(item => `<article class="pane"><strong>${e(text(item.label, '旁路'))}</strong> ${badge(item.channel === 'PLATFORM_ONLY' ? 'PLATFORM_ONLY' : 'CORROBORATION')}<p>${e(text(item.summary, ''))}</p></article>`).join('')
+    : empty('本次未取得旁路佐证；旁路缺失不影响直接结论，也不得用其他视角替代直接链路判断。')
+  const candidates = records(report.causes).map(cause => `<tr><td>${e(text(cause.title, cause.id))}</td><td>${badge(cause.status)}</td><td>${e((cause.support?.evidence_ids ?? []).length + ' / ' + (cause.refutation?.evidence_ids ?? []).length)}</td></tr>`).join('')
+  return `<section class="card"><h2>分层核对（第二层）</h2>
+    <div class="pane"><h3>直接检查状态与时间窗</h3><table><thead><tr><th>检查</th><th>证据状态</th><th>动作状态</th><th>观测时间</th><th>来源窗口</th></tr></thead><tbody>${rows || `<tr><td colspan="5">未保存检查事实</td></tr>`}</tbody></table>
+      <p class="tiny muted">动作状态与证据状态分开保存：TIMEOUT/失败/部分结果可以与成功证据同时存在，不互相覆盖。</p></div>
+    <div class="pane"><h3>候选状态</h3><table><thead><tr><th>候选</th><th>状态</th><th>支持/反驳</th></tr></thead><tbody>${candidates || `<tr><td colspan="3">未保存候选</td></tr>`}</tbody></table></div>
+    <div class="pane"><h3>旁路佐证分区</h3><p class="tiny muted">直接链路（A-B）与旁路（A-C/B-C）分区呈现；CORROBORATION(旁路佐证) 只能旁证，PLATFORM_ONLY(仅平台视角) 不代表源端实测，均不得替代直接结论。</p>${sideBlock}</div>
+    <div class="pane"><h3>建议清单</h3>${[asObject(c.primaryRecommendation), ...records(c.followupRecommendations)].filter(item => Object.keys(item).length).map(item => `<article class="pane"><strong>${e(text(item.recommendationId, '—'))} ${e(text(item.title, ''))}</strong> ${badge(item.state ?? 'PENDING')}<p class="tiny muted">${e(text(item.category, ''))} · 责任方 ${e(text(item.owner, '—'))} · 授权 ${e(text(item.authorization, '—'))} · 风险 ${e(text(item.risk, '—'))}</p></article>`).join('') || empty('未保存建议')}</div>
+    <div class="pane"><h3>部分失败与未覆盖</h3>${(() => {
+      const label = (list: any[]) => (list ?? []).map(item => typeof item === 'string' ? item : String(item?.check ?? '未命名检查')).join('、') || '无'
+      const pf = c.partialFailures ?? {}
+      return `<p>失败：${e(label(pf.failed))}<br>能力不可用：${e(label(pf.unavailable))}<br>未执行：${e(label(pf.notExecuted))}<br>无记录/成功无精确匹配：${e(label(pf.noData))}<br>有数据但证据不足：${e(label(pf.unknownEvidence))}</p>`
+    })()}<p class="tiny muted">保留未执行、未配置、不支持、权限失败、超时、部分结果与查询无匹配的具体原因；不以空结果推断正常。</p></div></section>`
+}
+
 /** 只整理已保存安全事实；不修改输入、不执行诊断、不生成根因或恢复结论。 */
 export function renderTroubleshootingReport(result: Record<string, any>): string {
   const report = asObject(safeProjection(result))
@@ -197,13 +242,15 @@ export function renderTroubleshootingReport(result: Record<string, any>): string
   const processContent = `<h2>排查过程与证据审计</h2><p class="muted">执行状态、已存事实状态、业务结果、源观测时间与记录时间分开呈现。未保存的执行状态不从检查记录存在与否推断。</p>${processTable(evidence, true)}${gaps(report, evidence)}<details class="pane"><summary>完整安全证据与来源附录</summary><p class="tiny muted">逐项安全证据可通过“查看已保存检查证据”离线打开；以下附录不含完整原始响应。</p>${safeSources(report, evidence, true)}</details>`
   const closureContent = `<h2>处置与恢复验收</h2>${closure(report)}`
   const tabs = [
-    { key: 'symptoms', label: '① 故障现象', content: symptomContent },
-    { key: 'chains', label: '② 故障链与关联', content: chainContent },
-    { key: 'process', label: '③ 排查过程', content: processContent },
-    { key: 'closure', label: '④ 处置与恢复', content: closureContent },
+    { key: 'first', label: '① 首屏结论', content: firstScreen(report) },
+    { key: 'layers', label: '② 分层核对', content: layers2(report) },
+    { key: 'symptoms', label: '③ 故障现象', content: symptomContent },
+    { key: 'chains', label: '④ 故障链与关联', content: chainContent },
+    { key: 'process', label: '⑤ 排查过程', content: processContent },
+    { key: 'closure', label: '⑥ 处置与恢复', content: closureContent },
   ]
-  const content = `${overview(report)}<section class="card"><div class="tabs" role="tablist" aria-label="故障报告页签">${tabs.map((tab, index) => `<button type="button" class="tab${index === 0 ? ' active' : ''}" data-tab="${e(tab.key)}" id="tab-${e(tab.key)}" role="tab" aria-controls="view-${e(tab.key)}" aria-selected="${index === 0 ? 'true' : 'false'}" tabindex="${index === 0 ? '0' : '-1'}">${e(tab.label)}</button>`).join('')}</div>${tabs.map((tab, index) => `<section data-view="${e(tab.key)}" id="view-${e(tab.key)}" role="tabpanel" aria-labelledby="tab-${e(tab.key)}" tabindex="0"${index === 0 ? '' : ' hidden'}>${tab.content}</section>`).join('')}</section>${evidence.map(entry => `<template id="evidence-content-${e(entry.id)}">${factDetail(entry)}</template>`).join('')}`
-  const printContent = `${overview(report)}${printChapter(1, '现象', `<section class="pane"><h3>已保存故障现象</h3>${savedEntries(report.symptoms, '未保存独立结构化故障现象；不补造原始报障。')}</section><section class="pane"><h3>附加异常</h3>${savedEntries(report.additional_anomalies, '未保存独立附加异常；不以原因或告警数替代。')}</section>${renderScope(report)}${boundaries(report)}`)}
+  const content = `<section class="card"><div class="tabs" role="tablist" aria-label="故障报告页签">${tabs.map((tab, index) => `<button type="button" class="tab${index === 0 ? ' active' : ''}" data-tab="${e(tab.key)}" id="tab-${e(tab.key)}" role="tab" aria-controls="view-${e(tab.key)}" aria-selected="${index === 0 ? 'true' : 'false'}" tabindex="${index === 0 ? '0' : '-1'}">${e(tab.label)}</button>`).join('')}</div>${tabs.map((tab, index) => `<section data-view="${e(tab.key)}" id="view-${e(tab.key)}" role="tabpanel" aria-labelledby="tab-${e(tab.key)}" tabindex="0"${index === 0 ? '' : ' hidden'}>${tab.content}</section>`).join('')}</section>${evidence.map(entry => `<template id="evidence-content-${e(entry.id)}">${factDetail(entry)}</template>`).join('')}`
+  const printContent = `${firstScreen(report)}${layers2(report)}${printChapter(1, '现象', `<section class="pane"><h3>已保存故障现象</h3>${savedEntries(report.symptoms, '未保存独立结构化故障现象；不补造原始报障。')}</section><section class="pane"><h3>附加异常</h3>${savedEntries(report.additional_anomalies, '未保存独立附加异常；不以原因或告警数替代。')}</section>${renderScope(report)}${boundaries(report)}`)}
     ${printChapter(2, '链路', chains(report))}
     ${printChapter(3, '过程', processTable(evidence, false))}
     ${printChapter(4, '处置恢复', closure(report))}

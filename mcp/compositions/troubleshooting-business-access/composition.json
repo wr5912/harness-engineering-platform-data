@@ -1,18 +1,324 @@
 {
   "id": "troubleshooting-business-access",
-  "draft": {
+  "versions": [
+    {
+      "versionId": "4dafc8e371dfe8df304d94efeb25bbcb84f0d03c976a06f7b487e3b14aeceacf",
+      "publishedAt": "2026-11-09T09:19:01.073Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "SOC优先的逐轮业务访问故障排查：先冻结源、目标、协议端口、时间和真实执行点，按资产、心跳、告警、拓扑路径、监听与策略证据循环取证；按需使用受控探测，区分设备不在线、网络不可达、策略阻挡与无法判定，输出证据链、缺口、建议和复验。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "08b9ab159283aad05011165c17c5e9fa0573c42930215c842328f29cb392032e",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "master": "ai-soc-master",
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "c86ac107c620ced14d431a8440176af45faa489acd45e35195199e66846c04ad"
+      },
+      "implementationDigest": "08b9ab159283aad05011165c17c5e9fa0573c42930215c842328f29cb392032e"
+    },
+    {
+      "versionId": "cc5f5dccc42e5fa1d10b4429e00dc2d3cf45c5d9e285ca1a31b1fda4ad09f3f2",
+      "publishedAt": "2026-11-10T12:27:07.924Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：冻结源目标、五元组与时间后，每轮按已核前置、候选六态与区分价值选下一项只读检查，四出口与真实回边。无规则或冲突才受控提议，经剧本GET目录、冻结参数、实时Schema与预算去重校验。疑似离线按需复用已发布设备可用性固定版本，仅同目标可核原子并入候选。同诊断可 resume_run_id 持久延续，未知执行不重发；不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "ee74156665752c4867d311c8a557435b6347dc0dd6000cf9e28445cf5441aaf6",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "38dc510933a7f4ae21d1b98c9fba6664e70b3b2760cf5c72f4978fd6b60be23e"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "34ba4357e44e16881d12d73c76a4ba1f85af5d9f2a009189d0932cffe37d1b0d"
+      },
+      "implementationDigest": "ee74156665752c4867d311c8a557435b6347dc0dd6000cf9e28445cf5441aaf6"
+    },
+    {
+      "versionId": "b4a8e6581e45a223e45e4d5acd282881c95749b51c9e131aac70f02d880d8b33",
+      "publishedAt": "2026-11-10T12:43:26.299Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：冻结源目标、五元组与时间后，每轮按已核前置、候选六态与区分价值选下一项只读检查，四出口与真实回边。无规则或冲突才受控提议，按剧本GET目录、冻结参数、实时Schema与预算去重校验；SOC返回的NO_RECORD、空策略、未确认路径与会话/NAT缺口、日志窗来源分别保留，不作因果确认。疑似离线按需复用固定版设备可用性，仅同目标可核原子并入候选。同诊断可resume_run_id持久延续，未知执行不重发；不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "9d3695bb2e98ab2db94431c7d8b992358f6222bdf8f270d5be69f858cc71a0cc",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "38dc510933a7f4ae21d1b98c9fba6664e70b3b2760cf5c72f4978fd6b60be23e"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "42b3a625d7c3fa0266048d088317f01e2cc83f3f0d564fc4eebf1d6e09546374"
+      },
+      "implementationDigest": "9d3695bb2e98ab2db94431c7d8b992358f6222bdf8f270d5be69f858cc71a0cc"
+    },
+    {
+      "versionId": "91ef0213299e0eede5ac95ad41e89e466b9c5b33a4cd77bf5079c99c3b768417",
+      "publishedAt": "2026-11-10T12:54:44.036Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：冻结源目标、五元组与时间后，每轮按已核前置、候选六态与区分价值选下一项只读检查，四出口与真实回边。无规则或冲突才受控提议，按剧本GET目录、冻结参数、实时Schema与预算去重校验；模型流完成原因与失败码脱敏后留存，未通过则不执行。SOC返回的NO_RECORD、空策略、未确认路径与会话/NAT缺口、日志窗来源分别保留，不作因果确认。疑似离线按需复用固定版设备可用性，仅同目标可核原子并入候选。同诊断可resume_run_id持久延续，未知执行不重发；不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "07221e265e5eb0f06fc89f615241cb54a72f11280f5807a32c82ab29a2bbb065",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "38dc510933a7f4ae21d1b98c9fba6664e70b3b2760cf5c72f4978fd6b60be23e"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "42b3a625d7c3fa0266048d088317f01e2cc83f3f0d564fc4eebf1d6e09546374"
+      },
+      "implementationDigest": "07221e265e5eb0f06fc89f615241cb54a72f11280f5807a32c82ab29a2bbb065"
+    },
+    {
+      "versionId": "bd06e10fd6d2f7fb7b1eb1a43ce4ce57da3249a98653ed388260d1d4c45b3496",
+      "publishedAt": "2026-11-10T13:01:17.745Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：冻结源目标、五元组与时间后，每轮按已核前置、候选六态与区分价值选下一项只读检查，四出口与真实回边。无规则或冲突才受控提议，按剧本GET目录、冻结参数、实时Schema与预算去重校验；模型按原生内容块请求并留存完成原因与脱敏失败码，未通过则不执行。SOC返回的NO_RECORD、空策略、未确认路径与会话/NAT缺口、日志窗来源分别保留，不作因果确认。疑似离线按需复用固定版设备可用性，仅同目标可核原子并入候选。同诊断可resume_run_id持久延续，未知执行不重发；不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "b0b83ccee8e8691f9a23889b92576b803cba021b3549a1e2d41365ca5464947b",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "38dc510933a7f4ae21d1b98c9fba6664e70b3b2760cf5c72f4978fd6b60be23e"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "42b3a625d7c3fa0266048d088317f01e2cc83f3f0d564fc4eebf1d6e09546374"
+      },
+      "implementationDigest": "b0b83ccee8e8691f9a23889b92576b803cba021b3549a1e2d41365ca5464947b"
+    },
+    {
+      "versionId": "039424eb177ed4afe1030ca282b21a39c2213dada905aa90fe0fd96bc173e65d",
+      "publishedAt": "2026-11-11T03:50:11.420Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：统一结论对象（七项首屏、建议生命周期、旁路分区、部分失败分存）与分层展开；无规则或冲突才受控提议并校验。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "1aaa19742dd8eb3d8d7d23936f006c0ba48ba2dde3657980ebd61e58da74b0c3",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "38dc510933a7f4ae21d1b98c9fba6664e70b3b2760cf5c72f4978fd6b60be23e"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "0ed553437f3b0318331f6efa3e761d79f2fd31c5ac0e312c8929f966dbe2dad0"
+      },
+      "implementationDigest": "1aaa19742dd8eb3d8d7d23936f006c0ba48ba2dde3657980ebd61e58da74b0c3"
+    },
+    {
+      "versionId": "2e5699409ce4fb350c67aa73672297a4654d560594d8b32b4ca658099c36ce09",
+      "publishedAt": "2026-11-11T03:52:31.203Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：统一结论对象（七项首屏、建议生命周期、旁路分区、部分失败分存）与分层展开；无规则或冲突才受控提议并校验。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "adafa456315ca5a891b9b342354facc1f62ea45580e2c1079f6364fe7ac099c2",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "a98b0cd599703d6d16cacca7f1eb816ec312bfdb4f00e208aaac583a96f14929"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "0ed553437f3b0318331f6efa3e761d79f2fd31c5ac0e312c8929f966dbe2dad0"
+      },
+      "implementationDigest": "adafa456315ca5a891b9b342354facc1f62ea45580e2c1079f6364fe7ac099c2"
+    },
+    {
+      "versionId": "dff3d11f8c941ee69f521d90ec67bddbaaa4146c073b443f86c648f9ba2ca60b",
+      "publishedAt": "2026-11-11T12:08:37.084Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：统一结论对象与七项首屏；失败/未执行/不可用/无匹配分存；提议异常或中止收口为 unknown 报告；源未匹配不阻断已唯一目标的只读检查。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "e315d4074ca2e2fec94ec4d4f06930d442f0b497593a0d483599311eec10834f",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "2db4c468d27fd9ce0d3ec646e63dc2f640897554a8d19b0ea51513e8fd04f788"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "13c1a640ebe37643ebf727e5a74753a726d2c23c9cff0488ce00e9c0724e9366"
+      },
+      "implementationDigest": "e315d4074ca2e2fec94ec4d4f06930d442f0b497593a0d483599311eec10834f"
+    },
+    {
+      "versionId": "991d1298d716b289efa79940459100920e179f2da62b4021e6befaf0cab3f2bc",
+      "publishedAt": "2026-11-11T12:38:59.559Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：紧凑首屏与统一结论对象；失败/未执行/不可用/无匹配分存；提议独立预算收口；源未匹配不阻断已唯一目标的只读检查。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "1c665725dbac7549266ea04c222e0440bc0b55537788b44f28e3887513ee19c0",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "2495b34d8980e427e7b8e5dd8cd431e598dca1a4af030f4a00356a97f6b844e4"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "4004111991545bb98f8ca0c6dcf6a21cca905bd8692595e3d7ef172f779e22ac"
+      },
+      "implementationDigest": "1c665725dbac7549266ea04c222e0440bc0b55537788b44f28e3887513ee19c0"
+    },
+    {
+      "versionId": "044098ae2f385fd0e5d149d15d591d0babfed53ce4846f236d9ac424c71699a8",
+      "publishedAt": "2026-11-11T13:02:07.192Z",
+      "config": {
+        "toolName": "diagnose_business_access",
+        "title": "业务访问故障排查",
+        "description": "逐轮业务访问诊断：紧凑首屏与统一结论；五类部分失败分存；提议独立预算收口；双端成功不报虚假身份缺口；源未匹配不阻断已唯一目标。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "ee8080df2b6cadd42144a2e896e99e5e71dc89d10d86a682cd4aea59c0409a1a",
+        "workflow": "troubleshooting-business-access",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "master": "ai-soc-master"
+        },
+        "options": {
+          "fixedDependencies": [
+            {
+              "compositionId": "troubleshooting-device-offline",
+              "versionId": "eb89d4874eb51110362cfcd03b41f86ab7ae4ca6ac6b24c4e30116f794ffc119"
+            }
+          ]
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "905ce4180102ce23256a8dd60b36bb7bc93f7ddf755acfec8c2f7cb55be3a244"
+      },
+      "implementationDigest": "ee8080df2b6cadd42144a2e896e99e5e71dc89d10d86a682cd4aea59c0409a1a"
+    }
+  ],
+  "published": {
     "toolName": "diagnose_business_access",
     "title": "业务访问故障排查",
-    "description": "按唯一源、目标、精确协议端口及绝对时间窗口读取SOC状态、固定快照告警与配置路径，保留来源和未知缺口；报告按同次Run读取原HTML。不主动探测、配置写入或修复，不以未知判断正常。",
+    "description": "逐轮业务访问诊断：紧凑首屏与统一结论；五类部分失败分存；提议独立预算收口；双端成功不报虚假身份缺口；源未匹配不阻断已唯一目标。只读，不探测、不写配置、不处置。",
     "connectionId": "platform-compositions",
     "readonly": true,
+    "implementation": "ee8080df2b6cadd42144a2e896e99e5e71dc89d10d86a682cd4aea59c0409a1a",
     "workflow": "troubleshooting-business-access",
     "connections": {
-      "master": "ai-soc-master",
       "detect": "ai-soc-detect",
-      "graph": "ai-soc-graph"
+      "graph": "ai-soc-graph",
+      "master": "ai-soc-master"
+    },
+    "options": {
+      "fixedDependencies": [
+        {
+          "compositionId": "troubleshooting-device-offline",
+          "versionId": "eb89d4874eb51110362cfcd03b41f86ab7ae4ca6ac6b24c4e30116f794ffc119"
+        }
+      ]
     },
     "kind": "workflow",
-    "engine": "lfx"
-  }
+    "engine": "lfx",
+    "flowDigest": "905ce4180102ce23256a8dd60b36bb7bc93f7ddf755acfec8c2f7cb55be3a244",
+    "publishedAt": "2026-11-11T13:02:07.192Z"
+  },
+  "publishedVersionId": "044098ae2f385fd0e5d149d15d591d0babfed53ce4846f236d9ac424c71699a8"
 }

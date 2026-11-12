@@ -106,22 +106,60 @@
         "flowDigest": "9c2a3a91f9c4e99dd37e0e3e7c3ebb836a35a273a344829074140f9f891c1afb"
       },
       "implementationDigest": "55cec2472ebef4a0334d25d99fa9d7bcf1cef6ee388e2a936432eefd3d507c21"
+    },
+    {
+      "versionId": "d1d5f6ff25b189881e52339dd9fc0ca44d7dba5871224ec2a50926e3dde3c46d",
+      "publishedAt": "2026-11-10T08:27:34.258Z",
+      "config": {
+        "toolName": "inspection_vulnerabilities",
+        "title": "漏洞检查",
+        "description": "读取SOC已有漏洞，完整成功空结果为没有漏洞；失败和未完成独立保留，不发扫描。",
+        "connectionId": "platform-compositions",
+        "implementation": "2cd0a69a0f8c9873224a9a207ef83b8219e3fe93f1a6fe5a99d6e37fd3d52a9b",
+        "workflow": "inspection-vulnerabilities",
+        "connections": {
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "71d45d25375a5a464927e45edf594f41b7c41f4b910a82abd24f8581945b5591"
+      },
+      "implementationDigest": "2cd0a69a0f8c9873224a9a207ef83b8219e3fe93f1a6fe5a99d6e37fd3d52a9b"
+    },
+    {
+      "versionId": "b50fc27c711b4ea910da3bf043fb874422662e787c25b89f976096ca7cd28ed7",
+      "publishedAt": "2026-11-10T11:59:38.649Z",
+      "config": {
+        "toolName": "inspection_vulnerabilities",
+        "title": "漏洞检查",
+        "description": "读取SOC已有漏洞，完整成功空结果为没有漏洞；失败和未完成独立保留，不发扫描。",
+        "connectionId": "platform-compositions",
+        "implementation": "28a52494705a1a63cc0a3d6790a4ce0552f47b63f30a62a34ac3420fb5db7a39",
+        "workflow": "inspection-vulnerabilities",
+        "connections": {
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "6310be4fa7fac73855ed04fed4b0d76ee8855cf254946e9220056942fbd95236"
+      },
+      "implementationDigest": "28a52494705a1a63cc0a3d6790a4ce0552f47b63f30a62a34ac3420fb5db7a39"
     }
   ],
   "published": {
     "toolName": "inspection_vulnerabilities",
     "title": "漏洞检查",
-    "description": "漏洞检查：按明确资产范围读取 SOC 事实并生成报告；未知和缺失不代表正常。",
+    "description": "读取SOC已有漏洞，完整成功空结果为没有漏洞；失败和未完成独立保留，不发扫描。",
     "connectionId": "platform-compositions",
-    "implementation": "55cec2472ebef4a0334d25d99fa9d7bcf1cef6ee388e2a936432eefd3d507c21",
+    "implementation": "28a52494705a1a63cc0a3d6790a4ce0552f47b63f30a62a34ac3420fb5db7a39",
     "workflow": "inspection-vulnerabilities",
     "connections": {
       "master": "ai-soc-master"
     },
     "kind": "workflow",
     "engine": "lfx",
-    "flowDigest": "9c2a3a91f9c4e99dd37e0e3e7c3ebb836a35a273a344829074140f9f891c1afb",
-    "publishedAt": "2026-11-06T12:58:12.687Z"
+    "flowDigest": "6310be4fa7fac73855ed04fed4b0d76ee8855cf254946e9220056942fbd95236",
+    "publishedAt": "2026-11-10T11:59:38.649Z"
   },
-  "publishedVersionId": "475681fc4867f7f4db38ede402caa66441e78a3c1bf986753d334ed656c1e4e2"
+  "publishedVersionId": "b50fc27c711b4ea910da3bf043fb874422662e787c25b89f976096ca7cd28ed7"
 }

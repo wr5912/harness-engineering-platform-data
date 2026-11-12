@@ -20,6 +20,26 @@
         "flowDigest": "3993ddafecf4194017441e8b7cf7021a06f909a29f632c6bb53f0a842ccf13fe"
       },
       "implementationDigest": "686bf9851a896365451a3a743f7c6bac5c40355adb2325ac63d22c44b9ec6a1b"
+    },
+    {
+      "versionId": "ae580a422cf607df8b24f7c84226983fa3cf80fa8b016e386a323ea2a0552ef8",
+      "publishedAt": "2026-11-12T04:51:21.129Z",
+      "config": {
+        "toolName": "policy_change",
+        "title": "策略变更",
+        "description": "策略变更固定流程：发现合同、真实预览、保存原任务、提交及按原任务查询；stop控制停止位置",
+        "connectionId": "platform-compositions",
+        "readonly": false,
+        "implementation": "5c35af4ae29747498b63d3bdc36c325e0db0a6c6371bda34d2a73de0917979e8",
+        "workflow": "policy-change",
+        "connections": {
+          "ingest": "ai-soc-ingest"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "3993ddafecf4194017441e8b7cf7021a06f909a29f632c6bb53f0a842ccf13fe"
+      },
+      "implementationDigest": "5c35af4ae29747498b63d3bdc36c325e0db0a6c6371bda34d2a73de0917979e8"
     }
   ],
   "published": {
@@ -28,7 +48,7 @@
     "description": "策略变更固定流程：发现合同、真实预览、保存原任务、提交及按原任务查询；stop控制停止位置",
     "connectionId": "platform-compositions",
     "readonly": false,
-    "implementation": "686bf9851a896365451a3a743f7c6bac5c40355adb2325ac63d22c44b9ec6a1b",
+    "implementation": "5c35af4ae29747498b63d3bdc36c325e0db0a6c6371bda34d2a73de0917979e8",
     "workflow": "policy-change",
     "connections": {
       "ingest": "ai-soc-ingest"
@@ -36,7 +56,7 @@
     "kind": "workflow",
     "engine": "lfx",
     "flowDigest": "3993ddafecf4194017441e8b7cf7021a06f909a29f632c6bb53f0a842ccf13fe",
-    "publishedAt": "2026-11-07T01:23:30.509Z"
+    "publishedAt": "2026-11-12T04:51:21.129Z"
   },
-  "publishedVersionId": "d1e7e76495b0633a899cbf30d413ba6099ee27d98dbc55c4ea7e1d5abbf4b300"
+  "publishedVersionId": "ae580a422cf607df8b24f7c84226983fa3cf80fa8b016e386a323ea2a0552ef8"
 }

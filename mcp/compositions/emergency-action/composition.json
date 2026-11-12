@@ -21,15 +21,78 @@
         "flowDigest": "a3d63fdf68e40eedc06941cdce4f08f8e3e5b39049b6abd5bfda8cf433dd8d20"
       },
       "implementationDigest": "313220c3770f7602f6214dc2dee24b1183330bd09c4684e5a3c343c8ec1294fd"
+    },
+    {
+      "versionId": "3711c6b487b02257fbfefc0bc40de0b9c564fb26671dc67eaa2c121de40e51fc",
+      "publishedAt": "2026-11-09T11:22:35.393Z",
+      "config": {
+        "toolName": "emergency_action",
+        "title": "应急动作",
+        "description": "应急动作固定流程：发现动作及执行点、核对参数；EDR 多 Agent 时返回候选并等待选择；按授权真实预览、仅创建任务或执行，并查询原请求",
+        "connectionId": "platform-compositions",
+        "readonly": false,
+        "implementation": "8eef7195a960d2176b5d4675f9fb27676538ff94a09d7329ef163d78266e54cb",
+        "workflow": "emergency-action",
+        "connections": {
+          "ingest": "ai-soc-ingest",
+          "response": "ai-soc-response"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "4c987e84b2418250035e69f1a501f33b82d35003b048d3524bc5e233781a4962"
+      },
+      "implementationDigest": "8eef7195a960d2176b5d4675f9fb27676538ff94a09d7329ef163d78266e54cb"
+    },
+    {
+      "versionId": "b1579d382af9c439b473bbddf30f9b3d689246a1f7277dfc8e8c4c5573f66e09",
+      "publishedAt": "2026-11-11T01:52:34.041Z",
+      "config": {
+        "toolName": "emergency_action",
+        "title": "应急动作",
+        "description": "应急动作固定流程：发现动作与执行点，归一化用户目标和参数；EDR或多设备候选返回选择并等待用户选择；按授权真实预览、仅创建任务或执行，并查询原请求",
+        "connectionId": "platform-compositions",
+        "readonly": false,
+        "implementation": "96c4d777dbefad73a78820a63f1bf3836dccec526e7c9bee90d7c6c6868074d4",
+        "workflow": "emergency-action",
+        "connections": {
+          "ingest": "ai-soc-ingest",
+          "response": "ai-soc-response"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "69a6d762f935b60661926e9f5e66eb8ca6b64dfd06fc7cf2cb49afaccc549c7b"
+      },
+      "implementationDigest": "96c4d777dbefad73a78820a63f1bf3836dccec526e7c9bee90d7c6c6868074d4"
+    },
+    {
+      "versionId": "cfec7bb0e085588582800101a7e157e3a3781fcfbdb11c99cf83b17df699ee95",
+      "publishedAt": "2026-11-11T01:58:16.875Z",
+      "config": {
+        "toolName": "emergency_action",
+        "title": "应急动作",
+        "description": "应急动作固定流程：发现动作与执行点，归一化用户目标和参数；EDR或多设备候选返回选择并等待用户选择；按授权真实预览、仅创建任务或执行，并查询原请求",
+        "connectionId": "platform-compositions",
+        "readonly": false,
+        "implementation": "f4e1d90d91fda96b068080a6d9fcea737d2dc08eb2253c242b25b53a88d47ec8",
+        "workflow": "emergency-action",
+        "connections": {
+          "ingest": "ai-soc-ingest",
+          "response": "ai-soc-response"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "16008c05b3978f46b9fa5b22283d8aca52be2be732bae33c9a5c598d498222d3"
+      },
+      "implementationDigest": "f4e1d90d91fda96b068080a6d9fcea737d2dc08eb2253c242b25b53a88d47ec8"
     }
   ],
   "published": {
     "toolName": "emergency_action",
     "title": "应急动作",
-    "description": "应急动作固定流程：发现动作及执行点、核对参数、真实预览、按授权停止位置处理并查询原请求",
+    "description": "应急动作固定流程：发现动作与执行点，归一化用户目标和参数；EDR或多设备候选返回选择并等待用户选择；按授权真实预览、仅创建任务或执行，并查询原请求",
     "connectionId": "platform-compositions",
     "readonly": false,
-    "implementation": "313220c3770f7602f6214dc2dee24b1183330bd09c4684e5a3c343c8ec1294fd",
+    "implementation": "f4e1d90d91fda96b068080a6d9fcea737d2dc08eb2253c242b25b53a88d47ec8",
     "workflow": "emergency-action",
     "connections": {
       "ingest": "ai-soc-ingest",
@@ -37,8 +100,8 @@
     },
     "kind": "workflow",
     "engine": "lfx",
-    "flowDigest": "a3d63fdf68e40eedc06941cdce4f08f8e3e5b39049b6abd5bfda8cf433dd8d20",
-    "publishedAt": "2026-11-07T01:25:52.758Z"
+    "flowDigest": "16008c05b3978f46b9fa5b22283d8aca52be2be732bae33c9a5c598d498222d3",
+    "publishedAt": "2026-11-11T01:58:16.875Z"
   },
-  "publishedVersionId": "43a03bc99cd871342d1d377c4ea1c38684e2851bb8d7b21d6129f881b98f8ef0"
+  "publishedVersionId": "cfec7bb0e085588582800101a7e157e3a3781fcfbdb11c99cf83b17df699ee95"
 }

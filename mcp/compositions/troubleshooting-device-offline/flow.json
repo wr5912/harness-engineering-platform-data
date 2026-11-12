@@ -1,95 +1,1063 @@
 {
   "name": "troubleshooting-device-offline",
-  "metadata": {"hep": {"typescript": "src/index.ts"}},
+  "description": "设备可用性逐轮证据循环：冻结对象、原子事实、六态候选、四出口及真实回边；不主动探测。",
+  "metadata": {
+    "hep": {
+      "typescript": "src/index.ts"
+    }
+  },
   "data": {
     "nodes": [
-      {"id":"input","type":"genericNode","position":{"x":0,"y":250},"data":{"id":"input","type":"HepInput","node":{"display_name":"冻结本次对象与查询窗口","base_classes":["Data"],"template":{"_type":"Component","code":{"type":"code","name":"code","value":"from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":[],"metadata":{"kind":"input"},"is_output":false}}},
-      {"id":"resolve","type":"genericNode","position":{"x":300,"y":250},"data":{"id":"resolve","type":"FaultStep","node":{"display_name":"完整分页唯一定位设备与可选观察源","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('resolve',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-      {"id":"resolution-gate","type":"genericNode","position":{"x":600,"y":250},"data":{"id":"resolution-gate","type":"ResolutionGate","node":{"display_name":"冻结身份是否唯一","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass ResolutionGate(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='ready',method='route_ready',group_outputs=True),Output(name='blocked',method='route_blocked',group_outputs=True)]\n def select(self)->Data:\n  selected=payload(self.value)['branch']\n  if selected not in ('ready','blocked'):raise ValueError('未知解析分支')\n  excluded=[name for name in ('ready','blocked') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_ready(self)->Data:return self.select()\n async def route_blocked(self)->Data:return self.select()\n"}},"outputs":[{"name":"ready","display_name":"对象已确认","method":"route_ready","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"blocked","display_name":"对象未确认","method":"route_blocked","types":["Data"],"selected":"Data","cache":true,"group_outputs":true}],"field_order":["value"],"metadata":{"kind":"condition"},"is_output":false}}},
-      {"id":"blocked-result","type":"genericNode","position":{"x":900,"y":0},"data":{"id":"blocked-result","type":"FaultTerminal","node":{"display_name":"独立终态：对象解析阻塞","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('blocked',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-      {"id":"offline-batch","type":"genericNode","position":{"x":900,"y":400},"data":{"id":"offline-batch","type":"HepBatch","node":{"display_name":"状态、告警与管理观察","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"items_key":{"type":"str","show":true,"_input_type":"StrInput","name":"items_key","value":"items"},"concurrency":{"type":"int","show":true,"_input_type":"IntInput","name":"concurrency","value":3},"code":{"type":"code","name":"code","value":"from hep_lfx import HepBatch as BaseComponent\nclass HepBatch(BaseComponent):\n pass\n"},"body":{"type":"NestedDict","show":true,"_input_type":"NestedDictInput","name":"body","required":true,"value":{
-        "name":"设备不在线单项分支",
-        "data":{
-          "nodes":[
-            {"id":"input","type":"genericNode","position":{"x":0,"y":400},"data":{"id":"input","type":"HepInput","node":{"display_name":"批次单项输入：item／index","base_classes":["Data"],"template":{"_type":"Component","code":{"type":"code","name":"code","value":"from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":[],"metadata":{"kind":"input"},"is_output":false}}},
-            {"id":"item-gate","type":"genericNode","position":{"x":280,"y":400},"data":{"id":"item-gate","type":"OfflineItemGate","node":{"display_name":"按内部item仅选一条独立分支","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass OfflineItemGate(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='soc-state',method='route_soc',group_outputs=True),Output(name='alerts',method='route_alerts',group_outputs=True),Output(name='management',method='route_management',group_outputs=True)]\n def select(self)->Data:\n  selected=payload(self.value)['item']\n  if selected not in ('soc-state','alerts','management'):raise ValueError('未知设备检查item')\n  excluded=[name for name in ('soc-state','alerts','management') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_soc(self)->Data:return self.select()\n async def route_alerts(self)->Data:return self.select()\n async def route_management(self)->Data:return self.select()\n"}},"outputs":[{"name":"soc-state","display_name":"状态证据","method":"route_soc","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"alerts","display_name":"关联告警","method":"route_alerts","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"management","display_name":"管理观察","method":"route_management","types":["Data"],"selected":"Data","cache":true,"group_outputs":true}],"field_order":["value"],"metadata":{"kind":"condition"},"is_output":false}}},
-            {"id":"soc-status","type":"genericNode","position":{"x":560,"y":0},"data":{"id":"soc-status","type":"FaultStep","node":{"display_name":"读取SOC状态依据；不是本次管理响应","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('status',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"soc-result","type":"genericNode","position":{"x":850,"y":0},"data":{"id":"soc-result","type":"BranchTerminal","node":{"display_name":"独立终态：SOC状态项","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-            {"id":"alerts","type":"genericNode","position":{"x":560,"y":200},"data":{"id":"alerts","type":"FaultStep","node":{"display_name":"固定告警快照与全部成员页；严格完整性","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('alerts',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"alerts-result","type":"genericNode","position":{"x":850,"y":200},"data":{"id":"alerts-result","type":"BranchTerminal","node":{"display_name":"独立终态：告警项及实际缺口","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-            {"id":"management","type":"genericNode","position":{"x":560,"y":550},"data":{"id":"management","type":"FaultStep","node":{"display_name":"管理原子不可用：仅记录真实缺口","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('management',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"observation-gate","type":"genericNode","position":{"x":850,"y":550},"data":{"id":"observation-gate","type":"ObservationGate","node":{"display_name":"仅使用管理组件的真实响应枚举","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass ObservationGate(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='reply',method='route_reply',group_outputs=True),Output(name='no_reply',method='route_no_reply',group_outputs=True),Output(name='unknown',method='route_unknown',group_outputs=True)]\n def select(self)->Data:\n  selected=payload(self.value)['branch']\n  if selected not in ('reply','no_reply','unknown'):raise ValueError('未知管理响应分支')\n  excluded=[name for name in ('reply','no_reply','unknown') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_reply(self)->Data:return self.select()\n async def route_no_reply(self)->Data:return self.select()\n async def route_unknown(self)->Data:return self.select()\n"}},"outputs":[{"name":"reply","display_name":"本次已响应","method":"route_reply","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"no_reply","display_name":"无回复","method":"route_no_reply","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"unknown","display_name":"响应未核实","method":"route_unknown","types":["Data"],"selected":"Data","cache":true,"group_outputs":true}],"field_order":["value"],"metadata":{"kind":"condition"},"is_output":false}}},
-            {"id":"collection-capability","type":"genericNode","position":{"x":1150,"y":350},"data":{"id":"collection-capability","type":"FaultStep","node":{"display_name":"本Run真实响应后读取采集适用性","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('capability',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"bindings","type":"genericNode","position":{"x":1440,"y":350},"data":{"id":"bindings","type":"FaultStep","node":{"display_name":"读取同一资产唯一采集绑定","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('bindings',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"binding-gate","type":"genericNode","position":{"x":1730,"y":350},"data":{"id":"binding-gate","type":"BindingGate","node":{"display_name":"采集绑定是否唯一可用","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BindingGate(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='bound',method='route_bound',group_outputs=True),Output(name='none',method='route_none',group_outputs=True)]\n def select(self)->Data:\n  selected=payload(self.value)['branch']\n  if selected not in ('bound','none'):raise ValueError('未知绑定分支')\n  excluded=[name for name in ('bound','none') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_bound(self)->Data:return self.select()\n async def route_none(self)->Data:return self.select()\n"}},"outputs":[{"name":"bound","display_name":"唯一绑定","method":"route_bound","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"none","display_name":"绑定缺口","method":"route_none","types":["Data"],"selected":"Data","cache":true,"group_outputs":true}],"field_order":["value"],"metadata":{"kind":"condition"},"is_output":false}}},
-            {"id":"collection-batch","type":"genericNode","position":{"x":2020,"y":200},"data":{"id":"collection-batch","type":"HepBatch","node":{"display_name":"采集证据检查","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"items_key":{"type":"str","show":true,"_input_type":"StrInput","name":"items_key","value":"items"},"concurrency":{"type":"int","show":true,"_input_type":"IntInput","name":"concurrency","value":4},"code":{"type":"code","name":"code","value":"from hep_lfx import HepBatch as BaseComponent\nclass HepBatch(BaseComponent):\n pass\n"},"body":{"type":"NestedDict","show":true,"_input_type":"NestedDictInput","name":"body","required":true,"value":{
-              "name":"采集单项分支",
-              "data":{
-                "nodes":[
-                  {"id":"input","type":"genericNode","position":{"x":0,"y":300},"data":{"id":"input","type":"HepInput","node":{"display_name":"采集批次单项输入","base_classes":["Data"],"template":{"_type":"Component","code":{"type":"code","name":"code","value":"from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":[],"metadata":{"kind":"input"},"is_output":false}}},
-                  {"id":"item-gate","type":"genericNode","position":{"x":280,"y":300},"data":{"id":"item-gate","type":"CollectionItemGate","node":{"display_name":"按内部item仅选择一项采集分支","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass CollectionItemGate(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='run-state',method='route_run',group_outputs=True),Output(name='config',method='route_config',group_outputs=True),Output(name='heartbeat',method='route_heartbeat',group_outputs=True),Output(name='synchronization',method='route_sync',group_outputs=True)]\n def select(self)->Data:\n  selected=payload(self.value)['item']\n  if selected not in ('run-state','config','heartbeat','synchronization'):raise ValueError('未知采集检查item')\n  excluded=[name for name in ('run-state','config','heartbeat','synchronization') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_run(self)->Data:return self.select()\n async def route_config(self)->Data:return self.select()\n async def route_heartbeat(self)->Data:return self.select()\n async def route_sync(self)->Data:return self.select()\n"}},"outputs":[{"name":"run-state","display_name":"采集运行","method":"route_run","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"config","display_name":"采集配置","method":"route_config","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"heartbeat","display_name":"原始心跳","method":"route_heartbeat","types":["Data"],"selected":"Data","cache":true,"group_outputs":true},{"name":"synchronization","display_name":"状态同步","method":"route_sync","types":["Data"],"selected":"Data","cache":true,"group_outputs":true}],"field_order":["value"],"metadata":{"kind":"condition"},"is_output":false}}},
-                  {"id":"run-state","type":"genericNode","position":{"x":560,"y":0},"data":{"id":"run-state","type":"FaultStep","node":{"display_name":"采集运行态只读证据","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('runState',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-                  {"id":"run-result","type":"genericNode","position":{"x":850,"y":0},"data":{"id":"run-result","type":"BranchTerminal","node":{"display_name":"独立终态：运行态项","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-                  {"id":"config-state","type":"genericNode","position":{"x":560,"y":200},"data":{"id":"config-state","type":"FaultStep","node":{"display_name":"采集配置只读证据","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('configState',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-                  {"id":"config-result","type":"genericNode","position":{"x":850,"y":200},"data":{"id":"config-result","type":"BranchTerminal","node":{"display_name":"独立终态：配置项","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-                  {"id":"heartbeat-gap","type":"genericNode","position":{"x":560,"y":400},"data":{"id":"heartbeat-gap","type":"FaultStep","node":{"display_name":"原始心跳原子缺口；不猜正常","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('heartbeat',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-                  {"id":"heartbeat-result","type":"genericNode","position":{"x":850,"y":400},"data":{"id":"heartbeat-result","type":"BranchTerminal","node":{"display_name":"独立终态：心跳缺口","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-                  {"id":"sync-gap","type":"genericNode","position":{"x":560,"y":600},"data":{"id":"sync-gap","type":"FaultStep","node":{"display_name":"源状态到SOC同步关联缺口","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('synchronization',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-                  {"id":"synchronization-result","type":"genericNode","position":{"x":850,"y":600},"data":{"id":"synchronization-result","type":"BranchTerminal","node":{"display_name":"独立终态：同步缺口","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}}
-                ],
-                "edges":[
-                  {"source":"input","target":"item-gate","data":{"sourceHandle":{"id":"input","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"item-gate","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-                  {"source":"item-gate","target":"run-state","data":{"sourceHandle":{"id":"item-gate","name":"run-state","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"run-state","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-                  {"source":"run-state","target":"run-result","data":{"sourceHandle":{"id":"run-state","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"run-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-                  {"source":"item-gate","target":"config-state","data":{"sourceHandle":{"id":"item-gate","name":"config","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"config-state","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-                  {"source":"config-state","target":"config-result","data":{"sourceHandle":{"id":"config-state","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"config-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-                  {"source":"item-gate","target":"heartbeat-gap","data":{"sourceHandle":{"id":"item-gate","name":"heartbeat","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"heartbeat-gap","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-                  {"source":"heartbeat-gap","target":"heartbeat-result","data":{"sourceHandle":{"id":"heartbeat-gap","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"heartbeat-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-                  {"source":"item-gate","target":"sync-gap","data":{"sourceHandle":{"id":"item-gate","name":"synchronization","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"sync-gap","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-                  {"source":"sync-gap","target":"synchronization-result","data":{"sourceHandle":{"id":"sync-gap","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"synchronization-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}}
-                ]
+      {
+        "id": "input",
+        "type": "genericNode",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "id": "input",
+          "type": "HepInput",
+          "node": {
+            "display_name": "诊断输入",
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n"
               }
-            }}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value","body","items_key","concurrency"],"metadata":{"kind":"batch"},"is_output":false}}},
-            {"id":"bound-result","type":"genericNode","position":{"x":2320,"y":200},"data":{"id":"bound-result","type":"BranchTerminal","node":{"display_name":"独立终态：真实响应与四项采集收口","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-            {"id":"empty-binding-result","type":"genericNode","position":{"x":2020,"y":450},"data":{"id":"empty-binding-result","type":"BranchTerminal","node":{"display_name":"独立终态：绑定未唯一核实","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-            {"id":"unknown-gap","type":"genericNode","position":{"x":1150,"y":700},"data":{"id":"unknown-gap","type":"FaultStep","node":{"display_name":"管理未知：记录实际缺口与禁止推断","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('unknownGap',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"unknown-path","type":"genericNode","position":{"x":1440,"y":700},"data":{"id":"unknown-path","type":"FaultStep","node":{"display_name":"管理未知：只读已有配置IP对路径","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('unknownPath',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"unknown-result","type":"genericNode","position":{"x":1730,"y":700},"data":{"id":"unknown-result","type":"BranchTerminal","node":{"display_name":"独立终态：管理未知及已有路径","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}},
-            {"id":"no-reply-gap","type":"genericNode","position":{"x":1150,"y":950},"data":{"id":"no-reply-gap","type":"FaultStep","node":{"display_name":"无回复：只记实际观察缺口，不判断电","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('noReplyGap',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"no-reply-path","type":"genericNode","position":{"x":1440,"y":950},"data":{"id":"no-reply-path","type":"FaultStep","node":{"display_name":"无回复：只读已有配置IP对路径","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('noReplyPath',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"step"},"is_output":false}}},
-            {"id":"no-reply-result","type":"genericNode","position":{"x":1730,"y":950},"data":{"id":"no-reply-result","type":"BranchTerminal","node":{"display_name":"独立终态：无回复及已有路径","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass BranchTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('branchResult',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}}
-          ],
-          "edges":[
-            {"source":"input","target":"item-gate","data":{"sourceHandle":{"id":"input","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"item-gate","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"item-gate","target":"soc-status","data":{"sourceHandle":{"id":"item-gate","name":"soc-state","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"soc-status","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"soc-status","target":"soc-result","data":{"sourceHandle":{"id":"soc-status","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"soc-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"item-gate","target":"alerts","data":{"sourceHandle":{"id":"item-gate","name":"alerts","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"alerts","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"alerts","target":"alerts-result","data":{"sourceHandle":{"id":"alerts","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"alerts-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"item-gate","target":"management","data":{"sourceHandle":{"id":"item-gate","name":"management","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"management","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"management","target":"observation-gate","data":{"sourceHandle":{"id":"management","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"observation-gate","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"observation-gate","target":"collection-capability","data":{"sourceHandle":{"id":"observation-gate","name":"reply","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"collection-capability","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"collection-capability","target":"bindings","data":{"sourceHandle":{"id":"collection-capability","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"bindings","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"bindings","target":"binding-gate","data":{"sourceHandle":{"id":"bindings","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"binding-gate","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"binding-gate","target":"collection-batch","data":{"sourceHandle":{"id":"binding-gate","name":"bound","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"collection-batch","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"collection-batch","target":"bound-result","data":{"sourceHandle":{"id":"collection-batch","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"bound-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"binding-gate","target":"empty-binding-result","data":{"sourceHandle":{"id":"binding-gate","name":"none","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"empty-binding-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"observation-gate","target":"unknown-gap","data":{"sourceHandle":{"id":"observation-gate","name":"unknown","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"unknown-gap","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"unknown-gap","target":"unknown-path","data":{"sourceHandle":{"id":"unknown-gap","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"unknown-path","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"unknown-path","target":"unknown-result","data":{"sourceHandle":{"id":"unknown-path","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"unknown-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"observation-gate","target":"no-reply-gap","data":{"sourceHandle":{"id":"observation-gate","name":"no_reply","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"no-reply-gap","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"no-reply-gap","target":"no-reply-path","data":{"sourceHandle":{"id":"no-reply-gap","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"no-reply-path","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-            {"source":"no-reply-path","target":"no-reply-result","data":{"sourceHandle":{"id":"no-reply-path","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"no-reply-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}}
-          ]
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "input"
+            }
+          }
         }
-      }}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value","body","items_key","concurrency"],"metadata":{"kind":"batch"},"is_output":false}}},
-      {"id":"summary","type":"genericNode","position":{"x":1230,"y":400},"data":{"id":"summary","type":"FaultTerminal","node":{"display_name":"严格核对三项身份／顺序／事实闭包后出报告","base_classes":["Data"],"template":{"_type":"Component","value":{"type":"other","show":true,"name":"value","input_types":["Data"],"required":true,"list":false,"value":null},"code":{"type":"code","name":"code","value":"from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass FaultTerminal(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('summary',payload(self.value),self._id))\n"}},"outputs":[{"name":"result","method":"build","types":["Data"],"selected":"Data","cache":true}],"field_order":["value"],"metadata":{"kind":"terminal"},"is_output":true}}}
+      },
+      {
+        "id": "accept",
+        "type": "genericNode",
+        "position": {
+          "x": 300,
+          "y": 0
+        },
+        "data": {
+          "id": "accept",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "受理与冻结对象/时间",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('loopAccept',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "context",
+        "type": "genericNode",
+        "position": {
+          "x": 600,
+          "y": 0
+        },
+        "data": {
+          "id": "context",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "建立诊断上下文与预算",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('loopContext',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "first",
+        "type": "genericNode",
+        "position": {
+          "x": 900,
+          "y": 0
+        },
+        "data": {
+          "id": "first",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "选择首轮检查",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('loopFirst',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "execute",
+        "type": "genericNode",
+        "position": {
+          "x": 1200,
+          "y": 0
+        },
+        "data": {
+          "id": "execute",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "执行并原子解析",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build',allows_loop=True,cache=False)]\n async def build(self)->Data:\n  return Data(data=await component('loopExecute',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false,
+                "allows_loop": true
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "append",
+        "type": "genericNode",
+        "position": {
+          "x": 1500,
+          "y": 0
+        },
+        "data": {
+          "id": "append",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "每轮追加事实/来源/缺口",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build',allows_loop=True,cache=False)]\n async def build(self)->Data:\n  return Data(data=await component('loopAppend',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false,
+                "allows_loop": true
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "candidates",
+        "type": "genericNode",
+        "position": {
+          "x": 1800,
+          "y": 0
+        },
+        "data": {
+          "id": "candidates",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "更新候选六态",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build',allows_loop=True,cache=False)]\n async def build(self)->Data:\n  return Data(data=await component('loopCandidates',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false,
+                "allows_loop": true
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "decision",
+        "type": "genericNode",
+        "position": {
+          "x": 2100,
+          "y": 0
+        },
+        "data": {
+          "id": "decision",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "评估停止/继续条件",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build',allows_loop=True,cache=False)]\n async def build(self)->Data:\n  return Data(data=await component('loopDecision',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false,
+                "allows_loop": true
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "rule",
+        "type": "genericNode",
+        "position": {
+          "x": 1800,
+          "y": 400
+        },
+        "data": {
+          "id": "rule",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "校验并执行下一项",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build',allows_loop=True,cache=False)]\n async def build(self)->Data:\n  return Data(data=await component('loopRule',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false,
+                "allows_loop": true
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "proposal",
+        "type": "genericNode",
+        "position": {
+          "x": 1500,
+          "y": 650
+        },
+        "data": {
+          "id": "proposal",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "受控提议并校验",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build',allows_loop=True,cache=False)]\n async def build(self)->Data:\n  return Data(data=await component('loopProposal',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false,
+                "allows_loop": true
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "action"
+            }
+          }
+        }
+      },
+      {
+        "id": "report",
+        "type": "genericNode",
+        "position": {
+          "x": 2700,
+          "y": -250
+        },
+        "data": {
+          "id": "report",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "证据充分：输出报告",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('loopReport',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false
+              }
+            ],
+            "is_output": true,
+            "metadata": {
+              "kind": "output"
+            }
+          }
+        }
+      },
+      {
+        "id": "stop",
+        "type": "genericNode",
+        "position": {
+          "x": 2700,
+          "y": 350
+        },
+        "data": {
+          "id": "stop",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "明确停点：能力/执行点/预算/错误",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticStep(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='result',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('loopStop',payload(self.value),self._id))\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "result",
+                "method": "build",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "cache": false
+              }
+            ],
+            "is_output": true,
+            "metadata": {
+              "kind": "output"
+            }
+          }
+        }
+      },
+      {
+        "id": "gate",
+        "type": "genericNode",
+        "position": {
+          "x": 2400,
+          "y": 0
+        },
+        "data": {
+          "id": "gate",
+          "type": "DiagnosticStep",
+          "node": {
+            "display_name": "四条件分支（规则优先，未知不当成功）",
+            "template": {
+              "_type": "Component",
+              "value": {
+                "type": "other",
+                "show": true,
+                "name": "value",
+                "input_types": [
+                  "Data"
+                ],
+                "required": true,
+                "list": false
+              },
+              "code": {
+                "type": "code",
+                "name": "code",
+                "value": "from hep_lfx import HepComponent, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass DiagnosticGate(HepComponent):\n inputs=[DataInput(name='value',required=True)]\n outputs=[Output(name='sufficient',method='route_sufficient',group_outputs=True,allows_loop=True,cache=False),Output(name='rule',method='route_rule',group_outputs=True,allows_loop=True,cache=False),Output(name='proposal',method='route_proposal',group_outputs=True,allows_loop=True,cache=False),Output(name='stop',method='route_stop',group_outputs=True,allows_loop=True,cache=False)]\n def choose(self):\n  selected=payload(self.value).get('route','stop')\n  excluded=[name for name in ('sufficient','rule','proposal','stop') if name!=selected]\n  for name in excluded:self.stop(name)\n  self.graph.exclude_branches_conditionally(self._id,excluded)\n  return self.value\n async def route_sufficient(self)->Data:return self.choose()\n async def route_rule(self)->Data:return self.choose()\n async def route_proposal(self)->Data:return self.choose()\n async def route_stop(self)->Data:return self.choose()\n"
+              }
+            },
+            "base_classes": [
+              "Data"
+            ],
+            "outputs": [
+              {
+                "name": "sufficient",
+                "display_name": "证据充分→输出报告",
+                "method": "route_sufficient",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "group_outputs": true,
+                "cache": false,
+                "allows_loop": true
+              },
+              {
+                "name": "rule",
+                "display_name": "规则有明确后继→校验并执行下一项",
+                "method": "route_rule",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "group_outputs": true,
+                "cache": false,
+                "allows_loop": true
+              },
+              {
+                "name": "proposal",
+                "display_name": "无明确分支或存在冲突→受控提议并校验",
+                "method": "route_proposal",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "group_outputs": true,
+                "cache": false,
+                "allows_loop": true
+              },
+              {
+                "name": "stop",
+                "display_name": "无能力、无执行点或预算耗尽→明确停点",
+                "method": "route_stop",
+                "types": [
+                  "Data"
+                ],
+                "selected": "Data",
+                "group_outputs": true,
+                "cache": false,
+                "allows_loop": true
+              }
+            ],
+            "is_output": false,
+            "metadata": {
+              "kind": "condition"
+            }
+          }
+        }
+      }
     ],
-    "edges":[
-      {"source":"input","target":"resolve","data":{"sourceHandle":{"id":"input","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"resolve","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-      {"source":"resolve","target":"resolution-gate","data":{"sourceHandle":{"id":"resolve","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"resolution-gate","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-      {"source":"resolution-gate","target":"blocked-result","data":{"sourceHandle":{"id":"resolution-gate","name":"blocked","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"blocked-result","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-      {"source":"resolution-gate","target":"offline-batch","data":{"sourceHandle":{"id":"resolution-gate","name":"ready","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"offline-batch","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}},
-      {"source":"offline-batch","target":"summary","data":{"sourceHandle":{"id":"offline-batch","name":"result","dataType":"Data","output_types":["Data"]},"targetHandle":{"id":"summary","fieldName":"value","inputTypes":["Data"],"type":"DataInput"}}}
+    "edges": [
+      {
+        "id": "input-result-accept",
+        "source": "input",
+        "target": "accept",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "input",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "accept",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "accept-result-context",
+        "source": "accept",
+        "target": "context",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "accept",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "context",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "context-result-first",
+        "source": "context",
+        "target": "first",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "context",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "first",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "first-result-execute",
+        "source": "first",
+        "target": "execute",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "first",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "execute",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "execute-result-append",
+        "source": "execute",
+        "target": "append",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "execute",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "append",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "append-result-candidates",
+        "source": "append",
+        "target": "candidates",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "append",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "candidates",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "candidates-result-decision",
+        "source": "candidates",
+        "target": "decision",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "candidates",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "decision",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "decision-result-gate",
+        "source": "decision",
+        "target": "gate",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "decision",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "gate",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "rule-result-execute",
+        "source": "rule",
+        "target": "execute",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "rule",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "execute",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "proposal-result-execute",
+        "source": "proposal",
+        "target": "execute",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "proposal",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "execute",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "gate-sufficient-report",
+        "source": "gate",
+        "target": "report",
+        "sourceHandle": "sufficient",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "gate",
+            "name": "sufficient",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "report",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "gate-rule-rule",
+        "source": "gate",
+        "target": "rule",
+        "sourceHandle": "rule",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "gate",
+            "name": "rule",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "rule",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "gate-proposal-proposal",
+        "source": "gate",
+        "target": "proposal",
+        "sourceHandle": "proposal",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "gate",
+            "name": "proposal",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "proposal",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "gate-stop-stop",
+        "source": "gate",
+        "target": "stop",
+        "sourceHandle": "stop",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "gate",
+            "name": "stop",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "stop",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      }
     ]
   }
 }

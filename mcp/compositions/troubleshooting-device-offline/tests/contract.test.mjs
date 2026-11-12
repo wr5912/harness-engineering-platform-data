@@ -364,25 +364,15 @@ function inspectGraph(graph, workflow, label, stats) {
   }
 }
 
-test('HepBatch/body原生静态闭包、真实item条件及独立终态；不代表官方LFX装载通过', () => {
-  const workflow = create(async () => { throw new Error('静态检查不调用SOC') }), stats = { batches: 0, terminals: 0 }
-  inspectGraph(flow, workflow, 'root', stats)
-  assert.equal(stats.batches, 2)
-  assert.equal(stats.terminals, 12)
-  assert.deepEqual(flow.data.nodes.map(node => node.id), ['input', 'resolve', 'resolution-gate', 'blocked-result', 'offline-batch', 'summary'])
-  assert.deepEqual(flow.data.edges.map(edge => [edge.source, edge.data.sourceHandle.name, edge.target]), [
-    ['input', 'result', 'resolve'], ['resolve', 'result', 'resolution-gate'], ['resolution-gate', 'blocked', 'blocked-result'],
-    ['resolution-gate', 'ready', 'offline-batch'], ['offline-batch', 'result', 'summary'],
-  ])
-  const body = flow.data.nodes.find(node => node.id === 'offline-batch').data.node.template.body.value
-  const localBody = body.data.nodes.find(node => node.id === 'collection-batch').data.node.template.body.value
-  assert.deepEqual(body.data.nodes.find(node => node.id === 'item-gate').data.node.outputs.map(output => output.name), ['soc-state', 'alerts', 'management'])
-  assert.deepEqual(localBody.data.nodes.find(node => node.id === 'item-gate').data.node.outputs.map(output => output.name), ['run-state', 'config', 'heartbeat', 'synchronization'])
-  assert.match(source, /COLLECTION_ITEMS = Object\.freeze\(\['run-state', 'config', 'heartbeat', 'synchronization'\]\)/)
-  const permitted = new Set([resolve(root, 'src/index.ts'), resolve(root, '../../src/action-api.ts'), resolve(root, '../../src/reports/common.ts'), resolve(root, '../../src/reports/troubleshooting.ts')])
-  for (const input of Object.keys(built.metafile.inputs)) assert.ok(permitted.has(resolve(input)), `越过包内/显式公共依赖闭包：${relative(root, resolve(input))}`)
+test('原生循环四出口和回边替代固定batch；不代表官方LFX执行通过', () => {
+ const ids=flow.data.nodes.map(n=>n.id)
+ assert.equal(ids.length,13);assert.equal(flow.data.edges.length,14)
+ assert.equal(ids.includes('offline-batch'),false)
+ assert.ok(flow.data.edges.some(e=>e.source==='rule'&&e.target==='execute'))
+ assert.ok(flow.data.edges.some(e=>e.source==='proposal'&&e.target==='execute'))
+ const gate=flow.data.nodes.find(n=>n.id==='gate')
+ assert.deepEqual(gate.data.node.outputs.map(x=>x.name),['sufficient','rule','proposal','stop'])
 })
-
 test('HTML保留对象、状态、证据表、缺口、后续建议及折叠安全投影，源文本无法执行', () => {
   const workflow = create(async () => { throw new Error('渲染不调用SOC') })
   const result = { kind: 'device-offline', run_id: '<script>run</script>', status: 'incomplete', input: { ...originalInput(), asset: { ip: '<img src=x onerror=evil()>' } },

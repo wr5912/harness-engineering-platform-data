@@ -221,38 +221,171 @@
         "engine": "lfx",
         "flowDigest": "e10af163dd61c433400fcc516bf7b5c5d77c8b8cb088c42571b98707c06ff6e2"
       }
+    },
+    {
+      "versionId": "85cb21aed981b3a572620bc15c68263dd0b07abd5ad91d031b9cf74314e84b0e",
+      "publishedAt": "2026-11-09T16:19:24.690Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+        "connectionId": "platform-compositions",
+        "implementation": "bdf6ef4734094455c09b14d28de0e30660d87bb8a097045abde24b11f3201b68",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "d8111b0931cfa82e556ab2860959e30ebe1707a01c8d26db751452cb0524c09a"
+      },
+      "implementationDigest": "bdf6ef4734094455c09b14d28de0e30660d87bb8a097045abde24b11f3201b68"
+    },
+    {
+      "versionId": "5a0b0e8b09c930bb0cdda9084bc637d44c035ca3d3673780630c17d81e894ba0",
+      "publishedAt": "2026-11-10T08:33:57.473Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检按SOC当前在线状态、基线原因与规则结果汇总，未完成和异常分别统计。",
+        "connectionId": "platform-compositions",
+        "implementation": "4bc76ce9a4d1eb8fc98b1d7261fd60703195e081eacbfd623d0053bfba0a778c",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "09d546d9fbf4d1476ee47f8db48ae62aa0cd1a3acad2382447e6e6330d7a9005"
+      },
+      "implementationDigest": "4bc76ce9a4d1eb8fc98b1d7261fd60703195e081eacbfd623d0053bfba0a778c"
+    },
+    {
+      "versionId": "9d8288bda6c3a3630c1e35ca937520a535aa7814523e9e3d902041efffa3f095",
+      "publishedAt": "2026-11-10T12:01:32.519Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检按SOC在线状态、基线原子结论与启用规则互联结果汇总；明确未采集未绑定不推成未完成，失败独立保留。",
+        "connectionId": "platform-compositions",
+        "implementation": "6973c2fa8634ee3502b78530e824f468c19fa9d8ce13083cd1476edf0ca9ec14",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "c4a0d760f19b1771b87739ecf147226bc33e3e57d8fd0d917420719d0ca5ae84"
+      },
+      "implementationDigest": "6973c2fa8634ee3502b78530e824f468c19fa9d8ce13083cd1476edf0ca9ec14"
+    },
+    {
+      "versionId": "5d509eebd9119e767178ddbc4b11a97843e111d98ed7bd216a4b834a6b8531ea",
+      "publishedAt": "2026-11-10T12:28:52.147Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检按SOC在线状态、基线原子结论与启用规则互联结果汇总；明确未采集未绑定不推成未完成，失败独立保留。",
+        "connectionId": "platform-compositions",
+        "implementation": "6606193bee3e60bee53d10df87c4487566f37402248f79479962afebb86e89b8",
+        "workflow": "inspection-routine",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "fb3c4513ec13112a693c048d7c6b3565977887b7e462b25b704827314e525fd9"
+      },
+      "implementationDigest": "6606193bee3e60bee53d10df87c4487566f37402248f79479962afebb86e89b8"
+    },
+    {
+      "versionId": "b689c672ca8f602ef171eecb24c3c6f76b182c6812210fd3f21f2ef52c632516",
+      "publishedAt": "2026-11-10T12:40:53.112Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检按SOC在线状态、基线原子结论与启用规则互联结果汇总；明确未采集未绑定不推成未完成；无适用检查对不挂A4，失败独立保留。",
+        "connectionId": "platform-compositions",
+        "implementation": "640b0337c6b5a9232d2b8af2eb51293f25917c0c3e1403b7cee116ec39da4eb9",
+        "workflow": "inspection-routine",
+        "connections": {
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "4a5b2d0bfd99133dd9507f8fd5e963008fcc94362af06233754e9a393b46a270"
+      },
+      "implementationDigest": "640b0337c6b5a9232d2b8af2eb51293f25917c0c3e1403b7cee116ec39da4eb9"
+    },
+    {
+      "versionId": "ce8d5cd74e46723f894f07a8cc78276bb0e488a52c735b9a02b01a5d252e5452",
+      "publishedAt": "2026-11-10T13:37:19.249Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检汇总SOC状态、基线与启用规则互联结果；明确状态独立呈现，失败保留，聊天与HTML同源。",
+        "connectionId": "platform-compositions",
+        "implementation": "07317c6aced1073edb72a0927d882b29a4a829196542812bb27dee73cb648855",
+        "workflow": "inspection-routine",
+        "connections": {
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "61f31ab260415210f8f446895f404cd276e4996d817a5c7b9b8b450703a46415"
+      },
+      "implementationDigest": "07317c6aced1073edb72a0927d882b29a4a829196542812bb27dee73cb648855"
+    },
+    {
+      "versionId": "e62786d46fdfc3ec44c79d6de4159d19cce093a83fa9980828a8649f26dbafb7",
+      "publishedAt": "2026-11-12T00:53:11.064Z",
+      "config": {
+        "toolName": "inspection_routine",
+        "title": "常规巡检",
+        "description": "常规巡检汇总SOC状态、基线与启用规则互联结果；明确状态独立呈现，失败保留，聊天与HTML同源。",
+        "connectionId": "platform-compositions",
+        "implementation": "4281fa8deb7c9ce9f19866a1bec1f2959598dd648d6c6cd45a52f6b56004000f",
+        "workflow": "inspection-routine",
+        "connections": {
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "bb89a7a0fa77121394c2f4d1f67220642fc79f072bc3e86480e671138ba87a5b"
+      },
+      "implementationDigest": "4281fa8deb7c9ce9f19866a1bec1f2959598dd648d6c6cd45a52f6b56004000f"
     }
   ],
   "published": {
     "toolName": "inspection_routine",
     "title": "常规巡检",
-    "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+    "description": "常规巡检汇总SOC状态、基线与启用规则互联结果；明确状态独立呈现，失败保留，聊天与HTML同源。",
     "connectionId": "platform-compositions",
-    "implementation": "76aece70b3d94efcc2cab4471de51596274ba2b1c230eee83baef13fa6766007",
+    "implementation": "4281fa8deb7c9ce9f19866a1bec1f2959598dd648d6c6cd45a52f6b56004000f",
     "workflow": "inspection-routine",
     "connections": {
-      "master": "ai-soc-master",
+      "graph": "ai-soc-graph",
       "ingest": "ai-soc-ingest",
-      "graph": "ai-soc-graph"
+      "master": "ai-soc-master"
     },
     "kind": "workflow",
     "engine": "lfx",
-    "flowDigest": "e10af163dd61c433400fcc516bf7b5c5d77c8b8cb088c42571b98707c06ff6e2",
-    "publishedAt": "2026-11-07T03:27:13.413Z"
+    "flowDigest": "bb89a7a0fa77121394c2f4d1f67220642fc79f072bc3e86480e671138ba87a5b",
+    "publishedAt": "2026-11-12T00:53:11.064Z"
   },
-  "publishedVersionId": "06bf7342d95b21c1986c08a64c3baaa3f30bbc9cff91726b74aaf4ba6a6c58c4",
-  "draft": {
-    "toolName": "inspection_routine",
-    "title": "常规巡检",
-    "description": "常规巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
-    "connectionId": "platform-compositions",
-    "workflow": "inspection-routine",
-    "connections": {
-      "master": "ai-soc-master",
-      "ingest": "ai-soc-ingest",
-      "graph": "ai-soc-graph"
-    },
-    "kind": "workflow",
-    "engine": "lfx"
-  }
+  "publishedVersionId": "e62786d46fdfc3ec44c79d6de4159d19cce093a83fa9980828a8649f26dbafb7"
 }

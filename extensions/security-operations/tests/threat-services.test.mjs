@@ -4,8 +4,8 @@ import { chmod, lstat, mkdtemp, readFile, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { after, before, test } from 'node:test'
-import { createNativeThreatServices } from '../src/threat-services.ts'
-import { ensureThreatSource, THREAT_SOURCE_COMMIT, THREAT_SOURCE_DIRECTORY } from '../src/threat/source.ts'
+import { createNativeThreatServices } from '../../../mcp/src/threat-services.ts'
+import { ensureThreatSource, THREAT_SOURCE_COMMIT, THREAT_SOURCE_DIRECTORY } from '../../../mcp/src/threat/source.ts'
 
 let repository
 const active = () => new AbortController().signal
@@ -61,7 +61,7 @@ test('工具分派保留连接、原始参数和同一取消信号；错误回�
   assert.equal(calls[0][1], signal)
   const failed = createNativeThreatServices(repository, async () => ({ status: 502, value: { error: 'fixture-private-manager-detail' } }), {}, () => defaultRoute)
   await assert.rejects(() => failed.invoke('fixture-soc', 'incident_lookup', {}, signal), error => {
-    assert.equal(error.message, '平台连接调用失败：fixture-soc/incident_lookup')
+    assert.match(error.message, /依赖工具调用失败.*连接=fixture-soc.*阶段=invocation.*操作=incident_lookup.*MCP调度状态=502/u)
     assert.doesNotMatch(error.message, /fixture-private-manager-detail/)
     return true
   })
@@ -153,7 +153,7 @@ test('OpenAPI未暴露操作或规格发现失败时拒绝调用，不泄露规�
     const services = createNativeThreatServices(repository, async request => { calls.push(request); return reply }, {}, () => defaultRoute,
       () => [{ id: 'fixture-soc', specUrl: 'http://fixture.invalid/openapi' }])
     await assert.rejects(() => services.invoke('fixture-soc', 'absent_operation', {}, active()), error => {
-      assert.match(error.message, /(?:未暴露所需工具|无法发现组合依赖)/)
+      assert.match(error.message, /(?:依赖工具发现失败|未暴露所需工具)/)
       assert.doesNotMatch(error.message, /fixture-private-spec-detail/)
       return true
     })

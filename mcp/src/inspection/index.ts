@@ -1,6 +1,7 @@
 import { BlockList, isIP } from 'node:net'
 import { renderInspectionReport } from '../reports/inspection.ts'
-import { safeProjection } from '../reports/common.ts'
+import { renderInspectionChatMarkdown, renderInspectionMarkdown } from '../reports/inspection-operations.ts'
+import { publicErrorText } from '../error.ts'
 import type { CompositionWorkflow, WorkflowContext } from '@harness-platform/mcp/extension'
 
 
@@ -19,6 +20,7 @@ export const inputSchema = {
       networkTiers: { type: 'array', minItems: 1, items: { type: 'string', minLength: 1 }, uniqueItems: true },
       deptIds: { type: 'array', minItems: 1, items: { type: 'integer', minimum: 1 }, uniqueItems: true },
     } },
+    ruleTypes: { type: 'array', minItems: 1, uniqueItems: true, items: { type: 'string', enum: ['REQUIRED', 'FORBIDDEN'] } },
     reachability: { type: 'object', additionalProperties: false, required: ['srcIp', 'dstIp'], properties: {
       srcIp: { type: 'string' }, dstIp: { type: 'string' }, mode: { type: 'string', enum: ['FULL', 'MUST_PASS'] },
       via: { type: 'array', minItems: 1, items: { type: 'string' } }, port: { type: 'integer', minimum: 1, maximum: 65535 }, protocol: { type: 'string', enum: ['tcp', 'udp', 'icmp'] },
@@ -26,24 +28,24 @@ export const inputSchema = {
   },
 }
 export function decode(value: any): any {
-  if (value?.isError) throw new Error('上游 MCP 工具执行失败')
+  if (value?.isError) {
+    const content = value.content ?? value.contents
+    const detail = Array.isArray(content)
+      ? content.filter((item: any) => typeof item?.text === 'string').map((item: any) => item.text).join('\n')
+      : value.error ?? value.message
+    const message = publicErrorText(detail, 'MCP 工具返回错误，但没有提供错误详情')
+    throw new Error(`上游 MCP 工具执行失败：${message}`)
+  }
   if (value?.structuredContent) value = value.structuredContent
   else if (Array.isArray(value?.content) || Array.isArray(value?.contents)) {
     const text = (value.content ?? value.contents).filter((item: any) => typeof item.text === 'string').map((item: any) => item.text).join('\n')
-    try { value = JSON.parse(text) } catch { throw new Error('上游未返回可解析的结构化数据') }
+    try { value = JSON.parse(text) } catch { throw new Error('上游返回了文本，但无法解析为结构化数据；请核对工具回执格式') }
   }
-  if (!value || typeof value !== 'object' || value.code !== undefined && ![0, 200].includes(value.code)) throw new Error(`上游业务响应失败（业务码=${value?.code ?? 'invalid-response'}；上游HTTP状态未提供）`)
+  if (!value || typeof value !== 'object' || value.code !== undefined && ![0, 200].includes(value.code)) throw new Error(`上游业务响应未通过：业务码=${value?.code ?? 'invalid-response'}；上游HTTP状态未提供`)
   return value
 }
-function publicErrorText(value: any): string {
-  const projected: any = safeProjection({ error: value })
-  const text = projected?.error
-  if (typeof text === 'string') return text.slice(0, 1000)
-  if (text === undefined) return ''
-  try { return JSON.stringify(text).slice(0, 1000) } catch { return '[错误信息无法安全展开]' }
-}
 function publicReceiptError(error: any): string {
-  return publicErrorText(error?.receipt?.error)
+  return error?.receipt ? publicErrorText(error.receipt.error, '') : ''
 }
 export function rows(value: any): any[] {
   const result = value.rows ?? value.data?.rows ?? value.data?.records ?? value.data?.list ?? value.data
@@ -56,6 +58,29 @@ export function cidrMatch(ip: string, cidr: string) {
   const block = new BlockList(); block.addSubnet(address, +prefix, family === 4 ? 'ipv4' : 'ipv6')
   return isIP(ip) === family && block.check(ip, family === 4 ? 'ipv4' : 'ipv6')
 }
+export function preparationError(code: string, message: string, details: Record<string, any>) {
+  return Object.assign(new Error(`${message}；${JSON.stringify({ code, ...details })}`), { code, reasonCode: code, details })
+}
+export function selectedRuleTypes(input: any): string[] {
+  const types = input.ruleTypes ?? ['REQUIRED', 'FORBIDDEN']
+  if (!Array.isArray(types) || !types.length || types.some(type => !['REQUIRED', 'FORBIDDEN'].includes(type)) || new Set(types).size !== types.length) throw new Error('ruleTypes 须为不重复的 REQUIRED/FORBIDDEN 列表')
+  return [...types].sort()
+}
+export function matches(asset: any, selector: any, layers?: any[]) {
+  if (!selector || selector.bizIds?.length || !['ASSETS', 'ALL', null, undefined].includes(selector.scope)) throw new Error('规则含当前无法解析的选择条件')
+  const hasCriteria = ['cidrs', 'networkTiers', 'assetTypes'].some(key => selector[key]?.length)
+  if (!hasCriteria && selector.scope !== 'ALL') throw new Error('规则没有明确的目标条件')
+  if (selector.networkTiers?.length && !Array.isArray(layers)) throw new Error('网络层目录未成功冻结，无法核对规则 networkTiers')
+  const layer = asset.layerId == null ? undefined : layers?.find(layer => layer.category === 'network_tier' && String(layer.id) === String(asset.layerId))
+  const networkTier = asset.networkTier ?? layer?.code
+  return (!selector.cidrs?.length || selector.cidrs.some((value: string) => isIP(value) ? asset.ip === value : cidrMatch(asset.ip ?? '', value))) && (!selector.networkTiers?.length || selector.networkTiers.includes(networkTier)) && (!selector.assetTypes?.length || selector.assetTypes.includes(asset.assetType))
+}
+export function applicableRule(rule: any) {
+  if (rule.selectorIssues?.some((issue: any) => issue?.reason !== 'LAYER_NOT_FOUND') || !['FORBIDDEN', 'REQUIRED'].includes(rule.ruleType) || rule.allowedPorts || rule.destPort && (!/^\d+$/.test(String(rule.destPort)) || Number(rule.destPort) < 1 || Number(rule.destPort) > 65535) || rule.protocol && !['tcp', 'udp', 'icmp'].includes(String(rule.protocol).toLowerCase())) throw new Error('当前证据无法解释该规则的选择条件或策略条件，未核查路径')
+}
+export function reachabilityGap(ruleTypes: string[]) {
+  return preparationError('REACHABILITY_INPUT_REQUIRED', '没有适用于冻结范围和所选类型的可达性规则；须补充实际连接参数，本次未创建运行', { missingFields: ['reachability.srcIp', 'reachability.dstIp'], ruleTypes })
+}
 export function tools(soc: Soc) {
   async function request(connection: string, operation: string, args: Record<string, any>, signal: AbortSignal, context?: RequestContext) {
     const invoke = async () => {
@@ -67,7 +92,7 @@ export function tools(soc: Soc) {
         const type = typeof error.cause?.name === 'string' && error.cause.name !== 'Error' ? `；底层类型=${publicErrorText(error.cause.name)}` : ''
         const code = typeof error.cause?.code === 'string' ? `；cause=${publicErrorText(error.cause.code)}` : ''
         const status = Number.isInteger(error.status) ? `；MCP调度状态=${error.status}` : ''
-        const message = publicErrorText(error.message) || '未提供错误消息'
+        const message = publicErrorText(error.message, '运行时未提供错误详情，请查看平台日志')
         const receipt = publicReceiptError(error)
         const receiptText = receipt && receipt !== message ? `；调度回执错误=${receipt}` : ''
         throw new Error(`${connection}/${operation}${asset}：${message}${type}${code}${status}${receiptText}`, { cause: error })
@@ -107,9 +132,13 @@ export function tools(soc: Soc) {
     if (!scope || !Object.keys(scope).length || scope.all && Object.keys(scope).length > 1) throw new Error('须提供明确范围；全部资产不能与其他筛选混用')
     for (const ip of scope.ips ?? []) if (!isIP(ip)) throw new Error(`IP 无效：${ip}`)
     for (const cidr of scope.cidrs ?? []) cidrMatch('', cidr)
+    const ruleTypes = selectedRuleTypes(input)
     if (input.reachability) {
+      const missingFields = ['srcIp', 'dstIp'].filter(key => !input.reachability[key]).map(key => `reachability.${key}`)
+      if (input.reachability.mode === 'MUST_PASS' && !input.reachability.via?.length) missingFields.push('reachability.via')
+      if (missingFields.length) throw preparationError('REACHABILITY_INPUT_REQUIRED', '可达性连接参数缺失，本次未创建运行', { missingFields })
       if (!isIP(input.reachability.srcIp) || !isIP(input.reachability.dstIp)) throw new Error('可达性源、目的必须为有效 IP')
-      if (input.reachability.mode === 'MUST_PASS' && !input.reachability.via?.length) throw new Error('MUST_PASS 模式须提供途经节点')
+      if (!ruleTypes.includes('REQUIRED')) throw preparationError('REACHABILITY_RULE_TYPE_CONFLICT', '显式连接检查为 REQUIRED，不能使用排除 REQUIRED 的规则筛选', { ruleTypes })
     }
     const connection = config.connections?.master
     if (!connection) throw new Error('未绑定资产连接')
@@ -130,7 +159,10 @@ export function tools(soc: Soc) {
     if (scope.assetIds?.some((id: number) => !unique.has(id))) throw new Error('部分指定资产不存在或不在部门范围内；请核对 ID')
     if (scope.ips?.some((ip: string) => ![...unique.values()].some(asset => asset.ip === ip))) throw new Error('部分指定 IP 没有对应资产；请核对 IP')
     const fields = ['assetId', 'ip', 'hostname', 'assetType', 'hostAssetId', 'deptId', 'layerId', 'networkTier', 'status', 'online', 'onlineBasis', 'lastSeenAt', 'lastProbeAt', 'probeState', 'onlineWindowMinutes', 'heartbeatWindowSeconds', 'stateEvidence']
-    return { connection, scope: { requested: scope, frozen_at: new Date().toISOString(), count: assets.length, assetIds: assets.map(asset => asset.assetId) }, assets: assets.map(asset => Object.fromEntries(fields.filter(key => Object.hasOwn(asset, key)).map(key => [key, asset[key]]))) }
+    const project = (asset: any) => Object.fromEntries(fields.filter(key => Object.hasOwn(asset, key)).map(key => [key, asset[key]]))
+    const ambiguities = scope.assetIds ? [] : (scope.ips ?? []).map((ip: string) => ({ ip, candidates: assets.filter(asset => asset.ip === ip).map(project) })).filter((item: any) => item.candidates.length > 1)
+    if (ambiguities.length) throw preparationError('AMBIGUOUS_ASSET_IP', 'IP 对应多个真实资产，请使用 assetIds 或其他范围条件消歧，本次未创建运行', { ambiguities })
+    return { connection, scope: { requested: scope, frozen_at: new Date().toISOString(), count: assets.length, assetIds: assets.map(asset => asset.assetId), ruleTypes }, assets: assets.map(project) }
   }
   async function prepareInspection(input: any, config: any, signal: AbortSignal, withRules = false, context?: RequestContext) {
     const fingerprints = Object.fromEntries([...new Set<string>(Object.values(config.connections ?? {}))].map(id => [id, soc.fingerprint?.(id)]))
@@ -139,29 +171,55 @@ export function tools(soc: Soc) {
     verify()
     if (withRules && !input.reachability) {
       let rules: any[] = [], rules_error: string | undefined
-      try { rules = rows(await request(config.connections.graph, 'get_graph_compliance_rules', {}, signal, context)) }
-      catch (error: any) { signal.throwIfAborted(); rules_error = error.message }
+      try {
+        rules = rows(await request(config.connections.graph, 'get_graph_compliance_rules', {}, signal, context))
+        if (rules.some(rule => !rule || typeof rule !== 'object' || Array.isArray(rule))) throw new Error('规则列表包含无效记录，不能作为零规则')
+      } catch (error: any) { signal.throwIfAborted(); rules = []; rules_error = error.message }
       verify()
-      return { ...snapshot, rules, rules_error, rules_frozen_at: new Date().toISOString(), graphConnection: config.connections.graph }
+      const ruleTypes = snapshot.scope.ruleTypes
+      rules = rules.filter(rule => ruleTypes.includes(rule.ruleType) || input.ruleTypes === undefined && !['REQUIRED', 'FORBIDDEN'].includes(rule.ruleType))
+      const enabledRules = rules.filter(rule => rule.enabled === true || rule.enabled === 1)
+      if (!rules_error && !enabledRules.length) throw reachabilityGap(ruleTypes)
+      let layers: any[] | undefined, layers_error: string | undefined, layers_observed_at: string | undefined
+      if (!rules_error && enabledRules.some(rule => rule.sourceSelector?.networkTiers?.length || rule.destSelector?.networkTiers?.length)) {
+        try {
+          const directory = rows(await request(snapshot.connection, 'list_soc_layer', {}, signal, context))
+          if (directory.some(layer => !layer || layer.id == null || typeof layer.code !== 'string' || typeof layer.category !== 'string')) throw new Error('网络层目录记录缺少 id/code/category，不能作为完整映射')
+          layers = directory.map(layer => ({ id: layer.id, code: layer.code, category: layer.category }))
+          layers_observed_at = new Date().toISOString()
+        } catch (error: any) { signal.throwIfAborted(); layers_error = error.message }
+      }
+      verify()
+      return { ...snapshot, rules, rules_error, rules_frozen_at: new Date().toISOString(), graphConnection: config.connections.graph, layers, layers_error, layers_observed_at }
     }
     return snapshot
   }
   async function snapshot(input: any, config: any, context: WorkflowContext, withRules = false) {
     const shared = context.shared
     if (!shared) return prepareInspection(input, config, context.signal, withRules, context)
-    if (shared.connection !== config.connections.master || JSON.stringify(shared.scope?.requested) !== JSON.stringify(input.scope) || !Object.values(config.connections ?? {}).every(id => Object.hasOwn(shared.connection_fingerprints ?? {}, String(id)) && shared.connection_fingerprints[id as string] === soc.fingerprint?.(String(id))) || withRules && !input.reachability && (!Array.isArray(shared.rules) || shared.graphConnection !== config.connections.graph)) throw new Error('运行快照与范围、规则或连接不一致；保留原范围，本次不重新准备')
+    if (shared.connection !== config.connections.master || JSON.stringify(shared.scope?.requested) !== JSON.stringify(input.scope) || JSON.stringify(shared.scope?.ruleTypes) !== JSON.stringify(selectedRuleTypes(input)) || !Object.values(config.connections ?? {}).every(id => Object.hasOwn(shared.connection_fingerprints ?? {}, String(id)) && shared.connection_fingerprints[id as string] === soc.fingerprint?.(String(id))) || withRules && !input.reachability && (!Array.isArray(shared.rules) || shared.graphConnection !== config.connections.graph)) throw new Error('运行快照与范围、规则或连接不一致；保留原范围，本次不重新准备')
     return shared
   }
   return { request, prepare: prepareInspection, snapshot }
 }
-export function summary(kind: string, items: any[], context: WorkflowContext) {
-  return { kind, scope: context.shared.scope, status: items.some(item => ['failed', 'unknown'].includes(item.status)) ? 'incomplete' : 'completed',
+import { withCompletion } from './completion.ts'
+
+export function summary(kind: string, items: any[], context: WorkflowContext, executionStatus: string = 'unknown') {
+  const shared = context.shared ?? {}, generatedAt = new Date().toISOString()
+  const connections = Object.keys(shared.connection_fingerprints ?? {}).map(connectionId => ({ connectionId }))
+  const source = { connections, connection_fingerprints: shared.connection_fingerprints ?? {}, ...(shared.graphConnection ? { graphConnection: shared.graphConnection } : {}) }
+  items = items.map(item => withCompletion(kind, item))
+  const complete = (items.length > 0 || ['routine', 'deep'].includes(kind)) && items.every(item => item.complete)
+  return { kind, run_id: context.runId, generated_at: generatedAt, execution_status: executionStatus, source, scope: shared.scope, complete, status: complete ? 'completed' : 'incomplete',
     counts: Object.fromEntries(['normal', 'abnormal', 'unknown', 'not_applicable', 'failed'].map(status => [status, items.filter(item => item.status === status).length])), items }
 }
 export function artifacts(result: Record<string, any>) {
-  const body = renderInspectionReport(result)
+  const enriched = { ...result, generated_at: new Date().toISOString() }
+  const body = renderInspectionReport(enriched)
   return [{ id: 'report', filename: 'inspection-report.html', contentType: 'text/html; charset=utf-8', body },
-    { id: 'details', filename: 'inspection-details.json', contentType: 'application/json', body: JSON.stringify(result, null, 2) }]
+    { id: 'details', filename: 'inspection-details.json', contentType: 'application/json', body: JSON.stringify(enriched, null, 2) },
+    { id: 'chat', filename: 'inspection-chat.md', contentType: 'text/markdown; charset=utf-8', body: renderInspectionChatMarkdown(enriched) },
+    { id: 'markdown', filename: 'inspection-report.md', contentType: 'text/markdown; charset=utf-8', body: renderInspectionMarkdown(enriched) }]
 }
 
 export function base(soc: Soc, withRules = false): Pick<CompositionWorkflow, 'inputSchema' | 'connections' | 'prepare' | 'artifacts'> {
@@ -169,7 +227,7 @@ export function base(soc: Soc, withRules = false): Pick<CompositionWorkflow, 'in
 }
 
 export function assetItem(asset: any, result: any) {
-  return { assetId: asset.assetId, ip: asset.ip, hostname: asset.hostname, observed_at: new Date().toISOString(), ...result }
+  return { assetId: asset.assetId, ...(asset.hostAssetId === undefined ? {} : { hostAssetId: asset.hostAssetId }), ip: asset.ip, hostname: asset.hostname, observed_at: new Date().toISOString(), ...result }
 }
 export function scopeComponent(soc: Soc, withRules = false) {
   return async (input: any, config: any, context: WorkflowContext) => {

@@ -1,5 +1,31 @@
 import { api, data, rows, prepare, validateParameters, type Soc } from '../../../src/action-api.ts'
 
+function candidateId(item: any): string | undefined {
+  const value = item?.deviceId ?? item?.value ?? item?.id
+  return value === undefined || value === null || value === '' ? undefined : String(value)
+}
+
+function matchesTarget(item: any, requested: string): boolean {
+  return [item?.deviceId, item?.value, item?.id, item?.ip, item?.hostname, item?.assetId]
+    .filter((value) => value !== undefined && value !== null && value !== '')
+    .some((value) => String(value) === requested)
+}
+
+function targetSelection(item: any) {
+  return {
+    deviceId: candidateId(item),
+    hostname: item?.hostname ?? item?.hostName ?? item?.name ?? item?.deviceName ?? null,
+    ip: item?.ip ?? item?.address ?? null,
+    assetId: item?.assetId ?? null,
+    modelId: item?.modelId ?? null,
+  }
+}
+
+function generatedRuleName(srcIp: string): string {
+  const suffix = String(srcIp).replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48)
+  return `AUTO-BLOCK-${suffix || 'SOURCE'}`
+}
+
 export function create(soc: Soc) {
   return {
     responseMode: 'complete' as const,
@@ -20,19 +46,68 @@ export function create(soc: Soc) {
         const matches = rows(definitions).filter((item: any) => item.actionKey === input.actionKey && item.enabled !== false)
         if (matches.length !== 1) throw new Error('当前动作目录无唯一可用动作')
         const action = matches[0]
-        const targets = rows(candidates).filter((item: any) => (item.deviceId ?? item.id ?? item.value) === input.deviceId)
-        if (targets.length !== 1) throw new Error('目标不属于此动作的唯一合格执行点')
-        return { ...input, action, target: targets[0], params: { ...input.params } }
+        const requestedTarget = String(input.deviceId)
+        const targets = rows(candidates).filter((item: any) => matchesTarget(item, requestedTarget))
+        if (targets.length === 0) throw new Error('目标不属于此动作的合格执行点')
+        if (targets.length > 1) {
+          return {
+            ...input,
+            status: 'NEEDS_SELECTION',
+            stage: 'awaiting-device-selection',
+            proceed: false,
+            selection: {
+              kind: 'device',
+              requested: requestedTarget,
+              candidates: targets.map(targetSelection),
+            },
+            message: '该输入对应多个合格执行设备，请用户选择后重新提交相同动作。',
+          }
+        }
+        const resolvedDeviceId = candidateId(targets[0])
+        if (!resolvedDeviceId) throw new Error('候选执行点缺少可用 deviceId')
+        return { ...input, deviceId: resolvedDeviceId, action, target: targets[0], params: { ...input.params } }
       },
       async parameters(value: any, config: any, context: any) {
+        if (value.status === 'NEEDS_SELECTION') return value
         const call = api(soc, config, context), params = { ...value.params }
+        if (value.actionKey === 'block-ip' || value.actionKey === 'unblock-ip') {
+          if (params.src_ip === undefined && params.ip !== undefined) params.src_ip = params.ip
+          if (params.rule_name === undefined && params.ruleName !== undefined) params.rule_name = params.ruleName
+          delete params.ip
+          delete params.ruleName
+          if (value.actionKey === 'block-ip' && !params.rule_name && params.src_ip) params.rule_name = generatedRuleName(params.src_ip)
+          if (value.actionKey === 'unblock-ip' && !params.rule_name) throw new Error('解封必须关联原封禁回执中的规则标识；当前动作合同不支持仅按源IP安全定位规则')
+        }
         if (value.stop === 'create-task' && value.actionKey !== 'trigger-scan') throw new Error('仅扫描动作支持仅创建任务的请求')
         let agent: any, template: any
         if (value.actionKey.startsWith('host-')) {
           const agents = rows(await call('response', 'get_resp_actions_device_agents', { deviceId: value.deviceId }, true))
-          const matches = agents.filter((item: any) => String(item.agentId ?? item.id) === value.agentId)
-          if (matches.length !== 1) throw new Error('必须指定该 EDR 设备实际列出的唯一 agentId')
+          const requestedAgentId = value.agentId === undefined || value.agentId === null || value.agentId === '' ? undefined : String(value.agentId)
+          const matches = requestedAgentId === undefined
+            ? agents
+            : agents.filter((item: any) => String(item.agentId ?? item.id) === requestedAgentId)
+          if (matches.length === 0) throw new Error(requestedAgentId === undefined ? '该 EDR 设备没有可用的 agentId' : '指定的 agentId 不属于该 EDR 设备')
+          if (requestedAgentId === undefined && matches.length > 1) {
+            return {
+              ...value,
+              status: 'NEEDS_SELECTION',
+              stage: 'awaiting-agent-selection',
+              proceed: false,
+              selection: {
+                kind: 'agent',
+                deviceId: value.deviceId,
+                candidates: matches.map((item: any) => ({
+                  agentId: String(item.agentId ?? item.id),
+                  hostname: item.hostname ?? item.hostName ?? item.name ?? null,
+                  ip: item.ip ?? item.address ?? null,
+                  os: item.os ?? null,
+                })),
+              },
+              message: '该 EDR 执行设备存在多个可用 Agent，请用户选择后重新提交相同动作。',
+            }
+          }
           agent = matches[0]
+          value = { ...value, agentId: String(agent.agentId ?? agent.id) }
         } else if (value.agentId) throw new Error('此动作不能携带 agentId')
         if (value.actionKey === 'trigger-scan') {
           const templates = rows(await call('ingest', 'get_admin_ingest_devices_scan_templates', { deviceId: value.deviceId }, true))
@@ -72,6 +147,7 @@ export function create(soc: Soc) {
       },
       result(value: any) {
         const { action, ...result } = value
+        if (!action) return result
         return { ...result, action: { actionKey: action.actionKey, name: action.name, risk: action.risk, reversible: action.reversible, rollbackAction: action.rollbackAction } }
       },
     },

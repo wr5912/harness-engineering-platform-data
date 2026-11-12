@@ -1,0 +1,332 @@
+{
+  "data": {
+    "nodes": [
+      {
+        "id": "input",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 24
+        },
+        "data": {
+          "id": "input",
+          "type": "HepInput",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepInput as BaseComponent\nclass HepInput(BaseComponent):\n pass\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "运行输入",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "输入",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "scope"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "status",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 148
+        },
+        "data": {
+          "id": "status",
+          "type": "HepStatus",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "value": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "value",
+                "value": "",
+                "display_name": "输入",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepStatus(HepComponent):\n display_name='汇总同次资产状态证据'\n inputs=[DataInput(name='value', display_name='输入', required=True)]\n outputs=[Output(name='result',display_name='结果',method='build')]\n async def build(self)->Data:\n  return Data(data=await component('status',payload(self.value),self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "状态证据汇总",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "transform"
+            },
+            "tool_mode": false,
+            "is_output": false
+          }
+        }
+      },
+      {
+        "id": "summary",
+        "type": "genericNode",
+        "position": {
+          "x": 24,
+          "y": 272
+        },
+        "data": {
+          "id": "summary",
+          "type": "HepSummary",
+          "node": {
+            "template": {
+              "_type": "Component",
+              "check_status": {
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "list": false,
+                "list_add_label": "Add More",
+                "trace_as_input": true,
+                "override_skip": false,
+                "required": true,
+                "placeholder": "",
+                "show": true,
+                "name": "check_status",
+                "value": "",
+                "display_name": "在线状态检查",
+                "advanced": false,
+                "api_editable": false,
+                "input_types": [
+                  "Data",
+                  "JSON"
+                ],
+                "dynamic": false,
+                "info": "",
+                "title_case": false,
+                "track_in_telemetry": false,
+                "type": "other",
+                "_input_type": "JSONInput"
+              },
+              "code": {
+                "type": "code",
+                "required": true,
+                "placeholder": "",
+                "list": false,
+                "show": true,
+                "multiline": true,
+                "value": "from hep_lfx import HepComponent, component, payload\nfrom lfx.io import DataInput, Output\nfrom lfx.schema import Data\nclass HepSummary(HepComponent):\n display_name='汇总在线状态专项结果'\n inputs=[DataInput(name='check_status', display_name='在线状态检查', required=True)]\n outputs=[Output(name=\"result\",display_name=\"结果\",method=\"build\")]\n async def build(self)->Data:\n  return Data(data=await component(\"summary\",{'status':payload(self.check_status)},self._id))\n",
+                "fileTypes": [],
+                "file_path": "",
+                "password": false,
+                "name": "code",
+                "advanced": true,
+                "api_editable": false,
+                "dynamic": true,
+                "info": "",
+                "load_from_db": false,
+                "title_case": false
+              }
+            },
+            "base_classes": [
+              "JSON"
+            ],
+            "display_name": "汇总在线状态专项结果",
+            "documentation": "",
+            "minimized": false,
+            "custom_fields": {},
+            "output_types": [],
+            "pinned": false,
+            "conditional_paths": [],
+            "frozen": false,
+            "outputs": [
+              {
+                "types": [
+                  "JSON"
+                ],
+                "selected": "JSON",
+                "name": "result",
+                "display_name": "结果",
+                "method": "build",
+                "value": "__UNDEFINED__",
+                "cache": true,
+                "allows_loop": false,
+                "group_outputs": false,
+                "tool_mode": true
+              }
+            ],
+            "field_order": [],
+            "beta": false,
+            "legacy": false,
+            "edited": false,
+            "metadata": {
+              "kind": "aggregate"
+            },
+            "tool_mode": false,
+            "is_output": true
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "input-result-status-value",
+        "source": "input",
+        "target": "status",
+        "sourceHandle": "result",
+        "targetHandle": "value",
+        "data": {
+          "sourceHandle": {
+            "id": "input",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "status",
+            "fieldName": "value",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      },
+      {
+        "id": "status-result-summary-check_status",
+        "source": "status",
+        "target": "summary",
+        "sourceHandle": "result",
+        "targetHandle": "check_status",
+        "data": {
+          "sourceHandle": {
+            "id": "status",
+            "name": "result",
+            "dataType": "Data",
+            "output_types": [
+              "Data"
+            ]
+          },
+          "targetHandle": {
+            "id": "summary",
+            "fieldName": "check_status",
+            "inputTypes": [
+              "Data"
+            ],
+            "type": "DataInput"
+          }
+        }
+      }
+    ]
+  },
+  "name": "在线状态专项巡检",
+  "metadata": {
+    "hep": {
+      "typescript": "src/index.ts"
+    }
+  }
+}

@@ -1,14 +1,38 @@
 {
   "id": "xx-device-command",
-  "draft": {
+  "versions": [
+    {
+      "versionId": "f1567bd2c1f7fc7cbdac43b664c78559eab90ff9c6f010d15aa393661cea473e",
+      "publishedAt": "2026-11-10T02:29:50.569Z",
+      "config": {
+        "toolName": "xx_device_command",
+        "title": "XX设备固定指令（真实接口接入骨架）",
+        "description": "XX固定指令真实接口接入骨架：查主机、核对真实映射并组装三字符串实体；未配置真实连接时明确停止，不回退本地Mock。",
+        "connectionId": "platform-compositions",
+        "readonly": false,
+        "implementation": "4fd2fbdd8e3332cb3c71476b28a096b91be1955b50af00ae0299636708a9549f",
+        "workflow": "xx-device-command",
+        "connections": {},
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "9bd6e24c6d21a6d1d4f1a1885b4e025d7f5ef07b79e5cfacb1287f9d628b9a31"
+      },
+      "implementationDigest": "4fd2fbdd8e3332cb3c71476b28a096b91be1955b50af00ae0299636708a9549f"
+    }
+  ],
+  "published": {
     "toolName": "xx_device_command",
     "title": "XX设备固定指令（真实接口接入骨架）",
     "description": "XX固定指令真实接口接入骨架：查主机、核对真实映射并组装三字符串实体；未配置真实连接时明确停止，不回退本地Mock。",
     "connectionId": "platform-compositions",
     "readonly": false,
+    "implementation": "4fd2fbdd8e3332cb3c71476b28a096b91be1955b50af00ae0299636708a9549f",
     "workflow": "xx-device-command",
     "connections": {},
     "kind": "workflow",
-    "engine": "lfx"
-  }
+    "engine": "lfx",
+    "flowDigest": "9bd6e24c6d21a6d1d4f1a1885b4e025d7f5ef07b79e5cfacb1287f9d628b9a31",
+    "publishedAt": "2026-11-10T02:29:50.569Z"
+  },
+  "publishedVersionId": "f1567bd2c1f7fc7cbdac43b664c78559eab90ff9c6f010d15aa393661cea473e"
 }

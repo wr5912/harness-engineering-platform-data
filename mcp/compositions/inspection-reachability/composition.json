@@ -112,14 +112,34 @@
         "flowDigest": "945b8bc3a776db39490455fd87b241e7ca5ee4f715ab418e4b72557e92d1dd9e"
       },
       "implementationDigest": "cec4fd608c971da7f8591d057ca01caab262d1f1299536f97d4afdcfb36ca843"
+    },
+    {
+      "versionId": "f01d952b24d7125d801379765f06a0cb34ee88243fbea4ed184a241575161886",
+      "publishedAt": "2026-11-10T11:49:26.688Z",
+      "config": {
+        "toolName": "inspection_reachability",
+        "title": "可达性检查",
+        "description": "按SOC启用规则、实际分层与冻结资产匹配互联对象并读取路径ACL；完整无匹配为无适用检查对，真实失败和证据缺失独立保留。",
+        "connectionId": "platform-compositions",
+        "implementation": "e2b1c33845b22909d64776f54f8118b0cadb82a717ca4b06fa9ae9ea50ae77b8",
+        "workflow": "inspection-reachability",
+        "connections": {
+          "master": "ai-soc-master",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "141a9957c48ee236aecb458a5bc08280380fade815c0a61ed173a99fb7cfe75d"
+      },
+      "implementationDigest": "e2b1c33845b22909d64776f54f8118b0cadb82a717ca4b06fa9ae9ea50ae77b8"
     }
   ],
   "published": {
     "toolName": "inspection_reachability",
     "title": "可达性检查",
-    "description": "可达性检查：按明确资产范围读取 SOC 事实并生成报告；未知和缺失不代表正常。",
+    "description": "按SOC启用规则、实际分层与冻结资产匹配互联对象并读取路径ACL；完整无匹配为无适用检查对，真实失败和证据缺失独立保留。",
     "connectionId": "platform-compositions",
-    "implementation": "cec4fd608c971da7f8591d057ca01caab262d1f1299536f97d4afdcfb36ca843",
+    "implementation": "e2b1c33845b22909d64776f54f8118b0cadb82a717ca4b06fa9ae9ea50ae77b8",
     "workflow": "inspection-reachability",
     "connections": {
       "master": "ai-soc-master",
@@ -127,8 +147,8 @@
     },
     "kind": "workflow",
     "engine": "lfx",
-    "flowDigest": "945b8bc3a776db39490455fd87b241e7ca5ee4f715ab418e4b72557e92d1dd9e",
-    "publishedAt": "2026-11-06T12:58:17.878Z"
+    "flowDigest": "141a9957c48ee236aecb458a5bc08280380fade815c0a61ed173a99fb7cfe75d",
+    "publishedAt": "2026-11-10T11:49:26.688Z"
   },
-  "publishedVersionId": "03a782d9f932e08d41ab1c30cfa85b7784f10d3775cecf859a92b6c6b87c426b"
+  "publishedVersionId": "f01d952b24d7125d801379765f06a0cb34ee88243fbea4ed184a241575161886"
 }

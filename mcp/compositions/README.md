@@ -4,6 +4,7 @@
 
 - [深度巡检](inspection-deep/docs/README.md)
 - [常规巡检](inspection-routine/docs/README.md)
+- [在线状态专项（离线资产，未登记）](inspection-status/docs/README.md)
 - [漏洞检查](inspection-vulnerabilities/docs/README.md)
 - [基线检查](inspection-baseline/docs/README.md)
 - [可达性检查](inspection-reachability/docs/README.md)

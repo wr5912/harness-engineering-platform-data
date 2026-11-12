@@ -197,24 +197,150 @@
         "engine": "lfx",
         "flowDigest": "76c28144c683e95fb29e22eb4d5a9e08f5ae7f3b6d0a1892d16b1886ce33520b"
       }
+    },
+    {
+      "versionId": "89d149955f6eaa77e6ccc5956762613e5685ebe1ea436a39aa62763c5724bd96",
+      "publishedAt": "2026-11-10T08:38:11.402Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "深度巡检固定复用当前常规与已有漏洞检查，SOC状态权威，完整空漏洞为没有漏洞，失败与未知分别保留。",
+        "connectionId": "platform-compositions",
+        "implementation": "72c3782e8f4dc4f8778e1ecf8425b4d6d91300e13be4c2cb11f250c2b8ae3291",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "a9e34645513b15af1c6ed3bd65703b7741103906240cc5b5a55ba9f2e8e57a7e"
+      },
+      "implementationDigest": "72c3782e8f4dc4f8778e1ecf8425b4d6d91300e13be4c2cb11f250c2b8ae3291"
+    },
+    {
+      "versionId": "d691947e3140396ec302c64443ee2f3c181bb4c1640eb00a0faf42c361b7d5dc",
+      "publishedAt": "2026-11-10T12:06:24.889Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "固定复用常规与已有漏洞检查，按原子业务结论区分未采集、未绑定、异常与实际未完成，输出同源聊天Markdown及完整HTML。",
+        "connectionId": "platform-compositions",
+        "implementation": "f44042bb73c59a33cc398f60e6d56732f186b4b11c800f9d59f0c43fbeb0086c",
+        "workflow": "inspection-deep",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "0181aba4fa656bb33f9bc1e203486fb2de8be15c4fd1530aa1830b9ea94884bf"
+      },
+      "implementationDigest": "f44042bb73c59a33cc398f60e6d56732f186b4b11c800f9d59f0c43fbeb0086c"
+    },
+    {
+      "versionId": "12e70303533d54376b7d46de60e2a9d8c3297a8ec9e689ea0c5b3062992580cc",
+      "publishedAt": "2026-11-10T12:30:17.055Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "固定复用常规与已有漏洞检查，按原子业务结论区分未采集、未绑定、异常与实际未完成，输出同源聊天Markdown及完整HTML。",
+        "connectionId": "platform-compositions",
+        "implementation": "e731b9f13e271b1901fd295b865a233627d0c792990d8275768ae29bc54aa6cf",
+        "workflow": "inspection-deep",
+        "connections": {
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "cfc7ade0853b0c7e155bee332b5cef15c03114387a6c7278b8196a1a35f066e6"
+      },
+      "implementationDigest": "e731b9f13e271b1901fd295b865a233627d0c792990d8275768ae29bc54aa6cf"
+    },
+    {
+      "versionId": "bae4c2015744261cd92747d7f3a273108e6fffc7f277c7ff8bcbbb07643030db",
+      "publishedAt": "2026-11-10T12:41:54.531Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "固定复用常规与已有漏洞检查，按原子业务结论区分未采集、未绑定、异常与实际未完成；无适用检查对不挂A4。",
+        "connectionId": "platform-compositions",
+        "implementation": "4675f083853cbc61ccc9fde9748ff2f218f53ffff8ea67abd3383ad1a1c76174",
+        "workflow": "inspection-deep",
+        "connections": {
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "6244789dd30c2492c8778aab21ec1384bf6a21399f0047fa598131f412c6ea5d"
+      },
+      "implementationDigest": "4675f083853cbc61ccc9fde9748ff2f218f53ffff8ea67abd3383ad1a1c76174"
+    },
+    {
+      "versionId": "df9fd4b324cb7482da0310eb474ec9a5ea1901cec9f0ad678d8c1074600b5a42",
+      "publishedAt": "2026-11-10T13:38:14.097Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "固定复用常规与已有漏洞检查，按原子业务结论区分未采集、未绑定、异常与实际未完成；无适用检查对不挂A4。",
+        "connectionId": "platform-compositions",
+        "implementation": "6f83882fa9860cdeeaf892caa1eb4a25ab471a4ee4113b911fbd40c532bbd67b",
+        "workflow": "inspection-deep",
+        "connections": {
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "cdd345a01dff59f4fa30cbc53055d974f3a4afd6724bdfe7666df70057637a26"
+      },
+      "implementationDigest": "6f83882fa9860cdeeaf892caa1eb4a25ab471a4ee4113b911fbd40c532bbd67b"
+    },
+    {
+      "versionId": "165c57cf45efa2f494e8f6b749d55e56a01e0247d349afe0b50d1a6117b26866",
+      "publishedAt": "2026-11-12T00:54:25.831Z",
+      "config": {
+        "toolName": "inspection_deep",
+        "title": "全面巡检",
+        "description": "固定复用常规与已有漏洞检查，按原子业务结论区分未采集、未绑定、异常与实际未完成；无适用检查对不挂A4。",
+        "connectionId": "platform-compositions",
+        "implementation": "fc80aa8f4ed84b66f780448dd759032e8d9df06e3715f9bb2ec486446b213e9c",
+        "workflow": "inspection-deep",
+        "connections": {
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "e97a43ca44ef8d547838c9b4305ae89bc0c6a81dc96a8780ee01287f18ee33f9"
+      },
+      "implementationDigest": "fc80aa8f4ed84b66f780448dd759032e8d9df06e3715f9bb2ec486446b213e9c"
     }
   ],
   "published": {
     "toolName": "inspection_deep",
     "title": "全面巡检",
-    "description": "全面巡检：按明确资产范围复用固定子组合，共享资产快照与请求额度，缺失和未知不代表正常。",
+    "description": "固定复用常规与已有漏洞检查，按原子业务结论区分未采集、未绑定、异常与实际未完成；无适用检查对不挂A4。",
     "connectionId": "platform-compositions",
-    "implementation": "e64b73f8dda26136ba9c2e774fe2e42ac74afb5e17f449b204d18532fae671dd",
+    "implementation": "fc80aa8f4ed84b66f780448dd759032e8d9df06e3715f9bb2ec486446b213e9c",
     "workflow": "inspection-deep",
     "connections": {
-      "master": "ai-soc-master",
+      "graph": "ai-soc-graph",
       "ingest": "ai-soc-ingest",
-      "graph": "ai-soc-graph"
+      "master": "ai-soc-master"
     },
     "kind": "workflow",
     "engine": "lfx",
-    "flowDigest": "76c28144c683e95fb29e22eb4d5a9e08f5ae7f3b6d0a1892d16b1886ce33520b",
-    "publishedAt": "2026-11-07T03:27:13.449Z"
+    "flowDigest": "e97a43ca44ef8d547838c9b4305ae89bc0c6a81dc96a8780ee01287f18ee33f9",
+    "publishedAt": "2026-11-12T00:54:25.831Z"
   },
-  "publishedVersionId": "9c4007b5c98793c841a86f768bdf45d2184b712d7235f9631c18e18dcab484b6"
+  "publishedVersionId": "165c57cf45efa2f494e8f6b749d55e56a01e0247d349afe0b50d1a6117b26866"
 }

@@ -4,7 +4,7 @@ export function create(soc: Soc) {
   const api = tools(soc)
   return { ...base(soc), components: {
     scope: scopeComponent(soc),
-    summary: (value: any, _config: any, context: any) => summary('vulnerabilities', value.items, context),
+    summary: (value: any, _config: any, context: any) => summary('vulnerabilities', value.items, context, 'completed'),
     children: async (value: any, config: any, context: any) => {
       const asset = value.item, errors: string[] = []
       const targets = new Map([[asset.assetId, asset]])
@@ -55,9 +55,9 @@ export function create(soc: Soc) {
       const findings = [...observations.values()].sort((a, b) => a.identity.localeCompare(b.identity)).map(finding => ({ ...finding,
         observations: finding.observations.sort((a: any, b: any) => a.sourceAssetId - b.sourceAssetId || JSON.stringify(a.record).localeCompare(JSON.stringify(b.record))),
         sourceAssetIds: [...new Set<number>(finding.observations.map((item: any) => item.sourceAssetId))].sort((a, b) => a - b) }))
-      return assetItem(value.asset, { status: errors.length ? 'failed' : findings.length ? 'abnormal' : 'unknown',
-        message: `${findings.length ? `查询到 ${findings.length} 条去重漏洞观测` : '未返回漏洞观测'}；不证明扫描覆盖、当前未修复数量或资产无漏洞`,
-        recommendation: '核对漏洞数据来源、扫描覆盖及受影响软件的当前处置状态。', findings, sources: sources.sort((a, b) => a.assetId - b.assetId), errors, coverage: errors.length ? 'incomplete' : 'existing_records_only' })
+      return assetItem(value.asset, { status: errors.length ? 'failed' : findings.length ? 'abnormal' : 'normal',
+        message: errors.length ? '漏洞数据未完整读取' : findings.length ? `查询到 ${findings.length} 条去重漏洞记录` : '没有漏洞',
+        recommendation: errors.length ? '核对读取失败原因；尚未执行补采或扫描。' : findings.length ? '核对已有漏洞的处置状态；尚未执行整改。' : undefined, findings, sources: sources.sort((a, b) => a.assetId - b.assetId), errors, coverage: errors.length ? 'incomplete' : 'existing_records_only' })
     },
   } }
 }

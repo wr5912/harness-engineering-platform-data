@@ -46,7 +46,7 @@ for (const id of ids) {
   } }
 }
 const socTarget = join(directory, 'soc.mjs')
-await build({ entryPoints: [join(root, 'src/soc.ts')], outfile: socTarget, bundle: true, format: 'esm', platform: 'node', logLevel: 'silent' })
+await build({ entryPoints: [join(root, 'src/soc.ts')], outfile: socTarget, bundle: true, format: 'esm', platform: 'node', logLevel: 'silent', nodePaths: [join(process.env.HARNESS_PROGRAM_ROOT, 'platform/plugin/node_modules')] })
 const { createSoc } = await import(pathToFileURL(socTarget).href)
 const asset = { assetId: 1, ip: '10.0.0.1', assetType: 'host', online: 'online', stateEvidence: { online: 'online', timeBasis: 'DATABASE_LOCAL', evaluatedAt: '2026-11-05 12:00:00', signals: [{ validity: 'CURRENT', supportsOnline: true, observedAt: '2026-11-05 11:59:00' }] } }
 const config = { connections: { master: 'master', ingest: 'ingest', graph: 'graph' } }
@@ -111,10 +111,12 @@ test('实现摘要跟踪实际共享依赖，未引用的源码不改变工作�
   assert.notEqual(await fingerprint(), first)
 })
 
-test('状态与基线缺证据不判正常；当前模板和逐项覆盖必须一致', () => {
+test('状态使用 SOC 当前字段；基线当前模板和逐项覆盖必须一致', () => {
   assert.equal(modules.routine.classifyStatus(asset).status, 'normal')
-  assert.equal(modules.routine.classifyStatus({ ...asset, stateEvidence: { ...asset.stateEvidence, signals: [] } }).status, 'unknown')
-  assert.equal(modules.routine.classifyStatus({ ...asset, stateEvidence: { ...asset.stateEvidence, evaluatedAt: 'invalid' } }).status, 'unknown')
+  assert.equal(modules.routine.classifyStatus({ ...asset, stateEvidence: { ...asset.stateEvidence, signals: [] } }).status, 'normal')
+  assert.equal(modules.routine.classifyStatus({ ...asset, stateEvidence: { ...asset.stateEvidence, evaluatedAt: 'invalid' } }).status, 'normal')
+  assert.equal(modules.routine.classifyStatus({ ...asset, online: 'unknown' }).status, 'unknown')
+  assert.equal(modules.routine.classifyStatus({ ...asset, online: undefined }).status, 'unknown')
   const ready = { assetId: 1, templateId: 8, templateScopeMatched: true, memberCount: 1, applicableCount: 1, coverageReason: 'APPLICABLE_ITEMS_PRESENT', items: [{ itemId: 2, applicable: true, applicabilityReason: 'MATCHED' }] }
   const report = { run: { assetId: 1, templateId: 8, passFlag: '1' } }
   assert.equal(modules.baseline.classify(1, report, ready).status, 'normal')
@@ -166,7 +168,7 @@ test('同次运行复用准备和相同 GET；单接口失败保留另一接口�
   assert.equal(first.items[0].facts.report.run, null)
   assert.equal(first.items[0].facts.readiness.error, 'ingest/get_admin_baseline_readiness assetId=1：offline')
   const reports = baseline.artifacts(first)
-  assert.deepEqual(reports.map(item => item.id), ['report', 'details'])
+  assert.deepEqual(reports.map(item => item.id), ['report', 'details', 'chat', 'markdown'])
   assert.equal(JSON.parse(reports[1].body).items.length, 1)
 })
 
@@ -183,7 +185,7 @@ test('五项编排按 ID 定向冻结，准备和重试共用请求统计且不�
       if (operation === 'get_graph_compliance_rules') return { code: 200, data: [] }
       throw new Error('不得读取全量资产：' + operation)
     }
-    const workflow = modules[id].create(soc), input = { scope: { assetIds: [1] } }
+    const workflow = modules[id].create(soc), input = { scope: { assetIds: [1] }, reachability: { srcIp: '10.0.0.1', dstIp: '10.0.0.2' } }
     const preparation = { call: async fn => { measured.requests++; return fn() } }
     const frozen = await workflow.prepare(input, config, signal, preparation)
     assert.deepEqual(frozen.scope.assetIds, [1], id)
@@ -206,7 +208,7 @@ test('定向查询拒绝错误身份；带部门筛选仍以服务端含下级�
   assert.deepEqual(frozen.scope.assetIds, [1])
 })
 
-test('漏洞遍历全部直接子资产，空列表不能声称无漏洞', async () => {
+test('漏洞遍历全部直接子资产，完整空列表按当前 SOC 合同呈现', async () => {
   let pages = 0, reads = 0
   const soc = async (_connection, operation, args) => {
     if (operation === 'list_soc_asset') return inventory()
@@ -215,7 +217,8 @@ test('漏洞遍历全部直接子资产，空列表不能声称无漏洞', async
   }
   const workflow = modules.vulnerabilities.create(soc), input = { scope: { all: true } }, prepared = await workflow.prepare(input, config, signal)
   const result = await workflow.execute(input, config, context(prepared))
-  assert.equal(pages, 2); assert.equal(reads, 3); assert.equal(result.items[0].status, 'unknown')
+  assert.equal(pages, 2); assert.equal(reads, 3); assert.equal(result.items[0].status, 'normal')
+  assert.equal(result.items[0].coverage, 'existing_records_only')
 })
 
 test('可达路径必须核对逐跳策略；批次进度与结果事实保留', async () => {
@@ -284,7 +287,7 @@ test('SOC 衔接按发现结果调用工具、资源和模板，资源正文进�
   })
   const input = { scope: { all: true } }, prepared = await workflow.prepare(input, config, signal)
   const result = await workflow.execute(input, config, context(prepared))
-  assert.equal(result.items[0].status, 'unknown')
+  assert.equal(result.items[0].status, 'normal')
   assert.equal(calls[0].action, 'readResource')
   assert.equal(calls[0].uriTemplate, 'http://fixture/assets/{assetId}/vulnerabilities')
   assert.deepEqual(calls[0].arguments, { assetId: 1 })
@@ -324,7 +327,7 @@ test('运行中连接变化拒绝重准备；保持同一次资产范围', async
   assert.equal(inventories, 1)
 })
 
-test('规则接口失败或无启用规则不阻止同一快照的其他检查', async () => {
+test('规则接口失败保留其他检查；无启用规则提供实际连接参数', async () => {
   for (const unavailable of [true, false]) {
     let inventories = 0
     const soc = async (_connection, operation) => {
@@ -334,13 +337,13 @@ test('规则接口失败或无启用规则不阻止同一快照的其他检查',
       if (operation === 'get_soc_asset_vulnerabilities') return { code: 200, data: [] }
       return { code: 200, data: {} }
     }
-    const input = { scope: { all: true } }, deep = modules.deep.create(soc)
+    const input = { scope: { all: true }, ...(!unavailable ? { reachability: { srcIp: '10.0.0.1', dstIp: '10.0.0.2' } } : {}) }, deep = modules.deep.create(soc)
     const prepared = await deep.prepare(input, config, signal), ctx = context(prepared)
     const result = await deep.execute(input, config, ctx)
     assert.equal(inventories, 1)
     assert.equal(result.checks.status.items[0].status, 'normal')
     assert.equal(result.checks.reachability.items[0].status, unavailable ? 'failed' : 'unknown')
-    assert.equal(result.checks.vulnerabilities.items[0].status, 'unknown')
+    assert.equal(result.checks.vulnerabilities.items[0].status, 'normal')
     assert.equal(result.status, 'incomplete')
     assert.deepEqual(result.scope, prepared.scope)
   }

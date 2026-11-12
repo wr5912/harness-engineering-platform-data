@@ -1,12 +1,18 @@
 import { isIP } from 'node:net'
+import { offlineEvidenceLoop } from './evidence-loop.ts'
+import { controlledDiagnosticProposal } from '../../../src/controlled-diagnostic-proposal.ts'
 import { unpack, rows, type Soc } from '../../../src/action-api.ts'
 import { renderTroubleshootingReport } from '../../../src/reports/troubleshooting.ts'
+import { buildConclusion } from '../../../src/reports/conclusion.ts'
+import { diagnosticTime, candidateStates, evaluateCandidate } from '../../../src/diagnostic-context.ts'
 
 type Value = Record<string, any>
 type Context = { runId: string; nodeId: string; signal: AbortSignal; shared: Value; progress(value: Value): void; call<T>(call: () => Promise<T>): Promise<T> }
-const endpoint = { type: 'object', additionalProperties: false, required: ['ip'], properties: { ip: { type: 'string', minLength: 1 }, assetId: { type: 'integer', minimum: 1 } } }
-export const inputSchema = { type: 'object', additionalProperties: false, required: ['asset', 'from', 'to'], properties: {
+const endpoint = { type: 'object', additionalProperties: false, required: ['ip'], properties: { ip: { type: 'string', minLength: 1 }, assetId: { type: 'integer', minimum: 1 }, assetType: { type: 'string', minLength: 1 }, physicalVirtual: { type: 'string', enum: ['physical', 'virtual', 'unknown'] }, managementObject: { type: 'string', minLength: 1 } } }
+export const inputSchema = { type: 'object', additionalProperties: false, required: ['asset'], properties: {
   asset: endpoint, observer: endpoint,
+  resume_run_id: { type: 'string', pattern: '^run-[0-9a-f-]{36}$', description: '公开延续入口：继承同冻结范围、同版本已保存诊断；未知执行不重放。' },
+   faultStartedAt: { type: ['string', 'null'], description: '故障起点未知可省略或null；当前观察不强制历史窗口。' },
   from: { type: 'string', description: '固定查询窗口起点，ISO-8601且带Z或UTC偏移。' },
   to: { type: 'string', description: '固定查询窗口终点，ISO-8601且带Z或UTC偏移。' },
 } }
@@ -19,6 +25,14 @@ function redact(value: any): any {
 }
 const OFFLINE_ITEMS = Object.freeze(['soc-state', 'alerts', 'management'])
 const COLLECTION_ITEMS = Object.freeze(['run-state', 'config', 'heartbeat', 'synchronization'])
+const candidateRules = [
+  { id: 'device-offline', title: '设备当前离线', support: [{ predicate: 'soc-online', value: false }], confirm: [], refute: [{ predicate: 'soc-online', value: true }] },
+  { id: 'management-unreachable', title: '管理路径不可达', support: [{ predicate: 'management-state', value: 'unreachable' }], confirm: [], refute: [{ predicate: 'management-state', value: 'reachable' }] },
+  { id: 'collection-interrupted', title: '采集链中断', support: [{ predicate: 'collection-state', value: 'interrupted' }], confirm: [], refute: [{ predicate: 'collection-state', value: 'healthy' }] },
+  { id: 'network-link-abnormal', title: '网络链路异常', support: [{ predicate: 'network-state', value: 'unreachable' }], confirm: [], refute: [{ predicate: 'network-state', value: 'reachable' }] },
+  { id: 'soc-data-not-updated', title: 'SOC数据未更新', support: [{ predicate: 'synchronization-state', value: 'stale' }], confirm: [], refute: [{ predicate: 'synchronization-state', value: 'current' }] },
+  { id: 'identity-gap', title: '资产身份或管理对象缺口', support: [{ predicate: 'identity-state', value: 'ambiguous' }], confirm: [], refute: [{ predicate: 'identity-state', value: 'unique' }] },
+] as const
 const message = (error: any) => String(error?.message ?? error?.error ?? error)
 const errorFields = (error: any) => ({ error: message(error), message: message(error) })
 class ProgressFailure extends Error {
@@ -37,31 +51,63 @@ function freeze<T>(value: T): T {
 }
 function store(context: Context, check: string, status: string, facts: Value, receipts: Value[] = []) {
   context.signal.throwIfAborted()
-  const id = context.nodeId
-  if (Object.hasOwn(context.shared.facts, id)) throw new Error(`检查节点重复完成：${id}`)
-  const fact = { id, node_id: id, path: id.slice(0, id.lastIndexOf('/')), check, status, run_id: context.runId, recorded_at: new Date().toISOString(), observed_at: null, source_timezone: 'unknown',
-    execution_point: { kind: receipts.length ? 'SOC_READONLY' : 'PLATFORM_ANALYSIS', services: [...new Set(receipts.map(receipt => receipt.serverId))] },
-    raw_receipt_refs: receipts.map(receipt => ({ run_id: context.runId, node_id: id, receipt_id: receipt.id })), ...facts }
+  const id = context.shared.diagnostic_loop?.round > 0 ? `${context.runId}:${context.nodeId}:${Object.keys(context.shared.facts).length + (context.shared.diagnostic_loop.staged?.length ?? 0) + 1}` : context.nodeId
+  const times = [...(facts.source_observations ?? []).map((entry: Value) => entry.observedAt), ...(timed(facts.observed_at) ? [facts.observed_at] : [])].filter(timed)
+  const fact = { id, node_id: id, path: id.slice(0, id.lastIndexOf('/')), check, status, run_id: context.runId, recorded_at: new Date().toISOString(), observed_at: times.length === 1 ? times[0] : null, source_timezone: times.length === 1 ? times[0].match(/(?:Z|[+-]\d{2}:\d{2})$/i)?.[0] : 'unknown',
+    ...redact(facts),
+    observed_at: times.length === 1 ? times[0] : null,
+    source_timezone: times.length === 1 ? times[0].match(/(?:Z|[+-]\d{2}:\d{2})$/i)?.[0] : 'unknown',
+    atoms: Array.isArray(facts.atoms) ? facts.atoms : [],
+    executed: receipts.some(receipt => receipt.response_received) ? true : receipts.some(receipt => receipt.attempted) ? null : false,
+    execution_status: receipts.some(receipt => receipt.error) ? 'failed' : receipts.some(receipt => receipt.response_received) ? 'completed' : 'not_executed',
+    execution_point: { kind: receipts.some(receipt => receipt.attempted) ? 'SOC_READONLY' : 'PLATFORM_ANALYSIS', services: [...new Set(receipts.filter(receipt => receipt.attempted).map(receipt => receipt.serverId))] },
+    request_attempts: receipts.filter(receipt => receipt.attempted).map(receipt => ({ id: receipt.id, source_id: receipt.serverId, name: receipt.operation, response_received: receipt.response_received, status: receipt.error ? 'failed' : 'completed' })),
+    raw_receipt_refs: receipts.filter(receipt => receipt.response_received).map(receipt => ({ run_id: context.runId, node_id: id, receipt_id: receipt.id })) }
   // 先调用既有Run progress；该调用失败则不返回，不释放后继。沿用平台实际持久化语义，不新增存储或flush。
   progress(context, { status: 'completed', completed: 1, total: 1, result: { kind: 'fault-check', status, item_count: 1, items: [fact], raw_receipts: receipts } })
+  if (context.shared.diagnostic_loop?.defer_append) { context.shared.diagnostic_loop.staged.push({fact,receipts}); return fact }
   context.shared.facts[id] = fact
   for (const receipt of receipts) context.shared.receipts[receipt.id] = receipt
+  reassess(context, fact)
   return fact
+}
+function reassess(context: Context, fact: Value) {
+  const all = Object.values<Value>(context.shared.facts)
+  const atoms = all.flatMap(item => Array.isArray(item.atoms) ? item.atoms : [])
+  const blocked = all.filter(item => /(?:401|403|forbidden|unauthorized|权限拒绝)/i.test(JSON.stringify(item.error ?? item.message ?? ''))).map(item => item.id)
+  if (blocked.length) context.shared.authentication_blocker = { kind: 'soc-authentication', evidence_ids: blocked, retryable: false, reason: 'SOC认证/授权失败；停止依赖取证、不自动重试、不沿用旧资产ID' }
+  const objectId = context.shared.scope.asset?.assetId ? `asset:${context.shared.scope.asset.assetId}` : 'asset:unresolved'
+  const causes = candidateRules.map(rule => {
+    const evaluation = evaluateCandidate(rule, atoms, objectId, [])
+    const message = evaluation.status === 'supported' ? '有带来源和观测时间的原子支持，但没有完整确认判据。'
+      : evaluation.status === 'refuted' ? '有同对象、同适用时间范围内的反驳原子。'
+      : evaluation.status === 'insufficient_capability' ? '只有明确权限拒绝才进入能力/权限不足；传输失败和空数据不作此结论。'
+      : '没有满足当前候选的适用原子；未知不等于反驳。'
+    return { ...evaluation, message, support: { status: evaluation.status === 'supported' ? 'supported' : 'unknown', evidence_ids: evaluation.support_evidence_ids }, refutation: { status: evaluation.status === 'refuted' ? 'refuted' : 'unknown', evidence_ids: evaluation.refutation_evidence_ids } }
+  })
+  context.shared.causes = causes
+  const round = { id: `round-${context.shared.rounds.length + 1}`, node_id: context.nodeId, recorded_at: new Date().toISOString(), known_facts: all.map(item => item.id), candidates: structuredClone(causes), evidence_ids: [fact.id], gaps: fact.gaps ?? [], distinguishing_next_check: null, next_check: null, reason: fact.message ?? fact.check }
+  context.shared.rounds.push(round)
+  if (context.shared.diagnostic_loop?.round > 0) progress(context, { status: 'completed', result: { kind: 'fault-check', status: fact.status, item_count: all.length, items: all, raw_receipts:Object.values(context.shared.receipts), causes, rounds: context.shared.rounds } })
 }
 function reader(soc: Soc, config: Value, context: Context, receipts: Value[]) {
   return async (alias: string, operation: string, args: Value) => {
     const serverId = config.connections[alias]
     if (!serverId) throw new Error(`缺少连接：${alias}`)
-    const started_at = new Date().toISOString(), id = `${context.nodeId}:receipt:${receipts.length}`
-    let raw: any
-    try { raw = await context.call(() => soc(serverId, operation, args, AbortSignal.any([context.signal, AbortSignal.timeout(30_000)]), context.shared.connection_fingerprints[serverId])) }
+    const started_at = new Date().toISOString(), id = `${context.nodeId}:round:${context.shared.diagnostic_loop?.round ?? 0}:receipt:${receipts.length}`
+    let raw: any, attempted = false
+    try { raw = await context.call(() => {
+      if (context.shared.request_count >= 48) throw new Error('本Run只读请求预算到限')
+      context.shared.request_count++; attempted = true
+      return soc(serverId, operation, args, AbortSignal.any([context.signal, AbortSignal.timeout(30_000)]), context.shared.connection_fingerprints[serverId])
+    }) }
     catch (error: any) {
       context.signal.throwIfAborted()
-      receipts.push({ id, serverId, operation, arguments: structuredClone(args), started_at, received_at: new Date().toISOString(), ...errorFields(error), receipt: redact(error?.receipt ?? null) })
+      receipts.push({ id, serverId, operation, attempted, response_received: raw !== undefined, arguments: structuredClone(args), started_at, received_at: new Date().toISOString(), ...errorFields(error), receipt: redact(error?.receipt ?? raw ?? null) })
       progress(context, { status: 'running', raw_receipts: receipts })
       throw error
     }
-    receipts.push({ id, serverId, operation, arguments: structuredClone(args), started_at, received_at: new Date().toISOString(), receipt: redact(raw) })
+    receipts.push({ id, serverId, operation, attempted, response_received: raw !== undefined, arguments: structuredClone(args), started_at, received_at: new Date().toISOString(), receipt: redact(raw) })
     progress(context, { status: 'running', raw_receipts: receipts })
     return unpack(raw)
   }
@@ -84,12 +130,14 @@ async function locate(selector: Value, call: ReturnType<typeof reader>) {
   return candidates.filter(item => item.ip === selector.ip && (selector.assetId === undefined || selector.assetId === item.assetId))
 }
 function report(context: Context, terminal: string) {
+  const confirmed = context.shared.causes.some((cause: Value) => cause.status === 'confirmed') && !context.shared.causes.some((cause: Value) => cause.status === 'conflict')
   const items = (Object.values(context.shared.facts) as Value[]).sort((a, b) => a.id.localeCompare(b.id))
-  return { kind: 'device-offline', status: 'incomplete', terminal, run_id: context.runId, input: context.shared.input,
-    scope: context.shared.scope ?? { requested: context.shared.input, frozen_at: context.shared.frozen_at },
-    message: '仅交付本次已保存只读事实及缺口；无响应不判断断电，SOC在线不判正常，没有实施修复或主动探测。',
-    items, item_count: items.length, raw_receipts: Object.values(context.shared.receipts), active_checks_executed: false,
+  const result: Value = { kind: 'device-offline', status: confirmed ? 'complete' : 'incomplete', conclusion: confirmed ? 'confirmed' : 'inconclusive', terminal, run_id: context.runId, diagnostic_id: context.shared.diagnostic_id ?? context.runId, input: context.shared.input,
+    scope: context.shared.scope ?? { requested: context.shared.input, frozen_at: context.shared.frozen_at }, execution_status: 'unverified',
+    message: '仅交付本次同诊断已保存的只读事实、候选状态和缺口；无响应不判断断电，SOC在线不判正常，没有实施修复或主动探测。',
+    items, item_count: items.length, causes: context.shared.causes ?? [], rounds: context.shared.rounds ?? [], raw_receipts: Object.values(context.shared.receipts), active_checks_executed: false,
     gaps: items.flatMap(item => item.gaps ?? []), next_check: '按已核对象补足真实管理/网络响应与来源时区；没有原子则保留未执行，不以其他执行点代替。' }
+  return { ...result, unified_conclusion: buildConclusion(result) }
 }
 type BranchDefinition = { item: string; index: number; batch: string; required: [string, string][]; collection?: boolean }
 const managementFacts: [string, string][] = [['management', 'management-observation']]
@@ -204,28 +252,34 @@ export function create(soc: Soc) {
         gaps: ['仅为已有配置IP对模型，不是本次响应，不证明实际路径、端口、断电或设备正常'] }, receipts)
     } catch (error: any) { businessFailure(context, error); return store(context, 'configuration-path', 'failed', { ...errorFields(error), gaps: ['路径查询失败不等于无路径'] }, receipts) }
   }
-  return {
+  const workflow = {
      inputSchema,
     connections: (config: Value) => [...new Set<string>(Object.values(config.connections))],
     prepare(input: Value, config: Value) {
       input = structuredClone(input)
-      if (!object(input) || Object.keys(input).some(key => !['asset', 'observer', 'from', 'to'].includes(key))) throw new Error('输入含未声明字段；不接受模型自填响应事实')
+      if (!object(input) || Object.keys(input).some(key => !['asset', 'observer', 'from', 'to', 'faultStartedAt', 'resume_run_id'].includes(key))) throw new Error('输入含未声明字段；不接受模型自填响应事实')
       for (const selector of [input.asset, ...(input.observer === undefined ? [] : [input.observer])]) {
-        if (!object(selector) || Object.keys(selector).some(key => !['ip', 'assetId'].includes(key)) || typeof selector.ip !== 'string' || !isIP(selector.ip) || selector.assetId !== undefined && (!Number.isSafeInteger(selector.assetId) || selector.assetId <= 0)) throw new Error('仅接受明确合法IP及可选正整数assetId，不猜域名或观察源')
+        if (!object(selector) || Object.keys(selector).some(key => !['ip', 'assetId', 'assetType', 'physicalVirtual', 'managementObject'].includes(key)) || typeof selector.ip !== 'string' || !isIP(selector.ip) || selector.assetId !== undefined && (!Number.isSafeInteger(selector.assetId) || selector.assetId <= 0)) throw new Error('仅接受明确合法IP及可选正整数assetId，不猜域名或观察源')
       }
-      if (!timed(input.from) || !timed(input.to) || Date.parse(input.from) >= Date.parse(input.to)) throw new Error('from/to须带时区且from早于to')
+      const time = diagnosticTime(input)
       const frozen_at = new Date().toISOString()
-      return { input: freeze(input), frozen_at, scope: { requested: freeze(structuredClone(input)), frozen_at }, facts: {}, receipts: {},
-        connection_fingerprints: Object.fromEntries(Object.values<string>(config.connections).map(id => [id, soc.fingerprint?.(id)])) }
+      return { input: freeze(input), frozen_at, scope: { time, requested: freeze(structuredClone(input)), frozen_at, playbook: 'soc-existing-device-availability', candidate_states: candidateStates }, facts: {}, receipts: {}, request_count: 0, rounds: [], causes: candidateRules.map(rule => ({ id: rule.id, title: rule.title, status: 'unknown', support: { evidence_ids: [] }, refutation: { evidence_ids: [] } })),
+        diagnostic_loop: {round:0,round_limit:24,attempts:{},staged:[],pending:null},
+         connection_fingerprints: Object.fromEntries(Object.values<string>(config.connections).map(id => [id, soc.fingerprint?.(id)])) }
     },
     components: {
+      loopFinalReport: (value: Value, _config: Value, context: Context) => report(context,value.terminal),
+      controlledProposal: (value: Value, config: Value, context: Context) => controlledDiagnosticProposal(soc, {
+        status:['master','get_soc_asset_by_asset_id',{assetId:context.shared.scope.asset?.assetId}],
+        path:['graph','get_graph_path_query',{srcIp:context.shared.scope.observer?.ip,dstIp:context.shared.scope.asset?.ip}],
+      },value,config,context),
       async resolve(_value: Value, config: Value, context: Context) {
         const receipts: Value[] = [], call = reader(soc, config, context, receipts), input = context.shared.input
         try {
           const asset = await locate(input.asset, call), observer = input.observer ? await locate(input.observer, call) : []
           const ready = asset.length === 1 && (!input.observer || observer.length === 1)
           if (ready) Object.assign(context.shared.scope, {
-            asset: { assetId: asset[0].assetId, ip: asset[0].ip, hostAssetId: asset[0].hostAssetId ?? null },
+            asset: { assetId: asset[0].assetId, ip: asset[0].ip, assetType: asset[0].assetType ?? input.asset.assetType ?? null, physicalVirtual: asset[0].physicalVirtual ?? input.asset.physicalVirtual ?? 'unknown', managementObject: input.asset.managementObject ?? null, hostAssetId: asset[0].hostAssetId ?? null },
             observer: input.observer ? { assetId: observer[0].assetId, ip: observer[0].ip } : null })
           const result = store(context, 'resolve', ready ? 'observed' : 'unknown', { ready, exact_matches: { asset: asset.length, observer: observer.length }, candidates: redact({ asset, observer }), gaps: ready ? [] : ['对象不唯一，未执行依赖检查'] }, receipts)
           return { ...result, branch: ready ? 'ready' : 'blocked', ...(ready ? { items: [...OFFLINE_ITEMS] } : {}) }
@@ -236,12 +290,15 @@ export function create(soc: Soc) {
         try {
           const reply = data(await call('master', 'get_soc_asset_by_asset_id', { assetId: asset.assetId }))
           if (reply.assetId !== asset.assetId || reply.ip !== asset.ip) throw new Error('状态响应与冻结身份不一致')
-          return store(context, 'soc-state', 'unknown', { assetId: asset.assetId, reported_state: reply.online, onlineBasis: reply.onlineBasis,
-            stateEvidence: reply.stateEvidence, source_time_evidence: reply.stateEvidence?.signals ?? [],
+          const signals = Array.isArray(reply.stateEvidence?.signals) ? reply.stateEvidence.signals : []
+           const atoms = signals.filter((signal: Value) => timed(signal.observedAt) && signal.validity === 'VALID' && typeof signal.supportsOnline === 'boolean').map((signal: Value, index: number) => ({ id: `soc-online-${index}`, object_id: `asset:${asset.assetId}`, predicate: 'soc-online', value: signal.supportsOnline, observed_at: signal.observedAt, applicability: 'applicable', result: 'observed', provenance_verified: true }))
+           return store(context, 'soc-state', 'unknown', { assetId: asset.assetId, reported_state: reply.online, onlineBasis: reply.onlineBasis,
+            stateEvidence: reply.stateEvidence, source_observations: signals, source_time_evidence: signals, atoms,
             gaps: ['SOC在线不代表本次真实响应或业务正常；源时区未核不得以评估时间代替观测时间'] }, receipts)
         } catch (error: any) { businessFailure(context, error); return store(context, 'soc-state', 'failed', { ...errorFields(error) }, receipts) }
       },
       async alerts(_value: Value, config: Value, context: Context) {
+        if (!context.shared.scope.time.query_window) return store(context, 'alerts', 'not_checked', { executed: false, gaps: ['未提供历史查询窗；未猜时间或发告警请求，当前SOC状态检查独立继续'] })
         const receipts: Value[] = [], call = reader(soc, config, context, receipts), assetId = String(context.shared.scope.asset.assetId)
         const groups: Value[] = [], members: Value[] = [], keys = new Set<string>(), memberIds = new Set<string>()
         const raw_pages: Value = { groups: [], members: [] }
@@ -352,4 +409,6 @@ export function create(soc: Soc) {
         { id: 'details', filename: 'device-offline-details.json', contentType: 'application/json', body: JSON.stringify(result, null, 2) }]
     },
   }
+  Object.assign(workflow.components, offlineEvidenceLoop(workflow.components,reassess))
+  return workflow
 }

@@ -1,4 +1,4 @@
-export type Soc = ((connection: string, operation: string, args: Record<string, any>, signal: AbortSignal, expected?: string) => Promise<any>) & { fingerprint?: (connection: string) => string }
+export type Soc = ((connection: string, operation: string, args: Record<string, any>, signal: AbortSignal, expected?: string) => Promise<any>) & { fingerprint?: (connection: string) => string; describe?: (connection: string, operation: string, signal: AbortSignal) => Promise<any>; propose?: (input: any, signal: AbortSignal) => Promise<any> }
 
 export function unpack(value: any): any {
   const content = value?.contents ?? value?.content

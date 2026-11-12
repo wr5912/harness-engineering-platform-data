@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import test from 'node:test'
-import { createThreatBridge } from '../src/threat/bridge.ts'
+import { createThreatBridge } from '../../../mcp/src/threat/bridge.ts'
 
 test('原生网关仅接受本轮授权、catalog工具和指定报告入口，并传递取消', async () => {
   const root = await mkdtemp(join(tmpdir(), 'threat-bridge-'))
@@ -33,5 +33,25 @@ test('原生网关仅接受本轮授权、catalog工具和指定报告入口，�
     controller.abort()
     assert.equal((await request(query)).status, 502)
     assert.equal(calls.length, 2)
+  } finally { bridge.close(); await rm(root, { recursive: true, force: true }) }
+})
+
+test('原生网关保留 MCP 错误回执的可展示原因', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'threat-bridge-error-'))
+  const tool = 'ai_soc_asset__get_soc_asset_by_asset_id'
+  await writeFile(join(root, '.current-ai_soc_asset-tools.local.json'), JSON.stringify({ items: [{ name: tool }] }))
+  const bridge = await createThreatBridge(root, { socConnectionId: 'soc-error', reportConnectionId: 'report-error' }, {
+    async invoke() { return { isError: true, content: [{ type: 'text', text: '上游 HTTP 502：连接暂不可用' }] } },
+  }, new AbortController().signal)
+  try {
+    const response = await fetch(bridge.runtime + '/invoke', {
+      method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + bridge.key },
+      body: JSON.stringify({ resource: 'ai_soc_asset', tool, args: { assetId: 9106 } }),
+    })
+    assert.equal(response.status, 200)
+    assert.deepEqual(await response.json(), {
+      status: 'error', status_code: 502,
+      result: { code: 502, data: null, message: 'MCP 工具返回错误：上游 HTTP 502：连接暂不可用' },
+    })
   } finally { bridge.close(); await rm(root, { recursive: true, force: true }) }
 })

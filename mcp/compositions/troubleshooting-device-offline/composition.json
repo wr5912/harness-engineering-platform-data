@@ -1,19 +1,140 @@
 {
   "id": "troubleshooting-device-offline",
-  "draft": {
+  "versions": [
+    {
+      "versionId": "38dc510933a7f4ae21d1b98c9fba6664e70b3b2760cf5c72f4978fd6b60be23e",
+      "publishedAt": "2026-11-10T12:26:25.695Z",
+      "config": {
+        "toolName": "diagnose_device_offline",
+        "title": "设备不在线排查",
+        "description": "逐轮设备可用性诊断：冻结设备与可选观察源后，按已核前置逐项选择状态、管理原子、告警、已有路径与采集证据；无规则或冲突才受控提议并校验。四出口与真实回边，同一诊断事实/来源/冲突逐轮累计，未知执行不重发；不主动探测、不写配置、不做处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "d28d45157eb721d8b62b146160eb66117908f2ce38804215b7832f3370169f21",
+        "workflow": "troubleshooting-device-offline",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest",
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "fd50d3bbd4c8d9f7a79c99d8f303a20b66854a3570932ed6520763c79d9dbcd4"
+      },
+      "implementationDigest": "d28d45157eb721d8b62b146160eb66117908f2ce38804215b7832f3370169f21"
+    },
+    {
+      "versionId": "a98b0cd599703d6d16cacca7f1eb816ec312bfdb4f00e208aaac583a96f14929",
+      "publishedAt": "2026-11-11T03:51:03.223Z",
+      "config": {
+        "toolName": "diagnose_device_offline",
+        "title": "设备不在线排查",
+        "description": "逐轮设备可用性诊断：统一结论对象（七项首屏、建议生命周期、旁路分区、部分失败分存）与分层展开；无规则或冲突才受控提议并校验。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "ce9571aaf0452bf092e93d879f4d6bef809dcf0027a720138b8e43dadd0e72d6",
+        "workflow": "troubleshooting-device-offline",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "220b4c2b76bb62381b7ca6d52441d0266537b615706c83d23a3923e988a479a8"
+      },
+      "implementationDigest": "ce9571aaf0452bf092e93d879f4d6bef809dcf0027a720138b8e43dadd0e72d6"
+    },
+    {
+      "versionId": "2db4c468d27fd9ce0d3ec646e63dc2f640897554a8d19b0ea51513e8fd04f788",
+      "publishedAt": "2026-11-11T12:06:48.695Z",
+      "config": {
+        "toolName": "diagnose_device_offline",
+        "title": "设备不在线排查",
+        "description": "逐轮设备可用性诊断：统一结论对象与七项首屏；失败/未执行/不可用/无匹配分存；提议异常或中止收口为 unknown 报告；建议按实际缺口落到责任方。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "b50efe7ebc94809f9df86f69297e7b48c7db99ad48a074a4b41b239cdfbc54cb",
+        "workflow": "troubleshooting-device-offline",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "9b8a03ce3c71dcff4f51b8f5527350609306f81e512731692b254ec9894e274f"
+      },
+      "implementationDigest": "b50efe7ebc94809f9df86f69297e7b48c7db99ad48a074a4b41b239cdfbc54cb"
+    },
+    {
+      "versionId": "2495b34d8980e427e7b8e5dd8cd431e598dca1a4af030f4a00356a97f6b844e4",
+      "publishedAt": "2026-11-11T12:38:11.140Z",
+      "config": {
+        "toolName": "diagnose_device_offline",
+        "title": "设备不在线排查",
+        "description": "逐轮设备可用性诊断：统一结论对象与紧凑首屏；失败/未执行/不可用/无匹配分存；提议独立预算收口；建议按实际缺口落到责任方。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "04098d2c166116f5195bd85dc1bd0c2c29020b598f59777f4dbd18b1d9b92d2f",
+        "workflow": "troubleshooting-device-offline",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "7327a9d55b41a45ecef8637dbb506c50406b6ffa04f23fef014dc39755fc0d81"
+      },
+      "implementationDigest": "04098d2c166116f5195bd85dc1bd0c2c29020b598f59777f4dbd18b1d9b92d2f"
+    },
+    {
+      "versionId": "eb89d4874eb51110362cfcd03b41f86ab7ae4ca6ac6b24c4e30116f794ffc119",
+      "publishedAt": "2026-11-11T13:00:55.342Z",
+      "config": {
+        "toolName": "diagnose_device_offline",
+        "title": "设备不在线排查",
+        "description": "逐轮设备可用性诊断：紧凑首屏与统一结论；五类部分失败分存（failed/unavailable/notExecuted/noData/unknownEvidence）；提议独立预算收口；建议落到责任方。只读，不探测、不写配置、不处置。",
+        "connectionId": "platform-compositions",
+        "readonly": true,
+        "implementation": "cfaf216747a946c0b516214278108ec465f3d069285baa7643d1b4500e7cbaf6",
+        "workflow": "troubleshooting-device-offline",
+        "connections": {
+          "detect": "ai-soc-detect",
+          "graph": "ai-soc-graph",
+          "ingest": "ai-soc-ingest",
+          "master": "ai-soc-master"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "d4ad4fa9195616d9e3dfec793db7c795c2d95dd83d770ed391f8cf8b8d100e0a"
+      },
+      "implementationDigest": "cfaf216747a946c0b516214278108ec465f3d069285baa7643d1b4500e7cbaf6"
+    }
+  ],
+  "published": {
     "toolName": "diagnose_device_offline",
     "title": "设备不在线排查",
-    "description": "唯一定位并冻结设备与绝对时间窗口后读取SOC状态、固定快照告警及管理观察；仅本次真实管理响应后核采集适用性、绑定及采集证据。报告按同次Run读取原HTML；分页不完整和缺原子保持未知，不主动探测、配置写入或修复。",
+    "description": "逐轮设备可用性诊断：紧凑首屏与统一结论；五类部分失败分存（failed/unavailable/notExecuted/noData/unknownEvidence）；提议独立预算收口；建议落到责任方。只读，不探测、不写配置、不处置。",
     "connectionId": "platform-compositions",
     "readonly": true,
+    "implementation": "cfaf216747a946c0b516214278108ec465f3d069285baa7643d1b4500e7cbaf6",
     "workflow": "troubleshooting-device-offline",
     "connections": {
-      "master": "ai-soc-master",
-      "ingest": "ai-soc-ingest",
       "detect": "ai-soc-detect",
-      "graph": "ai-soc-graph"
+      "graph": "ai-soc-graph",
+      "ingest": "ai-soc-ingest",
+      "master": "ai-soc-master"
     },
     "kind": "workflow",
-    "engine": "lfx"
-  }
+    "engine": "lfx",
+    "flowDigest": "d4ad4fa9195616d9e3dfec793db7c795c2d95dd83d770ed391f8cf8b8d100e0a",
+    "publishedAt": "2026-11-11T13:00:55.342Z"
+  },
+  "publishedVersionId": "eb89d4874eb51110362cfcd03b41f86ab7ae4ca6ac6b24c4e30116f794ffc119"
 }

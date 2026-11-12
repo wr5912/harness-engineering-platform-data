@@ -8,6 +8,7 @@ import { defaultThreatStateRoot, loadThreatSource } from './source.ts'
 import { threatPython } from './python.ts'
 import type { ThreatArtifact, ThreatBindings, ThreatPhaseStatus, ThreatResult, ThreatRuntime, ThreatRuntimeOptions, ThreatServices, ThreatStage, ThreatTrace } from './types.ts'
 import type { CompositionExecutionContext } from '@harness-platform/mcp/extension'
+import { publicErrorText } from '../error.ts'
 
 const RUN_ID = /^run-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
 const STAGES: ThreatStage[] = ['collect', 'infer', 'writeback', 'report']
@@ -199,10 +200,11 @@ export function createThreatRuntime(assetRoot: string, services: ThreatServices,
           const value = JSON.parse(result.stdout)
           context.result = value.result
           context.phase_status = value.phase_status
-        } catch {
+        } catch (error: any) {
           try { context.result = await json(join(output, 'result.json')) } catch { /* 无已落盘身份时保留初始化状态。 */ }
           context.phase_status = 'unknown'
-          context.result.error_type = signal.aborted ? 'AbortError' : 'PhaseExecutionError'
+          context.result.error_type = signal.aborted ? 'AbortError' : error?.name || 'PhaseExecutionError'
+          context.result.error = publicErrorText(error?.message, '阶段执行未返回错误详情')
           if (stage === 'collect' && context.result.judgement_id) context.result.status = 'evidence_failed'
           if (stage === 'infer') context.result.status = 'model_failed'
         } finally {

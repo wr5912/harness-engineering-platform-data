@@ -112,14 +112,54 @@
         "flowDigest": "ade7264a87eadbf2d0d6a7f84ac54a9c7dd1c185af0113658c1279d7171d9bc0"
       },
       "implementationDigest": "8fd1a1be5ccc98c7d487d1c71b869f29aa42eb2b8e2d23a28a338c37ee7ece78"
+    },
+    {
+      "versionId": "0a8a0e9f695729a8ea211cfbad106da0c1bb2763c0b49b1991307431fabc6aa8",
+      "publishedAt": "2026-11-10T08:20:10.657Z",
+      "config": {
+        "toolName": "inspection_baseline",
+        "title": "基线检查",
+        "description": "按SOC当前基线结果检查：未绑定模板与未采集基线数据分别保留，未知和失败不作为通过。",
+        "connectionId": "platform-compositions",
+        "implementation": "e96672f9e1edd2386c227e40f5d501f1bf7114e8ead4e4e2c1bc5584d516f15e",
+        "workflow": "inspection-baseline",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "845e78b3c45fc95d9f4cebdfb8fb78b07901ff15293ed4c2c1e3c2e2919199c5"
+      },
+      "implementationDigest": "e96672f9e1edd2386c227e40f5d501f1bf7114e8ead4e4e2c1bc5584d516f15e"
+    },
+    {
+      "versionId": "e4dd7c70914257a879a856491fbcade4deb9aa5ee1bbdcde7cc9bd517e0306d3",
+      "publishedAt": "2026-11-10T11:50:29.096Z",
+      "config": {
+        "toolName": "inspection_baseline",
+        "title": "基线检查",
+        "description": "按SOC原子状态检查：未绑定模板和未采集数据为明确业务结论，不作为通过，也不单凭unknown认定未完成；失败独立保留。",
+        "connectionId": "platform-compositions",
+        "implementation": "0cd2620edc7abfcd2f7552f2e0f09fce618ba5e1393261c6f8a4611081828011",
+        "workflow": "inspection-baseline",
+        "connections": {
+          "master": "ai-soc-master",
+          "ingest": "ai-soc-ingest"
+        },
+        "kind": "workflow",
+        "engine": "lfx",
+        "flowDigest": "2b2fc0fc3ac1779167cc1e693ffe099533d9ce7b4ad312896f438bfe6af8f3bd"
+      },
+      "implementationDigest": "0cd2620edc7abfcd2f7552f2e0f09fce618ba5e1393261c6f8a4611081828011"
     }
   ],
   "published": {
     "toolName": "inspection_baseline",
     "title": "基线检查",
-    "description": "基线检查：按明确资产范围读取 SOC 事实并生成报告；未知和缺失不代表正常。",
+    "description": "按SOC原子状态检查：未绑定模板和未采集数据为明确业务结论，不作为通过，也不单凭unknown认定未完成；失败独立保留。",
     "connectionId": "platform-compositions",
-    "implementation": "8fd1a1be5ccc98c7d487d1c71b869f29aa42eb2b8e2d23a28a338c37ee7ece78",
+    "implementation": "0cd2620edc7abfcd2f7552f2e0f09fce618ba5e1393261c6f8a4611081828011",
     "workflow": "inspection-baseline",
     "connections": {
       "master": "ai-soc-master",
@@ -127,8 +167,8 @@
     },
     "kind": "workflow",
     "engine": "lfx",
-    "flowDigest": "ade7264a87eadbf2d0d6a7f84ac54a9c7dd1c185af0113658c1279d7171d9bc0",
-    "publishedAt": "2026-11-06T12:58:08.318Z"
+    "flowDigest": "2b2fc0fc3ac1779167cc1e693ffe099533d9ce7b4ad312896f438bfe6af8f3bd",
+    "publishedAt": "2026-11-10T11:50:29.096Z"
   },
-  "publishedVersionId": "cbab7937cc6318726309c47821ecd8616dafe5e1634bbe75af55754add01f9dc"
+  "publishedVersionId": "e4dd7c70914257a879a856491fbcade4deb9aa5ee1bbdcde7cc9bd517e0306d3"
 }

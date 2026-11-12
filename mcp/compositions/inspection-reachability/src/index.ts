@@ -1,12 +1,6 @@
 import { isIP } from 'node:net'
-import { base, cidrMatch, scopeComponent, summary, tools, type Soc } from '../../../src/inspection/index.ts'
-
-export function matches(asset: any, selector: any) {
-  if (!selector || selector.bizIds?.length || !['ASSETS', 'ALL', null, undefined].includes(selector.scope)) throw new Error('规则含当前无法解析的选择条件')
-  const hasCriteria = ['cidrs', 'networkTiers', 'assetTypes'].some(key => selector[key]?.length)
-  if (!hasCriteria && selector.scope !== 'ALL') throw new Error('规则没有明确的目标条件')
-  return (!selector.cidrs?.length || selector.cidrs.some((value: string) => isIP(value) ? asset.ip === value : cidrMatch(asset.ip ?? '', value))) && (!selector.networkTiers?.length || selector.networkTiers.includes(asset.networkTier)) && (!selector.assetTypes?.length || selector.assetTypes.includes(asset.assetType))
-}
+import { applicableRule, base, matches, reachabilityGap, scopeComponent, summary, tools, type Soc } from '../../../src/inspection/index.ts'
+export { matches } from '../../../src/inspection/index.ts'
 export function create(soc: Soc) {
   const api = tools(soc)
   function pairResult(pair: any, facts: any, status: string, message: string) {
@@ -15,18 +9,24 @@ export function create(soc: Soc) {
   }
   return { ...base(soc, true), components: {
     scope: scopeComponent(soc, true),
-    summary: (value: any, _config: any, context: any) => summary('reachability', [...(value.prior ?? []), ...value.items], context),
+    summary: (value: any, _config: any, context: any) => summary('reachability', [...(value.prior ?? []), ...value.items], context, 'completed'),
     mode: (value: any, _config: any, context: any) => ({ mode: value.reachability ? 'explicit' : context.shared.rules_error ? 'rulesError' : !context.shared.rules.some((rule: any) => rule.enabled === true || rule.enabled === 1) ? 'noRules' : 'rules' }),
     explicit: (value: any) => ({ ...value, prior: [], items: [{ ...value.reachability, mode: value.reachability.mode ?? 'FULL', ruleType: 'REQUIRED' }] }),
     rulesError: (value: any, _config: any, context: any) => ({ ...value, items: [{ status: 'failed', message: '可达性规则读取失败，未核查路径', error: context.shared.rules_error, facts: { rules_frozen_at: context.shared.rules_frozen_at } }] }),
-    noRules: (value: any, _config: any, context: any) => ({ ...value, items: [{ status: 'unknown', message: '没有启用的可达性规则；需补充源、目的地址或配置规则', facts: { rules: context.shared.rules, rules_frozen_at: context.shared.rules_frozen_at } }] }),
+    noRules: (_value: any, _config: any, context: any) => { throw reachabilityGap(context.shared.scope.ruleTypes) },
     rules: (value: any, _config: any, context: any) => {
       const snapshot = context.shared, items: any[] = [], pairs: any[] = []
     for (const rule of snapshot.rules.filter((rule: any) => rule.enabled === true || rule.enabled === 1)) {
       try {
-        if (rule.selectorIssues?.length || !['FORBIDDEN', 'REQUIRED'].includes(rule.ruleType) || rule.allowedPorts || rule.destPort && (!/^\d+$/.test(String(rule.destPort)) || Number(rule.destPort) < 1 || Number(rule.destPort) > 65535) || rule.protocol && !['tcp', 'udp', 'icmp'].includes(String(rule.protocol).toLowerCase())) throw new Error('规则存在选择器问题或当前无法解释的策略条件')
-        const sources = snapshot.assets.filter((asset: any) => matches(asset, rule.sourceSelector)), destinations = snapshot.assets.filter((asset: any) => matches(asset, rule.destSelector))
-        if (!sources.length || !destinations.length) { items.push({ ruleId: rule.id, ruleName: rule.name, status: 'unknown', message: '冻结范围内未匹配到规则的完整检查对，未核查该规则', facts: { rule } }); continue }
+        applicableRule(rule)
+        const needsLayers = rule.sourceSelector?.networkTiers?.length || rule.destSelector?.networkTiers?.length
+        if (needsLayers && snapshot.layers_error) {
+          items.push({ ruleId: rule.id, ruleName: rule.name, ruleType: rule.ruleType, status: 'failed', reasonCode: 'NETWORK_LAYER_READ_FAILED', complete: false, message: '网络层目录读取失败，无法完成规则匹配，未核查路径', error: snapshot.layers_error, facts: { rule } })
+          continue
+        }
+        const sources = snapshot.assets.filter((asset: any) => matches(asset, rule.sourceSelector, snapshot.layers)), destinations = snapshot.assets.filter((asset: any) => matches(asset, rule.destSelector, snapshot.layers))
+        const noPairs = () => ({ ruleId: rule.id, ruleName: rule.name, ruleType: rule.ruleType, status: 'not_applicable', reasonCode: 'NO_MATCHING_PAIRS', complete: true, message: '本次范围无匹配对象/无适用检查对', facts: { rule, sourceCount: sources.length, destinationCount: destinations.length, layers: snapshot.layers, layers_observed_at: snapshot.layers_observed_at } })
+        if (!sources.length || !destinations.length) { items.push(noPairs()); continue }
         const seen = new Set<string>()
         for (const source of sources) for (const destination of destinations) {
           if (!isIP(source.ip ?? '') || !isIP(destination.ip ?? '')) throw new Error('规则目标缺少有效 IP')
@@ -34,8 +34,8 @@ export function create(soc: Soc) {
           const key = `${source.ip}>${destination.ip}`
           if (!seen.has(key)) { seen.add(key); pairs.push({ rule, ruleId: rule.id, ruleName: rule.name, ruleType: rule.ruleType, srcIp: source.ip, dstIp: destination.ip, mode: 'FULL', ...(rule.destPort ? { port: Number(rule.destPort) } : {}), ...(rule.protocol ? { protocol: rule.protocol.toLowerCase() } : {}) }) }
         }
-        if (!seen.size) items.push({ ruleId: rule.id, ruleName: rule.name, status: 'unknown', message: '规则只匹配同一地址，未生成跨地址检查对' })
-      } catch (error: any) { items.push({ ruleId: rule.id, ruleName: rule.name, status: 'unknown', message: error.message, facts: { rule } }) }
+        if (!seen.size) items.push(noPairs())
+      } catch (error: any) { items.push({ ruleId: rule.id, ruleName: rule.name, ruleType: rule.ruleType, status: 'unknown', message: error.message, facts: { rule } }) }
     }
       return { ...value, prior: items, items: pairs }
     },

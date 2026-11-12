@@ -3,13 +3,21 @@ import { createServer } from 'node:http'
 import { readdir, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { ThreatBindings, ThreatServices } from './types.ts'
+import { publicErrorText } from '../error.ts'
 
 function decodedTool(value: any): any {
-  if (value?.isError || value?.error) return { code: 502, data: null }
   if (Array.isArray(value?.content)) {
     const text = value.content.find((item: any) => item.type === 'text')?.text
-    if (typeof text !== 'string') return { code: 502, data: null }
-    try { return JSON.parse(text) } catch { return { code: 502, data: null } }
+    if (value?.isError || value?.error) return {
+      code: 502, data: null,
+      message: `MCP 工具返回错误：${publicErrorText(text ?? value.error ?? value.message, '未提供错误详情')}`,
+    }
+    if (typeof text !== 'string') return { code: 502, data: null, message: 'MCP 工具未返回可解析的文本回执' }
+    try { return JSON.parse(text) } catch { return { code: 502, data: null, message: 'MCP 工具返回了文本，但无法解析为结构化回执' } }
+  }
+  if (value?.isError || value?.error) return {
+    code: 502, data: null,
+    message: `MCP 工具返回错误：${publicErrorText(value.error ?? value.message, '未提供错误详情')}`,
   }
   return value
 }
@@ -57,7 +65,12 @@ export async function createThreatBridge(catalogDir: string, bindings: ThreatBin
         send(200, await services.inferFrozen(body, bindings.model, AbortSignal.any([bridgeSignal, AbortSignal.timeout(300_000)]))); return
       }
       send(404, { error: 'not_found' })
-    } catch { send(502, { status: 'error', status_code: 502, error: 'platform_upstream_failed' }) }
+    } catch (error: any) {
+      send(502, {
+        status: 'error', status_code: 502, error: 'platform_upstream_failed',
+        message: '平台依赖调用未完成', detail: publicErrorText(error?.message, '上游未提供错误详情'),
+      })
+    }
   })
   await new Promise<void>((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve) })
   const address = server.address()
