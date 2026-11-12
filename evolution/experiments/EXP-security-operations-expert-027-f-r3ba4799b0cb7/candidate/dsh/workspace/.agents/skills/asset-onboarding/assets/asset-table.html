@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root { color-scheme: light dark; --paper: light-dark(#fff, #1c241f); --ink: light-dark(#202e25, #e7efe9); --muted: light-dark(#69766d, #a4b1a7); --line: light-dark(#e0e6e0, #354239); --soft: light-dark(#f5f8f4, #252e28); --green: light-dark(#247343, #9ad5aa); }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 0; font: 13px/1.65 "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--ink); background: var(--paper); }
+  .card { min-width: 0; border: 1px solid var(--line); border-radius: 9px; background: var(--paper); }
+  .table-wrap { overflow: auto; max-height: 420px; border-radius: 9px 9px 0 0; }
+  table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+  th { position: sticky; top: 0; z-index: 1; padding: 10px 5px; background: var(--soft); color: var(--muted); font-size: 11px; font-weight: 500; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td { padding: 10px 5px; height: 56px; vertical-align: middle; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  .col-idx { width: 5%; } .col-ip { width: 18%; } .col-name { width: 21%; } .col-type { width: 13%; } .col-os { width: 14%; } .col-deploy { width: 16%; } .col-status { width: 13%; }
+  .idx { color: var(--muted); font-size: 11px; }
+  .ip { font: 11px/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  input { width: 100%; min-width: 0; height: 34px; padding: 0 7px; font: inherit; font-size: 12px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 5px; text-overflow: ellipsis; }
+  input.is-missing { border-color: light-dark(#d8bc86, #967442); background: light-dark(#fffdf7, #30291d); }
+  input:disabled { color: var(--muted); opacity: .8; cursor: not-allowed; }
+  input:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #78a988; outline-offset: 2px; }
+  .pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px; font-size: 11px; white-space: nowrap; }
+  .pill::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+  .p-green { color: light-dark(#247343, #9ad5aa); background: light-dark(#eaf4ec, #263d2d); }
+  .p-yellow { color: light-dark(#885c1e, #e5bd7e); background: light-dark(#fff6e6, #3d3221); }
+  .p-blue { color: light-dark(#386b91, #a3c5de); background: light-dark(#eef5fa, #263440); }
+  .p-red { color: light-dark(#ae4036, #f0a299); background: light-dark(#fff0ee, #3e2928); }
+  .p-gray { color: var(--muted); background: var(--soft); }
+  .table-tail { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; padding: 10px 13px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+  .stats b { font-weight: 600; color: var(--ink); }
+  .required { margin: 0; padding: 0 13px 10px; color: var(--muted); font-size: 11px; }
+  .notice { padding: 0 13px 10px; font-size: 12px; color: light-dark(#885c1e, #e5bd7e); }
+  .foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 13px; border-top: 1px solid var(--line); }
+  .hint { min-width: 0; font-size: 11px; color: var(--muted); overflow-wrap: anywhere; }
+  .button-group { display: flex; gap: 8px; flex-shrink: 0; }
+  button { width: 100px; height: 36px; padding: 0 10px; border: 1px solid #247343; border-radius: 6px; background: #247343; color: #fff; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; touch-action: manipulation; }
+  button.secondary { background: transparent; color: var(--ink); border-color: var(--line); font-weight: 500; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  details { padding: 0 13px 10px; color: var(--muted); font-size: 11px; }
+  summary { padding: 4px 0; cursor: pointer; }
+  .kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin-top: 6px; overflow-wrap: anywhere; }
+  @media (max-width: 599px) {
+    .table-wrap { max-height: none; overflow: visible; }
+    table, tbody { display: block; width: 100%; }
+    table { table-layout: auto; }
+    colgroup { display: none; }
+    thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    tbody tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 14px 13px; border-bottom: 1px solid var(--line); }
+    tbody tr:last-child { border-bottom: 0; }
+    td { display: block; min-width: 0; height: auto; padding: 0; border: 0; }
+    td::before { content: attr(data-label); display: block; margin-bottom: 5px; font: 11px/1.65 "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--muted); }
+    td.col-name { width: auto; grid-column: 1 / -1; }
+    .ip { font-size: 13px; }
+    input { height: 44px; font-size: 16px; }
+    .foot { flex-wrap: wrap; }
+    .hint { width: 100%; }
+    .button-group { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+    button { width: 100%; height: 44px; }
+  }
+</style>
+</head>
+<body>
+<script type="application/json" id="asset-preview-data">__ASSET_PREVIEW_DATA__</script>
+<div class="card">
+  <div class="table-wrap">
+    <table aria-label="待纳管设备清单">
+      <colgroup><col class="col-idx" /><col class="col-ip" /><col class="col-name" /><col class="col-type" /><col class="col-os" /><col class="col-deploy" /><col class="col-status" /></colgroup>
+      <thead><tr id="head"></tr></thead>
+      <tbody id="body"></tbody>
+    </table>
+  </div>
+  <div class="table-tail"><div class="stats" id="stats"></div><span id="shown"></span></div>
+  <p class="required">必填：资产名称、设备类型、部署形态。操作系统未识别时可留空；部署形态可选择常见值或自由输入。</p>
+  <div class="notice" id="notice" hidden></div>
+  <div class="foot">
+    <span class="hint" id="hint" role="status" aria-live="polite">等待交互通道就绪…</span>
+    <div class="button-group"><button class="secondary" id="cancel" type="button" disabled>取消纳管</button><button id="confirm" type="button" disabled>确认纳管</button></div>
+  </div>
+  <details><summary>来源与统计详情</summary><div class="kv" id="detail"></div></details>
+</div>
+<datalist id="deploy-options"><option value="物理设备"></option><option value="虚拟机"></option><option value="容器"></option></datalist>
+<script>
+(() => {
+  let embedded = null;
+  try { const node = document.getElementById('asset-preview-data'); if (node && node.textContent.trim() && node.textContent.trim() !== '__ASSET_PREVIEW_DATA__') embedded = JSON.parse(node.textContent); } catch { embedded = null; }
+  const data = window.__ASSET_PREVIEW__ || embedded || (window.dsh && window.dsh.data) || {};
+  // 冻结机器列保持 IP/名称；仅展示层改为 IP 地址/资产名称。
+  const columns = ['序号', 'IP', '名称', '设备类型', '操作系统', '部署形态', '状态'];
+  const displayLabels = ['序号', 'IP 地址', '资产名称', '设备类型', '操作系统', '部署形态', '状态'];
+  const rows = Array.isArray(data.table?.rows) ? data.table.rows : [];
+  const summary = data.summary || {};
+  const emit = (name, payload) => {
+    if (window.dsh && window.dsh.ready === true && typeof window.dsh.emit === 'function') return window.dsh.emit(name, payload);
+    throw new Error('bridge unavailable');
+  };
+  const TYPE_LABEL = { host: '主机', server: '服务器', switch: '交换机', router: '路由器', firewall: '防火墙' };
+  // 已知code及code（中文）只转换展示；未知/自定义值不误归类。
+  const typeCode = (value) => {
+    const text = String(value ?? '').trim();
+    const matched = /^([A-Za-z][\w-]*)（[^）]+）$/u.exec(text);
+    return matched ? matched[1] : text;
+  };
+  const typeDisplay = (value) => {
+    const text = String(value ?? '').trim();
+    const code = typeCode(text);
+    if (TYPE_LABEL[code]) return TYPE_LABEL[code];
+    return text === '未知' ? '' : text;
+  };
+  const typeEmit = (value) => {
+    const text = String(value ?? '').trim();
+    if (!text) return '';
+    const byLabel = Object.entries(TYPE_LABEL).find(([, label]) => label === text);
+    if (byLabel) return byLabel[0];
+    const code = typeCode(text);
+    return TYPE_LABEL[code] ? code : text;
+  };
+  const DEPLOY_LABEL = { physical: '物理设备', vm: '虚拟机', container: '容器' };
+  const DEPLOY_VALUE = { '物理设备': 'physical', '虚拟机': 'vm', '容器': 'container' };
+  const STATUS_CLASS = { '可提交': 'p-green', '待补全': 'p-yellow', '校验中': 'p-blue', '提交失败': 'p-red', '待核对': 'p-gray', '已跳过': 'p-gray', '已提交': 'p-green' };
+  const emptyValue = value => value == null || ['未知', '未识别'].includes(String(value)) ? '' : String(value);
+  const incomplete = rows.filter(row => row[6] === '待补全' || !emptyValue(row[2]).trim() || !typeDisplay(row[3]).trim() || !emptyValue(row[5]).trim()).length;
+  const pending = Number(summary.pending ?? rows.length);
+  const readyCount = rows.filter(row => row[6] === '可提交').length;
+  const conflicts = Number(summary.conflicts ?? 0);
+  const baselineUnknown = Number(summary.baseline_unknown ?? 0);
+  const blocked = data.blocked === true || conflicts > 0;
+  const baselineBlocked = baselineUnknown > 0;
+  const confirmable = rows.length > 0 && pending > 0 && !blocked && !baselineBlocked && incomplete === 0 && rows.every(row => row[6] === '可提交');
+  document.getElementById('stats').textContent = `待纳管 ${pending} 台 · 待补全 ${incomplete} · 可提交 ${readyCount}`;
+  document.getElementById('shown').textContent = `已显示全部 ${rows.length} 台设备`;
+  const head = document.getElementById('head');
+  displayLabels.forEach(name => { const th = document.createElement('th'); th.scope = 'col'; th.textContent = name; head.appendChild(th); });
+  const confirm = document.getElementById('confirm');
+  const cancel = document.getElementById('cancel');
+  const hint = document.getElementById('hint');
+  const notice = document.getElementById('notice');
+  let dirty = 0;
+  let invalidated = false;
+  let pendingAction = null;
+  let settled = false;
+  let bridgeSending = false;
+  let channelError = '';
+  const inputs = [];
+  const bridgeReady = () => window.dsh?.ready === true && typeof window.dsh.emit === 'function';
+  const syncControls = () => {
+    const unavailable = !bridgeReady() || settled || Boolean(pendingAction) || bridgeSending;
+    inputs.forEach(input => { input.disabled = unavailable; });
+    cancel.disabled = unavailable;
+    confirm.disabled = unavailable || invalidated || !confirmable;
+    if (settled) hint.textContent = '本清单已结束，请查看最新服务端结果。';
+    else if (!bridgeReady()) hint.textContent = '交互通道未就绪，暂不可操作。';
+    else if (channelError) hint.textContent = channelError;
+    else if (pendingAction === 'edit') hint.textContent = '修改已发送，等待最新预览；旧清单不可确认。';
+    else if (pendingAction === 'cancel') hint.textContent = '正在取消…请等待服务端确认。';
+    else if (pendingAction === 'confirm') hint.textContent = '确认请求已发送，请等待服务端结果。';
+    else if (bridgeSending) hint.textContent = '请求处理中，请等待服务端结果。';
+    else if (invalidated) hint.textContent = '清单已修改，请等待最新预览后重新核对。';
+    else if (incomplete) hint.textContent = '补齐全部必填字段后可确认；取消仅结束本次预览。';
+    else if (!pending) hint.textContent = '没有待纳管设备。';
+    else hint.textContent = '确认后提交本次清单；取消仅结束本次预览。';
+  };
+  const payloadBase = () => ({ preview_digest: data.preview_digest, ...(data.session || data.session_id ? { session: data.session || data.session_id } : {}), dirty });
+  const failed = action => {
+    pendingAction = null;
+    bridgeSending = false;
+    channelError = action === 'cancel' ? '取消请求未送达，请重试。' : action === 'edit' ? '修改请求未送达，请重新编辑该字段后重试；旧确认保持失效。' : '确认请求未送达，请重试。';
+    syncControls();
+  };
+  const deliver = (action, send) => {
+    pendingAction = action;
+    channelError = '';
+    syncControls();
+    try {
+      const result = send();
+      // true 仅表示桥接投递，不代表服务端业务成功；只由真实状态/新预览解除等待。
+      if (result === false) failed(action);
+      else if (result && typeof result.catch === 'function') result.catch(() => { if (!settled) failed(action); });
+    } catch { failed(action); }
+  };
+  const body = document.getElementById('body');
+  rows.forEach((cells, index) => {
+    const tr = document.createElement('tr');
+    columns.forEach((name, col) => {
+      const value = cells[col] ?? '';
+      const td = document.createElement('td');
+      td.dataset.label = displayLabels[col];
+      if (col === 0) { td.className = 'idx'; td.textContent = value; }
+      else if (col === 1) { td.className = 'ip'; td.textContent = value; }
+      else if (col === 6) {
+        const pill = document.createElement('span'); pill.className = `pill ${STATUS_CLASS[value] || 'p-gray'}`; pill.textContent = value; td.appendChild(pill);
+      } else {
+        const input = document.createElement('input');
+        input.disabled = true;
+        input.setAttribute('aria-label', `第${index + 1}行 ${displayLabels[col]}`);
+        input.value = col === 3 ? typeDisplay(value) : col === 5 ? DEPLOY_LABEL[value] || emptyValue(value) : emptyValue(value);
+        if (col === 2) td.className = 'col-name';
+        if (col === 5) { input.setAttribute('list', 'deploy-options'); input.placeholder = '请选择'; }
+        if (col !== 4) { input.required = true; input.classList.toggle('is-missing', !input.value.trim()); }
+        const field = col === 2 ? 'hostname' : col === 3 ? 'assetType' : col === 4 ? 'os' : 'deployForm';
+        const normalized = () => col === 3 ? typeEmit(input.value) : col === 5 ? DEPLOY_VALUE[input.value.trim()] || input.value.trim() : input.value.trim();
+        const initial = normalized();
+        let sentValue = null;
+        input.addEventListener('input', () => {
+          if (!bridgeReady() || settled || pendingAction || bridgeSending) return;
+          // input 时同步失效，先于 blur/change/按钮 click；不阻断当前输入。
+          invalidated = true;
+          confirm.disabled = true;
+          channelError = '';
+          if (col !== 4) input.classList.toggle('is-missing', !input.value.trim());
+          hint.textContent = '清单正在修改；完成输入后等待最新预览。';
+        });
+        input.addEventListener('change', () => {
+          if (!bridgeReady() || settled || pendingAction || bridgeSending) return;
+          const next = normalized();
+          if (next === initial || next === sentValue) return;
+          invalidated = true; dirty++;
+          sentValue = next;
+          deliver('edit', () => {
+            const result = emit('asset-table:edit', { ...payloadBase(), row_index: index + 1, ip: cells[1], field, value: next });
+            if (result === false) sentValue = null;
+            else if (result && typeof result.catch === 'function') result.catch(() => { sentValue = null; });
+            return result;
+          });
+        });
+        inputs.push(input); td.appendChild(input);
+      }
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+  if (blocked || baselineBlocked) {
+    notice.hidden = false;
+    notice.textContent = blocked ? '存在同 IP 冲突，整批已阻断，请先核对。' : '暂时无法核对SOC已有资产，请稍后重试';
+  }
+  const kind = summary.source?.kind;
+  const shortSource = kind === 'excel' ? '附件导入' : kind === 'discovery' ? '网络发现' : '未知来源';
+  const detail = document.getElementById('detail');
+  const pairs = [['来源', data.source_file || shortSource], ['批次', String(data.preview_digest || '').slice(0, 12)], ['候选总数', String(summary.candidates ?? '-')], ['已纳管', String(summary.already_managed ?? '-')], ['冲突', String(conflicts)], ['未响应', String(summary.unreachable ?? '-')], ['SOC 基线读失败', String(baselineUnknown)]];
+  pairs.forEach(([key, value]) => { const k = document.createElement('span'); k.textContent = key; const v = document.createElement('span'); v.textContent = value; detail.append(k, v); });
+  cancel.addEventListener('click', () => { if (!cancel.disabled) deliver('cancel', () => emit('asset-table:cancel', payloadBase())); });
+  confirm.addEventListener('click', () => { if (!confirm.disabled) deliver('confirm', () => emit('asset-table:confirm', payloadBase())); });
+  window.addEventListener('dsh:state', event => {
+    const state = event.detail || {};
+    settled = settled || state.settled === true;
+    bridgeSending = state.sending === true;
+    if (state.error && !settled) {
+      // 宿主只报告投递/服务端失败；不将排队或无错误视作成功。
+      pendingAction = null;
+      channelError = '请求未完成，请重试；清单修改后仍需最新预览。';
+    }
+    syncControls();
+  });
+  syncControls();
+})();
+</script>
+</body>
+</html>

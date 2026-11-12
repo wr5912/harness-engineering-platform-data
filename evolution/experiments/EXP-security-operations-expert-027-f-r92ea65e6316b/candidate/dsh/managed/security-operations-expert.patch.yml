@@ -125,6 +125,12 @@
 
     - id: security-operations-ui
       name: /opt/dsh-managed/security-operations-ui/index.js
+      config:
+        anonymousUserName: admin
+        nats:
+          url: nats://172.16.138.223:14222
+          subjects:
+            - notify.ws.incident
 
     - id: voice-mode
       name: /opt/dsh-managed/dsh-voice-hub/lib/index.js
@@ -163,6 +169,9 @@
           runtimeGroup:
             id: threat-analysis-runtime
             url: http://10.0.160.32:18120/hep/mcp/groups/threat-analysis-runtime/v2
+
+    - id: threat-report-download
+      name: /opt/dsh-managed/threat-report-download.mjs
 
     - id: security-operations-delegate-threat-analysis
       name: '@deepseek-ai/dsh-tool-subagent'

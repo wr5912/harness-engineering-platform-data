@@ -13,12 +13,12 @@ asset_builds:
     compiler:
       typescript: 5.9.3
       esbuild: 0.25.12
-      platform_lock_sha256: 61aa7c1b2fe86d51b10607fe37c29d191e9ed00d925f19361a1d72d1bb2e80cd
+      platform_lock_sha256: bc5f36eb3e9ab14dd711dec75e1d5a4a92d6dd278ad4652baaaaaff090b9183b
     dependencies_sha256: null
     source_files:
       - path: dsh/managed/inspection-preparation-runtime.ts
-        sha256: 37487d38d9b577946a025e3076473ad9f67482fa0b68bcbc8281ea57b9f2c357
-    source_sha256: 48aba702a31012af7370ad1e341a3ecbcd2c0d00eef623e096f652ff215b7748
+        sha256: 7e31bca34e5bc076164aefdecacf988f46711b21ac7eccf98121812ac364fbd1
+    source_sha256: 307f1aa96e028facd8a6aa65e2743fc3f799bfb9fa1faf4481901c97e9103e9b
     platform_sources:
       - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
         sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
@@ -26,12 +26,9 @@ asset_builds:
     source_inputs_version: 1
     runtime_imports:
       - node:crypto
-      - node:fs/promises
-      - node:os
-      - node:path
-    build_digest: df9de40bface38c551f57db66f08fcc55936cd4dad5b8a3527816e6cf18810af
-    esm_sha256: 0cb0ccc7e99f1dafd3bd6a656f69deab692bc90a14dee18378784856a2f156c7
-    candidate_sha256: 3c548d574e1675e586c37e6c28d1586015af920826bdc3e66924ab4a1b96cc90
+    build_digest: 9069d86214c2c7dc2a85e966b00cbb975395d88ff1bc8d98e09b1e935057df1d
+    esm_sha256: ce00e4935a00fe9491809f2d0ce616a8958187b748a3a54d7cf89ca7530d93fd
+    candidate_sha256: 030b0a0896eb67ef9449251d33f1f1ba32c2a9c44c90e0dbf63304ae1ff60c6f
   dsh/managed/threat-analysis/mcp-group-bridge.ts:
     schema_version: 1
     entry_path: dsh/managed/threat-analysis/mcp-group-bridge.ts
@@ -39,12 +36,12 @@ asset_builds:
     compiler:
       typescript: 5.9.3
       esbuild: 0.25.12
-      platform_lock_sha256: 61aa7c1b2fe86d51b10607fe37c29d191e9ed00d925f19361a1d72d1bb2e80cd
+      platform_lock_sha256: bc5f36eb3e9ab14dd711dec75e1d5a4a92d6dd278ad4652baaaaaff090b9183b
     dependencies_sha256: null
     source_files:
       - path: dsh/managed/threat-analysis/mcp-group-bridge.ts
-        sha256: d36fe4092dfc298001dc1990b7c43f9c87cd19f9f9574a330d64b0e52de5ae54
-    source_sha256: b354f0b907958bd16721eab8c51547dc7e03e29e2328cc4d2914965ee755270a
+        sha256: 515a572a59ff61c5bcfc8b20eb26e0c020f50741d71dae36783eb1d771f7e90b
+    source_sha256: e4101f63930c939af92d4eb23bd98cf0b159b1fa9e5289ae1580c580457e1764
     platform_sources:
       - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
         sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
@@ -54,9 +51,9 @@ asset_builds:
       - node:crypto
       - node:http
       - node:module
-    build_digest: 723b04c6cb05c47f954f76b7a779e437e14f349fbf8ad1bf0e9cebae19c4d366
-    esm_sha256: 3eae3be807d160f57ba363160baad0d7aec5c76cbff381e620a69617dd381538
-    candidate_sha256: eaba9410e7d872f31c25e9f0d15bf96d985fd34ab65a2542ddc16e0ac6562cf0
+    build_digest: c7bffb0ce24281ca800802010f8605461339894e5d622e3b1d7d460a03442aec
+    esm_sha256: 6bc23dc43c73677372864a7cf1a4ea506de1c382a13e4a8dadc1f5a110c3425c
+    candidate_sha256: 887c231b351042e2d6107f9bae0474649d35fb4942cd54e80f1d952e2a4e66a1
   dsh/managed/diagnosis-runtime.ts:
     schema_version: 1
     entry_path: dsh/managed/diagnosis-runtime.ts
@@ -83,4 +80,300 @@ asset_builds:
     build_digest: 8871d83ee99ab5daedb06c1f0e2c1734ffe87f4034f55bcdabaac584722e3a5b
     esm_sha256: f2f4403a3d0f197d0082ded38a9e44c2cd57600da4236df2478ed9c2d59aceb7
     candidate_sha256: 1b1c8f6b880c17c7ae6e9ba951aa1d5ef13ed84474a4fa48912683fa04caf56b
+  dsh/managed/asset-onboarding-runtime.ts:
+    schema_version: 1
+    entry_path: dsh/managed/asset-onboarding-runtime.ts
+    output_path: dsh/managed/asset-onboarding-runtime.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: bc5f36eb3e9ab14dd711dec75e1d5a4a92d6dd278ad4652baaaaaff090b9183b
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/asset-onboarding-runtime.ts
+        sha256: e976585dbc2066e9da5da9711f7efe1725b999cf71ca1891030dd496d457b43c
+      - path: dsh/managed/asset-workbook.d.mts
+        sha256: f175806339ea7125e3b559c363a604293c820c2a4f6b40954ebd29ded9eaaf3f
+      - path: dsh/managed/asset-workbook.mjs
+        sha256: c444943009f00168b1f715d39ef738b892d95cd80f75e056b602be4522f7f8b3
+      - path: dsh/managed/attachment-reader/xlsx-extract.mjs
+        sha256: cc42b0995351cb64566f68a10b8dd517c08e0dd26a9f1e1f9740527f439db3c3
+      - path: dsh/managed/attachment-reader/xlsx-xml.mjs
+        sha256: 1ca7f90ec93e6bd0634cc8d03bc869fff9c077ea19311f25ff071ddf99bc5fb3
+      - path: dsh/managed/attachment-reader/zip-reader.mjs
+        sha256: f8142165ac9dfda80d052151a09de762156dc37178e982c8742439caf4218dff
+    source_sha256: 40cc0766f462d5f5e45c87ac293ee8d9109628966e975aea7c258ef6ddda9db1
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
+    platform_sources_sha256: af539f1f3eb7a2bc3cfd4456124f15cff8e65abf4333aea55e756823d4b36d3d
+    source_inputs_version: 1
+    runtime_imports:
+      - node:crypto
+      - node:net
+      - node:fs/promises
+      - node:path
+      - node:zlib
+    build_digest: ccc5d6a09230352b27e4aaeb47d2300819d6f8819ebbe9954aa617bf7a3aeca9
+    esm_sha256: 71eab5698ca642fd05541bf6c43612af6867cbcf5ad219dfcf029d1b0ec0abb8
+    candidate_sha256: 9241cb86e23734c31ebac9c82b099390765d1740aa8f71677636388cbe12c0c4
+  dsh/managed/security-report-runtime.ts:
+    schema_version: 1
+    entry_path: dsh/managed/security-report-runtime.ts
+    output_path: dsh/managed/security-report-runtime.mjs
+    compiler:
+      typescript: 5.9.3
+      esbuild: 0.25.12
+      platform_lock_sha256: bc5f36eb3e9ab14dd711dec75e1d5a4a92d6dd278ad4652baaaaaff090b9183b
+    dependencies_sha256: null
+    source_files:
+      - path: dsh/managed/security-report-runtime.ts
+        sha256: 19e16bc1c098a90b5fbe783232b93e9ac5c02fa68af670a581de3c380a74a54a
+      - path: dsh/managed/security-report-source.d.mts
+        sha256: e58f258f8aba5561e101c29e3503fa72843461810243fc5dcc594f255d14e213
+      - path: dsh/managed/security-report-source.mjs
+        sha256: e30cff8fa02172f30a79d88bf7ffc88110f83d606f53d21ae8bc8af38290245b
+    source_sha256: cda90dcfccd3718a6c0f48f2be730bbc44a743fd502975a32e514c2534091dec
+    platform_sources:
+      - path: runtime/adapters/dsh-web/src/resolve-runtime.ts
+        sha256: 69e91bb7ff19f8e6f79694988ccf54d49e1a0a19675c33f59b3f7cc64a55bf1b
+    platform_sources_sha256: af539f1f3eb7a2bc3cfd4456124f15cff8e65abf4333aea55e756823d4b36d3d
+    source_inputs_version: 1
+    runtime_imports:
+      - node:crypto
+    build_digest: 31b36d342d763500fa368177f44c7ed620ee331bc866c0bf4be0172675112a1d
+    esm_sha256: 9f7462ac789291ab583a87dc17d04632552990b73ee062d63c2061ce863290fa
+    candidate_sha256: 473be2f2c91d6f9a0c48fd16289573c093fc680e3a78fec73e3d4d38cb164bf4
 outcome: inconclusive
+features:
+  - id: threat-local-report-and-rule-review
+    title: 威胁研判本地报告与规则建议
+    description: 合入特性分支的本地HTML报告存储、动态下载及规则建议合同，保留主线原生委派与工具链。
+    source_refs:
+      - git:5b0373b66503b8120af98d3aa322fa2cb7eadee8:EXP-security-operations-expert-027-f-r92ea65e6316b
+    evidence_refs: []
+  - id: native-policy-emergency-composition
+    title: 原生策略与应急组合工具
+    description: 保留 DSH 原生确认与委派，合入真实组合工具及设备发现、策略验收路径。
+    source_refs:
+      - git:5b0373b66503b8120af98d3aa322fa2cb7eadee8:EXP-security-operations-expert-027-f-r5efdc136f237
+    evidence_refs: []
+  - id: inspection-fault-report-and-asset-onboarding
+    title: 巡检故障报告与设备资产纳管
+    description: 合入巡检报告卡片、完整报告附件、故障来源核对与设备发现、表格预览及确认纳管能力。
+    source_refs:
+      - git:5b0373b66503b8120af98d3aa322fa2cb7eadee8:EXP-security-operations-expert-027-f-r3ba4799b0cb7
+    evidence_refs: []
+fusion_sources:
+  - experiment_id: EXP-security-operations-expert-027-f-r3ba4799b0cb7
+    ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+    candidate_sha256: 2c25c863ca44fc1b4c52071f23aa0253585d160cff8698163b573216c38ceafe
+  - experiment_id: EXP-security-operations-expert-027-f-r5efdc136f237
+    ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+    candidate_sha256: 0e07277113f722b2a58fc1aeed878e26d65ae71fa66f0bcf8ec07a6011cf2a7a
+  - experiment_id: EXP-security-operations-expert-027-f-r92ea65e6316b
+    ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+    candidate_sha256: f32e8888fdffe52a5b4d52ba7c410a1d3eb1030e5e6efd97b8d119591cbac8cd
+creation:
+  status: integrating
+  operation_id: c2594e50-b808-432f-b71c-2061094631f3
+  plan_sha256: b980197fa55703ce13ea48734747037ff3fbc25dfc7f936dbeb41f2d299e0f6a
+  target_experiment_id: EXP-security-operations-expert-027-m-reab20c48f610
+  confirmed_at: '2026-11-11T10:01:11.553Z'
+  research_question: 将用户指定三个特性当前资产逐一融合到同代主线，保留主线原生DSH委派与工具链并记录未验证边界。
+  assistant_session_id: null
+  plan:
+    sources:
+      - experiment_id: EXP-security-operations-expert-024-rad80a907c628
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: omit
+        reason: 不在用户指定的三个融合来源中，保持原状。
+      - experiment_id: EXP-security-operations-expert-025-r3f8a8b3da3f1
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: omit
+        reason: 不在用户指定的三个融合来源中，保持原状。
+      - experiment_id: EXP-security-operations-expert-026-ra06021c8deaf
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: omit
+        reason: 不在用户指定的三个融合来源中，保持原状。
+      - experiment_id: EXP-security-operations-expert-027-f-r3ba4799b0cb7
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: inherit
+        reason: 用户指定的固定当前Candidate，本步骤合入或已由前序步骤合入。
+      - experiment_id: EXP-security-operations-expert-027-f-r5efdc136f237
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: inherit
+        reason: 用户指定的固定当前Candidate，本步骤合入或已由前序步骤合入。
+      - experiment_id: EXP-security-operations-expert-027-f-r6930a1922fdc
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: omit
+        reason: 不在用户指定的三个融合来源中，保持原状。
+      - experiment_id: EXP-security-operations-expert-027-f-r78d4eab2e727
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: omit
+        reason: 不在用户指定的三个融合来源中，保持原状。
+      - experiment_id: EXP-security-operations-expert-027-m-reab20c48f610
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: omit
+        reason: 不在用户指定的三个融合来源中，保持原状。
+      - experiment_id: EXP-security-operations-expert-027-f-r92ea65e6316b
+        ref: git:5b0373b66503b8120af98d3aa322fa2cb7eadee8
+        decision: inherit
+        reason: 用户指定的固定当前Candidate，本步骤合入或已由前序步骤合入。
+    features:
+      - id: threat-local-report-and-rule-review
+        title: 威胁研判本地报告与规则建议
+        description: 合入特性分支的本地HTML报告存储、动态下载及规则建议合同，保留主线原生委派与工具链。
+        source_refs:
+          - git:5b0373b66503b8120af98d3aa322fa2cb7eadee8:EXP-security-operations-expert-027-f-r92ea65e6316b
+        evidence_refs: []
+      - id: native-policy-emergency-composition
+        title: 原生策略与应急组合工具
+        description: 保留 DSH 原生确认与委派，合入真实组合工具及设备发现、策略验收路径。
+        source_refs:
+          - git:5b0373b66503b8120af98d3aa322fa2cb7eadee8:EXP-security-operations-expert-027-f-r5efdc136f237
+        evidence_refs: []
+      - id: inspection-fault-report-and-asset-onboarding
+        title: 巡检故障报告与设备资产纳管
+        description: 合入巡检报告卡片、完整报告附件、故障来源核对与设备发现、表格预览及确认纳管能力。
+        source_refs:
+          - git:5b0373b66503b8120af98d3aa322fa2cb7eadee8:EXP-security-operations-expert-027-f-r3ba4799b0cb7
+        evidence_refs: []
+    conflicts:
+      - description: 来源仍含主线已移除的旧确认、处置及子会话续接包装。
+        resolution: 保留主线原生能力与清理结果，只融合业务研判、报告及对应测试，不恢复旧执行循环。
+    checks:
+      - id: merged-build
+        kind: build
+        command:
+          - node
+          - '--experimental-transform-types'
+          - '--test'
+          - tests/threat-report-download.test.mjs
+          - tests/security-operations-guard.test.mjs
+          - tests/security-report-runtime.test.mjs
+          - tests/asset-onboarding-runtime.test.mjs
+          - dsh/managed/inspection-report-card/test/model.test.mjs
+        cwd: .
+      - id: merged-load
+        kind: load
+      - id: merged-capability
+        kind: capability
+        case_ids:
+          - U-THREAT-001
+          - U-THREAT-002
+          - U-EMG-008
+          - U-POL-017
+          - U-INS-024
+          - U-INS-007
+          - U-ONBOARD-005
+          - U-ONBOARD-007
+          - U-ONBOARD-009
+          - U-ONBOARD-014
+    evaluation_case_ids:
+      - U-THREAT-001
+      - U-THREAT-002
+      - U-EMG-008
+      - U-POL-017
+      - U-INS-024
+      - U-INS-007
+      - U-ONBOARD-005
+      - U-ONBOARD-007
+      - U-ONBOARD-009
+      - U-ONBOARD-014
+    evaluation_sha256: a78b6ce0b765324fd116c1a9e952f42d131f0628f8baced854c1f312898e6fac
+  receipts:
+    - check_id: merged-build
+      kind: build
+      candidate_sha256: a64ee27a44bbdefe5c5ff7438bcce485e7c58739bc4f1656254b4a2f6e77ce33
+      source_sha256: be42c93a1f21968091c03173e2ff9be940217dac8fff4e561d1b4dc7508fc12e
+      evaluation_sha256: a78b6ce0b765324fd116c1a9e952f42d131f0628f8baced854c1f312898e6fac
+      verified_at: '2026-11-11T11:54:46.181Z'
+      evidence:
+        command:
+          - node
+          - '--experimental-transform-types'
+          - '--test'
+          - tests/threat-report-download.test.mjs
+          - tests/security-operations-guard.test.mjs
+          - tests/security-report-runtime.test.mjs
+          - tests/asset-onboarding-runtime.test.mjs
+          - dsh/managed/inspection-report-card/test/model.test.mjs
+        stdout: |-
+          ✔ 首屏只保留概览与分组，原始证据默认收起 (6.202614ms)
+          ✔ 业务结论与真实执行缺口分离 (2.872565ms)
+          ✔ 无匹配规则不挂缺口，runId沿用且事件结构化 (0.835957ms)
+          ✔ 读取失败不被伪装为空漏洞或正常 (0.549031ms)
+          ✔ 首屏HTML只含概览与分组，不含设备全量或原始证据 (0.915888ms)
+          ✔ 报告卡对来源文本做HTML转义 (0.517854ms)
+          ✔ 报告卡事件写入输入并提交，携带当前runId (0.569468ms)
+          ✔ toolview注册键覆盖实际MCP全名与短名别名 (0.276604ms)
+          ✔ 实际全名回执样例生成卡片并沿用runId，不新建运行 (0.85319ms)
+          ✔ 英文状态码显示为英文（中文说明），事件字段保持原值 (0.705451ms)
+          ✔ NO_TEMPLATE建议带真实模板名与ID，缺失时不虚构 (0.53926ms)
+          ✔ NO_DATA建议展示实际存在的采集字段 (0.404749ms)
+          ✔ SOC未采集状态建议核实采集链路与心跳 (0.285237ms)
+          ✔ NO_MATCHING_PAIRS是范围结论，建议不挂A4 (0.262711ms)
+          ✔ 真实读取失败建议指出操作、资产与重试条件 (0.29292ms)
+          ✔ 首屏分组显示具体建议而非只显示未绑定/未采集 (0.515983ms)
+          ✔ 报告卡建议与共享建议模型一致 (0.300907ms)
+          ✔ 漏洞发现给复核建议，恶意模板名安全显示 (0.576781ms)
+          ✔ 英文枚举带中文说明且首屏写出未执行边界 (0.44918ms)
+          ✔ 真实互联失败按规则去重，分组与realGapCount一致 (0.259537ms)
+          ✔ 操作名从原子字段或错误文本提取，缺失才写操作名未返回 (0.39672ms)
+          ✔ 首屏真实缺口建议点名操作和资产 (0.282039ms)
+          ✔ 恶意文本不进入建议句子，但证据仍保留原文 (0.305221ms)
+          ✔ 报告卡证据JSON投影不出现原始恶意标签 (0.475467ms)
+          (node:1518337) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+          (Use `node --trace-warnings ...` to show where the warning was created)
+          (node:1518337) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/cmp/harness-engineering-platform-data/evolution/experiments/EXP-security-operations-expert-027-m-reab20c48f610/candidate/dsh/managed/asset-onboarding-runtime.ts is not specified and it doesn't parse as CommonJS.
+          Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+          To eliminate this warning, add "type": "module" to /home/cmp/package.json.
+          ✔ 纳管原生guard拒绝双重命名或哈希名称的底层操作且不执行任何接口 (3.365683ms)
+          ✔ read_excel高层构建物通过公开附件服务解析既有夹具，不触MCP或受限属性 (22.225074ms)
+          ✔ normalizeRange保留合法单IP、对齐CIDR、起止范围及去重后的明确集合 (6.504232ms)
+          ✔ normalizeRange拒绝CIDR不对齐、超过4096地址及非法或倒置范围 (0.86641ms)
+          ✔ normalizeAssets保留真实设备字段并规范字符串，不修改原数组 (0.838737ms)
+          ✔ normalizeAssets拒绝重复IP、缺IP、不支持字段及空清单 (0.45623ms)
+          ✔ mainIdentity接受版本4根header及当前turn/start后的真实用户消息 (0.258161ms)
+          ✔ mainIdentity拒绝不完整根header、身份不一致及子Agent来源 (0.478463ms)
+          ✔ mainIdentity拒绝schedule续轮借用上轮真实确认 (0.44524ms)
+          ✔ mainIdentity在turn/end后不沿用已结束轮次的用户消息 (0.4185ms)
+          ✔ mainIdentity拒绝nextTurn或nextStep等待中的新用户取消或改参 (0.387567ms)
+          ✔ mainIdentity拒绝已经中止的执行信号 (0.299009ms)
+          ✔ previewAssets从本会话完整workbook生成未提交的完整清单 (2.008906ms)
+          ✔ previewAssets不接受无来源、跨Session或未配对的伪来源 (0.782737ms)
+          ✔ previewAssets只接受同一发现记录中的findingId与IP配对 (0.922716ms)
+          ✔ previewAssets拒绝失败、未知或明确不完整的发现事实 (0.555312ms)
+          ✔ priorPreview要求原清单先完整展示且只有一条新的明确确认 (1.86857ms)
+          ✔ priorPreview拒绝改写、缺失或晚于确认的清单展示 (1.951877ms)
+          ✔ priorPreview在本批次取消记录后拒绝旧清单确认 (0.476956ms)
+          ✔ priorPreview拒绝fork新Session继承父Session的预览与确认 (0.449275ms)
+          ✔ priorPreview拒绝预览前旧确认和改动消息，但接受同批独立确认重试 (2.683089ms)
+          ✔ priorPreview拒绝摘要不变但冻结资产被改写的工具记录 (0.618081ms)
+          ✔ unpack兼容规范SOC结构化、文本及canonical工具结果，保留业务data (0.430713ms)
+          ✔ unpack区分SOC业务拒绝与工具层错误，不把失败当成功 (0.823716ms)
+          ✔ 工具错误保留原错和关联且脱敏，不把未知当未发送或认证失败 (0.744034ms)
+          ✔ 252原始结果超预算时完整保留45 alive全部字段证据，不重复大数组 (3.366782ms)
+          ✔ 真实start preview与execution无损关联，错号错范围和自动纳管拒绝 (0.647569ms)
+          ✔ int64无损与真实终态候选完整性 (0.702726ms)
+          ✔ TableDataInfo顶层rows/total保留，不把真实0条变为null (0.114139ms)
+          ✔ 254条发现混合集合不受200条导入批次上限限制 (0.599237ms)
+          ✔ unpack拒绝非JSON、缺少业务状态及非对象回执 (0.231536ms)
+          ✔ 资产高层入口仅主Agent可用，清单与确认由纳管Runtime独立核对 (0.613274ms)
+          ✔ Guard拒绝模型直调资产分组所有SOC原始接口 (0.310368ms)
+          ✔ 纳管Skill不重新锁定主线的原生业务路由 (0.245633ms)
+          ✔ 发现目标可衔接策略与应急；旧包装器不可再调用 (4.812372ms)
+          ✔ 故障只读组合只为主Agent开放两类Run和同组原结果查询，legacy取证与巡检授信保留 (2.006285ms)
+          ✔ 故障只读接线不恢复旧Java，不扩大探测、配置写入或陌生分组权限 (0.627341ms)
+          ✔ matrix与Guard五项故障接线一致，子角色与旧Java拒绝集合不串用 (8.794834ms)
+          ✔ 无需登录的development实例不安装security-operations-guard工具限制和 Guard (1.369364ms)
+          ✔ 无需登录的development实例不安装security-operations-child-guard工具限制和 Guard (1.622477ms)
+          ✔ 无需登录的published实例不安装security-operations-guard工具限制和 Guard (0.266759ms)
+          ✔ 无需登录的published实例不安装security-operations-child-guard工具限制和 Guard (0.2718ms)
+          ✔ 无需登录配置晚于 security-operations-guard 装载时仍保持原生工具访问 (1.241173ms)
+          ✔ 无需登录配置晚于 security-operations-child-guard 装载时仍保持原生工具访问 (0.677568ms)
+          ✔ spill 完成展示不覆盖完整回执终态，并导出原始字节 (9.913719ms)
+          ✔ 完整text回执与ordinary展示：completed/incomplete仍可导出 (1.89491ms)
+          ✔ 完整text回执与segmented展示：completed/incomplete仍可导出
+        stderr: ''

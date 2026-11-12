@@ -105,11 +105,19 @@ export function selectInspectionRun(input, runId, canonicalName = name => name) 
   return selectInspectionRuns(input, runId, canonicalName)[0]
 }
 
-/** 返回同会话可核验来源的倒序候选；完成状态由调用方以本次完整回执核验。 */
-export function selectInspectionRuns(input, runId, canonicalName = name => name) {
+/** 默认仅允许唯一尝试；语义选择由 Skill 填入明确枚举，终态仍由完整 canonical 回执核验。 */
+export function selectInspectionRuns(input, runId, canonicalName = name => name, selection) {
   if (runId !== undefined && !identifier(runId)) fail('巡检报告运行标识无效。')
   if (typeof canonicalName !== 'function') fail('巡检工具来源解析器无效。')
+  if (selection !== undefined && selection !== 'latest_completed' || runId !== undefined && selection !== undefined) {
+    fail('巡检报告选择参数无效，显式运行不能与最近已完成选择混用。')
+  }
   const events = ownEvents(input), origins = new Map()
+  const attempts = events.filter(event => event.type === 'tool/call' && inspectionTools.has(canonicalName(event.data.name)))
+  if (runId === undefined && selection === undefined && attempts.length > 1) {
+    fail('本会话有多个巡检尝试，报告指代不清；请明确所需运行，只有用户明确要求最近已完成时才可选择旧报告。')
+  }
+  const boundCalls = new Set()
   for (const pair of successfulPairs(events)) {
     const workflow = inspectionTools.get(canonicalName(pair.call.data.name))
     if (!workflow) continue
@@ -118,8 +126,13 @@ export function selectInspectionRuns(input, runId, canonicalName = name => name)
     if (value.composition_id !== undefined && value.composition_id !== workflow
       || value.workflow !== undefined && value.workflow !== workflow) continue
     const previous = origins.get(value.run_id)
-    if (previous && previous.workflow !== workflow) fail('同一巡检运行出现冲突的原始启动来源。')
-    origins.set(value.run_id, { runId: value.run_id, workflow, seq: pair.receipt.seq })
+    if (previous) fail('同一巡检运行出现冲突或重复的原始启动来源。')
+    boundCalls.add(pair.call)
+    origins.set(value.run_id, { runId: value.run_id, workflow, seq: pair.call.seq })
+  }
+  // 新失败、裁剪或未返回的尝试不能被过滤成“没有新运行”，即使允许最近已完成也不猜测未知来源。
+  if (runId === undefined && attempts.some(call => !boundCalls.has(call))) {
+    fail('巡检尝试缺少可核验的巡检启动回执，来源未知，不能回退旧报告。')
   }
   const candidates = runId !== undefined ? [origins.get(runId)].filter(Boolean)
     : [...origins.values()].sort((left, right) => right.seq - left.seq)
@@ -594,6 +607,8 @@ function hasNewTroubleshootingSource(events, cutoff, canonicalName, validatedThr
 
 function hasNewReportSource(parentId, events, kind, cutoff, canonicalName, newTroubleshooting) {
   if (newTroubleshooting) return true
+  if (kind === 'inspection' && events.some(event => event.seq > cutoff && event.type === 'tool/call'
+    && inspectionTools.has(canonicalName(event.data.name)))) return true
   const pairs = successfulPairs(events, true)
   for (const pair of pairs) {
     if (pair.receipt.seq <= cutoff || !requestBefore(events, pair.call.seq)) continue

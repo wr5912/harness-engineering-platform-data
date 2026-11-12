@@ -46263,7 +46263,7 @@ var TELEMETRY_VIEW = [
   { stage: "first-tts-chunk", key: "telFirstChunk" },
   { stage: "first-audio-played", key: "telFirstPlayed" }
 ];
-var BUILD_TAG = "0.0.3+4778924-dirty";
+var BUILD_TAG = "0.0.3+ec7c75ec-dirty";
 var TELEMETRY_FLAG = "dsh-voice-mode.telemetry";
 var telemetryEnabled = typeof localStorage !== "undefined" && localStorage.getItem(TELEMETRY_FLAG) === "1";
 console.log("[dsh-voice] \u63D2\u4EF6\u6784\u5EFA\u7248\u672C\uFF1A" + BUILD_TAG);

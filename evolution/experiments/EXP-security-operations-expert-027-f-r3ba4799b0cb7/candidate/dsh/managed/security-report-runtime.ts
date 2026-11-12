@@ -37,7 +37,14 @@ export function requireReportRequest(exec: any) {
   const content = user?.data?.content
   const text = typeof content === 'string' ? content : Array.isArray(content)
     ? content.filter((part: any) => part?.type === 'text').map((part: any) => part.text).join('') : ''
-  const requested = /(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:生成|导出|下载|保存|给我|给出|出具|发我|发给我)|(?:执行|开始|运行)[\s\S]{0,20}巡检/iu.test(text)
+  let reportEvent
+  try {
+    const candidate = text.trim().startsWith('{') ? JSON.parse(text) : null
+    if (candidate?.type === 'inspection_report_event' && candidate?.schema === 'inspection-report-event/v1'
+      && candidate?.action === 'download_report' && typeof candidate?.runId === 'string'
+      && /^run-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(candidate.runId)) reportEvent = candidate
+  } catch { /* 非事件 JSON，按普通自然语言处理。 */ }
+  const requested = Boolean(reportEvent) || /(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:生成|导出|下载|保存|给我|给出|出具|发我|发给我)|(?:执行|开始|运行)[\s\S]{0,20}巡检/iu.test(text)
   const inquiryOnly = /^\s*(?:(?:(?:请问|请(?:介绍|说明|解释))\s*)?(?:如何|怎么|怎样)[\s\S]*(?:报告|HTML)|(?:请问\s*)?(?:本次|这次)?(?:完整|巡检)?(?:报告|HTML)\s*(?:如何|怎么|怎样)[\s\S]*|请(?:介绍|说明|解释)[\s\S]{0,20}(?:报告|HTML)[\s\S]{0,20}(?:步骤|方法|用途|格式|内容))[\s\S]*$/iu.test(text)
   const declined = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[\s\S]{0,8}(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上|报告|HTML)/iu.test(text)
   const downloadExisting = /(?:下载|导出)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:下载|导出)/iu.test(text)
@@ -48,7 +55,17 @@ export function requireReportRequest(exec: any) {
   if (!user?.data?.id || !requested || inquiryOnly || declinedTransfer || declined && !reuseOnly) {
     throw new Error('当前请求没有报告生成或下载意图，未写入文件')
   }
-  return { agent, events, reuseOnly }
+  return { agent, events, reuseOnly, eventRunId: reportEvent?.runId }
+}
+
+/** 报告卡事件只允许绑定事件 Run；附件必须由 manifest 的 source.run_id 证明同 Run。 */
+export function resolveReportRunSelection(eventRunId: string | undefined, args: RecordValue, savedRunId?: string): string | undefined {
+  if (!eventRunId) return args.run_id
+  if (args.kind !== 'inspection') throw new Error('报告卡下载事件只接受 inspection 报告')
+  if (args.selection !== undefined) throw new Error('报告卡下载事件不能改用 latest_completed 选择')
+  if (args.run_id !== undefined && args.run_id !== eventRunId) throw new Error('报告卡下载事件的 runId 与显式 run_id 不一致，已拒绝')
+  if (args.attachment_id !== undefined && savedRunId !== eventRunId) throw new Error('报告卡下载事件的 runId 与附件 manifest 不一致，已拒绝')
+  return eventRunId
 }
 
 /** 只取原报告或已完成的故障分析；不启动巡检、诊断、探测或处置。 */
@@ -58,7 +75,8 @@ export function apply(ctx: any) {
     description: '保存当前会话真实巡检或故障组合的原HTML，可原生预览、下载。fault默认核验本会话最新真实启动的troubleshooting-business-access/diagnose_business_access或troubleshooting-device-offline/diagnose_device_offline；显式run_id可选择本会话真实绑定的原故障Run，不冒称最新。只读原Run及唯一完整HTML，保留原filename/UTF-8字节，不让模型重绘。新流程失败、运行中、未知或读取校验失败均拒绝，不回退旧报告。仅无新流程活动时兼容analysis主助手只读取证正文或已完成故障子结果。再次下载复用真实attachment_id/原file；出现更晚新故障组合来源时不能用旧附件绕过；无新编排时仍可显式复用真实历史附件。不能传HTML、路径、URL或其他会话；生成不等于修复或已下载。',
     parameters: { type: 'object', additionalProperties: false, required: ['kind'], properties: {
       kind: { type: 'string', enum: ['inspection', 'fault'] },
-      run_id: { type: 'string', description: '可选：本会话真实启动回执的原运行编号。inspection省略时选择本会话最近已完成报告，显式编号只核该原巡检；fault仅允许本会话真实启动的troubleshooting故障运行，与child_id/analysis/evidence_call_ids/attachment_id互斥，fault省略默认最新尝试。显式原Run不是最新结果声明；拒绝外部、未知或inspection假冒。' },
+      run_id: { type: 'string', description: '可选：本会话真实启动回执的原运行编号；只核指定运行，失败、运行中或未知不得切换。inspection多run指代不清先询问；只有用户明确要求最近已完成时才传selection。fault仅允许本会话真实启动的troubleshooting故障运行，省略默认最新尝试。显式原Run不代表最新。' },
+      selection: { type: 'string', enum: ['latest_completed'], description: '仅inspection：只有用户明确要求“最近已完成的巡检报告”时，由助手按语义填写；与run_id/attachment_id互斥。可跳过已核验的未完成/失败运行，须在交付说明所选run及被跳过状态，不称为最新巡检结果。其他含糊指代不得填写。' },
       child_id: { type: 'string', description: '可选，仅无新故障组合来源时：明确导出本会话指定已完成子分析；不得与analysis/run_id混用。主助手已补证时应改用analysis。' },
       analysis: { type: 'string', minLength: 1, maxLength: 65536, description: '仅无新故障组合来源时：主助手依据本会话实际SOC只读回执整理的完整可见报告正文，含事实、推断、证据缺口、未执行建议；不是HTML或隐藏reasoning。语义分析由模型负责，来源由入口核对。' },
       evidence_call_ids: { type: 'array', minItems: 1, maxItems: 32, uniqueItems: true, items: { type: 'string', minLength: 1 }, description: '可选，配合analysis绑定本会话真实只读查询调用；省略自动选择最近实际取证批次。不让用户填写编号，不以用户材料冒充原生回执。' },
@@ -70,9 +88,12 @@ export function apply(ctx: any) {
       presentationMeta: (_args: any, value: any) => value,
     },
     async execute(args: RecordValue, exec: any) {
-      const { agent, events, reuseOnly } = requireReportRequest(exec)
+      const { agent, events, reuseOnly, eventRunId } = requireReportRequest(exec)
+      if (eventRunId && args.kind !== 'inspection') throw new Error('报告卡下载事件只接受 inspection 报告')
       if (!record(args) || !['inspection', 'fault'].includes(args.kind)
-        || Object.keys(args).some(key => !['kind', 'run_id', 'child_id', 'analysis', 'evidence_call_ids', 'attachment_id'].includes(key))
+        || Object.keys(args).some(key => !['kind', 'run_id', 'selection', 'child_id', 'analysis', 'evidence_call_ids', 'attachment_id'].includes(key))
+        || args.selection !== undefined && (args.kind !== 'inspection' || args.selection !== 'latest_completed'
+          || args.run_id !== undefined || args.attachment_id !== undefined)
         || args.run_id !== undefined && typeof args.run_id !== 'string'
         || args.child_id !== undefined && typeof args.child_id !== 'string'
         || args.kind === 'inspection' && ['child_id', 'analysis', 'evidence_call_ids'].some(key => args[key] !== undefined)
@@ -100,6 +121,7 @@ export function apply(ctx: any) {
       }
       const saved = selectSavedSecurityReport(agent.id, events, args.kind, args.attachment_id, canonical)
       if (args.attachment_id !== undefined && !saved) throw new Error('本会话没有该真实已导出报告，不猜测附件或文件路径')
+      const selectedRunId = resolveReportRunSelection(eventRunId, args, saved?.value?.source?.run_id)
       if (args.attachment_id !== undefined && args.kind === 'fault' && saved!.has_new_troubleshooting_source) {
         throw new Error('本会话已有更新故障来源或新尝试，不能指定旧attachment_id绕过；请核对最新运行。')
       }
@@ -114,6 +136,7 @@ export function apply(ctx: any) {
       }
       let html: string, source: RecordValue, filename: string
       let expectedInspectionBytes: number | undefined
+      const skippedInspectionRuns: { run_id: string, status: string }[] = []
       if (args.kind === 'inspection') {
         // 巡检来源必须被当前同组resolver精确确认；不借故障活动识别的旧名回退放行。
         const inspectionCanonical = (tool: string) => {
@@ -123,7 +146,7 @@ export function apply(ctx: any) {
           }
           return undefined
         }
-        const candidates = selectInspectionRuns(events, args.run_id, inspectionCanonical)
+        const candidates = selectInspectionRuns(events, selectedRunId, inspectionCanonical, args.selection)
         const query = ctx.mcpSessionManager.resolveTool('inspection-compositions', 'get_composition_run')
         if (!query || !ctx.tools.get(query, agent)) throw new Error('当前没有同次巡检终态读取入口')
         let selected: (typeof candidates)[number] | undefined
@@ -141,7 +164,9 @@ export function apply(ctx: any) {
             || run.workflow !== undefined && run.workflow !== candidate.workflow) throw new Error('巡检结果与本会话原始运行或流程不一致')
           // result.status是业务完整性；未知/读取失败不能跳过并冒称较旧报告最新。
           if (run.status !== 'completed') {
-            if (args.run_id === undefined && ['accepted', 'pending', 'queued', 'running', 'failed', 'canceled', 'cancelled'].includes(run.status)) continue
+            if (args.selection === 'latest_completed' && ['accepted', 'pending', 'queued', 'running', 'in_progress', 'failed', 'canceled', 'cancelled'].includes(run.status)) {
+              skippedInspectionRuns.push({ run_id: candidate.run_id, status: run.status }); continue
+            }
             throw new Error('原巡检尚未成功结束，不能将运行中或失败状态导出为已完成报告。')
           }
           const reports = Array.isArray(run.artifacts) ? run.artifacts.filter((item: any) => item?.id === 'report') : []
@@ -166,7 +191,10 @@ export function apply(ctx: any) {
           || !/\.html$/iu.test(artifact.filename ?? '')) throw new Error('原运行尚无可导出的完整HTML报告')
         if (artifact.filename !== report.filename || artifact.contentType !== report.contentType) throw new Error('原报告与同次产物元数据不一致')
         html = artifact.body
+        const fresh = selectInspectionRuns(agent.session.snapshotEvents(), selectedRunId, inspectionCanonical, args.selection)
+        if (JSON.stringify(fresh) !== JSON.stringify(candidates)) throw new Error('巡检来源已变化，未保存过时报告。')
         source = { kind: 'inspection', run_id: selected.run_id, artifact_id: report.id,
+          selection: args.selection ?? (selectedRunId !== undefined ? 'explicit_run' : 'unique_run'), skipped_runs: skippedInspectionRuns,
           original_filename: artifact.filename, original_sha256: createHash('sha256').update(html).digest('hex') }
         filename = `inspection-report-${selected.run_id}.html`
       } else if (troubleshooting) {
@@ -230,7 +258,11 @@ export function apply(ctx: any) {
         file_path: path, filename: attachment.name, content_type: 'text/html; charset=utf-8', bytes: attachment.bytes,
         sha256: createHash('sha256').update(data).digest('hex'), attachment_id: attachment.attachmentId,
         source, generated_at: new Date().toISOString(),
-        message: troubleshooting && args.run_id !== undefined
+        message: args.kind === 'inspection'
+          ? `已保存本会话原巡检 ${source.run_id} 的完整HTML，未重跑或重绘。${args.selection === 'latest_completed'
+            ? `按用户明确要求选择最近已完成报告；跳过：${skippedInspectionRuns.map(item => `${item.run_id}（${item.status}）`).join('、') || '无'}；不是最新巡检结果声明。`
+            : selectedRunId !== undefined ? '按事件/显式run_id选择，未切换其他运行，不冒称最新结果。' : '本会话唯一巡检来源。'}可原生预览、下载；不表示全部正常。`
+          : troubleshooting && args.run_id !== undefined
           ? '已按显式run_id保存本会话原故障Run的完整HTML，不冒称本会话最新结果。可原生预览、下载；不表示故障已修复。'
           : 'HTML报告文件已生成。可在本次报告卡片预览或下载HTML；生成文件不表示故障已修复或巡检全部正常。' }
     },

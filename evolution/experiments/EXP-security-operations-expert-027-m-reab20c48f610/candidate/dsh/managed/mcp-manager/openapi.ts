@@ -1,11 +1,15 @@
+import { createHash } from 'node:crypto'
+import { assertConnectionReady } from './connection.ts'
+
+export const OPENAPI_RESPONSE_META_KEY = 'io.deepseek.dsh/openapi-response'
+
 const MAX_DOCUMENT = 2 * 1024 * 1024
 const MAX_RESULT = 1024 * 1024
 const methods = new Set(['get', 'post', 'put', 'patch', 'delete'])
-export const OPENAPI_RESPONSE_META_KEY = 'io.deepseek.dsh/openapi-response'
 
-function requestSignal(server: any) {
-  const timeout = AbortSignal.timeout(20_000)
-  return server.signal ? AbortSignal.any([server.signal, timeout]) : timeout
+function requestSignal(server: any): AbortSignal {
+  const timeout = AbortSignal.timeout(server.platformTimeoutMs ?? 20_000)
+  return server.platformSignal ? AbortSignal.any([server.platformSignal, timeout]) : timeout
 }
 
 export function validateSpecUrl(value: string): string {
@@ -133,7 +137,7 @@ async function loginToken(server: any): Promise<string> {
   return state.pending
 }
 
-async function authorizedFetch(server: any, url: URL, init: RequestInit, spec?: any, operation?: any) {
+async function authorizedFetch(server: any, url: URL, init: RequestInit, spec?: any, operation?: any, controlled?: any) {
   const request = async () => {
     const headers = new Headers(init.headers)
     let credential = server.apiKey || ''
@@ -147,10 +151,18 @@ async function authorizedFetch(server: any, url: URL, init: RequestInit, spec?: 
       for (const [name, value] of Object.entries(spec ? authHeaders(spec, operation, credential) :
         credential ? { Authorization: `Bearer ${credential}` } : {})) headers.set(name, value)
     }
-    return { response: await fetch(url, { ...init, headers }), credential }
+    const dispatch = (signal?: AbortSignal) => {
+      for (const [name, value] of Object.entries(server.platformRequestHeaders?.(url.href) ?? {})) headers.set(name, String(value))
+      return fetch(url, { ...init, signal: signal ?? init.signal, headers, redirect: controlled ? 'error' : init.redirect })
+    }
+    const response = controlled && server.platformExecute
+      ? await server.platformExecute(controlled, dispatch, init.signal)
+      : await dispatch()
+    return { response, credential }
   }
   let result = await request()
-  if (result.response.status === 401 && server.authType === 'login') {
+  // 已派发的业务写请求不因 401 自动重放；规格发现仍可刷新凭据重试。
+  if (result.response.status === 401 && server.authType === 'login' && !controlled) {
     const state = loginState(server)
     if (state.token === result.credential) state.token = undefined
     result = await request()
@@ -159,6 +171,7 @@ async function authorizedFetch(server: any, url: URL, init: RequestInit, spec?: 
 }
 
 export async function loadOpenApi(server: any): Promise<any> {
+  assertConnectionReady(server)
   const specUrl = validateSpecUrl(server.specUrl)
   let response = await fetch(specUrl, { signal: requestSignal(server) })
   let retriedWithAuth = false
@@ -188,26 +201,31 @@ export async function loadOpenApi(server: any): Promise<any> {
       const body = raw.requestBody ? resolveObject(spec, raw.requestBody) : undefined
       const uri = operationUrl(base, path).href
       const description = raw.summary || raw.description || `${method.toUpperCase()} ${path}`
+      const httpOperation = { method: method.toUpperCase(), path }
       const item = { name, method, path, parameters, body, raw, uri, description }
       operations.set(name, item)
       const queryReadable = method === 'get' && parameters.some(parameter => parameter.in === 'query')
       if (method === 'get' && !body && parameters.every(parameter => ['path', 'query'].includes(parameter.in)
         && (parameter.in !== 'query' || parameter.schema?.type !== 'array' && /^[A-Za-z0-9_.-]+$/.test(parameter.name)))) {
         readable.push(item)
-        const info = { name, description, mimeType: 'application/json' }
+        const info = { name, title: raw.summary, description, httpOperation, mimeType: 'application/json',
+          inputSchema: { ...operationSchema(spec, parameters, body), additionalProperties: false } }
         if (parameters.length) {
           const queryNames = parameters.filter(parameter => parameter.in === 'query').map(parameter => parameter.name)
           resourceTemplates.push({ ...info, uriTemplate: uri.replace(/%7B/gi, '{').replace(/%7D/gi, '}')
             + (queryNames.length ? `{?${queryNames.join(',')}}` : '') })
         }
         else resources.push({ ...info, uri })
-        if (queryReadable) tools.push({ name, description, inputSchema: operationSchema(spec, parameters, body) })
+        if (queryReadable) tools.push({ name, title: raw.summary, description, httpOperation, inputSchema: operationSchema(spec, parameters, body) })
       } else {
-        tools.push({ name, description, inputSchema: operationSchema(spec, parameters, body) })
+        tools.push({ name, title: raw.summary, description, httpOperation, inputSchema: operationSchema(spec, parameters, body) })
       }
     }
   }
-  return { spec, base, tools, resources, resourceTemplates, operations, readable, server }
+  const businessTools = [...tools, ...readable.filter(item => !tools.some(tool => tool.name === item.name)).map(item => ({ name: item.name, title: item.raw.summary,
+    description: item.description, httpOperation: { method: item.method.toUpperCase(), path: item.path },
+    inputSchema: operationSchema(spec, item.parameters, item.body) }))]
+  return { spec, base, tools, businessTools, resources, resourceTemplates, operations, readable, server }
 }
 
 async function execute(source: any, item: any, args: any): Promise<{ response: Response; text: string; uri: string }> {
@@ -226,9 +244,12 @@ async function execute(source: any, item: any, args: any): Promise<{ response: R
     if (args?.[parameter.name] !== undefined) headers[parameter.name] = String(args[parameter.name])
   }
   if (item.body) headers['content-type'] = 'application/json'
+  const controlled = { serverId: source.server.id, operationId: item.name, kind: 'write',
+    target: url.href, method: item.method.toUpperCase(), args,
+    schemaDigest: createHash('sha256').update(JSON.stringify(item.raw)).digest('hex') }
   const { response, credential } = await authorizedFetch(source.server, url, { method: item.method.toUpperCase(), headers,
     body: item.body ? JSON.stringify(bodyArgument(source, item, args)) : undefined,
-    signal: requestSignal(source.server) }, source.spec, item.raw)
+    signal: requestSignal(source.server) }, source.spec, item.raw, controlled)
   const raw = await limitedText(response, MAX_RESULT)
   let text = raw
   for (const secret of [credential, source.server.apiKey, source.server.loginPassword]) {
@@ -239,9 +260,8 @@ async function execute(source: any, item: any, args: any): Promise<{ response: R
 
 export async function callOpenApiTool(source: any, name: string, args: any): Promise<any> {
   const item = source.operations.get(name)
-  if (!item || source.readable.includes(item) && !source.tools.some((tool: any) => tool.name === name)) {
-    throw new Error('工具不属于当前 OpenAPI 范围')
-  }
+  if (!item || source.readable.includes(item) && !source.server.platformToolResources
+    && !source.tools.some((tool: any) => tool.name === name)) throw new Error('工具不属于当前 OpenAPI 范围')
   const { response, text } = await execute(source, item, args)
   return {
     _meta: { [OPENAPI_RESPONSE_META_KEY]: { status: response.status } },
@@ -250,7 +270,18 @@ export async function callOpenApiTool(source: any, name: string, args: any): Pro
   }
 }
 
-export async function readOpenApiResource(source: any, uri: string): Promise<any> {
+async function readResourceOperation(source: any, item: any, args: any, uri: string): Promise<any> {
+  const { response, text } = await execute(source, item, args)
+  if (!response.ok) throw new Error(`Resource 读取失败：HTTP ${response.status}`)
+  return { contents: [{ uri, mimeType: response.headers.get('content-type')?.split(';')[0] || 'application/json', text }] }
+}
+
+export async function readOpenApiResource(source: any, uri: string, args?: Record<string, unknown>): Promise<any> {
+  if (args !== undefined) {
+    const resource = [...source.resources, ...source.resourceTemplates].find(item => (item.uri ?? item.uriTemplate) === uri)
+    if (!resource) throw new Error('Resource URI 不属于当前 OpenAPI 范围')
+    return readResourceOperation(source, source.operations.get(resource.name), args, uri)
+  }
   const request = new URL(uri)
   if (request.hash) throw new Error('Resource URI 不属于当前 OpenAPI 范围')
   for (const item of source.readable) {
@@ -271,42 +302,29 @@ export async function readOpenApiResource(source: any, uri: string): Promise<any
       const value = request.searchParams.get(name)
       if (value !== null) args[name] = value
     }
-    const { response, text } = await execute(source, item, args)
-    if (!response.ok) throw new Error(`Resource 读取失败：HTTP ${response.status}`)
-    return { contents: [{ uri, mimeType: response.headers.get('content-type')?.split(';')[0] || 'application/json', text }] }
+    return readResourceOperation(source, item, args, uri)
   }
   throw new Error('Resource URI 不属于当前 OpenAPI 范围')
 }
 
-
-// 兼容两种模型行为：① body 传成 JSON 字符串 → 还原为对象；② 直接把请求体字段平铺在顶层 → 按 body schema 组装。
-function normalizeJsonArgument(value) {
-    if (typeof value !== 'string')
-        return value;
-    const trimmed = value.trim();
-    if (!trimmed.startsWith('{') && !trimmed.startsWith('['))
-        return value;
-    try {
-        return JSON.parse(trimmed);
-    }
-    catch {
-        return value;
-    }
+// Candidate compatibility: reconstruct only the existing JSON body shapes.
+// Resource arguments still pass the upstream validateJsonSchemaValue boundary unchanged.
+function normalizeJsonArgument(value: unknown): unknown {
+  if (typeof value !== 'string') return value
+  const trimmed = value.trim()
+  if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) return value
+  try { return JSON.parse(trimmed) } catch { return value }
 }
-function bodyArgument(source, item, args) {
-    if (args && typeof args === 'object' && args.body !== undefined)
-        return normalizeJsonArgument(args.body);
-    const schema = item?.body?.content?.['application/json']?.schema;
-    if (!schema || !args || typeof args !== 'object')
-        return undefined;
-    const ref = typeof schema.$ref === 'string' ? schema.$ref.split('/').pop() : undefined;
-    const resolved = ref ? source?.spec?.components?.schemas?.[ref] : schema;
-    const properties = resolved?.properties;
-    if (!properties)
-        return undefined;
-    const picked = {};
-    for (const key of Object.keys(properties))
-        if (args[key] !== undefined)
-            picked[key] = args[key];
-    return Object.keys(picked).length ? picked : undefined;
+
+function bodyArgument(source: any, item: any, args: any): unknown {
+  if (args && typeof args === 'object' && args.body !== undefined) return normalizeJsonArgument(args.body)
+  const schema = item?.body?.content?.['application/json']?.schema
+  if (!schema || !args || typeof args !== 'object') return undefined
+  const ref = typeof schema.$ref === 'string' ? schema.$ref.split('/').pop() : undefined
+  const resolved = ref ? source?.spec?.components?.schemas?.[ref] : schema
+  const properties = resolved?.properties
+  if (!properties) return undefined
+  const picked: Record<string, unknown> = {}
+  for (const key of Object.keys(properties)) if (args[key] !== undefined) picked[key] = args[key]
+  return Object.keys(picked).length ? picked : undefined
 }

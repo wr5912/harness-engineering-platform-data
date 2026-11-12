@@ -391,3 +391,13 @@ fi
     await rm(directory, { recursive: true, force: true })
   }
 })
+
+// 原生子任务完成后继续由主智能体按 Skill 处理，不注入旧准备/确认调用。
+test('研判完成交还原生模型，不装载处置账本与确认适配器', async () => {
+  const { agent, hooks, adapters } = harness([])
+  const native = { provider: 'fixture', model: 'fixture' }
+  const notice = { id: 'settled', role: 'user', source: { kind: 'subagent-settled', senderSessionId: 'child' }, content: [{ type: 'text', text: '研判完成' }] }
+  await hooks.get('agent/pre-step')({ agent, turn: 1, step: 1, messages: [notice], signal: new AbortController().signal }, async () => ({ kind: 'enter', messages: [notice] }))
+  assert.deepEqual(await hooks.get('agent/request')({ agent, turn: 1, step: 1 }, async () => native), native)
+  assert.deepEqual([...adapters.keys()].sort(), ['threat-analysis-automation', 'threat-analysis-delivery'])
+})

@@ -45,11 +45,12 @@ export function selectInspectionRun(
   canonicalName?: (name: string) => string | undefined,
 ): InspectionReportBinding
 
-/** 默认按本会话来源倒序核验最近已完成；显式runId仅返回该原运行。 */
+/** 默认只允许唯一尝试；latest_completed须由Skill按用户明确语义填写，显式runId只返回指定运行。 */
 export function selectInspectionRuns(
   events: readonly unknown[],
   runId?: string,
   canonicalName?: (name: string) => string | undefined,
+  selection?: 'latest_completed',
 ): readonly InspectionReportBinding[]
 
 export interface TroubleshootingReportBinding {

@@ -33,6 +33,15 @@
         tools:
           mode: all
           names: []
+      - id: soc-readonly
+        serverName: soc-readonly
+        description: 只读资产与来源核验；路由层用它取 source/sourceRef
+        enabled: true
+        url: http://172.16.138.228:18120/hep/mcp/groups/soc-readonly/v2
+        headers: []
+        tools:
+          mode: all
+          names: []
       - id: ai-soc-correlate
         serverName: ai-soc-correlate
         description: SOC 关联/研判读取（应急处置资源）
@@ -45,30 +54,6 @@
         tools:
           mode: all
           names: []
-      - id: sec-ops
-        serverName: sec-ops
-        description: ''
-        enabled: true
-        url: http://172.16.138.232:50500/mcp/security-operations-expert
-        headers: []
-        tools:
-          mode: selected
-          names:
-          - search_graph_assets
-          - get_graph_resolve_ip_host
-          - get_soc_asset_by_asset_id
-          - list_soc_asset
-          - get_soc_asset_biz_systems
-          - get_soc_asset_vulnerabilities
-          - get_ingest_devices_by_asset_by_asset_id
-          - get_graph_node_detail
-          - get_graph_path_query
-          - get_reachability_path_by_ip
-          - get_graph_flow_host_pair_ports
-          - get_reachability_cross_signal
-          - get_graph_compliance_violations
-          - get_graph_coverage
-          - get_event_by_id
       - id: inspection
         serverName: inspection
         description: ''

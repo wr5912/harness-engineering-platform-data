@@ -40,12 +40,6 @@ import { loadServiceConfig, saveServiceConfig, validateServiceConfig, type Servi
 import { DEFAULT_SEND_COMMANDS } from './send-command.ts'
 import { checkServiceConnections } from './service-check.ts'
 
-// 按宿主制品的相对 URL 读取原模块，不能静态打包而复制其运行期路由 Map。
-// 独立使用语音插件时可没有业务交付模块，仍使用原生请求头或显式摘要模型。
-const getOperationOriginalRoute = await import(new URL('../../operation-result-delivery.mjs', import.meta.url).href)
-  .then(module => module.getOriginalRoute as ((sessionId: string) => { provider: string; model: string } | undefined) | undefined)
-  .catch(() => undefined)
-
 export const name = 'voice-mode'
 
 /**
@@ -789,7 +783,7 @@ export function apply(ctx: Context, config: Config): void {
     const targetTabId = sid === activeVoiceSession ? activeTabId : sid === readSessionId ? readTabId : null
     if (!config.enabled || !targetTabId || !latestConnByTab.has(targetTabId)) return
     if (event.type === 'tool/call') { broadcast('tool', { sessionId: sid, name: event.data.name }); return }
-    const source = summarySource(event, session.snapshotEvents(), getOperationOriginalRoute?.(sid))
+    const source = summarySource(event, session.snapshotEvents())
     if (!source || event.type !== 'assistant/message') return
     const timing = mainTimings.get(sid)
     mainTimings.delete(sid)

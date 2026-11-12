@@ -3,8 +3,13 @@ import { apply } from './index.js'
 
 const records = new Map()
 const activities = new Map()
+const notificationEvents = new Map()
+const notificationReads = new Map()
 const handlers = new Map()
+const routes = new Map()
 let route
+let notificationRoute
+let notificationReadRoute
 let dispose
 let listFails = false
 const sessions = [
@@ -17,30 +22,48 @@ const ctx = {
   effect: async callback => { dispose = await callback() },
   on: (name, handler) => { handlers.set(name, handler); return () => handlers.delete(name) },
   storageDomain: { open: async spec => {
-    assert.equal(spec.name, 'security_operations_overview')
+    assert(['security_operations_overview', 'security_operations_notifications'].includes(spec.name))
+    const notification = spec.name === 'security_operations_notifications'
     return { table: name => ({
-      get: key => (name === 'calls' ? records : activities).get(key),
-      put: async (key, value) => { (name === 'calls' ? records : activities).set(key, spec.tables[name].valueSchema.parse(value)) },
-      delete: async key => { (name === 'calls' ? records : activities).delete(key) },
-      entries: () => (name === 'calls' ? records : activities).entries(),
+      get: key => (notification ? name === 'events' ? notificationEvents : notificationReads : name === 'calls' ? records : activities).get(key),
+      put: async (key, value) => {
+        const target = notification ? name === 'events' ? notificationEvents : notificationReads : name === 'calls' ? records : activities
+        target.set(key, spec.tables[name].valueSchema.parse(value))
+      },
+      delete: async key => { (notification ? name === 'events' ? notificationEvents : notificationReads : name === 'calls' ? records : activities).delete(key) },
+      entries: () => (notification ? name === 'events' ? notificationEvents : notificationReads : name === 'calls' ? records : activities).entries(),
     }), close: async () => {} }
   } },
-  connection: { fetch: { register: options => {
-    route = options.fetch
-    assert.deepEqual(options.methods, ['GET'])
-    return () => {}
-  } } },
+  webServer: { register: options => {
+    routes.set(options.path, options.handler)
+    if (options.path.endsWith('/notifications')) notificationRoute = options.handler
+    if (options.path.endsWith('/notifications/read')) notificationReadRoute = options.handler
+    return () => routes.delete(options.path)
+  } },
   sessionController: { list: async () => {
     if (listFails) throw new Error('list unavailable')
     return { items: sessions }
   } },
 }
 
-await apply(ctx)
+await apply(ctx, { anonymousUserName: 'admin', nats: { url: 'not-a-nats-url' } })
+const invoke = (path, method = 'GET', body = '') => new Promise(resolve => {
+  const handler = routes.get(path)
+  let status = 200
+  let output = ''
+  const req = { method, on(name, callback) { if (name === 'data' && body) callback(Buffer.from(body)); if (name === 'end') queueMicrotask(callback) } }
+  const res = { writeHead(code) { status = code }, end(value = '') { output += String(value); resolve({ status, body: output ? JSON.parse(output) : undefined }) } }
+  handler(req, res)
+})
 const read = async () => {
-  const response = await route()
+  const response = await invoke('/api/security-operations/overview')
   assert.equal(response.status, 200)
-  return response.json()
+  return response.body
+}
+const readNotifications = async () => {
+  const response = await invoke('/api/security-operations/notifications')
+  assert.equal(response.status, 200)
+  return response.body
 }
 let overview = await read()
 assert.equal(overview.parent.active, 1)
@@ -49,6 +72,10 @@ assert.equal(overview.roles.length, 3)
 assert(overview.roles.every(role => role.state === 'idle'))
 assert.deepEqual([overview.parent.toolCalls, overview.parent.skillLoads], [0, 0])
 assert(overview.roles.every(role => role.toolCalls === 0 && role.skillLoads === 0))
+const notifications = await readNotifications()
+assert.deepEqual(notifications.items, [])
+assert.equal(notifications.unreadCount, 0)
+assert.equal((await invoke('/api/security-operations/notifications/read', 'POST', JSON.stringify({ eventKey: 'missing' }))).status, 404)
 
 const exec = (name, callId, sessionId = 'parent-1') => ({ name, callId, agent: { session: { id: sessionId } } })
 activities.set('old', { sessionId: 'parent-1', at: Date.now() - 25 * 3_600_000, toolCalls: 1, skillLoads: 1 })
@@ -108,7 +135,7 @@ assert.equal(JSON.stringify([...records.values()]).includes('prompt'), false)
 assert.equal(JSON.stringify([...activities.values()]).includes('incident-response'), false)
 
 listFails = true
-assert.equal((await route()).status, 503)
+assert.equal((await invoke('/api/security-operations/overview')).status, 503)
 listFails = false
 await dispose()
 assert.equal(handlers.size, 0)

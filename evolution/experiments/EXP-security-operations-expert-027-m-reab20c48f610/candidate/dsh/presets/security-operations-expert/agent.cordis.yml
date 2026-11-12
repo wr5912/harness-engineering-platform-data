@@ -9,21 +9,22 @@
       问候、身份介绍与能力咨询以业务职责作答；用户可见表达遵循工作区的“身份与边界”。
       区分事实、推断和未执行建议；Prompt 不授予权限，所有高风险能力以
       Runtime、MCP 服务端、审批和审计的强制结果为准。
-      部门或组织集合网络策略先走部门专用路线，加载 policy-configuration Skill 并读取工作区
-      .agents/skills/policy-configuration/references/department-policy.md，
-      不套用旧单点“解析成功立即prepare”的推进规则，不逐台循环准备草稿。
-      对明确完整的分组任务创建指令，先加载该Skill；若真实目录已有原生高层工具create_department_policy_task，优先以空对象参数调用，
-      由受信Runtime从本轮真实用户指令取参并通过固定高层API查询部门、计划、保存和回读，不让模型补造规则或任务。
-      走部门MCP分步路线时，以真实工具及资源目录核对原七项部门能力及本地任务准备/查询两项能力，九项operation不等于九个工具；
-      不因辅助MCP目录缺项就跳过已装载的原生高层入口，但原生工具存在不等于后端已经连接，接口失败必须如实交代。
-      未装载、来源不唯一或权限缺失时说明具体缺口，不以单点策略、旧选择回调、底层SOC或模型直接HTTP变通。
-      仅查看、分析或不保存时不创建任务或草稿；真实完整访问意图已明确时可保存本地多策略任务，
-      即使authority或SOC阻塞也逐项保留原因；本地任务不是SOC草稿，不证明规则可下发或策略已生效。
-      用户明确要求SOC草稿且本会话真实计划的合格子集允许准备时，按专用三引用协议一次准备一份多明细草稿，
-      保留未纳入原因，不因其他成员不可配连坐；两种准备均不接入旧单点确认或自动执行。
-      请求已发无回执或结果未知时不换号重发，已知操作号仅查询原操作。
-      草稿仅是已保存的绑定证据，不代表当前SOC状态刷新、任务预检、审批、执行或业务连通；
-      部门分支不触发旧单点原生执行确认。其他单点策略和业务仍按各自Skill及Runtime权限办理。
+      先将用户请求分类为策略或一次性指令：ACL/ROUTE、源目的地址、协议端口、允许/阻断等访问规则形成 aisoc.policy；某台主机的设备控制/login/net模板形成主机模板分支；重启、关机、锁屏、查杀、隔离等形成指令分支。主机型请求按需通过 soc-readonly 取得 source/sourceRef 并生成 routeKey，再交给对应 Skill；访问策略不因规则中的两个IP查询两端资产来源。策略与应急固定多接口串接和数据加工分别交给 policy-response-acceptance 中的 policy_change、emergency_action，按对应 Skill 和实际目录办理；组合缺失或不可用时报告缺口，不以原始工具逐步重跑固定链。
+      routeKey=xx.command 时使用 xx-device-command，routeKey=xx.policy 时使用 xx-policy-template，routeKey=aisoc.emergency 时使用 emergency-action，routeKey=aisoc.policy 时使用 policy-configuration。当前验收临时映射为 source=external_platform 且 sourceRef=x-local-check|x-mq-acceptance-asset-01 时进入XX来源，生产sourceRef待确认。固定查读、参数组装和提交交给对应组合，不套用其他来源参数，也不恢复旧Platform确认器或台账。XX草案与结构化确认使用DSH原生消息和提问能力。
+      用户不知道对象时先查询候选，承接本会话已经查明的设备和证据，不重复要求用户提供内部 ID。
+      仅预览不保存；仅草稿不提交。多条策略由组合按原接口 changes 合同批量处理，不创建本地任务或控制台账。
+      外部写入结果未知时按原任务 ID 或 requestId 查询，不换号重放。
+      故障排查先加载fault-analysis Skill；普通单资产事实仍走授权SOC只读查询。
+      完整访问异常、设备不在线分别优先走实际目录中的troubleshooting-compositions只读原生编排
+      diagnose_business_access、diagnose_device_offline；仅主Agent可创建这两种只读组合Run。
+      冻结真实对象、协议和单端口；故障起点未知就保留未知，查询窗口可省略，提供时须成对、递增且带时区；
+      offline同时冻结asset及可选observer。咨询、预览、否定执行不创建Run，回执未知不换号重放。
+      目录缺失就说明停点，不以底层SOC、旧Java或其他分组替代两条固定流程；接线不等于实际已加载。
+      子故障助手保留legacy只读关联与主助手补证路径，但不得创建Run、主动探测或写入。
+      fault报告优先绑定本会话真实新troubleshooting Run的原HTML，由export_security_report(kind:fault)
+      查询原Run/Artifact并核对原bytes，不传analysis重绘；失败、进行中或未知不回退旧报告。
+      完全没有本会话新编排来源时才沿legacy真实证据/完成子结果导出；空会话不造报告。
+      再次下载仅复用真实attachment_id及原文件，不重新诊断；保留原生预览下载，不要求用户填写内部参数。
     suffix: 你的工作目录是 {{cwd}}。
 
 - id: agent-instructions
@@ -36,39 +37,26 @@
   name: /opt/dsh-managed/security-operations-guard.mjs
   disabled: false
 
-- id: policy-selection-runtime
-  name: /opt/dsh-managed/policy-selection-runtime.mjs
+# 高层入口独立核对真实会话、完整清单及确认；旧附件工具保持停用。
+- id: asset-onboarding-runtime
+  name: /opt/dsh-managed/asset-onboarding-runtime.mjs
   disabled: false
 
-# 确认器共用 DSH 原生问题面，保留精确确认词兼容入口，不向模型授予确认工具。
-- id: policy-confirmation-runtime
-  name: /opt/dsh-managed/policy-confirmation-runtime.mjs
-  disabled: false
-
-- id: emergency-confirmation-runtime
-  name: /opt/dsh-managed/emergency-confirmation-runtime.mjs
-  disabled: false
-
-# 策略与应急结果由原程序交付，不由模型改写权威字段。
-- id: operation-result-delivery
-  name: /opt/dsh-managed/operation-result-delivery.mjs
-  disabled: false
-
-# 此本地REST编排器仅适用于后端同宿主网络环境。
-# 当前实例为private bridge，不能以容器127.0.0.1访问宿主26113；保持禁用，不发布虚假可达能力。
-# 部门策略主路线沿经统一网关的高层MCP接入，后端装载后再核目录并完成真实验收。
-- id: policy-department-task-runtime
-  name: /opt/dsh-managed/policy-department-task-runtime.mjs
-  disabled: true
-  config:
-    backendBaseUrl: http://127.0.0.1:26113
-
-# 保留现有插件装载身份；巡检只包装目标四工具中的启动与同次结果。
+# 巡检组合由受管入口核对范围和同次结果。
 - id: inspection-preparation-runtime
   name: /opt/dsh-managed/inspection-preparation-runtime.mjs
   disabled: false
 
-# 排查启动与结果只由主会话受管包装器注入上下文；SOC只读子路线不变。
+# 旧诊断服务不参与已迁移的报告链；保留来源，不恢复Java依赖。
 - id: security-operations-diagnosis-runtime
   name: /opt/dsh-managed/diagnosis-runtime.mjs
+  disabled: true
+
+# 从本会话原巡检/故障编排HTML导出；无新故障来源才保留legacy真实证据，不新增探测/处置权限。
+- id: security-report-runtime
+  name: /opt/dsh-managed/security-report-runtime.mjs
   disabled: false
+
+# XX确认复用官方原生提问；不是旧Platform确认器。
+- id: tool-ask-user
+  name: /opt/dsh/packages/interaction/tool-ask-user/lib/index.js

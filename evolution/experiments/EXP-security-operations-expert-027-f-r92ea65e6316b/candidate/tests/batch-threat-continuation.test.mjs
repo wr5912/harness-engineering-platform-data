@@ -63,19 +63,24 @@ test('前三个事件使用上一轮真实查询候选绑定', () => {
       id: 'query-user', role: 'user', source: { kind: 'user' },
       content: [{ type: 'text', text: '有哪些需要研判的威胁事件？' }],
     } },
-    { type: 'tool/result', seq: 3, data: { message: {
-      content: [{ type: 'text', text: JSON.stringify({ rows: ids.map(incidentId => ({ incidentId })) }) }],
+    { type: 'tool/call', seq: 3, data: { turn: 1, step: 1, callId: 'list-call',
+      name: 'mcp__ai-soc-correlate__get_correlate_incident_judge_pending', arguments: '{}' } },
+    { type: 'tool/result', seq: 4, data: { turn: 1, step: 1, message: {
+      role: 'tool', toolCallId: 'list-call', source: { kind: 'tool', callId: 'list-call' }, isError: false,
+      content: [{ type: 'text', text: JSON.stringify({ code: 200, data: { rows: ids.map(incidentId => ({ incidentId })) } }) }],
     } } },
-    { type: 'user/message', seq: 4, data: {
+    { type: 'assistant/message', seq: 5, data: { turn: 1, step: 2, message: { role: 'assistant',
+      content: [{ type: 'text', text: ids.map((id, index) => `${index + 1}. ${id}`).join('\n') }] } } },
+    { type: 'user/message', seq: 6, data: {
       id: 'batch-user', role: 'user', source: { kind: 'user' },
       content: [{ type: 'text', text: '研判前三个事件。' }],
     } },
-    { type: 'turn/start', seq: 5, data: { turn: 2 } },
+    { type: 'turn/start', seq: 7, data: { turn: 2 } },
   ]
   ids.forEach((incidentId, index) => {
     const callId = `query-call-${index}`
     const childId = `query-child-${index}`
-    const base = 6 + index * 4
+    const base = 8 + index * 4
     events.push(
       { type: 'tool/call', seq: base, data: { turn: 2, step: 1, name: 'delegate_threat_analysis', callId,
         arguments: JSON.stringify({ prompt: `请研判 ${incidentId}` }) } },

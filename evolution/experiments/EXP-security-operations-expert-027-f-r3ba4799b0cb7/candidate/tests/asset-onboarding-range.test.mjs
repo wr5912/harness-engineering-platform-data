@@ -1,7 +1,9 @@
 // HV-04本地Mock回归：Node原生读取TS源码，不构建/改写MJS，不发网络或写业务日记。
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import * as runtime from '../dsh/managed/asset-onboarding-runtime.ts'
+const runtime = await import(process.env.ASSET_TEST_BUILT === '1'
+  ? '../dsh/managed/asset-onboarding-runtime.mjs'
+  : '../dsh/managed/asset-onboarding-runtime.ts')
 
 const A = '172.16.228.1', B = '172.16.228.254'
 const RANGE = `${A}-${B}`
@@ -164,4 +166,32 @@ test('4096上限、非法IPv4、倒置与CIDR对齐仍保持', () => {
   for (const value of ['10.0.0.0至10.0.16.0', `${B}到${A}`, '999.16.228.1到172.16.228.254', '172.16.228.01至172.16.228.254', '172.16.228.1/24']) {
     assert.throws(() => runtime.normalizeRange(value))
   }
+})
+
+
+test('当前完整纯138范围可发现，无需固定授权句', async () => {
+  await stoppedBeforeIo('172.16.138.1-172.16.138.254', { ranges: '172.16.138.1-172.16.138.254' })
+})
+test('失败或状态未知后停止约束不否定本轮明确发现', async () => {
+  for (const condition of ['若状态未知立即停止，不重试', '如果任务失败时立即停止，不要重试', '若失败或状态未知立即停止，不重试']) {
+    await stoppedBeforeIo(`发现172.16.138.1-172.16.138.254，${condition}`, { ranges: '172.16.138.1-172.16.138.254' })
+  }
+})
+test('当前停止否定咨询Excel及条件句外取消仍拒绝', async () => {
+  for (const prefix of ['停止发现', '不要扫描', '如何发现', '仅Excel导入，不发现', '取消发现']) {
+    await rejectedBeforeLookup(`${prefix}172.16.138.1-172.16.138.254，若状态未知立即停止，不重试`, { ranges: '172.16.138.1-172.16.138.254' })
+  }
+})
+
+
+test('两条真实完整授权原句保留条件停止及暂不导入边界', async () => {
+  for (const text of [
+    '我明确授权本轮对172.16.138.1-172.16.138.254执行真实设备探测和发现任务创建/启动。仅限该范围，autoAdopt=false，只发现不纳管；请记录真实SOC taskId、请求关联标识、任务状态和执行阶段。若状态未知立即停止，不重试。发现完成后只查询本次任务候选结果，暂不导入。',
+    '本轮明确授权：仅对172.16.138.1-172.16.138.254执行真实发现探测，autoAdopt=false，只发现不纳管。请创建并启动发现任务，返回真实SOC taskId、请求关联标识、任务状态和执行阶段；若未受理或状态未知，立即停止且不要重试。发现完成后只查询本任务候选结果，暂不导入。',
+    '只发现172.16.138.1-172.16.138.254，不导入',
+    '把172.16.138.1-172.16.138.254范围的设备纳管',
+  ]) await stoppedBeforeIo(text, { ranges: '172.16.138.1-172.16.138.254' })
+})
+test('纳管上下文不能将咨询已有查询否定Excel变成发现授权', async () => {
+  for (const text of ['如何纳管这个范围172.16.138.1-172.16.138.254', '仅查询已有资产172.16.138.1-172.16.138.254', '不要发现172.16.138.1-172.16.138.254', '停止', 'Excel导入172.16.138.1-172.16.138.254', '停止发现172.16.138.1-172.16.138.254，若状态未知立即停止，不重试']) await rejectedBeforeLookup(text, { ranges: '172.16.138.1-172.16.138.254' })
 })

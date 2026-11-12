@@ -44,24 +44,19 @@ controls:
     output_schema_validation: native-post-execute-guard
     tool_access: none
   - id: CTRL-DSH-007
-    boundary: exact-mcp-tool-contract
-    enforcement: role-tool-matrix-plus-profile-plus-native-guard
-    unknown_mcp: deny
+    boundary: native-bound-mcp-tools-and-role-separation
+    enforcement: native-registration-and-native-permissions-plus-existing-role-guard
+    unregistered_mcp: deny
+    root_mcp_catalog: actual-bound-tools
+    child_roles: role-tool-matrix.yaml
   - id: CTRL-DSH-008
-    boundary: policy-and-emergency-route-isolation
-    enforcement: separate-skills-mcp-prefixes-and-native-guard
-    root_only: true
-    same_turn_cross_domain_calls: deny
-    other_business_routes_after_policy_or_emergency: deny
+    boundary: skill-and-composition-responsibility
+    enforcement: skill-intent-and-stop-plus-native-composition-fixed-chain
+    business_state: upstream-only
+    local_platform_controller: absent
   - id: CTRL-DSH-009
-    boundary: trusted-confirmation-isolation
-    enforcement: independent-runtime-plugins-plus-native-guard
-    policy_exact_user_message: 执行
-    emergency_exact_user_message: 确认执行
-    matching_session_draft_required: true
-    model_confirm_and_submit_tools: deny
-  - id: CTRL-DSH-010
-    boundary: optional-new-service-startup
-    enforcement: source-contract-plus-profile-disabled-expression
-    policy_mcp_url: POLICY_CONFIGURATION_MCP_URL
-    existing_sec_ops_and_inspection: required
+    boundary: xx-native-user-interaction
+    enforcement: official-dsh-ask-user
+    ordinary_chat_is_structured_answer: false
+    custom_confirmation_controller: absent
+    server_authorization: upstream-responsibility

@@ -34,6 +34,18 @@
         tools:
           mode: all
           names: []
+      - id: ai-soc-master
+        serverName: ai-soc-master
+        description: SOC Master 资产发现与纳管动作（asset-management组唯一来源）
+        enabled: true
+        specUrl: http://172.16.138.223:18087/v3/api-docs/mcp
+        apiKey: ''
+        authType: credential
+        authHeader: X-API-Key
+        headers: []
+        tools:
+          mode: all
+          names: []
       - id: sec-ops
         serverName: sec-ops
         description: ''
@@ -155,4 +167,7 @@
           resourceUris: []
           resourceTemplates:
           - http://172.16.138.223:18087/soc/discovery/tasks/{taskId}
+          - http://172.16.138.223:18087/soc/discovery/tasks/{taskId}/scope
+          - http://172.16.138.223:18087/soc/asset/{assetId}
+          - http://172.16.138.223:18087/soc/asset/list{?pageNum,pageSize,ip,hostname,keyword,source,layerId,excludeLayerId,online,assetType,vendor,status,techStatus,deptId,sortField,sortOrder,collectionStatus,collectAnomaly,modelIds,includeUnits,assetView,rootOnly,hostAssetId,bizIds,bizAssociation}
       sharedToken: ''

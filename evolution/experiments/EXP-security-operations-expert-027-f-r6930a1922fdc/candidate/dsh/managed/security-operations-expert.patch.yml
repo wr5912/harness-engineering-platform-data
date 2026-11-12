@@ -126,6 +126,11 @@
     - id: security-operations-ui
       name: /opt/dsh-managed/security-operations-ui/index.js
 
+    - id: security-network-space
+      name: /opt/dsh-managed/security-network-space/index.js
+      config:
+        groupId: network-space-monitoring
+
     - id: voice-mode
       name: /opt/dsh-managed/dsh-voice-hub/lib/index.js
       config:

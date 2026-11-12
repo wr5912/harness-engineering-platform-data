@@ -292,12 +292,20 @@ function twoStarts() {
   ]
 }
 for (const status of ['running', 'failed', 'canceled']) {
-  test(`默认最近已完成：新${status}不能遮蔽本会话旧completed原报告`, async () => {
+  test(`多run指代不清不默认跳过新${status}去旧报告`, async () => {
     const f = fixture({ events: twoStarts(), runs: { [RUN]: runValue(smallHtml, { status, artifacts: [] }), [OTHER]: runValue(smallHtml, { run_id: OTHER }) } })
-    const value = await f.invoke({ kind: 'inspection' })
+    await assert.rejects(f.invoke({ kind: 'inspection' }), /多个巡检尝试.*指代不清/)
+    assert.equal(f.calls.length, 0); assert.equal(f.saved.length, 0)
+  })
+  test(`用户明确最近已完成时才跳过新${status}，说明所选及跳过状态`, async () => {
+    const f = fixture({ events: twoStarts(), runs: { [RUN]: runValue(smallHtml, { status, artifacts: [] }), [OTHER]: runValue(smallHtml, { run_id: OTHER }) }, requestText: '请提供最近已完成的巡检报告。' })
+    const value = await f.invoke({ kind: 'inspection', selection: 'latest_completed' })
     assert.equal(value.source.run_id, OTHER)
     assert.equal(value.filename, `inspection-report-${OTHER}.html`)
     assert.deepEqual(f.calls.map(call => call.arguments.run_id), [RUN, OTHER, OTHER])
+    assert.deepEqual(value.source.skipped_runs, [{ run_id: RUN, status }])
+    assert.ok(value.message.includes(OTHER) && value.message.includes(RUN) && value.message.includes(status))
+    assert.match(value.message, /不是最新巡检结果声明/)
   })
   test(`显式新run ${status}不得借用旧completed报告`, async () => {
     const f = fixture({ events: twoStarts(), runs: { [RUN]: runValue(smallHtml, { status }), [OTHER]: runValue(smallHtml, { run_id: OTHER }) } })
@@ -321,15 +329,15 @@ for (const requestText of ['请问如何生成完整报告？', '完整报告怎
     assert.equal(f.calls.length, 0); assert.equal(f.saved.length, 0)
   })
 }
-test('默认两个completed选择最近来源，不把旧报告冒充新报告', async () => {
+test('明确最近已完成时两个completed选择最近来源，不把旧报告冒充新报告', async () => {
   const f = fixture({ events: twoStarts(), runs: { [RUN]: runValue(), [OTHER]: runValue(smallHtml, { run_id: OTHER }) } })
-  const value = await f.invoke({ kind: 'inspection' })
+  const value = await f.invoke({ kind: 'inspection', selection: 'latest_completed' })
   assert.equal(value.source.run_id, RUN)
   assert.deepEqual(f.calls.map(call => call.arguments.run_id), [RUN, RUN])
 })
 test('默认新状态未知不能跳过并冒称旧completed为最新', async () => {
   const f = fixture({ events: twoStarts(), runs: { [RUN]: runValue(smallHtml, { status: undefined }), [OTHER]: runValue(smallHtml, { run_id: OTHER }) } })
-  await assert.rejects(f.invoke({ kind: 'inspection' }), /尚未成功结束/)
+  await assert.rejects(f.invoke({ kind: 'inspection', selection: 'latest_completed' }), /尚未成功结束/)
   assert.deepEqual(f.calls.map(call => call.arguments.run_id), [RUN]); assert.equal(f.saved.length, 0)
 })
 test('显式旧completed仍只读取确切指定run', async () => {
@@ -338,8 +346,39 @@ test('显式旧completed仍只读取确切指定run', async () => {
   assert.deepEqual(f.calls.map(call => call.arguments.run_id), [OTHER, OTHER])
 })
 
-test('未指定run时仍以本会话最近真实来源核验，不借用其他来源', async () => {
+test('未指定run时仅唯一真实尝试可直接核验，不借用其他来源', async () => {
   const f = fixture()
   assert.equal((await f.invoke({ kind: 'inspection' })).source.run_id, RUN)
   assert.equal(f.calls[0].arguments.run_id, RUN)
+})
+
+for (const mode of ['unreturned', 'error', 'truncated']) {
+  test(`新${mode}启动不能被过滤后回退旧completed`, async () => {
+    const events = twoStarts()
+    if (mode === 'unreturned') events.pop()
+    if (mode === 'error') events.at(-1).data.message.isError = true
+    if (mode === 'truncated') events.at(-1).data.message.content = [{ type: 'text', text: '{"run_id":' }]
+    const f = fixture({ events })
+    await assert.rejects(f.invoke({ kind: 'inspection', selection: 'latest_completed' }), /来源未知.*不能回退/)
+    assert.equal(f.calls.length, 0); assert.equal(f.saved.length, 0)
+  })
+}
+for (const args of [
+  { kind: 'inspection', run_id: RUN, selection: 'latest_completed' },
+  { kind: 'inspection', selection: 'latest' },
+  { kind: 'fault', selection: 'latest_completed' },
+]) {
+  test(`选择schema拒绝不兼容或未知模式：${JSON.stringify(args)}`, async () => {
+    const f = fixture()
+    await assert.rejects(f.invoke(args), /参数不符合合同/)
+    assert.equal(f.calls.length, 0); assert.equal(f.saved.length, 0)
+  })
+}
+test('原HTML保留公开hostAssetId与宿主直接子资产关系，不重绘或巡检', async () => {
+  const body = '<!doctype html><html><body><pre>{"id":7,"hostAssetId":3,"children":[{"id":9,"hostAssetId":7}]}</pre></body></html>'
+  const f = fixture({ body })
+  const value = await f.invoke()
+  assert.deepEqual(f.saved[0].bytes, Buffer.from(body))
+  assert.equal(value.sha256, sha(Buffer.from(body)))
+  assert.deepEqual(f.calls.map(call => call.name), [toolName('get_composition_run'), toolName('get_composition_artifact')])
 })

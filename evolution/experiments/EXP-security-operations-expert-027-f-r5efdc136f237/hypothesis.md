@@ -6,16 +6,15 @@
 
 由智能体使用原始 AISOC 工具与 Skill 完成咨询、发现和语义选择，固定多接口衔接交给策略变更、应急动作组合连续执行并直接返回结果，可以完成用户任务，并减少旧服务包装、固定确认器和本地业务台账。AISOC 继续负责业务校验、审批、执行及状态。
 
-实现入口为 [策略 Skill](candidate/dsh/workspace/.agents/skills/policy-configuration/SKILL.md)和[应急 Skill](candidate/dsh/workspace/.agents/skills/emergency-action/SKILL.md)；调用顺序与边界见 [共同交互设计](../../../mcp/docs/policy-response-interaction-design.md)。参数和实现事实不在本文重复维护。
+实现入口为 [策略 Skill](candidate/dsh/workspace/.agents/skills/policy-configuration/SKILL.md)和[应急 Skill](candidate/dsh/workspace/.agents/skills/emergency-action/SKILL.md)；固定调用边界见 [共同交互设计](../../../mcp/docs/policy-response-interaction-design.md)，代表性计划与验证方法由应急 Skill 包内维护。
 
 ## 本轮变更假设
 
-- 直接按 SOC 实时 `input-fields` 生成 JSON，不新增一套模型前置校验；用正确的数组、snake_case 字段和设备映射 canonical 值减少格式误报。
-- 能力目录只作为候选来源；按 `assetId` 读取已有在线/可达状态证据，离线不推荐，多候选不按列表顺序自动选择。
-- 所有选择框、候选说明和会话标题使用中文；内部工具名、枚举和字段标识保持原样。
+- 按用户问题逐轮发现真实动作和输入合同、支持型号及真实候选；能力到型号查询只使用当前提供的真实合同，缺少时明确缺口，不以候选标签代替全量支持映射。
+- 全量发现候选不等于全量核对状态。每个型号/必要动作组最多生成一条代表计划，只核对代表并复用证据，不固定取首台、不扫描所有未选设备。
+- 生成计划与实际验证分轮授权：先只准备，续轮明确要求验证后，在同一会话按原计划逐项参数核对与 stop=preview，交付真实回执和阻塞原因；不需要动态创建另一批 Case，也不授予真实处置或自动回滚权限。
+- 用户已给动作、设备和参数时保留直接办理路径，不为自测分支重复发现全部型号；并行维护的 XX 分流、EDR 原生选择和原请求恢复约束保持不变。
 
 ## 验证
 
-先核对实时工具 Schema 与实际装载，再用真实多轮任务检查未知对象的发现、选择、预览、草稿回读和取消。静态检查、分组发现、实例装载和业务通过分别记录；没有同口径对照时不宣称性能收益。旧失败及本轮证据见 [研究观察](evaluation/observations.md)。
-
-本轮验收口径为 [evaluation.md](../../../agents/security-operations-expert/evaluation.md) 的 `U-POL-020`～`U-POL-022`、`U-EMG-007`～`U-EMG-010`。用户授权三条指定策略下发；应急分别仅准备、仅真实预览、仅创建不启动、仅准备。每次 Run 冻结完整输入，历史草稿示例不作为本轮授权。外部能力、配置或凭据缺失时保留停点，不修改外部仓库，不绕过业务校验。
+本轮以 [evaluation.md](../../../agents/security-operations-expert/evaluation.md) 的 `U-EMG-008` 检查“发现 → 代表计划 → 同会话逐项只读验证”的闭环，`U-EMG-009` 保留受控单计划真实执行的独立口径，但本轮未获得真实写入授权，不运行该写入用例。只新增一次只读定向 Run，历史失败与超时不改写，不把接口缺失、全部阻塞或静态校验通过当作业务通过；状态和结论据新 Run 的冻结来源与真实证据记录。型号映射接口及设备侧效果缺口保持独立，不修改外部服务或以猜测接口补齐。

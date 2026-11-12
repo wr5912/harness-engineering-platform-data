@@ -1,6 +1,7 @@
 // 纯函数；不读会话、不执行工具、不注册 Hook、不维护业务账本。
 // analysis_session_id/analysis_run_id 是本次本地工具 schema 新增字段；不是上游 prepare API。
 import { createHash } from 'node:crypto'
+import { decodeThreatCandidatePage } from './threat-candidate-page.mjs'
 
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value)
 const clone = value => JSON.parse(JSON.stringify(value))
@@ -88,38 +89,6 @@ export function latestCompletion(events) {
 
 const batchSizePattern = /(?:前|前面)\s*(?:三|3)\s*(?:个|条|项)|(?:批量|批次)\s*(?:三|3)\s*(?:个|条|项)/u
 
-function orderedIncidentIds(value, output = []) {
-  if (typeof value === 'string') {
-    for (const id of value.match(/INC-\d{8}-\d{6}/g) ?? []) output.push(id)
-    return output
-  }
-  if (Array.isArray(value)) {
-    for (const item of value) orderedIncidentIds(item, output)
-    return output
-  }
-  if (object(value)) {
-    for (const [key, item] of Object.entries(value)) {
-      if (['incidentId', 'incident_id', 'unified_event_id', 'event_id', 'id'].includes(key)) {
-        orderedIncidentIds(item, output)
-      } else if (typeof item === 'string' && item.includes('INC-')) {
-        orderedIncidentIds(item, output)
-      } else if (Array.isArray(item) || object(item)) {
-        orderedIncidentIds(item, output)
-      }
-    }
-  }
-  return output
-}
-
-function uniqueIncidentIds(values) {
-  return [...new Set(values.filter(id => /^INC-\d{8}-\d{6}$/.test(id)))]
-}
-
-function resultIncidentIds(event) {
-  const message = event?.data?.message
-  return orderedIncidentIds(message?.content ?? message ?? event?.data)
-}
-
 function requestedBatchSize(text) {
   if (typeof text !== 'string') return undefined
   if (batchSizePattern.test(text)) return 3
@@ -134,19 +103,127 @@ function promptIncidentId(call) {
   return promptIds.length === 1 ? promptIds[0] : undefined
 }
 
-function batchCandidateIds(events, user) {
-  const text = textOnly(user?.data?.content) ?? ''
-  const direct = ids(text)
-  if (direct.length > 1) return direct
-  const previousUser = events.findLast(event => realUser(event) && event.seq < user.seq)
-  const queryIds = events
-    .filter(event => event.type === 'tool/result'
-      && event.seq > (previousUser?.seq ?? -Infinity) && event.seq < user.seq)
-    .flatMap(resultIncidentIds)
-  return uniqueIncidentIds(queryIds)
+function candidateDisplayIds(text) {
+  const normalized = typeof text === 'string' ? text.replaceAll('\\-', '-') : ''
+  const tableHeader = /\|\s*(?:#|序号)\s*\|[^\n]*\|\s*事件 ID\s*\|/u.test(normalized)
+  const numberedRow = /(?:^|\n)\s*(?:\|\s*\d+\s*\||\d+\s*[.)、])[^\n]*INC-\d{8}-\d{6}/u.test(normalized)
+  if (!tableHeader && !numberedRow) return undefined
+  const displayed = ids(normalized)
+  return displayed.length ? displayed : undefined
 }
 
-function validateBatchBinding({ events, user, delegations }) {
+function candidateViewId({ callIds, receiptSeqs, displaySeq, ids: displayed }) {
+  return `candidate-view-v1-${createHash('sha256').update(stableSerialize({ callIds, receiptSeqs, displaySeq, ids: displayed })).digest('hex').slice(0, 24)}`
+}
+
+function pendingPageNumber(call) {
+  const value = argsOf(call)?.pageNum
+  return Number.isSafeInteger(value) && value >= 1 ? value : 1
+}
+
+function pendingPageKey(call) {
+  const args = argsOf(call) ?? {}
+  const { pageNum: _pageNum, ...rest } = args
+  return stableSerialize(rest)
+}
+
+function isCandidateViewContinuation(text) {
+  return typeof text === 'string' && /显示|展开|前\s*\d+\s*(?:条|个|项)|第\s*\d+\s*页|继续.*(?:列表|队列)/u.test(text)
+}
+
+function onlyCandidateContinuationBetween(events, fromSeq, toSeq) {
+  return events.filter(event => realUser(event) && event.seq > fromSeq && event.seq < toSeq)
+    .every(event => isCandidateViewContinuation(textOnly(event.data?.content)))
+}
+
+// 取最新分页链：例如 page 1 + page 2 组成“显示前40条”的同一候选视图。
+// 最新页失败、前置页缺失或配对失败时整条视图不可用，不回退到旧成功页。
+function pendingPageCalls(events, upperBound) {
+  const calls = events.filter(event => event.type === 'tool/call' && event.seq < upperBound
+    && /(?:^|__)get_correlate_incident(?:_judge_pending)?$/.test(event.data?.name ?? ''))
+  const latest = calls.at(-1)
+  if (!latest) return []
+  const key = pendingPageKey(latest)
+  const selected = [latest]
+  let current = latest
+  let expected = pendingPageNumber(latest) - 1
+  while (expected >= 1) {
+    const prior = calls.findLast(event => event.seq < current.seq
+      && pendingPageKey(event) === key && pendingPageNumber(event) === expected
+      && onlyCandidateContinuationBetween(events, event.seq, current.seq))
+    if (!prior) {
+      const boundary = events.findLast(event => realUser(event) && event.seq < current.seq)
+      return boundary && isCandidateViewContinuation(textOnly(boundary.data?.content)) ? [] : selected.reverse()
+    }
+    selected.push(prior)
+    current = prior
+    expected -= 1
+  }
+  return selected.reverse()
+}
+
+// 候选视图是查询回执之后、委派调用之前最后一个可识别的正式列表展示。
+// 中间可以有“显示前N条”等用户轮次；非查询用户消息不会截断视图，分页链按页码合并。
+function candidateSnapshot(events, user, count, boundSeq = user?.seq) {
+  const upperBound = Number.isSafeInteger(boundSeq) ? boundSeq : user?.seq
+  if (!Number.isSafeInteger(upperBound)) return undefined
+  const calls = pendingPageCalls(events, upperBound)
+  if (!calls.length) return undefined
+  const entries = calls.map(call => {
+    const receipts = events.filter(event => event.type === 'tool/result' && event.seq < upperBound
+      && event.data?.message?.toolCallId === call.data.callId)
+    if (receipts.length !== 1 || !paired(call, receipts[0]) || receipts[0].data.message.isError !== false) return undefined
+    const receipt = receipts[0]
+    const page = decodeThreatCandidatePage(textOnly(receipt.data.message.content))
+    return page ? { call, receipt, page } : undefined
+  })
+  if (entries.some(entry => !entry)) return undefined
+  const returned = entries.flatMap(entry => entry.page.rows.map(row => row?.incidentId))
+  if (returned.some(id => typeof id !== 'string' || id.trim() !== id || !/^INC-\d{8}-\d{6}$/.test(id))
+    || new Set(returned).size !== returned.length) return undefined
+  const lastReceipt = entries.at(-1).receipt
+  const displays = events.filter(event => event.type === 'assistant/message'
+    && event.seq > lastReceipt.seq && event.seq < upperBound)
+    .map(event => ({ event, ids: candidateDisplayIds(textOnly(event.data?.message?.content)) }))
+    .filter(item => item.ids)
+  const display = displays.at(-1)
+  if (!display) return undefined
+  const displayed = display.ids
+  const selected = displayed.slice(0, count)
+  if (selected.length !== count || selected.some(id => !returned.includes(id))) return undefined
+  const truncated = entries.some(entry => entry.page.truncated)
+  // 完整页保持全量身份检查；截断页只证明连续完整前缀内的所选事件。
+  if (!truncated && displayed.some(id => !returned.includes(id))) return undefined
+  return { ids: selected, truncated,
+    viewId: candidateViewId({ callIds: entries.map(entry => entry.call.data.callId),
+      receiptSeqs: entries.map(entry => entry.receipt.seq), displaySeq: display.event.seq, ids: displayed }),
+    queryCallId: entries.at(-1).call.data.callId, queryReceiptSeq: lastReceipt.seq,
+    queryCallIds: entries.map(entry => entry.call.data.callId),
+    queryReceiptSeqs: entries.map(entry => entry.receipt.seq),
+    pageNumbers: entries.map(entry => pendingPageNumber(entry.call)), displaySeq: display.event.seq,
+    boundSeq: upperBound }
+}
+
+// 结果交付的事件绑定不授予处置权限；序号同时依赖上一轮正式展示和真实查询候选。
+function singleIncidentBinding(events, user, boundSeq) {
+  const text = textOnly(user?.data?.content) ?? ''
+  const direct = ids(text)
+  if (direct.length === 1) return { incidentId: direct[0] }
+  if (direct.length > 1) return stop('SINGLE_INCIDENT_REQUIRED', '单条研判请求包含多个事件，无法唯一绑定结果。')
+  const references = [...text.matchAll(/第\s*([零一二三四五六七八九十百\d]+)\s*(?:个|条|项)|首(?:个|条|项)/gu)]
+  if (references.length !== 1 || references[0][1] !== undefined && !['一', '1'].includes(references[0][1])) {
+    return stop('SINGLE_CANDIDATE_BINDING_REQUIRED', '无法唯一核对本次研判指向的候选事件，未交付其他事件的结果。')
+  }
+  const snapshot = candidateSnapshot(events, user, 1, boundSeq)
+  const displayedId = snapshot?.ids[0]
+  if (!displayedId) {
+    return stop('SINGLE_CANDIDATE_BINDING_REQUIRED', '上一轮展示的首个事件缺少对应真实查询候选，无法核对本次结果。')
+  }
+  return { incidentId: displayedId, candidatePageTruncated: snapshot.truncated, candidateViewId: snapshot.viewId,
+    candidateView: snapshot }
+}
+
+function validateBatchBinding({ events, user, delegations, boundSeq }) {
   const text = textOnly(user?.data?.content) ?? ''
   const direct = ids(text)
   const requested = requestedBatchSize(text)
@@ -160,14 +237,17 @@ function validateBatchBinding({ events, user, delegations }) {
     if (direct.length !== selected.length || direct.some((id, index) => id !== selected[index])) {
       return stop('BATCH_USER_BINDING_MISMATCH', '批量委派事件与用户明确给出的顺序或数量不一致。')
     }
-    return { kind: 'batch', incidentIds: selected, userMessageId: user.data.id, userSeq: user.seq }
+    return { kind: 'batch', incidentIds: selected, candidateIds: selected, selectionMode: 'explicit',
+      frozenAtSeq: boundSeq, userMessageId: user.data.id, userSeq: user.seq }
   }
-  const candidates = batchCandidateIds(events, user)
-  const expected = candidates.slice(0, selected.length)
+  const snapshot = candidateSnapshot(events, user, selected.length, boundSeq)
+  const candidates = snapshot?.ids ?? []
+  const expected = candidates
   if (expected.length !== selected.length || expected.some((id, index) => id !== selected[index])) {
     return stop('BATCH_CANDIDATE_BINDING_MISMATCH', '批量委派未绑定到上一轮真实查询返回的候选事件。')
   }
-  return { kind: 'batch', incidentIds: selected, candidateIds: candidates,
+  return { kind: 'batch', incidentIds: selected, candidateIds: candidates, candidatePageTruncated: snapshot.truncated,
+    candidateViewId: snapshot.viewId, candidateView: snapshot, frozenAtSeq: boundSeq,
     userMessageId: user.data.id, userSeq: user.seq }
 }
 
@@ -209,7 +289,6 @@ export function validateCompletionEvent({ parentId, parentEvents: events, turn, 
   const intent = validateUserIntent(user)
   if (allowBatch && requirePreparation) return stop('BATCH_PREPARATION_UNSUPPORTED', '批量研判本轮只交付独立结果，不自动准备处置。')
   if (requirePreparation && !allowBatch && intent.kind !== 'authorized') return intent
-  const userIds = ids(textOnly(user?.data?.content) ?? '')
   if (!realUser(user) || !user.data.id) return stop('USER_SOURCE_REQUIRED', '缺少可与委派绑定的唯一真实用户事件。')
   // 批量研判只交付独立结果，不取得处置准备授权；事件身份以每个委派 prompt 为准。
   const delegations = events.filter(e => e.type === 'tool/call' && e.seq > user.seq
@@ -222,17 +301,27 @@ export function validateCompletionEvent({ parentId, parentEvents: events, turn, 
   }
   const promptIds = ids(typeof argsOf(call)?.prompt === 'string' ? argsOf(call).prompt : '')
   if (promptIds.length !== 1) return stop('DELEGATE_INCIDENT_MISMATCH', '委派缺少唯一事件 ID。')
-  const batch = allowBatch ? validateBatchBinding({ events, user, delegations }) : undefined
+  const frozenAtSeq = Math.min(...delegations.map(item => item.seq))
+  const batch = allowBatch ? validateBatchBinding({ events, user, delegations, boundSeq: frozenAtSeq }) : undefined
   if (batch?.kind === 'stop') return batch
+  const selection = allowBatch ? undefined : singleIncidentBinding(events, user, call.seq)
+  if (selection?.kind === 'stop') return selection
+  const userUpdated = events.some(e => (realUser(e) && e.seq > user.seq)
+    || (e.type === 'agent/inbox/spliced' && e.seq > user.seq
+      && e.data?.inserted?.some(message => message.source?.kind === 'user')))
+  if (userUpdated && requirePreparation) {
+    return stop('USER_INTENT_SUPERSEDED', '用户有更新请求；已冻结的研判结果仍可交付，但不继续准备处置。')
+  }
+  const userUpdateStop = continuationStop('USER_INTENT_SUPERSEDED',
+    '用户有更新请求；仅交付已冻结研判结果，不继续准备处置。')
   const authorization = allowBatch
     ? { incidentId: promptIds[0], userMessageId: user.data.id, userSeq: user.seq, batch,
+      userUpdated, frozenAtSeq,
       preparationStop: continuationStop('BATCH_DELIVERY_ONLY', '批量研判只交付结果，不自动准备处置。') }
-    : intent.kind === 'authorized' ? intent : { incidentId: userIds[0],
-      userMessageId: user.data.id, userSeq: user.seq, preparationStop: intent }
-  if (events.some(e => realUser(e) && e.seq > user.seq || e.type === 'agent/inbox/spliced' && e.seq > user.seq
-    && e.data?.inserted?.some(message => message.source?.kind === 'user'))) {
-    return stop('USER_INTENT_SUPERSEDED', '用户有更新请求，旧授权失效。')
-  }
+    : intent.kind === 'authorized' ? { ...intent, userUpdated, frozenAtSeq,
+      preparationStop: userUpdated ? userUpdateStop : undefined }
+      : { ...selection, userMessageId: user.data.id, userSeq: user.seq,
+        userUpdated, frozenAtSeq, preparationStop: userUpdated ? userUpdateStop : intent }
   if (promptIds[0] !== authorization.incidentId) return stop('DELEGATE_INCIDENT_MISMATCH', '委派事件与用户请求不一致。')
   if (!allowProgress && events.some(e => e.seq > call.seq && e.type === 'tool/call'
     && e.data?.name === 'disposition_prepare' && e.data.callId !== boundToolCallId)) {
@@ -266,7 +355,7 @@ export function validateChildResult(gate, snapshot) {
   }
   const markdown = typeof analysis.delivery?.markdown === 'string' ? analysis.delivery.markdown : ''
   if (!object(analysis.result) || analysis.result.unified_event_id !== gate.incidentId) {
-    return stop('STRUCTURED_RESULT_REQUIRED', '本次研判结果缺失或事件不一致。', { markdown })
+    return stop('STRUCTURED_RESULT_REQUIRED', '本次研判结果缺失或事件不一致。', object(analysis.result) ? {} : { markdown })
   }
   const recommendations = analysis.result.recommended_actions
   if (!Array.isArray(recommendations)) {
@@ -367,8 +456,10 @@ export function continuationPlan({ gate, snapshot, parentEvents, classify }) {
   if (gate.preparationStop) return attempts.length
     ? { kind: 'deliver', markdown: plan.markdown, message: '本轮未取得准备授权；已有准备调用须另行核对，不重发。' }
     : { kind: 'deliver', markdown: plan.markdown,
-      message: gate.preparationStop.code === 'PREPARATION_NOT_EXPLICIT' && plan.markdown
-        ? undefined : gate.preparationStop.message }
+      message: !plan.markdown ? plan.message || '本次研判尚无可交付结果。'
+        : gate.candidatePageTruncated ? '候选来源说明：原查询输出已截断，本次仅核对所选事件，不代表完整候选清单。'
+        : ['PREPARATION_NOT_EXPLICIT', 'SINGLE_INCIDENT_REQUIRED', 'PREPARATION_NOT_AUTHORIZED', 'INTENT_NEEDS_CLARIFICATION']
+          .includes(gate.preparationStop.code) ? undefined : gate.preparationStop.message }
   if (plan.kind === 'stop') return attempts.length
     ? { kind: 'deliver', markdown: plan.markdown, message: '已有准备尝试，但当前研判结果检查未通过；须核对操作记录，不能据此断言未建草案，不重发。' }
     : plan

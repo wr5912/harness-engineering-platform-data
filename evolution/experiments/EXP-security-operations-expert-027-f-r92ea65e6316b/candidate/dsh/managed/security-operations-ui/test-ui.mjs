@@ -17,6 +17,12 @@ const responseOverview = {
   roles: ['delegate_threat_analysis', 'delegate_fault_analysis', 'delegate_response_planning'].map(id =>
     ({ id, title: id, state: 'idle', active: 0, completed: 0, failed: 0, noChild: 0, unknown: 0, toolCalls: 0, skillLoads: 0, recent: [] })),
 }
+const responseNotifications = {
+  unreadCount: 1,
+  items: [{ eventKey: 'event-1', type: 'INCIDENT_STATE', label: '威胁状态变化', title: '威胁状态变化', receivedAt: Date.now(),
+    incidentId: 'INC-QUICK-001', incidentIds: [], summary: 'INC-QUICK-001：OPEN → INVESTIGATING', status: 'INVESTIGATING',
+    severity: 'high', links: [], isRead: false, refreshRequired: false }],
+}
 const React = {
   createElement(type, props, ...children) { return { type, props: { ...props, children } } },
   useState(initial) {
@@ -39,7 +45,7 @@ runInNewContext(readFileSync(new URL('./client.js', import.meta.url), 'utf8'), {
   crypto: { randomUUID() { return 'new-employee' } },
   localStorage: { getItem(key) { return storage.get(key) ?? null }, setItem(key, value) { storage.set(key, value) } },
   document: pageDocument, URL, setImmediate,
-  async fetch(url, options) { requests.push({ url: String(url), options }); return { ok: true, json: async () => responseOverview } },
+  async fetch(url, options) { requests.push({ url: String(url), options }); return { ok: true, json: async () => String(url).includes('/notifications') ? responseNotifications : responseOverview } },
   setInterval() { return 1 }, clearInterval() {},
 })
 assert.equal(plugin.id, 'dsh-security-operations-ui')
@@ -151,7 +157,9 @@ function render() {
       insertText(value) { inserted.push(value); return true },
     },
   })
-  return dock.type(dock.props)
+  const quickActions = nodes(dock, node => node.type?.name === 'QuickActions')[0]
+  assert(quickActions, '输入框 dock 应保留快捷入口组件')
+  return quickActions.type(quickActions.props)
 }
 const inserted = []
 const cards = tree => nodes(tree, node => node.type === 'button' && node.props.className?.includes('soc-quick__card'))

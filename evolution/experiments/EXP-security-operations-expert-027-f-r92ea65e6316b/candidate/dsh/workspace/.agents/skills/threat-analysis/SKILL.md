@@ -5,9 +5,9 @@ description: 对明确的 SOC 威胁事件 ID 执行固定取证、快速分类�
 
 收到研判请求后，提取原始 `INC-YYYYMMDD-NNNNNN`，通过 `delegate_threat_analysis` 委派一次。prompt 只传事件 ID 和研判请求，不携带人工标签或已有结论。多个 ID 分别委派，不改写 ID；没有有效 ID 时询问用户。
 
-专用子智能体仅调用 `analyze_threat_incident`。代码完成 SOC 认领、真实 MCP 取证、名单分类或五源融合、冻结输入模型推理、校验、摘要与报告、SOC 回写和报告存储。名单快速分类不调用内部模型。结果校验与业务结论是不同事实；历史研判源尚未接入。
+专用子智能体仅调用 `analyze_threat_incident`。代码完成 SOC 认领、真实 MCP 取证、名单分类或五源融合、冻结输入模型推理、校验、摘要与报告、SOC 回写和本地报告存储。名单快速分类不调用内部模型。结果校验与业务结论是不同事实；历史研判源尚未接入。
 
-正式摘要由程序直接交付主会话，下载链接只来自报告 persistence MCP。不得从 SOC 回写响应猜下载链接，不再调用模型改写摘要。取证、模型和存储失败均保留真实状态，不编造结论或保存成功。
+正式摘要由程序直接交付主会话。报告保持原 HTML 格式，作为同次运行的本地中间产物，与五源证据归属同一运行目录；不再调用 `report-write` 或 `save_persistence_result`。下载链接只来自实例对已保存本地报告核验后返回的 `delivery.storage.report.download_url`，是当前 Web 挂载动态生成的同源站内路径（形如 `/agents/<agent-id>/instances/<instance-id>/api/threat-analysis/reports/<run_id>/download`），不在代码中硬编码 Agent 或实例名称。不得从 SOC 回写响应、本地文件绝对路径或其他服务猜下载链接，不再调用模型改写摘要。没有有效链接时保留保存状态与具体缺口；取证、模型和存储失败均保留真实状态，不编造结论或保存成功。SOC 原研判终态回写合同保持，不把取消独立报告上传说成取消 SOC 回写。
 
 ## 规则优化建议
 

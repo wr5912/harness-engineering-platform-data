@@ -1,30 +1,51 @@
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 import { apply, createSecurityOperationsGuard } from '../dsh/managed/security-operations-guard.mjs'
 import { apply as applyChildGuard } from '../dsh/managed/security-operations-child-guard.mjs'
 
-test('业务 Guard 在实际pre-step按 Agent 作用域识别 Web MCP 工具，且只冻结一次', async () => {
+const troubleshootingRaw = [
+  'diagnose_business_access', 'diagnose_device_offline',
+  'get_composition_run', 'get_composition_artifact', 'get_composition_details',
+]
+const troubleshooting = troubleshootingRaw.map(raw => `mcp__troubleshooting-compositions__${raw}`)
+
+test('新实例故障连接引用完整平台分组及公开原名，不恢复旧Java连接', async () => {
+  const seed = await readFile(new URL('../dsh/managed/web-profile.seed.patch.yml', import.meta.url), 'utf8')
+  const block = seed.match(/^      - id: troubleshooting-compositions\n[\s\S]*?(?=^      - id:|^      groups:)/mu)?.[0]
+  assert.ok(block)
+  assert.match(block, /^        serverName: troubleshooting-compositions$/mu)
+  const inspection = seed.match(/^      - id: inspection-compositions\n[\s\S]*?^        url: (\S+)$/mu)?.[1]
+  const endpoint = block.match(/^        url: (\S+)$/mu)?.[1]
+  assert.ok(inspection)
+  assert.equal(endpoint, inspection.replace(/\/inspection-compositions\/v2$/u, '/troubleshooting-compositions/v2'))
+  const names = block.split('          names:\n')[1].trim().split('\n').map(line => line.trim().replace(/^- /u, ''))
+  assert.deepEqual(names, troubleshootingRaw)
+  assert.doesNotMatch(block, /mcp__/u)
+  assert.doesNotMatch(seed, /^      - id: troubleshooting$/mu)
+  assert.doesNotMatch(seed, /\/mcp\/troubleshooting(?:\s|$)/u)
+})
+
+test('主会话使用原生deny保留新绑定，子角色仍按原allow收紧且按当前目录刷新', async () => {
   const resources = ['list_mcp_resources', 'list_mcp_resource_templates', 'read_mcp_resource']
-  const tools = new Set([...resources, 'mcp__inspection__list_executable_inspections', 'mcp__troubleshooting__list_troubleshooting_playbooks', 'mcp__sec-ops__get_event_by_id'])
+  const tools = new Set([...resources, 'bash', 'ask_user_question', 'mcp__xx-bound__new_tool', 'mcp__sec-ops__get_event_by_id'])
   let preStep
   apply({
     mcpSessionManager: { resolveTool: (source, raw) => `mcp__${source}__${raw}` },
     on(event, callback) { if (event === 'agent/pre-step') preStep = callback },
-    tools: {
-      guard() {},
-      get(name, agent) { return agent && tools.has(name) ? {} : undefined },
-    },
+    tools: { guard() {}, get(name, agent) { return agent && tools.has(name) ? {} : undefined } },
   })
-  for (const [depth, expected] of [
-    [0, [...resources, 'mcp__inspection__list_executable_inspections', 'mcp__troubleshooting__list_troubleshooting_playbooks']],
-    [1, [...resources, 'mcp__sec-ops__get_event_by_id']],
-  ]) {
-    let allowed, restrictions = 0
-    const agent = { session: { header: { delegationDepth: depth } }, ctx: { tools: { restrict({ allow }) { allowed = allow; restrictions++ } } } }
+  for (const depth of [0, 1]) {
+    let restriction, restrictions = 0
+    const agent = { session: { header: { delegationDepth: depth } }, ctx: { tools: { restrict(value) { restriction = value; restrictions++ } } } }
     await preStep({ agent, messages: [], step: 1 }, async () => ({ kind: 'enter' }))
-    assert.deepEqual(allowed, expected)
+    if (depth === 0) {
+      assert.deepEqual(restriction, { deny: ['bash', 'mcp__sec-ops__get_event_by_id'] })
+    } else {
+      assert.deepEqual(restriction, { allow: [...resources, 'mcp__sec-ops__get_event_by_id'] })
+    }
     await preStep({ agent, messages: [], step: 2 }, async () => ({ kind: 'enter' }))
-    assert.equal(restrictions, 1)
+    assert.equal(restrictions, 2)
   }
 })
 
@@ -72,33 +93,49 @@ test('原生作用域restrict不可用时保留逐调用Guard边界', async () =
   assert.ok(decide({ name: 'mcp__policy-configuration__confirm_policy_configuration', agent, arguments: {} }))
 })
 
-test('首次挂载推迟restrict仍冻结本轮DENY；挂载完成和后续ALLOW轮次不丢失或沿用旧约束', async () => {
-  let preStep, decide, resolverReady = false
-  const resolver = 'mcp__policy-configuration__resolve_policy_endpoints'
-  const agent = { session: { header: { delegationDepth: 0 }, snapshotEvents: () => [] }, ctx: { tools: { restrict() {} } } }
+test('新增MCP按当次真实注册目录可用，不需要改固定工具名；子角色和旧禁止入口仍拒绝', async () => {
+  let preStep, decide
+  const registered = new Set()
+  const tool = 'mcp__xx-bound__new_tool'
+  const agent = { session: { header: { delegationDepth: 0 } }, ctx: { tools: { restrict(value) { assert.ok(value.deny); assert.equal(value.allow, undefined) } } } }
   apply({
     mcpSessionManager: { resolveTool: (source, raw) => `mcp__${source}__${raw}` },
     on(event, callback) { if (event === 'agent/pre-step') preStep = callback },
-    tools: { get: name => name === resolver && !resolverReady ? undefined : {}, guard: callback => { decide = callback } },
+    tools: { get: name => registered.has(name) ? {} : undefined, guard: callback => { decide = callback } },
     logger: { warn() {} },
   })
-  const step = (number, text) => preStep({ agent, step: number, messages: [{ source: { kind: 'user' }, content: [{ type: 'text', text }] }] }, async () => ({ kind: 'enter' }))
-  let requestId = 'basic-request-1'
-  const args = action => ({ body: { contract_version: 'workbench-policy-endpoint-resolution/v1', request_id: requestId, operation: 'ADD', action,
-    source_query: 'basic-source', destination_query: 'basic-destination', protocol: 'TCP', destination_port: 443 } })
-  const allowed = action => decide({ name: resolver, agent, arguments: args(action) })
-  await step(1, '新增策略，阻断基础主机到基础服务的TCP 443访问')
-  assert.equal(decide({ name: 'skill', agent, arguments: { name: 'policy-configuration' } }), undefined)
-  assert.match(allowed('ALLOW'), /阻断/)
-  assert.equal(allowed('DENY'), undefined)
-  resolverReady = true
-  await step(2, '新增策略，阻断基础主机到基础服务的TCP 443访问')
-  assert.match(allowed('ALLOW'), /阻断/)
-  assert.equal(allowed('DENY'), undefined)
-  await step(1, '新增策略，允许基础主机到基础服务的TCP 443访问')
-  requestId = 'basic-request-2'
-  assert.match(allowed('DENY'), /允许/)
-  assert.equal(allowed('ALLOW'), undefined)
+  await preStep({ agent, step: 1, messages: [] }, async () => ({ kind: 'enter' }))
+  assert.match(decide({ name: tool, agent, arguments: {} }), /未列入/)
+  registered.add(tool)
+  assert.equal(decide({ name: tool, agent, arguments: {} }), undefined)
+  assert.equal(decide({ name: 'ask_user_question', agent, arguments: {} }), undefined)
+  assert.match(decide({ name: tool, agent: { session: { header: { delegationDepth: 1 } } }, arguments: {} }), /子角色/)
+  registered.add('mcp__policy-configuration__confirm_policy_configuration')
+  assert.match(decide({ name: 'mcp__policy-configuration__confirm_policy_configuration', agent, arguments: {} }), /永久禁用/)
   assert.ok(decide({ name: 'mcp__unknown__write', agent, arguments: {} }))
-  assert.ok(decide({ name: 'mcp__policy-configuration__confirm_policy_configuration', agent, arguments: {} }))
 })
+
+for (const moduleName of ['security-operations-guard', 'security-operations-child-guard']) {
+  test(`${moduleName} 在访问配置同步为匿名后解除已有限制`, async () => {
+    const { apply } = await import(`../dsh/managed/${moduleName}.mjs`)
+    let authentication = true, decide, postExecute, active = 0
+    const hooks = new Map()
+    const agent = { session: { header: { delegationDepth: 0 } }, ctx: { tools: {
+      restrict() { active++; return () => { active-- } },
+    } } }
+    apply({
+      get: () => ({ requiresAuthentication: () => authentication }),
+      mcpSessionManager: { resolveTool: (source, raw) => `mcp__${source}__${raw}`, sourceStatus: () => ({ configured: false }) },
+      tools: { get: () => ({}), guard: callback => { decide = callback } },
+      on(event, callback) { hooks.set(event, callback); if (event === 'tools/post-execute') postExecute = callback },
+    }, { role: 'fault' })
+    hooks.get('agent/created')?.({ agent })
+    await hooks.get('agent/pre-step')?.({ agent, step: 1, messages: [] }, async () => 'next')
+    assert.ok(active > 0)
+    authentication = false
+    assert.equal(await hooks.get('agent/pre-step')({ agent, step: 2, messages: [] }, async () => 'next'), 'next')
+    assert.equal(active, 0)
+    assert.equal(decide({ agent, name: 'mcp__fixture__healthy', arguments: {} }), undefined)
+    if (postExecute) assert.equal(await postExecute({ agent, name: 'mcp__fixture__healthy' }, {}, async () => 'next'), 'next')
+  })
+}

@@ -28,7 +28,7 @@ def raw_result():
 
 
 def completed_run():
-    return {'schema_version': '1.0', 'incident_id': INCIDENT, 'run_id': 'run-component-test',
+    return {'schema_version': '1.0', 'incident_id': INCIDENT, 'run_id': 'run-11111111-1111-4111-8111-111111111111',
         'report_revision': 1, 'route': 'five_source', 'llm_invoked': True, 'model': 'component-test',
         'status': 'completed', 'result': raw_result(),
         'validation': {'status': 'failed', 'error_type': 'ValueError', 'error': ERROR}}
@@ -61,16 +61,21 @@ class CompatDeliveryTest(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     build_delivery(run)
 
-    def test_failed_validation_report_uses_save_only_once(self):
+    def test_failed_validation_report_is_local_without_mcp_save(self):
         run, gateway = completed_run(), MagicMock()
-        gateway.invoke_trusted.return_value = {'status': 'success', 'status_code': 200,
-            'result': {'code': '200', 'data': {'id': 'file-component', 'downloadUrl': 'https://report.invalid/report'}}}
         html = build_delivery(run)['report_html']
-        state = persist(run, html, gateway)['report']
-        self.assertEqual(state['status'], 'saved')
-        self.assertEqual(state['download_url'], 'https://report.invalid/report')
-        gateway.invoke_trusted.assert_called_once()
-        self.assertEqual(gateway.invoke_trusted.call_args.kwargs['tool_name'], 'save_persistence_result')
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / run['run_id']
+            (output / 'fusion' / 'raw').mkdir(parents=True)
+            (output / 'report.html').write_text(html, encoding='utf-8')
+            gateway.raw_directory = output / 'fusion' / 'raw'
+            state = persist(run, html, gateway)['report']
+            self.assertEqual(state['status'], 'saved')
+            self.assertEqual(state['storage'], 'local')
+            self.assertEqual(state['id'], run['run_id'])
+            self.assertEqual((output / 'report.html').read_text(encoding='utf-8'), html)
+        gateway.invoke_trusted.assert_not_called()
+        self.assertNotIn('download_url', state)
         self.assertEqual(run['validation']['status'], 'failed')
 
     def test_runner_only_recovers_parsed_dictionary_and_keeps_validation_failed(self):

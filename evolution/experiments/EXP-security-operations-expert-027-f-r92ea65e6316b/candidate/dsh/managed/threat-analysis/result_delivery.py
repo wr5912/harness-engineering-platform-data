@@ -368,11 +368,39 @@ def build_delivery(run, storage=None, analyzed_at=None):
             'storage': storage if storage is not None else {'summary': 'not_configured', 'report': 'not_configured'}}
 
 
+def _claim_locked(business_message):
+    message = business_message or ''
+    return 'COVERED' in message.upper() or '不可领取' in message
+
+
+def _claim_next_available(business_message):
+    match = re.search(r'最早可领取时间\s*[=:：]\s*([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2})',
+                      business_message or '')
+    return match.group(1).replace('T', ' ') if match else None
+
+
 def failure_markdown(run):
-    status = {'claim_failed': 'SOC 事件认领失败，未开始取证', 'evidence_failed': '取证失败', 'model_failed': '模型调用失败', 'contract_failed': '模型输出格式或证据引用校验未通过，请查看本轮校验记录'}.get(run['status'], '研判未完成')
+    # 认领失败最常见的原因是事件已被研判且证据未更新；面向用户的说明不直接透传 SOC 原始错误码与术语。
     if run['status'] == 'claim_failed':
-        if run.get('business_message'):
-            status += '；SOC 返回：' + md(run['business_message'])
-        elif run.get('error_code') is not None:
-            status += '（错误码 ' + md(str(run['error_code'])) + '）'
+        message = run.get('business_message') or ''
+        if _claim_locked(message):
+            lines = ['该威胁事件当前处于锁定状态：已经完成过研判，且事件证据没有更新，'
+                     '因此本次不会重复研判，也没有生成新的正式结论。',
+                     '建议直接查看该事件的历史研判结果；如果确实需要重新研判，请在锁定期结束后再发起。']
+            next_available = _claim_next_available(message)
+            if next_available:
+                lines.append('最早可再次领取时间（SOC 原始值）：' + next_available)
+            return '### 本次未重复研判\n\n' + '\n\n'.join(lines) + '\n\n运行 ID：' + md(run['run_id']) + '\n'
+        code = run.get('error_code')
+        if code in (401, 403):
+            return ('### 研判未完成\n\n当前没有该事件的研判权限，本次未开始取证，也没有生成新的正式结论。\n\n'
+                    '建议联系管理员核对该 SOC 账号的事件研判权限后重试。\n\n运行 ID：' + md(run['run_id']) + '\n')
+        # 未识别为已研判锁定时保留 SOC 原始原因，避免用推断替代真实回执。
+        reason = '，SOC 给出的原因：' + md(message) if message else (
+            '（错误码 ' + md(str(code)) + '）' if code is not None else '')
+        return ('### 研判未完成\n\n该威胁事件当前无法领取研判任务' + reason +
+                '。本次未开始取证，也没有生成新的正式结论。\n\n'
+                '建议稍后重试，或先查看该事件的历史研判记录。\n\n运行 ID：' + md(run['run_id']) + '\n')
+    status = {'evidence_failed': '取证失败', 'model_failed': '模型调用失败',
+              'contract_failed': '模型输出格式或证据引用校验未通过，请查看本轮校验记录'}.get(run['status'], '研判未完成')
     return f'### 研判未完成\n\n{status}。当前没有可发布的正式结论，未生成正式摘要与报告。\n\n运行 ID：{md(run["run_id"])}\n'

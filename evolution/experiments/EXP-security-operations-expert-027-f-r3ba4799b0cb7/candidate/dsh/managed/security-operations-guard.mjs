@@ -5,7 +5,7 @@
  * MCP 服务端仍须独立强制执行身份、租户、对象、参数、幂等、审批和审计。
  */
 
-import { createHash } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
 import { isAbsolute, resolve, sep } from 'node:path'
 import { createSecurityOperationsGuard as createPolicyGuard, isPolicyConfirmationTurn, setPolicyUserRequest } from './policy-configuration-guard.mjs'
 import { createDepartmentGuard, DEPARTMENT_SOURCE_ID, DEPARTMENT_TOOL_NAMES, isDepartmentResource,
@@ -439,6 +439,84 @@ function nativeDepartmentWriteBarrier(agent) {
   } catch { return '原生部门Task账本不可核实，不能通过MCP准备新Task或Draft。' }
 }
 
+
+/** 两类故障回显校验：只读结论与文本，不触碰 Run/HTML/证据。 */
+const FAULT_KINDS = new Set(['business-access', 'device-offline'])
+const statusLabels = { CONFIRMED: '已确认', SUPPORTED: '得到支持', REFUTED: '被反驳', UNKNOWN: '未知', CONFLICT: '证据冲突', INSUFFICIENT_CAPABILITY: '能力不足' }
+
+function deepFindConclusion(value, depth = 0) {
+  if (!value || typeof value !== 'object' || depth > 12) return undefined
+  if (value.unified_conclusion && typeof value.unified_conclusion === 'object') return value.unified_conclusion
+  for (const entry of Object.values(value)) {
+    const found = deepFindConclusion(entry, depth + 1)
+    if (found) return found
+  }
+  return undefined
+}
+
+function textOf(message) {
+  const content = message?.content
+  if (typeof content === 'string') return content
+  if (!Array.isArray(content)) return ''
+  return content.filter(block => block?.type === 'text' && typeof block.text === 'string').map(block => block.text).join('')
+}
+
+/** 取最近一次两类故障组合结果的统一结论与本轮最后一条助手文本。 */
+export function faultEchoContext(events) {
+  let conclusion, assistant = ''
+  for (const event of events ?? []) {
+    if (event?.type === 'tool/result') {
+      const text = textOf(event.data?.message)
+      if (text.includes('unified_conclusion')) {
+        try {
+          const found = deepFindConclusion(JSON.parse(text))
+          if (found && FAULT_KINDS.has(found.kind)) conclusion = found
+        } catch { /* 非 JSON 回执不参与校验 */ }
+      }
+    }
+    if (event?.type === 'assistant/message') {
+      const text = textOf(event.data?.message)
+      if (text.trim()) assistant = text
+    }
+  }
+  return { conclusion, assistant }
+}
+
+export function structuredEchoSummary(conclusion) {
+  return [
+    `当前状态：${conclusion?.currentStatus ?? 'UNKNOWN(未知)'}；影响等级：${conclusion?.impactLevel?.label ?? '—'}；停止状态：${conclusion?.stopStatus ?? '—'}`,
+    `故障概况：${conclusion?.incidentSummary ?? '—'}`,
+    `当前根因判断：${conclusion?.rootCause?.title ?? '根因尚未确认'}（${conclusion?.rootCause?.status ?? 'UNKNOWN(未知)'}）`,
+    `首要建议：${conclusion?.primaryRecommendation?.title ?? '—'}`,
+  ].join('\n')
+}
+
+/** 回显违规项；空数组表示通过。 */
+export function echoViolations(conclusion, text) {
+  const body = String(text ?? '')
+  const violations = []
+  if (!body.trim()) return ['EMPTY_ECHO']
+  const objects = conclusion?.impactScope?.objects ?? {}
+  const ips = [objects.source, objects.target, objects.asset, objects.observer].filter(Boolean).map(String)
+  if (ips.length && !ips.some(ip => body.includes(ip))) violations.push('OBJECT_MISSING')
+  const foreign = [...new Set((body.match(/\b\d{1,3}(?:\.\d{1,3}){3}\b/g) ?? []).filter(ip => !ips.includes(ip)))]
+  if (foreign.length) violations.push(`OBJECT_EXTRA:${foreign.slice(0, 3).join(',')}`)
+  if (objects.port !== undefined && !body.includes(String(objects.port))) violations.push('PORT_MISSING')
+  if (objects.protocol && !new RegExp(`\\b${objects.protocol}\\b`, 'i').test(body)) violations.push('PROTOCOL_MISSING')
+  if (conclusion?.runId && !body.includes(String(conclusion.runId))) violations.push('RUN_ID_MISSING')
+  const rootCode = conclusion?.rootCause?.statusCode
+  if (rootCode !== 'CONFIRMED' && /(根因(?:已|是|为)?(?:确认|确定)|已定位根因|确定是)/.test(body)) violations.push('ROOT_OVERCLAIM')
+  const unNegated = [...body.matchAll(/未监听|没有监听/g)].some(match => {
+    const before = body.slice(Math.max(0, (match.index ?? 0) - 10), match.index ?? 0)
+    return !/(不等于|不能|不得|并非|不是|非)\s*$/.test(before)
+  })
+  if (unNegated && rootCode !== 'CONFIRMED') violations.push('NO_RECORD_AS_NOT_LISTENING')
+  if (/(旁路|CORROBORATION|PLATFORM_ONLY)/.test(body) && /源端(?:实测|已测)|实测源端/.test(body)) violations.push('SIDECHANNEL_AS_DIRECT')
+  if (/(检查完成|已完成检查)/.test(body) && rootCode !== 'CONFIRMED' && /(根因|定位)/.test(body)) violations.push('CHECK_AS_ROOTCAUSE')
+  if (conclusion?.rootCause?.status && !body.includes(String(conclusion.rootCause.status).split('(')[0])) violations.push('ROOT_STATUS_MISSING')
+  return violations
+}
+
 export function createSecurityOperationsGuard(options = {}) {
   const environment = options.environment ?? process.env
   const canonicalName = options.canonicalName ?? (name => name)
@@ -816,6 +894,25 @@ export function apply(ctx) {
     const reason = guard.decide(exec)
     if (reason !== undefined) ctx.logger?.warn?.(`security guard denied tool=${exec.name} call=${String(exec.callId)} reason=${reason}`)
     return reason
+  })
+  // 两类故障回显：本轮结束前校验，违规时注入结构化摘要要求更正；不拦截工具、不改 Run/HTML/证据。
+  const echoChecked = new WeakMap()
+  ctx.on('agent/turn-stopping', async ({ agent, turn }) => {
+    if (anonymous()) return
+    const checked = echoChecked.get(agent) ?? new Set()
+    if (checked.has(turn)) return
+    let events = []
+    try { events = agent.session?.snapshotEvents?.() ?? [] } catch { return }
+    const { conclusion, assistant } = faultEchoContext(events)
+    if (!conclusion || !assistant) return
+    const violations = echoViolations(conclusion, assistant)
+    if (!violations.length) return
+    checked.add(turn)
+    echoChecked.set(agent, checked)
+    try {
+      agent.steer({ id: randomUUID(), role: 'user', source: { kind: 'fault-echo-guard', form: 'correction' },
+        content: [{ type: 'text', text: `上一条回显与本次故障结论不一致（${violations.join('、')}）。请仅按以下结构化摘要原样复述，不新增、不改写事实、不重新取证：\n${structuredEchoSummary(conclusion)}` }] })
+    } catch { /* 会话不可写入时保持原回显，不阻断 */ }
   })
   ctx.on('tools/post-execute', async (exec, result, next) => {
     if (anonymous()) return next()

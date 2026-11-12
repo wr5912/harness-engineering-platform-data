@@ -97,10 +97,18 @@ function inspectionValue(message, startToolName, parentId) {
   return void 0;
 }
 var inspectionTools = new Map(["status", "baseline", "vulnerabilities", "reachability", "routine", "deep"].map((kind) => [`mcp__inspection-compositions__inspection_${kind}`, `inspection-${kind}`]));
-function selectInspectionRuns(input, runId, canonicalName = (name2) => name2) {
+function selectInspectionRuns(input, runId, canonicalName = (name2) => name2, selection) {
   if (runId !== void 0 && !identifier(runId)) fail("\u5DE1\u68C0\u62A5\u544A\u8FD0\u884C\u6807\u8BC6\u65E0\u6548\u3002");
   if (typeof canonicalName !== "function") fail("\u5DE1\u68C0\u5DE5\u5177\u6765\u6E90\u89E3\u6790\u5668\u65E0\u6548\u3002");
+  if (selection !== void 0 && selection !== "latest_completed" || runId !== void 0 && selection !== void 0) {
+    fail("\u5DE1\u68C0\u62A5\u544A\u9009\u62E9\u53C2\u6570\u65E0\u6548\uFF0C\u663E\u5F0F\u8FD0\u884C\u4E0D\u80FD\u4E0E\u6700\u8FD1\u5DF2\u5B8C\u6210\u9009\u62E9\u6DF7\u7528\u3002");
+  }
   const events = ownEvents(input), origins = /* @__PURE__ */ new Map();
+  const attempts = events.filter((event) => event.type === "tool/call" && inspectionTools.has(canonicalName(event.data.name)));
+  if (runId === void 0 && selection === void 0 && attempts.length > 1) {
+    fail("\u672C\u4F1A\u8BDD\u6709\u591A\u4E2A\u5DE1\u68C0\u5C1D\u8BD5\uFF0C\u62A5\u544A\u6307\u4EE3\u4E0D\u6E05\uFF1B\u8BF7\u660E\u786E\u6240\u9700\u8FD0\u884C\uFF0C\u53EA\u6709\u7528\u6237\u660E\u786E\u8981\u6C42\u6700\u8FD1\u5DF2\u5B8C\u6210\u65F6\u624D\u53EF\u9009\u62E9\u65E7\u62A5\u544A\u3002");
+  }
+  const boundCalls = /* @__PURE__ */ new Set();
   for (const pair of successfulPairs(events)) {
     const workflow = inspectionTools.get(canonicalName(pair.call.data.name));
     if (!workflow) continue;
@@ -108,8 +116,12 @@ function selectInspectionRuns(input, runId, canonicalName = (name2) => name2) {
     if (!value) continue;
     if (value.composition_id !== void 0 && value.composition_id !== workflow || value.workflow !== void 0 && value.workflow !== workflow) continue;
     const previous = origins.get(value.run_id);
-    if (previous && previous.workflow !== workflow) fail("\u540C\u4E00\u5DE1\u68C0\u8FD0\u884C\u51FA\u73B0\u51B2\u7A81\u7684\u539F\u59CB\u542F\u52A8\u6765\u6E90\u3002");
-    origins.set(value.run_id, { runId: value.run_id, workflow, seq: pair.receipt.seq });
+    if (previous) fail("\u540C\u4E00\u5DE1\u68C0\u8FD0\u884C\u51FA\u73B0\u51B2\u7A81\u6216\u91CD\u590D\u7684\u539F\u59CB\u542F\u52A8\u6765\u6E90\u3002");
+    boundCalls.add(pair.call);
+    origins.set(value.run_id, { runId: value.run_id, workflow, seq: pair.call.seq });
+  }
+  if (runId === void 0 && attempts.some((call) => !boundCalls.has(call))) {
+    fail("\u5DE1\u68C0\u5C1D\u8BD5\u7F3A\u5C11\u53EF\u6838\u9A8C\u7684\u5DE1\u68C0\u542F\u52A8\u56DE\u6267\uFF0C\u6765\u6E90\u672A\u77E5\uFF0C\u4E0D\u80FD\u56DE\u9000\u65E7\u62A5\u544A\u3002");
   }
   const candidates = runId !== void 0 ? [origins.get(runId)].filter(Boolean) : [...origins.values()].sort((left, right) => right.seq - left.seq);
   if (!candidates.length) fail("\u672C\u4F1A\u8BDD\u6CA1\u6709\u53EF\u6838\u9A8C\u7684\u5DE1\u68C0\u542F\u52A8\u56DE\u6267\uFF0C\u4E0D\u80FD\u501F\u5916\u90E8\u8FD0\u884C\u6807\u8BC6\u5BFC\u51FA\u3002");
@@ -556,6 +568,7 @@ function hasNewTroubleshootingSource(events, cutoff, canonicalName, validatedThr
 }
 function hasNewReportSource(parentId, events, kind, cutoff, canonicalName, newTroubleshooting) {
   if (newTroubleshooting) return true;
+  if (kind === "inspection" && events.some((event) => event.seq > cutoff && event.type === "tool/call" && inspectionTools.has(canonicalName(event.data.name)))) return true;
   const pairs = successfulPairs(events, true);
   for (const pair of pairs) {
     if (pair.receipt.seq <= cutoff || !requestBefore(events, pair.call.seq)) continue;
@@ -677,7 +690,13 @@ function requireReportRequest(exec) {
   const user = events.findLast((event) => event?.type === "user/message" && event.data?.source?.kind === "user");
   const content = user?.data?.content;
   const text = typeof content === "string" ? content : Array.isArray(content) ? content.filter((part) => part?.type === "text").map((part) => part.text).join("") : "";
-  const requested = /(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:生成|导出|下载|保存|给我|给出|出具|发我|发给我)|(?:执行|开始|运行)[\s\S]{0,20}巡检/iu.test(text);
+  let reportEvent;
+  try {
+    const candidate = text.trim().startsWith("{") ? JSON.parse(text) : null;
+    if (candidate?.type === "inspection_report_event" && candidate?.schema === "inspection-report-event/v1" && candidate?.action === "download_report" && typeof candidate?.runId === "string" && /^run-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(candidate.runId)) reportEvent = candidate;
+  } catch {
+  }
+  const requested = Boolean(reportEvent) || /(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:生成|导出|下载|保存|给我|给出|出具|发我|发给我)|(?:执行|开始|运行)[\s\S]{0,20}巡检/iu.test(text);
   const inquiryOnly = /^\s*(?:(?:(?:请问|请(?:介绍|说明|解释))\s*)?(?:如何|怎么|怎样)[\s\S]*(?:报告|HTML)|(?:请问\s*)?(?:本次|这次)?(?:完整|巡检)?(?:报告|HTML)\s*(?:如何|怎么|怎样)[\s\S]*|请(?:介绍|说明|解释)[\s\S]{0,20}(?:报告|HTML)[\s\S]{0,20}(?:步骤|方法|用途|格式|内容))[\s\S]*$/iu.test(text);
   const declined = /(?:不要|禁止|无需|不需要|暂不|先不|别|取消|停止)[\s\S]{0,8}(?:生成|导出|下载|保存|提供|交付|输出|给我|给出|出具|发我|发给我|附上|报告|HTML)/iu.test(text);
   const downloadExisting = /(?:下载|导出)[^，。！？；;,\n]*(?:报告|HTML)|(?:报告|HTML)[\s\S]{0,20}(?:下载|导出)/iu.test(text) && /(?:刚才|上次|先前|此前|已有|已(?:生成|导出|保存)|原(?:有|始)?(?:的)?(?:HTML|报告|文件)|同一(?:份|个)?)/iu.test(text);
@@ -687,7 +706,15 @@ function requireReportRequest(exec) {
   if (!user?.data?.id || !requested || inquiryOnly || declinedTransfer || declined && !reuseOnly) {
     throw new Error("\u5F53\u524D\u8BF7\u6C42\u6CA1\u6709\u62A5\u544A\u751F\u6210\u6216\u4E0B\u8F7D\u610F\u56FE\uFF0C\u672A\u5199\u5165\u6587\u4EF6");
   }
-  return { agent, events, reuseOnly };
+  return { agent, events, reuseOnly, eventRunId: reportEvent?.runId };
+}
+function resolveReportRunSelection(eventRunId, args, savedRunId) {
+  if (!eventRunId) return args.run_id;
+  if (args.kind !== "inspection") throw new Error("\u62A5\u544A\u5361\u4E0B\u8F7D\u4E8B\u4EF6\u53EA\u63A5\u53D7 inspection \u62A5\u544A");
+  if (args.selection !== void 0) throw new Error("\u62A5\u544A\u5361\u4E0B\u8F7D\u4E8B\u4EF6\u4E0D\u80FD\u6539\u7528 latest_completed \u9009\u62E9");
+  if (args.run_id !== void 0 && args.run_id !== eventRunId) throw new Error("\u62A5\u544A\u5361\u4E0B\u8F7D\u4E8B\u4EF6\u7684 runId \u4E0E\u663E\u5F0F run_id \u4E0D\u4E00\u81F4\uFF0C\u5DF2\u62D2\u7EDD");
+  if (args.attachment_id !== void 0 && savedRunId !== eventRunId) throw new Error("\u62A5\u544A\u5361\u4E0B\u8F7D\u4E8B\u4EF6\u7684 runId \u4E0E\u9644\u4EF6 manifest \u4E0D\u4E00\u81F4\uFF0C\u5DF2\u62D2\u7EDD");
+  return eventRunId;
 }
 function apply(ctx) {
   ctx.tools.register({
@@ -695,7 +722,8 @@ function apply(ctx) {
     description: "\u4FDD\u5B58\u5F53\u524D\u4F1A\u8BDD\u771F\u5B9E\u5DE1\u68C0\u6216\u6545\u969C\u7EC4\u5408\u7684\u539FHTML\uFF0C\u53EF\u539F\u751F\u9884\u89C8\u3001\u4E0B\u8F7D\u3002fault\u9ED8\u8BA4\u6838\u9A8C\u672C\u4F1A\u8BDD\u6700\u65B0\u771F\u5B9E\u542F\u52A8\u7684troubleshooting-business-access/diagnose_business_access\u6216troubleshooting-device-offline/diagnose_device_offline\uFF1B\u663E\u5F0Frun_id\u53EF\u9009\u62E9\u672C\u4F1A\u8BDD\u771F\u5B9E\u7ED1\u5B9A\u7684\u539F\u6545\u969CRun\uFF0C\u4E0D\u5192\u79F0\u6700\u65B0\u3002\u53EA\u8BFB\u539FRun\u53CA\u552F\u4E00\u5B8C\u6574HTML\uFF0C\u4FDD\u7559\u539Ffilename/UTF-8\u5B57\u8282\uFF0C\u4E0D\u8BA9\u6A21\u578B\u91CD\u7ED8\u3002\u65B0\u6D41\u7A0B\u5931\u8D25\u3001\u8FD0\u884C\u4E2D\u3001\u672A\u77E5\u6216\u8BFB\u53D6\u6821\u9A8C\u5931\u8D25\u5747\u62D2\u7EDD\uFF0C\u4E0D\u56DE\u9000\u65E7\u62A5\u544A\u3002\u4EC5\u65E0\u65B0\u6D41\u7A0B\u6D3B\u52A8\u65F6\u517C\u5BB9analysis\u4E3B\u52A9\u624B\u53EA\u8BFB\u53D6\u8BC1\u6B63\u6587\u6216\u5DF2\u5B8C\u6210\u6545\u969C\u5B50\u7ED3\u679C\u3002\u518D\u6B21\u4E0B\u8F7D\u590D\u7528\u771F\u5B9Eattachment_id/\u539Ffile\uFF1B\u51FA\u73B0\u66F4\u665A\u65B0\u6545\u969C\u7EC4\u5408\u6765\u6E90\u65F6\u4E0D\u80FD\u7528\u65E7\u9644\u4EF6\u7ED5\u8FC7\uFF1B\u65E0\u65B0\u7F16\u6392\u65F6\u4ECD\u53EF\u663E\u5F0F\u590D\u7528\u771F\u5B9E\u5386\u53F2\u9644\u4EF6\u3002\u4E0D\u80FD\u4F20HTML\u3001\u8DEF\u5F84\u3001URL\u6216\u5176\u4ED6\u4F1A\u8BDD\uFF1B\u751F\u6210\u4E0D\u7B49\u4E8E\u4FEE\u590D\u6216\u5DF2\u4E0B\u8F7D\u3002",
     parameters: { type: "object", additionalProperties: false, required: ["kind"], properties: {
       kind: { type: "string", enum: ["inspection", "fault"] },
-      run_id: { type: "string", description: "\u53EF\u9009\uFF1A\u672C\u4F1A\u8BDD\u771F\u5B9E\u542F\u52A8\u56DE\u6267\u7684\u539F\u8FD0\u884C\u7F16\u53F7\u3002inspection\u7701\u7565\u65F6\u9009\u62E9\u672C\u4F1A\u8BDD\u6700\u8FD1\u5DF2\u5B8C\u6210\u62A5\u544A\uFF0C\u663E\u5F0F\u7F16\u53F7\u53EA\u6838\u8BE5\u539F\u5DE1\u68C0\uFF1Bfault\u4EC5\u5141\u8BB8\u672C\u4F1A\u8BDD\u771F\u5B9E\u542F\u52A8\u7684troubleshooting\u6545\u969C\u8FD0\u884C\uFF0C\u4E0Echild_id/analysis/evidence_call_ids/attachment_id\u4E92\u65A5\uFF0Cfault\u7701\u7565\u9ED8\u8BA4\u6700\u65B0\u5C1D\u8BD5\u3002\u663E\u5F0F\u539FRun\u4E0D\u662F\u6700\u65B0\u7ED3\u679C\u58F0\u660E\uFF1B\u62D2\u7EDD\u5916\u90E8\u3001\u672A\u77E5\u6216inspection\u5047\u5192\u3002" },
+      run_id: { type: "string", description: "\u53EF\u9009\uFF1A\u672C\u4F1A\u8BDD\u771F\u5B9E\u542F\u52A8\u56DE\u6267\u7684\u539F\u8FD0\u884C\u7F16\u53F7\uFF1B\u53EA\u6838\u6307\u5B9A\u8FD0\u884C\uFF0C\u5931\u8D25\u3001\u8FD0\u884C\u4E2D\u6216\u672A\u77E5\u4E0D\u5F97\u5207\u6362\u3002inspection\u591Arun\u6307\u4EE3\u4E0D\u6E05\u5148\u8BE2\u95EE\uFF1B\u53EA\u6709\u7528\u6237\u660E\u786E\u8981\u6C42\u6700\u8FD1\u5DF2\u5B8C\u6210\u65F6\u624D\u4F20selection\u3002fault\u4EC5\u5141\u8BB8\u672C\u4F1A\u8BDD\u771F\u5B9E\u542F\u52A8\u7684troubleshooting\u6545\u969C\u8FD0\u884C\uFF0C\u7701\u7565\u9ED8\u8BA4\u6700\u65B0\u5C1D\u8BD5\u3002\u663E\u5F0F\u539FRun\u4E0D\u4EE3\u8868\u6700\u65B0\u3002" },
+      selection: { type: "string", enum: ["latest_completed"], description: "\u4EC5inspection\uFF1A\u53EA\u6709\u7528\u6237\u660E\u786E\u8981\u6C42\u201C\u6700\u8FD1\u5DF2\u5B8C\u6210\u7684\u5DE1\u68C0\u62A5\u544A\u201D\u65F6\uFF0C\u7531\u52A9\u624B\u6309\u8BED\u4E49\u586B\u5199\uFF1B\u4E0Erun_id/attachment_id\u4E92\u65A5\u3002\u53EF\u8DF3\u8FC7\u5DF2\u6838\u9A8C\u7684\u672A\u5B8C\u6210/\u5931\u8D25\u8FD0\u884C\uFF0C\u987B\u5728\u4EA4\u4ED8\u8BF4\u660E\u6240\u9009run\u53CA\u88AB\u8DF3\u8FC7\u72B6\u6001\uFF0C\u4E0D\u79F0\u4E3A\u6700\u65B0\u5DE1\u68C0\u7ED3\u679C\u3002\u5176\u4ED6\u542B\u7CCA\u6307\u4EE3\u4E0D\u5F97\u586B\u5199\u3002" },
       child_id: { type: "string", description: "\u53EF\u9009\uFF0C\u4EC5\u65E0\u65B0\u6545\u969C\u7EC4\u5408\u6765\u6E90\u65F6\uFF1A\u660E\u786E\u5BFC\u51FA\u672C\u4F1A\u8BDD\u6307\u5B9A\u5DF2\u5B8C\u6210\u5B50\u5206\u6790\uFF1B\u4E0D\u5F97\u4E0Eanalysis/run_id\u6DF7\u7528\u3002\u4E3B\u52A9\u624B\u5DF2\u8865\u8BC1\u65F6\u5E94\u6539\u7528analysis\u3002" },
       analysis: { type: "string", minLength: 1, maxLength: 65536, description: "\u4EC5\u65E0\u65B0\u6545\u969C\u7EC4\u5408\u6765\u6E90\u65F6\uFF1A\u4E3B\u52A9\u624B\u4F9D\u636E\u672C\u4F1A\u8BDD\u5B9E\u9645SOC\u53EA\u8BFB\u56DE\u6267\u6574\u7406\u7684\u5B8C\u6574\u53EF\u89C1\u62A5\u544A\u6B63\u6587\uFF0C\u542B\u4E8B\u5B9E\u3001\u63A8\u65AD\u3001\u8BC1\u636E\u7F3A\u53E3\u3001\u672A\u6267\u884C\u5EFA\u8BAE\uFF1B\u4E0D\u662FHTML\u6216\u9690\u85CFreasoning\u3002\u8BED\u4E49\u5206\u6790\u7531\u6A21\u578B\u8D1F\u8D23\uFF0C\u6765\u6E90\u7531\u5165\u53E3\u6838\u5BF9\u3002" },
       evidence_call_ids: { type: "array", minItems: 1, maxItems: 32, uniqueItems: true, items: { type: "string", minLength: 1 }, description: "\u53EF\u9009\uFF0C\u914D\u5408analysis\u7ED1\u5B9A\u672C\u4F1A\u8BDD\u771F\u5B9E\u53EA\u8BFB\u67E5\u8BE2\u8C03\u7528\uFF1B\u7701\u7565\u81EA\u52A8\u9009\u62E9\u6700\u8FD1\u5B9E\u9645\u53D6\u8BC1\u6279\u6B21\u3002\u4E0D\u8BA9\u7528\u6237\u586B\u5199\u7F16\u53F7\uFF0C\u4E0D\u4EE5\u7528\u6237\u6750\u6599\u5192\u5145\u539F\u751F\u56DE\u6267\u3002" },
@@ -707,8 +735,9 @@ function apply(ctx) {
       presentationMeta: (_args, value) => value
     },
     async execute(args, exec) {
-      const { agent, events, reuseOnly } = requireReportRequest(exec);
-      if (!record(args) || !["inspection", "fault"].includes(args.kind) || Object.keys(args).some((key) => !["kind", "run_id", "child_id", "analysis", "evidence_call_ids", "attachment_id"].includes(key)) || args.run_id !== void 0 && typeof args.run_id !== "string" || args.child_id !== void 0 && typeof args.child_id !== "string" || args.kind === "inspection" && ["child_id", "analysis", "evidence_call_ids"].some((key) => args[key] !== void 0) || args.run_id !== void 0 && ["child_id", "analysis", "evidence_call_ids", "attachment_id"].some((key) => args[key] !== void 0) || args.analysis !== void 0 && (typeof args.analysis !== "string" || !args.analysis.trim() || args.analysis.length > 65536) || args.evidence_call_ids !== void 0 && (args.analysis === void 0 || !Array.isArray(args.evidence_call_ids) || args.evidence_call_ids.length < 1 || args.evidence_call_ids.length > 32 || args.evidence_call_ids.some((id) => typeof id !== "string" || !id.trim()) || new Set(args.evidence_call_ids).size !== args.evidence_call_ids.length) || args.analysis !== void 0 && args.child_id !== void 0 || args.attachment_id !== void 0 && (typeof args.attachment_id !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(args.attachment_id) || ["run_id", "child_id", "analysis", "evidence_call_ids"].some((key) => args[key] !== void 0))) throw new Error("\u62A5\u544A\u7C7B\u578B\u6216\u6765\u6E90\u53C2\u6570\u4E0D\u7B26\u5408\u5408\u540C");
+      const { agent, events, reuseOnly, eventRunId } = requireReportRequest(exec);
+      if (eventRunId && args.kind !== "inspection") throw new Error("\u62A5\u544A\u5361\u4E0B\u8F7D\u4E8B\u4EF6\u53EA\u63A5\u53D7 inspection \u62A5\u544A");
+      if (!record(args) || !["inspection", "fault"].includes(args.kind) || Object.keys(args).some((key) => !["kind", "run_id", "selection", "child_id", "analysis", "evidence_call_ids", "attachment_id"].includes(key)) || args.selection !== void 0 && (args.kind !== "inspection" || args.selection !== "latest_completed" || args.run_id !== void 0 || args.attachment_id !== void 0) || args.run_id !== void 0 && typeof args.run_id !== "string" || args.child_id !== void 0 && typeof args.child_id !== "string" || args.kind === "inspection" && ["child_id", "analysis", "evidence_call_ids"].some((key) => args[key] !== void 0) || args.run_id !== void 0 && ["child_id", "analysis", "evidence_call_ids", "attachment_id"].some((key) => args[key] !== void 0) || args.analysis !== void 0 && (typeof args.analysis !== "string" || !args.analysis.trim() || args.analysis.length > 65536) || args.evidence_call_ids !== void 0 && (args.analysis === void 0 || !Array.isArray(args.evidence_call_ids) || args.evidence_call_ids.length < 1 || args.evidence_call_ids.length > 32 || args.evidence_call_ids.some((id) => typeof id !== "string" || !id.trim()) || new Set(args.evidence_call_ids).size !== args.evidence_call_ids.length) || args.analysis !== void 0 && args.child_id !== void 0 || args.attachment_id !== void 0 && (typeof args.attachment_id !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(args.attachment_id) || ["run_id", "child_id", "analysis", "evidence_call_ids"].some((key) => args[key] !== void 0))) throw new Error("\u62A5\u544A\u7C7B\u578B\u6216\u6765\u6E90\u53C2\u6570\u4E0D\u7B26\u5408\u5408\u540C");
       exec.signal?.throwIfAborted();
       const canonical = (tool) => {
         for (const [group, names] of [
@@ -724,6 +753,7 @@ function apply(ctx) {
       };
       const saved = selectSavedSecurityReport(agent.id, events, args.kind, args.attachment_id, canonical);
       if (args.attachment_id !== void 0 && !saved) throw new Error("\u672C\u4F1A\u8BDD\u6CA1\u6709\u8BE5\u771F\u5B9E\u5DF2\u5BFC\u51FA\u62A5\u544A\uFF0C\u4E0D\u731C\u6D4B\u9644\u4EF6\u6216\u6587\u4EF6\u8DEF\u5F84");
+      const selectedRunId = resolveReportRunSelection(eventRunId, args, saved?.value?.source?.run_id);
       if (args.attachment_id !== void 0 && args.kind === "fault" && saved.has_new_troubleshooting_source) {
         throw new Error("\u672C\u4F1A\u8BDD\u5DF2\u6709\u66F4\u65B0\u6545\u969C\u6765\u6E90\u6216\u65B0\u5C1D\u8BD5\uFF0C\u4E0D\u80FD\u6307\u5B9A\u65E7attachment_id\u7ED5\u8FC7\uFF1B\u8BF7\u6838\u5BF9\u6700\u65B0\u8FD0\u884C\u3002");
       }
@@ -737,6 +767,7 @@ function apply(ctx) {
       }
       let html, source, filename;
       let expectedInspectionBytes;
+      const skippedInspectionRuns = [];
       if (args.kind === "inspection") {
         const inspectionCanonical = (tool) => {
           for (const raw of ["inspection_status", "inspection_baseline", "inspection_vulnerabilities", "inspection_reachability", "inspection_routine", "inspection_deep"]) {
@@ -745,7 +776,7 @@ function apply(ctx) {
           }
           return void 0;
         };
-        const candidates = selectInspectionRuns(events, args.run_id, inspectionCanonical);
+        const candidates = selectInspectionRuns(events, selectedRunId, inspectionCanonical, args.selection);
         const query = ctx.mcpSessionManager.resolveTool("inspection-compositions", "get_composition_run");
         if (!query || !ctx.tools.get(query, agent)) throw new Error("\u5F53\u524D\u6CA1\u6709\u540C\u6B21\u5DE1\u68C0\u7EC8\u6001\u8BFB\u53D6\u5165\u53E3");
         let selected;
@@ -766,7 +797,10 @@ function apply(ctx) {
           const run = reportValue(state.value);
           if (run.run_id !== candidate.run_id || run.composition_id !== candidate.workflow || run.workflow !== void 0 && run.workflow !== candidate.workflow) throw new Error("\u5DE1\u68C0\u7ED3\u679C\u4E0E\u672C\u4F1A\u8BDD\u539F\u59CB\u8FD0\u884C\u6216\u6D41\u7A0B\u4E0D\u4E00\u81F4");
           if (run.status !== "completed") {
-            if (args.run_id === void 0 && ["accepted", "pending", "queued", "running", "failed", "canceled", "cancelled"].includes(run.status)) continue;
+            if (args.selection === "latest_completed" && ["accepted", "pending", "queued", "running", "in_progress", "failed", "canceled", "cancelled"].includes(run.status)) {
+              skippedInspectionRuns.push({ run_id: candidate.run_id, status: run.status });
+              continue;
+            }
             throw new Error("\u539F\u5DE1\u68C0\u5C1A\u672A\u6210\u529F\u7ED3\u675F\uFF0C\u4E0D\u80FD\u5C06\u8FD0\u884C\u4E2D\u6216\u5931\u8D25\u72B6\u6001\u5BFC\u51FA\u4E3A\u5DF2\u5B8C\u6210\u62A5\u544A\u3002");
           }
           const reports = Array.isArray(run.artifacts) ? run.artifacts.filter((item2) => item2?.id === "report") : [];
@@ -796,10 +830,14 @@ function apply(ctx) {
         if (typeof artifact.body !== "string" || !/^text\/html(?:\s*;|$)/iu.test(artifact.contentType ?? "") || !/\.html$/iu.test(artifact.filename ?? "")) throw new Error("\u539F\u8FD0\u884C\u5C1A\u65E0\u53EF\u5BFC\u51FA\u7684\u5B8C\u6574HTML\u62A5\u544A");
         if (artifact.filename !== report.filename || artifact.contentType !== report.contentType) throw new Error("\u539F\u62A5\u544A\u4E0E\u540C\u6B21\u4EA7\u7269\u5143\u6570\u636E\u4E0D\u4E00\u81F4");
         html = artifact.body;
+        const fresh = selectInspectionRuns(agent.session.snapshotEvents(), selectedRunId, inspectionCanonical, args.selection);
+        if (JSON.stringify(fresh) !== JSON.stringify(candidates)) throw new Error("\u5DE1\u68C0\u6765\u6E90\u5DF2\u53D8\u5316\uFF0C\u672A\u4FDD\u5B58\u8FC7\u65F6\u62A5\u544A\u3002");
         source = {
           kind: "inspection",
           run_id: selected.run_id,
           artifact_id: report.id,
+          selection: args.selection ?? (selectedRunId !== void 0 ? "explicit_run" : "unique_run"),
+          skipped_runs: skippedInspectionRuns,
           original_filename: artifact.filename,
           original_sha256: createHash2("sha256").update(html).digest("hex")
         };
@@ -879,7 +917,7 @@ function apply(ctx) {
         attachment_id: attachment.attachmentId,
         source,
         generated_at: (/* @__PURE__ */ new Date()).toISOString(),
-        message: troubleshooting && args.run_id !== void 0 ? "\u5DF2\u6309\u663E\u5F0Frun_id\u4FDD\u5B58\u672C\u4F1A\u8BDD\u539F\u6545\u969CRun\u7684\u5B8C\u6574HTML\uFF0C\u4E0D\u5192\u79F0\u672C\u4F1A\u8BDD\u6700\u65B0\u7ED3\u679C\u3002\u53EF\u539F\u751F\u9884\u89C8\u3001\u4E0B\u8F7D\uFF1B\u4E0D\u8868\u793A\u6545\u969C\u5DF2\u4FEE\u590D\u3002" : "HTML\u62A5\u544A\u6587\u4EF6\u5DF2\u751F\u6210\u3002\u53EF\u5728\u672C\u6B21\u62A5\u544A\u5361\u7247\u9884\u89C8\u6216\u4E0B\u8F7DHTML\uFF1B\u751F\u6210\u6587\u4EF6\u4E0D\u8868\u793A\u6545\u969C\u5DF2\u4FEE\u590D\u6216\u5DE1\u68C0\u5168\u90E8\u6B63\u5E38\u3002"
+        message: args.kind === "inspection" ? `\u5DF2\u4FDD\u5B58\u672C\u4F1A\u8BDD\u539F\u5DE1\u68C0 ${source.run_id} \u7684\u5B8C\u6574HTML\uFF0C\u672A\u91CD\u8DD1\u6216\u91CD\u7ED8\u3002${args.selection === "latest_completed" ? `\u6309\u7528\u6237\u660E\u786E\u8981\u6C42\u9009\u62E9\u6700\u8FD1\u5DF2\u5B8C\u6210\u62A5\u544A\uFF1B\u8DF3\u8FC7\uFF1A${skippedInspectionRuns.map((item) => `${item.run_id}\uFF08${item.status}\uFF09`).join("\u3001") || "\u65E0"}\uFF1B\u4E0D\u662F\u6700\u65B0\u5DE1\u68C0\u7ED3\u679C\u58F0\u660E\u3002` : selectedRunId !== void 0 ? "\u6309\u4E8B\u4EF6/\u663E\u5F0Frun_id\u9009\u62E9\uFF0C\u672A\u5207\u6362\u5176\u4ED6\u8FD0\u884C\uFF0C\u4E0D\u5192\u79F0\u6700\u65B0\u7ED3\u679C\u3002" : "\u672C\u4F1A\u8BDD\u552F\u4E00\u5DE1\u68C0\u6765\u6E90\u3002"}\u53EF\u539F\u751F\u9884\u89C8\u3001\u4E0B\u8F7D\uFF1B\u4E0D\u8868\u793A\u5168\u90E8\u6B63\u5E38\u3002` : troubleshooting && args.run_id !== void 0 ? "\u5DF2\u6309\u663E\u5F0Frun_id\u4FDD\u5B58\u672C\u4F1A\u8BDD\u539F\u6545\u969CRun\u7684\u5B8C\u6574HTML\uFF0C\u4E0D\u5192\u79F0\u672C\u4F1A\u8BDD\u6700\u65B0\u7ED3\u679C\u3002\u53EF\u539F\u751F\u9884\u89C8\u3001\u4E0B\u8F7D\uFF1B\u4E0D\u8868\u793A\u6545\u969C\u5DF2\u4FEE\u590D\u3002" : "HTML\u62A5\u544A\u6587\u4EF6\u5DF2\u751F\u6210\u3002\u53EF\u5728\u672C\u6B21\u62A5\u544A\u5361\u7247\u9884\u89C8\u6216\u4E0B\u8F7DHTML\uFF1B\u751F\u6210\u6587\u4EF6\u4E0D\u8868\u793A\u6545\u969C\u5DF2\u4FEE\u590D\u6216\u5DE1\u68C0\u5168\u90E8\u6B63\u5E38\u3002"
       };
     }
   });
@@ -889,5 +927,6 @@ export {
   inject,
   name,
   reportValue,
-  requireReportRequest
+  requireReportRequest,
+  resolveReportRunSelection
 };

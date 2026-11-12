@@ -79,17 +79,6 @@
           - list_troubleshooting_playbooks
           - start_diagnosis
           - get_diagnosis_result
-      - id: report-write
-        serverName: report-write
-        description: 仅受信研判运行时保存并回读同次报告，不向模型授权写入
-        enabled: true
-        url: http://172.16.138.228:26000/mcp/persistence
-        headers: []
-        tools:
-          mode: selected
-          names:
-          - save_persistence_result
-          - get_persistence_result
       - id: threat-analysis-runtime
         serverName: threat-analysis-runtime
         description: 平台工具与资源分组 v2；服务就绪后在 MCP 管理页发现并启用。

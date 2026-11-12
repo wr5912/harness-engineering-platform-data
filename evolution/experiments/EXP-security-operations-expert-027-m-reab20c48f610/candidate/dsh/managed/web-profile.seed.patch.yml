@@ -4,20 +4,40 @@
     name: file:///opt/dsh-managed/mcp-manager/index.mjs
     config:
       servers:
-      - id: policy-configuration
-        serverName: policy-configuration
-        description: 单来源统一策略分组 v2；单点与部门共用HEP业务签名网关
+      - id: policy-response
+        serverName: policy-response
+        description: 策略与应急原始 AISOC 工具和资源
         enabled: true
-        url: http://172.16.138.228:18120/hep/mcp/groups/policy-configuration/v2
+        url: http://172.16.138.228:18120/hep/mcp/groups/policy-response/v2
         headers: []
         tools:
           mode: all
           names: []
-      - id: emergency-action
-        serverName: emergency-action
-        description: 平台应急处置分组 v2；经统一网关业务签名通道访问
+      - id: policy-response-acceptance
+        serverName: policy-response-acceptance
+        description: 策略与应急未发布组合专用验收入口，待平台绑定
         enabled: true
-        url: http://172.16.138.228:18120/hep/mcp/groups/emergency-action/v2
+        url: http://172.16.138.228:18120/hep/mcp/groups/policy-response-acceptance/v2
+        headers: []
+        tools:
+          mode: selected
+          names:
+          - policy_change
+          - emergency_action
+      - id: xx-device-acceptance
+        serverName: xx-device-acceptance
+        description: XX指令与三Map模板的专属Mock组合验收
+        enabled: true
+        url: http://172.16.138.228:18120/hep/mcp/groups/xx-device-acceptance/v2
+        headers: []
+        tools:
+          mode: all
+          names: []
+      - id: soc-readonly
+        serverName: soc-readonly
+        description: 只读资产与来源核验；路由层用它取 source/sourceRef
+        enabled: true
+        url: http://172.16.138.228:18120/hep/mcp/groups/soc-readonly/v2
         headers: []
         tools:
           mode: all
@@ -34,51 +54,41 @@
         tools:
           mode: all
           names: []
-      - id: sec-ops
-        serverName: sec-ops
-        description: ''
+      - id: ai-soc-master
+        serverName: ai-soc-master
+        description: SOC Master 资产发现与纳管动作（asset-management组唯一来源）
         enabled: true
-        url: http://172.16.138.232:50500/mcp/security-operations-expert
-        headers: []
-        tools:
-          mode: selected
-          names:
-          - search_graph_assets
-          - get_graph_resolve_ip_host
-          - get_soc_asset_by_asset_id
-          - list_soc_asset
-          - get_soc_asset_biz_systems
-          - get_soc_asset_vulnerabilities
-          - get_ingest_devices_by_asset_by_asset_id
-          - get_graph_node_detail
-          - get_graph_path_query
-          - get_reachability_path_by_ip
-          - get_graph_flow_host_pair_ports
-          - get_reachability_cross_signal
-          - get_graph_compliance_violations
-          - get_graph_coverage
-          - get_event_by_id
-      - id: inspection
-        serverName: inspection
-        description: ''
-        enabled: true
-        url: http://172.16.138.228:26000/mcp/inspection
+        specUrl: http://172.16.138.232:18087/v3/api-docs/mcp
+        apiKey: ''
+        authType: credential
+        authHeader: X-API-Key
         headers: []
         tools:
           mode: all
           names: []
-      - id: troubleshooting
-        serverName: troubleshooting
-        description: 已发布故障排查目录、诊断运行与同次报告
+      - id: inspection-compositions
+        serverName: inspection-compositions
+        description: ''
         enabled: true
-        url: http://172.16.138.228:26000/mcp/troubleshooting
+        url: http://172.16.138.228:18120/hep/mcp/groups/inspection-compositions/v2
+        headers: []
+        tools:
+          mode: all
+          names: []
+      - id: troubleshooting-compositions
+        serverName: troubleshooting-compositions
+        description: 只读业务访问与设备不在线排查及同次运行报告
+        enabled: true
+        url: http://172.16.138.228:18120/hep/mcp/groups/troubleshooting-compositions/v2
         headers: []
         tools:
           mode: selected
           names:
-          - list_troubleshooting_playbooks
-          - start_diagnosis
-          - get_diagnosis_result
+          - diagnose_business_access
+          - diagnose_device_offline
+          - get_composition_run
+          - get_composition_artifact
+          - get_composition_details
       - id: report-write
         serverName: report-write
         description: 仅受信研判运行时保存并回读同次报告，不向模型授权写入
@@ -99,34 +109,22 @@
         tools:
           mode: selected
           names: []
-      # 策略已由远端同名HEP组完成12工具/5模板选择；本地不再次过滤或包装其资源URI。
-      # 模型确认/决定的永久禁用仍由业务守卫执行；不通过目录声明授予执行权限。
       groups:
-      - id: inspection-readonly
+      # 纳管底层来源仅供高层入口核对。
+      - id: asset-management
         members:
-        - serverId: inspection
+        - serverId: ai-soc-master
           names:
-          - list_executable_inspections
-          - get_inspection_result
-      - id: emergency-action
-        members:
-        - serverId: emergency-action
-          names:
-          - preview_disposition
-          - prepare_emergency_action
-          - revise_emergency_action
-          - cancel_emergency_action
-          - get_emergency_action
-          - get_emergency_action_result
-          - list_emergency_actions
-          resourceUris: []
-          resourceTemplates: []
-        - serverId: ai-soc-correlate
-          names: []
+          - create_soc_asset_probe
+          - create_soc_discovery_identify
+          - create_soc_discovery_tasks
+          - start_soc_discovery_tasks
+          - create_soc_discovery_tasks_adopt
+          - create_soc_asset
           resourceUris: []
           resourceTemplates:
-          - http://172.16.138.223:18085/correlate/incident/{incidentId}
-          - http://172.16.138.223:18085/correlate/incident/{incidentId}/judgements
-          - http://172.16.138.223:18085/correlate/incident/judgement/{judgementId}/report
-          - http://172.16.138.223:18085/correlate/reasoning/rules/{ruleId}
+          - http://172.16.138.232:18087/soc/discovery/tasks/{taskId}
+          - http://172.16.138.232:18087/soc/discovery/tasks/{taskId}/scope
+          - http://172.16.138.232:18087/soc/asset/{assetId}
+          - http://172.16.138.232:18087/soc/asset/list{?pageNum,pageSize,ip,hostname,keyword,source,layerId,excludeLayerId,online,assetType,vendor,status,techStatus,deptId,sortField,sortOrder,collectionStatus,collectAnomaly,modelIds,includeUnits,assetView,rootOnly,hostAssetId,bizIds,bizAssociation}
       sharedToken: ''

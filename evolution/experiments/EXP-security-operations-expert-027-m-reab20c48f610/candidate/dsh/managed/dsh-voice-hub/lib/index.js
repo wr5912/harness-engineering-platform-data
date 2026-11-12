@@ -22481,7 +22481,6 @@ async function checkServiceConnections(config2) {
 }
 
 // src/index.ts
-var getOperationOriginalRoute = await import(new URL("../../operation-result-delivery.mjs", import.meta.url).href).then((module) => module.getOriginalRoute).catch(() => void 0);
 var name = "voice-mode";
 var NS_VOICE_MODE = "voice-mode";
 var BASE_PATH = "/voice-mode";
@@ -22970,7 +22969,7 @@ function apply(ctx, config2) {
       broadcast("tool", { sessionId: sid, name: event.data.name });
       return;
     }
-    const source = summarySource(event, session.snapshotEvents(), getOperationOriginalRoute?.(sid));
+    const source = summarySource(event, session.snapshotEvents());
     if (!source || event.type !== "assistant/message") return;
     const timing = mainTimings.get(sid);
     mainTimings.delete(sid);

@@ -1,9 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { build } from 'esbuild'
-import * as operationDelivery from '../../operation-result-delivery.mjs'
 import * as threatDelivery from '../../threat-analysis.mjs'
-import * as policySelection from '../../policy-selection-runtime.mjs'
 
 const compiled = await build({ entryPoints: ['src/speech-summary.ts'], bundle: true, write: false, platform: 'node', format: 'esm', logLevel: 'silent' })
 const { SpeechSummaryQueue, summarySource, SUMMARY_DEFAULTS } = await import('data:text/javascript;base64,' + Buffer.from(compiled.outputFiles[0].text).toString('base64'))
@@ -28,19 +26,8 @@ async function delivered(kind, history = [header('previous-native', 'old-model')
   const ctx = { on: (name, hook) => hooks.set(name, hook), tools: { register() {} },
     userQuestions: { ask: async ({ questions: [question] }) => { questions++; return { answers: [{ id: question.id, selected: [question.options[0].label] }] } } },
     llm: { registerAdapter: (names, adapter) => names.forEach(name => adapters.set(name, adapter)) } }
-  if (kind === 'native-clarification') {
-    policySelection.apply(ctx)
-    operationDelivery.apply(ctx)
-    const messages = [{ source: { kind: 'user' }, content: [{ type: 'text', text: '新增基础主机到基础服务的访问策略，TCP 443' }] }]
-    await hooks.get('agent/pre-step')({ agent, step: 1, messages }, async () => ({ kind: 'enter', messages }))
-    deliveredText = '已记录源、目的和访问条件，请先确定本次新增策略的动作。'
-  } else if (kind === 'operation') {
-    operationDelivery.apply(ctx)
-    operationDelivery.queueControlledOutput(agent.id, text)
-  } else {
-    threatDelivery.apply(ctx)
-    history.push({ type: 'tool/result', data: { turn: 1, meta: { threat_analysis: { delivery: { markdown: text } } } } })
-  }
+  threatDelivery.apply(ctx)
+  history.push({ type: 'tool/result', data: { turn: 1, meta: { threat_analysis: { delivery: { markdown: text } } } } })
   const signal = new AbortController().signal
   const route = await hooks.get('agent/request')({ agent, turn: 1, signal }, async () => ({ provider: 'selected-native', model: 'current-model' }))
   history.push(header(route.provider, route.model))
@@ -53,7 +40,7 @@ async function delivered(kind, history = [header('previous-native', 'old-model')
   return { adapters, history, event, route, hooks, agent, deliveredText, questions, steered }
 }
 
-for (const kind of ['operation', 'threat']) {
+for (const kind of ['threat']) {
   test(`真实 ${kind} 固定交付已消费后：旧摘要路由失败，默认摘要恢复最近原生模型`, async () => {
     const { adapters, history, event, route } = await delivered(kind)
     const requests = [], emitted = [], spoken = [], failures = []
@@ -89,40 +76,6 @@ for (const kind of ['operation', 'threat']) {
     } finally { queue.dispose() }
   })
 }
-
-test('首轮零原生请求头的固定澄清：默认摘要复用已捕获路由，辅助调用保持独立', async () => {
-  const { history, event, hooks, agent, deliveredText: text, questions, steered } = await delivered('native-clarification', [])
-  assert.equal(questions, 1, '必须真实经过策略动作澄清的原生问题边界')
-  assert.equal(steered.length, 1)
-  assert.equal(history.filter(event => event.type === 'request/header').length, 1)
-  assert.equal(history[0].data.header.config.provider, 'security-operation-delivery')
-  assert.deepEqual(summarySource(event, history), { text }, '旧路径在首轮没有可用的原生请求头')
-  const routes = await import(new URL('../../operation-result-delivery.mjs', import.meta.url).href)
-  assert.strictEqual(routes.getOriginalRoute, operationDelivery.getOriginalRoute, '动态 URL 必须复用同一模块实例')
-  const captured = routes.getOriginalRoute(agent.id)
-  assert.deepEqual(captured, { provider: 'selected-native', model: 'current-model' })
-  captured.model = 'changed-copy'
-  const source = summarySource(event, history, routes.getOriginalRoute(agent.id))
-  assert.deepEqual(source, { text, provider: 'selected-native', model: 'current-model' }, '读取快照不能更改固定交付的原始路由')
-  const requests = [], emitted = [], spoken = []
-  const queue = new SpeechSummaryQueue(async function* (options) {
-    requests.push(options)
-    assert.equal(options.provider, 'selected-native')
-    assert.equal(options.model, 'current-model')
-    assert.equal(options.sessionId, undefined)
-    assert.equal(options.tools, undefined)
-    yield { type: 'text-delta', text: '请补充本次操作。' }; yield finish
-  }, value => emitted.push(value), (...args) => spoken.push(args), () => assert.fail('首轮摘要不应缺失实际路由'))
-  try {
-    assert.equal(SUMMARY_DEFAULTS.summaryModel, null)
-    queue.enqueue(job(source))
-    await waitFor(() => emitted.length === 1)
-    assert.equal(requests.length, 1)
-    assert.equal(spoken.length, 1)
-    hooks.get('agent/disposed')({ agent })
-    assert.equal(routes.getOriginalRoute(agent.id), undefined, '已释放会话不能保留捕获路由')
-  } finally { queue.dispose() }
-})
 
 test('显式摘要模型优先；固定交付没有历史原生模型时也能独立使用', async () => {
   const source = summarySource(message('security-operation-delivery', 'fixed-operation-result'), [])

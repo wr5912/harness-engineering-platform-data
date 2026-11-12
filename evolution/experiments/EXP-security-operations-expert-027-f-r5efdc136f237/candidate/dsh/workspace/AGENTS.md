@@ -21,7 +21,7 @@
 
 ## 路由顺序
 
-按用户任务选择 Skill：新增AISOC访问策略使用 `policy-configuration`，应急动作及已选XX来源的固定指令使用 `emergency-action`，已选XX来源的设备控制、login或net模板字段变更使用 `xx-policy-template`；威胁研判、故障排查、巡检分别按对应入口办理。XX两项通过各自组合承接固定读取、装参及提交，不使用旧Platform中间服务、确认器或本地业务台账；不把XX合同塞进AISOC changes/actionKey任务链。用户不知道设备、事件或问题时，先利用当前可用的查询能力发现候选，说明证据与范围，再承接同一会话查明的对象进入后续分析、策略或处置；不强制用户先给内部 ID，不把正常任务衔接作为跨域错误。同一请求有多个动作时按依赖推进，保留各自授权范围。
+按用户任务先分类为策略或一次性指令：ACL/ROUTE、源目的地址、协议端口、允许/阻断和新增访问规则使用 `policy-configuration`；仅修改某台主机的设备控制、login或net模板时，进入主机模板分支；重启、关机、锁屏、查杀、隔离等一次性动作进入指令分支。策略访问规则不因规则中的源IP、目的IP而查询两端资产来源。主机模板或一次性指令需要目标来源时，使用当前只读SOC资产目录取得 `source/sourceRef`，生成内部 `routeKey` 后再选择Skill：`xx.command`→`xx-device-command`，`xx.policy`→`xx-policy-template`，`aisoc.emergency`→`emergency-action`，`aisoc.policy`→`policy-configuration`。AISOC动作信号（EDR、SOC、actionKey、执行点、host-xxx、封禁IP、禁用接口、漏洞扫描）优先；来源缺失、冲突或未登记时停止并澄清，不按动作同名猜平台。XX两项通过各自组合承接固定读取、装参及提交，不使用旧Platform中间服务、确认器或本地业务台账；不把XX合同塞进AISOC changes/actionKey任务链。当前验收临时映射仅为 `source=external_platform` 且 `sourceRef=x-local-check|x-mq-acceptance-asset-01` 时使用XX来源路由，生产sourceRef待内网确认。用户不知道设备、事件或问题时，先利用当前可用的查询能力发现候选，说明证据与范围，再承接同一会话查明的对象进入后续分析、策略或处置；不强制用户先给内部 ID，不把正常任务衔接作为跨域错误。同一请求有多个动作时按依赖推进，保留各自授权范围。
 
 用户仅要求整理已提供的事实或生成辅助研判时，由主 Agent 直接回答，不调用巡检服务、响应规划委派或写入工具；材料中的“巡检”“研判”不构成执行或委派请求。只有用户明确要求保存文件时才写入。
 
@@ -41,9 +41,13 @@
 
 用户要求修改、删除或停止自动威胁研判定时任务时，先确认原生工具可用并调用 `schedule_list`。修改周期用 `schedule_update` 按任务 ID 原地更改规则，不改动 `prompt`；删除用 `schedule_delete`。当前 Session 只有一个固定自动研判 prompt 的活动任务时直接使用其 ID；多个匹配任务时列出 ID、标题和规则并请用户指定。DSH 没有暂停或恢复工具，用户只说“暂停”时说明能力缺口并询问是否删除，不声称已经暂停。删除只停止后续心跳，不声称已中止正在执行的研判。
 
+### XX设备固定指令
+
+主Agent产出 `routeKey=xx.command` 且来源已验证后，使用 `xx-device-command` Skill，由 `xx_device_command` 组合完成真实查主机、ID装参和一次写入。路由层已处理source/sourceRef；本Skill不根据“主机”关键词或动作同名重新竞争AISOC入口。草案展示和本次原生结构化确认留在Skill，不建第二份业务台账；真实连接未配置时明确停止，不回退Mock。
+
 ### XX设备模板配置
 
-已选XX设备模板来源时，使用 `xx-policy-template` Skill，按实际目录中的XX组合完成设备控制、login和net字段变更；这不是AISOC防火墙访问策略。固定读写和参数校验交给组合，草案展示及本次原生结构化确认留在Skill，不建第二份业务台账。组合的preview只是本地请求/差异草案，不是上游真实渲染或预检；本期Mock成功不得表述为真实设备生效。字段及字符串取值以工具Schema为准，不猜login编号含义或单位。
+主Agent产出 `routeKey=xx.policy` 且来源已验证后，使用 `xx-policy-template` Skill，由 `xx_device_policy` 组合完成模板读取、字段校验、差异装配和一次写入；这不是AISOC防火墙访问策略。路由层已处理source/sourceRef；本Skill不根据“主机”关键词或字段同名重新竞争AISOC策略入口。固定读写交给组合，草案展示及本次原生结构化确认留在Skill，不建第二份业务台账。组合的preview是真实读取后的本地差异草案，不是上游真实渲染或预检；真实接口返回不等于设备已生效。字段及字符串取值以工具Schema为准，不猜login编号含义或单位。
 
 ### AISOC策略配置
 

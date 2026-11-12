@@ -36,7 +36,7 @@ const mcpTool = (sourceId: string, rawName: string): Target => ({ kind: 'tool', 
 const resource = (sourceId: string, name: string): Target => ({ kind: 'resource', sourceId, name })
 const template = (sourceId: string, name: string, ...variables: string[]): Target => ({ kind: 'template', sourceId, name, variables })
 
-// 基础映射及其预检范围保持不变；规则分支映射单独发现、按需使用。
+// 仅保留基础取证与研判保存映射；报告为本地存储，后置规则建议不新增MCP读取或校验。
 export const LOGICAL_MAPPINGS: readonly LogicalMapping[] = [
   mapping('ai_soc_correlate', 'ai_soc_correlate__get_correlate_incident_judge_pending', mcpTool('ai-soc-correlate', 'get_correlate_incident_judge_pending')),
   mapping('ai_soc_correlate', 'ai_soc_correlate__create_incident_judgement_claim', mcpTool('ai-soc-correlate', 'create_incident_judgement_claim')),
@@ -57,48 +57,13 @@ export const LOGICAL_MAPPINGS: readonly LogicalMapping[] = [
   mapping('ai_soc_graph', 'ai_soc_graph__get_graph_identity_asset_accounts', template('ai-soc-graph', 'get_graph_identity_asset_accounts', 'assetId')),
   mapping('ai_soc_graph', 'ai_soc_graph__get_graph_lm_login_sequence', mcpTool('ai-soc-graph', 'get_graph_lm_login_sequence')),
   mapping('ai_soc_graph', 'ai_soc_graph__get_graph_flow_host_pair_ports', mcpTool('ai-soc-graph', 'get_graph_flow_host_pair_ports')),
-  mapping('report-write', 'save_persistence_result', mcpTool('report-write', 'save_persistence_result')),
-  mapping('report-write', 'get_persistence_result', mcpTool('report-write', 'get_persistence_result')),
-]
-export const RULE_OPTIMIZATION_MAPPINGS: readonly LogicalMapping[] = [
-  mapping('ai_soc_correlate', 'ai_soc_correlate__get_correlate_incident_rule_hits', mcpTool('ai-soc-correlate', 'get_correlate_incident_rule_hits')),
-  mapping('ai_soc_correlate', 'ai_soc_correlate__get_incident_rule_hits_by_hit_id', template('ai-soc-correlate', 'get_incident_rule_hits_by_hit_id', 'incidentId', 'hitId')),
-  mapping('ai_soc_correlate', 'ai_soc_correlate__get_correlate_rule_by_rule_id', template('ai-soc-correlate', 'get_correlate_rule_by_rule_id', 'ruleId')),
-  mapping('ai_soc_correlate', 'ai_soc_correlate__get_correlate_reasoning_rules_definition', template('ai-soc-correlate', 'get_correlate_reasoning_rules_definition', 'ruleId')),
-  mapping('ai_soc_detect', 'ai_soc_detect__get_detect_rule_by_rule_id', template('ai-soc-detect', 'get_detect_rule_by_rule_id', 'ruleId')),
-  mapping('ai_soc_correlate', 'ai_soc_correlate__get_correlate_rule_fields', template('ai-soc-correlate', 'get_correlate_rule_fields', 'q', 'usage')),
-  mapping('ai_soc_detect', 'ai_soc_detect__get_detect_operators', resource('ai-soc-detect', 'get_detect_operators')),
-  mapping('ai_soc_correlate', 'ai_soc_correlate__validate_correlate_reasoning_rules', mcpTool('ai-soc-correlate', 'validate_correlate_reasoning_rules')),
 ]
 const keyOf = (resourceName: string, tool: string) => `${resourceName}\u0000${tool}`
-const mappingByKey = new Map([...LOGICAL_MAPPINGS, ...RULE_OPTIMIZATION_MAPPINGS].map(item => [keyOf(item.resource, item.tool), item]))
+const mappingByKey = new Map(LOGICAL_MAPPINGS.map(item => [keyOf(item.resource, item.tool), item]))
 export const PENDING_REQUIRED = [keyOf('ai_soc_correlate', 'ai_soc_correlate__get_correlate_incident_judge_pending')] as const
 export const MANUAL_REQUIRED = LOGICAL_MAPPINGS
-  .filter(item => item.resource !== 'report-write' && !PENDING_REQUIRED.includes(keyOf(item.resource, item.tool) as any))
+  .filter(item => !PENDING_REQUIRED.includes(keyOf(item.resource, item.tool) as any))
   .map(item => keyOf(item.resource, item.tool))
-
-function storageContract(tool: any, operation: string): boolean {
-  const schema = tool?.inputSchema, properties = schema?.properties, required = schema?.required
-  if (!properties || typeof properties !== 'object' || !Array.isArray(required)) return false
-  if (operation === 'get_persistence_result') {
-    return required.length === 1 && required[0] === 'id' && Object.keys(properties).length === 1
-      && properties.id?.type === 'string'
-  }
-  const fileFields = ['sourceModule', 'resultType', 'businessId', 'revision', 'contentType', 'fileName', 'fileContentBase64', 'payloadJson']
-  if (operation === 'save_persistence_result' && Object.keys(properties).length === fileFields.length
-    && fileFields.every(field => properties[field]?.type === (field === 'revision' ? 'integer' : 'string'))
-    && required.every(field => fileFields.includes(field))) return true
-  const fields = ['sourceModule', 'resultType', 'businessId', 'revision', 'content']
-  const content = properties.content
-  return operation === 'save_persistence_result' && required.length === fields.length
-    && fields.every(field => required.includes(field)) && Object.keys(properties).length === fields.length
-    && properties.revision?.type === 'integer' && properties.revision.minimum === 1
-    && content?.type === 'object' && Array.isArray(content.oneOf) && content.oneOf.length === 2
-    && content.properties?.fileContentBase64?.type === 'string'
-    && content.properties?.fileName?.type === 'string' && content.properties?.contentType?.type === 'string'
-    && Array.isArray(content.properties?.payload?.oneOf)
-    && !Object.prototype.hasOwnProperty.call(properties, 'payloadJson')
-}
 
 function proxyOwner(uri: string, groupId: string, sourceId: string, kind: 'r' | 't'): boolean {
   return typeof uri === 'string' && uri.startsWith(`mcp-group:/${groupId}/${sourceId}/${kind}/`)
@@ -110,8 +75,7 @@ export function resolveMappings(discovery: any, groupId = 'threat-analysis-runti
   const resources = Array.isArray(discovery?.resources) ? discovery.resources : []
   const templates = Array.isArray(discovery?.resourceTemplates) ? discovery.resourceTemplates : []
   const resolved = new Map<string, any>()
-  for (const item of [...LOGICAL_MAPPINGS, ...RULE_OPTIMIZATION_MAPPINGS]) {
-    const optional = RULE_OPTIMIZATION_MAPPINGS.includes(item)
+  for (const item of LOGICAL_MAPPINGS) {
     let discovered
     if (item.target.kind === 'tool') {
       const matches = tools.filter((tool: any) => {
@@ -119,31 +83,24 @@ export function resolveMappings(discovery: any, groupId = 'threat-analysis-runti
         return source?.serverId === item.target.sourceId && source.kind === 'tool' && source.sourceName === (item.target as Extract<Target, { kind: 'tool' }>).rawName
       })
       if (matches.length > 1) {
-        if (optional) continue
         throw new Error(`threat-analysis MCP mapping ambiguous: ${item.target.sourceId}/${item.target.rawName}`)
       }
       discovered = matches[0]
-      // 只接入已核对的正文或文件合同；文件来源在调用边界转换，内部仍使用五字段正文。
-      if (item.resource === 'report-write' && discovered
-        && !storageContract(discovered, item.tool)) discovered = undefined
     } else if (item.target.kind === 'resource') {
       const matches = resources.filter((value: any) => value?.name === (item.target as Extract<Target, { kind: 'resource' }>).name && proxyOwner(value?.uri, groupId, item.target.sourceId, 'r'))
       if (matches.length > 1) {
-        if (optional) continue
         throw new Error(`threat-analysis MCP mapping ambiguous: ${item.target.sourceId}/${item.target.name}`)
       }
       discovered = matches[0]
     } else {
       const matches = templates.filter((value: any) => value?.name === (item.target as Extract<Target, { kind: 'template' }>).name && proxyOwner(value?.uriTemplate, groupId, item.target.sourceId, 't'))
       if (matches.length > 1) {
-        if (optional) continue
         throw new Error(`threat-analysis MCP mapping ambiguous: ${item.target.sourceId}/${item.target.name}`)
       }
       discovered = matches[0]
       if (discovered) {
         const actual = new UriTemplate(discovered.uriTemplate).variableNames
         if (JSON.stringify(actual) !== JSON.stringify(item.target.variables)) {
-          if (optional) continue
           throw new Error(`threat-analysis MCP template variables changed: ${item.target.sourceId}/${item.target.name}`)
         }
       }
@@ -239,19 +196,7 @@ async function invoke(client: any, resolved: Map<string, any>, payload: any, sig
   const _meta = { [GROUP_TARGET_META_KEY]: { digest: targetDigest } }
   try {
     if (selected.mapping.target.kind === 'tool') {
-      let arguments_ = args
-      if (payload.resource === 'report-write' && payload.tool === 'save_persistence_result'
-        && !selected.discovered.inputSchema.properties.content) {
-        const { content, ...identity } = args
-        if (Object.keys(identity).sort().join(',') !== 'businessId,resultType,revision,sourceModule'
-          || !Number.isInteger(identity.revision) || identity.revision < 1
-          || !content || Object.keys(content).sort().join(',') !== 'contentType,fileContentBase64,fileName'
-          || !['contentType', 'fileName', 'fileContentBase64'].every(field => typeof content[field] === 'string' && content[field])) {
-          throw new Error('invalid report file content')
-        }
-        arguments_ = { ...identity, ...content }
-      }
-      const result = await client.callTool({ name: selected.discovered.name, arguments: arguments_, _meta }, { signal, timeout })
+      const result = await client.callTool({ name: selected.discovered.name, arguments: args, _meta }, { signal, timeout })
       if (result?.isError) return failure(new Error('MCP tool returned an error'), result)
       return { status: 'success', status_code: 200, result: resultPayload(result) }
     }

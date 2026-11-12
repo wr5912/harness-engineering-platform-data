@@ -36,7 +36,45 @@
     };
   }
 
+  // notification-actions.ts
+  function notificationIncidentIds(item) {
+    const values = [item.incidentId, ...Array.isArray(item.incidentIds) ? item.incidentIds : []];
+    return [...new Set(values.filter((id) => typeof id === "string" && !!id.trim()).map((id) => id.trim()))];
+  }
+  function notificationList(items, showWithoutId = false) {
+    const visible = showWithoutId ? items : items.filter((item) => notificationIncidentIds(item).length > 0);
+    return { items: visible, unreadCount: visible.filter((item) => !item.isRead).length, hiddenCount: items.length - visible.length };
+  }
+  function notificationAction(item, visible) {
+    const ids = notificationIncidentIds(item);
+    const ready = new Set(visible.filter((row) => row.type === "AI_INVESTIGATION_READY").flatMap(notificationIncidentIds));
+    const readyIds = ids.filter((id) => ready.has(id));
+    const review = ids.length > 0 && readyIds.length === ids.length;
+    return { ids, readyIds, review, label: review ? "\u5C06\u4E8B\u4EF6\u4E0A\u4E0B\u6587\u586B\u5165\u8F93\u5165\u6846\uFF0C\u590D\u6838\u5DF2\u6709\u7814\u5224" : "\u5C06\u4E8B\u4EF6\u4E0A\u4E0B\u6587\u586B\u5165\u8F93\u5165\u6846\uFF0C\u6838\u5BF9\u5E76\u7814\u5224" };
+  }
+  function investigationDraft(item, ids, readyIds = []) {
+    if (!ids.length) return "";
+    const context = {
+      incident_ids: [...ids],
+      ready_notification_incident_ids: [...readyIds],
+      notification_type: item.type,
+      title: item.title,
+      summary: item.summary,
+      notified_status: item.status,
+      severity: item.severity
+    };
+    const review = readyIds.length === ids.length;
+    return `${review ? "\u8BF7\u67E5\u8BE2\u5E76\u590D\u6838\u5DF2\u6709\u7814\u5224\u7ED3\u679C" : "\u8BF7\u6838\u5BF9\u5E76\u7814\u5224\u4EE5\u4E0B\u5A01\u80C1\u4E8B\u4EF6"}\uFF1A${ids.join("\u3001")}\u3002
+\u5148\u6309\u4E8B\u4EF6 ID \u67E5\u8BE2\u5B8C\u6574\u8BE6\u60C5\u3001\u8BC1\u636E\u548C\u5F53\u524D\u7814\u5224\u72B6\u6001\uFF1B\u82E5\u5DF2\u7ECF\u7814\u5224\u6216\u6B63\u5728\u7814\u5224\uFF0C\u8BF7\u544A\u77E5\u5DF2\u6709\u7ED3\u679C\u6216\u8FDB\u5EA6\uFF0C\u4E0D\u8981\u91CD\u590D\u542F\u52A8\u3002${review ? "\u672C\u6B21\u4EC5\u590D\u6838\u73B0\u6709\u7ED3\u8BBA\u53CA\u8BC1\u636E\u7F3A\u53E3\uFF0C\u4E0D\u91CD\u65B0\u542F\u52A8\u7814\u5224\u3002" : "\u4EC5\u5BF9\u786E\u8BA4\u5F85\u7814\u5224\u7684\u4E8B\u4EF6\u8FDB\u884C\u7814\u5224\uFF0C\u8BF4\u660E\u7ED3\u8BBA\u548C\u8BC1\u636E\u7F3A\u53E3\u3002"}\u4E0D\u6267\u884C\u5904\u7F6E\u52A8\u4F5C\u3002
+\u8BF7\u7814\u5224\u4EE5\u4E0B\u4E8B\u4EF6\uFF1A
+${JSON.stringify(context, null, 2)}`;
+  }
+
   // client.tsx
+  function notificationTime(value) {
+    if (!Number.isFinite(value)) return "\u65F6\u95F4\u672A\u77E5";
+    return new Date(value).toLocaleString();
+  }
   var recommendations = [
     {
       title: "\u65B0\u589E\u8BBF\u95EE\u7B56\u7565\u8349\u7A3F",
@@ -95,6 +133,8 @@
   ];
   var PLUGIN_ID = "dsh-security-operations-ui";
   var STATUS_KIND = "security-operations-status";
+  var THREAT_PLUGIN_ID = "dsh-security-operations-threat-notifications";
+  var THREAT_KIND = "security-threat-notifications";
   var EMPLOYEES_KEY = "dsh.securityOperations.digitalEmployees.v1";
   function loadEmployees() {
     try {
@@ -149,7 +189,7 @@
           expanded && /* @__PURE__ */ React.createElement("div", { className: "soc-runtime__detail" }, "\u5931\u8D25 ", overview ? role.failed : "\u2014", " \xB7 \u65E0\u5B50\u4F1A\u8BDD ", overview ? role.noChild : "\u2014", " \xB7 \u72B6\u6001\u672A\u77E5 ", overview ? role.unknown : "\u2014", role.recent.length ? /* @__PURE__ */ React.createElement("ul", null, role.recent.map((call, index) => /* @__PURE__ */ React.createElement("li", { key: `${call.startedAt}-${index}` }, /* @__PURE__ */ React.createElement("button", { type: "button", onClick: () => openSession(call.childSessionId ?? call.parentSessionId) }, new Date(call.startedAt).toLocaleString(), " \xB7 ", call.status, " \xB7 ", call.childSessionId ? "\u5B50\u4F1A\u8BDD" : "\u4E3B\u4F1A\u8BDD")))) : /* @__PURE__ */ React.createElement("p", null, "\u5F53\u524D\u65F6\u95F4\u7A97\u6682\u65E0\u59D4\u6D3E\u8C03\u7528\u3002"))
         ))));
       }
-      function QuickActions({ session, inputActions, openStatus, useWorkspaces, useSessions, uiWorkspace }) {
+      function QuickActions({ session, inputActions, openStatus, openThreat, useWorkspaces, useSessions, uiWorkspace }) {
         const [tab, setTab] = React.useState("recommend");
         const [query, setQuery] = React.useState("");
         const [notice, setNotice] = React.useState("");
@@ -179,11 +219,6 @@
             clearInterval(timer);
           };
         }, []);
-        React.useEffect(() => {
-          if (!session.blank || window.innerWidth <= 720) return void 0;
-          const frame = requestAnimationFrame(openStatus);
-          return () => cancelAnimationFrame(frame);
-        }, [session.blank, openStatus]);
         if (!session.blank) return null;
         const keyword = query.trim().toLocaleLowerCase();
         const recommended = recommendations.filter((action) => `${action.title} ${action.description}`.toLocaleLowerCase().includes(keyword));
@@ -236,7 +271,7 @@
           if (!window.confirm(`\u786E\u5B9A\u5220\u9664\u201C${person.title}\u201D\u5417\uFF1F`)) return;
           if (persistEmployees(employeeItems.filter((item) => item.id !== person.id)) && editingId === person.id) setDraft(null);
         }
-        return /* @__PURE__ */ React.createElement("section", { className: "soc-quick", "aria-label": "\u667A\u80FD\u5BF9\u8BDD\u5FEB\u6377\u5165\u53E3" }, /* @__PURE__ */ React.createElement(RuntimeOverview, { overview, openStatus, openSession: (id) => void uiWorkspace.openSession(id) }), /* @__PURE__ */ React.createElement("div", { className: "soc-quick__heading" }, /* @__PURE__ */ React.createElement("strong", null, "\u667A\u80FD\u5BF9\u8BDD"), /* @__PURE__ */ React.createElement("button", { type: "button", className: "soc-quick__status", onClick: openStatus }, "\u7CFB\u7EDF\u6D88\u606F")), /* @__PURE__ */ React.createElement("div", { className: "soc-quick__toolbar" }, /* @__PURE__ */ React.createElement("div", { className: "soc-quick__tabs", role: "tablist", "aria-label": "\u5FEB\u6377\u5165\u53E3\u5206\u7C7B" }, /* @__PURE__ */ React.createElement("button", { type: "button", role: "tab", "aria-selected": tab === "recommend", onClick: () => switchTab("recommend") }, "\u63A8\u8350"), /* @__PURE__ */ React.createElement("button", { type: "button", role: "tab", "aria-selected": tab === "employees", onClick: () => switchTab("employees") }, "\u6570\u5B57\u5458\u5DE5"), /* @__PURE__ */ React.createElement("button", { type: "button", role: "tab", "aria-selected": tab === "favorites", onClick: () => switchTab("favorites") }, "\u6536\u85CF")), tab === "employees" && /* @__PURE__ */ React.createElement(
+        return /* @__PURE__ */ React.createElement("section", { className: "soc-quick", "aria-label": "\u667A\u80FD\u5BF9\u8BDD\u5FEB\u6377\u5165\u53E3" }, /* @__PURE__ */ React.createElement(RuntimeOverview, { overview, openStatus, openSession: (id) => void uiWorkspace.openSession(id) }), /* @__PURE__ */ React.createElement("div", { className: "soc-quick__heading" }, /* @__PURE__ */ React.createElement("strong", null, "\u667A\u80FD\u5BF9\u8BDD"), /* @__PURE__ */ React.createElement("span", { className: "soc-quick__status-group" }, /* @__PURE__ */ React.createElement("button", { type: "button", className: "soc-quick__status", onClick: openThreat }, "\u5A01\u80C1\u4E8B\u4EF6\u901A\u77E5"), /* @__PURE__ */ React.createElement("button", { type: "button", className: "soc-quick__status", onClick: openStatus }, "\u7CFB\u7EDF\u6D88\u606F"))), /* @__PURE__ */ React.createElement("div", { className: "soc-quick__toolbar" }, /* @__PURE__ */ React.createElement("div", { className: "soc-quick__tabs", role: "tablist", "aria-label": "\u5FEB\u6377\u5165\u53E3\u5206\u7C7B" }, /* @__PURE__ */ React.createElement("button", { type: "button", role: "tab", "aria-selected": tab === "recommend", onClick: () => switchTab("recommend") }, "\u63A8\u8350"), /* @__PURE__ */ React.createElement("button", { type: "button", role: "tab", "aria-selected": tab === "employees", onClick: () => switchTab("employees") }, "\u6570\u5B57\u5458\u5DE5"), /* @__PURE__ */ React.createElement("button", { type: "button", role: "tab", "aria-selected": tab === "favorites", onClick: () => switchTab("favorites") }, "\u6536\u85CF")), tab === "employees" && /* @__PURE__ */ React.createElement(
           "button",
           {
             type: "button",
@@ -283,13 +318,21 @@
           /* @__PURE__ */ React.createElement("span", { className: "soc-quick__person" }, /* @__PURE__ */ React.createElement("span", { className: "soc-quick__card-title" }, person.title, /* @__PURE__ */ React.createElement("span", { "aria-hidden": "true" }, "\u2197")), /* @__PURE__ */ React.createElement("span", { className: "soc-quick__person-label" }, "\u7B80\u4ECB"), /* @__PURE__ */ React.createElement("span", { className: "soc-quick__card-description" }, person.description), /* @__PURE__ */ React.createElement("span", { className: "soc-quick__skills" }, person.skills.map((skill) => /* @__PURE__ */ React.createElement("span", { key: skill }, skill))))
         ))) : favorites.map((item) => /* @__PURE__ */ React.createElement("button", { key: item.id, type: "button", className: "soc-quick__card", onClick: () => uiWorkspace.openSession(item.id) }, /* @__PURE__ */ React.createElement("span", { className: "soc-quick__card-title" }, item.displayTitle, /* @__PURE__ */ React.createElement("span", { "aria-hidden": "true" }, "\u2197")), /* @__PURE__ */ React.createElement("span", { className: "soc-quick__card-description" }, "\u5DF2\u7F6E\u9876\u4F1A\u8BDD\uFF0C\u70B9\u51FB\u7EE7\u7EED\u5BF9\u8BDD\u3002")))) : tab === "employees" && employeeEditing ? /* @__PURE__ */ React.createElement("div", { className: "soc-quick__grid", role: "tabpanel" }, /* @__PURE__ */ React.createElement("button", { type: "button", className: "soc-quick__card soc-employee-add", onClick: () => openEmployeeForm() }, /* @__PURE__ */ React.createElement("span", { "aria-hidden": "true" }, "\uFF0B"), "\u65B0\u589E\u6570\u5B57\u5458\u5DE5")) : /* @__PURE__ */ React.createElement("p", { className: "soc-quick__empty", role: "tabpanel" }, tab === "favorites" && !keyword ? "\u6682\u65E0\u6536\u85CF\u4F1A\u8BDD\u3002\u53EF\u5728\u5DE6\u4FA7\u4F1A\u8BDD\u83DC\u5355\u4E2D\u9009\u62E9\u201C\u7F6E\u9876\u201D\u3002" : `\u6CA1\u6709\u5339\u914D\u7684${tab === "recommend" ? "\u63A8\u8350\u4EFB\u52A1" : tab === "employees" ? "\u6570\u5B57\u5458\u5DE5" : "\u6536\u85CF\u4F1A\u8BDD"}\u3002`), tab === "favorites" && favorites.length > 0 && /* @__PURE__ */ React.createElement("p", { className: "soc-quick__favorite" }, "\u5728\u5DE6\u4FA7\u4F1A\u8BDD\u83DC\u5355\u4E2D\u4F7F\u7528\u201C\u7F6E\u9876\u201D\u6216\u201C\u53D6\u6D88\u7F6E\u9876\u201D\u7BA1\u7406\u6536\u85CF\u3002"));
       }
-      function StatusPanel({ useSession, useInput }) {
+      function StatusPanel({ useSession, useInput, threatOnly = false, appendDraft }) {
         const queued = useInput((state) => state.queue.length);
         const submitting = useSession((state) => state.pendingSubmissions.length);
         const running = useSession((state) => state.running);
         const attempted = useSession((state) => state.promptAttempted);
         const awaiting = useSession((state) => state.awaitingFirstTurn);
         const failed = useSession((state) => state.lastAgentError !== null || state.promptError !== null || state.openError !== null);
+        const [notifications, setNotifications] = React.useState([]);
+        const [showWithoutId, setShowWithoutId] = React.useState(false);
+        const display = notificationList(notifications, showWithoutId);
+        const unreadCount = display.unreadCount;
+        const [notificationError, setNotificationError] = React.useState("");
+        const [actionNotice, setActionNotice] = React.useState("");
+        const [expandedKey, setExpandedKey] = React.useState(null);
+        const notificationsRef = React.useRef(null);
         const pending = queued + submitting;
         const completed = attempted && !running && !awaiting && !failed ? 1 : 0;
         const message = failed ? "\u6267\u884C\u5F02\u5E38\uFF0C\u8BF7\u67E5\u770B\u5F53\u524D\u4F1A\u8BDD\u8BE6\u60C5\u3002" : running || awaiting ? "\u5F53\u524D\u4F1A\u8BDD\u6B63\u5728\u6267\u884C\u3002" : pending > 0 ? `\u5F53\u524D\u4F1A\u8BDD\u6709 ${pending} \u9879\u5F85\u5904\u7406\u6D88\u606F\u3002` : completed ? "\u5F53\u524D\u4F1A\u8BDD\u6700\u8FD1\u4E00\u6B21\u6267\u884C\u5DF2\u5B8C\u6210\u3002" : "\u6682\u65E0\u7CFB\u7EDF\u6D88\u606F\u3002";
@@ -299,7 +342,134 @@
           [running || awaiting ? "1" : "0", "\u6267\u884C\u4E2D"],
           [String(completed), "\u5DF2\u5B8C\u6210"]
         ];
-        return /* @__PURE__ */ React.createElement("section", { className: "soc-status", "aria-labelledby": "soc-status-title" }, /* @__PURE__ */ React.createElement("header", null, /* @__PURE__ */ React.createElement("strong", { id: "soc-status-title" }, "\u7CFB\u7EDF\u6D88\u606F"), /* @__PURE__ */ React.createElement("span", null, "\u5F53\u524D\u4F1A\u8BDD")), /* @__PURE__ */ React.createElement("div", { className: "soc-status__metrics" }, metrics.map(([value, label]) => /* @__PURE__ */ React.createElement("div", { key: label }, /* @__PURE__ */ React.createElement("strong", null, value), /* @__PURE__ */ React.createElement("span", null, label)))), /* @__PURE__ */ React.createElement("p", { className: failed ? "soc-status__message soc-status__message--error" : "soc-status__message" }, message));
+        React.useEffect(() => {
+          if (!threatOnly) return void 0;
+          let active = true;
+          async function refresh() {
+            try {
+              const response = await fetch(new URL("api/security-operations/notifications", document.baseURI), { credentials: "same-origin" });
+              if (!response.ok) throw new Error(`notifications ${response.status}`);
+              const data = await response.json();
+              if (!active) return;
+              setNotifications(Array.isArray(data.items) ? data.items : []);
+              setNotificationError("");
+            } catch {
+              if (active) setNotificationError("\u5B9E\u65F6\u901A\u77E5\u6682\u4E0D\u53EF\u7528\u3002");
+            }
+          }
+          void refresh();
+          const timer = setInterval(() => void refresh(), 5e3);
+          return () => {
+            active = false;
+            clearInterval(timer);
+          };
+        }, [threatOnly]);
+        async function markRead(eventKey) {
+          try {
+            const response = await fetch(new URL("api/security-operations/notifications/read", document.baseURI), {
+              method: "POST",
+              credentials: "same-origin",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ eventKey })
+            });
+            if (!response.ok) return;
+            const data = await response.json();
+            setNotifications(Array.isArray(data.items) ? data.items : []);
+          } catch {
+          }
+        }
+        function quickInvestigate(item) {
+          const action = notificationAction(item, notifications);
+          const prompt = investigationDraft(item, action.ids, action.readyIds);
+          if (!prompt) return;
+          try {
+            const result = appendDraft?.(prompt);
+            setActionNotice(result === "applied" ? "\u5DF2\u8FFD\u52A0\u4E8B\u4EF6\u4E0A\u4E0B\u6587\uFF0C\u4FDD\u7559\u539F\u6709\u8349\u7A3F\uFF1B\u8BF7\u6838\u5BF9\u540E\u53D1\u9001\u3002" : "\u804A\u5929\u8F93\u5165\u6846\u6682\u4E0D\u53EF\u7F16\u8F91\uFF0C\u672A\u66F4\u6539\u8349\u7A3F\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+          } catch {
+            setActionNotice("\u672A\u80FD\u586B\u5165\u804A\u5929\u8F93\u5165\u6846\uFF0C\u539F\u6709\u8349\u7A3F\u5DF2\u4FDD\u7559\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+          }
+        }
+        function focusUnread() {
+          const target = notificationsRef.current?.querySelector(".soc-notification--unread .soc-notification__toggle");
+          if (!target) return;
+          target.focus({ preventScroll: true });
+          target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "center", inline: "nearest" });
+        }
+        function details(item) {
+          const lines = [
+            item.eventId && `\u4E8B\u4EF6\u6D41\u6C34 ID\uFF1A${item.eventId}`,
+            item.alertId && `\u544A\u8B66 ID\uFF1A${item.alertId}`,
+            item.incidentId && `\u4E8B\u4EF6 ID\uFF1A${item.incidentId}`,
+            item.incidentIds.length > 0 && `\u4E8B\u4EF6 ID\uFF1A${item.incidentIds.join("\u3001")}`,
+            item.status && `\u5F53\u524D\u72B6\u6001\uFF1A${item.status}`,
+            item.severity && `\u4E25\u91CD\u6027\uFF1A${item.severity}`,
+            item.confidence && `\u7F6E\u4FE1\u5EA6\uFF1A${item.confidence}`,
+            item.affectedAssetId && `\u5173\u8054\u8D44\u4EA7\uFF1A${item.affectedAssetId}`,
+            item.account && `\u8D26\u53F7\uFF1A${item.account}`,
+            item.edgeCount !== void 0 && `\u8FB9\u6570\uFF1A${item.edgeCount}`,
+            item.hopCount !== void 0 && `\u8DF3\u6570\uFF1A${item.hopCount}`,
+            item.compromisedCount !== void 0 && `\u5931\u9677\u6570\uFF1A${item.compromisedCount}`,
+            item.nodeId && `\u8282\u70B9\uFF1A${item.nodeId}`,
+            item.instanceId && `\u5B9E\u4F8B\uFF1A${item.instanceId}`,
+            item.bindingId && `\u7ED1\u5B9A\uFF1A${item.bindingId}`,
+            item.pluginId && `\u63D2\u4EF6\uFF1A${item.pluginId}`,
+            item.verdict && `\u5224\u5B9A\uFF1A${item.verdict}`,
+            item.recovered !== void 0 && `\u5DF2\u6062\u590D\uFF1A${item.recovered ? "\u662F" : "\u5426"}`
+          ].filter(Boolean);
+          return /* @__PURE__ */ React.createElement(React.Fragment, null, lines.length > 0 && /* @__PURE__ */ React.createElement("ul", { className: "soc-notification__facts" }, lines.map((line) => /* @__PURE__ */ React.createElement("li", { key: line }, line))), item.conclusion && /* @__PURE__ */ React.createElement("p", null, /* @__PURE__ */ React.createElement("strong", null, "\u7814\u5224\u7ED3\u8BBA\uFF1A"), item.conclusion), item.investigation && /* @__PURE__ */ React.createElement("p", null, /* @__PURE__ */ React.createElement("strong", null, "\u7814\u5224\u8FC7\u7A0B\uFF1A"), item.investigation), item.alertDetail && /* @__PURE__ */ React.createElement("pre", null, JSON.stringify(item.alertDetail, null, 2)), item.refreshRequired && /* @__PURE__ */ React.createElement("p", { className: "soc-notification__pending" }, "\u8BE5\u6D88\u606F\u662F\u5237\u65B0\u4FE1\u53F7\uFF0C\u5B8C\u6574\u4E8B\u4EF6\u8BE6\u60C5\u4ECD\u5F85\u67E5\u8BE2\u3002"), /* @__PURE__ */ React.createElement("p", { className: "soc-notification__context-hint" }, notificationAction(item, notifications).ids.length === 0 ? "\u8BE5\u901A\u77E5\u672A\u63D0\u4F9B\u5A01\u80C1\u4E8B\u4EF6 ID\uFF0C\u6682\u4E0D\u652F\u6301\u5FEB\u901F\u7814\u5224\u3002" : notificationAction(item, notifications).review ? "\u5DF2\u6709\u7814\u5224\u5B8C\u6210\u901A\u77E5\uFF1B\u9776\u6807\u6309\u94AE\u53EF\u51C6\u5907\u590D\u6838\u8349\u7A3F\uFF0C\u4E0D\u91CD\u590D\u542F\u52A8\u7814\u5224\u3002" : "\u5F53\u524D\u7814\u5224\u72B6\u6001\u5F85\u6838\u5BF9\uFF1B\u9776\u6807\u6309\u94AE\u4EC5\u586B\u5165\u8349\u7A3F\uFF0C\u53D1\u9001\u540E\u5148\u67E5\u8BE2\u771F\u5B9E\u72B6\u6001\u3002"), item.links.length > 0 && /* @__PURE__ */ React.createElement("p", { className: "soc-notification__links" }, item.links.map((link) => /* @__PURE__ */ React.createElement("a", { key: link, href: link, target: "_blank", rel: "noopener noreferrer" }, "\u6253\u5F00\u8BE6\u60C5"))));
+        }
+        return /* @__PURE__ */ React.createElement("section", { className: "soc-status", "aria-label": threatOnly ? "\u5A01\u80C1\u4E8B\u4EF6\u901A\u77E5" : "\u7CFB\u7EDF\u6D88\u606F" }, /* @__PURE__ */ React.createElement("header", { className: threatOnly ? "soc-notifications__header" : void 0 }, /* @__PURE__ */ React.createElement("strong", null, threatOnly ? "\u5A01\u80C1\u4E8B\u4EF6\u901A\u77E5" : "\u7CFB\u7EDF\u6D88\u606F"), threatOnly ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { className: "soc-notifications__counts" }, /* @__PURE__ */ React.createElement("span", null, "\u5171 ", display.items.length, " \u6761"), /* @__PURE__ */ React.createElement("button", { type: "button", onClick: focusUnread, disabled: unreadCount === 0, "aria-label": `\u5B9A\u4F4D\u7B2C\u4E00\u6761\u672A\u8BFB\u6D88\u606F\uFF0C\u5F53\u524D ${unreadCount} \u6761\u672A\u8BFB`, title: "\u5B9A\u4F4D\u7B2C\u4E00\u6761\u672A\u8BFB\u6D88\u606F" }, "\u672A\u8BFB ", unreadCount, " \u6761")), /* @__PURE__ */ React.createElement("div", { className: "soc-notifications__filter" }, /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            type: "button",
+            role: "switch",
+            "aria-checked": showWithoutId,
+            "aria-label": "\u663E\u793A\u65E0\u4E8B\u4EF6 ID \u6D88\u606F",
+            className: "soc-notifications__switch",
+            title: showWithoutId ? "\u5173\u95ED\u540E\u4EC5\u663E\u793A\u5305\u542B\u5A01\u80C1\u4E8B\u4EF6 ID \u7684\u6D88\u606F" : `\u5DF2\u9690\u85CF ${display.hiddenCount} \u6761\u65E0\u5A01\u80C1\u4E8B\u4EF6 ID \u7684\u6D88\u606F`,
+            onClick: () => setShowWithoutId((value) => !value)
+          },
+          /* @__PURE__ */ React.createElement("span", { className: "soc-notifications__switch-track", "aria-hidden": "true" }, /* @__PURE__ */ React.createElement("span", null)),
+          /* @__PURE__ */ React.createElement("span", null, "\u663E\u793A\u65E0\u4E8B\u4EF6 ID \u6D88\u606F")
+        ))) : /* @__PURE__ */ React.createElement("span", null, "\u5F53\u524D\u4F1A\u8BDD")), !threatOnly && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { className: "soc-status__metrics" }, metrics.map(([value, label]) => /* @__PURE__ */ React.createElement("div", { key: label }, /* @__PURE__ */ React.createElement("strong", null, value), /* @__PURE__ */ React.createElement("span", null, label)))), /* @__PURE__ */ React.createElement("p", { className: failed ? "soc-status__message soc-status__message--error" : "soc-status__message" }, message)), threatOnly && actionNotice && /* @__PURE__ */ React.createElement("p", { className: "soc-notification__action-notice", role: "status" }, actionNotice), threatOnly && /* @__PURE__ */ React.createElement("section", { className: "soc-notifications", "aria-label": "\u5A01\u80C1\u4E8B\u4EF6\u901A\u77E5" }, notificationError && /* @__PURE__ */ React.createElement("p", { className: "soc-notification__error", role: "status" }, notificationError), display.items.length === 0 && !notificationError && /* @__PURE__ */ React.createElement("p", { className: "soc-notifications__empty" }, display.hiddenCount > 0 ? "\u6682\u65E0\u5305\u542B\u5A01\u80C1\u4E8B\u4EF6 ID \u7684\u6D88\u606F\u3002\u53EF\u6253\u5F00\u4E0A\u65B9\u5F00\u5173\u67E5\u770B\u5176\u4ED6\u901A\u77E5\u3002" : "\u6682\u65E0\u5A01\u80C1\u4E8B\u4EF6\u901A\u77E5\u3002"), /* @__PURE__ */ React.createElement("div", { className: "soc-notifications__list", ref: notificationsRef }, display.items.map((item) => {
+          const expanded = expandedKey === item.eventKey;
+          const action = notificationAction(item, notifications);
+          return /* @__PURE__ */ React.createElement("article", { key: item.eventKey, "data-event-key": item.eventKey, className: `soc-notification${item.isRead ? "" : " soc-notification--unread"}` }, /* @__PURE__ */ React.createElement("div", { className: "soc-notification__row" }, /* @__PURE__ */ React.createElement(
+            "button",
+            {
+              type: "button",
+              className: "soc-notification__toggle",
+              "aria-expanded": expanded,
+              onClick: () => {
+                setExpandedKey(expanded ? null : item.eventKey);
+                if (!expanded && !item.isRead) void markRead(item.eventKey);
+              }
+            },
+            /* @__PURE__ */ React.createElement("span", { className: "soc-notification__title" }, /* @__PURE__ */ React.createElement("strong", null, item.title), !item.isRead && /* @__PURE__ */ React.createElement("em", null, "\u672A\u8BFB")),
+            /* @__PURE__ */ React.createElement("span", { className: "soc-notification__summary" }, item.summary),
+            /* @__PURE__ */ React.createElement("time", { dateTime: new Date(item.receivedAt).toISOString() }, notificationTime(item.receivedAt))
+          ), threatOnly && action.ids.length > 0 && /* @__PURE__ */ React.createElement(
+            "button",
+            {
+              type: "button",
+              className: "soc-notification__investigate",
+              "aria-label": action.label,
+              title: action.label,
+              onClick: () => quickInvestigate(item)
+            },
+            /* @__PURE__ */ React.createElement("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", "aria-hidden": "true", focusable: "false" }, /* @__PURE__ */ React.createElement("circle", { cx: "12", cy: "12", r: "7" }), /* @__PURE__ */ React.createElement("circle", { cx: "12", cy: "12", r: "2" }), /* @__PURE__ */ React.createElement("path", { d: "M12 2v5m0 10v5M2 12h5m10 0h5" }))
+          )), expanded && /* @__PURE__ */ React.createElement("div", { className: "soc-notification__details" }, details(item)));
+        }))));
+      }
+      function ThreatNotificationPanel(props) {
+        return /* @__PURE__ */ React.createElement(StatusPanel, { ...props, threatOnly: true });
+      }
+      function DefaultThreatSidebar({ sessionId, useSidebarMounted, openDefaultThreat }) {
+        const mounted = useSidebarMounted((id) => id);
+        React.useEffect(() => {
+          if (mounted === sessionId) openDefaultThreat(sessionId);
+        }, [mounted, sessionId, openDefaultThreat]);
+        return null;
       }
       const css = `
       .soc-brand-mark{display:block;object-fit:contain}
@@ -338,6 +508,7 @@
       .soc-runtime__detail{padding-top:8px;border-top:1px solid var(--dsw-alias-border-l2,#e4e7ec);color:var(--dsw-alias-label-secondary,#667085);font-size:12px;line-height:1.5}
       .soc-quick__heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 12px 10px}
       .soc-quick__heading strong{font-size:16px}
+      .soc-quick__status-group{display:inline-flex;align-items:center;gap:8px}
       .soc-quick__status{border:0;background:transparent;color:var(--dsw-alias-brand-primary,#1677ff);cursor:pointer;font:inherit;white-space:nowrap}
       .soc-quick__toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 14px}
       .soc-quick__tabs{display:flex;align-items:center;gap:5px}
@@ -391,6 +562,47 @@
       .soc-status__metrics span{overflow:hidden;color:var(--dsw-alias-label-secondary,#667085);font-size:11px;text-overflow:ellipsis;white-space:nowrap}
       .soc-status__message{margin:22px 0;color:var(--dsw-alias-label-secondary,#667085);font-size:13px;line-height:1.6;text-align:center}
       .soc-status__message--error{color:var(--dsw-alias-error-primary,#d92d20)}
+      .soc-notifications{margin-top:12px;padding-top:0;border-top:0}
+      .soc-status header.soc-notifications__header{flex-wrap:wrap;row-gap:8px}
+      .soc-notifications__filter{display:flex;justify-content:flex-end;flex:0 0 100%;min-width:0}
+      .soc-notifications__switch{display:inline-flex;align-items:center;gap:7px;min-height:28px;padding:2px 0;border:0;background:transparent;color:var(--dsw-alias-label-secondary);font:inherit;font-size:12px;cursor:pointer}
+      .soc-notifications__switch-track{display:inline-flex;align-items:center;flex:none;box-sizing:border-box;width:28px;height:16px;padding:2px;border:1px solid var(--dsw-alias-border-l2);border-radius:99px;background:var(--dsw-alias-bg-subtle)}
+      .soc-notifications__switch-track>span{display:block;width:10px;height:10px;border-radius:50%;background:var(--dsw-alias-label-secondary);transition:transform 120ms ease}
+      .soc-notifications__switch[aria-checked="true"] .soc-notifications__switch-track{border-color:var(--dsw-alias-brand-primary);background:var(--dsw-alias-brand-primary)}
+      .soc-notifications__switch[aria-checked="true"] .soc-notifications__switch-track>span{transform:translateX(12px);background:var(--dsw-alias-bg-base)}
+      .soc-notifications__switch:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:3px;border-radius:4px}
+      @media(prefers-reduced-motion:reduce){.soc-notifications__switch-track>span{transition:none}}
+      .soc-notifications__counts{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+      .soc-notifications__counts button{padding:2px 5px;border:0;border-radius:5px;background:transparent;color:var(--dsw-alias-brand-primary,#1677ff);cursor:pointer;font:inherit;font-size:12px}
+      .soc-notifications__counts button:disabled{color:var(--dsw-alias-label-tertiary,#98a2b3);cursor:default}
+      .soc-notifications__counts button:not(:disabled):hover{background:var(--dsw-alias-bg-subtle,#f5f7fa)}
+      .soc-notification__action-notice{margin:12px 0;padding:8px 10px;border-radius:7px;background:var(--dsw-alias-bg-subtle,#f5f7fa);color:var(--dsw-alias-label-secondary,#667085);font-size:12px}
+      .soc-notifications__empty,.soc-notification__error{padding:16px 8px;color:var(--dsw-alias-label-secondary,#667085);font-size:12px;text-align:center}
+      .soc-notification__error{color:var(--dsw-alias-error-primary,#d92d20)}
+      .soc-notifications__list{display:grid;gap:8px;max-height:520px;overflow:auto;padding-right:2px}
+      .soc-notification{border:1px solid var(--dsw-alias-border-l2,#e4e7ec);border-radius:9px;background:var(--dsw-alias-bg-base,#fff);overflow:hidden}
+      .soc-notification--unread{border-left:3px solid var(--dsw-alias-brand-primary,#1677ff);background:linear-gradient(90deg,#1677ff0a,transparent 45%),var(--dsw-alias-bg-base,#fff)}
+      .soc-notification__row{display:flex;align-items:stretch;min-width:0}
+      .soc-notification__row .soc-notification__toggle{flex:1;min-width:0}
+      .soc-notification__investigate{display:grid;place-items:center;flex:none;align-self:center;margin:0 8px 0 0;padding:0;width:28px;height:28px;border:1px solid var(--dsw-alias-border-l2);border-radius:6px;background:var(--dsw-alias-bg-base);color:var(--dsw-alias-brand-primary);cursor:pointer}
+      .soc-notification__context-hint{color:var(--dsw-alias-label-secondary);font-size:11px}
+      .soc-notification__investigate:hover{background:var(--dsw-alias-bg-subtle,#f5f7fa)}
+      .soc-notification__investigate:focus-visible{outline:2px solid var(--dsw-alias-brand-primary,#1677ff);outline-offset:2px}
+      .soc-notification__toggle{display:grid;width:100%;gap:5px;padding:11px 12px;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-align:left}
+      .soc-notification__toggle:hover{background:var(--dsw-alias-bg-subtle,#f5f7fa)}
+      .soc-notification__toggle:focus-visible{outline:2px solid var(--dsw-alias-brand-primary,#1677ff);outline-offset:-2px}
+      .soc-notification__title{display:flex;align-items:center;gap:7px;min-width:0}
+      .soc-notification__title strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+      .soc-notification__title em{flex:none;padding:2px 6px;border-radius:99px;background:var(--dsw-alias-brand-primary,#1677ff);color:#fff;font-size:10px;font-style:normal}
+      .soc-notification__summary{display:block;color:var(--dsw-alias-label-secondary,#667085);font-size:12px;line-height:1.5}
+      .soc-notification__toggle time{color:var(--dsw-alias-label-tertiary,#98a2b3);font-size:11px}
+      .soc-notification__details{max-height:260px;overflow:auto;padding:10px 12px;border-top:1px solid var(--dsw-alias-border-l2,#e4e7ec);color:var(--dsw-alias-label-secondary,#667085);font-size:12px;line-height:1.6}
+      .soc-notification__details p{margin:6px 0}
+      .soc-notification__details pre{max-height:180px;overflow:auto;margin:7px 0;padding:8px;border-radius:6px;background:var(--dsw-alias-bg-subtle,#f5f7fa);white-space:pre-wrap;overflow-wrap:anywhere}
+      .soc-notification__facts{margin:0;padding-left:18px}
+      .soc-notification__pending{color:var(--dsw-alias-warning-primary,#b54708)}
+      .soc-notification__links{display:flex;flex-wrap:wrap;gap:8px}
+      .soc-notification__links a{color:var(--dsw-alias-brand-primary,#1677ff)}
       @media(max-width:1100px){.soc-quick__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.soc-runtime__header{flex-wrap:wrap}.soc-runtime__summary{flex-basis:100%;order:3}.soc-runtime__summary div:first-child{padding-left:0;border-left:0}}
       @media(max-width:720px){.soc-quick__grid{grid-template-columns:1fr}.soc-quick__toolbar{align-items:stretch;flex-direction:column}.soc-quick__search{width:100%;box-sizing:border-box;margin-left:0}.soc-employee-form{grid-template-columns:1fr}.soc-employee-form label:nth-child(3){grid-column:auto}}
     `;
@@ -401,8 +613,14 @@
         const title = phase === "preparing" ? `\u6B63\u5728\u51C6\u5907\u542F\u52A8${role}` : phase === "start" ? `\u6B63\u5728\u542F\u52A8${role}` : block.isError ? `\u542F\u52A8${role}\u5931\u8D25` : receipt?.title ?? `${role}\u5DF2\u8FD4\u56DE\u56DE\u6267`;
         return /* @__PURE__ */ React.createElement("details", { className: "soc-delegation" }, /* @__PURE__ */ React.createElement("summary", null, title, receipt?.task && /* @__PURE__ */ React.createElement("span", null, " \xB7 ", receipt.task)), receipt && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("p", null, "\u7ED3\u679C\u5C06\u5728\u4EFB\u52A1\u7ED3\u675F\u540E\u8FD4\u56DE\u3002"), /* @__PURE__ */ React.createElement("p", null, "\u5B50\u4F1A\u8BDD ID\uFF1A", /* @__PURE__ */ React.createElement("code", null, receipt.subagentId))), /* @__PURE__ */ React.createElement("details", null, /* @__PURE__ */ React.createElement("summary", null, "\u6280\u672F\u8BE6\u60C5"), /* @__PURE__ */ React.createElement("pre", null, toolName, "\n", argsRaw, "\n", JSON.stringify(block.content ?? [], null, 2))), inspect && /* @__PURE__ */ React.createElement("button", { type: "button", onClick: inspect }, "\u67E5\u770B\u8C03\u7528\u8BB0\u5F55"));
       }
-      const inject = ["slots", "sidebarRight", "sidebarRightTabs", "uiWorkspace", "locale", "configForms"];
+      const inject = ["slots", "sidebarRight", "sidebarRightTabs", "uiWorkspace", "locale", "configForms", "conversation", "sessions"];
       function apply(ctx) {
+        const defaultedSessions = /* @__PURE__ */ new Set();
+        const openDefaultThreat = (sessionId) => {
+          if (defaultedSessions.has(sessionId) || ctx.sidebarRight.mounted.getSnapshot() !== sessionId) return;
+          ctx.sidebarRight.openTab(THREAT_KIND);
+          defaultedSessions.add(sessionId);
+        };
         for (const toolName of Object.keys(DELEGATE_ROLES)) {
           ctx.effect(() => ctx.slots.inject("tool.call.toolview", () => ctx.slots.register(
             { name: "tool.call.toolview", key: toolName },
@@ -470,26 +688,40 @@
           HeroMark
         )), "security-operations-ui: hero mark");
         ctx.effect(() => ctx.sidebarRightTabs.register({
+          id: THREAT_PLUGIN_ID,
+          kind: THREAT_KIND,
+          title: () => "\u5A01\u80C1\u4E8B\u4EF6\u901A\u77E5",
+          guide: [{ order: 4, title: () => "\u5A01\u80C1\u4E8B\u4EF6\u901A\u77E5", description: () => "\u67E5\u770B SOC \u5A01\u80C1\u4E8B\u4EF6\u5E76\u5FEB\u901F\u53D1\u8D77\u7814\u5224" }]
+        }), "security-operations-ui: threat notifications type");
+        ctx.effect(() => ctx.sidebarRightTabs.register({
           id: PLUGIN_ID,
           kind: STATUS_KIND,
           title: () => "\u7CFB\u7EDF\u6D88\u606F",
           guide: [{ order: 5, title: () => "\u7CFB\u7EDF\u6D88\u606F", description: () => "\u67E5\u770B\u5F53\u524D\u4F1A\u8BDD\u6267\u884C\u72B6\u6001" }]
         }), "security-operations-ui: status type");
         ctx.effect(() => ctx.slots.inject("sidebar.right.pane.tab", () => ctx.slots.register(
+          { name: "sidebar.right.pane.tab", key: THREAT_PLUGIN_ID, inject: (sessionId) => ({
+            appendDraft(prompt) {
+              const binding = ctx.sessions.binding(sessionId);
+              if (!binding) return "blocked";
+              const result = ctx.conversation.input.requestDraftInitialization(binding, { prompt, whenDraftExists: "append" });
+              if (result === "applied" && ctx.sidebarRight.mounted.getSnapshot() === sessionId) {
+                ctx.conversation.input.for(binding.ctx).focus();
+              }
+              return result;
+            }
+          }) },
+          ThreatNotificationPanel
+        )), "security-operations-ui: threat notifications panel");
+        ctx.effect(() => ctx.slots.inject("sidebar.right.pane.tab", () => ctx.slots.register(
           { name: "sidebar.right.pane.tab", key: PLUGIN_ID },
           StatusPanel
         )), "security-operations-ui: status panel");
         const openStatus = () => ctx.sidebarRight.openTab(STATUS_KIND);
-        const Dock = (props) => /* @__PURE__ */ React.createElement(
-          QuickActions,
-          {
-            ...props,
-            openStatus,
-            uiWorkspace: ctx.get("uiWorkspace")
-          }
-        );
+        const openThreat = () => ctx.sidebarRight.openTab(THREAT_KIND);
+        const Dock = (props) => /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(DefaultThreatSidebar, { ...props, openDefaultThreat }), /* @__PURE__ */ React.createElement(QuickActions, { ...props, openStatus, openThreat, uiWorkspace: ctx.get("uiWorkspace") }));
         ctx.effect(() => ctx.slots.inject("conversation.input.dock", () => ctx.slots.register(
-          { name: "conversation.input.dock", id: PLUGIN_ID, order: 100 },
+          { name: "conversation.input.dock", id: PLUGIN_ID, order: 100, inject: () => ({ hooks: { sidebarMounted: ctx.sidebarRight.mounted } }) },
           Dock
         )), "security-operations-ui: quick actions");
       }

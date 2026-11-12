@@ -2,6 +2,7 @@ import type * as ReactTypes from 'react'
 import avatarUrl from './assets/live-chatbot.gif'
 import logoUrl from './assets/logo-v1.webp'
 import { DELEGATE_ROLES, delegationReceipt } from './delegation'
+import { investigationDraft, notificationAction, notificationList } from './notification-actions'
 
 type InputActions = {
   captureInsertion(): { start: number; end: number; draftRev: number }
@@ -16,6 +17,48 @@ type OverviewCall = { parentSessionId: string; childSessionId?: string; startedA
 type OverviewCounts = { toolCalls: number; skillLoads: number }
 type OverviewRole = OverviewCounts & { id: string; title: string; state: string; active: number; completed: number; failed: number; noChild: number; unknown: number; recent: OverviewCall[] }
 type Overview = { windowHours: number; parent: OverviewCounts & { state: string; active: number; sessions: number; recentSessionId: string | null }; roles: OverviewRole[] }
+type Notification = {
+  eventKey: string
+  type: string
+  label: string
+  receivedAt: number
+  eventId?: string
+  alertId?: string
+  incidentId?: string
+  incidentIds: string[]
+  severity?: string
+  title: string
+  summary: string
+  status?: string
+  fromStatus?: string
+  toStatus?: string
+  confidence?: string
+  conclusion?: string
+  investigation?: string
+  alertDetail?: Record<string, unknown>
+  affectedAssetId?: string
+  account?: string
+  edgeCount?: number
+  hopCount?: number
+  compromisedCount?: number
+  implant?: string
+  nodeId?: string
+  instanceId?: string
+  bindingId?: string
+  pluginId?: string
+  verdict?: string
+  recovered?: boolean
+  links: string[]
+  link?: string
+  isRead: boolean
+  refreshRequired?: boolean
+}
+type NotificationResponse = { items: Notification[]; unreadCount: number }
+
+function notificationTime(value: number) {
+  if (!Number.isFinite(value)) return '时间未知'
+  return new Date(value).toLocaleString()
+}
 
 const recommendations: Action[] = [
   {
@@ -77,6 +120,8 @@ const defaultEmployees: Employee[] = [
 
 const PLUGIN_ID = 'dsh-security-operations-ui'
 const STATUS_KIND = 'security-operations-status'
+const THREAT_PLUGIN_ID = 'dsh-security-operations-threat-notifications'
+const THREAT_KIND = 'security-threat-notifications'
 // shortcut: 卡片仅保存在当前浏览器，需要跨设备共享时接入持久化服务。
 const EMPLOYEES_KEY = 'dsh.securityOperations.digitalEmployees.v1'
 
@@ -165,10 +210,11 @@ type ModuleLoader = {
       )
     }
 
-    function QuickActions({ session, inputActions, openStatus, useWorkspaces, useSessions, uiWorkspace }: {
+    function QuickActions({ session, inputActions, openStatus, openThreat, useWorkspaces, useSessions, uiWorkspace }: {
       session: { blank: boolean }
       inputActions: InputActions
       openStatus: () => void
+      openThreat: () => void
       useWorkspaces: (select: (state: any) => any) => any
       useSessions: (select: (state: any) => any) => any
       uiWorkspace: any
@@ -201,12 +247,6 @@ type ModuleLoader = {
         const timer = setInterval(() => void refresh(), 5000)
         return () => { active = false; clearInterval(timer) }
       }, [])
-
-      React.useEffect(() => {
-        if (!session.blank || window.innerWidth <= 720) return undefined
-        const frame = requestAnimationFrame(openStatus)
-        return () => cancelAnimationFrame(frame)
-      }, [session.blank, openStatus])
 
       if (!session.blank) return null
 
@@ -272,7 +312,7 @@ type ModuleLoader = {
           <RuntimeOverview overview={overview} openStatus={openStatus} openSession={(id) => void uiWorkspace.openSession(id)} />
           <div className="soc-quick__heading">
             <strong>智能对话</strong>
-            <button type="button" className="soc-quick__status" onClick={openStatus}>系统消息</button>
+            <span className="soc-quick__status-group"><button type="button" className="soc-quick__status" onClick={openThreat}>威胁事件通知</button><button type="button" className="soc-quick__status" onClick={openStatus}>系统消息</button></span>
           </div>
           <div className="soc-quick__toolbar">
             <div className="soc-quick__tabs" role="tablist" aria-label="快捷入口分类">
@@ -350,7 +390,7 @@ type ModuleLoader = {
       )
     }
 
-    function StatusPanel({ useSession, useInput }: any) {
+    function StatusPanel({ useSession, useInput, threatOnly = false, appendDraft }: any) {
       const queued = useInput((state: any) => state.queue.length) as number
       const submitting = useSession((state: any) => state.pendingSubmissions.length) as number
       const running = useSession((state: any) => state.running) as boolean
@@ -358,6 +398,14 @@ type ModuleLoader = {
       const awaiting = useSession((state: any) => state.awaitingFirstTurn) as boolean
       const failed = useSession((state: any) =>
         state.lastAgentError !== null || state.promptError !== null || state.openError !== null) as boolean
+      const [notifications, setNotifications] = React.useState<Notification[]>([])
+      const [showWithoutId, setShowWithoutId] = React.useState(false)
+      const display = notificationList(notifications, showWithoutId)
+      const unreadCount = display.unreadCount
+      const [notificationError, setNotificationError] = React.useState('')
+      const [actionNotice, setActionNotice] = React.useState('')
+      const [expandedKey, setExpandedKey] = React.useState<string | null>(null)
+      const notificationsRef = React.useRef<HTMLDivElement | null>(null)
       const pending = queued + submitting
       const completed = attempted && !running && !awaiting && !failed ? 1 : 0
       const message = failed
@@ -376,14 +424,154 @@ type ModuleLoader = {
         [String(completed), '已完成'],
       ]
 
+      React.useEffect(() => {
+        if (!threatOnly) return undefined
+        let active = true
+        async function refresh() {
+          try {
+            const response = await fetch(new URL('api/security-operations/notifications', document.baseURI), { credentials: 'same-origin' })
+            if (!response.ok) throw new Error(`notifications ${response.status}`)
+            const data = await response.json() as NotificationResponse
+            if (!active) return
+            setNotifications(Array.isArray(data.items) ? data.items : [])
+            setNotificationError('')
+          } catch {
+            if (active) setNotificationError('实时通知暂不可用。')
+          }
+        }
+        void refresh()
+        const timer = setInterval(() => void refresh(), 5000)
+        return () => { active = false; clearInterval(timer) }
+      }, [threatOnly])
+
+      async function markRead(eventKey: string) {
+        try {
+          const response = await fetch(new URL('api/security-operations/notifications/read', document.baseURI), {
+            method: 'POST', credentials: 'same-origin',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ eventKey }),
+          })
+          if (!response.ok) return
+          const data = await response.json() as NotificationResponse
+          setNotifications(Array.isArray(data.items) ? data.items : [])
+        } catch { /* 展开仍然可用，下一次轮询会重试已读状态 */ }
+      }
+
+      function quickInvestigate(item: Notification) {
+        const action = notificationAction(item, notifications)
+        const prompt = investigationDraft(item, action.ids, action.readyIds)
+        if (!prompt) return
+        try {
+          const result = appendDraft?.(prompt)
+          setActionNotice(result === 'applied' ? '已追加事件上下文，保留原有草稿；请核对后发送。' : '聊天输入框暂不可编辑，未更改草稿，请稍后重试。')
+        } catch {
+          setActionNotice('未能填入聊天输入框，原有草稿已保留，请稍后重试。')
+        }
+      }
+
+      function focusUnread() {
+        const target = notificationsRef.current?.querySelector<HTMLElement>('.soc-notification--unread .soc-notification__toggle')
+        if (!target) return
+        target.focus({ preventScroll: true })
+        target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center', inline: 'nearest' })
+      }
+
+      function details(item: Notification) {
+        const lines = [
+          item.eventId && `事件流水 ID：${item.eventId}`,
+          item.alertId && `告警 ID：${item.alertId}`,
+          item.incidentId && `事件 ID：${item.incidentId}`,
+          item.incidentIds.length > 0 && `事件 ID：${item.incidentIds.join('、')}`,
+          item.status && `当前状态：${item.status}`,
+          item.severity && `严重性：${item.severity}`,
+          item.confidence && `置信度：${item.confidence}`,
+          item.affectedAssetId && `关联资产：${item.affectedAssetId}`,
+          item.account && `账号：${item.account}`,
+          item.edgeCount !== undefined && `边数：${item.edgeCount}`,
+          item.hopCount !== undefined && `跳数：${item.hopCount}`,
+          item.compromisedCount !== undefined && `失陷数：${item.compromisedCount}`,
+          item.nodeId && `节点：${item.nodeId}`,
+          item.instanceId && `实例：${item.instanceId}`,
+          item.bindingId && `绑定：${item.bindingId}`,
+          item.pluginId && `插件：${item.pluginId}`,
+          item.verdict && `判定：${item.verdict}`,
+          item.recovered !== undefined && `已恢复：${item.recovered ? '是' : '否'}`,
+        ].filter(Boolean) as string[]
+        return <>
+          {lines.length > 0 && <ul className="soc-notification__facts">{lines.map(line => <li key={line}>{line}</li>)}</ul>}
+          {item.conclusion && <p><strong>研判结论：</strong>{item.conclusion}</p>}
+          {item.investigation && <p><strong>研判过程：</strong>{item.investigation}</p>}
+          {item.alertDetail && <pre>{JSON.stringify(item.alertDetail, null, 2)}</pre>}
+          {item.refreshRequired && <p className="soc-notification__pending">该消息是刷新信号，完整事件详情仍待查询。</p>}
+          <p className="soc-notification__context-hint">{notificationAction(item, notifications).ids.length === 0 ? '该通知未提供威胁事件 ID，暂不支持快速研判。' : notificationAction(item, notifications).review ? '已有研判完成通知；靶标按钮可准备复核草稿，不重复启动研判。' : '当前研判状态待核对；靶标按钮仅填入草稿，发送后先查询真实状态。'}</p>
+          {item.links.length > 0 && <p className="soc-notification__links">{item.links.map(link => <a key={link} href={link} target="_blank" rel="noopener noreferrer">打开详情</a>)}</p>}
+        </>
+      }
+
       return (
-        <section className="soc-status" aria-labelledby="soc-status-title">
-          <header><strong id="soc-status-title">系统消息</strong><span>当前会话</span></header>
-          <div className="soc-status__metrics">{metrics.map(([value, label]) =>
-            <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div>
-          <p className={failed ? 'soc-status__message soc-status__message--error' : 'soc-status__message'}>{message}</p>
+        <section className="soc-status" aria-label={threatOnly ? '威胁事件通知' : '系统消息'}>
+          <header className={threatOnly ? 'soc-notifications__header' : undefined}>
+            <strong>{threatOnly ? '威胁事件通知' : '系统消息'}</strong>
+            {threatOnly ? <>
+              <span className="soc-notifications__counts"><span>共 {display.items.length} 条</span><button type="button" onClick={focusUnread} disabled={unreadCount === 0} aria-label={`定位第一条未读消息，当前 ${unreadCount} 条未读`} title="定位第一条未读消息">未读 {unreadCount} 条</button></span>
+              <div className="soc-notifications__filter">
+                <button type="button" role="switch" aria-checked={showWithoutId} aria-label="显示无事件 ID 消息"
+                  className="soc-notifications__switch" title={showWithoutId ? '关闭后仅显示包含威胁事件 ID 的消息' : `已隐藏 ${display.hiddenCount} 条无威胁事件 ID 的消息`}
+                  onClick={() => setShowWithoutId(value => !value)}>
+                  <span className="soc-notifications__switch-track" aria-hidden="true"><span /></span>
+                  <span>显示无事件 ID 消息</span>
+                </button>
+              </div>
+            </> : <span>当前会话</span>}
+          </header>
+          {!threatOnly && <>
+            <div className="soc-status__metrics">{metrics.map(([value, label]) =>
+              <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div>
+            <p className={failed ? 'soc-status__message soc-status__message--error' : 'soc-status__message'}>{message}</p>
+          </>}
+          {threatOnly && actionNotice && <p className="soc-notification__action-notice" role="status">{actionNotice}</p>}
+          {threatOnly && <section className="soc-notifications" aria-label="威胁事件通知">
+            {notificationError && <p className="soc-notification__error" role="status">{notificationError}</p>}
+            {display.items.length === 0 && !notificationError && <p className="soc-notifications__empty">{display.hiddenCount > 0 ? '暂无包含威胁事件 ID 的消息。可打开上方开关查看其他通知。' : '暂无威胁事件通知。'}</p>}
+            <div className="soc-notifications__list" ref={notificationsRef}>
+              {display.items.map(item => {
+                const expanded = expandedKey === item.eventKey
+                const action = notificationAction(item, notifications)
+                return <article key={item.eventKey} data-event-key={item.eventKey} className={`soc-notification${item.isRead ? '' : ' soc-notification--unread'}`}>
+                  <div className="soc-notification__row">
+                    <button type="button" className="soc-notification__toggle" aria-expanded={expanded}
+                      onClick={() => { setExpandedKey(expanded ? null : item.eventKey); if (!expanded && !item.isRead) void markRead(item.eventKey) }}>
+                      <span className="soc-notification__title"><strong>{item.title}</strong>{!item.isRead && <em>未读</em>}</span>
+                      <span className="soc-notification__summary">{item.summary}</span>
+                      <time dateTime={new Date(item.receivedAt).toISOString()}>{notificationTime(item.receivedAt)}</time>
+                    </button>
+                    {threatOnly && action.ids.length > 0 && <button type="button" className="soc-notification__investigate"
+                      aria-label={action.label} title={action.label}
+                      onClick={() => quickInvestigate(item)}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="2" /><path d="M12 2v5m0 10v5M2 12h5m10 0h5" />
+                      </svg>
+                    </button>}
+                  </div>
+                  {expanded && <div className="soc-notification__details">{details(item)}</div>}
+                </article>
+              })}
+            </div>
+          </section>}
         </section>
       )
+    }
+
+    function ThreatNotificationPanel(props: any) {
+      return <StatusPanel {...props} threatOnly />
+    }
+
+    function DefaultThreatSidebar({ sessionId, useSidebarMounted, openDefaultThreat }: any) {
+      const mounted = useSidebarMounted((id: string | undefined) => id)
+      React.useEffect(() => {
+        if (mounted === sessionId) openDefaultThreat(sessionId)
+      }, [mounted, sessionId, openDefaultThreat])
+      return null
     }
 
     const css = `
@@ -423,6 +611,7 @@ type ModuleLoader = {
       .soc-runtime__detail{padding-top:8px;border-top:1px solid var(--dsw-alias-border-l2,#e4e7ec);color:var(--dsw-alias-label-secondary,#667085);font-size:12px;line-height:1.5}
       .soc-quick__heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 12px 10px}
       .soc-quick__heading strong{font-size:16px}
+      .soc-quick__status-group{display:inline-flex;align-items:center;gap:8px}
       .soc-quick__status{border:0;background:transparent;color:var(--dsw-alias-brand-primary,#1677ff);cursor:pointer;font:inherit;white-space:nowrap}
       .soc-quick__toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 14px}
       .soc-quick__tabs{display:flex;align-items:center;gap:5px}
@@ -476,6 +665,47 @@ type ModuleLoader = {
       .soc-status__metrics span{overflow:hidden;color:var(--dsw-alias-label-secondary,#667085);font-size:11px;text-overflow:ellipsis;white-space:nowrap}
       .soc-status__message{margin:22px 0;color:var(--dsw-alias-label-secondary,#667085);font-size:13px;line-height:1.6;text-align:center}
       .soc-status__message--error{color:var(--dsw-alias-error-primary,#d92d20)}
+      .soc-notifications{margin-top:12px;padding-top:0;border-top:0}
+      .soc-status header.soc-notifications__header{flex-wrap:wrap;row-gap:8px}
+      .soc-notifications__filter{display:flex;justify-content:flex-end;flex:0 0 100%;min-width:0}
+      .soc-notifications__switch{display:inline-flex;align-items:center;gap:7px;min-height:28px;padding:2px 0;border:0;background:transparent;color:var(--dsw-alias-label-secondary);font:inherit;font-size:12px;cursor:pointer}
+      .soc-notifications__switch-track{display:inline-flex;align-items:center;flex:none;box-sizing:border-box;width:28px;height:16px;padding:2px;border:1px solid var(--dsw-alias-border-l2);border-radius:99px;background:var(--dsw-alias-bg-subtle)}
+      .soc-notifications__switch-track>span{display:block;width:10px;height:10px;border-radius:50%;background:var(--dsw-alias-label-secondary);transition:transform 120ms ease}
+      .soc-notifications__switch[aria-checked="true"] .soc-notifications__switch-track{border-color:var(--dsw-alias-brand-primary);background:var(--dsw-alias-brand-primary)}
+      .soc-notifications__switch[aria-checked="true"] .soc-notifications__switch-track>span{transform:translateX(12px);background:var(--dsw-alias-bg-base)}
+      .soc-notifications__switch:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:3px;border-radius:4px}
+      @media(prefers-reduced-motion:reduce){.soc-notifications__switch-track>span{transition:none}}
+      .soc-notifications__counts{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+      .soc-notifications__counts button{padding:2px 5px;border:0;border-radius:5px;background:transparent;color:var(--dsw-alias-brand-primary,#1677ff);cursor:pointer;font:inherit;font-size:12px}
+      .soc-notifications__counts button:disabled{color:var(--dsw-alias-label-tertiary,#98a2b3);cursor:default}
+      .soc-notifications__counts button:not(:disabled):hover{background:var(--dsw-alias-bg-subtle,#f5f7fa)}
+      .soc-notification__action-notice{margin:12px 0;padding:8px 10px;border-radius:7px;background:var(--dsw-alias-bg-subtle,#f5f7fa);color:var(--dsw-alias-label-secondary,#667085);font-size:12px}
+      .soc-notifications__empty,.soc-notification__error{padding:16px 8px;color:var(--dsw-alias-label-secondary,#667085);font-size:12px;text-align:center}
+      .soc-notification__error{color:var(--dsw-alias-error-primary,#d92d20)}
+      .soc-notifications__list{display:grid;gap:8px;max-height:520px;overflow:auto;padding-right:2px}
+      .soc-notification{border:1px solid var(--dsw-alias-border-l2,#e4e7ec);border-radius:9px;background:var(--dsw-alias-bg-base,#fff);overflow:hidden}
+      .soc-notification--unread{border-left:3px solid var(--dsw-alias-brand-primary,#1677ff);background:linear-gradient(90deg,#1677ff0a,transparent 45%),var(--dsw-alias-bg-base,#fff)}
+      .soc-notification__row{display:flex;align-items:stretch;min-width:0}
+      .soc-notification__row .soc-notification__toggle{flex:1;min-width:0}
+      .soc-notification__investigate{display:grid;place-items:center;flex:none;align-self:center;margin:0 8px 0 0;padding:0;width:28px;height:28px;border:1px solid var(--dsw-alias-border-l2);border-radius:6px;background:var(--dsw-alias-bg-base);color:var(--dsw-alias-brand-primary);cursor:pointer}
+      .soc-notification__context-hint{color:var(--dsw-alias-label-secondary);font-size:11px}
+      .soc-notification__investigate:hover{background:var(--dsw-alias-bg-subtle,#f5f7fa)}
+      .soc-notification__investigate:focus-visible{outline:2px solid var(--dsw-alias-brand-primary,#1677ff);outline-offset:2px}
+      .soc-notification__toggle{display:grid;width:100%;gap:5px;padding:11px 12px;border:0;background:transparent;color:inherit;cursor:pointer;font:inherit;text-align:left}
+      .soc-notification__toggle:hover{background:var(--dsw-alias-bg-subtle,#f5f7fa)}
+      .soc-notification__toggle:focus-visible{outline:2px solid var(--dsw-alias-brand-primary,#1677ff);outline-offset:-2px}
+      .soc-notification__title{display:flex;align-items:center;gap:7px;min-width:0}
+      .soc-notification__title strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+      .soc-notification__title em{flex:none;padding:2px 6px;border-radius:99px;background:var(--dsw-alias-brand-primary,#1677ff);color:#fff;font-size:10px;font-style:normal}
+      .soc-notification__summary{display:block;color:var(--dsw-alias-label-secondary,#667085);font-size:12px;line-height:1.5}
+      .soc-notification__toggle time{color:var(--dsw-alias-label-tertiary,#98a2b3);font-size:11px}
+      .soc-notification__details{max-height:260px;overflow:auto;padding:10px 12px;border-top:1px solid var(--dsw-alias-border-l2,#e4e7ec);color:var(--dsw-alias-label-secondary,#667085);font-size:12px;line-height:1.6}
+      .soc-notification__details p{margin:6px 0}
+      .soc-notification__details pre{max-height:180px;overflow:auto;margin:7px 0;padding:8px;border-radius:6px;background:var(--dsw-alias-bg-subtle,#f5f7fa);white-space:pre-wrap;overflow-wrap:anywhere}
+      .soc-notification__facts{margin:0;padding-left:18px}
+      .soc-notification__pending{color:var(--dsw-alias-warning-primary,#b54708)}
+      .soc-notification__links{display:flex;flex-wrap:wrap;gap:8px}
+      .soc-notification__links a{color:var(--dsw-alias-brand-primary,#1677ff)}
       @media(max-width:1100px){.soc-quick__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.soc-runtime__header{flex-wrap:wrap}.soc-runtime__summary{flex-basis:100%;order:3}.soc-runtime__summary div:first-child{padding-left:0;border-left:0}}
       @media(max-width:720px){.soc-quick__grid{grid-template-columns:1fr}.soc-quick__toolbar{align-items:stretch;flex-direction:column}.soc-quick__search{width:100%;box-sizing:border-box;margin-left:0}.soc-employee-form{grid-template-columns:1fr}.soc-employee-form label:nth-child(3){grid-column:auto}}
     `
@@ -498,8 +728,14 @@ type ModuleLoader = {
       </details>
     }
 
-    const inject = ['slots', 'sidebarRight', 'sidebarRightTabs', 'uiWorkspace', 'locale', 'configForms']
+    const inject = ['slots', 'sidebarRight', 'sidebarRightTabs', 'uiWorkspace', 'locale', 'configForms', 'conversation', 'sessions']
     function apply(ctx: any) {
+      const defaultedSessions = new Set<string>()
+      const openDefaultThreat = (sessionId: string) => {
+        if (defaultedSessions.has(sessionId) || ctx.sidebarRight.mounted.getSnapshot() !== sessionId) return
+        ctx.sidebarRight.openTab(THREAT_KIND)
+        defaultedSessions.add(sessionId)
+      }
       for (const toolName of Object.keys(DELEGATE_ROLES)) {
         ctx.effect(() => ctx.slots.inject('tool.call.toolview', () => ctx.slots.register(
           { name: 'tool.call.toolview', key: toolName }, DelegationTool,
@@ -566,6 +802,12 @@ type ModuleLoader = {
       )), 'security-operations-ui: hero mark')
 
       ctx.effect(() => ctx.sidebarRightTabs.register({
+        id: THREAT_PLUGIN_ID,
+        kind: THREAT_KIND,
+        title: () => '威胁事件通知',
+        guide: [{ order: 4, title: () => '威胁事件通知', description: () => '查看 SOC 威胁事件并快速发起研判' }],
+      }), 'security-operations-ui: threat notifications type')
+      ctx.effect(() => ctx.sidebarRightTabs.register({
         id: PLUGIN_ID,
         kind: STATUS_KIND,
         title: () => '系统消息',
@@ -573,15 +815,32 @@ type ModuleLoader = {
       }), 'security-operations-ui: status type')
 
       ctx.effect(() => ctx.slots.inject('sidebar.right.pane.tab', () => ctx.slots.register(
+        { name: 'sidebar.right.pane.tab', key: THREAT_PLUGIN_ID, inject: (sessionId: string) => ({
+          appendDraft(prompt: string) {
+            const binding = ctx.sessions.binding(sessionId)
+            if (!binding) return 'blocked'
+            const result = ctx.conversation.input.requestDraftInitialization(binding, { prompt, whenDraftExists: 'append' })
+            if (result === 'applied' && ctx.sidebarRight.mounted.getSnapshot() === sessionId) {
+              ctx.conversation.input.for(binding.ctx).focus()
+            }
+            return result
+          },
+        }) },
+        ThreatNotificationPanel,
+      )), 'security-operations-ui: threat notifications panel')
+      ctx.effect(() => ctx.slots.inject('sidebar.right.pane.tab', () => ctx.slots.register(
         { name: 'sidebar.right.pane.tab', key: PLUGIN_ID },
         StatusPanel,
       )), 'security-operations-ui: status panel')
 
       const openStatus = () => ctx.sidebarRight.openTab(STATUS_KIND)
-      const Dock = (props: any) => <QuickActions {...props} openStatus={openStatus}
-        uiWorkspace={ctx.get('uiWorkspace')} />
+      const openThreat = () => ctx.sidebarRight.openTab(THREAT_KIND)
+      const Dock = (props: any) => <>
+        <DefaultThreatSidebar {...props} openDefaultThreat={openDefaultThreat} />
+        <QuickActions {...props} openStatus={openStatus} openThreat={openThreat} uiWorkspace={ctx.get('uiWorkspace')} />
+      </>
       ctx.effect(() => ctx.slots.inject('conversation.input.dock', () => ctx.slots.register(
-        { name: 'conversation.input.dock', id: PLUGIN_ID, order: 100 },
+        { name: 'conversation.input.dock', id: PLUGIN_ID, order: 100, inject: () => ({ hooks: { sidebarMounted: ctx.sidebarRight.mounted } }) },
         Dock,
       )), 'security-operations-ui: quick actions')
     }

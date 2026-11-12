@@ -4,51 +4,14 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
-import {
-  TOOL_NAME,
-  GROUP_ID,
-  apply,
-  resolveAssetTools,
-  mainIdentity,
-  normalizeRange,
-  normalizeAssets,
-  previewAssets,
-  priorPreview,
-  unpack,
-} from '../dsh/managed/asset-onboarding-runtime.mjs'
+const runtime = await import(process.env.ASSET_TEST_BUILT === '1'
+  ? '../dsh/managed/asset-onboarding-runtime.mjs'
+  : '../dsh/managed/asset-onboarding-runtime.ts')
+const { TOOL_NAME, GROUP_ID, apply, mainIdentity, normalizeRange, normalizeAssets, previewAssets, priorPreview, unpack } = runtime
 import {
   TOOL_ROUTES,
   createSecurityOperationsGuard,
 } from '../dsh/managed/security-operations-guard.mjs'
-
-test('resolveAssetTools仅接受实际注册且当前Agent可见的原始或v2上游名称', () => {
-  const operation = 'create_soc_asset'
-  const rawV2 = `mcp__${GROUP_ID}__${operation}`
-  const native = `mcp__${GROUP_ID}__mock-v2-hashed-tool`
-  const agent = { id: 'mock-lookup-agent' }
-  const calls = []
-  const ctx = {
-    mcpSessionManager: { resolveTool(server, raw) { calls.push([server, raw]); return raw === rawV2 ? native : undefined } },
-    tools: { get(name, caller) { return name === native && caller === agent ? { name } : undefined } },
-  }
-  assert.deepEqual(resolveAssetTools(ctx, operation, agent), [native])
-  assert.deepEqual(calls, [[GROUP_ID, operation], [GROUP_ID, `ai-soc-master__${operation}`], [GROUP_ID, `mcp__ai-soc-master__${operation}`], [GROUP_ID, rawV2]])
-  assert.deepEqual(resolveAssetTools(ctx, operation, { id: 'mock-not-permitted' }), [])
-  ctx.mcpSessionManager.resolveTool = () => undefined
-  assert.deepEqual(resolveAssetTools(ctx, operation, agent), [])
-})
-
-test('resolveAssetTools不依赖旧manager目录，精确匹配独立客户端的成员v2注册', () => {
-  const operation = 'create_soc_discovery_tasks'
-  const name = 'mcp__asset-management__ai-soc-master__create_soc_discovery_tasks'
-  const agent = { id: 'mock-native-group-agent' }
-  const ctx = {
-    mcpSessionManager: { resolveTool: () => undefined },
-    tools: { get(candidate, caller) { return candidate === name && caller === agent ? { name } : undefined } },
-  }
-  assert.deepEqual(resolveAssetTools(ctx, operation, agent), [name])
-  assert.deepEqual(resolveAssetTools(ctx, operation, { id: 'mock-other-agent' }), [])
-})
 
 test('纳管原生guard拒绝双重命名或哈希名称的底层操作且不执行任何接口', () => {
   let guard, registered = 0, executions = 0
@@ -155,75 +118,6 @@ test('read_excel高层构建物通过公开附件服务解析既有夹具，不�
   assert.deepEqual(serviceGets, ['attachments'])
 })
 
-test('status只查元目录，不将零候选或旧manager结果解释为来源不存在', async () => {
-  let tool, catalogCalls = 0
-  const ctx = {
-    mcpSessionManager: { sourceStatus() { throw new Error('不依赖旧管理器配置状态') }, resolveTool: () => undefined },
-    tools: { guard() {}, register(value) { tool = value }, get(name) {
-      if (name !== 'list_mcp_resource_templates') return undefined
-      return { async execute() { catalogCalls++; return { isError: true } } }
-    } },
-  }
-  apply(ctx)
-  const exec = mockExec({ events: [turnStart(1), user('mock-status-user', '只读检查当前资产纳管服务')] })
-  const result = await tool.execute({ action: 'status' }, exec)
-  assert.equal(result.local_entry_loaded, true)
-  assert.equal(result.backend.configured, null)
-  assert.equal(result.backend.tooling_ready, false)
-  assert.equal(result.backend.task_query_template_count, null)
-  assert.equal(result.business_verification, 'not_performed')
-  assert.equal(result.registration_performed, false)
-  assert.match(result.message, /不表示目标离线/)
-  assert.equal(catalogCalls, 1)
-})
-
-test('status缺公开配置检查方法时保留未知并安全报告资源缺口', async () => {
-  let tool, catalogCalls = 0
-  const ctx = {
-    mcpSessionManager: { resolveTool: () => undefined },
-    tools: { guard() {}, register(value) { tool = value }, get(name) {
-      if (name !== 'list_mcp_resource_templates') return undefined
-      return { async execute() { catalogCalls++; throw new Error('Mock目录不可用') } }
-    } },
-  }
-  apply(ctx)
-  const exec = mockExec({ events: [turnStart(1), user('mock-status-user', '只读检查当前资产纳管服务')] })
-  const result = await tool.execute({ action: 'status' }, exec)
-  assert.equal(result.backend.configured, null)
-  assert.equal(result.backend.configuration_check_supported, false)
-  assert.equal(result.backend.task_query_resource, 'unavailable')
-  assert.equal(result.backend.tooling_ready, false)
-  assert.equal(result.registration_performed, false)
-  assert.equal(catalogCalls, 1)
-  assert.deepEqual(resolveAssetTools({ mcpSessionManager: {}, tools: { get: () => undefined } }, 'create_soc_asset'), [])
-})
-
-test('status仅发现目录，不把接口就绪或目录歧义说成业务通过', async () => {
-  let tool, catalogCalls = 0, businessCalls = 0
-  let templates = [{ name: 'get_soc_discovery_tasks_by_task_id', uriTemplate: 'mcp-group:/asset-management/mock/t/task{?taskId}' }]
-  const ctx = {
-    mcpSessionManager: { sourceStatus: () => ({ configured: true }), resolveTool: (_server, raw) => raw.startsWith('create_') || raw.startsWith('start_') ? `mock-${raw}` : undefined },
-    tools: { guard() {}, register(value) { tool = value }, get(name) {
-      if (name === 'list_mcp_resource_templates') return { async execute(args) { assert.equal(args.server, GROUP_ID); catalogCalls++; return { resourceTemplates: templates } } }
-      if (name.startsWith('mock-')) return { execute() { businessCalls++; throw new Error('状态检查不可执行资产接口') } }
-      return undefined
-    } },
-  }
-  apply(ctx)
-  const exec = mockExec({ events: [turnStart(1), user('mock-status-user', '只读检查当前资产纳管服务')] })
-  const first = await tool.execute({ action: 'status' }, exec)
-  assert.equal(first.backend.tooling_ready, true)
-  assert.equal(first.business_verification, 'not_performed')
-  assert.equal(first.registration_performed, false)
-  assert.match(first.message, /未验证SOC业务权限/)
-  templates = [templates[0], { ...templates[0] }]
-  const ambiguous = await tool.execute({ action: 'status' }, exec)
-  assert.equal(ambiguous.backend.tooling_ready, false)
-  assert.equal(ambiguous.backend.task_query_resource, 'missing_or_ambiguous')
-  assert.equal(catalogCalls, 2)
-  assert.equal(businessCalls, 0)
-})
-
 function excelFixture({ sessionId = SESSION_ID, sourceSessionId = sessionId, request = '读取本会话附件并预览设备清单' } = {}) {
   const source = { kind: 'excel', attachment_id: ATTACHMENT_ID }
   const assets = [{ ip: '192.0.2.10', hostname: 'mock-edge' }, { ip: '192.0.2.11', hostname: 'mock-db' }]
@@ -246,7 +140,7 @@ function discoveryFixture(overrides = {}) {
   const source = { kind: 'discovery', evidence_id: 'mock-discovery-evidence' }
   const discovery = envelope({
     kind: 'discovery-result', evidence_id: source.evidence_id, taskId: 41,
-    evidence_complete: true,
+    state: 'completed', evidence_complete: true, completion_contract_verified: true, candidate_complete: true,
     facts: { findings: [
       { id: 201, ip: '192.0.2.10' },
       { findingId: 202, ip: '192.0.2.11' },
@@ -438,14 +332,14 @@ test('priorPreview拒绝fork新Session继承父Session的预览与确认', () =>
   assert.throws(() => priorPreview(mainIdentity(fork), fixture.frozen.preview_digest), /本会话最新/)
 })
 
-test('priorPreview不把预览前的旧确认或多个后续用户消息视为本批授权', () => {
+test('priorPreview拒绝预览前旧确认和改动消息，但接受同批独立确认重试', () => {
   const old = excelFixture({ request: '确认导入' })
   const frozen = envelope(previewAssets(old.identity, { source: old.source, assets: old.assets }))
   old.events.push(...resultEvents(frozen, { callId: 'mock-later-preview' }), assistant(frozen.markdown))
   assert.throws(() => priorPreview(mainIdentity(old.exec), frozen.preview_digest), /查看完整清单后/)
   const repeated = confirmedFixture()
   repeated.events.push(turnEnd(2), turnStart(3), user('mock-second-confirm', '确认导入'))
-  assert.throws(() => priorPreview(mainIdentity(repeated.exec), repeated.frozen.preview_digest), /其他新消息/)
+  assert.deepEqual(priorPreview(mainIdentity(repeated.exec), repeated.frozen.preview_digest), repeated.frozen)
   const vague = confirmedFixture({ confirmation: '确认导入，但把主机名改一下' })
   assert.throws(() => priorPreview(vague.identity, vague.frozen.preview_digest), /其他新消息/)
 })
@@ -479,6 +373,82 @@ test('unpack区分SOC业务拒绝与工具层错误，不把失败当成功', ()
   assert.throws(() => unpack({ isError: true, structuredContent: { code: 200, data: { assetId: 501 } } }), /SOC工具返回错误/)
 })
 
+test('工具错误保留原错和关联且脱敏，不把未知当未发送或认证失败', () => {
+  for (const notSent of [true, false]) {
+    assert.throws(() => unpack({ isError: true, content: [{ type: 'text', text: JSON.stringify({ error: { code: 'RISK_DENIED', message: 'X-API-KEY=secret-value Authorization: Bearer secret-token', notSent, requestId: 'mock-request' } }) }] }), error => {
+      assert.equal(error.notSent, notSent)
+      assert.equal(error.businessFailure, false)
+      assert.equal(error.diagnostic.code, 'RISK_DENIED')
+      assert.equal(error.diagnostic.request_id, 'mock-request')
+      assert.doesNotMatch(JSON.stringify(error.diagnostic), /secret-value|secret-token/)
+      return true
+    })
+  }
+})
+
+test('252原始结果超预算时完整保留45 alive全部字段证据，不重复大数组', () => {
+  const findings = Array.from({ length: 252 }, (_, i) => ({ id: String(i + 1), ip: `172.16.138.${i + 1}`, alive: i < 45 ? 1 : 0, identifyStatus: 'done', suggestAssetType: i < 27 ? 'host' : null, nameSourceLabel: 'NETBIOS', modelName: null, evidenceJson: 'PING OPEN_PORTS BANNER ' + 'e'.repeat(i < 45 ? 900 : 1200) }))
+  const facts = { task: { id: '2120100732104658945', status: 'done', total: 252, doneCount: 252, coverageJson: { scanTargetCount: 254, managedSkipped: 2 } }, findings }
+  assert.ok(JSON.stringify(facts).length > 131072)
+  const compact = runtime.compactDiscovery(facts)
+  assert.equal(compact.facts.findings, undefined)
+  assert.equal(facts.findings.length, 252)
+  assert.equal(compact.candidate_summary.length, 45)
+  assert.deepEqual(compact.candidate_summary.map(row => row.findingId), findings.slice(0,45).map(row => row.id))
+  assert.equal(compact.candidate_summary[44].suggestAssetType, '未知')
+  assert.match(compact.candidate_summary[0].evidence_summary.summary, /PING/)
+  const serialized = JSON.stringify(compact)
+  assert.ok(serialized.indexOf('"facts"') > serialized.indexOf('"findingId":"45"'))
+  assert.ok(JSON.stringify(compact.candidate_summary).length < 25000)
+  assert.ok(serialized.indexOf('"facts"') < 25000)
+  assert.equal(runtime.candidateEvidenceSummary(JSON.stringify([{ type: 'OPEN_PORTS', ports: [22, 443] }])).raw_preserved, true)
+  assert.equal(compact.discovery_summary.raw_findings, 252)
+  assert.equal(compact.discovery_summary.not_alive, 207)
+  assert.equal(compact.discovery_summary.type_suggested, 27)
+  assert.equal(compact.discovery_summary.type_unknown, 18)
+  assert.ok(JSON.stringify(compact).length < 20000)
+})
+test('真实start preview与execution无损关联，错号错范围和自动纳管拒绝', () => {
+  const preview = '2120100731249020929', execution = '2120100732104658945'
+  const coverage = { previewTaskId: preview, includedRanges: '172.16.138.1-172.16.138.254', excludedRanges: '', autoAdopt: false, confirmedBy: 9001 }
+  const record = { ranges: coverage.includedRanges, excluded_ranges: '', facts: { prepared: { taskId: preview }, started: { taskId: execution, task: { id: execution, coverageJson: JSON.stringify(coverage) } } } }
+  assert.equal(runtime.executionLink(record).taskId, execution)
+  assert.equal(runtime.executionLink(record).previewTaskId, preview)
+  for (const changed of [{ ...coverage, previewTaskId: execution }, { ...coverage, autoAdopt: true }, { ...coverage, includedRanges: '172.16.1.1-172.16.1.254' }]) assert.equal(runtime.executionLink({ ...record, facts: { ...record.facts, started: { taskId: execution, task: { id: execution, coverageJson: changed } } } }), null)
+  assert.equal(runtime.executionLink({ ...record, facts: { ...record.facts, started: { taskId: preview, task: { id: execution, coverageJson: coverage } } } }), null)
+})
+test('int64无损与真实终态候选完整性', () => {
+  const id = '2120038186043625474'
+  assert.equal(runtime.validSocId(id), true)
+  assert.equal(runtime.validSocId(Number(id)), false)
+  const facts = { task: { id, status: 'done', total: 2, doneCount: 2, adoptedCount: 0, pendingCount: 1, unreachableCount: 1 }, findings: [{ id: '2120038186043625475', ip: '172.16.138.2' }] }
+  assert.equal(runtime.discoveryCompletion(facts, id).candidate_complete, true)
+  for (const altered of [{ ...facts, task: { ...facts.task, status: 'running' } }, { ...facts, task: { ...facts.task, status: 'failed' } }, { ...facts, task: { ...facts.task, pendingCount: undefined } }]) assert.equal(runtime.discoveryCompletion(altered, id).candidate_complete, false)
+  assert.equal(runtime.discoveryCompletion(facts, '2120038186043625476').candidate_complete, false)
+  const mixed = { ...facts, findings: [
+    { id: '1', ip: '172.16.138.2', alive: 1, identifyStatus: 'done' },
+    { id: '2', ip: '172.16.138.3', alive: 1, identifyStatus: 'done', adoptedAssetId: 10, softwareCandidates: [{ id: '8' }] },
+    { id: '3', ip: '172.16.138.4', alive: 0, identifyStatus: 'done' },
+  ] }
+  const projected = runtime.discoveryCompletion(mixed, id)
+  assert.equal(projected.candidate_complete, true)
+  assert.deepEqual(projected.eligible_findings.map(row => row.id), ['1'])
+  assert.equal(projected.excluded_findings.length, 2)
+  assert.equal(projected.collection_completeness, 'unknown')
+})
+
+test('TableDataInfo顶层rows/total保留，不把真实0条变为null', () => {
+  const table = { code: 200, msg: 'success', total: 0, rows: [] }
+  assert.deepEqual(unpack({ value: table }), table)
+})
+test('254条发现混合集合不受200条导入批次上限限制', () => {
+  const id = '2119614486382673922'
+  const findings = Array.from({ length: 254 }, (_, i) => ({ id: String(i + 1), ip: `172.16.138.${i + 1}`, alive: i < 3 ? 1 : 0, identifyStatus: 'done', ...(i === 1 ? { adoptedAssetId: 77 } : {}), ...(i === 2 ? { conflict: 1 } : {}) }))
+  const facts = { task: { id, status: 'done', total: 254, doneCount: 254, adoptedCount: 1, pendingCount: 1, unreachableCount: 251 }, findings }
+  const result = runtime.discoveryCompletion(facts, id)
+  assert.equal(result.evidence_complete, true); assert.deepEqual(result.eligible_findings.map(row => row.id), ['1'])
+  assert.throws(() => runtime.normalizeAssets(findings.slice(0, 201)), /每批/)
+})
 test('unpack拒绝非JSON、缺少业务状态及非对象回执', () => {
   for (const result of [
     { content: [{ type: 'text', text: 'mock-not-json' }] },

@@ -42,56 +42,64 @@ parent_direct_tools:
     - skill
   attachment:
     - read_attachment_table
+  reports:
+    - export_security_report
+  asset-onboarding:
+    - asset_onboarding
+  # 供受信高层流程解析；模型直接调用这些底层工具始终被拒绝。
+  asset-onboarding-trusted-soc:
+    - mcp__asset-management__create_soc_asset_probe
+    - mcp__asset-management__create_soc_discovery_identify
+    - mcp__asset-management__create_soc_discovery_tasks
+    - mcp__asset-management__start_soc_discovery_tasks
+    - mcp__asset-management__create_soc_discovery_tasks_adopt
+    - mcp__asset-management__create_soc_asset
   schedule:
     - schedule_create
     - schedule_list
     - schedule_delete
     - schedule_update
+  native_questions:
+    - ask_user_question
   mcp:
-    policy:
-      - mcp__policy-configuration__resolve_policy_endpoints
-      - mcp__policy-configuration__choose_ambiguous_policy_endpoints
-      - mcp__policy-configuration__prepare_policy_configuration
-      - mcp__policy-configuration__get_policy_configuration_status
-      - mcp__policy-configuration__select_policy_configuration_candidate
-      - mcp__policy-configuration__get_policy_configuration_result
-    # 同一真实来源；部门6工具与plan/task/draft三查询模板分别由运行时核验，不表示9个可调用工具。
-    department-policy:
-      - mcp__policy-configuration__list_policy_departments
-      - mcp__policy-configuration__preview_policy_department_targets
-      - mcp__policy-configuration__resolve_policy_department_destination
-      - mcp__policy-configuration__preview_policy_department_plan
-      - mcp__policy-configuration__get_policy_department_plan
-      - mcp__policy-configuration__prepare_policy_department_draft
-      - mcp__policy-configuration__get_policy_department_draft
-      - mcp__policy-configuration__prepare_policy_department_task
-      - mcp__policy-configuration__get_policy_department_task
-    emergency-action:
-      - mcp__emergency-action__prepare_emergency_action
-      - mcp__emergency-action__revise_emergency_action
-      - mcp__emergency-action__get_emergency_action
-      - mcp__emergency-action__list_emergency_actions
-      - mcp__emergency-action__get_emergency_action_result
-      - mcp__emergency-action__cancel_emergency_action
+    # 主会话普通MCP按真实绑定目录和DSH原生权限装载，不在此维护新增工具名单。
+    # 以下保留已有SOC专用合同索引及巡检/诊断入口；子角色与禁止接口仍有独立边界。
+    policy-response:
+      source: security-operations-guard.mjs#TOOL_ROUTES.policyResponse
+    soc-readonly:
+      - mcp__soc-readonly__search_graph_assets
+      - mcp__soc-readonly__get_graph_resolve_ip_host
+      - mcp__soc-readonly__get_soc_asset_by_asset_id
+      - mcp__soc-readonly__list_soc_asset
+      - mcp__soc-readonly__get_soc_asset_vulnerabilities
+      - mcp__soc-readonly__get_admin_baseline_report_latest
+      - mcp__soc-readonly__get_graph_path_query
     inspection:
-      - mcp__inspection__list_executable_inspections
-      - mcp__inspection__start_inspection
-      - mcp__inspection__get_inspection_result
-      - mcp__inspection__get_inspection_report_details
-    diagnosis:
-      - mcp__troubleshooting__list_troubleshooting_playbooks
-      - mcp__troubleshooting__start_diagnosis
-      - mcp__troubleshooting__get_diagnosis_result
+      - mcp__inspection-compositions__inspection_baseline
+      - mcp__inspection-compositions__inspection_vulnerabilities
+      - mcp__inspection-compositions__inspection_reachability
+      - mcp__inspection-compositions__inspection_routine
+      - mcp__inspection-compositions__inspection_deep
+      - mcp__inspection-compositions__get_composition_run
+      - mcp__inspection-compositions__get_composition_details
+      - mcp__inspection-compositions__get_composition_artifact
+    # 仅主Agent的两条只读组合Run及同组原结果查询；不包含主动探测或业务写入。
+    troubleshooting:
+      - mcp__troubleshooting-compositions__diagnose_business_access
+      - mcp__troubleshooting-compositions__diagnose_device_offline
+      - mcp__troubleshooting-compositions__get_composition_run
+      - mcp__troubleshooting-compositions__get_composition_artifact
+      - mcp__troubleshooting-compositions__get_composition_details
   delegates:
     - delegate_threat_analysis
     - delegate_fault_analysis
     - delegate_response_planning
   threat-automation:
     - analyze_pending_threat_incidents
-  # 此同宿主原生REST试验入口在容器Preset中禁用，不作为已装载能力。
-  department-task-workflow:
-    - create_department_policy_task
 denied_mcp_tools:
+  - mcp__troubleshooting__list_troubleshooting_playbooks
+  - mcp__troubleshooting__start_diagnosis
+  - mcp__troubleshooting__get_diagnosis_result
   - mcp__sec-ops__prepare_policy_configuration
   - mcp__sec-ops__get_policy_configuration_status
   - mcp__sec-ops__get_policy_configuration_result
@@ -110,18 +118,15 @@ runtime_capabilities:
     - grep
     - skill
     - read_attachment_table
+    - asset_onboarding
+    - export_security_report
     - analyze_threat_incident
     - analyze_pending_threat_incidents
     - delegate_threat_analysis
     - delegate_fault_analysis
     - delegate_response_planning
-    - create_department_policy_task
   local_model_routes:
     - provider: threat-analysis-automation
       model: scheduled-batch
     - provider: threat-analysis-delivery
       model: fixed-summary
-    - provider: threat-analysis-continuation
-      model: bound-recommendation
-    - provider: security-operation-delivery
-      model: fixed-operation-result

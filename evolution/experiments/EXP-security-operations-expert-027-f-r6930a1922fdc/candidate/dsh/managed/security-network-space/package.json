@@ -1,0 +1,31 @@
+{
+  "name": "dsh-security-network-space",
+  "version": "1.0.0",
+  "description": "默认沉浸式网络空间监控；真实只读数据、资产拓扑、事件证据与原生运行记录，不替换聊天。",
+  "private": true,
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": ["index.js", "mcp.js", "data.js", "timeline.js", "client.js", "test-contracts.mjs", "locale/*.json", "icon.svg"],
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-workspace",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-theme",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  }
+}

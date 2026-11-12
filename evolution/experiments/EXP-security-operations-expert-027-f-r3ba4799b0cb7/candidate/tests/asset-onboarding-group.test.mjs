@@ -1,7 +1,9 @@
 // ASSET02：只测试TS源码与Mock公开组服务，无原始MCP注册、网络、发现或业务FS写入。
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import * as runtime from '../dsh/managed/asset-onboarding-runtime.ts'
+const runtime = await import(process.env.ASSET_TEST_BUILT === '1'
+  ? '../dsh/managed/asset-onboarding-runtime.mjs'
+  : '../dsh/managed/asset-onboarding-runtime.ts')
 
 const GROUP = 'asset-management', MEMBER = 'ai-soc-master'
 const TARGET = 'io.deepseek.dsh/mcp-group-target', OWNER = 'io.deepseek.dsh/mcp-group-tool'
@@ -193,4 +195,26 @@ test('等待目录期间有取消则不派发；摘要漂移不重新发现或�
   await assert.rejects(runtime.createAssetGroupBackend(g.ctx).call(OPS[0], {}, second), /目标已变化/)
   assert.equal(attempts, 1)
   assert.equal(g.lists(), 1)
+})
+
+
+test('真实oneOf目录大整数taskId在scope/query/start/adopt保持原字符串', async () => {
+  const id = '2120038186043625474', finding = '2120038186043625475', directory = catalog()
+  const schema = { oneOf: [{ type: 'string', pattern: '^[1-9][0-9]{0,18}$' }, { type: 'integer', minimum: 1, maximum: Number.MAX_SAFE_INTEGER }] }
+  directory.tools.at(-1).inputSchema.properties.taskId = schema
+  const scope = clone(directory.tools.at(-1)); scope.name = 'get_soc_discovery_tasks_scope'; scope._meta[OWNER].sourceName = scope.name; scope._meta[OWNER].sourceUri = `${URI}/scope`; directory.tools.push(scope)
+  const f = fixture(directory), backend = runtime.createAssetGroupBackend(f.ctx), e = exec(), seen = []
+  f.manager.callGroupTool = async (_group, _version, name, args) => {
+    assert.equal(args.taskId, id); seen.push(name)
+    if (name === QUERY || name === scope.name) {
+      const uri = name === QUERY ? URI : `${URI}/scope`
+      return { structuredContent: { contents: [{ uri: `mcp-group:/${GROUP}/${MEMBER}/t/${Buffer.from(uri).toString('base64url')}`, text: JSON.stringify({ code: 200, data: { taskId: id } }) }] } }
+    }
+    if (name === 'create_soc_discovery_tasks_adopt') assert.equal(args.body[0].findingId, finding)
+    return { code: 200, data: { taskId: id } }
+  }
+  await backend.resource(id, e, scope.name); await backend.resource(id, e)
+  await backend.call('start_soc_discovery_tasks', { taskId: id, body: { previewHash: 'a'.repeat(64) } }, e)
+  await backend.call('create_soc_discovery_tasks_adopt', { taskId: id, body: [{ findingId: finding, assetName: 'mock' }] }, e)
+  assert.equal(seen.length, 4)
 })

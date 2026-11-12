@@ -1,0 +1,26 @@
+{
+  "name": "dsh-inspection-report-card",
+  "version": "0.1.0",
+  "description": "巡检报告卡：聊天中三层展开概览、设备、规则与证据；按钮回传当前 Run 结构化事件。",
+  "private": true,
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./client": "./client.js"
+  },
+  "files": [
+    "index.mjs",
+    "client.js",
+    "model.mjs"
+  ],
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-tool",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  }
+}

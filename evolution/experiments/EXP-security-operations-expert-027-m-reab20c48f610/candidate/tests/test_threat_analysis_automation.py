@@ -38,7 +38,7 @@ class ThreatAnalysisAutomationTest(unittest.TestCase):
             with self.subTest(start=start, end=end), self.assertRaises(ValueError):
                 build_forward_slices(start, end)
 
-    def test_parsed_model_output_cannot_override_failed_evidence_validation(self) -> None:
+    def test_compat_delivery_preserves_failed_evidence_validation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             fusion = Path(directory) / 'fusion'
             fusion.mkdir()
@@ -66,13 +66,12 @@ class ThreatAnalysisAutomationTest(unittest.TestCase):
                     patch.object(dsh_runner, '_finish_completed') as finish:
                 run = dsh_runner._analyze('INC-20261105-000004', directory,
                                           {'analysisModel': {'baseURL': 'http://model.invalid', 'model': 'test'}})
-            self.assertEqual(run['status'], 'contract_failed')
-            self.assertNotIn('result', run)
-            self.assertEqual(run['delivery']['status'], 'not_generated')
-            self.assertIn('证据引用校验未通过', run['delivery']['markdown'])
-            self.assertNotIn('误报', run['delivery']['markdown'])
-            self.assertEqual(client.write.call_args.args[:2], ('fail', 'judge-validation'))
-            finish.assert_not_called()
+            self.assertEqual(run['status'], 'completed')
+            self.assertEqual(run['result'], {'verdict': '误报'})
+            self.assertEqual(run['validation']['status'], 'failed')
+            self.assertIn('graph.missing', run['validation']['error'])
+            finish.assert_called_once()
+            client.write.assert_not_called()
 
     def test_evidence_array_paths_resolve_both_model_notations(self) -> None:
         payload = {"enriched_context": {"edr_detail": {"entities": [
@@ -159,8 +158,7 @@ class ThreatAnalysisAutomationTest(unittest.TestCase):
         self.assertEqual(target, delivery["summary"]["recommended_actions"][0]["target"])
         self.assertEqual(target, build_writeback(run, report)["resultJson"]["result"]["recommended_actions"][0]["target"])
         run['validation']['status'] = 'failed'
-        with self.assertRaisesRegex(ValueError, 'validated analysis'):
-            build_delivery(run)
+        self.assertEqual(build_delivery(run)['summary']['validation']['status'], 'failed')
 
     def test_action_target_must_identify_one_observed_endpoint_and_its_port(self) -> None:
         five_source = {"event_snapshot": {"entities": [
@@ -224,12 +222,11 @@ class ThreatAnalysisAutomationTest(unittest.TestCase):
             self.assertEqual(run_id, client.write.call_args.args[2]["runId"])
             self.assertEqual(result, repeated)
 
-    def test_fixed_runtime_contract_contains_pending_and_report_tools(self) -> None:
+    def test_fixed_runtime_contract_contains_pending_tool(self) -> None:
         self.assertIn(
             ("ai_soc_correlate", "ai_soc_correlate__get_correlate_incident_judge_pending"),
             FIXED_RUNTIME_TOOLS,
         )
-        self.assertIn(("report-write", "save_persistence_result"), FIXED_RUNTIME_TOOLS)
 
     def test_gateway_sends_legacy_contract_to_authorized_run_bridge(self) -> None:
         class Response:
@@ -290,7 +287,9 @@ class ThreatAnalysisAutomationTest(unittest.TestCase):
             )
         with self.assertRaises(PermissionError):
             gateway.invoke_trusted(
-                resource="report-write", tool_name="unselected_write", arguments={},
+                resource="ai_soc_correlate",
+                tool_name="ai_soc_correlate__get_correlate_threat_intel",
+                arguments={},
             )
 
     def test_pending_uses_first_page_and_bounded_page_size(self) -> None:
@@ -357,58 +356,27 @@ class ThreatAnalysisAutomationTest(unittest.TestCase):
             invoke.call_args_list,
         )
 
-    def test_report_uses_shared_gateway_and_failure_is_non_blocking(self) -> None:
-        run = {
-            "run_id": "run-test", "incident_id": "INC-20261010-000001", "report_revision": 1,
-        }
+    def test_report_uses_local_receipt_and_failure_is_non_blocking(self) -> None:
+        run = {'run_id': 'run-11111111-1111-4111-8111-111111111111',
+               'incident_id': 'INC-20261010-000001', 'report_revision': 1}
         gateway = MagicMock()
-        saved = {
-            "status": "success", "status_code": 200,
-            "result": {"code": "200", "data": {
-                "id": "report-test", "downloadUrl": "http://report.invalid/file",
-            }},
-        }
-        loaded = {"status": "success", "status_code": 200, "result": {"code": "200", "data": {
-            "id": "report-test", "businessId": run["run_id"], "sourceModule": "threat-analysis",
-            "revision": 1, "resultType": "report",
-            "sha256": hashlib.sha256(b"<html>report</html>").hexdigest(),
-        }}}
-        gateway.invoke_trusted.side_effect = [saved, loaded]
-        state = persist(run, "<html>report</html>", gateway)["report"]
-        self.assertEqual("saved", state["status"])
-        self.assertEqual("report-test", state["id"])
-        self.assertEqual("http://report.invalid/file", state["download_url"])
-        call = gateway.invoke_trusted.call_args_list[0]
-        self.assertEqual("report-write", call.kwargs["resource"])
-        self.assertEqual("save_persistence_result", call.kwargs["tool_name"])
-        self.assertEqual("run-test", call.kwargs["arguments"]["businessId"])
-        self.assertEqual("get_persistence_result", gateway.invoke_trusted.call_args.kwargs["tool_name"])
-        self.assertEqual({"id": "report-test"}, gateway.invoke_trusted.call_args.kwargs["arguments"])
-
-        for field, invalid in (("id", "other"), ("businessId", "other"), ("revision", 2),
-                               ("sourceModule", "other"), ("resultType", "other"), ("sha256", "other")):
-            with self.subTest(field=field):
-                wrong = {**loaded, "result": {"code": "200", "data": {**loaded["result"]["data"], field: invalid}}}
-                gateway.reset_mock()
-                gateway.invoke_trusted.side_effect = [saved, wrong]
-                failed = persist(run, "<html>report</html>", gateway)["report"]
-                self.assertEqual("saved_unverified", failed["status"])
-                self.assertNotIn("download_url", failed)
-                self.assertEqual(2, gateway.invoke_trusted.call_count)
-
-        for url in ("javascript:alert(1)", "/download/guessed", None):
-            with self.subTest(url=url):
-                gateway.invoke_trusted.side_effect = [
-                    {**saved, "result": {"code": "200", "data": {"id": "report-test", "downloadUrl": url}}}, loaded]
-                self.assertNotIn("download_url", persist(run, "<html>report</html>", gateway)["report"])
-
-        gateway.invoke_trusted.side_effect = None
-        gateway.invoke_trusted.return_value = {
-            "status": "error", "status_code": 502, "result": None,
-        }
-        failed = persist(run, "<html>report</html>", gateway)["report"]
-        self.assertEqual("unknown", failed["status"])
-        self.assertEqual("ValueError", failed["error_type"])
+        html = '<html>report</html>'
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / run['run_id']
+            (output / 'fusion' / 'raw').mkdir(parents=True)
+            gateway.raw_directory = output / 'fusion' / 'raw'
+            (output / 'report.html').write_text(html, encoding='utf-8')
+            state = persist(run, html, gateway)['report']
+            self.assertEqual('saved', state['status'])
+            self.assertEqual('local', state['storage'])
+            self.assertEqual(run['run_id'], state['id'])
+            self.assertEqual(hashlib.sha256(html.encode()).hexdigest(), state['sha256'])
+            self.assertNotIn('download_url', state)
+            (output / 'report.html').unlink()
+            failed = persist(run, html, gateway)['report']
+            self.assertEqual('failed', failed['status'])
+            self.assertEqual('FileNotFoundError', failed['error_type'])
+        gateway.invoke_trusted.assert_not_called()
 
     def test_claim_409_displays_business_reason_without_inventing_lock(self) -> None:
         run = {"run_id": "run-rejected", "status": "claim_failed", "error_code": 409,

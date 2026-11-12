@@ -13,15 +13,13 @@ from typing import Any, Callable, Mapping
 from fusion_contract import CallOutcome
 
 
-# 状态与报告入口保留固定 allowlist；取证路由由 Node bridge 动态映射并预检。
+# 状态入口保留固定 allowlist；取证路由由 Node bridge 动态映射并预检。
 FIXED_RUNTIME_TOOLS = frozenset(
     {
         ("ai_soc_correlate", "ai_soc_correlate__get_correlate_incident_judge_pending"),
         ("ai_soc_correlate", "ai_soc_correlate__create_incident_judgement_claim"),
         ("ai_soc_correlate", "ai_soc_correlate__update_incident_judgement_result"),
         ("ai_soc_correlate", "ai_soc_correlate__create_correlate_incident_judgement_fail"),
-        ("report-write", "save_persistence_result"),
-        ("report-write", "get_persistence_result"),
     }
 )
 
@@ -203,7 +201,7 @@ class McpGateway:
         arguments: Mapping[str, Any],
         timeout: int = 30,
     ) -> Mapping[str, Any]:
-        """调用固定流程显式允许的状态或报告工具，不扩大只读取证入口。"""
+        """调用固定流程显式允许的状态工具，不扩大只读取证入口。"""
 
         if (resource, tool_name) not in FIXED_RUNTIME_TOOLS:
             raise PermissionError(f"tool did not pass fixed runtime gate: {tool_name}")

@@ -1,13 +1,15 @@
-"""经本轮 MCP bridge 完成 SOC 状态写回与报告保存。"""
+"""经本轮 MCP bridge 完成 SOC 状态写回，报告制品保留在本地运行目录。"""
 from __future__ import annotations
 
-import base64
 import copy
+import hashlib
 import json
-import urllib.parse
+import os
+import re
+import stat
 from pathlib import Path
 
-from mcp_gateway import McpGateway, classify_response, extract_result_data
+from mcp_gateway import classify_response, extract_result_data
 from fusion_contract import CallOutcome
 
 LIMIT = 1048576
@@ -135,58 +137,47 @@ def build_failure_writeback(run):
     return body
 
 
-def _persistence_data(response):
-    if classify_response(response) not in (CallOutcome.SUCCESS_WITH_DATA, CallOutcome.SUCCESS_EMPTY):
-        raise ValueError('persistence MCP tool error')
-    data = extract_result_data(response)
-    # bridge 的规范结果应直接给出 data；兼容报告 MCP 原有的 code/data 业务包络。
-    if isinstance(data, dict) and str(data.get('code')) == '200' and isinstance(data.get('data'), dict):
-        data = data['data']
-    if not isinstance(data, dict):
-        raise ValueError('persistence MCP invalid result')
-    return data
-
-
-def persist(run, report_html, gateway: McpGateway):
-    """只调用一次SAVE，直接交付其真实回执中的下载地址，不以GET为前提。"""
+def persist(run, report_html, gateway):
+    """确认 runner 已保存的同次 HTML；gateway 仅定位本地取证目录，不调用 MCP。"""
     states = {'summary': {'status': 'not_configured'}}
-    stored_id = None
-    submitted = False
     try:
-        # revision 是可信运行创建时冻结的唯一报告修订，不是模型、模板或插件版本。
         revision = run.get('report_revision')
         if type(revision) is not int or revision < 1:
             raise ValueError('missing trusted report business revision')
-        content_bytes = report_html.encode('utf-8')
-        if len(content_bytes) > LIMIT:
+        run_id, incident_id = run['run_id'], run['incident_id']
+        if not isinstance(run_id, str) or not re.fullmatch(
+                r'run-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}', run_id):
+            raise ValueError('invalid run ID')
+        if not isinstance(incident_id, str) or not re.fullmatch(r'INC-\d{8}-\d{6}', incident_id):
+            raise ValueError('invalid incident ID')
+        content = report_html.encode('utf-8')
+        if len(content) > LIMIT:
             raise ValueError('reportHtml exceeds 1048576 UTF-8 bytes')
-        args = {'businessId': run['run_id'], 'sourceModule': 'threat-analysis',
-                'revision': revision, 'resultType': 'report',
-                'content': {'contentType': 'text/html',
-                            'fileName': run['incident_id'] + '-' + run['run_id'] + '.html',
-                            'fileContentBase64': base64.b64encode(content_bytes).decode('ascii')}}
-        submitted = True
-        response = gateway.invoke_trusted(
-            resource='report-write', tool_name='save_persistence_result', arguments=args)
-        data = _persistence_data(response)
-        candidate_id = data.get('id')
-        if not isinstance(candidate_id, str) or not candidate_id.strip():
-            raise ValueError('persistence MCP missing storage id')
-        stored_id = candidate_id
-        state = {'status': 'saved', 'id': stored_id}
-        # SAVE回执已证明保存成功；GET权限、可用性及回读内容不再阻断链接交付。
-        url_value = data.get('downloadUrl')
-        if isinstance(url_value, str):
-            parsed = urllib.parse.urlsplit(url_value)
-            if parsed.scheme in ('http', 'https') and parsed.netloc:
-                state['download_url'] = url_value
-        states['report'] = state
+        # build_gateway 的 raw_directory 固定为本次 output/fusion/raw；不从模型取路径。
+        raw = Path(gateway.raw_directory).absolute()
+        output = raw.parent.parent
+        if raw.name != 'raw' or raw.parent.name != 'fusion' or output.name != run_id:
+            raise ValueError('report directory does not match trusted run')
+        if output.resolve(strict=True) != output:
+            raise ValueError('report directory must not contain symbolic links')
+        descriptor = os.open(output / 'report.html', os.O_RDONLY | os.O_NOFOLLOW)
+        with os.fdopen(descriptor, 'rb') as handle:
+            info = os.fstat(handle.fileno())
+            if not stat.S_ISREG(info.st_mode) or info.st_size > LIMIT:
+                raise ValueError('report is not a bounded regular file')
+            saved = handle.read(LIMIT + 1)
+            if saved != content:
+                raise ValueError('saved report differs from generated HTML')
+            os.fchmod(handle.fileno(), 0o600)
+        states['report'] = {'status': 'saved', 'storage': 'local', 'id': run_id,
+                            'relative_path': 'report.html',
+                            'file_name': incident_id + '-' + run_id + '.html',
+                            'content_type': 'text/html', 'size_bytes': len(saved),
+                            'sha256': hashlib.sha256(saved).hexdigest()}
+        # 下载地址由实例 Host 核对本地制品后生成，不猜远端地址或暴露服务器路径。
     except Exception as error:
-        # 不盲目重试上传。已收到有效存储ID时，链接解析异常不推翻已保存事实。
-        status = 'saved' if stored_id else 'unknown' if submitted else 'failed'
-        states['report'] = {'status': status, 'error_type': type(error).__name__}
-        if stored_id:
-            states['report']['id'] = stored_id
+        states['report'] = {'status': 'failed', 'storage': 'local',
+                            'error_type': type(error).__name__}
         if isinstance(error, ValueError):
             states['report']['error'] = str(error)
     return states

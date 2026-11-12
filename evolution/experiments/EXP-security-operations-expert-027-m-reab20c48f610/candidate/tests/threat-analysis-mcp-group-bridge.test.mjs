@@ -4,7 +4,7 @@ import { createServer } from 'node:http'
 import { createRequire } from 'node:module'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'
+import { mkdtemp, readFile, rm, symlink } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -16,20 +16,14 @@ const { build } = programRequire('esbuild')
 const managerDirectory = await mkdtemp(join(tmpdir(), 'threat-mcp-manager-'))
 after(() => rm(managerDirectory, { recursive: true, force: true }))
 await symlink(join(pluginRoot, 'node_modules'), join(managerDirectory, 'node_modules'), 'dir')
-const buildSource = await readFile(join(pluginRoot, 'build.mjs'), 'utf8')
-const adapterStart = buildSource.indexOf('export const managerSource =')
-const adapterEnd = buildSource.indexOf('\nconst { name } =', adapterStart)
-assert.ok(adapterStart > 0 && adapterEnd > adapterStart)
-const adapterFile = join(managerDirectory, 'adapter.mjs')
-await writeFile(adapterFile, `import { readFile } from 'node:fs/promises'; import { resolve as pathResolve } from 'node:path';
-const resolve = (...parts) => pathResolve(${JSON.stringify(pluginRoot)}, ...parts);
-` + buildSource.slice(adapterStart, adapterEnd).replace(
-  /fileURLToPath\(new URL\('..\/..\/plugins\/mcp-manager', import.meta.url\)\)/,
-  JSON.stringify(join(process.env.HARNESS_PROGRAM_ROOT, 'plugins/mcp-manager'))))
-const { managerSources } = await import(pathToFileURL(adapterFile))
+const { managerSources } = await import(pathToFileURL(join(pluginRoot, 'build.mjs')))
 const managerFile = join(managerDirectory, 'manager.mjs')
-await build({ stdin: { contents: "export * from 'harness-mcp-manager-server'", resolveDir: pluginRoot, loader: 'ts' },
-  outfile: managerFile, bundle: true, platform: 'node', format: 'esm', packages: 'external', plugins: [managerSources] })
+const initialDirectory = process.cwd()
+process.chdir(pluginRoot)
+try {
+  await build({ stdin: { contents: "export * from 'harness-mcp-manager-server'", resolveDir: pluginRoot, loader: 'ts' },
+    outfile: managerFile, bundle: true, platform: 'node', format: 'esm', packages: 'external', plugins: [managerSources] })
+} finally { process.chdir(initialDirectory) }
 const { apply: applyMcpManager } = await import(pathToFileURL(managerFile))
 
 import {
@@ -44,7 +38,6 @@ import {
   runtimeGroupConnection,
   apply as applyThreat,
 } from '../dsh/managed/threat-analysis.mjs'
-import { continuationPlan } from '../dsh/managed/continuation-helper.mjs'
 
 function discovery(selected = LOGICAL_MAPPINGS) {
   const tools = []
@@ -149,62 +142,6 @@ test('已声明暂不可用的来源仅重新发现一次，发现期间没有�
   assert.equal(failed.calls.length, 0)
 })
 
-test('报告文件来源按真实 schema 转换正文，拒绝丢弃非文件正文', async () => {
-  const source = discovery()
-  const save = source.tools.find(tool => tool.name === 'save_persistence_result')
-  const fields = ['sourceModule', 'resultType', 'businessId', 'revision', 'contentType', 'fileName', 'fileContentBase64', 'payloadJson']
-  save.inputSchema = { type: 'object', required: [],
-    properties: Object.fromEntries(fields.map(field => [field, { type: field === 'revision' ? 'integer' : 'string' }])) }
-  const { bridge, client } = await open('manual', source)
-  try {
-    const identity = { sourceModule: 'threat-analysis', resultType: 'report', businessId: 'run-report', revision: 1 }
-    const content = { fileName: 'report.html', contentType: 'text/html', fileContentBase64: Buffer.from('报告').toString('base64') }
-    const result = await invoke(bridge, { resource: 'report-write', tool: 'save_persistence_result', args: { ...identity, content } })
-    assert.equal(result.body.status, 'success')
-    assert.deepEqual(client.calls.at(-1), ['tool', 'save_persistence_result', { ...identity, ...content }])
-    const rejected = await invoke(bridge, { resource: 'report-write', tool: 'save_persistence_result',
-      args: { ...identity, content: { ...content, payload: { ignored: true } } } })
-    assert.equal(rejected.body.status, 'error')
-    assert.equal(client.calls.length, 1)
-  } finally { await bridge.close() }
-})
-
-test('五字段报告来源保持正文原样，不转换为文件接口', async () => {
-  const source = discovery()
-  source.tools.find(tool => tool.name === 'save_persistence_result').inputSchema = {
-    type: 'object', required: ['sourceModule', 'resultType', 'businessId', 'revision', 'content'],
-    properties: { sourceModule: { type: 'string' }, resultType: { type: 'string' }, businessId: { type: 'string' },
-      revision: { type: 'integer', minimum: 1 }, content: { type: 'object', oneOf: [{}, {}], properties: {
-        fileContentBase64: { type: 'string' }, fileName: { type: 'string' }, contentType: { type: 'string' },
-        payload: { oneOf: [{ type: 'object' }, { type: 'array' }] } } } },
-  }
-  const { bridge, client } = await open('manual', source)
-  try {
-    const args = { sourceModule: 'threat-analysis', resultType: 'report', businessId: 'run-report', revision: 1,
-      content: { payload: { summary: '报告' } } }
-    assert.equal((await invoke(bridge, { resource: 'report-write', tool: 'save_persistence_result', args })).body.status, 'success')
-    assert.deepEqual(client.calls.at(-1), ['tool', 'save_persistence_result', args])
-  } finally { await bridge.close() }
-})
-
-test('纯研判交付保留真实失败正文，不额外要求处置准备授权', () => {
-  const gate = { kind: 'read-child', childId: 'child-a', childCreatedAt: 'now', incidentId: 'INC-20261010-000001',
-    delegateSeq: 1, preparationStop: { code: 'PREPARATION_NOT_EXPLICIT', message: '请澄清处置授权' } }
-  const snapshot = { session: { id: 'child-a', createdAt: 'now', origin: 'subagent', isSeeded: false },
-    inheritedEventCount: 0, events: [
-      { type: 'tool/call', seq: 1, data: { name: 'analyze_threat_incident', callId: 'call-a', turn: 1, step: 1,
-        arguments: JSON.stringify({ incident_id: gate.incidentId }) } },
-      { type: 'tool/result', seq: 2, data: { turn: 1, step: 1, message: { role: 'tool', toolCallId: 'call-a',
-        source: { kind: 'tool', callId: 'call-a' }, isError: false }, meta: { threat_analysis: {
-          incident_id: gate.incidentId, run_id: 'run-a', delivery: { markdown: 'SOC 认领被拒：当前领取名额用于超时保障' } } } } },
-    ] }
-  const delivered = continuationPlan({ gate, snapshot, parentEvents: [] })
-  assert.match(delivered.markdown, /当前领取名额用于超时保障/)
-  assert.equal(delivered.message, undefined)
-  gate.preparationStop.code = 'ANOTHER_RESTRICTION'
-  assert.equal(continuationPlan({ gate, snapshot, parentEvents: [] }).message, '请澄清处置授权')
-})
-
 test('预检失败返回可固定交付的结构化原因，不进入模型或认领', async () => {
   const definitions = new Map()
   const groupUrl = 'http://127.0.0.1/mcp/groups/threat-analysis-runtime/v2'
@@ -223,10 +160,10 @@ test('预检失败返回可固定交付的结构化原因，不进入模型或�
   assert.match(value.delivery.markdown, /get_ingest_devices_by_asset_by_asset_id/)
 })
 
-test('手工预检固定为 18 项 SOC，报告工具缺失不阻断', async () => {
+test('手工预检固定为 18 项 SOC', async () => {
   assert.equal(MANUAL_REQUIRED.length, 18)
   assert.equal(PENDING_REQUIRED.length, 1)
-  const source = discovery(LOGICAL_MAPPINGS.filter(item => item.resource !== 'report-write'))
+  const source = discovery()
   const { bridge, client, factoryCalls } = await open('manual', source)
   try {
     assert.equal(factoryCalls[0].groupUrl,
@@ -243,12 +180,6 @@ test('手工预检固定为 18 项 SOC，报告工具缺失不阻断', async () 
       args: { incidentId: 'INC/20261010 000001' } })
     assert.equal(incident.body.status, 'success')
     assert.match(client.calls.at(-1)[1], /\?incidentId=INC%2F20261010%20000001$/)
-
-    const report = await invoke(bridge, { resource: 'report-write',
-      tool: 'save_persistence_result', args: { businessId: 'run-1' } })
-    assert.deepEqual(report, { status: 200, body: {
-      status: 'error', status_code: 503, error_type: 'McpMappingUnavailable',
-    } })
 
     assert.equal((await invoke(bridge, { resource: 'ai_soc_correlate',
       tool: 'ai_soc_correlate__create_incident_judgement_claim', args: {} }, 'wrong-key')).status, 403)
@@ -285,7 +216,7 @@ test('pending 运行只预检待研判入口，手工运行缺少任一 SOC 映�
   assert.equal(active.client.closed, 1)
 
   const source = discovery(LOGICAL_MAPPINGS.filter(item =>
-    item.tool !== 'ai_soc_event__search_event' && item.resource !== 'report-write'))
+    item.tool !== 'ai_soc_event__search_event'))
   const client = fakeClient(source)
   await assert.rejects(startMcpGroupBridge({
     groupUrl: 'http://127.0.0.1:3094/mcp/groups/threat-analysis-runtime/v2',

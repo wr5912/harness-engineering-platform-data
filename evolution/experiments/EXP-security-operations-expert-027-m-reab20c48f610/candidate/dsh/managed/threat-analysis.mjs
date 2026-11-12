@@ -8,11 +8,6 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { startMcpGroupBridge } from './threat-analysis/mcp-group-bridge.mjs'
 import { delegationReceipt } from './security-operations-ui/delegation.js'
-import { classifyRecommendation } from './disposition-runtime/index.mjs'
-import { latestCompletion, validateCompletionEvent, continuationPlan, continuationStop, textOnly } from './continuation-helper.mjs'
-import { peekOperationDelivery, discardEmergencyInteraction, emergencyDraftMarkdown } from './operation-result-delivery.mjs'
-import { draftFromExecution } from './emergency-confirmation-runtime.mjs'
-import { createRuleReviewRequestTracker } from './rule-review-request.mjs'
 
 export const name = 'threat-analysis'
 export const inject = ['tools', 'llm', 'mcpSessionManager', 'sessionQuery']
@@ -20,89 +15,19 @@ export const TOOL_ROUTES = { tools: ['analyze_threat_incident', 'analyze_pending
 const executeFile = promisify(execFile)
 const runner = fileURLToPath(new URL('./threat-analysis/dsh_runner.py', import.meta.url))
 const automationProvider = 'threat-analysis-automation'
-const resumeProvider = 'threat-analysis-continuation'
 const automationTool = 'analyze_pending_threat_incidents'
 const continuousBatchSize = 1
 const manualToolTimeoutMs = 36 * 60 * 1000
 const automationToolTimeoutMs = 45 * 60 * 1000
 const pendingTimeoutMs = 2 * 60 * 1000
 const processedOccurrenceLimit = 256
-const operationDeliveryProvider = 'security-operation-delivery'
-
-// 仅从当前父日志配对真实调用与结果；用途分类不代替 helper 的来源/授权门禁。
-function pairedExecution(events, receipt) {
-  const message = receipt?.data?.message
-  if (receipt?.type !== 'tool/result' || message?.role !== 'tool' || message.source?.kind !== 'tool'
-    || message.isError !== false || message.toolCallId !== message.source.callId) return undefined
-  const calls = events.filter(event => event.type === 'tool/call' && event.data?.callId === message.toolCallId)
-  const call = calls[0]
-  if (calls.length !== 1 || call.seq >= receipt.seq || call.data.turn !== receipt.data.turn
-    || call.data.step !== receipt.data.step || receipt.sourceEventSeqs !== undefined
-    && (!Array.isArray(receipt.sourceEventSeqs) || !receipt.sourceEventSeqs.includes(call.seq))) return undefined
-  return call
-}
-
-function completionPurpose(events, notice) {
-  const childId = notice?.data?.source?.senderSessionId
-  if (typeof childId !== 'string' || !childId) return 'unknown'
-  const receipts = events.filter(event => event.type === 'tool/result'
-    && textOnly(event.data?.message?.content) === `started subagent ${childId}`)
-  if (receipts.length !== 1) return 'unknown'
-  const call = pairedExecution(events, receipts[0])
-  if (call?.data.name === 'delegate_threat_analysis') return 'threat'
-  return typeof call?.data.name === 'string' && call.data.name.startsWith('delegate_') ? 'other' : 'unknown'
-}
-
-function preparationForContinuation(events, gate, plan) {
-  const calls = events.filter(event => event.type === 'tool/call' && event.seq > gate.noticeSeq
-    && event.data?.name === 'disposition_prepare')
-  if (calls.length !== 1) return undefined
-  const call = calls[0]
-  const receipts = events.filter(event => event.type === 'tool/result'
-    && event.data?.message?.toolCallId === call.data.callId)
-  if (receipts.length !== 1 || pairedExecution(events, receipts[0]) !== call) return undefined
-  const receipt = receipts[0]
-  let value
-  try { value = JSON.parse(textOnly(receipt.data.message.content)) } catch { return undefined }
-  const root = value?.code === '200' && value.data && typeof value.data === 'object' ? value.data : value
-  const view = root?.data?.operation_id ? root.data
-    : root?.operation?.data?.operation_id ? root.operation.data
-    : root?.operation?.operation_id ? root.operation : root
-  // 三字段只来自本次真实回执；即使已过期也可用于定向撤销，不代表重新授权。
-  if (view?.operation_id !== plan.operationId || !/^op_[a-f0-9]{32}$/.test(view.operation_id ?? '')
-    || !Number.isInteger(view.version) || view.version < 1
-    || !/^sha256:[a-f0-9]{64}$/.test(view.snapshot_digest ?? '')) return undefined
-  const expected = { operationId: view.operation_id, version: view.version, snapshotDigest: view.snapshot_digest }
-  const draft = draftFromExecution({ name: call.data.name, arguments: call.data.arguments }, receipt.data.message)
-  const historicalMarkdown = view.phase === 'READY' && view.execution_status === 'NOT_SUBMITTED'
-    && view.snapshot && typeof view.snapshot === 'object' && !Array.isArray(view.snapshot)
-    && Number.isFinite(Date.parse(view.expires_at)) ? emergencyDraftMarkdown(view, true) : undefined
-  return { expected, draft, receiptSeq: receipt.seq, historicalMarkdown }
-}
-
-function noticeAlreadyDelivered(events, gate, preparation) {
-  if (!preparation?.historicalMarkdown) return false
-  return events.some(event => event.type === 'assistant/message' && event.seq > preparation.receiptSeq
-    && event.seq > gate.noticeSeq && event.data?.message?.role === 'assistant'
-    && event.data.message.source?.provider === operationDeliveryProvider
-    && (() => {
-      const text = textOnly(event.data.message.content)
-      return text === preparation.historicalMarkdown || typeof text === 'string'
-        && text.startsWith(`${preparation.historicalMarkdown}\n\n---\n\n`)
-    })())
-}
-
 export function apply(ctx, config = {}, dependencies = {}) {
   const openMcpGroupBridge = dependencies.openMcpGroupBridge ?? startMcpGroupBridge
-  const ruleReviewRequests = createRuleReviewRequestTracker()
   // 让 Runtime 正常持久化助手回复；此专用路由只回放固定摘要，不访问模型服务。
   const deliveryProvider = 'threat-analysis-delivery'
   const pending = new Map()
   const automation = new Map()
   const scheduledSteps = new Map()
-  // 只缓存本次原生接纳消息与适配器输送计划，不是可变处置账本。
-  const completionSteps = new Map()
-  const continuations = new Map()
   const originalRoutes = new Map()
   let activeAutomation
   let lastAutomationFinishedAt = 0
@@ -110,13 +35,7 @@ export function apply(ctx, config = {}, dependencies = {}) {
   // request/header 和本步 user/message 尚未落盘；只冻结原生 inbox 本次实际接纳的来源。
   ctx.on('agent/pre-step', async ({ agent, turn, step, messages, signal }, next) => {
     scheduledSteps.delete(agent.id)
-    completionSteps.delete(agent.id)
     const decision = await next()
-    // 任意 step 的原生接纳批均留只读副本；用户更新/原生面板补充不能被旧完成通知盖住。
-    // 此投影只用于计划，工具执行仍读取已落盘日志，不把副本当作执行授权。
-    if (!signal.aborted && decision.kind === 'enter') {
-      completionSteps.set(agent.id, { turn, step, signal, messages: structuredClone(decision.messages) })
-    }
     if (signal.aborted || decision.kind !== 'enter' || step !== 1 || !messages.length) return decision
     if (messages.some(message => !message.id || message.source?.kind !== 'schedule'
       || scheduledBatch([{ type: 'user/message', data: message }]) === undefined)) return decision
@@ -130,14 +49,12 @@ export function apply(ctx, config = {}, dependencies = {}) {
     return decision
   }, { prepend: true })
   ctx.on('session/event', (session, event) => {
-    ruleReviewRequests.observe(session, event)
     if (event.type === 'turn/end') {
       scheduledSteps.delete(session.id); automation.delete(session.id)
-      completionSteps.delete(session.id); continuations.delete(session.id)
     }
   })
   const realModelRoute = (agent, events, config) => {
-    const fixed = [deliveryProvider, automationProvider, resumeProvider, operationDeliveryProvider]
+    const fixed = [deliveryProvider, automationProvider]
     const valid = route => typeof route?.provider === 'string' && route.provider
       && typeof route.model === 'string' && route.model && !fixed.includes(route.provider)
     return [config, originalRoutes.get(agent.id),
@@ -145,136 +62,10 @@ export function apply(ctx, config = {}, dependencies = {}) {
       agent.options].find(valid)
   }
   ctx.on('agent/request', async ({ agent, turn, step, signal }, next) => {
-    // 下游会消费现有队列/补充标记；必须在 await next 前读取同一步快照。
-    const operationDelivery = peekOperationDelivery(agent.id)
     const config = await next()
     signal.throwIfAborted()
-    if (![deliveryProvider, automationProvider, resumeProvider, operationDeliveryProvider].includes(config.provider)) originalRoutes.set(agent.id, config)
+    if (![deliveryProvider, automationProvider].includes(config.provider)) originalRoutes.set(agent.id, config)
     const events = agent.session.snapshotEvents()
-    const accepted = completionSteps.get(agent.id)
-    const admitted = accepted?.turn === turn && accepted.step === step && !accepted.signal.aborted
-      ? accepted.messages : []
-    // 完整接纳批按原顺序作只读计划投影，包含用户更新；绝不改写真实日志或执行授权。
-    const project = raw => {
-      const logged = new Set(raw.filter(event => event.type === 'user/message').map(event => event.data?.id))
-      const unseen = admitted.filter(message => !logged.has(message.id))
-      return [...raw, ...unseen.map((data, index) => ({ type: 'user/message',
-        seq: (raw.at(-1)?.seq ?? -1) + index + 1, data }))]
-    }
-    const stopHere = (code, message) => {
-      pending.delete(agent.id); automation.delete(agent.id)
-      continuations.set(agent.id, continuationStop(code, message))
-      return { provider: resumeProvider, model: 'bound-recommendation' }
-    }
-    const resumeModel = () => {
-      const route = realModelRoute(agent, events, config)
-      if (!route) return stopHere('ORIGINAL_MODEL_UNVERIFIED', '原始模型路由不可核对，停止本次续办；不再准备、确认或下发。')
-      pending.delete(agent.id); automation.delete(agent.id); continuations.delete(agent.id)
-      return route
-    }
-    const nativeSupplement = admitted.some(message => message.source?.kind === 'emergency-confirmation-runtime'
-      && message.source.form === 'answer')
-    const newUser = admitted.some(message => message.source?.kind === 'user')
-    if (operationDelivery.modelContinuation || nativeSupplement) return resumeModel()
-    if (newUser) {
-      pending.delete(agent.id); automation.delete(agent.id); continuations.delete(agent.id)
-      // 文本确认也可能已被原生确认器处理；取消旧续接，但不抢已排队的权威结果。
-      if (config.provider === operationDeliveryProvider && typeof operationDelivery.markdown === 'string'
-        && operationDelivery.markdown.trim()) return config
-      return resumeModel()
-    }
-    const projected = project(events)
-    const notice = latestCompletion(projected)
-    const currentStart = projected.findLast(event => event.type === 'turn/start')
-    const incomingNotices = admitted.filter(message => message.source?.kind === 'subagent-settled')
-    const purposes = incomingNotices.map(data => completionPurpose(projected, { data }))
-    // 明确属于其它原生委派的完成通知交给原流程，不伪装为威胁处置来源失败。
-    if (incomingNotices.length && purposes.every(purpose => purpose === 'other')) {
-      continuations.delete(agent.id); pending.delete(agent.id); automation.delete(agent.id)
-      return [deliveryProvider, automationProvider, resumeProvider].includes(config.provider) ? resumeModel() : config
-    }
-    if (incomingNotices.length > 1) return stopHere('COMPLETION_BATCH_AMBIGUOUS',
-      '本步有多个子任务完成通知，无法唯一承接本次威胁研判；停止自动准备，请核对来源与已有操作，不重试、确认或下发。')
-    // 只使用真实已有 turn/start，不伪造轮次事件；仅威胁/未知完成通知需要本分支门禁。
-    if (incomingNotices.length && (!currentStart || currentStart.data?.turn !== turn)) {
-      return stopHere('TURN_START_UNVERIFIED', '本轮原生开始记录尚未可核对，停止自动处置准备。')
-    }
-    const purpose = notice ? completionPurpose(projected, notice) : undefined
-    if (notice && notice.seq > (currentStart?.seq ?? Infinity) && currentStart?.data?.turn === turn
-      && purpose !== 'other') {
-      if (purpose !== 'threat') return stopHere('COMPLETION_SOURCE_UNVERIFIED',
-        '完成通知尚不能绑定到本次原生威胁研判委派，停止自动准备；请核对来源，不重试、确认或下发。')
-      pending.delete(agent.id)
-      automation.delete(agent.id)
-      const gate = validateCompletionEvent({ parentId: agent.session.id, parentEvents: projected, turn, allowProgress: true, requirePreparation: false })
-      let plan = gate
-      let planEvents = projected
-      if (gate.kind === 'read-child') {
-        try {
-          const snapshot = await ctx.sessionQuery.readSession(gate.childId)
-          signal.throwIfAborted()
-          const fresh = project(agent.session.snapshotEvents())
-          planEvents = fresh
-          const freshGate = validateCompletionEvent({ parentId: agent.session.id, parentEvents: fresh, turn, allowProgress: true, requirePreparation: false })
-          plan = freshGate.kind === 'read-child'
-            ? continuationPlan({ gate: freshGate, snapshot, parentEvents: fresh, classify: classifyRecommendation })
-            : freshGate
-        } catch {
-          signal.throwIfAborted()
-          plan = continuationStop('CHILD_READ_FAILED', '无法读取已证实直接子的原始研判结果，未自动准备处置。')
-        }
-      }
-      signal.throwIfAborted()
-      if (plan.kind === 'native-draft') {
-        const preparation = preparationForContinuation(planEvents, gate, plan)
-        // 先过本次真实完成通知的原门禁，再从日志派生消费状态；新重复 notice 不会走这里。
-        // 同一 notice 已交付后，后续修订/查询/取消归原生流程，不能拿原 v1 阻拦 v2。
-        if (noticeAlreadyDelivered(planEvents, gate, preparation)) {
-          continuations.delete(agent.id)
-          return [deliveryProvider, automationProvider, resumeProvider].includes(config.provider) ? resumeModel() : config
-        }
-        const draft = preparation?.draft
-        const expected = preparation?.expected
-        const binding = operationDelivery.interactionBinding
-        const bindingMatches = binding?.domain === 'emergency' && expected
-          && binding.operationId === expected.operationId && binding.version === expected.version
-          && binding.snapshotDigest === expected.snapshotDigest
-        // 同一真实回执须满足原确认器完整/未过期规则，还须核对当前同版本的全文及交互绑定。
-        // 原始不透明 token 不做 JSON 化或 structuredClone；此处不声称用户已看到面板。
-        if (draft && draft.operationId === plan.operationId && bindingMatches
-          && operationDelivery.markdown === draft.resultMarkdown && operationDelivery.interactionQueued
-          && typeof operationDelivery.interactionToken === 'symbol' && config.provider === operationDeliveryProvider) {
-          continuations.delete(agent.id)
-          return config
-        }
-        const queuedAuthority = config.provider === operationDeliveryProvider
-          && typeof operationDelivery.markdown === 'string' && operationDelivery.markdown.trim()
-        const differentBinding = binding?.domain === 'emergency'
-          && (binding.operationId !== plan.operationId || expected && !bindingMatches)
-        // 原队列中没有应急绑定的其它权威输出不归本分支清理；不靠正文猜测所属领域。
-        const otherAuthority = queuedAuthority && (differentBinding || binding?.domain !== 'emergency')
-        const stopPlan = { kind: 'deliver', requestId: plan.requestId,
-          message: `操作 ${String(plan.operationId)} 已返回；本步无法核对完整草案展示与原生确认的接管状态，请按操作号核对实际状态。本轮不再准备、确认或下发，不重试。` }
-        // 不抢别域/其它操作或后续版本的权威输出，也不把它记作本次草案已交付。
-        if (otherAuthority) {
-          continuations.set(agent.id, stopPlan)
-          return config
-        }
-        // 仅撤销此真实回执对应的同一次入队；过期不影响撤销，但绝不因此授予新权限。
-        const discarded = expected ? discardEmergencyInteraction(agent.id, operationDelivery, expected) : false
-        if (operationDelivery.interactionQueued && !discarded) {
-          stopPlan.message += ' 当前交互的身份/绑定未能核对，本分支未扩大撤销范围，请人工核对现有待办。'
-        }
-        continuations.set(agent.id, stopPlan)
-        return { provider: resumeProvider, model: 'bound-recommendation' }
-      }
-      // 摘要原样交付一次；之后只交付阶段状态。绝不让真实模型绕过明确 stop。
-      const alreadyDelivered = events.some(event => event.type === 'assistant/message'
-        && event.seq > notice.seq && event.data.message?.source?.provider === resumeProvider)
-      continuations.set(agent.id, { ...plan, markdown: alreadyDelivered ? '' : plan.markdown })
-      return { provider: resumeProvider, model: 'bound-recommendation' }
-    }
-    continuations.delete(agent.id)
     const markdown = deliveryMarkdown(events, turn)
     if (typeof markdown === 'string') {
       pending.set(agent.id, markdown)
@@ -290,8 +81,8 @@ export function apply(ctx, config = {}, dependencies = {}) {
     }
     automation.delete(agent.id)
     // 只恢复本插件自己的固定路由；不能抢走其它原生操作交付器的合法输出。
-    if ([deliveryProvider, automationProvider, resumeProvider].includes(config.provider)) {
-      return resumeModel()
+    if ([deliveryProvider, automationProvider].includes(config.provider)) {
+      return realModelRoute(agent, events, config) ?? agent.options
     }
     return config
   })
@@ -314,40 +105,6 @@ export function apply(ctx, config = {}, dependencies = {}) {
       yield { type: 'text-delta', index: 0, text }
       yield { type: 'block-end', index: 0, block: { type: 'text', text } }
       yield { type: 'finish', reason: { kind: 'stop' } }
-    },
-  })
-  ctx.llm.registerAdapter([resumeProvider], {
-    providerInfo: provider => ({ id: provider, name: '研判后处置准备（本地固定调用）' }),
-    providerRetryPolicy: () => undefined,
-    imageRequestPricing: () => undefined,
-    listModels: async () => [],
-    resolveModel: async (provider, model) => ({ provider, id: model, name: model }),
-    async prepareCall(provider, model) {
-      return { model: await this.resolveModel(provider, model), stream: request => this.stream(request) }
-    },
-    async *stream(request) {
-      const plan = continuations.get(request.sessionId)
-      if (!plan) throw new Error('missing bound threat-analysis continuation')
-      continuations.delete(request.sessionId)
-      request.signal?.throwIfAborted()
-      const callsTool = ['preview-only', 'prepare-once'].includes(plan.kind)
-      const text = callsTool ? plan.markdown : [plan.message, plan.markdown].filter(Boolean).join('\n\n')
-      let index = 0
-      if (text) {
-        yield { type: 'block-start', index, blockType: 'text' }
-        yield { type: 'text-delta', index, text }
-        yield { type: 'block-end', index, block: { type: 'text', text } }
-        index += 1
-      }
-      if (callsTool) {
-        request.signal?.throwIfAborted()
-        const id = `threat-cont-${randomUUID()}`
-        const args = JSON.stringify(plan.call.arguments)
-        yield { type: 'block-start', index, blockType: 'tool-call' }
-        yield { type: 'tool-call-delta', index, id, name: plan.call.name, argumentsDelta: args }
-        yield { type: 'block-end', index, block: { type: 'tool-call', id, name: plan.call.name, arguments: args } }
-      }
-      yield { type: 'finish', reason: { kind: callsTool ? 'tool-calls' : 'stop' } }
     },
   })
   ctx.llm.registerAdapter([automationProvider], {
@@ -373,7 +130,6 @@ export function apply(ctx, config = {}, dependencies = {}) {
   })
   ctx.on('agent/disposed', ({ agent }) => {
     pending.delete(agent.id); automation.delete(agent.id); scheduledSteps.delete(agent.id); originalRoutes.delete(agent.id)
-    completionSteps.delete(agent.id); continuations.delete(agent.id)
   })
   ctx.tools.register({
     name: 'analyze_threat_incident',
@@ -392,7 +148,7 @@ export function apply(ctx, config = {}, dependencies = {}) {
     isConcurrencySafe: () => false,
     async execute(args, exec) {
       if (!/^INC-\d{8}-\d{6}$/.test(args.incident_id)) throw new Error('invalid incident ID')
-      return runIncident(ctx, config, exec, args.incident_id, deliveryProvider, openMcpGroupBridge, ruleReviewRequests)
+      return runIncident(ctx, config, exec, args.incident_id, deliveryProvider, openMcpGroupBridge)
     },
   })
   ctx.tools.register({
@@ -463,7 +219,7 @@ export function apply(ctx, config = {}, dependencies = {}) {
           if (attempted >= args.batch_size) { stoppedReason = 'max_events'; break }
           try {
             activeAutomation.incidentId = incidentId
-            const result = await runIncident(ctx, config, exec, incidentId, deliveryProvider, openMcpGroupBridge, ruleReviewRequests)
+            const result = await runIncident(ctx, config, exec, incidentId, deliveryProvider, openMcpGroupBridge)
             if (result.status === 'claim_failed' && Number(result.error_code) === 409) {
               results.push({ incident_id: incidentId, status: 'skipped_claim_rejected', run_id: result.run_id, reason: result.business_message })
               continue
@@ -492,12 +248,12 @@ export function apply(ctx, config = {}, dependencies = {}) {
 function originalRoute(exec, deliveryProvider) {
   const events = exec.agent?.session.snapshotEvents() ?? []
   const route = events.findLast(event => event.type === 'request/header'
-    && ![deliveryProvider, automationProvider, resumeProvider, 'security-operation-delivery'].includes(event.data.header.config.provider))?.data.header.config ?? exec.agent?.options
+    && ![deliveryProvider, automationProvider].includes(event.data.header.config.provider))?.data.header.config ?? exec.agent?.options
   if (!route?.provider || !route?.model) throw new Error('missing DSH model route')
   return route
 }
 
-async function runIncident(ctx, config, exec, incidentId, deliveryProvider, openMcpGroupBridge, ruleReviewRequests) {
+async function runIncident(ctx, config, exec, incidentId, deliveryProvider, openMcpGroupBridge) {
   const route = originalRoute(exec, deliveryProvider)
   const sessionId = exec.agent?.session?.id
   if (typeof sessionId !== 'string' || !sessionId) throw new Error('missing threat-analysis Session identity')
@@ -528,14 +284,13 @@ async function runIncident(ctx, config, exec, incidentId, deliveryProvider, open
   let bridge
   try {
     bridge = await modelBridge(ctx, route, exec.signal)
-    const ruleReviewContext = await ruleReviewRequests.context(ctx, exec, incidentId, runId)
     const execution = executeFile('python3', [runner, incidentId, '--run-id', runId], {
       signal: exec.signal, maxBuffer: 2 * 1024 * 1024,
       env: pythonEnvironment({ PYTHONDONTWRITEBYTECODE: '1',
         THREAT_MODEL_BRIDGE_KEY: bridge.key,
-        THREAT_ANALYSIS_CONFIG: JSON.stringify({ ...pythonRuntimeConfig(config, mcpBridge, {
+        THREAT_ANALYSIS_CONFIG: JSON.stringify(pythonRuntimeConfig(config, mcpBridge, {
           baseURL: bridge.url, model: route.model, apiKeyEnv: 'THREAT_MODEL_BRIDGE_KEY',
-        }), ruleReviewContext }) }),
+        })) }),
     })
     try { return JSON.parse((await execution).stdout) }
     catch (error) {
@@ -612,7 +367,7 @@ export function runtimeGroupConnection(ctx, config, sessionId) {
 }
 
 export function pythonRuntimeConfig(config, mcpBridge, analysisModel) {
-  const { connections: _connections, ...safe } = config
+  const { connections: _connections, ruleReviewContext: _ruleReviewContext, ...safe } = config
   return { ...safe, connections: { runtime: { bridgeUrl: mcpBridge.url, bridgeKey: mcpBridge.key } },
     ...(analysisModel === undefined ? {} : { analysisModel }) }
 }
@@ -720,8 +475,18 @@ export function deliveryMarkdown(events, turn) {
   if (block.isError) return undefined
   if (call?.data.name !== 'delegate_threat_analysis') return undefined
   if (!block.content?.every(item => item.type === 'text')) return undefined
-  return delegationReceipt(call.data.name, block.content, call.data.arguments)?.markdown
-    ?? (block.content.map(item => item.text).join('') || undefined)
+  const delegationResults = events.filter(event => event.type === 'tool/result'
+    && event.data.turn === turn && event.data.message?.isError === false)
+    .map(event => {
+      const message = event.data.message
+      const delegateCall = events.findLast(item => item.type === 'tool/call'
+        && item.data.callId === message.toolCallId && item.data.name === 'delegate_threat_analysis')
+      return delegateCall && message.content?.every(item => item.type === 'text')
+        ? delegationReceipt(delegateCall.data.name, message.content, delegateCall.data.arguments)
+        : undefined
+    }).filter(Boolean)
+  return delegationResults.map(item => item.markdown).join('\n\n')
+    || (block.content.map(item => item.text).join('') || undefined)
 }
 
 export async function inferFrozen(ctx, route, payload, signal) {

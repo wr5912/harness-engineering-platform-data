@@ -19,7 +19,7 @@ const configOf = (servers, groups) => ({
 const member = (extra = {}) => ({ serverId: 'fixture', names: [], resourceUris: [], resourceTemplates: [], ...extra })
 const server = { id: 'fixture', enabled: true, url: 'http://127.0.0.1:1/mcp', tools: { mode: 'all', names: [] } }
 
-test('Runtime 能力声明覆盖实际本地工具、委派和三条受信模型路由', async () => {
+test('Runtime 能力声明覆盖实际本地工具、委派和受信模型路由', async () => {
   const yaml = require('js-yaml')
   const matrix = yaml.load(readFileSync(new URL('../dsh/managed/role-tool-matrix.yaml', import.meta.url), 'utf8'))
   const schema = yaml.DEFAULT_SCHEMA.extend(new yaml.Type('tag:yaml.org,2002:js', { kind: 'scalar', construct: value => value }))
@@ -52,10 +52,6 @@ test('Runtime 能力声明覆盖实际本地工具、委派和三条受信模型
   }
   events.push({ type: 'tool/result', data: { turn: 2, meta: { threat_analysis_batch: { status: 'completed', found: 0, results: [] } } } })
   await checkRoute(2)
-  const delivery = await import('../dsh/managed/operation-result-delivery.mjs')
-  delivery.apply(ctx)
-  delivery.queueControlledOutput(agent.id, '本地固定结果')
-  await checkRoute(3)
   assert.deepEqual(new Set(matrix.runtime_capabilities.local_model_routes.map(item => item.provider)), new Set(adapters.keys()))
 })
 
@@ -126,7 +122,8 @@ test('OpenAPI 路径与查询参数同时生成可读 v2 资源模板和同名�
   await new Promise(resolve => http.listen(0, '127.0.0.1', resolve))
   base = `http://127.0.0.1:${http.address().port}/`
   try {
-    const source = await loadOpenApi({ id: 'query-fixture', specUrl: `${base}openapi.json`, authType: 'credential', apiKey: '' })
+    // 本地fixture明确匿名；不以credential+空key绕过真实连接就绪校验。
+    const source = await loadOpenApi({ id: 'query-fixture', specUrl: `${base}openapi.json`, authType: '', apiKey: '' })
     assert.deepEqual(source.resourceTemplates.map(item => item.uriTemplate), [`${base}item/{id}{?q}`])
     assert.deepEqual(source.tools.map(item => item.name), ['get_item'])
     assert.match((await readOpenApiResource(source, `${base}item/42?q=abc`)).contents[0].text, /item\/42\?q=abc/)
@@ -229,16 +226,19 @@ test('真实 MCP 分组发现、成员失败隔离、分页、工具调用、资
     const client = await connect('mixed'); clients.push(client)
     const staticUri = 'mcp-group:/mixed/fixture/r/' + Buffer.from('fixture://selected').toString('base64url')
     const templateUri = 'mcp-group:/mixed/fixture/t/' + Buffer.from('fixture://record/{id}').toString('base64url') + '{?id}'
-    assert.deepEqual((await client.listTools()).tools.map(t => t.name), ['fixture__lookup'])
+    // 现行公开v2按组边界保留原名，资源/模板同时提供只读工具；v1旧名在下文独立保留断言。
+    const v2Directory = await client.listTools()
+    assert.deepEqual(v2Directory.tools.map(t => t.name), ['lookup', 'Selected', 'Record'])
+    assert.deepEqual(v2Directory.tools[0]._meta['io.deepseek.dsh/mcp-group-tool'], { serverId: 'fixture', kind: 'tool', sourceName: 'lookup' })
     assert.deepEqual((await client.listResources()).resources.map(r => r.uri), [staticUri])
     assert.equal((await client.listResourceTemplates()).resourceTemplates[0].uriTemplate, templateUri)
-    assert.equal((await client.callTool({ name: 'fixture__lookup', arguments: {} })).content[0].text, 'lookup receipt')
+    assert.equal((await client.callTool({ name: 'lookup', arguments: {}, _meta: v2Directory._meta })).content[0].text, 'lookup receipt')
     assert.equal((await client.readResource({ uri: staticUri })).contents[0].text, 'fixture data 42')
     assert.equal((await client.readResource({ uri: templateUri.replace('{?id}', '?id=42') })).contents[0].text, 'fixture data 42')
     await assert.rejects(client.readResource({ uri: 'fixture://private' }), /不属于/)
     await assert.rejects(client.callTool({ name: 'fixture__hidden', arguments: {} }), /不属于/)
     const data = await connect('data'); clients.push(data)
-    assert.deepEqual((await data.listTools()).tools, [])
+    assert.deepEqual((await data.listTools()).tools.map(tool => tool.name), ['Selected'])
     const dataUri = 'mcp-group:/data/fixture/r/' + Buffer.from('fixture://selected').toString('base64url')
     assert.equal((await data.readResource({ uri: dataUri })).contents.length, 1)
     await assert.rejects(data.readResource({ uri: staticUri }), /不属于/)
@@ -248,7 +248,10 @@ test('真实 MCP 分组发现、成员失败隔离、分页、工具调用、资
     assert.deepEqual((await legacy.listResources()).resources, [])
 
     const broken = await connect('resilient'); clients.push(broken)
-    await assert.rejects(broken.listTools(), /fetch failed|Version negotiation probe failed/)
+    const partial = await broken.listTools()
+    assert.deepEqual(partial.tools.map(tool => tool.name), ['lookup'])
+    assert.deepEqual(partial._meta['io.deepseek.dsh/mcp-group-discovery'].unavailable, ['unavailable'])
+    await assert.rejects(broken.callTool({ name: 'missing', arguments: {} }))
     const resilient = await connect('resilient', ''); clients.push(resilient)
     assert.deepEqual((await resilient.listTools()).tools.map(tool => tool.name), ['mcp__fixture__lookup'])
     await assert.rejects(resilient.callTool({ name: 'mcp__unavailable__missing', arguments: {} }))

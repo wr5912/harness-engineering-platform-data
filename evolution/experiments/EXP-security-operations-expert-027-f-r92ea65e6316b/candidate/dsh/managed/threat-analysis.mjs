@@ -9,7 +9,7 @@ import { join } from 'node:path'
 import { startMcpGroupBridge } from './threat-analysis/mcp-group-bridge.mjs'
 import { delegationReceipt } from './security-operations-ui/delegation.js'
 import { classifyRecommendation } from './disposition-runtime/index.mjs'
-import { latestCompletion, validateCompletionEvent, continuationPlan, continuationStop, textOnly, batchResultMarkdown } from './continuation-helper.mjs'
+import { latestCompletion, validateCompletionEvent, validateChildResult, continuationPlan, continuationStop, textOnly, batchResultMarkdown } from './continuation-helper.mjs'
 import { peekOperationDelivery, discardEmergencyInteraction, emergencyDraftMarkdown } from './operation-result-delivery.mjs'
 import { draftFromExecution } from './emergency-confirmation-runtime.mjs'
 
@@ -27,6 +27,55 @@ const automationToolTimeoutMs = 45 * 60 * 1000
 const pendingTimeoutMs = 2 * 60 * 1000
 const processedOccurrenceLimit = 256
 const operationDeliveryProvider = 'security-operation-delivery'
+const childReadRetryDelaysMs = [0, 200, 500, 1000, 2000]
+
+async function readChildSessionWithRetry(sessionQuery, childId, signal) {
+  let lastError
+  for (const delay of childReadRetryDelaysMs) {
+    signal?.throwIfAborted()
+    if (delay > 0) {
+      await new Promise((resolve, reject) => {
+        let timer
+        const cleanup = () => signal?.removeEventListener('abort', abort)
+        const finish = () => { cleanup(); resolve() }
+        const abort = () => {
+          if (timer) clearTimeout(timer)
+          cleanup()
+          reject(signal?.reason ?? new Error('child session read aborted'))
+        }
+        timer = setTimeout(finish, delay)
+        signal?.addEventListener('abort', abort, { once: true })
+      })
+    }
+    try {
+      const observation = await sessionQuery.observeSession(childId, { signal, projectionMode: 'none' })
+      try {
+        return {
+          session: observation.header,
+          inheritedEventCount: observation.inheritedEventCount,
+          events: observation.events,
+        }
+      } finally {
+        observation[Symbol.dispose]?.()
+      }
+    } catch (error) {
+      lastError = error
+    }
+  }
+  throw lastError ?? new Error('child session read failed')
+}
+
+function settledNoticeMarkdown(notice, incidentId) {
+  const text = textOnly(notice?.data?.content)
+  if (!text || typeof incidentId !== 'string') return undefined
+  const marker = 'Its closing message:'
+  const index = text.indexOf(marker)
+  if (index < 0) return undefined
+  const markdown = text.slice(index + marker.length).trim()
+  const normalized = markdown.replaceAll('\\-', '-')
+  const reportedId = normalized.match(/\*\*事件 ID：\*\*\s*(INC-\d{8}-\d{6})/)?.[1]
+  return reportedId === incidentId && markdown.startsWith('### 威胁事件研判摘要') ? markdown : undefined
+}
 
 // 仅从当前父日志配对真实调用与结果；用途分类不代替 helper 的来源/授权门禁。
 function pairedExecution(events, receipt) {
@@ -213,26 +262,53 @@ export function apply(ctx, config = {}, dependencies = {}) {
           let prompt = {}
           try { prompt = typeof call?.data?.arguments === 'string' ? JSON.parse(call.data.arguments) : {} } catch { prompt = {} }
           const incidentId = typeof prompt?.prompt === 'string'
-            ? prompt.prompt.match(/INC-\d{8}-\d{6}/)?.[0] : undefined
+                       ? prompt.prompt.match(/INC-\d{8}-\d{6}/)?.[0] : undefined
           let plan
-          if (!receipt || !call || !childId) {
+          let childReadFailed = false
+           if (!receipt || !call || !childId) {
             plan = continuationStop('BATCH_CHILD_BINDING_FAILED', '子会话启动回执与完成通知无法配对。')
           } else {
             const gate = validateCompletionEvent({ parentId: agent.session.id, parentEvents: projected, turn,
               allowProgress: true, requirePreparation: false, allowBatch: true, noticeOverride: noticeForChild })
             if (gate.kind !== 'read-child') plan = gate
             else {
+              let snapshot
               try {
-                const snapshot = await ctx.sessionQuery.readSession(gate.childId)
+                snapshot = await readChildSessionWithRetry(ctx.sessionQuery, gate.childId, signal)
                 signal.throwIfAborted()
-                plan = validateChildResult(gate, snapshot)
               } catch {
                 signal.throwIfAborted()
+                childReadFailed = true
                 plan = continuationStop('CHILD_READ_FAILED', '无法读取该子会话的原始研判结果。')
+              }
+              const fresh = project(agent.session.snapshotEvents())
+              const freshNotice = fresh.find(event => event.type === 'user/message'
+                && event.data?.id === noticeForChild.data?.id)
+              const freshGate = freshNotice
+                ? validateCompletionEvent({ parentId: agent.session.id, parentEvents: fresh, turn,
+                  allowProgress: true, requirePreparation: false, allowBatch: true, noticeOverride: freshNotice })
+                : continuationStop('NATIVE_SETTLED_REQUIRED', '本次原生完成通知已无法核对，未交付未经核验的结果。')
+              if (freshGate.kind !== 'read-child') {
+                plan = freshGate
+                childReadFailed = false
+              } else if (snapshot) {
+                try {
+                  plan = { ...validateChildResult(freshGate, snapshot),
+                    candidatePageTruncated: freshGate.batch?.candidatePageTruncated === true }
+                } catch (error) {
+                  signal.throwIfAborted()
+                  const errorType = error instanceof ReferenceError ? 'ReferenceError' : error instanceof TypeError ? 'TypeError' : 'Error'
+                  plan = continuationStop('CHILD_RESULT_VALIDATION_FAILED',
+                    `已读取子会话，但研判结果校验发生内部错误（${errorType}）；未交付未经核验的结果。`, { error_type: errorType })
+                }
               }
             }
           }
-          results.push({ incidentId, markdown: plan?.kind === 'preview-only' ? plan.markdown : undefined,
+          const noticeMarkdown = childReadFailed ? settledNoticeMarkdown(noticeForChild, incidentId) : undefined
+          const resultMarkdown = plan?.markdown && plan.candidatePageTruncated
+            ? `候选来源说明：原查询输出已截断，本次仅核对所选事件，不代表完整候选清单。\n\n${plan.markdown}` : plan?.markdown
+          results.push({ incidentId, markdown: resultMarkdown || (noticeMarkdown
+              ? `原始研判结果读取失败；以下仅为子任务结束通知中的摘要，尚未核验完整结果。\n\n${noticeMarkdown}` : undefined),
             error: plan?.message ?? '结果结构或来源校验失败。' })
         }
         if (results.length) {
@@ -259,7 +335,7 @@ export function apply(ctx, config = {}, dependencies = {}) {
       let planEvents = projected
       if (gate.kind === 'read-child') {
         try {
-          const snapshot = await ctx.sessionQuery.readSession(gate.childId)
+          const snapshot = await readChildSessionWithRetry(ctx.sessionQuery, gate.childId, signal)
           signal.throwIfAborted()
           const fresh = project(agent.session.snapshotEvents())
           planEvents = fresh
@@ -269,7 +345,8 @@ export function apply(ctx, config = {}, dependencies = {}) {
             : freshGate
         } catch {
           signal.throwIfAborted()
-          plan = continuationStop('CHILD_READ_FAILED', '无法读取已证实直接子的原始研判结果，未自动准备处置。')
+          if (typeof childReadFailed !== 'undefined') childReadFailed = true
+                 plan = continuationStop('CHILD_READ_FAILED', '无法读取已证实直接子的原始研判结果，未自动准备处置。')
         }
       }
       signal.throwIfAborted()
