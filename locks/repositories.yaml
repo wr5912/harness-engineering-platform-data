@@ -3,7 +3,7 @@ repositories:
   platform:
     url: git@github.com:wr5912/harness-engineering-platform.git
     ref: main
-    commit: be888c36fcceb652a5d7fbedb9fc98eb844a9648
+    commit: 087a71104b921e01bfaae0619f702d65861b614d
   platform_manager_dsh_home:
     url: git@github.com:wr5912/platform-manager-dsh-home.git
     ref: main
@@ -12,3 +12,15 @@ repositories:
     url: git@github.com:wr5912/business-agents.git
     ref: main
     commit: 36343c4192e9509cd51388059a6c7f6246abd17a
+runtime:
+  id: dsh
+  repository: https://github.com/deepseek-ai/deepseek-harness.git
+  tag: dsh-v0.2.2-rc.2
+  commit: ddac96760b6edf8fa0fe17cbdcf0b512f4c12b2c
+  tree: 3c4b8825db42206bec763295ce901af11d29ba61
+  cli_package: '@deepseek-ai/dsh'
+  cli_version: 0.2.2-rc.2
+  applies_to:
+    - platform
+    - business_agents
+    - platform_manager_dsh_home
