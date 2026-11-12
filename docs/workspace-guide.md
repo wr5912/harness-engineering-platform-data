@@ -38,7 +38,7 @@ workspace.json            工作区身份和原生扩展声明
 
 本仓库保留迁移前的 Git 历史，以便恢复固定 Baseline、父版本和历史算法。旧提交中的平台代码是历史来源，不是另一份当前程序。
 
-`security-operations-expert` 的研究版本以 `evolution/experiments/` 下各版本目录为准。EXP001–023、对应 Run 和旧联调资料可从数据提交 `1f162a1ce12025ffeb9d2e36c7a3ae283b41e421` 恢复到独立目录；日常启动与开发使用所选版本的 `change.yaml` 和 `candidate/harness.yaml`。其他智能体资产及运行实例的会话、设置保持各自生命周期。
+`security-operations-expert` 的研究版本以 `evolution/experiments/` 下各版本目录为准；业务源码仓库的 `agents/security-operations-expert/agent` 只作为当前可提取主线入口。EXP001–023、对应 Run 和旧联调资料可从数据提交 `1f162a1ce12025ffeb9d2e36c7a3ae283b41e421` 恢复到独立目录；日常启动与开发使用所选 Experiment 的 `change.yaml` 和 `candidate/harness.yaml`。其他智能体资产及运行实例的会话、设置保持各自生命周期。
 
 ## 启动与验证
 
