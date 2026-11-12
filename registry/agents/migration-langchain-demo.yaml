@@ -1,0 +1,16 @@
+schema_version: 1
+agent_id: migration-langchain-demo
+active: false
+repository_id: business-agents
+source_kind: repository
+source_repository: git@github.com:wr5912/business-agents.git
+source_ref: main
+source_commit: 36343c4192e9509cd51388059a6c7f6246abd17a
+agent_path: agents/migration-langchain-demo/agent
+source_experiment: EXP-migration-langchain-demo-001-rfa4065d93d85
+provenance_path: agents/migration-langchain-demo/source.yaml
+evaluation_source:
+  repository: git@github.com:wr5912/harness-engineering-platform-data.git
+  commit: 240c95e2c2dcad102bba9613c8d8dbcc008b848c
+  path: agents/migration-langchain-demo/evaluation.md
+versions: []

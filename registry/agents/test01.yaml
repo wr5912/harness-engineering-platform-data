@@ -1,0 +1,19 @@
+schema_version: 1
+agent_id: test01
+active: true
+repository_id: business-agents
+source_kind: repository
+source_repository: git@github.com:wr5912/business-agents.git
+source_ref: main
+source_commit: 36343c4192e9509cd51388059a6c7f6246abd17a
+agent_path: agents/test01/agent
+source_experiment: EXP-test01-002
+provenance_path: agents/test01/source.yaml
+evaluation_source:
+  repository: git@github.com:wr5912/harness-engineering-platform-data.git
+  commit: ce10900cf97b1cd5d72497a09f6590b509ce5562
+  path: agents/test01/evaluation.md
+versions:
+- experiment_id: EXP-test01-001
+  agent_path: agents/test01/versions/EXP-test01-001/agent
+  provenance_path: agents/test01/versions/EXP-test01-001/source.yaml
