@@ -24,7 +24,9 @@
         "session:prompt",
         "read"
       ],
-      "serverIds": [],
+      "serverIds": [
+        "platform-compositions"
+      ],
       "sourceDigest": "sha256:9f32b205f30af44bf9b46e6a5c974caec56684fb1f1c66046ce6577c04c07998",
       "agentAuthentication": {
         "enabled": true,
@@ -35,7 +37,15 @@
       }
     }
   ],
-  "operations": [],
+  "operations": [
+    {
+      "serverId": "platform-compositions",
+      "operationId": "diagnose_business_access",
+      "kind": "read",
+      "target": "http://172.16.138.228:18120/hep/mcp/groups/troubleshooting-compositions/v2",
+      "method": "TOOLS/CALL"
+    }
+  ],
   "gateway": {
     "host": "172.16.138.228",
     "port": 53105,
@@ -102,41 +112,9 @@
       },
       {
         "agentId": "security-operations-expert",
-        "instanceId": "policy-response-027-acceptance",
-        "sourceId": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
-        "sourceDigest": "sha256:297b1ec12277b6011a1bb3283a7fc1270649fb808773c33a4ef9fd3aaab01e39",
-        "accessMode": "anonymous",
-        "identityMode": "development"
-      },
-      {
-        "agentId": "security-operations-expert",
-        "instanceId": "policy-response-raw-027",
-        "sourceId": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
-        "sourceDigest": "sha256:0f296a1b56ed0fbc79c4689305bafcdd84f639167b55dc6c5aa2b29ee32a4406",
-        "accessMode": "anonymous",
-        "identityMode": "development"
-      },
-      {
-        "agentId": "security-operations-expert",
-        "instanceId": "xx-device-mock-16b",
-        "sourceId": "experiment:EXP-security-operations-expert-027-f-r92ea65e6316b",
-        "sourceDigest": "sha256:28a82216de25396a1aa5adac27210463c437263d4cc2c293edf2382cb68f005d",
-        "accessMode": "anonymous",
-        "identityMode": "development"
-      },
-      {
-        "agentId": "security-operations-expert",
-        "instanceId": "xx-device-mock-f237",
-        "sourceId": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
-        "sourceDigest": "sha256:bd4890e38f7d94388bada5d149c4b1f6517396e9170ed0327b8298ba136e82e8",
-        "accessMode": "anonymous",
-        "identityMode": "development"
-      },
-      {
-        "agentId": "security-operations-expert",
-        "instanceId": "inspection-027-schedule-acceptance",
-        "sourceId": "experiment:EXP-security-operations-expert-027-f-r3ba4799b0cb7",
-        "sourceDigest": "sha256:c0dddde9e3eb780f701bf8989226a30955db9b6b32f5f124c2da0ec28a884976",
+        "instanceId": "security-operations-expert-main",
+        "sourceId": "experiment:EXP-security-operations-expert-027-m-reab20c48f610",
+        "sourceDigest": "sha256:0de2f56c20ab9925422958b48b9979a670e6faeee1a7b5b68f95f61c04c42c80",
         "accessMode": "anonymous",
         "identityMode": "development"
       },
@@ -144,15 +122,23 @@
         "agentId": "security-operations-expert",
         "instanceId": "policy-response-acceptance-027-r5efdc136f237",
         "sourceId": "experiment:EXP-security-operations-expert-027-f-r5efdc136f237",
-        "sourceDigest": "sha256:c7f8ab7c9e1c3fc51ff3aa521bed36152d469f90abd3f93b1512b705f4c2d3dd",
+        "sourceDigest": "sha256:0be824f6331bbc02c9495b2b56b76d9855a4c109df269ddad3fd26bed462d4f9",
         "accessMode": "anonymous",
         "identityMode": "development"
       },
       {
         "agentId": "security-operations-expert",
-        "instanceId": "threat-analysis-004",
-        "sourceId": "experiment:EXP-security-operations-expert-027-f-r92ea65e6316b",
-        "sourceDigest": "sha256:e1391dd497febc6b7042dadb7d0c1dd81361e56f41c4bedbc33deb6d4248b278",
+        "instanceId": "security-operations-expert-0cb7",
+        "sourceId": "experiment:EXP-security-operations-expert-027-f-r3ba4799b0cb7",
+        "sourceDigest": "sha256:ecc1d55e2c1dd7f7a8b515d55259d00a10c7cb2b495fa9566bce0ca0b9b27e36",
+        "accessMode": "anonymous",
+        "identityMode": "development"
+      },
+      {
+        "agentId": "security-operations-expert",
+        "instanceId": "network-space-027-r6930a1922fdc",
+        "sourceId": "experiment:EXP-security-operations-expert-027-f-r6930a1922fdc",
+        "sourceDigest": "sha256:7053b8aa5c353ccf9135792de76165043d719ba51ec46ce4ab6f4b1d86d1f355",
         "accessMode": "anonymous",
         "identityMode": "development"
       }
