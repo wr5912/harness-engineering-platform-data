@@ -1,4 +1,4 @@
-import { base, assetItem, scopeComponent, summary, tools, type Soc } from '../../../src/inspection/index.ts'
+import { base, assetItem, scopeComponent, summary, tools, type Soc } from '@harness-platform/security-operations/inspection/index.ts'
 
 export function classify(assetId: number, report: any, ready: any) {
   const facts = { report, readiness: ready, consistency: '两次读取不构成事务快照，未核实模板内容版本' }

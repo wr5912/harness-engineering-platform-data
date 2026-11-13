@@ -1,5 +1,5 @@
-import { base, assetItem, summary, type Soc } from '../../../src/inspection/index.ts'
-import { classifyStatus } from '../../../src/inspection/status.ts'
+import { base, assetItem, summary, type Soc } from '@harness-platform/security-operations/inspection/index.ts'
+import { classifyStatus } from '@harness-platform/security-operations/inspection/status.ts'
 
 export function create(soc: Soc) {
   return { ...base(soc), components: {

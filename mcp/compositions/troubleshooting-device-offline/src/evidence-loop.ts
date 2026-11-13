@@ -1,4 +1,4 @@
-import { canonical } from '../../../src/diagnostic-context.ts'
+import { canonical } from '@harness-platform/security-operations/diagnostic-context.ts'
 type V=Record<string,any>
 
 /** 每个方法对应一个原生画布节点，调度回边仅由LFX执行。 */

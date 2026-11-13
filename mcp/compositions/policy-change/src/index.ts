@@ -1,4 +1,4 @@
-import { api, data, rows, prepare, type Soc } from '../../../src/action-api.ts'
+import { api, data, rows, prepare, type Soc } from '@harness-platform/security-operations/action-api.ts'
 
 export function create(soc: Soc) {
   return {

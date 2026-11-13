@@ -1,4 +1,4 @@
-import { api, data, rows, prepare, validateParameters, type Soc } from '../../../src/action-api.ts'
+import { api, data, rows, prepare, validateParameters, type Soc } from '@harness-platform/security-operations/action-api.ts'
 
 function candidateId(item: any): string | undefined {
   const value = item?.deviceId ?? item?.value ?? item?.id

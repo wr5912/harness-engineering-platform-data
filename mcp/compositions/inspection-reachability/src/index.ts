@@ -1,6 +1,6 @@
 import { isIP } from 'node:net'
-import { applicableRule, base, matches, reachabilityGap, scopeComponent, summary, tools, type Soc } from '../../../src/inspection/index.ts'
-export { matches } from '../../../src/inspection/index.ts'
+import { applicableRule, base, matches, reachabilityGap, scopeComponent, summary, tools, type Soc } from '@harness-platform/security-operations/inspection/index.ts'
+export { matches } from '@harness-platform/security-operations/inspection/index.ts'
 export function create(soc: Soc) {
   const api = tools(soc)
   function pairResult(pair: any, facts: any, status: string, message: string) {

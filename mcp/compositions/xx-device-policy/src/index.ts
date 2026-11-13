@@ -1,4 +1,4 @@
-import { api, data, prepare as prepareSoc, type Soc } from '../../../src/action-api.ts'
+import { api, data, prepare as prepareSoc, type Soc } from '@harness-platform/security-operations/action-api.ts'
 import policySchema from '../assets/policy-schema.json' with { type: 'json' }
 import realToolContract from '../assets/real-tool-contract.json' with { type: 'json' }
 

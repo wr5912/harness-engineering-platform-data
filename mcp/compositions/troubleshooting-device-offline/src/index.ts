@@ -1,10 +1,10 @@
 import { isIP } from 'node:net'
 import { offlineEvidenceLoop } from './evidence-loop.ts'
-import { controlledDiagnosticProposal } from '../../../src/controlled-diagnostic-proposal.ts'
-import { unpack, rows, type Soc } from '../../../src/action-api.ts'
-import { renderTroubleshootingReport } from '../../../src/reports/troubleshooting.ts'
-import { buildConclusion } from '../../../src/reports/conclusion.ts'
-import { diagnosticTime, candidateStates, evaluateCandidate } from '../../../src/diagnostic-context.ts'
+import { controlledDiagnosticProposal } from '@harness-platform/security-operations/controlled-diagnostic-proposal.ts'
+import { unpack, rows, type Soc } from '@harness-platform/security-operations/action-api.ts'
+import { renderTroubleshootingReport } from '@harness-platform/security-operations/reports/troubleshooting.ts'
+import { buildConclusion } from '@harness-platform/security-operations/reports/conclusion.ts'
+import { diagnosticTime, candidateStates, evaluateCandidate } from '@harness-platform/security-operations/diagnostic-context.ts'
 
 type Value = Record<string, any>
 type Context = { runId: string; nodeId: string; signal: AbortSignal; shared: Value; progress(value: Value): void; call<T>(call: () => Promise<T>): Promise<T> }

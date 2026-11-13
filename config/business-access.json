@@ -47,9 +47,9 @@
     }
   ],
   "gateway": {
-    "host": "172.16.138.228",
-    "port": 53105,
-    "publicOrigin": "http://172.16.138.228:53105",
+    "host": "0.0.0.0",
+    "port": 53106,
+    "publicOrigin": "http://172.16.138.228:53106",
     "sharedSecretFile": ".local/business-control-mock/gateway-secret.bin",
     "instances": [
       {
@@ -141,9 +141,25 @@
         "sourceDigest": "sha256:7053b8aa5c353ccf9135792de76165043d719ba51ec46ce4ab6f4b1d86d1f355",
         "accessMode": "anonymous",
         "identityMode": "development"
+      },
+      {
+        "agentId": "daily-inspection-assistant",
+        "instanceId": "hep-acceptance-qwen",
+        "sourceId": "experiment:EXP-daily-inspection-assistant-002-r9eba480e9d2a",
+        "sourceDigest": "sha256:7df02a9788ada56278d8f0c86ac2dc8a6c392b2e4e0e35db1e26efc95628b471",
+        "accessMode": "anonymous",
+        "identityMode": "development"
+      },
+      {
+        "agentId": "asset-discovery-assistant",
+        "instanceId": "hep-acceptance-native",
+        "sourceId": "experiment:EXP-asset-discovery-assistant-001-r5802bc157e6d",
+        "sourceDigest": "sha256:938158300b4b074c10cdb7e848cb06ac2aaab2988403d2ad15cefcc2af945dc7",
+        "accessMode": "anonymous",
+        "identityMode": "development"
       }
     ],
-    "managementUrl": "http://172.16.138.228:18120/hep/"
+    "managementUrl": "http://127.0.0.1:18120/hep/"
   },
   "detection": {
     "inputMarkers": [],

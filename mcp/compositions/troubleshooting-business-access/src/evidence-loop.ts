@@ -1,4 +1,4 @@
-import { canonical } from '../../../src/diagnostic-context.ts'
+import { canonical } from '@harness-platform/security-operations/diagnostic-context.ts'
 type Value = Record<string, any>
 export const loopConditions = Object.freeze({ sufficient: '证据充分→输出报告', rule: '规则有明确后继→校验并执行下一项', proposal: '无明确分支或存在冲突→受控提议并校验', stop: '无能力、无执行点或预算耗尽→明确停点' })
 

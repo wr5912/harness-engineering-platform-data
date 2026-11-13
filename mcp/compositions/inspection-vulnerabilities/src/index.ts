@@ -1,4 +1,4 @@
-import { base, assetItem, scopeComponent, summary, rows, tools, type Soc } from '../../../src/inspection/index.ts'
+import { base, assetItem, scopeComponent, summary, rows, tools, type Soc } from '@harness-platform/security-operations/inspection/index.ts'
 
 export function create(soc: Soc) {
   const api = tools(soc)

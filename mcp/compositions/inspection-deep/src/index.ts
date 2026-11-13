@@ -1,5 +1,5 @@
-import { base, summary, type Soc } from '../../../src/inspection/index.ts'
-import { checkComplete } from '../../../src/inspection/completion.ts'
+import { base, summary, type Soc } from '@harness-platform/security-operations/inspection/index.ts'
+import { checkComplete } from '@harness-platform/security-operations/inspection/completion.ts'
 
 export function create(soc: Soc) {
   return { ...base(soc, true), components: {

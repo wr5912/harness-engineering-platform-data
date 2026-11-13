@@ -1,12 +1,12 @@
 import { isIP } from 'node:net'
 import { evidenceLoop } from './evidence-loop.ts'
-import { controlledDiagnosticProposal } from '../../../src/controlled-diagnostic-proposal.ts'
-import { businessConfirmCriteria, normalizeDiagnosticAtoms } from '../../../src/diagnostic-atoms.ts'
-import { unpack, rows, type Soc } from '../../../src/action-api.ts'
-import { renderTroubleshootingReport } from '../../../src/reports/troubleshooting.ts'
-import { buildConclusion } from '../../../src/reports/conclusion.ts'
-import { escapeHtml } from '../../../src/reports/common.ts'
-import { diagnosticTime, candidateStates, evaluateCandidate } from '../../../src/diagnostic-context.ts'
+import { controlledDiagnosticProposal } from '@harness-platform/security-operations/controlled-diagnostic-proposal.ts'
+import { businessConfirmCriteria, normalizeDiagnosticAtoms } from '@harness-platform/security-operations/diagnostic-atoms.ts'
+import { unpack, rows, type Soc } from '@harness-platform/security-operations/action-api.ts'
+import { renderTroubleshootingReport } from '@harness-platform/security-operations/reports/troubleshooting.ts'
+import { buildConclusion } from '@harness-platform/security-operations/reports/conclusion.ts'
+import { escapeHtml } from '@harness-platform/security-operations/reports/common.ts'
+import { diagnosticTime, candidateStates, evaluateCandidate } from '@harness-platform/security-operations/diagnostic-context.ts'
 
 type Value = Record<string, any>
 /** 按当前真实响应结构给具体缺口；SOC自带gaps与日志窗原样保留。 */
