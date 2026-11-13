@@ -1,6 +1,6 @@
 # 数据工作区协作
 
-本仓保存智能体登记、研究与评测记录、实例状态，以及用户配置的 MCP 服务和组合编排。程序与 MCP 框架属于 harness-engineering-platform；管理方法、身份和 Skill 属于 platform-manager-dsh-home；业务原生 Harness 与 MCP 配置属于 business-agents。Harness 保持文件形式，不存数据库。
+本仓保存智能体来源登记、Experiment、Run、Decision、实例状态、历史证据，以及用户配置的 MCP 服务和组合编排。业务智能体当前需求、定义、验收标准与主线 Harness 由 business-agents 唯一维护；本仓 `agents/<id>/manifest.yaml` 仅保存动态研究登记和历史关联，不复制当前 `evaluation.md`。程序与 MCP 框架属于 harness-engineering-platform；管理方法、身份和 Skill 属于 platform-manager-dsh-home。Harness 保持文件形式，不存数据库。
 
 管理助手以本目录为 cwd，身份和技能仍由原生 DSH HOME 装载。研发工具阅读这些资料不切换成业务角色；运行身份以 HOME 的 AGENTS.md 为准。
 
