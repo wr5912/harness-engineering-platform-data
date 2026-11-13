@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-13",
+  "scope": "native MCP boundary and deployment acceptance; business evaluation remains inconclusive",
+  "source_commits": {
+    "platform": "65e8b74ba7de68f96831363b7c5d00c2240eb24e",
+    "platform_manager_dsh_home": "9d51b4ef16fdabd805a03c684b3753eb2d893118",
+    "business_agents": "8d59b1035dbf940c5c412b98903db3355a170889"
+  },
+  "business_repository": "http://172.16.138.233/ai-soc/business-agents.git",
+  "candidate": {
+    "tracked_files": 334,
+    "byte_identical_to_business_source": true,
+    "sorted_relative_path_and_sha256_manifest_digest": "18e98b21558cefe98be5b9b32054e986ee8327b55eb608b008c42f677fed2e2a"
+  },
+  "package": {
+    "filename": "security-operations-expert-2acacb7c9355-amd64-online-13668e1d.tar.gz",
+    "sha256": "28d445ce94ea752d3e48d6266bb256c59adf202938b0e29ccfcf72385b611371",
+    "architecture": "amd64",
+    "install_mode": "online",
+    "provenance": "built before platform commit; original manifest source commit remains unchanged",
+    "home": "/var/lib/dsh",
+    "uid": 1006,
+    "agent_contains_lfx_executor": false
+  },
+  "automated": {
+    "plugin": {
+      "tests": 1862,
+      "pass": 1861,
+      "fail": 0,
+      "skipped": 1
+    },
+    "deploy": {
+      "tests": 184,
+      "pass": 184,
+      "fail": 0,
+      "skipped": 0
+    },
+    "native_tool_admission": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "skipped": 0
+    },
+    "real_container_browser": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "upgrade": {
+      "tests": 30,
+      "pass": 30,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "lfx_platform_smoke": {
+    "lfx": "1.13.1",
+    "upload_http_status": 201,
+    "execute_http_status": 200,
+    "result": {
+      "ok": true
+    }
+  },
+  "live_business_session": {
+    "model": "Qwen3.8-27B",
+    "session_id": "session-1738b3f1-6b44-4380-b9d0-f8d29c894faa",
+    "completed_turn": 6,
+    "final_cursor": 151,
+    "completion_reason": "completed",
+    "native_calls": [
+      {
+        "sequence": 135,
+        "name": "mcp__inspection-compositions__inspection_baseline"
+      },
+      {
+        "sequence": 140,
+        "name": "mcp__inspection-compositions__get_composition_run"
+      },
+      {
+        "sequence": 145,
+        "name": "mcp__inspection-compositions__get_composition_artifact"
+      }
+    ],
+    "composition": "inspection_baseline",
+    "run_id": "run-17a30ee7-0868-49d3-add9-ad89f79e9747",
+    "execution_status": "completed",
+    "business_conclusion": "NO_DATA",
+    "business_check_passed": false,
+    "artifacts_read_by_model": [
+      "chat"
+    ],
+    "local_file_and_calculation_check": "17 * 23 = 391",
+    "outage_chat_check": "12 + 30 = 42; previous marker recalled",
+    "upgrade_session_preserved": true
+  },
+  "live_platform_sdk": {
+    "discovered_services": 6,
+    "run_id": "run-832308eb-ac49-4337-b719-b1ebf8285440",
+    "execution_status": "completed",
+    "business_conclusion": "NO_DATA",
+    "artifacts_read": [
+      "chat",
+      "markdown",
+      "html",
+      "details"
+    ],
+    "details_endpoint_read": true
+  },
+  "live_manager": {
+    "model": "deepseek-flash",
+    "session_id": "session-68eae900-bb0a-4b6d-8217-72e9bf2e13a7",
+    "completed": true,
+    "scope": "read-only platform agent/MCP discovery and composition-development guidance; no live write action"
+  },
+  "browser": {
+    "platform_pages": [
+      "home",
+      "conversations",
+      "agents",
+      "evaluation",
+      "instances",
+      "gateway",
+      "mcp"
+    ],
+    "standalone": [
+      {
+        "port": 18517,
+        "http_status": 200,
+        "script_errors": []
+      },
+      {
+        "port": 18516,
+        "http_status": 200,
+        "script_errors": []
+      }
+    ],
+    "report_card_visible": true
+  },
+  "observations": [
+    "Cold asynchronous MCP discovery produced UNKNOWN_TOOL in an early restored turn; after discovery the same native session completed the full inspection path. Startup and ordinary conversation remained available.",
+    "The successful model turn took about eight minutes with a large retained session context; this is no latency acceptance claim.",
+    "One short-lease plugin test failed under default full-suite concurrency, passed in isolation, and the complete suite passed with concurrency 4.",
+    "The plugin suite skips one container-browser case by default; that browser suite was executed separately with three passes and no skips."
+  ],
+  "limits": [
+    "NO_DATA means SOC baseline collection is missing, not that the asset passed inspection.",
+    "Emergency actions, policy changes and device writes were not executed against live production systems.",
+    "Offline installation, other CPU architectures, and every business workflow were not covered by this live acceptance."
+  ],
+  "raw_evidence": {
+    "location": "platform repository .local/acceptance (local and ignored)",
+    "published_content": "metadata and observed outcomes only; no model reasoning, credentials or authentication headers"
+  }
+}

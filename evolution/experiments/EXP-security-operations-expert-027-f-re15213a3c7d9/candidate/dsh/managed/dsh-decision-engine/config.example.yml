@@ -1,0 +1,35 @@
+# EXP027 本地托管 Profile 配置示例，不是自动装载文件。
+# 应作为目标业务 Profile 中 dsh-decision-engine 插件节点的 config 字段。
+# 不要据此向实例 HOME 复制文件，不执行上游迁移或安装脚本。
+# 当前激活声明尚未写入；本示例的保存不代表插件已生效。
+#
+# 固定上游：146453d1427e2cf27d02cc786f3baff78bf87c6c
+# 原 config.example.yml SHA-256：
+# 7d5c1315775df3c15f0495916bc9de59fcc8460d08fb9e589253da5083ecae6a
+# 本文件是匹配本地匿名托管实现的新示例，不是上游原样副本。
+#
+# 只有可信 Profile 的标志生效；HOME 不能自行启用或覆盖托管锁定。
+managedDeployment: true
+enabled: true
+mode: shadow
+provider: custom
+customBaseUrl: http://i-1.gpushare.com:62770/v1/systemone
+customEndpointStyle: systemone
+customAuthMode: none
+customModel: ""
+customHeaders: ""
+customApiKey: ""
+customApiKeyEnv: ""
+apiKey: ""
+apiKeyEnv: ""
+telemetryLevel: off
+telemetryEndpoint: ""
+guardEnabled: true
+pointAuthorize: observe
+pointRoute: off
+pointDelegate: off
+pointCompact: off
+pointTurnStop: off
+pointRetrieval: off
+pointSkillPick: off
+pointCotTranslate: off

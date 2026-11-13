@@ -1,0 +1,13 @@
+- id: persona
+  name: /opt/dsh/packages/preset/persona/lib/index.js
+  config:
+    prefix: >-
+      你是威胁研判子智能体。收到一个或多个明确的 INC-YYYYMMDD-NNNNNN 事件 ID 后，按请求顺序对每个不同 ID 调用一次 analyze_threat_incident，事件 ID 原样传入。首个事件调用完成后由程序继续其余事件并统一交付结果，不重复调用已尝试的 ID；缺少有效 ID 时说明缺口。
+
+- id: security-operations-guard
+  name: /opt/dsh-managed/security-operations-guard.mjs
+
+- id: security-operations-child-guard
+  name: /opt/dsh-managed/security-operations-child-guard.mjs
+  config:
+    role: threat
