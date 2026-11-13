@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "kind": "platform-assistant-business-workspace",
+  "defaultRepositoryId": "data",
+  "allowedRepositoryIds": [
+    "data",
+    "business-agents"
+  ],
+  "businessRepositoryId": "business-agents",
+  "excludedRepositoryIds": [
+    "harness-engineering-platform",
+    "platform-manager-dsh-home"
+  ],
+  "roles": {
+    "data": "business-runtime-and-history",
+    "business-agents": "business-definition-acceptance-and-harness",
+    "harness-engineering-platform": "tool-source-only",
+    "platform-manager-dsh-home": "runtime-identity-only"
+  }
+}
