@@ -91,6 +91,47 @@ def main() -> None:
     if not script_block:
         raise SystemExit("baseline interaction script block not found")
     body = body[: script_block.start()] + body[script_block.end() :]
+    state_helpers = r'''    function applyLiveState(content, state) {
+      if (!state || typeof state !== 'object') return
+      content.dataset.stateMode = state.stateMode || 'fixture'
+      content.dataset.stateSource = state.source || 'unknown'
+      const marker = content.querySelector('[data-testid="workbench-state"]')
+      if (marker) marker.textContent = `状态来源：${state.source || '未知'} · ${state.stateMode === 'live' ? '已读取项目工作区' : '固定参考/待验证'}`
+      const breadcrumb = content.querySelector('[data-testid="project-breadcrumb"] .project')
+      if (breadcrumb && state.project?.name) breadcrumb.textContent = state.project.name.slice(0, 48)
+      const coverage = content.querySelector('[data-testid="coverage-summary"]')
+      if (coverage) coverage.textContent = `${state.stateMode === 'live' ? '工作区状态' : '固定样本'} · ${state.document?.requirementCount || state.requirements?.length || 0} 条要求 · ${state.publish?.blockerCount || 0} 项阻断`
+      const saveState = content.querySelector('[data-testid="save-state"] span:last-child')
+      if (saveState) saveState.textContent = state.stateMode === 'live' ? '项目工作区状态 · 待核对' : '固定合成样本 · 状态待验证'
+      const navRequirements = content.querySelector('[data-testid="nav-requirements"] .nav-count')
+      if (navRequirements && Array.isArray(state.requirements)) navRequirements.textContent = String(state.requirements.length)
+      const navEvidence = content.querySelector('[data-testid="nav-evidence"] .nav-count')
+      if (navEvidence && Array.isArray(state.evidence)) navEvidence.textContent = String(state.evidence.length)
+      const tableBody = content.querySelector('[data-testid="document-table"] tbody')
+      if (tableBody && Array.isArray(state.requirements) && state.requirements.length > 0) {
+        tableBody.innerHTML = state.requirements.slice(0, 8).map(row => `<tr><td>${String(row.id)}</td><td>待绑定章节</td><td>${String(row.source || '待核对')}</td><td><span class="status pending">${String(row.status || '待验证')}</span></td></tr>`).join('')
+      }
+      const chips = content.querySelector('[data-testid="evidence-chips"]')
+      if (chips && Array.isArray(state.evidence) && state.evidence.length > 0) {
+        chips.innerHTML = '<span class="evidence-label">证据：</span>' + state.evidence.slice(0, 8).map(row => `<button class="evidence-chip" data-evidence="${String(row.id)}"><span class="file-icon">•</span><span>${String(row.id)} ${String(row.source || '')}</span><span class="dot"></span></button>`).join('')
+      }
+      const gate = content.querySelector('[data-testid="publish-risk"]')
+      if (gate) gate.textContent = state.publish?.status === 'blocked' ? `发布门禁：阻断（${state.publish.blockerCount || 0} 项）` : '发布门禁：待验证'
+    }
+
+    async function loadLiveState(content) {
+      for (const prefix of ['/plugins/ai-proposal-workbench', 'plugins/ai-proposal-workbench']) {
+        try {
+          const response = await fetch(`${prefix}/state`, { headers: { accept: 'application/json' }, credentials: 'same-origin' })
+          if (!response.ok) continue
+          const body = await response.json()
+          if (body?.ok === true && body.state) { applyLiveState(content, body.state); return body.state }
+        } catch (_) {}
+      }
+      return null
+    }
+
+    '''
     client = f'''window.__ModuleLoader__.load({{
   id: '@business/ai-proposal-workbench',
   factory(require) {{
@@ -120,6 +161,8 @@ def main() -> None:
         if (window.dsh && typeof window.dsh.emit === 'function') window.dsh.emit(name, payload);
       }} catch (_) {{}}
     }}
+
+    {state_helpers}
 
     function WorkbenchIcon({{ size = 18, active = false }}) {{
       return h('span', {{ 'aria-hidden': true, style: {{ width: size, height: size, display: 'inline-grid', placeItems: 'center', borderRadius: 5, background: active ? 'var(--dsw-alias-state-business-primary, #e7c83b)' : 'transparent', color: '#111315', fontSize: 11, fontWeight: 800, lineHeight: 1 }} }}, '方案');
@@ -156,6 +199,7 @@ def main() -> None:
         const script = realDocument.createElement('script');
         script.textContent = BASE_SCRIPT;
         root.appendChild(script);
+        void loadLiveState(content);
         const onClick = event => {{
           const target = event.target.closest?.('[data-nav], [data-evidence], [data-download], #submitBtn, [data-selection-command], #selectionApply');
           if (!target || !content.contains(target)) return;

@@ -10,3 +10,4 @@
 - 校验：`node tools/verify-client.mjs`
 - 页面中的指标当前标为“固定合成样本/状态待验证”；真实项目状态必须由 Agent 工具和工作区产物确认后再更新。
 - 页面事件通过 `window.dsh.emit` 发送小型 `view.change`、`evidence.select`、`ai.optimize`、`review.submit` 和 `download.request` 事件；事件桥接不等于业务写入或导出成功。
+- Host 提供同源只读状态路由 `/plugins/ai-proposal-workbench/state`：优先读取 `/work/project` 中的真实 Markdown 产物，返回 `stateMode=live`、源文件和 SHA-256；没有项目产物时降级为 `fixture`。该路由不执行发布、不写入文件。
