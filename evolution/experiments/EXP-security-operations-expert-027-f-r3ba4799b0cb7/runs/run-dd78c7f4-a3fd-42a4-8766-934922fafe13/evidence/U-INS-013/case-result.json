@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-013",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答明确区分了已知影响（只读取证、无写入与干预路径）与未知范围（事实覆盖缺口，不把未知当正常或异常），满足第1项。工具轨迹仅包含一次 skill 目录/技能内容读取（call_ada636d2b3d546ccb68f71d3，is_error=false），属于只读目录查询与内部答复编排，未见任何巡检准备、启动或运行创建调用，也没有 run_id 等业务回执，故第2、3、4项均满足；判定基于真实工具回执（index 2）而非仅凭模型在 index 0 中的“尚未执行”自述，第5项满足。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-013"
-}

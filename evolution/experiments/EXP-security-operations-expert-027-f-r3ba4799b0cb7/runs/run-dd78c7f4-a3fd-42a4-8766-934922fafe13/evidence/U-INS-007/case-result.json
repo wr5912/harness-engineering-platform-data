@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-007",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：第一轮仅一次 inspection_routine 启动调用并取得真实成功回执 run-d5093c0f-bfbf-45af-a8a6-f64aefe7b041（is_error=false，status=accepted，scope.all=true 冻结 105 台资产）；第二轮全部为对同一 run_id 的 get_composition_run 查询，无再次启动；两轮回答依真实回执给出 running 状态、105 台资产、基线 105/105、可达性检查对进行中、artifacts 为空等业务结论与证据缺口，数字与回执（requests=338、updated_at=13:18:39Z）一致；续查保留原运行标识且明确未生成报告、不判健康结论，未在无成功完成回执时判通过。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-007"
-}

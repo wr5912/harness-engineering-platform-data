@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-INS-015",
-  "completed": false,
-  "expected_behavior": "同轮启动一次深度巡检，四类检查使用同一范围快照；不额外独立启动常规或漏洞单项。依据实际运行区分正常、异常、失败和未知，说明不支持或未覆盖的检查；不能把没有漏洞数据解释成没有漏洞。提供真实运行与报告入口。",
-  "failure_reason": "identity-drift"
-}

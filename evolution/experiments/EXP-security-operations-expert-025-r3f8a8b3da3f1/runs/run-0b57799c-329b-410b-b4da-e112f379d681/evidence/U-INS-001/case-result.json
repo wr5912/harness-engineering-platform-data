@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-001",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测 Session 的关键事实有同一 Session 工具回执支撑：inspection MCP 服务器断连（tool/result seq=25、seq=27 均返回 \"Error: mcp-client(inspection): server is disconnected\"），因此未调用 list_executable_inspections、未调用 start_inspection、没有 runId、没有报告，巡检任务整体未完成。被测回答如实披露了断连与未执行，没有伪造设备数量、结论或下载地址，满足“工具失败时不得声称完成”和“设备数量缺失须说明缺口”等限制项；但冻结要求 1–3 属于必须真实完成的流程，服务不可用只能解释失败原因、不能改变要求本身，故整体判定 failed 而非通过或不确定。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-001"
-}

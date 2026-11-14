@@ -1,7 +1,0 @@
-{
-  "case_id": "U-VOICE-004",
-  "execution_status": "completed",
-  "verdict": "inconclusive",
-  "observation": "语义判定：三条 indexed_evidence 均为纯文本回答（kind=assistant，citation_allowed=true），且内容是安全巡检结论，与被测的自动播报、摘要生成、TTS 首包、浏览器起播、双模型对照实验及各项时延指标完全无关。没有任何 tool/result 类回执可证明播报开关、约 30 字默认摘要、思考关闭设置、五阶段关联点、流式起播时机、两模型各三次重复的逐次耗时/字数偏差/失败漏播、热态中位数目标（2s/3s/下降 50%）或凭据与物理播放证据。要求 1 仅能从文本本身看到否定、风险、未确认与未完成状态被保留且与输入事实一致，但无法确认其来自开启自动播报的约 30 字摘要链路、也无证据说明未被截断，故仍为 unknown。证据不足，按约定记为 inconclusive，不以 null 代替字段。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-VOICE-004"
-}

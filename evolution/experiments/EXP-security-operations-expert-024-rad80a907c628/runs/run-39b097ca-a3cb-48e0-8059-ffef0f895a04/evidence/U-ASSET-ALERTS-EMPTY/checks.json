@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-ASSET-ALERTS-EMPTY",
-  "completed": false,
-  "expected_behavior": "1. 查询同一资产的告警：实际执行资产查询，再以该响应的实际资产 ID 调告警查询。\n\n2. 核对受控空结果：两步 HTTP 和业务码均成功，告警 groups 为空、总分组和总告警均为 0。\n\n3. 交付准确结论与回执：回复准确说明本次固定样本的受控空结果、查询范围及未查询真实 SOC；不将它描述为工具失败，也不据此认定真实资产无告警或无风险。\n\n   注：保留两个原子步骤与同一固定样本的回执，不执行写入。",
-  "failure_reason": "evaluation-interrupted"
-}

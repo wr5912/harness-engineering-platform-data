@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-004",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：回答明确区分了一次性巡检与创建 DSH 周期任务（提醒）两条路径，并要求补齐巡检项、资产范围与执行周期（证据0）；条件未齐全且 inspection 服务断连（证据4、6、12 均为 server is disconnected 的原生错误回执）时，本轮仅调用 skill 与资源枚举，未见任何 schedule_create 或巡检发起回执，回答也如实声明未创建提醒、未生成 runId（证据0）；skill 内容载明巡检 MCP 只有目录查询、发起、结果查询三个工具且目录只含已发布模板，无模板创建入口（证据2）。三项要求均满足。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-004"
-}

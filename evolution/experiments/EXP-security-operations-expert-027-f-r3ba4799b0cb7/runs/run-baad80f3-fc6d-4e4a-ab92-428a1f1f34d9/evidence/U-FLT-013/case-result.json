@@ -1,7 +1,0 @@
-{
-  "case_id": "U-FLT-013",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测会话通过 6 次只读查询对 172.16.200.11 取得真实回执（IP 解析、资产列表、资产详情、采集设备、图谱节点、覆盖统计，均 is_error=false），结论明确区分事实、推断、证据缺口与未覆盖范围，且未执行探测/配置/处置；随后以完整分析正文调用 export_security_report 生成 14282 字节、charset=utf-8 的非空 HTML，回执给出文件名、类型、字节数与 SHA-256 可核对，报告声明不代表故障修复；第二轮以同一 attachment_id 复用原文件，SHA-256 与首轮一致，未重新取证或委派，交付了真实文件链接而非摘要或伪造链接。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-FLT-013"
-}

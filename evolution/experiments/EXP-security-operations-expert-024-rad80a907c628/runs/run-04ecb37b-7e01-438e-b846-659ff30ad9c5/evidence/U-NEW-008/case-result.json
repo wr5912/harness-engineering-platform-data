@@ -1,7 +1,0 @@
-{
-  "case_id": "U-NEW-008",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：inspection MCP 服务器连续三次返回 server is disconnected，被测 Session 未查询到真实目录、未选定模板、未调用发起工具、未获得 runId，也无任何巡检执行回执，因此核心要求「从真实目录选唯一模板并按真实 runId 查询」明确未满足；回答本身也承认未执行、仅给出未执行的建议，故整体判 failed。回答正确区分了建议与已执行动作、说明了第三方（inspection 服务）依赖缺口且未虚构业务通过，但不能抵消主流程缺失；LangGraph 图相关事实在给定证据中无法核对，记为 unknown。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-NEW-008"
-}

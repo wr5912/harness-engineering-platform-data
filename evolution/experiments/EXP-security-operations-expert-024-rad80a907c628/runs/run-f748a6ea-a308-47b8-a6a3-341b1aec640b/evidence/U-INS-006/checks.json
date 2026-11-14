@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-INS-006",
-  "completed": false,
-  "expected_behavior": "从真实目录选择唯一匹配模板，用 ASSET_IDS、values: [\"A-001\"] 准备并在 READY 后同轮执行。资产非法、未命中或模板不唯一时只澄清或说明服务错误，不用 ALL 代替。按实际 runId 核对范围和结果；Variant 使用相同输入的工作流，不调用 KEV。",
-  "failure_reason": "driver-container-stop-unconfirmed"
-}

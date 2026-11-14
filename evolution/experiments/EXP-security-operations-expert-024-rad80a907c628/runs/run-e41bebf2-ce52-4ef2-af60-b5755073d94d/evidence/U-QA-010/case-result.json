@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-010",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：回答逐项覆盖四条预期：明确指出巡检服务的三个 MCP 工具不创建任务（周期执行另走 DSH schedule）；按 Skill 说明了查询已发布可执行模板、以 taskId+definitionVersion+requestId 发起一次巡检、用 runId 轮询并在结束且报告就绪后仅原样提供服务返回的非空 reportDownloadUrl；分节给出巡检操作与响应处置（响应规划、应急处置、策略配置）的入口、必要信息，并以表格说明权限由 MCP 绑定、工具过滤器、受信 Gate、确认插件与 approval policy 决定；同时如实标注 inspection 服务器本轮断连（对应 tool/result 的 is_error 回执）且明确“未发起任何巡检”“尚未执行的建议”，未将建议描述为已执行，未编造未知权限名称。关键事实均有同 Session 工具回执或 Skill 原文支撑。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-010"
-}

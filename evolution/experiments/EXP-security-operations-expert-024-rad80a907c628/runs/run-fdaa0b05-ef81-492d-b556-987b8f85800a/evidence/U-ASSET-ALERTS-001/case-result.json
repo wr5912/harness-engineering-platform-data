@@ -1,7 +1,0 @@
-{
-  "case_id": "U-ASSET-ALERTS-001",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：资产详情查询与 asset:9106 映射确实执行且回执为 code 200，但实际告警查询仅为 get_graph_node_detail({vid})，请求中不存在第 1 页、每页 5 组、2592000 秒等参数，明确不满足分页/时长要求；工具返回体也未包含 from/to、页码与截断状态，答复只能以“未返回/推断”方式处理，交付摘要无法完整保留这些必需字段；同时回执中未见显式 HTTP 状态证据（仅有业务码 200 与 is_error:false），该项证据不足。Mock/replay 边界声明与只读未写入可由答复确认。总体 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-ASSET-ALERTS-001"
-}

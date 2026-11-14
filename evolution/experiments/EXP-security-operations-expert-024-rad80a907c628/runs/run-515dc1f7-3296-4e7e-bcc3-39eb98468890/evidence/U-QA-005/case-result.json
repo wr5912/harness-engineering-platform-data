@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-005",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：回答在无法读取 .mcp.json 的前提下，先用真实工具回执确认了 sec-ops 的在线状态与接口面（list_mcp_resources/list_mcp_resource_templates 均成功返回 serverInfo name=sec-ops v0.1.0，但 resources 与 resourceTemplates 为空，即仅剩工具面），并说明了受 role-tool-matrix 与角色过滤管控的适用边界，同时明确区分事实与推断、声明无法核对配置文件内容而未臆测其字段；工具回执 FS_NOT_FOUND、No files found 及 /opt/dsh 被文件策略拒绝均来自同一被测会话，支撑其“无法读取配置”的表述。两项要求均有 citation_allowed 为 true 的对应证据支持。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-005"
-}

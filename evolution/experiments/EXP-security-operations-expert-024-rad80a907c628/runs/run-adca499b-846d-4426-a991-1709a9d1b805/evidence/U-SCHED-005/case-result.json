@@ -1,7 +1,0 @@
-{
-  "case_id": "U-SCHED-005",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：索引证据中第二轮只有 schedule_update 调用及其回执（索引4为调用但 citation_allowed=false，回执为索引5、7），全程未出现 schedule_list 调用或回执，无法支持“第二轮先调用 schedule_list”，按预期“未先查询判为失败”。规则修改本身有真实回执支持：索引5显示同一 ID、everySeconds=1200 且 prompt 保持原值未被改动，索引1为回复更新后规则；但因未先查询，整体判定为失败。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-SCHED-005"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-FLT-005",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答在缺少此前故障上下文时，未继续盲目替换 IP、端口或提示词，而是基于同 Session 的 schedule_list 空结果说明当前会话不存在活动调度任务，并明确询问需要停止/修改/排查的对象、所在实例或会话等必要信息，满足先询问必要信息的要求；同时转向核对调度链路状态与失败原因，符合停止盲目替换参数并核对故障证据、链路状态和失败原因的预期。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-FLT-005"
-}

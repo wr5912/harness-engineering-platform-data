@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-005",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测 Session 中 inspection MCP 服务断连，目录查询两次均返回 is_error，未能核对设备在线状态的可执行模板；未取得任何 DSH schedule_create 真实回执（无提醒 ID、状态、下次到期时间），也不存在真实到期消息与 start_inspection/runId 结果回执。创建阶段与到期执行阶段的关键证据均缺失且目录核对明确失败，因此不满足全部要求。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-005"
-}

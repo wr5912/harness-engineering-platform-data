@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-012",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答在参数完整（scope all:true）的同轮内直接调用 inspection_routine，取得真实 run_id=run-a090a17d-0070-445d-b3fe-809426eff218 的成功回执（ok:true），随后按该 run_id 多次查询运行状态直至 completed，并保留成功执行回执（含产物标识），全程未额外索要确认；同时回答未把 completed 当作业务通过，明确整体业务结果为 incomplete，逐项说明状态/基线/可达性的未知与证据缺口（如 NO_DATA、未分配模板、NAT 快照采集缺失与 COLLECTION_FAILED），符合无真实回执不判通过、依赖缺口需说明的要求。关键数据均可由同 Session 的 tool/result 回执支持。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-012"
-}

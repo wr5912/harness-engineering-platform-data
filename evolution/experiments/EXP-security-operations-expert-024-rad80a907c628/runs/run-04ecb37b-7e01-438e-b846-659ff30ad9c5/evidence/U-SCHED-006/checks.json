@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-SCHED-006",
-  "completed": false,
-  "expected_behavior": "注：类型：自动研判。\n\n1. 查询并删除本会话任务：第二轮先调用 `schedule_list`；唯一匹配任务直接用其 ID 调 `schedule_delete`。\n\n2. 说明删除边界：并说明只停止后续心跳，不得声称已中止正在执行的研判。\n\n   注：未先查询直接删除判为失败。",
-  "failure_reason": "evaluation-interrupted"
-}

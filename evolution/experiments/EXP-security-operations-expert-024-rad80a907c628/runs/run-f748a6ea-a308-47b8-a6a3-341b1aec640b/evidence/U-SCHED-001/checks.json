@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-SCHED-001",
-  "completed": false,
-  "expected_behavior": "注：类型：自动研判。\n\n1. 创建本会话提醒：用 DSH `schedule_create` 创建绑定本 Session 的提醒，时间选择器为 `daily: {\"time\":\"12:00:00\",\"time_zone\":\"Asia/Shanghai\"}`（用户未说明时区时不追问）；`prompt` 固定为 `{\"type\":\"threat-analysis.pending\",\"version\":1,\"batchSize\":1}`，标题 `自动威胁研判-每天12:00`。\n\n2. 核对创建回执：回复中的任务标识、规则和下次到期时间与真实回执一致，并明确尚未执行。\n\n   注：工具未成功返回时不得声称创建成功。",
-  "failure_reason": "driver-container-stop-unconfirmed"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-NEW-009",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答明确区分了已知事实（inspection 服务器断开、未获取任何巡检项说明）与未知范围（具体巡检项是否影响业务需目录描述确认），符合第 1 项。真实工具轨迹显示本轮仅有 skill 指令加载与两次只读资源列举调用，两次回执均为 is_error=true 的 `server is disconnected`，没有任何巡检准备、发起或运行创建调用，第 2、3、4 项均满足；判定依据来自原生错误回执而非模型自称，第 5 项满足。所有证据均取自同一被测 Session 且 citation_allowed=true 的索引。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-NEW-009"
-}

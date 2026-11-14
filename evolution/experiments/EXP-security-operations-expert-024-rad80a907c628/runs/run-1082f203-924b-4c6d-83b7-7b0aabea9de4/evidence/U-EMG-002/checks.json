@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-EMG-002",
-  "completed": false,
-  "expected_behavior": "1. 准备防火墙动作：目标确认为防火墙后，使用 `block-ip` 与明确的 `params.src_ip`、`params.rule_name` 准备草案；冻结动作必须仍为 `block-ip`，不能变为主机侧 `host-block-ip`。\n\n2. 核对草案和确认边界：只以实际 Workbench 回执报告草案或能力不可用，不确认、不声称已封禁。\n\n   注：若仅有模拟服务或不支持防火墙动作，说明实际覆盖范围；不将主机动作或模拟回执作为防火墙业务效果。",
-  "failure_reason": "api 评测失败（退出码 2）"
-}

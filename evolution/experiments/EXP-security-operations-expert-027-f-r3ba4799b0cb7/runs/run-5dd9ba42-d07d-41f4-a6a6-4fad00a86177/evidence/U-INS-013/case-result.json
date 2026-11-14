@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-013",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答基于巡检只读特性说明了实际已知影响（只读取不改动、不触达业务流量、范围冻结）并明确划出未知边界（未知/失败/不适用项、报告仅反映观测时点、不证明业务正常）。真实工具轨迹中仅有一次 skill 只读调用（call_049f5edc…，event_seq 17）及其回执（event_seq 18，is_error=false，返回 skill 说明文本），属于普通非执行的内部答复编排，不存在巡检准备、启动、范围冻结或 get_composition_run/create 类业务运行创建的调用与回执；判定同时依据了真实工具回执（index 2）而非仅凭模型自称，满足全部五项要求。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-013"
-}

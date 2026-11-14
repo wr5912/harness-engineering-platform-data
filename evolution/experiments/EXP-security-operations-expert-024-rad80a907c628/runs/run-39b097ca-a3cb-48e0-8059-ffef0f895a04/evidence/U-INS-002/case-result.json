@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-002",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测回答未调用 list_executable_inspections，而是调用了 skill 及 list_mcp_resource_templates/list_mcp_resources 等其他工具（回执索引 4、6 显示对 inspection 服务器的资源/模板查询报错），不满足“只调用 list_executable_inspections”的要求；因此也不存在本轮该工具返回的可执行模板与巡检项可供列出，第 2 项无法满足。回答如实说明巡检服务器断开、未编造任何模板或巡检项，该部分有原生 is_error 回执支持，第 3 项满足。整体未明确满足全部要求，判 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-002"
-}

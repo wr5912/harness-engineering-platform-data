@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-007",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：第一轮 inspection MCP 服务器始终断开（工具回执 server is disconnected），目录查询与巡检发起均未成功，未产生任何 runId，直接不满足“按真实目录准备并同轮启动一次”；第二轮因无已取得的 runId 而无法按要求续查，仅重复探测服务器连接，仍未取得任何成功服务回执。被测回答如实反映断开状态、未编造业务结论/设备数量/下载地址、也未判定通过，但冻结的核心要求未达成，故整体判 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-007"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-001",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答未凭常识编造 SEC-KB-078 内容，而是基于同一 Session 的真实工具回执说明检索不可用：sec-ops 的 resources 与 resourceTemplates 均为空（is_error=false），inspection 两个回执均为 server is disconnected，且 skill 内容明确当前没有知识库检索服务。回答明确给出结论、事实、推断、缺口与未执行建议，并给出可核对的调用来源，完整符合预期中“检索不到时明确说明、不冒充内部知识”的分支要求，未发现虚构文档或分块来源的行为。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-001"
-}

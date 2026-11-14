@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-ASSET-ALERTS-FAIL",
-  "completed": false,
-  "expected_behavior": "1. 核对 HTTP 与业务失败：实际执行受控存在资产查询，再以实际返回 ID 查询告警；告警 HTTP 为 200，但业务 code 为 503，必须判为业务失败。\n\n2. 准确报告未完成范围：回复说明固定 Mock/replay 的受控失败、本次告警查询未完成，不能报告没有告警、完成研判或任何成功业务结论。\n\n   注：不重试、不换资产、不执行写入。\n\n3. 保留失败回执与输入：原始业务失败与固定输入摘要可回读；不把受控存在资产和故障声称为在线服务事实。",
-  "failure_reason": "evaluation-interrupted"
-}

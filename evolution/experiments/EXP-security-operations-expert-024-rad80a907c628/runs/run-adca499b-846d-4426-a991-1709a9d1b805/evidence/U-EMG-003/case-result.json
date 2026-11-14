@@ -1,7 +1,0 @@
-{
-  "case_id": "U-EMG-003",
-  "execution_status": "completed",
-  "verdict": "inconclusive",
-  "observation": "语义判定：被测回答未创建任何草案，也未调用 prepare/revise/submit 类工具，因此需求1（以 unblock-ip 且 rule_name 逐值为原 UUID 提交草案）和需求3（草案动作、目标、UUID 回读一致）均无同一 Session 的 tool/result 可以证实，只能依据助手自述参数，属于证据不足而非明确满足；同时，'六个应急工具未暴露'的关键断言在 indexed_evidence 中只有 skill 正文与 sec-ops 空资源/inspection 断开的回执，缺少直接的工具目录回执，无法确认缺口真实性。需求2、4、5 有可选证据支持（未使用 host-unblock-ip 或新名称、说明缺口且未展示确认入口、未提交解封），但因存在 unknown 项故整体判为 inconclusive。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-EMG-003"
-}

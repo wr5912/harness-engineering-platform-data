@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-006",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测回答与工具回执均表明本轮未完成任何必需阶段：inspection 服务器在资源列表与资源模板查询上均返回原生 is_error=true 的断开错误，因此既没有证据显示先调用了 list_executable_inspections 并选出唯一匹配任务，也完全不存在 start_inspection 调用、runId 及按同一 runId 的结果查询。回答自身也明确承认没有发起巡检、没有 runId。仅第三项（不猜任务标识、不以全量巡检冒充完成、如实说明状态）得到遵守，前两项明确不满足，故整体判定 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-006"
-}

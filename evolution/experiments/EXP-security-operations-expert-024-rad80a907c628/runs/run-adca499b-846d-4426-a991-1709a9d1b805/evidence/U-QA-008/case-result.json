@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-008",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答（索引 0）完整区分了 CVSS（FIRST 维护的技术严重性静态评分，0.0–10.0）、EPSS（每日更新的未来 30 天被利用概率预测，0%–100%）与 CISA KEV（CISA 维护的已被真实利用事实清单），并明确说明 CVSS 9.8 不一定最高优先级的原因：CVSS 不含我司上下文，内部优先级还取决于资产暴露面/可达性、业务重要性、漏洞是否与实际部署版本匹配（受影响情况）以及 WAF 等补偿控制削弱项，并给出 KEV>高 EPSS×暴露面×资产重要性×补偿控制的排序模型。本预期不要求真实工具数据，要求内容全部由 citation_allowed=true 的索引 0 支持，逐项核对均满足。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-008"
-}
