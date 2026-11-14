@@ -168,10 +168,10 @@ window.__ModuleLoader__.load({
           const target = event.target.closest?.('[data-nav], [data-evidence], [data-download], #submitBtn, [data-selection-command], #selectionApply');
           if (!target || !content.contains(target)) return;
           if (target.dataset.nav) { emit('view.change', { view: target.dataset.nav, stateMode: content.dataset.stateMode || 'fixture' }); setTimeout(() => applyViewState(content, content.__liveState), 0); }
-          if (target.dataset.evidence) emit('evidence.select', { evidenceId: target.dataset.evidence, stateMode: 'fixture' });
-          if (target.dataset.download) emit('download.request', { format: target.dataset.download, stateMode: 'fixture' });
-          if (target.id === 'submitBtn') emit('review.submit', { blocked: true, reason: 'fixture-pending-evidence' });
-          if (target.dataset.selectionCommand || target.id === 'selectionApply') emit('ai.optimize', { command: target.dataset.selectionCommand || 'custom', stateMode: 'fixture' });
+          if (target.dataset.evidence) emit('evidence.select', { evidenceId: target.dataset.evidence, stateMode: content.dataset.stateMode || 'fixture' });
+          if (target.dataset.download) emit('download.request', { format: target.dataset.download, stateMode: content.dataset.stateMode || 'fixture' });
+          if (target.id === 'submitBtn') emit('review.submit', { blocked: true, reason: 'live-pending-evidence', stateMode: content.dataset.stateMode || 'fixture' });
+          if (target.dataset.selectionCommand || target.id === 'selectionApply') emit('ai.optimize', { command: target.dataset.selectionCommand || 'custom', stateMode: content.dataset.stateMode || 'fixture' });
         };
         content.addEventListener('click', onClick);
         return () => { content.removeEventListener('click', onClick); root.replaceChildren(); };
