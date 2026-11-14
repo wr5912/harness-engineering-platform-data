@@ -1,0 +1,153 @@
+{
+  "tests": [
+    {
+      "name": "真实未研判卡片展开后填写并保留已有草稿",
+      "passed": true,
+      "elapsed": 9852,
+      "collapsedHeight": 105.59375,
+      "expandedHeight": 257.71875,
+      "draft": "请保留这段草稿。\n\n请研判以下威胁事件：INC-20261114-000032"
+    },
+    {
+      "name": "再次展开同一事件不重复追加",
+      "passed": true
+    },
+    {
+      "name": "清空并超过冷却时间后重新展开再次填写",
+      "passed": true
+    },
+    {
+      "name": "真实研判中卡片展开详情且不填写",
+      "passed": true
+    },
+    {
+      "name": "真实待复核卡片展开详情且不填写",
+      "passed": true
+    }
+  ],
+  "traces": [
+    {
+      "refresh": false,
+      "ms": 13428,
+      "total": 37,
+      "freshCount": 37,
+      "targets": [
+        {
+          "incidentId": "INC-20261114-000032",
+          "state": "pending",
+          "fresh": true,
+          "canDraft": true
+        },
+        {
+          "incidentId": "INC-20261114-000028",
+          "state": "running",
+          "fresh": true,
+          "canDraft": false
+        },
+        {
+          "incidentId": "INC-20261114-000029",
+          "state": "stale",
+          "fresh": true,
+          "canDraft": false
+        }
+      ]
+    },
+    {
+      "refresh": true,
+      "ms": 9557,
+      "total": 1,
+      "freshCount": 1,
+      "targets": [
+        {
+          "incidentId": "INC-20261114-000032",
+          "state": "pending",
+          "fresh": true,
+          "canDraft": true
+        }
+      ]
+    },
+    {
+      "refresh": true,
+      "ms": 206,
+      "total": 1,
+      "freshCount": 1,
+      "targets": [
+        {
+          "incidentId": "INC-20261114-000032",
+          "state": "pending",
+          "fresh": true,
+          "canDraft": true
+        }
+      ]
+    },
+    {
+      "refresh": false,
+      "ms": 2330,
+      "total": 37,
+      "freshCount": 37,
+      "targets": [
+        {
+          "incidentId": "INC-20261114-000032",
+          "state": "pending",
+          "fresh": true,
+          "canDraft": true
+        },
+        {
+          "incidentId": "INC-20261114-000028",
+          "state": "running",
+          "fresh": true,
+          "canDraft": false
+        },
+        {
+          "incidentId": "INC-20261114-000029",
+          "state": "stale",
+          "fresh": true,
+          "canDraft": false
+        }
+      ]
+    },
+    {
+      "refresh": true,
+      "ms": 228,
+      "total": 1,
+      "freshCount": 1,
+      "targets": [
+        {
+          "incidentId": "INC-20261114-000032",
+          "state": "pending",
+          "fresh": true,
+          "canDraft": true
+        }
+      ]
+    },
+    {
+      "refresh": true,
+      "ms": 308,
+      "total": 1,
+      "freshCount": 1,
+      "targets": [
+        {
+          "incidentId": "INC-20261114-000028",
+          "state": "running",
+          "fresh": true,
+          "canDraft": false
+        }
+      ]
+    },
+    {
+      "refresh": true,
+      "ms": 146,
+      "total": 1,
+      "freshCount": 1,
+      "targets": [
+        {
+          "incidentId": "INC-20261114-000029",
+          "state": "stale",
+          "fresh": true,
+          "canDraft": false
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

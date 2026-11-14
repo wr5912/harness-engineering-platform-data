@@ -18,3 +18,4 @@
 - [XX设备真实MCP接入与编排交接（f237，未配置内网连接）](<docs/plans/XX设备真实MCP接入交接说明.md>)
 - [XX设备Skill＋编排适配与验证（f237，历史Mock证据）](<docs/plans/XX设备Skill与编排适配实施.md>)
 - [待讨论：指令下发、模板修改与多服务选择](docs/issues/指令下发多服务适配待讨论.md)
+- [威胁事件通知同步、独立图标与首页布局验证（2026-11-14）](docs/incident-sidebar-20261114/README.md)

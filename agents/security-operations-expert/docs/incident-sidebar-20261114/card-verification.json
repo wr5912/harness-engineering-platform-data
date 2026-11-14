@@ -1,0 +1,50 @@
+{
+  "results": [
+    {
+      "case": "real-stale",
+      "incidentId": "INC-20261114-000029",
+      "toggleHeight": 99,
+      "detailHeight": 524.3125,
+      "draft": "",
+      "details": "INC-20261114-000029 · 待复核\n研判状态：待复核（STALE）\n事件状态：NEW\n研判结论：SUSPICIOUS\n研判置信度：55%\n研判时间：2026-11-14 10:39:21\n研判记录：JDG-2121432378677989377\n当前证据版本：47\n研判依据版本：5\n严重性：HIGH\n关联资产：3617352\n源地址：172.16.2.102\n\n证据已有变化，以下为上次研判结果，待复核。\n\n事件 INC-20261114-000029，完整研判结论：可疑。决定性支持点是 Sniper.exe 在目标主机上派生 cmd、schtasks、powershell 并执行计划任务与磁盘信息收集，且被 Wazuh EDR 标记为可疑进程。当前没有远程访问、凭据窃取、持久化写入、横向移动或主机沦陷结果，因此不能确认主机已被攻陷。关键缺口是 Sniper.exe 的来源、恶意属性和后续攻击结果未观察到。",
+      "source": "live-readonly",
+      "passed": true
+    },
+    {
+      "case": "pending-expand-draft-cooldown-clear-reexpand",
+      "passed": true,
+      "source": "browser-route-mock"
+    },
+    {
+      "case": "running-details-only",
+      "passed": true,
+      "source": "browser-route-mock"
+    },
+    {
+      "case": "completed-details-only",
+      "passed": true,
+      "source": "browser-route-mock"
+    },
+    {
+      "case": "failed-details-only",
+      "passed": true,
+      "source": "browser-route-mock"
+    },
+    {
+      "case": "stale-details-only",
+      "passed": true,
+      "source": "browser-route-mock"
+    },
+    {
+      "case": "unknown-details-only",
+      "passed": true,
+      "source": "browser-route-mock"
+    },
+    {
+      "case": "collapse-before-query-returns-no-draft",
+      "passed": true,
+      "source": "browser-route-mock"
+    }
+  ],
+  "errors": []
+}

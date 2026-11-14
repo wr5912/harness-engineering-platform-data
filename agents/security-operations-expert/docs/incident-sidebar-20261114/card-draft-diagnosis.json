@@ -1,0 +1,115 @@
+{
+  "before": {
+    "target": "INC-20261114-000032",
+    "draft": "",
+    "queries": [
+      {
+        "refresh": false,
+        "targets": [
+          {
+            "incidentId": "INC-20261114-000032",
+            "state": "pending",
+            "fresh": false,
+            "canDraft": false,
+            "error": "query_unavailable"
+          }
+        ]
+      },
+      {
+        "refresh": true,
+        "targets": [
+          {
+            "incidentId": "INC-20261114-000032",
+            "state": "pending",
+            "fresh": false,
+            "canDraft": false,
+            "error": "query_unavailable"
+          }
+        ]
+      },
+      {
+        "refresh": false,
+        "targets": [
+          {
+            "incidentId": "INC-20261114-000032",
+            "state": "pending",
+            "fresh": false,
+            "canDraft": false,
+            "error": "query_unavailable"
+          }
+        ]
+      }
+    ]
+  },
+  "upstreamRead": {
+    "incidentId": "INC-20261114-000032",
+    "http": 200,
+    "elapsedMs": 9741,
+    "judgeStatus": null
+  },
+  "firstLiveBatchCheck": {
+    "incidentIds": [
+      "INC-20261114-000033",
+      "INC-20261114-000032"
+    ],
+    "queries": [
+      {
+        "refresh": false,
+        "ms": 15182,
+        "total": 37,
+        "freshCount": 36,
+        "targets": [
+          {
+            "incidentId": "INC-20261114-000032",
+            "state": "unknown",
+            "fresh": false,
+            "canDraft": false,
+            "error": "query_unavailable"
+          },
+          {
+            "incidentId": "INC-20261114-000028",
+            "state": "running",
+            "fresh": true,
+            "canDraft": false
+          },
+          {
+            "incidentId": "INC-20261114-000029",
+            "state": "stale",
+            "fresh": true,
+            "canDraft": false
+          }
+        ]
+      },
+      {
+        "refresh": true,
+        "ms": 11117,
+        "total": 2,
+        "freshCount": 1,
+        "targets": [
+          {
+            "incidentId": "INC-20261114-000032",
+            "state": "unknown",
+            "fresh": false,
+            "canDraft": false,
+            "error": "query_unavailable"
+          }
+        ]
+      },
+      {
+        "refresh": true,
+        "ms": 5042,
+        "total": 2,
+        "freshCount": 2,
+        "targets": [
+          {
+            "incidentId": "INC-20261114-000032",
+            "state": "pending",
+            "fresh": true,
+            "canDraft": true
+          }
+        ]
+      }
+    ],
+    "observed": "第一次状态查询失败，自动重试后两个未研判事件均填入，原有草稿保留。首次检查脚本将批量卡片误当单事件并对换行断言过严，随后使用单事件卡片完成5项检查。"
+  }
+}
