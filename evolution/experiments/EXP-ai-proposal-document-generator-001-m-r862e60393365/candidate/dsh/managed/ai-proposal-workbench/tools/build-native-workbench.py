@@ -170,13 +170,8 @@ def main() -> None:
 
     {state_helpers}
 
-    function WorkbenchIcon({{ size = 18, active = false }}) {{
-      return h('span', {{ 'aria-hidden': true, style: {{ width: size, height: size, display: 'inline-grid', placeItems: 'center', borderRadius: 5, background: active ? 'var(--dsw-alias-state-business-primary, #e7c83b)' : 'transparent', color: '#111315', fontSize: 11, fontWeight: 800, lineHeight: 1 }} }}, '方案');
-    }}
-
     function NativeWorkbench() {{
       const host = React.useRef(null);
-      const [open, setOpen] = React.useState(true);
       React.useEffect(() => {{
         const root = host.current;
         if (!root) return undefined;
@@ -218,20 +213,14 @@ def main() -> None:
         content.addEventListener('click', onClick);
         return () => {{ content.removeEventListener('click', onClick); root.replaceChildren(); }};
       }}, []);
-      const shellStyle = {{ position: 'fixed', inset: 0, zIndex: 1000, pointerEvents: open ? 'auto' : 'none', display: open ? 'block' : 'none' }};
-      const closeStyle = {{ position: 'fixed', top: 10, right: 12, zIndex: 1005, height: 30, padding: '0 10px', border: '1px solid var(--dsw-alias-border-l2, #d9dcd7)', borderRadius: 7, background: 'rgba(255,255,255,.92)', color: '#111315', fontSize: 12, fontWeight: 650, cursor: 'pointer', boxShadow: '0 4px 12px rgba(17,19,21,.12)' }};
-      const launcherStyle = {{ position: 'fixed', top: 12, right: 12, zIndex: 1005, height: 34, padding: '0 12px', border: '1px solid var(--dsw-alias-border-l2, #d9dcd7)', borderRadius: 8, background: 'var(--dsw-alias-bg-base, #fff)', color: 'var(--dsw-alias-label-primary, #111315)', fontSize: 12, fontWeight: 650, cursor: 'pointer', boxShadow: '0 6px 16px rgba(17,19,21,.14)', pointerEvents: 'auto' }};
-      return h(React.Fragment, null,
-        h('div', {{ style: shellStyle, 'data-native-proposal-workbench': 'open' }}, h('div', {{ ref: host, style: {{ width: '100%', height: '100%' }} }}), h('button', {{ type: 'button', style: closeStyle, onClick: () => setOpen(false), 'aria-label': '返回 DSH 原生对话' }}, '返回 DSH')),
-        !open && h('button', {{ type: 'button', style: launcherStyle, onClick: () => setOpen(true), 'aria-label': '打开方案工作台' }}, '打开方案工作台'),
-      );
+      const shellStyle = {{ position: 'fixed', inset: 0, zIndex: 1000, pointerEvents: 'auto', display: 'block' }};
+      return h('div', {{ style: shellStyle, 'data-native-proposal-workbench': 'open' }}, h('div', {{ ref: host, style: {{ width: '100%', height: '100%' }} }}));
     }}
 
     return {{
       inject: ['slots'],
       apply(ctx) {{
         ctx.slots.inject('shell.overlay', () => ctx.slots.register({{ name: 'shell.overlay', id: 'ai-proposal-workbench', order: 5, label: '方案工作台' }}, NativeWorkbench));
-        ctx.slots.inject('sidebar.panellist', () => ctx.slots.register({{ name: 'sidebar.panellist', id: 'ai-proposal-workbench', order: 50, label: '方案工作台' }}, WorkbenchIcon));
       }},
     }};
   }},
