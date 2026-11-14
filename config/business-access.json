@@ -42,14 +42,14 @@
       "serverId": "platform-compositions",
       "operationId": "diagnose_business_access",
       "kind": "read",
-      "target": "http://10.0.160.32:18120/hep/mcp/groups/troubleshooting-compositions/v2",
+      "target": "http://172.16.138.228:18121/hep/mcp/groups/troubleshooting-compositions/v2",
       "method": "TOOLS/CALL"
     }
   ],
   "gateway": {
     "host": "0.0.0.0",
     "port": 53106,
-    "publicOrigin": "http://10.0.160.32:53106",
+    "publicOrigin": "http://172.16.138.228:53106",
     "sharedSecretFile": ".local/business-control-mock/gateway-secret.bin",
     "instances": [
       {
@@ -143,31 +143,23 @@
         "identityMode": "development"
       },
       {
-        "agentId": "daily-inspection-assistant",
-        "instanceId": "hep-acceptance-qwen",
-        "sourceId": "experiment:EXP-daily-inspection-assistant-002-r9eba480e9d2a",
-        "sourceDigest": "sha256:7df02a9788ada56278d8f0c86ac2dc8a6c392b2e4e0e35db1e26efc95628b471",
-        "accessMode": "anonymous",
-        "identityMode": "development"
-      },
-      {
-        "agentId": "asset-discovery-assistant",
-        "instanceId": "hep-acceptance-native",
-        "sourceId": "experiment:EXP-asset-discovery-assistant-001-r5802bc157e6d",
-        "sourceDigest": "sha256:938158300b4b074c10cdb7e848cb06ac2aaab2988403d2ad15cefcc2af945dc7",
-        "accessMode": "anonymous",
-        "identityMode": "development"
-      },
-      {
         "agentId": "ai-proposal-document-generator",
         "instanceId": "ai-proposal-document-generator-dev2",
         "sourceId": "experiment:EXP-ai-proposal-document-generator-001-m-r862e60393365",
         "sourceDigest": "sha256:4d4ded51c1528ddd8f1579fcac4f890a7c32d9d2e98f0b6939b7670d6b5e2e60",
         "accessMode": "anonymous",
         "identityMode": "development"
+      },
+      {
+        "agentId": "security-operations-expert",
+        "instanceId": "security-operations-expert-test",
+        "sourceId": "business:security-operations-expert",
+        "sourceDigest": "sha256:e02dff3552b1ce0e212bd7fc1b557edd516b70be85441923bd96f27fd1efb862",
+        "accessMode": "anonymous",
+        "identityMode": "development"
       }
     ],
-    "managementUrl": "http://10.0.160.32:18120/hep/",
+    "managementUrl": "http://172.16.138.228:18121/hep/",
     "publicOriginMode": "auto",
     "managementUrlMode": "auto"
   },
