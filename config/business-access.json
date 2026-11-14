@@ -42,14 +42,14 @@
       "serverId": "platform-compositions",
       "operationId": "diagnose_business_access",
       "kind": "read",
-      "target": "http://10.0.160.32:18120/hep/mcp/groups/troubleshooting-compositions/v2",
+      "target": "http://172.16.138.228:18121/hep/mcp/groups/troubleshooting-compositions/v2",
       "method": "TOOLS/CALL"
     }
   ],
   "gateway": {
     "host": "0.0.0.0",
     "port": 53106,
-    "publicOrigin": "http://10.0.160.32:53106",
+    "publicOrigin": "http://172.16.138.228:53106",
     "sharedSecretFile": ".local/business-control-mock/gateway-secret.bin",
     "instances": [
       {
@@ -159,7 +159,7 @@
         "identityMode": "development"
       }
     ],
-    "managementUrl": "http://10.0.160.32:18120/hep/",
+    "managementUrl": "http://172.16.138.228:18121/hep/",
     "publicOriginMode": "auto",
     "managementUrlMode": "auto"
   },
