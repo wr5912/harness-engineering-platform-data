@@ -38,10 +38,16 @@ def validate(data_root: Path, business_root: Path) -> dict:
     except Exception as exc:  # pragma: no cover - diagnostic path
         return {"valid": False, "errors": [f"无法读取 business commit: {exc}"]}
 
-    forbidden_dirs = ["evolution", "agents", "deliverables", "visual-validation"]
+    forbidden_dirs = ["agents", "deliverables", "visual-validation"]
     for name in forbidden_dirs:
         if (data_root / name).exists():
             fail(errors, f"data 不得保留旧业务数据目录: {name}")
+    evolution = data_root / "evolution"
+    if (evolution / "experiments").exists():
+        fail(errors, "evolution 不得恢复旧 experiments 资产目录")
+    for name in ("runs", "evidence", "decisions"):
+        if not (evolution / name).is_dir():
+            fail(errors, f"evolution 缺少当前评测运行目录: {name}")
 
     registry_dir = data_root / "registry" / "agents"
     actual = set()

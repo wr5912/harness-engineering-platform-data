@@ -7,5 +7,6 @@ Harness 工程平台的数据工作区，保存业务 Agent 来源登记、当�
 - [业务 Harness 来源登记](registry/agents/)
 - [仓库版本锁定](locks/repositories.yaml)
 - [管理助手业务工作区契约](config/assistant-workspace.json)
+- [当前评测运行数据](evolution/)
 - [当前配置](config/)
 - [MCP 管理](mcp/README.md)
