@@ -8,3 +8,4 @@
 - 可恢复生成：在本目录运行 `python3.10 tools/build-native-workbench.py`；运行 `node tools/verify-client.mjs` 检查包名、Client 入口、原生 Slot、基线选择器、事件桥、无 iframe/外网和模板摘要。
 - 生成产物：`lib/client.js`；生成文件应随模板变化重新生成，不手工编辑。
 - Host 状态合同：`lib/index.js` 注册只读 `/plugins/ai-proposal-workbench/state`，仅读取受控 `/work/project` 已知 Markdown 产物和固定 RFP 文件，返回来源文件、摘要、要求/证据/评审/发布门禁的待核对状态；没有 MCP 或领域工具时不伪造真实台账。
+- Host 事件合同：`POST /plugins/ai-proposal-workbench/event` 只接受白名单小 payload，返回 `persisted=false` 并保留最后一条观测；未宣称已送达 Agent 或持久化业务状态。

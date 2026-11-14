@@ -212,6 +212,9 @@ def main() -> None:
       try {{
         if (window.dsh && typeof window.dsh.emit === 'function') window.dsh.emit(name, payload);
       }} catch (_) {{}}
+      try {{
+        fetch('/plugins/ai-proposal-workbench/event', {{ method: 'POST', credentials: 'same-origin', headers: {{ 'content-type': 'application/json', accept: 'application/json' }}, body: JSON.stringify({{ name, payload }}) }}).catch(() => fetch('plugins/ai-proposal-workbench/event', {{ method: 'POST', credentials: 'same-origin', headers: {{ 'content-type': 'application/json', accept: 'application/json' }}, body: JSON.stringify({{ name, payload }}) }}).catch(() => {{}}));
+      }} catch (_) {{}}
     }}
 
     {state_helpers}
