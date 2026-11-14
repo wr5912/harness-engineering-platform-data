@@ -170,3 +170,21 @@ Mermaid 图中的文字必须与正文文字保持接近的视觉尺寸：
 - 升级、替换和供应链风险策略。
 
 静态 HTML 为了离线验收可以使用内嵌渲染示意，但正式产品不能以静态示意替代对成熟开源编辑器、Markdown 渲染器、Mermaid 渲染器和 DOCX 生成组件的选型评估。
+
+## 14. 两档验收口径
+
+### A 档：HTML fixture
+
+只验证固定原型自身的 DOM、视觉、视图切换、Markdown 预览、Mermaid 渲染、选中文本浮框和本地门禁交互。A 档不能证明真实材料解析、真实台账、真实证据写入、真实导出或发布通过。
+
+### B 档：dev2 原生工作台
+
+在 `ai-proposal-document-generator-dev2` 实例中验证：
+
+- Candidate 实际装载 `ai-proposal-workbench`，Client boot graph 包含 `@business/ai-proposal-workbench`；
+- 原生 DSH `shell.overlay` 显示完整工作台，不使用 iframe；
+- `/plugins/ai-proposal-workbench/state` 返回 `stateMode=live` 时，项目名、版本、要求/证据计数、要求—证据表和发布阻断来自 `/work/project` 的实际产物及 SHA-256；没有项目产物时必须明确显示 `fixture/待验证`；
+- 视图切换、关闭→恢复 DSH 原生对话→重开工作台、事件 payload 和发布阻断分别取证；
+- 真实需求编译、证据持久化、DOCX/PDF 导出、权限/审批和正式发布仍需对应 Agent 工具与业务 Run，不能由 B 档界面截图替代。
+
+最终验收必须同时记录 A/B 档结果和 `live/fixture` 状态，不得用静态 fixture 结果覆盖真实功能缺口。

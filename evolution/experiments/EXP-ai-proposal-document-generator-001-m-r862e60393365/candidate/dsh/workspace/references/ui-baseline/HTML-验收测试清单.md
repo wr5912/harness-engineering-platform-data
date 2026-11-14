@@ -2,11 +2,11 @@
 
 ## 使用规则
 
-1. 直接打开 `方案文档生成工具-静态验收原型.html`。
-2. 先运行 `node 验收检查.js 方案文档生成工具-静态验收原型.html`。
-3. 自动检查通过后，再按本清单进行浏览器人工验收。
-4. 任一必选项失败，整体验收不通过。
-5. 不使用效果图片作通过依据；只认 HTML 的真实 DOM 和交互行为。
+1. A 档直接打开 `方案文档生成工具-静态验收原型.html`，只判断 fixture 的 DOM、视觉和本地交互。
+2. B 档必须打开 `ai-proposal-document-generator-dev2`，核对 Candidate `ai-proposal-workbench` 的实际装载和原生 `shell.overlay`。
+3. 原生包可在其目录运行 `node tools/verify-client.mjs`；该命令只核对包/基线/事件桥合同，不能代替浏览器或业务验收。
+4. 任一必选项失败，所对应档位不通过；A 档通过不能替代 B 档。
+5. 不使用效果图片作唯一通过依据；浏览器视觉、DOM、状态路由和真实工作区产物必须分别取证。
 
 ## A. 启动和默认状态
 
@@ -107,7 +107,20 @@
 
 ## 通过条件
 
-A–H 全部必选项通过，且 `验收检查.js` 输出 `PASS`，才可判定静态 HTML 验收通过。
+A 档：A–H 全部必选项通过，只能判定静态 HTML fixture 通过，不能判定真实业务通过。
+
+## J. dev2 原生工作台与真实状态
+
+- [ ] 实例 `ai-proposal-document-generator-dev2` 状态为 running，目标 Candidate asset load 回执为 current/verified。
+- [ ] Client boot graph 包含 `@business/ai-proposal-workbench`，bundle 返回 200；无 iframe、无外部网络依赖。
+- [ ] 原生 `shell.overlay` 首屏显示完整工作台；DOM 包含全局头、左侧导航、文档区、右侧证据质量、`document-indexes`、`document-table`、`publish-risk`。
+- [ ] 点击“要求与评分”显示响应矩阵；点击证据项显示反馈；关闭工作台后 DSH 原生对话恢复，再次打开可恢复工作台。
+- [ ] GET `/plugins/ai-proposal-workbench/state` 返回 `stateMode=live` 时，`sourceFiles` 位于 `/work/project`，带 `sourceSha256`；无项目产物时明确为 `fixture`。
+- [ ] 工作台项目名、版本、要求/证据计数、要求—证据表和发布阻断与状态路由一致；不得用静态 86%、126、18 或“已保存”覆盖 live 状态。
+- [ ] 事件 payload 只包含视图/证据/评审/下载等小字段；实际事件送达 Agent、写入工作区、真实 DOCX/PDF 导出和发布仍需独立业务证据。
+- [ ] 控制台无 slot crash、未发现重复监听器；浅色/深色主题、下载一致性和真实导出分别记录通过或未验证。
+
+B 档只有在上述项目级条件和真实工作区状态均有证据时才可判定通过；静态 fixture、单次截图或模型自评不能替代。
 
 ## I. 开源复用约束
 
