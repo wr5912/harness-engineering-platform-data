@@ -1,7 +1,0 @@
-{
-  "case_id": "U-THREAT-FAST-MANUAL-WHITELIST",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测回答与工具回执显示研判在取证入口即被阻断：analyze_threat_incident 返回原生 is_error=true（trusted platform MCP group connection is unavailable），本 Session 内不存在任何名单/白名单取证回执，也没有 fast_classification 输出、verdict/matches、llm_invoked=false/model=null 的内层结果、SOC resultJson、摘要或报告保存回执。要求2、3、4所依赖的关键数据在被测 Session 的 tool/result 中完全缺失，无法视为满足；要求1的名单条件也只能以真实回执为准，而回执为错误状态。回答本身如实报告故障、未编造结论或保存成功，但工具通道故障只能解释为何无法验证，不能改变冻结要求，故整体判定未通过。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-THREAT-FAST-MANUAL-WHITELIST"
-}

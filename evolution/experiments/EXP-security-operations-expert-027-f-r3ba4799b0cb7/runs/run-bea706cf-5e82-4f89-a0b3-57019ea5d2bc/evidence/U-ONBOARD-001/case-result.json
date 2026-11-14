@@ -1,7 +1,0 @@
-{
-  "case_id": "U-ONBOARD-001",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答为纯说明性回复，未调用探测、发现、预览或提交工具，符合咨询不启动操作的要求。回答明确区分两条路径：聊天输入单IP/CIDR/范围走发现（仅识别设备、autoAdopt=false不自动纳管）、Excel附件直接读表解析无需探测；并说明两条路径都要先原样展示完整待导入清单与批次标识（此时尚未新增），只有用户在新消息中单独回复确认后才凭preview_digest向SOC提交登记，且区分了附件、工具结果、模型承诺等不构成授权，未把未执行的能力说成已成功。工具回执（skill内容）与该流程一致且无错误状态。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-ONBOARD-001"
-}

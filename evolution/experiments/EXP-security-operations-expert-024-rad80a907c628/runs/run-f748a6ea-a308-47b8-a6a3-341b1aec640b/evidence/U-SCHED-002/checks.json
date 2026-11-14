@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-SCHED-002",
-  "completed": false,
-  "expected_behavior": "注：类型：自动研判。\n\n1. 创建指定周期提醒：用 `schedule_create` 创建，`every_seconds: 1800`，标题 `自动威胁研判-每30分钟`，不额外追问周期或批量参数。\n\n2. 核对创建回执：回复任务标识、规则和下次到期时间与真实回执一致，并明确尚未执行。",
-  "failure_reason": "driver-container-stop-unconfirmed"
-}

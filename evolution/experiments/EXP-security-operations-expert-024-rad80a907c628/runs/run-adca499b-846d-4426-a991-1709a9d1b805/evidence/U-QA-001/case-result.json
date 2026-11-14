@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-001",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：要求1未满足：同一被测 Session 的唯一工具回执（索引2，is_error=false）显示调用的是 security-investigation Skill，其正文明确当前没有知识库检索服务，没有任何返回 SEC-KB-078 文档或分块的工具数据，因此无法给出可核对的来源；回答本身（索引0）也自认无法确认条目内容。要求2满足：回答明确说明无法确认、列出能力缺口，并把 SOAR 剧本定义标注为通用概念而非内部条目内容，未冒充内部知识（证据索引0、2）。因要求1未达成，整体判定 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-001"
-}

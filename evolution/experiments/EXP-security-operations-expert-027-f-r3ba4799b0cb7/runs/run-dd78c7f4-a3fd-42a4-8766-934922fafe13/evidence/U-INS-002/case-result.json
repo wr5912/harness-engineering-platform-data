@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-002",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答依据本轮真实工具/Skill 回执列出 6 项巡检能力（状态、基线、漏洞、可达性、常规、全面），与 skill 结果中实际描述的六类巡检及 scope 说明一致，无编造条目；list_mcp_resources/list_mcp_resource_templates 回执均按原生 is_error=false 正常返回（资源为空但非失败），因此未触发“读取失败需说明无法确认”的分支，且回答未虚构失败说明；所有可见调用仅为 skill 读取与 MCP 资源发现等只读操作，回答中也明确声明本轮未启动任何巡检运行；工具发现回执（skill 结果与资源列举结果）足以证明目录来源，符合无需额外专用目录工具的要求。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-002"
-}

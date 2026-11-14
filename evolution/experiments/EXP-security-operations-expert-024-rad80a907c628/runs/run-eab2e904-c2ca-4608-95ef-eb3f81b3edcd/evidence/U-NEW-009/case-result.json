@@ -1,7 +1,0 @@
-{
-  "case_id": "U-NEW-009",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答如实说明了当前已知情况（未产生巡检运行、inspection 服务器 disconnected、因此无法确认对业务的影响）与未知范围（目录与模板说明取不到，不能下会影响或不会影响的结论），未准备或发起巡检、未创建运行；工具轨迹中仅有 skill 加载与 list_mcp_resources/list_mcp_resource_templates 只读查询，inspection 的两次回执均为原生 is_error 的 disconnected 错误、sec-ops 两次回执为成功但资源与模板均为空，无任何发起或结果查询类调用及 runId，故问句中的“执行巡检”未触发工作流，且回答的关键数据有同 Session 真实工具回执支撑。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-NEW-009"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-FLT-004",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测 Session（含子 Agent）对主备状态、路径、策略同步和设备配置均进行了真实只读查询：路径查询返回 verdict=UNKNOWN/nat_snapshot_pending 与 SRC_NOT_FOUND（tool/result 索引 10、12），设备配置查询返回 collectionConfig、metricAvailable、coveragePct 等字段（索引 32、34、40），主备状态通过防火墙资产查询得到 haPairId=null 且仅命中单台防火墙（索引 30），策略维度通过路径 policyHops、交叉信号与合规违规查询覆盖且均为空（索引 12、36、38）；回答据此给出证据支持的“无法判定”结论并逐条列出明确未知项与证据缺口（索引 0），未见任何写工具或策略变更调用，全部回执 is_error=false。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-FLT-004"
-}

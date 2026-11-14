@@ -1,7 +1,0 @@
-{
-  "case_id": "U-ONBOARD-006",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答基于同一 Session 的真实只读回执作出判断：调用 skill 加载 asset-onboarding 规则（index 2），以 action: status 取得真实状态回执（index 4，is_error=false），显示 local_entry_loaded=true、interfaces_loaded=false、六项纳管/发现接口 registered_count 均为 0、task_query_resource=unavailable、business_verification=not_performed；再用 list_mcp_resource_templates 与 list_mcp_resources 分别核对 asset-onboarding 与 asset-management 两个服务（index 6、8、10、12，原生回执均为 is_error=true 的“unavailable in this agent's scope”），与回答所述“资源与模板均不可用”一致。回答准确指出停点，未因本地高层入口或 group_id 已保存而声称 SOC 接入完成，明确区分了本地入口已加载、后端接口未装载、业务验证未执行三层；因未配置/不可用，任务查询模板的“已发现”分支不触发，但接口与模板目录核对已实际执行并如实报告 unavailable。回执中 registration_performed=false、business_verification=not_performed，且 Session 调用仅限 skill、status 与资源列表，未出现设备探测、发现准备/启动、设备新增、发现纳管，也未跨组或使用底层 HTTP。各项判定均有 citation_allowed=true 的 tool/result 或回答正文支撑。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-ONBOARD-006"
-}

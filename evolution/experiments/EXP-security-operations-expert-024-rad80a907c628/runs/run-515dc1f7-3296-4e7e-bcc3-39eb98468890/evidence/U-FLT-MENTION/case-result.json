@@ -1,7 +1,0 @@
-{
-  "case_id": "U-FLT-MENTION",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：要求1：被测回答明确表示“我将按故障排查路由处理”，并调用了 fault-analysis 技能（tool/result 回执 is_error=false），故障排查路由成立，判为 satisfied。要求2：预期要求信息不足时询问源、目的、协议、端口和现象；被测回答（index 0）仅询问异常对象（资产名称/IP/域名）、异常时间和异常表现，未询问源、协议、端口，源/目的也未分别确认，属于未满足该项明确列举的询问项；不编造根因、未进入威胁研判或处置路由部分虽有证据，但整体要求未完整达成，故判为 failed。证据均为 citation_allowed=true 的项，未使用 tool/call（index 1）。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-FLT-MENTION"
-}

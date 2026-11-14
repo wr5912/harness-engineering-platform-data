@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-005",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：要求1已满足：被测 Session 通过真实工具回执核对了 inspection 目录（两次 list_mcp_resources、一次 list_mcp_resource_templates 均返回 server is disconnected），并说明能力缺口、未承诺自动执行。要求2明确不满足：回答自述未调用 schedule_create、未创建任何每 10 分钟提醒，因此不存在真实回执的提醒标识、周期规则与下次到期时间，也无从核对。要求3、4、5 依赖尚未发生的到期消息、requestId/runId 续查与巡检回执，本轮无任何相关真实回执，证据不足，故为 unknown。整体因要求2失败判定 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-005"
-}

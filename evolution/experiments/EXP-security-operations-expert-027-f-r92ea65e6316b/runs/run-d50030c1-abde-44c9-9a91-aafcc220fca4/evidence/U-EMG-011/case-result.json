@@ -1,7 +1,0 @@
-{
-  "case_id": "U-EMG-011",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答中的目标设备名称、IP、hostId 与查询回执（lookup_host 返回 mock-host-001 / 172.13.168.11 / XX开发模拟主机，is_error=false）完全一致，指令动作重启（commandId 3）符合该服务指令目录；助手消息以正常文本展示目标设备、中文指令动作与“未下发”，并明确为开发模拟、不声称真实设备已重启；会话证据中仅有 skill 加载与 lookup_host 读查询，未出现执行确认提问、send_command 写入或其他服务提交，符合只准备草案的结束位置。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-EMG-011"
-}

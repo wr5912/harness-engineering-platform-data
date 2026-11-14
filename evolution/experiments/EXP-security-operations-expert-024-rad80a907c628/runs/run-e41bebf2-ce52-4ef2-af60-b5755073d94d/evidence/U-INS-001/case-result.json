@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-001",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测回答与工具回执显示本轮仅进行了 MCP 资源/模板连通性探测且均报 server is disconnected，从未调用 list_executable_inspections、start_inspection，也没有任何 runId 与 get_inspection_result 轮询，因此没有 conclusionStatus、businessSummary、reportMarkdown、设备数量或 reportDownloadUrl 可依据。虽然未虚报完成、未提供下载地址（第 5、6 项满足），但第 1、2、3 项核心流程要求与设备数量项明确未满足，故整体判 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-001"
-}

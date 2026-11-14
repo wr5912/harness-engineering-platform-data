@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-016",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：第一轮回复仅补问巡检范围、未发起任何运行；第二轮沿用已明确的在线状态请求，直接以 scope.assetIds=[3617609] 调用 inspection_status 取得 run_id，未要求再次确认，也未扩大范围；随后通过 get_composition_run、get_composition_details 与 get_composition_artifact 用同一 run_id 的真实回执核对了 completed 状态、检查摘要与报告产物，回答关键数据均有同 Session 工具回执支撑。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-016"
-}

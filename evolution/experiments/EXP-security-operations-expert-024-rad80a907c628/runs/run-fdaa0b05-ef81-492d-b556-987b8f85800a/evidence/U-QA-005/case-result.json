@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-005",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：回答基于同一被测 Session 的真实工具回执说明 sec-ops：list_mcp_resources/list_mcp_resource_templates 均返回空（index 18、20），据此说明它注册于当前会话、仅提供工具类能力而无可读资源，并给出角色-工具矩阵过滤等适用边界；对具体工具归属明确标注为推断。同时明确说明 glob 多次搜索均未找到 .mcp.json（index 2、4、8、10、14、16），且读取 /opt/dsh/.mcp.json 被文件策略拒绝（index 36），因而不能引用配置原文，未臆测本地配置内容，两项要求均满足。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-005"
-}

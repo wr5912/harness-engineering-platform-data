@@ -1,7 +1,0 @@
-{
-  "case_id": "U-EMG-001",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测 Session 从未调用 prepare_emergency_action，仅调用了 skill 工具加载 emergency-action 指令（tool_events[1]）以及 list_mcp_resources/list_mcp_resource_templates 查询 sec-ops 的资源与模板（tool_events[3]、tool_events[5]，回执均为空），并据此在回复中判定工具目录缺失。因此无法原样传入设备、源 IP 和端口，也没有任何 Workbench 草案回执可供核对封禁动作、目标和参数，更未得到 READY/NOT_SUBMITTED 草案或操作号。回复对“能力不可用”原因的说明与工具回执一致，且未调用确认、未声称已封禁，这两项约束满足；但按 Case 预期（能力不可用时仍须说明原因、但该 Case 不通过），核心的准备草案要求未达成，故整体不通过。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-EMG-001"
-}

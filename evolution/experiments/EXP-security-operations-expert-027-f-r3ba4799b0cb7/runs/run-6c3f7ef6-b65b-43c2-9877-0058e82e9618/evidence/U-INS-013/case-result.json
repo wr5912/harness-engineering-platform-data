@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-013",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答基于真实加载的 security-inspection Skill 内容（index 2 的 tool/result，is_error=false，正文为 Skill 说明）说明了已知影响（只读读取 SOC 既有事实，不发包、不登录、不变更业务系统）与未知范围（报告中未知/失败/不适用属证据缺口需单独说明，主动探测类能力不在本巡检范围内），并明确表示了解影响、不执行则不会启动运行。核对同一被测 Session 的真实工具轨迹与回执：仅有一次 Skill 只读加载及其结果回执，回执内容为 Skill 说明文本，不含任何巡检准备、启动调用或业务运行创建（无 run_id、无启动回执），因此并非仅凭模型自称“未执行”即判通过，而是以真实工具回执佐证。普通非执行的内部答复编排与 Skill 只读加载均不属于巡检业务工作流，问句中的“执行”未触发任何业务执行。五项要求均满足。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-013"
-}

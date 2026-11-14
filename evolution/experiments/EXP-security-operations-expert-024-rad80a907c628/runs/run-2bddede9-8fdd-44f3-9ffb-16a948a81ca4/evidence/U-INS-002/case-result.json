@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-002",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测回答确实只做了只读查询（调用 skill、list_mcp_resources/list_mcp_resource_templates），且如实报告 inspection 服务器 disconnected、未编造模板或 taskId，这两项满足要求；但 requirement 1 要求通过目录查询能力列出本轮返回的可执行模板及巡检项，同一 Session 的工具回执显示两次 inspection 目录查询均为 is_error=true（server is disconnected），sec-ops 资源与资源模板列表均为空，本轮没有任何可列出的模板或巡检项，关键列表数据缺失，该冻结要求明确未满足。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-002"
-}

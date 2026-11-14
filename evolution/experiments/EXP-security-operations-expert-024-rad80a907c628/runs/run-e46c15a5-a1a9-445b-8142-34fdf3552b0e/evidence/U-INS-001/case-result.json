@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-001",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测 Session 的真实工具回执显示 inspection MCP 服务器处于 disconnected 状态（list_mcp_resource_templates 与 list_mcp_resources 均返回 is_error 的服务器断开错误），因此本轮无法查询巡检目录、无法选定模板、未发起任何巡检、没有真实 runId，也不存在报告就绪回执与 reportDownloadUrl。回答本身如实陈述了未执行状态且未伪造结果，但 requirements 1–5 要求的目录选模板、同轮启动、requestId/runId 绑定续查、报告交付等核心动作均明确未完成，故判 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-001"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-007",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测 Session 中 inspection 服务始终断开：首轮从未成功发起巡检、不存在可复用的 runId（回执均为 is_error 的 disconnected 错误），第二轮也只再次探测到断开状态，未调用 get_inspection_result，既没有运行状态与运行标识的回执，也没有 conclusionStatus、businessSummary、reportMarkdown、设备数量或 reportDownloadUrl 等报告数据。要求1明确未满足，要求2、3因状态从未发生而证据不足（unknown），要求4满足（未伪造成功回执）。因没有任何成功的巡检服务回执，不能判通过。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-007"
-}

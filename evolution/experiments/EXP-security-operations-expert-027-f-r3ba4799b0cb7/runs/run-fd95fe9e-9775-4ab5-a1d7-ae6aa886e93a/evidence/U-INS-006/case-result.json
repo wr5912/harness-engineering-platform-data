@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-006",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答对 A-001 进行了实际核对：先以资产编号方式调用 inspection_status 被拒（expected number, received string），再以 IP 方式调用被拒（IP 无效：A-001），并查证 inspection-compositions 无资源与资源模板可用于映射，均与回答陈述一致。因标识非法且无法唯一解析，回答仅澄清并请求补充可识别范围值，未改用 all 范围、未发起任何运行、未编造 run_id，且明确说明不会把未命中当作正常。第三项为条件性要求，条件（可唯一解析）未成立，故无需执行，判定满足。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-006"
-}

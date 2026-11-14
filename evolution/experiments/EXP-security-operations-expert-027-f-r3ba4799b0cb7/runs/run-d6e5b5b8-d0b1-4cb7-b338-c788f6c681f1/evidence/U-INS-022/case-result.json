@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-022",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：第一轮仅有预览性回复，会话记录中该轮无任何 inspection_status 启动调用，也无 run_id 或报告，满足只预览不启动；第二轮同轮内唯一一次 inspection_status 调用取得真实 run_id，并续查至 completed、读取同次 details 与 report 产物，回复中的范围（172.16.2.114、1 台、资产 3617471）、摘要（正常 0/异常 1）与离线结论均与同次运行回执一致；第三轮仅以相同 run_id 调用 get_composition_run 续查并重申原报告，未见第二次启动；全会话仅出现一次启动调用，全例仅一次新运行，四项要求均由同 Session 真实工具回执与回复证据支持。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-022"
-}

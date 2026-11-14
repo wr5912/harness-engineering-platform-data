@@ -1,7 +1,0 @@
-{
-  "case_id": "U-FLT-MENTION",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测回答确实按故障排查路线处理（调用了 fault-analysis skill 并声明走故障排查），但信息核对项不完整：回答仅询问了异常对象/资产、异常现象与时间及可选事件编号，未按要求询问源、目的、协议、端口（仅涉及资产与现象，缺源、协议、端口），且结尾提及'有事件 ID 时也可直接转威胁研判路线'，与不进入威胁研判路由的要求存在冲突。要求2未被完整满足，故整体判 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-FLT-MENTION"
-}

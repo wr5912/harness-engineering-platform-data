@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-002",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：冻结要求第一条“只调用 `list_executable_inspections`”未被满足：被测 Session 可引用证据显示，本轮实际产生的是 skill 加载回执（索引 2），以及两次针对 inspection 服务器的 MCP 资源/模板列举尝试，二者均原生报错 `mcp-client(inspection): server is disconnected`（索引 4、6）；回复正文自身也只描述了“列出 inspection 服务器资源模板/资源目录”这两次动作，全程未出现 `list_executable_inspections` 的调用或其回执（索引 0）。因此整体不能判为 passed。其余两项均有证据支持：回复明确声明未调用发起工具、无 `runId`、未执行任何巡检（索引 0、4、6），并如实说明服务断连、本轮未拿到任何模板或巡检项名称，没有编造目录内容（索引 0、4、6）。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-002"
-}

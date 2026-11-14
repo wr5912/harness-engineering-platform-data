@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-007",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：巡检服务连续多次探测均为 disconnected（tool/result 原生 is_error=true），被测 Session 从未查询目录、从未调用发起工具，也未取得任何 runId；两轮回答均如实说明未发起、无可续查标识，虽未伪造数据，但第一轮同轮准备并启动、第二轮按原 runId 续查、includeReport 默认读取、下载地址一致、保留原 runId 等冻结要求全部未实现，且无任何成功服务回执，故整体不通过。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-007"
-}

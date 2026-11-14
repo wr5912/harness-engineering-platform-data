@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-010",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测回答对查询可执行模板（巡检目录）、单次巡检（发起→按 runId 轮询→报告就绪后仅原样提供服务返回的非空 reportDownloadUrl）、周期提醒（schedule_create 仅创建提醒、每次到期单独发起）以及响应处置的两条路线（应急指令、响应规划）与权限边界（角色-工具矩阵、审批 ask/fail closed）均有说明，并明确标注“未执行建议（尚未执行）”、承认 role-tool-matrix.yaml 未找到而不编造其内容，符合第 2、3、4 项要求；但第 1 项要求依据接口文档与可用目录区分“模板管理”，回答全文未提及模板/任务管理入口（既未说明服务的巡检工具不创建任务，也未说明该能力是否可用），四项区分缺一，故整体判为 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-010"
-}

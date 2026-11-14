@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-002",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答基于本轮真实工具回执作答：skill 回执成功（index 2）给出巡检范围描述，而两次资源发现调用均返回原生 UNKNOWN_TOOL 错误（index 4、6），证明巡检目录读取在本轮失败；回答据此明确声明无法确认巡检项、不作推测、不编造条目（index 0），未列出任何虚构检查项。全程仅调用 skill 与只读 glob 类查询（index 8、10、12、14），无任何启动巡检的调用或回执，符合只读要求。工具发现记录本身即作为目录来源证据，符合“不要求额外调用专用目录工具”。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-002"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-004",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答明确询问了立即执行还是周期任务，并逐项要求补齐巡检项/模板、范围与周期；在 inspection 服务断开、目录无法核对的情况下未创建任何 schedule 提醒、未发起任何巡检，仅如实报告状态并给出待执行的下一步；同时以当前服务接口与可用目录为准说明模板目录不可用，不猜测 taskId/definitionVersion，也未将一次巡检或提醒冒充模板创建。三项要求均满足且有同 Session 工具回执（is_error 为真）佐证。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-004"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-NEW-008",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：第1项要求明确未满足：同一被测 Session 的真实工具回执显示 inspection 服务器断连（索引4、6），被测回答（索引0）自述未查询到巡检目录、未选定任何模板、未发起巡检、没有任何 runId，真实执行链路完全缺失，无法按真实 runId 查询。第4项满足：回答未声称业务通过，并明确说明了第三方依赖缺口与后续条件（索引0、4、6）。第2项有同 Session 真实工具回执（含 call_id、event_seq 的 tool/result，索引4、6、8、10）支持。第3项无零通用模型调用或删除 KEV 推导资源收益的相反主张（索引0）。因存在明确未满足项，整体判 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-NEW-008"
-}

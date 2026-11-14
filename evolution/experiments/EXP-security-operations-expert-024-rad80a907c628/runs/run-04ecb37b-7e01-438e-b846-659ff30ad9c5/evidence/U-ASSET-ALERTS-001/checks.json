@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-ASSET-ALERTS-001",
-  "completed": false,
-  "expected_behavior": "1. 查询资产并映射真实 ID：本轮实际执行资产详情查询，核对资产 ID 后将实际返回 ID 映射到关联告警查询；请求为第 1 页、每页 5 组、2592000 秒。\n\n2. 保留实际查询回执：保留 HTTP、业务码和完整响应证据。\n\n3. 交付范围准确的摘要：答复准确保留返回的资产标识、分组和告警总量、from/to、页码及截断状态，不将首页描述为全量明细，不推断没有风险。\n\n   注：明确固定 Mock/replay 边界和未查询真实 SOC；未执行写入。两侧原子调用返回来自同一固定输入摘要，允许由生成的工作流执行这些原子步骤。",
-  "failure_reason": "evaluation-interrupted"
-}

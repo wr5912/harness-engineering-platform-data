@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-002",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：本轮仅有 skill 加载与 list_mcp_resources/list_mcp_resource_templates 两次 MCP 资源枚举尝试，两者均返回 is_error=true 的“server is disconnected”，被测回答也自述工具目录中没有可见的巡检目录查询工具，因此“真实调用查询可执行巡检目录能力”这一冻结要求未满足（能力本身未被调用成功，也无该工具的调用回执）。不过其余要求表现正确：回答依据当次失败回执明确说明是目录查询失败、无法确认可用项目，并强调“不是没有巡检项而是目录未能取得”，未把失败当成空目录、未编造条目；全程只读，未准备、未发起任何巡检。因首要要求明确不满足，总判定为 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-002"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-001",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：要求1（检索并依据 SEC-KB-078 真实知识库内容作答并给出可核对的文档/分块来源）明确未达成：同一被测 Session 的回执（index 2，is_error=false 的 skill 结果）显示当前没有知识库检索服务，回答（index 0）也自述未读取到任何 SEC-KB-078 条目内容，全程没有产生任何可核对的知识库文档或分块来源，仅凭编号格式做了一般性推测。要求2（检索不到时明确说明、不凭常识冒充内部知识）已满足：index 0 明确标注“无法确认”“不是核实结果”并列出缺口，index 2 佐证了“没有知识库检索服务”的限制说明。因要求1明确不满足，整体判定 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-001"
-}

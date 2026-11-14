@@ -1,7 +1,0 @@
-{
-  "case_id": "U-QA-002",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：被测回答先通过 list_mcp_resources/list_mcp_resource_templates 真实列出了 sec-ops（资源与模板均为空）和 inspection（服务器断开）两个 MCP 服务器的可用情况，并尝试加载 knowledge-base-search Skill（回执为 unknown），据此确认当前作用域内无可检索的知识库，因而无法选择最相关知识库执行检索——该结论与本轮工具回执完全一致。回复中知识库名、文档标题、分块序号、分数、匹配类型均如实标为\"无\"，未与任何工具结果矛盾，也未编造任何勒索软件应急响应流程内容；对工具不可用（Skill 未配置、inspection 断开、sec-ops 为空）和证据缺口均逐项明确说明，并区分了\"未发现知识库\"与\"知识库不存在\"。三项要求均被真实工具回执支持。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-QA-002"
-}

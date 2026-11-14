@@ -1,7 +1,0 @@
-{
-  "case_id": "U-THREAT-FAST",
-  "execution_status": "completed",
-  "verdict": "inconclusive",
-  "observation": "语义判定：本轮被测 Session 的证据只推进到委派子智能体阶段：助手仅声明\"已启动威胁研判子智能体\"且\"结果将在任务结束后返回\"（索引 0），工具回执仅返回 \"started subagent a2b684e5-...\"（索引 3，tool/result）。没有任何名单取证证据、`analyze_threat_incident` 结果、llm_invoked 标记、SOC 回写或报告持久化回执，也未出现程序摘要或下载链接。因此无法确认是否按名单证据路由、是否走快速分类、摘要与报告是否交付及是否与本轮证据一致，同样无法证明失败。本轮快速路径确实未被执行到，故不能据此认定快速研判验证通过。",
-  "evidence_ref": "evidence/U-THREAT-FAST"
-}

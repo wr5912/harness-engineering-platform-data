@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-027",
-  "execution_status": "completed",
-  "verdict": "passed",
-  "observation": "语义判定：第一轮对指定资产3617609发起一次常规巡检并经get_composition_run读取至completed终态（范围冻结为单资产、时间与各检查计数完整）；export_security_report以同run_id导出真实非空HTML（22,727字节、text/html、SHA-256与原产物一致），回复给出真实file_path及预览/下载入口且未拼造URL；第二轮仅以同run_id再次导出同一文件（SHA-256不变），未重新启动巡检、未扩大范围；回复明确整体incomplete、未知项不等于正常、报告生成不代表全部正常，七项要求均满足。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-027"
-}

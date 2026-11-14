@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-SCHED-005",
-  "completed": false,
-  "expected_behavior": "注：类型：自动研判。\n\n1. 查询并原地修改本会话任务：第二轮先调用 `schedule_list`；当前 Session 只有一个匹配的自动研判任务时，直接用其 ID 调 `schedule_update` 原地修改规则为 `every_seconds: 1200`，不改动 `prompt`。\n\n2. 核对修改结果：并回复更新后的规则。\n\n   注：未先查询或改动 `prompt` 判为失败。",
-  "failure_reason": "evaluation-interrupted"
-}

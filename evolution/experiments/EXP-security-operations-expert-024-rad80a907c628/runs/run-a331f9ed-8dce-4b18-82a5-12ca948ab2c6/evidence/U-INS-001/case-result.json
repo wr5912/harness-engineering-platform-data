@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-001",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测回答未满足基本要求——未能发起巡检任务。证据：10. 要求首先调用`list_executable_inspections`以便查找可用的巡检模板，在证据索引 3（通过 tool/result 显示'list_mcp_resources'请求，server='inspection'）证实已尝试该操作，虽然 MCP 服务已断开（Evidence: laer 错误信息显示'server is disconnected'），但程序未能完成所需操作。11. 已成功调用'list_mcp_resource_templates'工具（证据：idx=4），但未找到可执行的巡检目录（证据：service 返回空值）。12. 未调用'start_inspection'模块，因为 MCP 服务不可用。13. 服务对象 ID 未确定，无法查询巡检状态。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-001"
-}

@@ -1,7 +1,0 @@
-{
-  "schema_version": "1.0",
-  "case_id": "U-SCHED-004",
-  "completed": false,
-  "expected_behavior": "注：类型：自动研判。\n\n1. 第一轮补齐窗口：第一轮不直接创建，先追问结束时间或窗口；第二轮说明一条 `*/30 9-18 * * *` 会多触发 18:30，不使用它冒充精确窗口。\n\n2. 第二轮创建精确窗口：用两条 DSH 原生 `schedule_create` 提醒覆盖：`cron: {\"expression\":\"*/30 9-17 * * *\",\"time_zone\":\"Asia/Shanghai\"}` 和 `cron: {\"expression\":\"0 18 * * *\",\"time_zone\":\"Asia/Shanghai\"}`，固定自动研判 prompt 保持一致。\n\n3. 分别核对两条提醒：按各自回执报告两个任务 ID、规则和下次到期时间，明确尚未执行；只有两条均创建成功才认为窗口完整。\n\n   注：任一失败时报告已成功项和未完成项，不把部分成功说成完整窗口。",
-  "failure_reason": "evaluation-interrupted"
-}

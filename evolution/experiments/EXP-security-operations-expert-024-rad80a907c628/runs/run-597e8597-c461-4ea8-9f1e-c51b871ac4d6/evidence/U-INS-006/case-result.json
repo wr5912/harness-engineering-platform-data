@@ -1,7 +1,0 @@
-{
-  "case_id": "U-INS-006",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：巡检 MCP 服务（inspection）在本 Session 中处于断连状态，两次目录/资源查询均返回 is_error 为 true 的 `mcp-client(inspection): server is disconnected`，因此无法查询真实目录、无法选定唯一模板，也未以 ASSET_IDS、values: [\"A-001\"] 准备并在 READY 后同轮发起执行，第一项要求明确未满足。回答未伪造 runId、未用 ALL 替代、未把服务错误说成巡检结果，与工具回执一致，但核心执行要求未达成，故整体判定 failed。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-INS-006"
-}

@@ -1,7 +1,0 @@
-{
-  "case_id": "U-ASSET-ALERTS-FAIL",
-  "execution_status": "completed",
-  "verdict": "failed",
-  "observation": "语义判定：被测证据仅显示加载 fault-analysis skill 并委派子代理，子代理回执只有一条 'started subagent' 启动信息；同一被测 Session 内没有任何受控存在资产查询或告警查询的实际 tool/result，因此既无法证明完成了'先查资产再以实际返回 ID 查告警'，也没有出现可判为业务失败（HTTP 200 / code 503）的原始响应。唯一回复文本把任务描述为'正在查询、查询完成后我会汇总结果'，未说明固定 Mock/replay 的受控失败、未声明本次告警查询未完成，属于对未完成流程的进行中成功预期表述。可见范围内未见重试、换资产或写入动作，但核心取证与失败说明均缺失，故整体判为失败。 同一路由自评，仅作研究辅助。",
-  "evidence_ref": "evidence/U-ASSET-ALERTS-FAIL"
-}
