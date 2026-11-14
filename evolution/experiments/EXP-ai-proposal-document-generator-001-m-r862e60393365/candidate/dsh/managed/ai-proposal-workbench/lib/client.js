@@ -28,8 +28,36 @@ window.__ModuleLoader__.load({
       } catch (_) {}
     }
 
-        function applyLiveState(content, state) {
+        function applyViewState(content, state) {
+      const host = content.querySelector('[data-testid="view-host"]')
+      const view = host?.querySelector('[data-view]')
+      if (!view || !state) return
+      const requirements = Array.isArray(state.requirements) ? state.requirements : []
+      const evidence = Array.isArray(state.evidence) ? state.evidence : []
+      if (view.dataset.view === 'requirements') {
+        const values = view.querySelectorAll('.metric-card .metric-value')
+        if (values[0]) values[0].textContent = String(requirements.length)
+        if (values[1]) values[1].textContent = '待核对'
+        if (values[2]) values[2].textContent = '待核对'
+        if (values[3]) values[3].textContent = String(state.publish?.blockerCount || 0)
+        const body = view.querySelector('.view-table tbody')
+        if (body) body.innerHTML = requirements.slice(0, 12).map(row => `<tr><td>${String(row.id)}</td><td>待核对</td><td>待绑定章节</td><td>待核对</td><td><span class="status pending">${String(row.status || '待验证')}</span></td><td>待核对</td></tr>`).join('')
+      } else if (view.dataset.view === 'materials') {
+        const values = view.querySelectorAll('.metric-card .metric-value')
+        if (values[0]) values[0].textContent = String(evidence.length)
+        if (values[1]) values[1].textContent = String(evidence.length)
+        if (values[2]) values[2].textContent = '待核对'
+        if (values[3]) values[3].textContent = '待核对'
+      } else if (view.dataset.view === 'publish') {
+        const gate = view.querySelector('[data-testid="publish-gate"]')
+        if (gate) gate.querySelector('strong').textContent = state.publish?.status === 'blocked' ? '发布门禁：阻断' : '发布门禁：待验证'
+        if (gate) gate.querySelector('.status').textContent = `${state.publish?.blockerCount || 0} 项待处理`
+      }
+    }
+
+    function applyLiveState(content, state) {
       if (!state || typeof state !== 'object') return
+      content.__liveState = state
       content.dataset.stateMode = state.stateMode || 'fixture'
       content.dataset.stateSource = state.source || 'unknown'
       const marker = content.querySelector('[data-testid="workbench-state"]')
@@ -72,6 +100,7 @@ window.__ModuleLoader__.load({
       }
       const gate = content.querySelector('[data-testid="publish-risk"]')
       if (gate) gate.textContent = state.publish?.status === 'blocked' ? `发布门禁：阻断（${state.publish.blockerCount || 0} 项）` : '发布门禁：待验证'
+      applyViewState(content, state)
     }
 
     async function loadLiveState(content) {
@@ -130,7 +159,7 @@ window.__ModuleLoader__.load({
         const onClick = event => {
           const target = event.target.closest?.('[data-nav], [data-evidence], [data-download], #submitBtn, [data-selection-command], #selectionApply');
           if (!target || !content.contains(target)) return;
-          if (target.dataset.nav) emit('view.change', { view: target.dataset.nav, stateMode: 'fixture' });
+          if (target.dataset.nav) { emit('view.change', { view: target.dataset.nav, stateMode: content.dataset.stateMode || 'fixture' }); setTimeout(() => applyViewState(content, content.__liveState), 0); }
           if (target.dataset.evidence) emit('evidence.select', { evidenceId: target.dataset.evidence, stateMode: 'fixture' });
           if (target.dataset.download) emit('download.request', { format: target.dataset.download, stateMode: 'fixture' });
           if (target.id === 'submitBtn') emit('review.submit', { blocked: true, reason: 'fixture-pending-evidence' });
