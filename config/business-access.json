@@ -42,14 +42,14 @@
       "serverId": "platform-compositions",
       "operationId": "diagnose_business_access",
       "kind": "read",
-      "target": "http://172.16.138.228:18121/hep/mcp/groups/troubleshooting-compositions/v2",
+      "target": "http://10.0.160.32:18120/hep/mcp/groups/troubleshooting-compositions/v2",
       "method": "TOOLS/CALL"
     }
   ],
   "gateway": {
     "host": "0.0.0.0",
     "port": 53106,
-    "publicOrigin": "http://172.16.138.228:53106",
+    "publicOrigin": "http://10.0.160.32:53106",
     "sharedSecretFile": ".local/business-control-mock/gateway-secret.bin",
     "instances": [
       {
@@ -133,13 +133,6 @@
         "identityMode": "development"
       },
       {
-        "agentId": "ai-proposal-document-generator",
-        "instanceId": "ai-proposal-document-generator-dev2",
-        "sourceId": "business:ai-proposal-document-generator@a107bb0c4989b69541c825d2111681bdc1ad6c61",
-        "accessMode": "anonymous",
-        "identityMode": "development"
-      },
-      {
         "agentId": "security-operations-expert",
         "instanceId": "security-operations-expert-test",
         "sourceId": "business:security-operations-expert@a107bb0c4989b69541c825d2111681bdc1ad6c61",
@@ -147,7 +140,7 @@
         "identityMode": "development"
       }
     ],
-    "managementUrl": "http://172.16.138.228:18121/hep/",
+    "managementUrl": "http://10.0.160.32:18120/hep/",
     "publicOriginMode": "auto",
     "managementUrlMode": "auto"
   },
