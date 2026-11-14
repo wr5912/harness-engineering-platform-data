@@ -26,3 +26,10 @@
         interactionTimeoutMs: 0
         allowedResourceOrigins: []
         eventBridgeEnabled: true
+
+# 在 DSH 原生 Web 壳内显示完整方案工作台，不使用 iframe。
+- insert:
+    - id: proposal-workbench-ui
+      name: /opt/dsh-managed/ai-proposal-workbench/lib/index.js
+      config:
+        enabled: true
