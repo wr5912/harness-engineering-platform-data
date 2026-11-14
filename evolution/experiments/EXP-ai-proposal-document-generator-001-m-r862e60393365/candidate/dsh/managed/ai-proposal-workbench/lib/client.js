@@ -94,6 +94,13 @@ window.__ModuleLoader__.load({
       if (paperSummary) paperSummary.textContent = `${state.requirements?.length || 0} 条要求 · ${state.evidence?.length || 0} 条证据 · ${state.publish?.blockerCount || 0} 项发布阻断`
       const saveState = content.querySelector('[data-testid="save-state"] span:last-child')
       if (saveState) saveState.textContent = state.stateMode === 'live' ? '项目工作区状态 · 待核对' : '固定合成样本 · 状态待验证'
+      if (state.stateMode === 'live') {
+        for (const button of content.querySelectorAll('#downloadMdBtn, #exportBtn, #generateBtn')) {
+          button.disabled = true
+          button.classList.add('blocked')
+          button.title = '真实导出/生成工具尚未接入；当前仅显示验收工作台'
+        }
+      }
       const navRequirements = content.querySelector('[data-testid="nav-requirements"] .nav-count')
       if (navRequirements && Array.isArray(state.requirements)) navRequirements.textContent = String(state.requirements.length)
       const navEvidence = content.querySelector('[data-testid="nav-evidence"] .nav-count')
