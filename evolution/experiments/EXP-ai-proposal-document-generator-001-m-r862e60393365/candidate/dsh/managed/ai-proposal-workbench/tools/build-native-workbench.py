@@ -97,8 +97,14 @@ def main() -> None:
       content.dataset.stateSource = state.source || 'unknown'
       const marker = content.querySelector('[data-testid="workbench-state"]')
       if (marker) marker.textContent = `状态来源：${state.source || '未知'} · ${state.stateMode === 'live' ? '已读取项目工作区' : '固定参考/待验证'}`
-      const breadcrumb = content.querySelector('[data-testid="project-breadcrumb"] .project')
-      if (breadcrumb && state.project?.name) breadcrumb.textContent = state.project.name.slice(0, 48)
+      const breadcrumb = content.querySelector('[data-testid="project-breadcrumb"]')
+      if (breadcrumb && state.project?.name) breadcrumb.querySelector('.project').textContent = state.project.name.slice(0, 48)
+      if (breadcrumb && state.document?.version) {
+        const spans = breadcrumb.querySelectorAll('span')
+        if (spans.length >= 5) spans[4].textContent = state.document.version
+      }
+      const paperVersion = content.querySelector('.paper-kicker span:last-child')
+      if (paperVersion && state.document?.version) paperVersion.textContent = `方案草案 · ${state.document.version}`
       const coverage = content.querySelector('[data-testid="coverage-summary"]')
       if (coverage) coverage.textContent = `${state.stateMode === 'live' ? '工作区状态' : '固定样本'} · ${state.document?.requirementCount || state.requirements?.length || 0} 条要求 · ${state.publish?.blockerCount || 0} 项阻断`
       const saveState = content.querySelector('[data-testid="save-state"] span:last-child')
