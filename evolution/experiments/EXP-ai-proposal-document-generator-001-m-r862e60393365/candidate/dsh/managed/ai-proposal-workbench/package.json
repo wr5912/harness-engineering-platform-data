@@ -22,5 +22,8 @@
     "title": "方案工作台",
     "description": "在 DSH 原生 Web 壳内显示方案文档、要求、证据、评审和发布门禁工作台。"
   },
-  "files": ["lib/**/*.js", "cordis.patch.yml", "README.md", "PROVENANCE.md", "package.json"]
+  "scripts": {
+    "verify": "node tools/verify-client.mjs"
+  },
+  "files": ["lib/**/*.js", "tools/*.mjs", "tools/*.py", "cordis.patch.yml", "README.md", "PROVENANCE.md", "package.json"]
 }
