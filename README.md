@@ -1,6 +1,6 @@
 # harness-engineering-platform-data
 
-Harness 工程平台的数据工作区，保存智能体来源登记、Experiment、Run、Decision、历史证据、用户配置与 MCP 编排。管理助手 Harness 位于 [DSH home 仓库](https://github.com/wr5912/platform-manager-dsh-home)，业务设计、验收与 Harness 资产位于 [business-agents](https://github.com/wr5912/business-agents)。
+Harness 工程平台的数据工作区，保存智能体来源登记、Experiment、Run、Decision、历史证据、用户配置与 MCP 编排。管理助手 Harness 位于 [DSH home 仓库](https://github.com/wr5912/platform-manager-dsh-home)，业务设计、验收与 Harness 资产位于 [business-agents](http://172.16.138.233/ai-soc/business-agents)。
 
 平台运行环境使用 Node.js 24.9+、Python 3.10+，启动与依赖准备见[程序仓说明](https://github.com/wr5912/harness-engineering-platform/blob/main/README.md#快速启动)。
 
