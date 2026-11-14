@@ -44,6 +44,18 @@ window.__ModuleLoader__.load({
       if (paperVersion && state.document?.version) paperVersion.textContent = `方案草案 · ${state.document.version}`
       const coverage = content.querySelector('[data-testid="coverage-summary"]')
       if (coverage) coverage.textContent = `${state.stateMode === 'live' ? '工作区状态' : '固定样本'} · ${state.document?.requirementCount || state.requirements?.length || 0} 条要求 · ${state.publish?.blockerCount || 0} 项阻断`
+      const progressValue = content.querySelector('[data-testid="document-progress"] .progress-value')
+      const progressFill = content.querySelector('[data-testid="document-progress"] .progress-fill')
+      if (progressValue) progressValue.textContent = '待核对'
+      if (progressFill) progressFill.style.width = '0%'
+      const qaScore = content.querySelector('#qaScore')
+      const qaFill = content.querySelector('#qaFill')
+      if (qaScore) qaScore.textContent = '待核对'
+      if (qaFill) qaFill.style.width = '0%'
+      const qaSub = content.querySelector('[data-testid="qa-card"] .qa-sub')
+      if (qaSub) qaSub.textContent = state.stateMode === 'live' ? '项目工作区状态已读取，覆盖率尚未计算' : '固定参考状态，覆盖率待核对'
+      const paperSummary = content.querySelector('[data-testid="document-title"] + p')
+      if (paperSummary) paperSummary.textContent = `${state.requirements?.length || 0} 条要求 · ${state.evidence?.length || 0} 条证据 · ${state.publish?.blockerCount || 0} 项发布阻断`
       const saveState = content.querySelector('[data-testid="save-state"] span:last-child')
       if (saveState) saveState.textContent = state.stateMode === 'live' ? '项目工作区状态 · 待核对' : '固定合成样本 · 状态待验证'
       const navRequirements = content.querySelector('[data-testid="nav-requirements"] .nav-count')
@@ -93,9 +105,17 @@ window.__ModuleLoader__.load({
         content.innerHTML = BASE_BODY;
         root.appendChild(content);
         const saveState = content.querySelector('[data-testid="save-state"]');
-        if (saveState) saveState.innerHTML = '<span class="save-dot"></span><span>固定合成样本 · 状态待验证</span>';
+        if (saveState) saveState.innerHTML = '<span class="save-dot"></span><span>项目工作区状态读取中…</span>';
         const coverage = content.querySelector('[data-testid="coverage-summary"]');
-        if (coverage) coverage.textContent = '固定样本 · 覆盖率待核对 · 2 项待确认';
+        if (coverage) coverage.textContent = '正在读取项目工作区状态…';
+        const progressValue = content.querySelector('[data-testid="document-progress"] .progress-value');
+        const progressFill = content.querySelector('[data-testid="document-progress"] .progress-fill');
+        if (progressValue) progressValue.textContent = '待读取';
+        if (progressFill) progressFill.style.width = '0%';
+        const qaScore = content.querySelector('#qaScore');
+        const qaFill = content.querySelector('#qaFill');
+        if (qaScore) qaScore.textContent = '待读取';
+        if (qaFill) qaFill.style.width = '0%';
         const marker = document.createElement('div');
         marker.setAttribute('data-testid', 'workbench-state');
         marker.dataset.mode = 'fixture';
