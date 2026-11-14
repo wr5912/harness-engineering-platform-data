@@ -36,10 +36,15 @@ window.__ModuleLoader__.load({
       const evidence = Array.isArray(state.evidence) ? state.evidence : []
       if (view.dataset.view === 'requirements') {
         const values = view.querySelectorAll('.metric-card .metric-value')
+        const metas = view.querySelectorAll('.metric-card .metric-meta')
         if (values[0]) values[0].textContent = String(requirements.length)
         if (values[1]) values[1].textContent = '待核对'
         if (values[2]) values[2].textContent = '待核对'
         if (values[3]) values[3].textContent = String(state.publish?.blockerCount || 0)
+        if (metas[0]) metas[0].textContent = state.stateMode === 'live' ? '来自项目工作区产物' : '来自固定参考材料'
+        if (metas[1]) metas[1].textContent = '评分权重待核对'
+        if (metas[2]) metas[2].textContent = '响应覆盖率待核对'
+        if (metas[3]) metas[3].textContent = `${state.publish?.blockerCount || 0} 项需要验证`
         const body = view.querySelector('.view-table tbody')
         if (body) body.innerHTML = requirements.slice(0, 12).map(row => `<tr><td>${String(row.id)}</td><td>待核对</td><td>待绑定章节</td><td>待核对</td><td><span class="status pending">${String(row.status || '待验证')}</span></td><td>待核对</td></tr>`).join('')
       } else if (view.dataset.view === 'materials') {
