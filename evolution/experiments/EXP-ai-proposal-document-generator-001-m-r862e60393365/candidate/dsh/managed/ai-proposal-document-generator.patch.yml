@@ -15,13 +15,14 @@
               path: /opt/dsh-presets/ai-proposal-document-generator/agent.cordis.yml
 
 # 复用 MIT 许可的 dsh-ui-html，在对话中渲染沙箱化方案工作台。
-- id: ui-html
-  name: /opt/dsh-managed/dsh-ui-html/lib/index.js
-  config:
-    enabled: true
-    announceToAgent: true
-    maxHtmlBytes: 262144
-    maxEventBytes: 65536
-    interactionTimeoutMs: 0
-    allowedResourceOrigins: []
-    eventBridgeEnabled: true
+- insert:
+    - id: ui-html
+      name: /opt/dsh-managed/dsh-ui-html/lib/index.js
+      config:
+        enabled: true
+        announceToAgent: true
+        maxHtmlBytes: 262144
+        maxEventBytes: 65536
+        interactionTimeoutMs: 0
+        allowedResourceOrigins: []
+        eventBridgeEnabled: true
