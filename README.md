@@ -11,3 +11,4 @@ Harness 工程平台的数据工作区，保存智能体来源登记、Experimen
 - [研究与运行记录](evolution/)
 - [当前配置](config/)
 - [MCP 管理](mcp/README.md)
+- [精简独立包技术验收](deliverables/standalone-compact-20261114/acceptance.json)

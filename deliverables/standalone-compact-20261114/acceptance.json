@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-14",
+  "scope": "精简独立包技术验收；不替代安全运营业务全量效果验收",
+  "implementation": {
+    "platform_commit": "9662bc0e7f017f192a0f1d72aa404b618767568a",
+    "manager_home_commit": "4e7c104b3cb5bbcecf31d92be9164fc840b29028",
+    "dsh_commit": "ddac96760b6edf8fa0fe17cbdcf0b512f4c12b2c",
+    "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+    "image_build_evidence": "image-build.json",
+    "manager_method_commit": "596751aa5bfd983a9bf9a080839a498858c479d6"
+  },
+  "delivery": {
+    "top_level_entries": [
+      "agent",
+      "manifest.json",
+      "harness",
+      "config",
+      "images"
+    ],
+    "native_harness": true,
+    "host_prerequisites": [
+      "Bash",
+      "Docker Engine",
+      "Docker Compose"
+    ],
+    "maintenance_help": "agent help",
+    "configuration_help": "config/README.md",
+    "platform_executors_in_agent": false,
+    "archives": [
+      {
+        "profile": "web",
+        "file": "security-operations-expert-887c231b3510-amd64-online-5b7567a2.tar.gz",
+        "bytes": 1173951027,
+        "sha256": "63fc5c8eb4a23aa1c5232733162a262854b221c4ccb2ab62a30fb3b27f582b7d",
+        "agent_id": "security-operations-expert",
+        "experiment_id": "EXP-security-operations-expert-027-m-reab20c48f610",
+        "candidate_sha256": "887c231b351042e2d6107f9bae0474649d35fb4942cd54e80f1d952e2a4e66a1",
+        "harness_sha256": "4bd883b4f802ea20c0a54086f21adfb540f688e3bf38f5b42366ca77470a0a56",
+        "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+        "manifest_schema": 2
+      },
+      {
+        "profile": "sdk",
+        "file": "compact-sdk-acceptance-5e37b1d736c4-amd64-online-8a74a857.tar.gz",
+        "bytes": 1160390618,
+        "sha256": "a7683c311583bc678bdbef4cf2b2d1b2be50c347017e6293d3891e37ad813fe3",
+        "agent_id": "compact-sdk-acceptance",
+        "experiment_id": "EXP-compact-sdk-acceptance-001-m-r9e8cf5d9cbf5",
+        "candidate_sha256": "5e37b1d736c473b9443605bc8a7c2d421b7365c75a141d4eeb6c28edfbf2e093",
+        "harness_sha256": "c06365d1c50a1e03446df962f6f7492faa33db8b81ac877e0918e3ef3512e025",
+        "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+        "manifest_schema": 2
+      }
+    ]
+  },
+  "automated": {
+    "deploy": {
+      "passed": 68,
+      "failed": 0
+    },
+    "plugin_standalone_and_deployment": {
+      "passed": 40,
+      "failed": 0
+    },
+    "container_adapter": {
+      "passed": 339,
+      "failed": 0
+    },
+    "plugin_typecheck_and_build": "pass",
+    "total_passed": 447
+  },
+  "live_acceptance": [
+    {
+      "case": "Web 模型读取原生 AGENTS.md 和 security-inspection Skill",
+      "result": "pass",
+      "image_id": "sha256:0d9a6b35d52708f61f2985aaf1ab0e6f3107ba966277a231d831dd7c22a0f61c",
+      "model": "local-qwen/Qwen3.8-27B",
+      "session_id": "session-b848ac23-af74-4214-b9bc-001f83720560",
+      "observed": [
+        "AGENTS.md 实际 Read 回执",
+        "security-inspection/SKILL.md 实际 Read 回执",
+        "最终回答包含 391 和 COMPACT-NATIVE-391"
+      ],
+      "qualification": "乘法为模型回答，未观察到计算工具执行"
+    },
+    {
+      "case": "外部 Harness、重启保留模型配置与原会话",
+      "result": "pass",
+      "image_id": "sha256:0d9a6b35d52708f61f2985aaf1ab0e6f3107ba966277a231d831dd7c22a0f61c",
+      "session_id": "session-b848ac23-af74-4214-b9bc-001f83720560",
+      "observed": [
+        "工具实际读取外部 compact-origin.txt，得到 EXTERNAL-HARNESS-OK-391",
+        "重启后同一会话回忆标记",
+        "模型配置和环境凭据文件摘要保持一致"
+      ]
+    },
+    {
+      "case": "Web 浏览器装载",
+      "result": "pass",
+      "image_id": "sha256:0d9a6b35d52708f61f2985aaf1ab0e6f3107ba966277a231d831dd7c22a0f61c",
+      "observed": [
+        "平台和独立实例 HTTP 200",
+        "浏览器无 pageerror",
+        "原生工作区、四角色概览、推荐提示及模型选择可见"
+      ]
+    },
+    {
+      "case": "资产预览与更新",
+      "result": "pass",
+      "image_id": "sha256:0d9a6b35d52708f61f2985aaf1ab0e6f3107ba966277a231d831dd7c22a0f61c",
+      "observed": [
+        "正式 agent-preview 刷新入口与配置说明",
+        "未变资产更新 changed=0、restart=false",
+        "外部 Harness 更新拒绝覆盖"
+      ]
+    },
+    {
+      "case": "原生 MCP 客户端发现平台组合工具、调用并读取运行状态和报告",
+      "result": "pass",
+      "image_id": "sha256:0d9a6b35d52708f61f2985aaf1ab0e6f3107ba966277a231d831dd7c22a0f61c",
+      "services": {
+        "policy-response": 27,
+        "policy-response-acceptance": 2,
+        "xx-device": 1,
+        "soc-readonly": 13,
+        "inspection": 9,
+        "troubleshooting": 5
+      },
+      "tool": "inspection_reachability",
+      "target_ip": "172.16.138.233",
+      "run_id": "run-3a64aa0a-c476-454c-ba8d-7b5291ec8326",
+      "states": [
+        "accepted",
+        "running",
+        "completed"
+      ],
+      "nodes_completed": 8,
+      "failed_requests": 0,
+      "reports": 4,
+      "artifact": {
+        "id": "markdown",
+        "response_bytes": 5578,
+        "response_sha256": "93e60cca227b1b9e633a3f86dae53882cd36f710b20f2436997fdfe5f77c895c"
+      },
+      "actual_engine": "workflow",
+      "qualification": "运行状态轮询已验证；无独立进度通知证据，本次未触发 LFX 引擎"
+    },
+    {
+      "case": "管理助手理解并使用更新后的交付方法",
+      "result": "pass",
+      "model": "deepseek-flash",
+      "session_id": "session-f1962f52-d267-4370-93ef-68d563d3ae56",
+      "observed": [
+        "实际读取 HOME task-builder Skill 和程序仓部署合同",
+        "正确说明五项布局、保留 manifest、agent help、config/README.md 及平台 MCP 边界"
+      ],
+      "recovered_observation": "首次宽范围文件搜索超时，随后实际 Read 完成"
+    },
+    {
+      "case": "最终镜像 Web 安装、模型和 MCP 配置导入、重启及原生 MCP 报告读取",
+      "result": "pass",
+      "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+      "observed": [
+        "正式 agent install 通过容器健康检查",
+        "正式 agent configure 导入现场模型与 MCP 连接后重启健康",
+        "原生 MCP 客户端成功读取已有平台组合报告，响应 5578 字节，与原报告响应摘要一致"
+      ],
+      "artifact_response_sha256": "93e60cca227b1b9e633a3f86dae53882cd36f710b20f2436997fdfe5f77c895c"
+    },
+    {
+      "case": "最终镜像 Web 真实模型与本地文件工具",
+      "result": "pass",
+      "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+      "model": "local-qwen/Qwen3.8-27B",
+      "session_id": "session-66cb7658-3ab7-41b0-b097-2c3fbd41243a",
+      "observed": [
+        "原生 Read 读取 /work/harness/workspace/AGENTS.md，共 116 行",
+        "模型正确说明职责并回答 391、COMPACT-FINAL-391",
+        "turn/end completed，running=false"
+      ],
+      "qualification": "乘法为模型回答，未执行计算工具"
+    },
+    {
+      "case": "最终 SDK 包真实模型与本地文件工具",
+      "result": "pass",
+      "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+      "model": "local-qwen/Qwen3.8-27B",
+      "session_id": "session-7c856d5a-36ba-48fd-8e13-72b1f63c7a3a",
+      "observed": [
+        "正式 agent run --input-file 退出码 0",
+        "原生 Read 成功读取技术验收 Harness 的 AGENTS.md，共 7 行",
+        "completed 结果包含职责、391 及 COMPACT-SDK-391"
+      ],
+      "qualification": "技术验收专用 Harness；不代表 SDK 安全运营业务效果"
+    },
+    {
+      "case": "最终镜像浏览器装载",
+      "result": "pass",
+      "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+      "observed": [
+        "真实 Chrome 打开最终独立实例",
+        "原生工作区选择、四角色概览、模型配置及会话入口可见",
+        "pageerror 为空"
+      ]
+    },
+    {
+      "case": "最终 SDK 包显式恢复会话",
+      "result": "pass",
+      "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+      "session_id": "session-7c856d5a-36ba-48fd-8e13-72b1f63c7a3a",
+      "observed": [
+        "第二次 agent run 显式传入原 session_id",
+        "原会话完成续接，回答前轮标记 COMPACT-SDK-391 及 391",
+        "恢复前后使用同一持久 HOME"
+      ]
+    },
+    {
+      "case": "最终 SDK 示例使用外部原生 Harness",
+      "result": "pass",
+      "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+      "model": "local-qwen/Qwen3.8-27B",
+      "session_id": "session-45e0b735d11f47778bccd0d278c5a1aa",
+      "observed": [
+        "正式 agent example --harness-root 使用外部 Harness",
+        "外部 sdk/example.ts 的 COMPACT-SDK-EXTERNAL-EXAMPLE 标记实际输出，证明运行副本已刷新",
+        "原生文件工具读取外部 compact-origin.txt，输出 COMPACT-SDK-EXTERNAL-391",
+        "切换前后模型与凭据配置文件摘要一致"
+      ]
+    },
+    {
+      "case": "最终镜像原生 MCP 客户端发现平台服务并完成新组合 Run",
+      "result": "pass",
+      "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+      "services": {
+        "policy-response": 27,
+        "policy-response-acceptance": 2,
+        "xx-device-acceptance": 1,
+        "soc-readonly": 13,
+        "inspection-compositions": 8,
+        "troubleshooting-compositions": 5
+      },
+      "tool": "inspection_reachability",
+      "target_ip": "172.16.138.233",
+      "run_id": "run-0eb7bcac-5f0c-43fe-ba3d-e4e68062f996",
+      "states": [
+        "running",
+        "running",
+        "completed"
+      ],
+      "nodes_completed": 8,
+      "requests": 3,
+      "result_counts": {
+        "normal": 0,
+        "abnormal": 0,
+        "unknown": 0,
+        "not_applicable": 6,
+        "failed": 0
+      },
+      "reports": 4,
+      "actual_engine": "workflow",
+      "platform_version": {
+        "versionId": "f01d952b24d7125d801379765f06a0cb34ee88243fbea4ed184a241575161886",
+        "implementationDigest": "1b389d9a9a54bd6dac591fd3c62cd68472f73f4e1c8a218c09db632762cd4bda",
+        "digest": "1b389d9a9a54bd6dac591fd3c62cd68472f73f4e1c8a218c09db632762cd4bda",
+        "sourceDigest": "6a370760339f0c485c7d2cd60d454a547a06c1d5a942b2b4b1ae6a07845c3d4e",
+        "gitCommit": "8fb45672a1e4cecfd16aec31c72a197285898457",
+        "gitDirty": true,
+        "programCommit": "9662bc0e7f017f192a0f1d72aa404b618767568a",
+        "programDirty": true
+      },
+      "qualification": "仅证明平台组合调用、状态轮询和产物生成；六项结果为 not_applicable，不证明实际网络可达。未执行 LFX 或写入动作，无独立进度通知证据。",
+      "artifact": {
+        "tool": "get_composition_artifact",
+        "id": "markdown",
+        "response_bytes": 5578,
+        "response_sha256": "7a9a52def089e8d58798e9990362d4ec7508c8296e3d7d916e2976c821b18a7a"
+      }
+    },
+    {
+      "case": "最终 Web 以非 root 用户运行且 HOME 可写",
+      "result": "pass",
+      "image_id": "sha256:60894d0ac6ae6e9511e95bc61451d5f4764e21c15ca84f97bcf491934f1fa59e",
+      "uid": 1006,
+      "home": "/var/lib/dsh",
+      "observed": [
+        "进程实际 HOME=/var/lib/dsh",
+        "以运行用户对 HOME 的 W_OK 检查成功"
+      ]
+    },
+    {
+      "case": "最终 Web 和 SDK 实例正式 cleanup",
+      "result": "pass",
+      "observed": [
+        "两个独立验收 Compose 项目均已移除",
+        "解压安装目录的 images/ 介质已清除，压缩包保留",
+        "原生 Harness、持久 HOME 和会话保留",
+        "仅停止本次 18121 验收服务，未操作现场 18120 服务或用户原解压目录"
+      ]
+    }
+  ],
+  "initial_sdk_observation": {
+    "result": "failed_read",
+    "reason": "技术验收专用 preset 初始未开启原生 Read 工具",
+    "resolution": "仅修正本地验收夹具，增加只读原生文件工具后重新导出最终 SDK 包",
+    "original_session_id": "session-968ca1be-68c6-4b2f-bb24-d7d06494eb0c"
+  },
+  "limits": [
+    "本机 linux/amd64 验收；未在 ARM64 主机实测",
+    "当前实际组合验收为只读可达性巡检及报告读取，未逐项执行全部 SOC 业务组合或写入动作",
+    "实际运行包含远程模型与平台 MCP，未验证全离线业务效果",
+    "原始会话、连接配置、安装包与完整导出清单保留于本地忽略目录，不提交密钥"
+  ],
+  "recovered_operational_observations": [
+    {
+      "case": "新 Run 的报告读取",
+      "initial_result": "fetch failed；重启时曾访问到初始化入口",
+      "reason": "验收服务先于最后一次报告读取停止，恢复命令初始未将已有 dsh CLI 加入 PATH",
+      "resolution": "通过正式 dsh-platform prepare/start 恢复服务后，同一原生 MCP 客户端成功读取该 Run 的 markdown 产物"
+    },
+    {
+      "case": "管理助手依赖准备",
+      "initial_result": "新发布的锁定依赖被 pnpm 发布时间等待期拦截",
+      "resolution": "本次准备通过 PNPM_CONFIG_MINIMUM_RELEASE_AGE=0 使用已锁定依赖；未持久修改依赖策略"
+    },
+    {
+      "case": "管理助手 Profile 启动锁一致性",
+      "initial_result": "在线 prepare 成功后，启动仍报告 Profile 锁不一致",
+      "reason": "pnpm 安装锁为 GitHub tarball 增加 gitHosted 元数据，版本化锁尚未规范化",
+      "resolution": "保存 pnpm 实际生成的规范锁；唯一变化为 gitHosted: true，包版本和来源均未变化；正式启动预检、HTTP 就绪及 MCP 报告读取均通过",
+      "commit": "4e7c104b3cb5bbcecf31d92be9164fc840b29028"
+    }
+  ]
+}
