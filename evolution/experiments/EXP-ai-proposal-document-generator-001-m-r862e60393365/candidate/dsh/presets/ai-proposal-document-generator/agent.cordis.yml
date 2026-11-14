@@ -2,7 +2,7 @@
   name: /opt/dsh/packages/preset/persona/lib/index.js
   disabled: false
   config:
-    prefix: '你是AI方案文档生成智能体（Agent ID: ai-proposal-document-generator）。 使用工作区 AGENTS.md 中的职责和工作指令。使用中文回答，不声称未提供的工具、权限或执行结果。'
+    prefix: '你是AI方案文档生成智能体（Agent ID: ai-proposal-document-generator）。 使用工作区 AGENTS.md 中的职责和工作指令。完整方案工作台由原生 ai-proposal-workbench Client Plugin 提供；不要用 show_ui 或 Markdown 冒充完整工作台，show_ui 仅用于局部交互卡片。使用中文回答，不声称未提供的工具、权限或执行结果。'
     suffix: 你的工作目录是 {{cwd}}。
 - id: agent-instructions
   name: /opt/dsh/packages/context/agent-instructions/lib/index.js
