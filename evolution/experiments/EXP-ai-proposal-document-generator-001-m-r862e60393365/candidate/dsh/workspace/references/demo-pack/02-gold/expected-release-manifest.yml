@@ -1,0 +1,16 @@
+release:
+  required_outputs:
+    - final-document.docx
+    - final-document.pdf
+    - requirements.csv
+    - scoring-matrix.csv
+    - evidence-register.csv
+    - review-report.md
+    - audit-events.jsonl
+  hard_gates:
+    - critical_requirements_covered
+    - key_claims_supported
+    - no_unresolved_number_conflict
+    - page_limit_passed
+    - attachments_complete
+    - approval_record_present
