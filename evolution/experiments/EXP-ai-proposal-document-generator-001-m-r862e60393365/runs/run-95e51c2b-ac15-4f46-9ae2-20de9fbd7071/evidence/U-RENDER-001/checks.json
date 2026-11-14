@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "case_id": "U-RENDER-001",
+  "transport": "api",
+  "session_id": "session-dd6c30b9-937b-456b-9168-f872249c4b2c",
+  "workspace_id": "dc9160a9-c393-4832-8325-69590b91cfa3",
+  "session_title": "评测 U-RENDER-001",
+  "preset_readiness": {
+    "source": "agentPresets/list",
+    "preset_id": "ai-proposal-document-generator",
+    "status": "ready"
+  },
+  "session_preset": "ai-proposal-document-generator",
+  "session_workspace": "/work/harness/workspace",
+  "preset_matches": true,
+  "workspace_matches": true,
+  "completed": false,
+  "failure_reason": "api-target-trace-export-failed",
+  "failure_stage": "target-trace-export",
+  "last_successful_step": "prompt-accepted",
+  "request_id": "5387cfec-e9be-429c-8fa0-852cdecc81a8",
+  "input_index": 0,
+  "rpc_method": "evaluation.wait",
+  "http_status": 409,
+  "error_code": "task-tree-wait-failed",
+  "session_cancellation": {
+    "session_id": "session-dd6c30b9-937b-456b-9168-f872249c4b2c",
+    "accepted": false
+  },
+  "trace_available": true
+}
