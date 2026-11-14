@@ -1,0 +1,894 @@
+{
+  "schema_version": "2.0",
+  "run_id": "run-9c069711-8587-42c6-b73f-1c611f614bf5",
+  "source_id": "experiment:EXP-ai-proposal-document-generator-001-m-r862e60393365",
+  "source_kind": "experiment",
+  "baseline_ref": "none:first-experiment",
+  "candidate_sha256": "aa1600250873df9dd6de390a21e9681a285846cb3b5731756d988a9767793dc0",
+  "created_at": "2026-11-14T04:12:53Z",
+  "harness_trees": {
+    "workspace": {
+      "tree_sha256": "sha256:e4810fbea834d484e12434a6a0eeeff4d7eb55415d17480e14a1abf1298b0f1d",
+      "directory_sha256": "sha256:aa817a6dbe5ff777a3e72d2af48a0d12694d379acd58a9436502fffc5c618c02",
+      "file_count": 28,
+      "total_bytes": 187143,
+      "files": [
+        {
+          "mode": "0664",
+          "path": ".env",
+          "sha256": "e574f8d1faf66f9167c33055ae1e2f99c70b031811f64aaac5bae1be54a19489",
+          "size": 84
+        },
+        {
+          "mode": "0664",
+          "path": "AGENTS.md",
+          "sha256": "425a890bc04f00e1fb3a3d31d708cda3f51ee76aa9603dac0753f90f88d83ba8",
+          "size": 4497
+        },
+        {
+          "mode": "0644",
+          "path": "references/acceptance-pack/00-验收范围与原则.md",
+          "sha256": "1bae7ad848b13662e294d8e52114ee16dd6f757894936a4bd95c6b6f85178baf",
+          "size": 2936
+        },
+        {
+          "mode": "0644",
+          "path": "references/acceptance-pack/01-产品功能与界面验收规范.md",
+          "sha256": "94a492ecdef46f2fc4aa529ae5027a104ceed34eb80e68e1d022cd34df533709",
+          "size": 4849
+        },
+        {
+          "mode": "0644",
+          "path": "references/acceptance-pack/03-验收指标与质量门禁.md",
+          "sha256": "f67746c63ce068d605a2b14f75b75a42cb3f7cddf78d4291d656248b82a103b0",
+          "size": 2740
+        },
+        {
+          "mode": "0644",
+          "path": "references/acceptance-pack/04-端到端验收场景.md",
+          "sha256": "e75a1e871efa72a67e16b3698eb5522ea00ee37571bc312df0bb27d8979c5002",
+          "size": 4577
+        },
+        {
+          "mode": "0644",
+          "path": "references/acceptance-pack/06-黄金资产与数据集规范.md",
+          "sha256": "4df5746824395a1ec7fceb9bf6b5677d1f841fd1d7a7d2a6ad46e9447210e8a4",
+          "size": 2157
+        },
+        {
+          "mode": "0644",
+          "path": "references/acceptance-pack/07-验收证据包规范.md",
+          "sha256": "2f35d1009b37a24e8fa7f1476a6512694c4d4efa5ba02d48ddb2c9c3b9cf336b",
+          "size": 1360
+        },
+        {
+          "mode": "0644",
+          "path": "references/acceptance-pack/08-发布门禁与缺陷分级.md",
+          "sha256": "2ec9364aebdaf4ea4c7e9f1428a96ffe71e61b5e069262e0f1d75c224d02c040",
+          "size": 1596
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/01-input/design/design-brief.md",
+          "sha256": "f3eef32f7ca61e7261a47c060f652ea7d114618af405f6fa59c4586c78d941be",
+          "size": 585
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/01-input/organization/forbidden-claims.yml",
+          "sha256": "48db7fc4dc96e1bc58dd5e8085bb7fd619461631f3d4101112b550e201ea1a46",
+          "size": 321
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/01-input/organization/product-capability.md",
+          "sha256": "cbb16c939e463f5786f2236abec31238201c852918aac5104cbfad4138aa3204",
+          "size": 815
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/01-input/rfp/amendment-01.md",
+          "sha256": "617d01ddff758e6490e0b4dbf8fa8021cf80c524d90d3eeec587862579c3140e",
+          "size": 465
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/01-input/rfp/conflicting-attachment.md",
+          "sha256": "66b6feab735bf3ea416ac2a2b2d81638428e5817f15b26c1762d1c7d6a86ff0c",
+          "size": 241
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/01-input/rfp/rfp-main.md",
+          "sha256": "5a633153e89209716cc48aaaa15f127a6cd4e63d74a2e031122fcde4ed0b54be",
+          "size": 1020
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/01-input/rfp/scoring-matrix.csv",
+          "sha256": "1e12dcb92a6082ad3b79aba02b952d8682beb04feb237ddc9698b09650aa9ce3",
+          "size": 388
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/01-input/rfp/submission-rules.md",
+          "sha256": "642a6f2253f404e4fc38077043b5636984a0c8cd557078bba60b6ce7c2d47109",
+          "size": 346
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/02-gold/evidence-links.csv",
+          "sha256": "deac17304616fbb8043ade67601053796089958d2aab50ba430b28776c8b8195",
+          "size": 484
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/02-gold/expected-findings.yml",
+          "sha256": "f07eca2ccb3b64230bbd23e31a44eacaf3b3270c387f9fe3c282c4013b65eeb5",
+          "size": 472
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/02-gold/expected-impact.json",
+          "sha256": "e98532b507a34391f2ee1adbcfde59698f6c0a76652f7010099acea85e9e5134",
+          "size": 393
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/02-gold/expected-release-manifest.yml",
+          "sha256": "6bcc856a6db5aa5a3e64282a690b1e9c31612404848dacf4b10731d88b127600",
+          "size": 398
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/02-gold/requirements.jsonl",
+          "sha256": "4ccae869162cb2c852b14367210009e007599e8d8cb7aadb3f8ab3e0a3261d8e",
+          "size": 385
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/04-expected-outputs/expected-release-checklist.md",
+          "sha256": "9480780886c9784350cc167b1bad4257c269d76063f76941ba993d89fa528ef4",
+          "size": 507
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/04-expected-outputs/expected-review-findings.md",
+          "sha256": "baa683b9713bc105d3cdc067cc126b67973cbac9ef4734c1d1e5d224f33a80c4",
+          "size": 423
+        },
+        {
+          "mode": "0644",
+          "path": "references/demo-pack/04-expected-outputs/expected-structure.md",
+          "sha256": "41afdc09407c53a1bf0a1b7bbf1e1789d382c4328ac6499ae43b7ccb9ddcd179",
+          "size": 392
+        },
+        {
+          "mode": "0644",
+          "path": "references/ui-baseline/HTML-验收基线.md",
+          "sha256": "e70e481bb20c22cfa55c69ceb1b00187efb2aadc54377b2796bf423974ec33f4",
+          "size": 8549
+        },
+        {
+          "mode": "0644",
+          "path": "references/ui-baseline/HTML-验收测试清单.md",
+          "sha256": "257949b099703d51494c68d485c31394a0d7ce89de5ebf141e8f28b88575e94e",
+          "size": 4959
+        },
+        {
+          "mode": "0644",
+          "path": "references/ui-baseline/方案文档生成工具-静态验收原型.html",
+          "sha256": "ddb475a2660265182499d3f1c166348e9269dc187d34da900fb21387545df376",
+          "size": 141204
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "references",
+          "mode": "0775"
+        },
+        {
+          "path": "references/acceptance-pack",
+          "mode": "0775"
+        },
+        {
+          "path": "references/demo-pack",
+          "mode": "0775"
+        },
+        {
+          "path": "references/demo-pack/01-input",
+          "mode": "0755"
+        },
+        {
+          "path": "references/demo-pack/01-input/design",
+          "mode": "0755"
+        },
+        {
+          "path": "references/demo-pack/01-input/organization",
+          "mode": "0755"
+        },
+        {
+          "path": "references/demo-pack/01-input/rfp",
+          "mode": "0755"
+        },
+        {
+          "path": "references/demo-pack/02-gold",
+          "mode": "0755"
+        },
+        {
+          "path": "references/demo-pack/04-expected-outputs",
+          "mode": "0755"
+        },
+        {
+          "path": "references/ui-baseline",
+          "mode": "0775"
+        }
+      ]
+    },
+    "presets": {
+      "tree_sha256": "sha256:77abd65e10edee8991db7dedc16bc14d42a8a0977788f7338b7f41bcb76321b7",
+      "directory_sha256": "sha256:a8f27a124dc173800cc84567e08058f2b6973d2e355277173572248872641b8a",
+      "file_count": 2,
+      "total_bytes": 1051,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "ai-proposal-document-generator/agent.cordis.yml",
+          "sha256": "37ac4a5b1581b156d2578167bc7368c7ec684e2b7edb802b2d0bb80caca43bdc",
+          "size": 511
+        },
+        {
+          "mode": "0664",
+          "path": "ai-proposal-document-generator/preset.yml",
+          "sha256": "e3624d5a4ef85dacf252fdaf535404a9c0acf9f1bfd00c7bf90135df682654f7",
+          "size": 540
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "ai-proposal-document-generator",
+          "mode": "0775"
+        }
+      ]
+    },
+    "managed": {
+      "tree_sha256": "sha256:b8c9daf51ef5061a39c34cc90995d0c8cabe81bdd75c804bd9c40e29efb9f470",
+      "directory_sha256": "sha256:b214b1fc177255604fd1823d5f9a977fe4581695958611376f22e44b577fa579",
+      "file_count": 15,
+      "total_bytes": 116514,
+      "files": [
+        {
+          "mode": "0664",
+          "path": "ai-proposal-document-generator.patch.yml",
+          "sha256": "f871cdf310362470e0d6371d6925287ae3507e7a74f9f2b2ad89f02baf38baf7",
+          "size": 835
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/LICENSE",
+          "sha256": "8e66f4e41e5833600fac03dc3c915c44da612c97416281c0ed011d0e8813125c",
+          "size": 1066
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/PROVENANCE.md",
+          "sha256": "9988b6bd2f0ffcbbc6e3cab525aa9c43f07790c93c37ee84ef00642b151a38f9",
+          "size": 8250
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/README.md",
+          "sha256": "30a9f34599812275d072e48553accc1c7f42d7d6cdb126936114b7cc7410b1a7",
+          "size": 5314
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/cordis.patch.yml",
+          "sha256": "d6795b1fc19162703e6a78e917ff7f7fadf3bf5235220902f4f8c740130cc93c",
+          "size": 1431
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/icon.svg",
+          "sha256": "a9141195c8c6fa9ee97a31fce1598e1564c1111f64621970c591e4ba6ef9b8b3",
+          "size": 707
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/lib/bridge.js",
+          "sha256": "b7ad16d596a743980c0d26cb4a69264a85eb4a7638163b4ead5182b195624192",
+          "size": 20393
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/lib/client.js",
+          "sha256": "83d8db0f7f2c6787af8f174ec77df4919385b0ff59c927715d7102143bc1b3e4",
+          "size": 44017
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/lib/config.js",
+          "sha256": "b059092ed26b24cec0c41738e2be828bc6c205d0d9f4b61313883210f33d4135",
+          "size": 4320
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/lib/index.js",
+          "sha256": "71eb092a0304f9bbf8abc005d40ac02b3b07b5bb06abedbb325beabae869bc29",
+          "size": 6786
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/lib/protocol.js",
+          "sha256": "98da7c17a8c62c84a34b155fec45696a00f121408d6b9001eb7ee959a70cc6ae",
+          "size": 9829
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/lib/tool.js",
+          "sha256": "d505650b469c311ad4389c0effea1d7c9bf51e139456b08ce7400dd9b5b7e3d9",
+          "size": 11591
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/locale/en.json",
+          "sha256": "2aaa664f0b4fdc60e0e3bac619dae11665adfdbbc85b3bbaa44aed15fa5b64b7",
+          "size": 262
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/locale/zh.json",
+          "sha256": "319d3d46781f4f8e769a8fad4cce9e07de6b397d1c96d9d437d3c2c49127f74f",
+          "size": 235
+        },
+        {
+          "mode": "0664",
+          "path": "dsh-ui-html/package.json",
+          "sha256": "3760d8cca3ed02e71618af818f140ce585fb6541b07e538f5d9b197aab5bb345",
+          "size": 1478
+        }
+      ],
+      "directories": [
+        {
+          "path": ".",
+          "mode": "0775"
+        },
+        {
+          "path": "dsh-ui-html",
+          "mode": "0775"
+        },
+        {
+          "path": "dsh-ui-html/lib",
+          "mode": "0775"
+        },
+        {
+          "path": "dsh-ui-html/locale",
+          "mode": "0775"
+        }
+      ]
+    }
+  },
+  "reference_tree": {
+    "tree_sha256": "sha256:c7b5f78bfcd6c889238585b285fb65cecf8ccc9719f8c2338b254c5975195ec5",
+    "directory_sha256": "sha256:7db283e201e603bce72a3fe6ed4b5e2a6acaebfe96fd571ff382d8824d058290",
+    "file_count": 46,
+    "total_bytes": 313537,
+    "files": [
+      {
+        "mode": "0600",
+        "path": "dsh/managed/ai-proposal-document-generator.patch.yml",
+        "sha256": "f871cdf310362470e0d6371d6925287ae3507e7a74f9f2b2ad89f02baf38baf7",
+        "size": 835
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/LICENSE",
+        "sha256": "8e66f4e41e5833600fac03dc3c915c44da612c97416281c0ed011d0e8813125c",
+        "size": 1066
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/PROVENANCE.md",
+        "sha256": "9988b6bd2f0ffcbbc6e3cab525aa9c43f07790c93c37ee84ef00642b151a38f9",
+        "size": 8250
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/README.md",
+        "sha256": "30a9f34599812275d072e48553accc1c7f42d7d6cdb126936114b7cc7410b1a7",
+        "size": 5314
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/cordis.patch.yml",
+        "sha256": "d6795b1fc19162703e6a78e917ff7f7fadf3bf5235220902f4f8c740130cc93c",
+        "size": 1431
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/icon.svg",
+        "sha256": "a9141195c8c6fa9ee97a31fce1598e1564c1111f64621970c591e4ba6ef9b8b3",
+        "size": 707
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/lib/bridge.js",
+        "sha256": "b7ad16d596a743980c0d26cb4a69264a85eb4a7638163b4ead5182b195624192",
+        "size": 20393
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/lib/client.js",
+        "sha256": "83d8db0f7f2c6787af8f174ec77df4919385b0ff59c927715d7102143bc1b3e4",
+        "size": 44017
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/lib/config.js",
+        "sha256": "b059092ed26b24cec0c41738e2be828bc6c205d0d9f4b61313883210f33d4135",
+        "size": 4320
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/lib/index.js",
+        "sha256": "71eb092a0304f9bbf8abc005d40ac02b3b07b5bb06abedbb325beabae869bc29",
+        "size": 6786
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/lib/protocol.js",
+        "sha256": "98da7c17a8c62c84a34b155fec45696a00f121408d6b9001eb7ee959a70cc6ae",
+        "size": 9829
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/lib/tool.js",
+        "sha256": "d505650b469c311ad4389c0effea1d7c9bf51e139456b08ce7400dd9b5b7e3d9",
+        "size": 11591
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/locale/en.json",
+        "sha256": "2aaa664f0b4fdc60e0e3bac619dae11665adfdbbc85b3bbaa44aed15fa5b64b7",
+        "size": 262
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/locale/zh.json",
+        "sha256": "319d3d46781f4f8e769a8fad4cce9e07de6b397d1c96d9d437d3c2c49127f74f",
+        "size": 235
+      },
+      {
+        "mode": "0664",
+        "path": "dsh/managed/dsh-ui-html/package.json",
+        "sha256": "3760d8cca3ed02e71618af818f140ce585fb6541b07e538f5d9b197aab5bb345",
+        "size": 1478
+      },
+      {
+        "mode": "0600",
+        "path": "dsh/presets/ai-proposal-document-generator/agent.cordis.yml",
+        "sha256": "37ac4a5b1581b156d2578167bc7368c7ec684e2b7edb802b2d0bb80caca43bdc",
+        "size": 511
+      },
+      {
+        "mode": "0600",
+        "path": "dsh/presets/ai-proposal-document-generator/preset.yml",
+        "sha256": "e3624d5a4ef85dacf252fdaf535404a9c0acf9f1bfd00c7bf90135df682654f7",
+        "size": 540
+      },
+      {
+        "mode": "0600",
+        "path": "dsh/workspace/AGENTS.md",
+        "sha256": "425a890bc04f00e1fb3a3d31d708cda3f51ee76aa9603dac0753f90f88d83ba8",
+        "size": 4497
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/acceptance-pack/00-验收范围与原则.md",
+        "sha256": "1bae7ad848b13662e294d8e52114ee16dd6f757894936a4bd95c6b6f85178baf",
+        "size": 2936
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/acceptance-pack/01-产品功能与界面验收规范.md",
+        "sha256": "94a492ecdef46f2fc4aa529ae5027a104ceed34eb80e68e1d022cd34df533709",
+        "size": 4849
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/acceptance-pack/03-验收指标与质量门禁.md",
+        "sha256": "f67746c63ce068d605a2b14f75b75a42cb3f7cddf78d4291d656248b82a103b0",
+        "size": 2740
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/acceptance-pack/04-端到端验收场景.md",
+        "sha256": "e75a1e871efa72a67e16b3698eb5522ea00ee37571bc312df0bb27d8979c5002",
+        "size": 4577
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/acceptance-pack/06-黄金资产与数据集规范.md",
+        "sha256": "4df5746824395a1ec7fceb9bf6b5677d1f841fd1d7a7d2a6ad46e9447210e8a4",
+        "size": 2157
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/acceptance-pack/07-验收证据包规范.md",
+        "sha256": "2f35d1009b37a24e8fa7f1476a6512694c4d4efa5ba02d48ddb2c9c3b9cf336b",
+        "size": 1360
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/acceptance-pack/08-发布门禁与缺陷分级.md",
+        "sha256": "2ec9364aebdaf4ea4c7e9f1428a96ffe71e61b5e069262e0f1d75c224d02c040",
+        "size": 1596
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/01-input/design/design-brief.md",
+        "sha256": "f3eef32f7ca61e7261a47c060f652ea7d114618af405f6fa59c4586c78d941be",
+        "size": 585
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/01-input/organization/forbidden-claims.yml",
+        "sha256": "48db7fc4dc96e1bc58dd5e8085bb7fd619461631f3d4101112b550e201ea1a46",
+        "size": 321
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/01-input/organization/product-capability.md",
+        "sha256": "cbb16c939e463f5786f2236abec31238201c852918aac5104cbfad4138aa3204",
+        "size": 815
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/01-input/rfp/amendment-01.md",
+        "sha256": "617d01ddff758e6490e0b4dbf8fa8021cf80c524d90d3eeec587862579c3140e",
+        "size": 465
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/01-input/rfp/conflicting-attachment.md",
+        "sha256": "66b6feab735bf3ea416ac2a2b2d81638428e5817f15b26c1762d1c7d6a86ff0c",
+        "size": 241
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/01-input/rfp/rfp-main.md",
+        "sha256": "5a633153e89209716cc48aaaa15f127a6cd4e63d74a2e031122fcde4ed0b54be",
+        "size": 1020
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/01-input/rfp/scoring-matrix.csv",
+        "sha256": "1e12dcb92a6082ad3b79aba02b952d8682beb04feb237ddc9698b09650aa9ce3",
+        "size": 388
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/01-input/rfp/submission-rules.md",
+        "sha256": "642a6f2253f404e4fc38077043b5636984a0c8cd557078bba60b6ce7c2d47109",
+        "size": 346
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/02-gold/evidence-links.csv",
+        "sha256": "deac17304616fbb8043ade67601053796089958d2aab50ba430b28776c8b8195",
+        "size": 484
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/02-gold/expected-findings.yml",
+        "sha256": "f07eca2ccb3b64230bbd23e31a44eacaf3b3270c387f9fe3c282c4013b65eeb5",
+        "size": 472
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/02-gold/expected-impact.json",
+        "sha256": "e98532b507a34391f2ee1adbcfde59698f6c0a76652f7010099acea85e9e5134",
+        "size": 393
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/02-gold/expected-release-manifest.yml",
+        "sha256": "6bcc856a6db5aa5a3e64282a690b1e9c31612404848dacf4b10731d88b127600",
+        "size": 398
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/02-gold/requirements.jsonl",
+        "sha256": "4ccae869162cb2c852b14367210009e007599e8d8cb7aadb3f8ab3e0a3261d8e",
+        "size": 385
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/04-expected-outputs/expected-release-checklist.md",
+        "sha256": "9480780886c9784350cc167b1bad4257c269d76063f76941ba993d89fa528ef4",
+        "size": 507
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/04-expected-outputs/expected-review-findings.md",
+        "sha256": "baa683b9713bc105d3cdc067cc126b67973cbac9ef4734c1d1e5d224f33a80c4",
+        "size": 423
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/demo-pack/04-expected-outputs/expected-structure.md",
+        "sha256": "41afdc09407c53a1bf0a1b7bbf1e1789d382c4328ac6499ae43b7ccb9ddcd179",
+        "size": 392
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/ui-baseline/HTML-验收基线.md",
+        "sha256": "e70e481bb20c22cfa55c69ceb1b00187efb2aadc54377b2796bf423974ec33f4",
+        "size": 8549
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/ui-baseline/HTML-验收测试清单.md",
+        "sha256": "257949b099703d51494c68d485c31394a0d7ce89de5ebf141e8f28b88575e94e",
+        "size": 4959
+      },
+      {
+        "mode": "0644",
+        "path": "dsh/workspace/references/ui-baseline/方案文档生成工具-静态验收原型.html",
+        "sha256": "ddb475a2660265182499d3f1c166348e9269dc187d34da900fb21387545df376",
+        "size": 141204
+      },
+      {
+        "mode": "0664",
+        "path": "evaluation.md",
+        "sha256": "d377003bed5eb734b0bb718fe0183f2466f1d87b7253931ca97b3336f55e3073",
+        "size": 8447
+      },
+      {
+        "mode": "0600",
+        "path": "harness.yaml",
+        "sha256": "339cdc76967f05ee29242d05d4924089d43121f18ae8c40fa417935246978ceb",
+        "size": 466
+      }
+    ],
+    "directories": [
+      {
+        "path": ".",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/managed",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/managed/dsh-ui-html",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/managed/dsh-ui-html/lib",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/managed/dsh-ui-html/locale",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/presets",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/presets/ai-proposal-document-generator",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/workspace",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/workspace/references",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/workspace/references/acceptance-pack",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/workspace/references/demo-pack",
+        "mode": "0775"
+      },
+      {
+        "path": "dsh/workspace/references/demo-pack/01-input",
+        "mode": "0755"
+      },
+      {
+        "path": "dsh/workspace/references/demo-pack/01-input/design",
+        "mode": "0755"
+      },
+      {
+        "path": "dsh/workspace/references/demo-pack/01-input/organization",
+        "mode": "0755"
+      },
+      {
+        "path": "dsh/workspace/references/demo-pack/01-input/rfp",
+        "mode": "0755"
+      },
+      {
+        "path": "dsh/workspace/references/demo-pack/02-gold",
+        "mode": "0755"
+      },
+      {
+        "path": "dsh/workspace/references/demo-pack/04-expected-outputs",
+        "mode": "0755"
+      },
+      {
+        "path": "dsh/workspace/references/ui-baseline",
+        "mode": "0775"
+      }
+    ]
+  },
+  "evaluation_sha256": "3c70675a7f469c400b5ca3537fbe80335f60da87ada9f7bc5d905b1f9123e942",
+  "evaluation_cases": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "title": "身份与职责",
+      "inputs": [
+        "你是谁？请简要说明身份和主要职责。"
+      ],
+      "expected_behavior": "回复明确包含 Agent ID `ai-proposal-document-generator`，身份为AI方案文档生成智能体，职责符合 Candidate 指令；不使用创建工具的流程验证身份。"
+    }
+  ],
+  "case_catalog": [
+    {
+      "case_id": "U-IDENTITY-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ROLE-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-REQ-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-BASE-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-EVD-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-CONS-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-ARCH-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-BID-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-SEC-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-CHANGE-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-GOV-001",
+      "scene": "未分组",
+      "fast": true
+    },
+    {
+      "case_id": "U-RENDER-001",
+      "scene": "未分组",
+      "fast": false
+    },
+    {
+      "case_id": "U-REPRO-001",
+      "scene": "未分组",
+      "fast": true
+    }
+  ],
+  "selection_mode": "explicit",
+  "review_mode": "none",
+  "configured_capabilities": [
+    "/opt/dsh-presets"
+  ],
+  "declared_guard": null,
+  "evaluation_implementation": {
+    "dsh-eval": "e34e401631e869f4271e9a0861474cff9e74ca20f195497539ebc5439bcf94e5",
+    "dsh-dev": "2cf6f9c0c77f543367b21cc1526307e61a20c7dd68af362bdc04a801adfaf9de",
+    "source_contract.py": "e3d297f96191b22cd947dd14236f382a0f6a23f9efabae75f2062ecfd6d2ba76",
+    "version-source.mts": "4664c407b3aeac051c67d2df829454002c0b1289ef58f14107c0de81df7be3b4",
+    "evaluation-source.mts": "662da0236808ec03434dce80e84468362cf477e7061b3fcb3e407d3297d43d6b",
+    "dsh-eval-api.mjs": "096eb7cd6eaddd75298b1273fe2715f4f5caddbedc3c0970b4de9c44048fd41d",
+    "dsh-eval-browser.mjs": "e2a0e7d8dbddb1777918c6a71c2bfaaf9efaad9cb67a17ef2c243b54e188ad86",
+    "dsh-eval-common.mjs": "708bb9ce1b82c006a9921075016c0c0774d1222b29b5bdcb0bf90eeb6f1889b6",
+    "harness-runtime.mts": "7a568ac06d6af98623bc40d129e4916b609c7c922d2b2431144550b1154d1356",
+    "run_record.py": "c8f15424e970f18d130573670b9de0e9b5b944069191961075f624a3f8149448",
+    "scenario_analysis.py": "f5a40f59f72690cd4ed3a1899a2cac76b39167504f3f5abfb83a76edeb9a9f16",
+    "business.ts": "9d87bfa138c90f1e3a448dce1a0c2c3a92401d3f518292890603a7f3f73d0947",
+    "evaluation-registry.patch.yml": "454e645362c2a746345c8ded4edee9317379d080382fe66d80e9d50b54591908",
+    "evaluation-wait.mts": "305b6724e4376721857c2128a77d8826428a3b2cd362e6fbc1ea17d87d2e0992",
+    "evaluation-judge-guard.mjs": "ad46cdd4c8264d3023bf0ea33327fdb60869209a3463f32f6cf30a347483219d",
+    "scenario-analysis-guard.mjs": "21c9b85f5400fefadbb39145d97409bd158a050941e076da249a504c8f24d541",
+    "evaluation-case-scheduler.mts": "5cc7a04bf72fc242e245841b2cf132ced45dba386c03ec99892710dfeb54abe4",
+    "evaluation-presets/evaluation-judge/agent.cordis.yml": "6c0c0c93018b318942d7334026e43b12124fa0fcabe166076d6e3d49f9e24f59",
+    "evaluation-presets/evaluation-judge/preset.yml": "df22cd2de4f05a31a21a2f041f44b2de57a48140797602ed4bf068e216a62a5e",
+    "evaluation-presets/scenario-analysis/agent.cordis.yml": "2dd97c8dd481ed744387c85c22cbd2c8883faec3c5ca405b8d6f1e516d5ee73f",
+    "evaluation-presets/scenario-analysis/preset.yml": "b9ca918a58de3bb8b043ec0847937950e06bc27c1cc7b155dd0823ee1076be03",
+    "platform/plugin/src/agents/asset-build.ts": "6650057aa4702867d9e06683424f011a7819a943220b717a80db47fed70e7409",
+    "platform/plugin/src/agents/asset-build-core.ts": "6bc13d704244fe9079e20e7dafdbfaa2d9bface27636edebc94099c63b8ca07d",
+    "platform/plugin/src/agents/asset-dependencies.ts": "374e71c70752c440d9045f279ab8e1969c1bf71c9bd10d232a1cdc2570837c4d",
+    "platform/plugin/src/agents/plugin-dependency-reuse.ts": "a9917afb926b3164fbf721cb1783e470ebc88d7d32e593e042b3105c19c4f94d",
+    "platform/plugin/src/agents/version-source.ts": "49151b216294b4175f10306ad5b3a29b0100588d3a36030d5dc371f245a118e1",
+    "platform/plugin/src/agents/compute-variants.ts": "668f81b20ecfc5ab8032e9637633d9385ce9c6a59902df92277f390c96384fdc",
+    "platform/plugin/src/models/harness-runtime.ts": "5a7c98db9b279268452c9683950470c4816fe357c1db2cb75d06d4fd51308793",
+    "platform/plugin/src/evaluation/jobs.ts": "ebf1cc2a0d882331d4e8d27cef091207414a92bf925acf178a214fdd64b33497",
+    "platform/plugin/src/evaluation/model-usage.ts": "fad7ab45e7a127aa373ecd45fc46445e848bbff85c433bb8373c85f2988448de",
+    "platform/plugin/src/evaluation/model-attempts.ts": "3f0a2d93c95a8396966a279bd07162f907eca7c725b62f004ac3aa3af564abe5",
+    "platform/plugin/src/business-control/local-capabilities.ts": "89214f8031c724f5e2682388c525cc44ec53e18695c50ecd00831956205b309d"
+  },
+  "dependency_env": {
+    "DEEPSEEK_API_KEY": true
+  },
+  "git_version": {
+    "commit": "f3d101b6e5a79585bddb433dc3ba34fbecced900",
+    "dirty": false,
+    "changed_path_count": 0
+  },
+  "program_origin": {
+    "commit": "29bf72d78faf89b76ed0f5e592c2627010f41f38",
+    "dirty": false,
+    "changed_path_count": 0,
+    "root": "/home/admin/work/hep-lab/harness-engineering-platform"
+  },
+  "asset_origin": {
+    "commit": "f3d101b6e5a79585bddb433dc3ba34fbecced900",
+    "dirty": false,
+    "changed_path_count": 0,
+    "workspace_id": "workspace-95db14d2-d53d-4015-8256-ade8612b1b77",
+    "candidate_sha256": "aa1600250873df9dd6de390a21e9681a285846cb3b5731756d988a9767793dc0"
+  },
+  "business_origin": {
+    "commit": "d9b4cdb88d42407d37e4bd7c436201c831cb06fa",
+    "dirty": false,
+    "changed_path_count": 0,
+    "root": "/home/admin/work/hep-lab/manager-workspace/business-agents"
+  },
+  "evaluation_source": "current",
+  "harness_review": {
+    "schema_version": 1,
+    "generated": [],
+    "sources": []
+  },
+  "model": "deepseek-flash",
+  "executor": "browser"
+}
